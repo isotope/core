@@ -90,7 +90,6 @@ abstract class ProductCollectionSurcharge extends TypeAgent
     /**
      * Get tax amount for an individual collection item
      *
-     * @param ProductCollectionItem $objItem
      *
      * @return float
      */
@@ -108,7 +107,6 @@ abstract class ProductCollectionSurcharge extends TypeAgent
      * Set tax amount for a collection item
      *
      * @param float                 $fltAmount
-     * @param ProductCollectionItem $objItem
      */
     public function setAmountForCollectionItem($fltAmount, ProductCollectionItem $objItem)
     {
@@ -144,7 +142,6 @@ abstract class ProductCollectionSurcharge extends TypeAgent
     /**
      * Split tax amount amongst collection products
      *
-     * @param IsotopeProductCollection $objCollection
      * @param Model                    $objSource
      */
     public function applySplittedTax(IsotopeProductCollection $objCollection, $objSource)
@@ -294,8 +291,6 @@ abstract class ProductCollectionSurcharge extends TypeAgent
     /**
      * Create a payment surcharge
      *
-     * @param IsotopePayment           $objPayment
-     * @param IsotopeProductCollection $objCollection
      *
      * @return Payment
      */
@@ -307,8 +302,6 @@ abstract class ProductCollectionSurcharge extends TypeAgent
     /**
      * Create a shipping surcharge
      *
-     * @param IsotopeShipping          $objShipping
-     * @param IsotopeProductCollection $objCollection
      *
      * @return Shipping
      */
@@ -324,7 +317,6 @@ abstract class ProductCollectionSurcharge extends TypeAgent
      * @param string                         $strClass
      * @param string                         $strLabel
      * @param IsotopePayment|IsotopeShipping $objSource
-     * @param IsotopeProductCollection       $objCollection
      *
      * @return ProductCollectionSurcharge
      */
@@ -554,7 +546,6 @@ abstract class ProductCollectionSurcharge extends TypeAgent
     /**
      * Add tax amount to the array of taxes, creating a new instance of Tax model if necessary
      *
-     * @param array  $arrTaxes
      * @param string $id
      * @param string $label
      * @param mixed  $price
@@ -563,7 +554,6 @@ abstract class ProductCollectionSurcharge extends TypeAgent
      * @param bool   $applyRoundingIncrement
      * @param bool   $addToTotal
      * @param bool   $notNegative
-     *
      * @return int
      */
     private static function addTax(array &$arrTaxes, $id, $label, $price, $isPercentage, $total, $applyRoundingIncrement, $addToTotal, $notNegative)

@@ -29,9 +29,7 @@ class Label
      *
      * @param array          $row
      * @param string         $label
-     * @param \DataContainer $dc
      * @param array          $args
-     *
      * @return array
      */
     public function generate($row, $label, DataContainer $dc, $args)
@@ -141,7 +139,7 @@ class Label
             /** @noinspection HtmlUnknownTarget */
             return sprintf(
                 '<a href="%s" title="%s">%s</a>',
-                ampersand(Environment::get('request')) . '&amp;id=' . $row['id'],
+                \Contao\StringUtil::ampersand(Environment::get('request')) . '&amp;id=' . $row['id'],
                 StringUtil::specialchars($GLOBALS['TL_LANG'][$dc->table]['showVariants']),
                 $objProduct->name
             );

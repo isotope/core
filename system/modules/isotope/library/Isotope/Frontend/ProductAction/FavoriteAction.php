@@ -74,8 +74,6 @@ class FavoriteAction extends AbstractButton
     }
 
     /**
-     * @param IsotopeProduct $product
-     *
      * @return bool
      */
     private function isFavorited(IsotopeProduct $product = null)

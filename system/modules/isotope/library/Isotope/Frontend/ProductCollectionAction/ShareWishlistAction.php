@@ -64,8 +64,6 @@ class ShareWishlistAction extends AbstractButton
     }
 
     /**
-     * @param IsotopeProductCollection $collection
-     *
      * @return bool
      */
     private function isShared(IsotopeProductCollection $collection)

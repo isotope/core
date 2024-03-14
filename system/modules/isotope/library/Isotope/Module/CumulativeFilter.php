@@ -35,10 +35,10 @@ use Isotope\Template;
  */
 class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterModule
 {
-    const QUERY_AND = 'and';
-    const QUERY_OR  = 'or';
-    const COUNT_ALL = 'all';
-    const COUNT_NEW = 'new';
+    public const QUERY_AND = 'and';
+    public const QUERY_OR  = 'or';
+    public const COUNT_ALL = 'all';
+    public const COUNT_NEW = 'new';
 
     /**
      * Template
@@ -70,7 +70,7 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
         $fields                     = array();
 
         if (\is_array($this->iso_cumulativeFields)) {
-            foreach ($this->iso_cumulativeFields as $k => $v) {
+            foreach ($this->iso_cumulativeFields as $v) {
                 $attribute = $v['attribute'];
                 unset($v['attribute']);
 
@@ -132,7 +132,7 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
 
         $this->generateFilter();
 
-        $this->Template->linkClearAll  = ampersand(preg_replace('/\?.*/', '', Environment::get('request')));
+        $this->Template->linkClearAll  = \Contao\StringUtil::ampersand(preg_replace('/\?.*/', '', Environment::get('request')));
         $this->Template->labelClearAll = $GLOBALS['TL_LANG']['MSC']['clearFiltersLabel'];
     }
 
@@ -219,11 +219,9 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
 
     /**
      * @param string $attribute
-     * @param array  $options
      * @param string $queryType
      * @param string $countType
      * @param bool   $filterActive
-     *
      * @return array
      */
     protected function generateOptions($attribute, array $options, $queryType, $countType, &$filterActive)

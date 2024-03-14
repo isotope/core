@@ -12,6 +12,7 @@
 namespace Isotope\Module;
 
 use Contao\Controller;
+use Contao\FrontendUser;
 use Contao\Input;
 use Contao\System;
 use Haste\Generator\RowClass;
@@ -25,6 +26,7 @@ use Isotope\Template;
 
 
 /**
+ * @property int $iso_orderdetails_module
  * @property int $iso_cart_jumpTo
  */
 class OrderHistory extends Module
@@ -65,7 +67,7 @@ class OrderHistory extends Module
             return $this->generateWildcard();
         }
 
-        if (FE_USER_LOGGED_IN !== true || 0 === \count($this->iso_config_ids)) {
+        if (!\Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER') || 0 === \count($this->iso_config_ids)) {
             return '';
         }
 
@@ -86,7 +88,7 @@ class OrderHistory extends Module
                 'tl_iso_product_collection.member=?',
                 'config_id IN (' . implode(',', array_map('intval', $this->iso_config_ids)) . ')'
             ],
-            [\FrontendUser::getInstance()->id],
+            [FrontendUser::getInstance()->id],
             ['order' => 'locked DESC']
         );
 
@@ -100,6 +102,7 @@ class OrderHistory extends Module
         }
 
         $reorder = (int) Input::get('reorder');
+        $previousUid = Input::get('uid');
 
         foreach ($objOrders as $objOrder) {
             if ($this->iso_cart_jumpTo && $reorder === (int) $objOrder->id) {
@@ -107,6 +110,12 @@ class OrderHistory extends Module
             }
 
             Isotope::setConfig($objOrder->getConfig());
+            $details = '';
+
+            if ($this->iso_orderdetails_module) {
+                Input::setGet('uid', $objOrder->uniqid);
+                $details = Controller::getFrontendModule($this->iso_orderdetails_module);
+            }
 
             $arrOrders[] = [
                 'collection' => $objOrder,
@@ -117,10 +126,13 @@ class OrderHistory extends Module
                 'grandTotal' => Isotope::formatPriceWithCurrency($objOrder->getTotal()),
                 'status'     => $objOrder->getStatusLabel(),
                 'link'       => $this->jumpTo ? (Url::addQueryString('uid=' . $objOrder->uniqid, $this->jumpTo)) : '',
+                'details'    => $details,
                 'reorder'    => $this->iso_cart_jumpTo ? (Url::addQueryString('reorder=' . $objOrder->id)) : '',
                 'class'      => $objOrder->getStatusAlias(),
             ];
         }
+
+        Input::setGet('uid', $previousUid);
 
         RowClass::withKey('class')->addFirstLast()->addEvenOdd()->applyTo($arrOrders);
 

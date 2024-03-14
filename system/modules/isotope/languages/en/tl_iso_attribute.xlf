@@ -209,6 +209,12 @@
       <trans-unit id="tl_iso_attribute.filesOnly.1">
         <source>Remove the radio buttons or checkboxes next to folders.</source>
       </trans-unit>
+      <trans-unit id="tl_iso_attribute.inline.0">
+        <source>Show in browser</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.inline.1">
+        <source>Show the file in the browser instead of opening the download dialog.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_attribute.isGallery.0">
         <source>Mark as gallery</source>
       </trans-unit>

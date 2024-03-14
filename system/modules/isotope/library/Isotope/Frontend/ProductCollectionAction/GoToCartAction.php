@@ -25,8 +25,6 @@ class GoToCartAction extends AbstractButton
 
     /**
      * Constructor.
-     *
-     * @param Module $module
      */
     public function __construct(Module $module)
     {
@@ -59,6 +57,7 @@ class GoToCartAction extends AbstractButton
 
     /**
      * {@inheritdoc}
+     * @return false|void
      */
     public function handleSubmit(IsotopeProductCollection $collection)
     {

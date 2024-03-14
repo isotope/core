@@ -97,8 +97,6 @@ class FineUploader extends Attribute implements \uploadable
 
     /**
      * @param mixed          $value
-     * @param IsotopeProduct $product
-     * @param Widget         $widget
      *
      * @return mixed
      */

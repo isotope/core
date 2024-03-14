@@ -73,11 +73,7 @@ abstract class Report extends Backend
 
     public function __get($strKey)
     {
-        if (isset($this->arrObjects[$strKey])) {
-            return $this->arrObjects[$strKey];
-        }
-
-        return $this->arrData[$strKey];
+        return $this->arrObjects[$strKey] ?? $this->arrData[$strKey];
     }
 
     public function __set($strKey, $varValue)

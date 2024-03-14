@@ -96,9 +96,6 @@ class Cart extends AbstractProductCollection
     }
 
     /**
-     * @param IsotopeProductCollection $collection
-     * @param array                    $data
-     * @param array                    $quantity
      * @param bool                     $hasChanges
      *
      * @return array

@@ -24,6 +24,11 @@
                 <?php if ($order['reorder']): ?><a href="<?= $order['reorder'] ?>"><?= $GLOBALS['TL_LANG']['MSC']['reorderLabel'] ?></a><?php endif; ?>
             </td>
         </tr>
+        <?php if ($order['details']): ?>
+        <tr>
+            <td colspan="5"><?= $order['details'] ?></td>
+        </tr>
+        <?php endif; ?>
     <?php endforeach; ?>
     </tbody>
 </table>

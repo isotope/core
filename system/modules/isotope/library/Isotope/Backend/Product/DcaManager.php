@@ -470,8 +470,8 @@ class DcaManager extends Backend
             $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$name]['sorting'] = ('price' !== $name && 'variantFields' !== $name && \in_array($name, $arrFields));
 
             $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$name] ?? null;
-            $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$name]['filter'] = $objAttribute && ($objAttribute->be_filter ? \in_array($name, $arrVariantFields) : false);
-            $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$name]['search'] = $objAttribute && ($objAttribute->be_search ? \in_array($name, $arrVariantFields) : false);
+            $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$name]['filter'] = $objAttribute && ($objAttribute->be_filter && \in_array($name, $arrVariantFields));
+            $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$name]['search'] = $objAttribute && ($objAttribute->be_search && \in_array($name, $arrVariantFields));
         }
     }
 

@@ -222,8 +222,6 @@ class OpenPaymentPlatform extends Payment
 
     /**
      * @param string                       $paymentType
-     * @param IsotopePurchasableCollection $objOrder
-     * @param array                        $params
      *
      * @return Request
      */
@@ -251,10 +249,6 @@ class OpenPaymentPlatform extends Payment
         return $request;
     }
 
-    /**
-     * @param array                        $data
-     * @param IsotopePurchasableCollection $objOrder
-     */
     private function storeApiResponse(array $data, IsotopePurchasableCollection $objOrder)
     {
         $payments = StringUtil::deserialize($objOrder->payment_data, true);
@@ -270,8 +264,6 @@ class OpenPaymentPlatform extends Payment
     }
 
     /**
-     * @param array $brands
-     *
      * @return array
      */
     public static function getPaymentTypes(array $brands)
@@ -299,8 +291,6 @@ class OpenPaymentPlatform extends Payment
     }
 
     /**
-     * @param IsotopePurchasableCollection $objOrder
-     *
      * @return array
      */
     private function preparePaymentParams(IsotopePurchasableCollection $objOrder)
@@ -327,8 +317,6 @@ class OpenPaymentPlatform extends Payment
     }
 
     /**
-     * @param array   $params
-     * @param Address $address
      * @param string  $type
      */
     private function setCustomerParams(array &$params, Address $address, $type)
@@ -360,8 +348,6 @@ class OpenPaymentPlatform extends Payment
     }
 
     /**
-     * @param array   $params
-     * @param Address $address
      * @param string  $type
      */
     private function setAddressParams(array &$params, Address $address, $type)

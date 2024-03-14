@@ -14,7 +14,7 @@ namespace Isotope\Collection;
 use Isotope\Interfaces\IsotopePrice;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
-use Model\Collection;
+use Contao\Model\Collection;
 
 /**
  * @method \Isotope\Model\ProductPrice current()
@@ -74,7 +74,6 @@ class ProductPrice extends Collection implements IsotopePrice
      * Return price
      *
      * @param int   $intQuantity
-     * @param array $arrOptions
      *
      * @return float
      */
@@ -87,7 +86,6 @@ class ProductPrice extends Collection implements IsotopePrice
      * Return original price
      *
      * @param int   $intQuantity
-     * @param array $arrOptions
      *
      * @return  float
      */
@@ -100,7 +98,6 @@ class ProductPrice extends Collection implements IsotopePrice
      * Return net price (without taxes)
      *
      * @param int   $intQuantity
-     * @param array $arrOptions
      *
      * @return float
      */
@@ -113,7 +110,6 @@ class ProductPrice extends Collection implements IsotopePrice
      * Return gross price (with all taxes)
      *
      * @param int   $intQuantity
-     * @param array $arrOptions
      *
      * @return float
      */
@@ -127,7 +123,6 @@ class ProductPrice extends Collection implements IsotopePrice
      *
      * @param bool  $blnShowTiers
      * @param int   $intQuantity
-     * @param array $arrOptions
      *
      * @return string
      */

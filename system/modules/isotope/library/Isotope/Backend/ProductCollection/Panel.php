@@ -22,7 +22,6 @@ class Panel extends Backend
 
     /**
      * Generate product filter buttons and return them as HTML
-     * @return string
      */
     public static function generateFilterButtons(): string
     {
@@ -34,7 +33,7 @@ class Panel extends Backend
         // Check if user can manage products
         if ($user->hasAccess('page', 'modules')) {
             $buttons[] = '
-    <a href="' . ampersand(System::getContainer()->get('contao.picker.builder')->getUrl('dc.tl_iso_product', ['fieldType' => 'radio'])) . '" class="tl_submit'.($intProduct ? ' active' : '').'" id="productFilter">' . ($GLOBALS['TL_LANG']['MSC']['filterByProducts'] ?? '') . '</a>
+    <a href="' . \Contao\StringUtil::ampersand(System::getContainer()->get('contao.picker.builder')->getUrl('dc.tl_iso_product', ['fieldType' => 'radio'])) . '" class="tl_submit'.($intProduct ? ' active' : '').'" id="productFilter">' . ($GLOBALS['TL_LANG']['MSC']['filterByProducts'] ?? '') . '</a>
     <script>
       document.getElementById("productFilter").addEventListener("click", function(e) {
         e.preventDefault();
@@ -79,7 +78,6 @@ class Panel extends Backend
 
     /**
      * Apply advanced filters to product list view
-     * @return void
      */
     public function applyAdvancedFilters(): void
     {

@@ -13,6 +13,7 @@ namespace Isotope\Frontend\ProductAction;
 
 use Contao\Controller;
 use Contao\Environment;
+use Contao\FormSelectMenu;
 use Contao\Input;
 use Haste\Util\Url;
 use Isotope\Interfaces\IsotopeProduct;
@@ -43,7 +44,7 @@ class WishlistAction extends AbstractButton
      */
     public function isAvailable(IsotopeProduct $product, array $config = [])
     {
-        return true === FE_USER_LOGGED_IN;
+        return \Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER');
     }
 
     /**
@@ -60,7 +61,7 @@ class WishlistAction extends AbstractButton
             }
         }
 
-        $widget = new \FormSelectMenu(
+        $widget = new FormSelectMenu(
             array(
                 'id' => $this->getName() . '_option',
                 'name' => $this->getName() . '_option',

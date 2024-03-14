@@ -9,7 +9,7 @@
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
-\System::loadLanguageFile(\Isotope\Model\ProductType::getTable());
+\Contao\System::loadLanguageFile(\Isotope\Model\ProductType::getTable());
 
 /**
  * Table tl_iso_product
@@ -442,7 +442,10 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
             'eval'                  => array
             (
                 'listCallback'      => array('Isotope\Backend\ProductPrice\Callback', 'generateWizardList'),
+                'list_callback'     => array('Isotope\Backend\ProductPrice\Callback', 'generateWizardList'),
                 'applyButtonLabel'  => &$GLOBALS['TL_LANG']['tl_iso_product']['prices']['apply_and_close'],
+                'global_operations' => array('new'),
+                'operations'        => array('edit', 'copy', 'delete', 'show'),
                 'tl_class'          =>'clr',
             ),
         ),

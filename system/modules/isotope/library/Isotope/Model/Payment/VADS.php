@@ -129,8 +129,6 @@ abstract class VADS extends Postsale
     }
 
     /**
-     * @param IsotopePurchasableCollection $objOrder
-     *
      * @return array
      */
     protected function getOutboundParameters(IsotopePurchasableCollection $objOrder)
@@ -179,9 +177,7 @@ abstract class VADS extends Postsale
     /**
      * Calculate SHA1 signature for the payment parameters
      *
-     * @param array  $parameters
      * @param string $certificate
-     *
      * @return string
      */
     protected function calculateSignature(array $parameters, $certificate)
@@ -203,7 +199,6 @@ abstract class VADS extends Postsale
     /**
      * Validate input parameters to prevent payment manipulation
      *
-     * @param IsotopePurchasableCollection $objOrder
      *
      * @return bool
      */

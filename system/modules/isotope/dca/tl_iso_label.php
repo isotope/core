@@ -102,7 +102,7 @@ $GLOBALS['TL_DCA']['tl_iso_label'] = array
             'filter'                    => true,
             'inputType'                 => 'select',
             'options_callback'          => function() {
-                return \Contao\System::getLanguages();
+                return \Contao\System::getContainer()->get('contao.intl.locales')->getLocales(null, true);
             },
             'default'                   => \Contao\BackendUser::getInstance()->language,
             'eval'                      => array('mandatory'=>true, 'tl_class'=>'clr'),

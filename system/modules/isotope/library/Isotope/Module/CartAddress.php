@@ -109,7 +109,7 @@ class CartAddress extends Module
 
             if (!\in_array($strName, $arrFields, true)
                 || !($arrDca['eval']['feEditable'] ?? null)
-                || (($arrDca['eval']['membersOnly'] ?? null) && FE_USER_LOGGED_IN !== true)
+                || (($arrDca['eval']['membersOnly'] ?? null) && !\Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER'))
             ) {
                 return false;
             }

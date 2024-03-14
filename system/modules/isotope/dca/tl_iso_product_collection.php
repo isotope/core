@@ -13,7 +13,7 @@
  * Load tl_iso_product data container and language files
  */
 $this->loadDataContainer('tl_iso_product');
-\System::loadLanguageFile('tl_iso_product');
+\Contao\System::loadLanguageFile('tl_iso_product');
 
 
 /**
@@ -263,6 +263,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         ),
         'config_id' => array
         (
+            'filter'                => true,
             'foreignKey'            => \Isotope\Model\Config::getTable().'.name',
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
@@ -326,7 +327,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         'language' => array
         (
             'options_callback' => static function () {
-                return \Contao\System::getLanguages();
+                return \Contao\System::getContainer()->get('contao.intl.locales')->getLocales(null, true);
             },
             'sql'                   => "varchar(5) NOT NULL default ''"
         ),

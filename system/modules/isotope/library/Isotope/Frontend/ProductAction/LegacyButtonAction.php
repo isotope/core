@@ -41,7 +41,6 @@ class LegacyButtonAction extends AbstractButton
      *
      * @param string $name
      * @param string $label
-     * @param array  $callback
      */
     public function __construct($name, $label, array $callback = null)
     {

@@ -85,7 +85,7 @@ class Currency
      */
     public static function getAmountInMinorUnits($amount, $currencyCode)
     {
-        return (int) round($amount * pow(10, static::getMinorUnits($currencyCode)));
+        return (int) round($amount * 10 ** static::getMinorUnits($currencyCode));
     }
 
     /**

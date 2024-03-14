@@ -30,7 +30,6 @@ class Analytics extends Frontend
     /**
      * Process checkout
      *
-     * @param Order $objOrder
      *
      * @return bool
      */
@@ -47,9 +46,6 @@ class Analytics extends Frontend
 
     /**
      * Actually execute the GoogleAnalytics tracking
-     *
-     * @param Config                   $objConfig
-     * @param IsotopeProductCollection $objOrder
      */
     protected function trackGATransaction(Config $objConfig, IsotopeProductCollection $objOrder)
     {
@@ -118,10 +114,7 @@ class Analytics extends Frontend
             $customVar = new CustomVariable(
                 1,
                 'Member',
-                StringUtil::parseSimpleTokens(
-                    $objConfig->ga_member,
-                    $objOrder->getMember()->row()
-                ),
+                \Contao\System::getContainer()->get('contao.string.simple_token_parser')->parse($objConfig->ga_member, $objOrder->getMember()->row()),
                 CustomVariable::SCOPE_VISITOR
             );
 

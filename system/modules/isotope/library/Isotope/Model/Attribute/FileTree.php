@@ -49,7 +49,6 @@ class FileTree extends Attribute
     /**
      * Make sure array values are unserialized.
      *
-     * @param IsotopeProduct $product
      *
      * @return mixed
      */
@@ -111,7 +110,6 @@ class FileTree extends Attribute
      * Sort the files
      *
      * @param FilesModel[]  $files
-     * @param IsotopeProduct $product
      *
      * @return array
      */

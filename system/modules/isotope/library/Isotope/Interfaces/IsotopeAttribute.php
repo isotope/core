@@ -53,15 +53,12 @@ interface IsotopeAttribute
 
     /**
      * Save attribute configuration into the given DCA array
-     *
-     * @param array $arrData
      */
     public function saveToDCA(array &$arrData);
 
     /**
      * Gets attribute value from given product.
      *
-     * @param IsotopeProduct $product
      *
      * @return mixed
      */
@@ -77,8 +74,6 @@ interface IsotopeAttribute
     /**
      * Generate attribute for given product
      *
-     * @param IsotopeProduct $objProduct
-     * @param array          $arrOptions
      *
      * @return string
      */

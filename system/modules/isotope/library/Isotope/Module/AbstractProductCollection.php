@@ -195,9 +195,6 @@ abstract class AbstractProductCollection extends Module
     }
 
     /**
-     * @param IsotopeProductCollection $collection
-     * @param array                    $data
-     * @param array                    $quantity
      * @param bool                     $hasChanges
      *
      * @return array
@@ -268,10 +265,8 @@ abstract class AbstractProductCollection extends Module
     /**
      * Generate buttons for collection view template
      *
-     * @param array $buttons
      *
      * @return array
-     *
      * @deprecated Deprecated since Isotope 2.5
      */
     protected function generateButtons(array $buttons = [])
@@ -280,11 +275,9 @@ abstract class AbstractProductCollection extends Module
     }
 
     /**
-     * @param array           $buttons
      * @param string          $name
      * @param string          $label
      * @param \Closure|string $action
-     * @param array           $additional
      *
      * @deprecated Deprecated since Isotope 2.5
      */

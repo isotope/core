@@ -108,11 +108,13 @@ class ProductCollectionDownload extends Model
                 continue;
             }
 
+            $uuid = StringUtil::binToUuid($objFileModel->uuid);
+
             // Send file to the browser
             if ($blnOrderPaid &&
                 $this->canDownload() &&
                 Input::get('download') == $objDownload->id &&
-                Input::get('file') == $objFileModel->path
+                (Input::get('file') == $uuid || Input::get('file') == $objFileModel->path)
             ) {
                 $path = $objFileModel->path;
 
@@ -142,7 +144,7 @@ class ProductCollectionDownload extends Model
             $strHref = '';
             if (CompatibilityHelper::isFrontend()) {
                 $strHref = Url::addQueryString(
-                    'download=' . $objDownload->id . '&amp;file=' . $objFileModel->path,
+                    'download=' . $objDownload->id . '&amp;file=' . $uuid,
                     $baseUrl
                 );
             }
@@ -173,8 +175,6 @@ class ProductCollectionDownload extends Model
     /**
      * Find all downloads that belong to items of a given collection
      *
-     * @param IsotopeProductCollection $objCollection
-     * @param array                    $arrOptions
      *
      * @return Collection|null
      */
@@ -195,7 +195,6 @@ class ProductCollectionDownload extends Model
     /**
      * Create ProductCollectionDownload for all product downloads in the given collection
      *
-     * @param IsotopeProductCollection $objCollection
      *
      * @return static[]
      */

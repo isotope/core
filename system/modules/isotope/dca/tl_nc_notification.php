@@ -22,7 +22,7 @@ $GLOBALS['TL_DCA']['tl_nc_notification']['fields']['iso_collectionTpl'] = array
 (
     'exclude'               => true,
     'inputType'             => 'select',
-    'options_callback'      => function(\DataContainer $dc) {
+    'options_callback'      => function() {
         return \Isotope\Backend::getTemplates('iso_collection_');
     },
     'eval'                  => array('mandatory'=>true, 'chosen'=>true, 'tl_class'=>'w50'),

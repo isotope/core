@@ -131,7 +131,7 @@ class Expercash extends Payment implements IsotopePostsale
 
         $strUrl .= 'language=' . strtoupper($GLOBALS['TL_LANGUAGE']) . '&amp;popupKey=' . md5($strKey . $this->expercash_popupKey);
 
-        $strBuffer = '
+        return '
 <h2>' . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0] . '</h2>
 <p class="message">' . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1] . '</p>
 
@@ -140,14 +140,11 @@ class Expercash extends Payment implements IsotopePostsale
   Sie können die eingebettete Seite über den folgenden Verweis
   aufrufen: <a href="' . $strUrl . '">ExperCash</a></p>
 </iframe>';
-
-        return $strBuffer;
     }
 
     /**
      * Validate URL parameters against payment hacking.
      *
-     * @param IsotopeProductCollection $objOrder
      *
      * @return bool
      */

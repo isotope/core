@@ -23,8 +23,6 @@ class LegacyButtonAction extends AbstractButton
 
     /**
      * Constructor.
-     *
-     * @param array $button
      */
     public function __construct(array $button)
     {

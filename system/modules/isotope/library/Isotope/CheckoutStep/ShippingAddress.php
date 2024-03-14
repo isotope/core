@@ -207,8 +207,6 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
 
     /**
      * Set new address in cart
-     *
-     * @param AddressModel $objAddress
      */
     protected function setAddress(AddressModel $objAddress)
     {
