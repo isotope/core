@@ -169,7 +169,7 @@ class AttributeWizard extends Backend
         /** @var IsotopeAttribute|IsotopeAttributeForVariants $objAttribute */
         $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$arrField['name']] ?? null;
 
-        if (!$objAttribute || !$objAttribute->id) {
+        if (null === $objAttribute || !$objAttribute->id) {
             return Image::getHtml('edit_.svg');
         }
 
