@@ -4,9 +4,9 @@
 
 <h2 class="sub_headline"><?= $this->name ?> (<?= $this->trans('MODEL.tl_iso_payment.saferpay.0') ?>)</h2>
 
-<table class="tl_show">
-  <tbody>
-    <?php foreach ($this->paymentData['POSTSALE'] as $postsale): ?>
+<?php foreach ($this->paymentData['POSTSALE'] as $postsale): ?>
+  <table class="tl_show">
+    <tbody>
       <?php if ($postsale['Transaction'] ?? null): ?>
         <tr>
           <td class="tl_bg"><span class="tl_label">Transaction type: </span></td>
@@ -75,6 +75,6 @@
           <?php endif; ?>
         <?php endif; ?>
       <?php endif; ?>
-    <?php endforeach; ?>
-  </tbody>
-</table>
+    </tbody>
+  </table>
+<?php endforeach; ?>
