@@ -7,7 +7,6 @@
 <table class="tl_show">
   <tbody>
     <?php foreach ($this->paymentData['POSTSALE'] as $postsale): ?>
-      <?php dump($postsale); ?>
       <?php if ($postsale['Transaction'] ?? null): ?>
         <tr>
           <td class="tl_bg"><span class="tl_label">Transaction type: </span></td>
