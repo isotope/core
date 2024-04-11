@@ -11,6 +11,8 @@
 
 namespace Isotope\Model\Payment;
 
+use Contao\BackendTemplate;
+use Contao\Environment;
 use Contao\Input;
 use Contao\Message;
 use Contao\Module;
@@ -18,6 +20,7 @@ use Contao\Request;
 use Contao\StringUtil;
 use Contao\System;
 use Isotope\CompatibilityHelper;
+use Isotope\Interfaces\IsotopeBackendInterface;
 use Isotope\Interfaces\IsotopeOrderStatusAware;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
@@ -36,7 +39,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  * @property string $saferpay_vtconfig
  * @property string $saferpay_paymentmethods
  */
-class Saferpay extends Postsale implements IsotopeOrderStatusAware
+class Saferpay extends Postsale implements IsotopeOrderStatusAware, IsotopeBackendInterface
 {
     protected $objXML;
 
@@ -185,6 +188,30 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
         } elseif ('cancel' === $objNewStatus->saferpay_status && CompatibilityHelper::isBackend()) {
             Message::addInfo($GLOBALS['TL_LANG']['tl_iso_product_collection']['saferpayStatusCancel']);
         }
+    }
+
+    public function hasBackendInterface(int $collectionId): bool
+    {
+        return true;
+    }
+
+    public function renderBackendInterface(int $collectionId): string
+    {
+        if (($objOrder = Order::findByPk($collectionId)) === null) {
+            return '<p class="tl_gerror">' . $GLOBALS['TL_LANG']['MSC']['backendPaymentNotFound'] . '</p>';
+        }
+
+        $arrPayment = StringUtil::deserialize($objOrder->payment_data);
+
+        if (empty($arrPayment) || !\is_array($arrPayment) || !isset($arrPayment['POSTSALE'])) {
+            return '<p class="tl_gerror">' . $GLOBALS['TL_LANG']['MSC']['backendPaymentNotFound'] . '</p>';
+        }
+
+        $template = new BackendTemplate('be_iso_payment_saferpay');
+        $template->name = $this->name;
+        $template->paymentData = $arrPayment;
+
+        return $template->parse();
     }
 
     /**
