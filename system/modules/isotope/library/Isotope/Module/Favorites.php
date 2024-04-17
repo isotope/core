@@ -106,7 +106,7 @@ class Favorites extends AbstractProductCollection
 
         // Add all items to cart based on quantity field and global button
         if (Input::post('FORM_SUBMIT') === $this->strFormId
-            && '' !== (string) Input::post('button_add_to_cart')
+            && null !== (string) Input::post('button_add_to_cart')
             && (0 === \count($quantity) || $quantity[$item->id] > 0)
         ) {
             Isotope::getCart()->addProduct(
