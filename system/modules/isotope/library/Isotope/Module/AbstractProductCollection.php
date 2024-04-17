@@ -298,7 +298,7 @@ abstract class AbstractProductCollection extends Module
 
         if (null !== $action
             && Input::post('FORM_SUBMIT') === $this->strFormId
-            && '' !== (string) Input::post('button_' . $name)
+            && null !== Input::post('button_' . $name)
         ) {
             if (\is_string($action)) {
                 Controller::redirect($action);
