@@ -59,7 +59,8 @@ class OptionsWizard extends Backend
         );
 
 
-        if (($objAttribute = Attribute::findByPk($objWidget->activeRecord->id)) !== null
+        if ($objWidget->activeRecord
+            && ($objAttribute = Attribute::findByPk($objWidget->activeRecord->id)) !== null
             && $objAttribute instanceof IsotopeAttributeWithOptions
         ) {
             $arrColumns = $objAttribute->prepareOptionsWizard($objWidget, $arrColumns);
