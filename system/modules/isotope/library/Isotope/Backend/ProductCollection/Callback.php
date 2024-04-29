@@ -171,6 +171,7 @@ class Callback extends Backend
                     }
 
                     if ($module && BackendUser::getInstance()->hasAccess($name, 'modules')) {
+                        System::loadLanguageFile($relatedTable);
                         Controller::loadDataContainer($relatedTable);
 
                         if (isset($GLOBALS['TL_DCA'][$relatedTable]['list']['operations']['show'])) {
@@ -184,8 +185,8 @@ class Callback extends Backend
                                     'popup' => 1,
                                     'rt' => REQUEST_TOKEN,
                                 ]),
-                                sprintf($GLOBALS['TL_DCA'][$relatedTable]['list']['operations']['show']['label'], $dc->activeRecord->{$field}),
-                                sprintf($GLOBALS['TL_DCA'][$relatedTable]['list']['operations']['show']['label'], $dc->activeRecord->{$field}),
+                                sprintf($GLOBALS['TL_DCA'][$relatedTable]['list']['operations']['show']['label'] ?? '', $dc->activeRecord->{$field}),
+                                sprintf($GLOBALS['TL_DCA'][$relatedTable]['list']['operations']['show']['label'] ?? '', $dc->activeRecord->{$field}),
                                 $name,
                                 Image::getHtml('show')
                             );
