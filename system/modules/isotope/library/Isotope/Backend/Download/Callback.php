@@ -22,7 +22,7 @@ use Contao\Input;
 use Contao\StringUtil;
 use Contao\System;
 use Contao\Versions;
-use Haste\Util\Format;
+use Isotope\Util\Format;
 use Isotope\Model\Attribute;
 use Isotope\Model\Download;
 use Isotope\Model\Product;

@@ -12,7 +12,7 @@
 namespace Isotope\Backend\ProductType;
 
 use Contao\Backend;
-use Haste\Util\Format;
+use Isotope\Util\Format;
 
 class Label extends Backend
 {

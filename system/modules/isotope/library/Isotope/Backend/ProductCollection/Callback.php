@@ -28,7 +28,7 @@ use Contao\ModuleModel;
 use Contao\SelectMenu;
 use Contao\StringUtil;
 use Contao\System;
-use Haste\Util\Format;
+use Isotope\Util\Format;
 use Isotope\CompatibilityHelper;
 use Isotope\Frontend;
 use Isotope\Interfaces\IsotopeBackendInterface;

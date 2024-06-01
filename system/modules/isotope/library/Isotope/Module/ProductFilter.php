@@ -20,7 +20,7 @@ use Contao\StringUtil;
 use Contao\System;
 use Contao\Widget;
 use Haste\Input\Input;
-use Haste\Util\Format;
+use Isotope\Util\Format;
 use Haste\Util\Url;
 use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;

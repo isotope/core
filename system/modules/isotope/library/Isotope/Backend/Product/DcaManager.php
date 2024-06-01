@@ -20,7 +20,7 @@ use Contao\Environment;
 use Contao\Input;
 use Contao\Session;
 use Contao\StringUtil;
-use Haste\Util\Format;
+use Isotope\Util\Format;
 use Isotope\Backend\Group\Breadcrumb;
 use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;

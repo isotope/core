@@ -18,7 +18,7 @@ use Contao\Input;
 use Contao\System;
 use Contao\Widget;
 use Haste\Data\Plain;
-use Haste\Util\Format;
+use Isotope\Util\Format;
 use Isotope\Frontend\ProductAction\CartAction;
 use Isotope\Frontend\ProductAction\FavoriteAction;
 use Isotope\Frontend\ProductAction\ProductActionInterface;

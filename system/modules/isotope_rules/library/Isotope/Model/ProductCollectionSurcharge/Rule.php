@@ -13,7 +13,7 @@ namespace Isotope\Model\ProductCollectionSurcharge;
 
 use Contao\Database;
 use Contao\System;
-use Haste\Units\Mass\Weight;
+use Isotope\Units\Mass\Weight;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopeProductCollectionSurcharge;
 use Isotope\Isotope;

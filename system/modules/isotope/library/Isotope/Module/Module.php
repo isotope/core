@@ -17,7 +17,6 @@ use Contao\Date;
 use Contao\Environment;
 use Contao\FrontendUser;
 use Contao\System;
-use Haste\Frontend\AbstractFrontendModule;
 use Haste\Input\Input;
 use Isotope\CompatibilityHelper;
 use Isotope\Frontend;
