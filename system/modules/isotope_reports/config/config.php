@@ -20,7 +20,7 @@ ArrayUtil::arrayInsert($GLOBALS['BE_MOD']['isotope'], 2, array
     (
         'callback'                      => 'Isotope\BackendModule\Reports',
         'icon'                          => 'system/modules/isotope_reports/assets/icon.png',
-        'stylesheet'                    => \Haste\Util\Debug::uncompressedFile('system/modules/isotope_reports/assets/reports.min.css'),
+        'stylesheet'                    => 'system/modules/isotope_reports/assets/reports.min.css',
         'modules' => array
         (
             'sales' => array

@@ -19,7 +19,6 @@ use Contao\FrontendUser;
 use Contao\System;
 use Haste\Frontend\AbstractFrontendModule;
 use Haste\Input\Input;
-use Haste\Util\Debug;
 use Isotope\CompatibilityHelper;
 use Isotope\Frontend;
 use Isotope\Interfaces\IsotopeProduct;
@@ -82,13 +81,9 @@ abstract class Module extends AbstractFrontendModule
 
         // Load Isotope JavaScript and style sheet
         if (CompatibilityHelper::isFrontend()) {
-            $GLOBALS['TL_JAVASCRIPT'][] = Debug::uncompressedFile(
-                'system/modules/isotope/assets/js/isotope.min.js|static'
-            );
+            $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/assets/js/isotope.min.js|static';
 
-            $GLOBALS['TL_CSS'][] = Debug::uncompressedFile(
-                'system/modules/isotope/assets/css/isotope.min.css|screen|static'
-            );
+            $GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/css/isotope.min.css|screen|static';
 
             // Disable caching for pages with certain modules (eg. Cart)
             if ($this->blnDisableCache) {

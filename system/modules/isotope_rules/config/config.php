@@ -19,7 +19,7 @@ ArrayUtil::arrayInsert($GLOBALS['BE_MOD']['isotope'], 2, array
     'iso_rules' => array
     (
         'tables'        => array(\Isotope\Model\Rule::getTable()),
-        'javascript'    => \Haste\Util\Debug::uncompressedFile('system/modules/isotope/assets/js/backend.min.js'),
+        'javascript'    => 'system/modules/isotope/assets/js/backend.min.js',
         'icon'          => 'system/modules/isotope_rules/assets/auction-hammer-gavel.png'
     ),
 ));

@@ -62,9 +62,9 @@
 <?php endif; ?>
 
 <?php if ($this->hasAutocomplete):
-$GLOBALS['TL_CSS'][] = \Haste\Util\Debug::uncompressedFile('system/modules/isotope/assets/plugins/awesomplete/awesomplete.min.css');
+$GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/plugins/awesomplete/awesomplete.min.css';
 ?>
-<script src="<?= \Haste\Util\Debug::uncompressedFile('system/modules/isotope/assets/plugins/awesomplete/awesomplete.min.js') ?>"></script>
+<script src="<?= 'system/modules/isotope/assets/plugins/awesomplete/awesomplete.min.js' ?>"></script>
 <script>
     Isotope.initAwesomplete(<?= $this->id ?>, document.getElementById('ctrl_keywords_<?= $this->id ?>'));
 </script>

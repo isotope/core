@@ -11,10 +11,10 @@
 <div class="tl_listing_container list_view mod_iso_reports <?= $this->class ?>">
 
 
-<?php $GLOBALS['TL_CSS'][] = \Haste\Util\Debug::uncompressedFile('system/modules/isotope_reports/assets/xcharts/xcharts.min.css'); ?>
+<?php $GLOBALS['TL_CSS'][] = 'system/modules/isotope_reports/assets/xcharts/xcharts.min.css'; ?>
 <figure style="width:100%; height:300px" id="report-data"></figure>
-<script src="<?= \Haste\Util\Debug::uncompressedFile('system/modules/isotope_reports/assets/d3.v3/d3.v3.min.js') ?>"></script>
-<script src="<?= \Haste\Util\Debug::uncompressedFile('system/modules/isotope_reports/assets/xcharts/xcharts.min.js') ?>"></script>
+<script src="<?= 'system/modules/isotope_reports/assets/d3.v3/d3.v3.min.js' ?>"></script>
+<script src="<?= 'system/modules/isotope_reports/assets/xcharts/xcharts.min.js' ?>"></script>
 <script>
 window.addEvent('domready', function() {
     window.xchart_report = new xChart('line-dotted', {

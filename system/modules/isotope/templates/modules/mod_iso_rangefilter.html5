@@ -2,9 +2,7 @@
 
 $this->extend('block_unsearchable');
 
-$GLOBALS['TL_CSS'][] = \Haste\Util\Debug::uncompressedFile(
-    'system/modules/isotope/assets/plugins/noUiSlider/nouislider.min.css'
-);
+$GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/plugins/noUiSlider/nouislider.min.css';
 
 $GLOBALS['TL_BODY'][] = <<<HTML
 <script src="system/modules/isotope/assets/plugins/noUiSlider/nouislider.min.js"></script>
