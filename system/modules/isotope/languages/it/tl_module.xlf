@@ -129,14 +129,6 @@
         <source>This setting defines to which page a user will be redirected when adding a product to the wishlist, if other than the current page.</source>
         <target>Questa impostazione definisce a quale pagina un utente verrà reindirizzato quando si aggiunge un prodotto alla lista dei desideri, se diversa dalla pagina corrente.</target>
       </trans-unit>
-      <trans-unit id="tl_module.iso_cols.0">
-        <source>Columns</source>
-        <target>Colonne</target>
-      </trans-unit>
-      <trans-unit id="tl_module.iso_cols.1">
-        <source>Enter a number of columns to display width-wise in the listing template.</source>
-        <target>Inserisca un numero di colonne per mostrare in ampiezza nella template elenco.</target>
-      </trans-unit>
       <trans-unit id="tl_module.iso_config_id.0">
         <source>Store configuration</source>
         <target>Configurazione negozio</target>

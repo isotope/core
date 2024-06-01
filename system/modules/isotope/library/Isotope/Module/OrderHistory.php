@@ -15,7 +15,6 @@ use Contao\Controller;
 use Contao\FrontendUser;
 use Contao\Input;
 use Contao\System;
-use Haste\Generator\RowClass;
 use Isotope\Util\Format;
 use Haste\Util\Url;
 use Isotope\CompatibilityHelper;
@@ -133,8 +132,6 @@ class OrderHistory extends Module
         }
 
         Input::setGet('uid', $previousUid);
-
-        RowClass::withKey('class')->addFirstLast()->addEvenOdd()->applyTo($arrOrders);
 
         $this->Template->orders = $arrOrders;
     }

@@ -13,7 +13,6 @@ namespace Isotope\Module;
 
 use Contao\Date;
 use Contao\PageModel;
-use Haste\Generator\RowClass;
 use Haste\Util\Url;
 use Isotope\CompatibilityHelper;
 use Isotope\Isotope;
@@ -110,8 +109,6 @@ class WishlistViewer extends Module
                 'model'      => $wishlist,
             ];
         }
-
-        RowClass::withKey('class')->addFirstLast()->addEvenOdd()->applyTo($items);
 
         $this->Template->items = $items;
     }

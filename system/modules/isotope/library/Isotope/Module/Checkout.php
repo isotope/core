@@ -18,7 +18,6 @@ use Contao\CoreBundle\Routing\ResponseContext\HtmlHeadBag\HtmlHeadBag;
 use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
-use Haste\Generator\RowClass;
 use Haste\Input\Input;
 use Haste\Util\Url;
 use Isotope\CheckoutStep\OrderConditions;
@@ -283,8 +282,6 @@ class Checkout extends Module
                 break;
         }
 
-        RowClass::withKey('class')->addFirstLast()->applyTo($arrBuffer);
-
         $this->Template->fields = $arrBuffer;
     }
 
@@ -481,8 +478,6 @@ class Checkout extends Module
                 }
             }
         }
-
-        RowClass::withKey('class')->addFirstLast()->applyTo($arrCheckoutInfo);
 
         return $arrCheckoutInfo;
     }
@@ -703,9 +698,6 @@ class Checkout extends Module
                 'title'    => StringUtil::specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['checkboutStepBack'], ($GLOBALS['TL_LANG']['MSC']['checkout_' . $step] ? : $step))),
             );
         }
-
-        // Add first/last classes
-        RowClass::withKey('class')->addFirstLast()->applyTo($arrItems);
 
         return $arrItems;
     }

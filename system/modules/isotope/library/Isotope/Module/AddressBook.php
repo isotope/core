@@ -21,7 +21,6 @@ use Contao\StringUtil;
 use Contao\System;
 use Contao\User;
 use Haste\Form\Form;
-use Haste\Generator\RowClass;
 use Isotope\CompatibilityHelper;
 use Isotope\Isotope;
 use Isotope\Model\Address;
@@ -157,8 +156,6 @@ class AddressBook extends Module
             $this->Template->mtype   = 'empty';
             $this->Template->message = $GLOBALS['TL_LANG']['ERR']['noAddressBookEntries'];
         }
-
-        RowClass::withKey('class')->addFirstLast()->addEvenOdd()->applyTo($arrAddresses);
 
         $this->Template->addNewAddressLabel   = $GLOBALS['TL_LANG']['MSC']['createNewAddressLabel'];
         $this->Template->editAddressLabel     = $GLOBALS['TL_LANG']['MSC']['editAddressLabel'];

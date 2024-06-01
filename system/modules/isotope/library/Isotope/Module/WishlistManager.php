@@ -15,7 +15,6 @@ use Contao\Controller;
 use Contao\FrontendUser;
 use Contao\Input;
 use Contao\PageModel;
-use Haste\Generator\RowClass;
 use Haste\Util\Url;
 use Isotope\CompatibilityHelper;
 use Isotope\Isotope;
@@ -140,8 +139,6 @@ class WishlistManager extends Module
                 'href'       => Url::addQueryString('id=' . $wishlist->id, $url)
             ];
         }
-
-        RowClass::withKey('class')->addFirstLast()->addEvenOdd()->applyTo($items);
 
         $this->Template->id = $this->id;
         $this->Template->items = $items;

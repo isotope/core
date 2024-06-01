@@ -20,7 +20,6 @@ use Contao\Date;
 use Contao\Environment;
 use Contao\Pagination;
 use Contao\System;
-use Haste\Generator\RowClass;
 use Haste\Input\Input;
 use Isotope\Collection\ProductPrice as ProductPriceCollection;
 use Isotope\CompatibilityHelper;
@@ -37,7 +36,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @property string $iso_list_layout
- * @property int    $iso_cols
  * @property bool   $iso_use_quantity
  * @property int    $iso_gallery
  * @property array  $iso_filterModules
@@ -292,15 +290,6 @@ class ProductList extends Module
                 $arrBuffer = System::importStatic($callback[0])->{$callback[1]}($arrBuffer, $arrProducts, $this->Template, $this);
             }
         }
-
-        RowClass::withKey('class')
-            ->addCount('product_')
-            ->addEvenOdd('product_')
-            ->addFirstLast('product_')
-            ->addGridRows($this->iso_cols)
-            ->addGridCols($this->iso_cols)
-            ->applyTo($arrBuffer)
-        ;
 
         $this->Template->products = $arrBuffer;
     }

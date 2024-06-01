@@ -16,7 +16,6 @@ use Contao\Message;
 use Contao\StringUtil;
 use Contao\System;
 use Contao\Template;
-use Haste\Generator\RowClass;
 use Isotope\Util\Format;
 use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeNotificationTokens;
@@ -578,8 +577,6 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
             $taxIds[]   = $arrItem['tax_id'];
             $arrItems[] = $arrItem;
         }
-
-        RowClass::withKey('rowClass')->addCount('row_')->addFirstLast('row_')->addEvenOdd('row_')->applyTo($arrItems);
 
         $objTemplate->items         = $arrItems;
         $objTemplate->downloads     = $arrAllDownloads;

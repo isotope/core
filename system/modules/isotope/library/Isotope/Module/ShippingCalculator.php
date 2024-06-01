@@ -11,7 +11,6 @@
 
 namespace Isotope\Module;
 
-use Haste\Generator\RowClass;
 use Isotope\CompatibilityHelper;
 use Isotope\Isotope;
 use Isotope\Model\Shipping;
@@ -114,13 +113,6 @@ class ShippingCalculator extends Module
                 'shipping'        => $objShipping
             ];
         }
-
-        RowClass::withKey('rowClass')
-            ->addCount('row_')
-            ->addFirstLast('row_')
-            ->addEvenOdd('row_')
-            ->applyTo($arrMethods)
-        ;
 
         $this->Template->shippingMethods = $arrMethods;
     }

@@ -15,7 +15,6 @@ use Contao\Controller;
 use Contao\Environment;
 use Contao\StringUtil;
 use Contao\Widget;
-use Haste\Generator\RowClass;
 use Haste\Input\Input;
 use Haste\Util\Url;
 use Isotope\CompatibilityHelper;
@@ -152,8 +151,6 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
             }
         }
 
-        RowClass::withKey('class')->addFirstLast()->applyTo($arrFilters);
-
         $this->Template->filters   = $arrFilters;
         $this->Template->showClear = $blnShowClear;
     }
@@ -183,8 +180,6 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
         if (empty($arrItems) || ($this->iso_filterHideSingle && \count($arrItems) < 2)) {
             return null;
         }
-
-        $objClass = RowClass::withKey('class')->addFirstLast();
 
         if ($isActive) {
             $objClass->addCustom('sibling');

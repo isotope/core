@@ -18,7 +18,6 @@ use Contao\MemberModel;
 use Contao\StringUtil;
 use Contao\System;
 use Contao\Template;
-use Haste\Generator\RowClass;
 use Isotope\Units\Mass\Scale;
 use Isotope\Units\Mass\Weighable;
 use Isotope\Units\Mass\WeightAggregate;
@@ -1627,8 +1626,6 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
             $taxIds[]   = $item['tax_id'];
             $arrItems[] = $item;
         }
-
-        RowClass::withKey('rowClass')->addCount('row_')->addFirstLast('row_')->addEvenOdd('row_')->applyTo($arrItems);
 
         $objTemplate->items         = $arrItems;
         $objTemplate->total_tax_ids = \count(array_unique($taxIds));

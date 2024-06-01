@@ -15,7 +15,6 @@ use Contao\Database;
 use Contao\Date;
 use Contao\Message;
 use Contao\Session;
-use Haste\Generator\RowClass;
 use Isotope\Isotope;
 use Isotope\Model\Config;
 use Isotope\Report\Period\PeriodFactory;
@@ -218,8 +217,6 @@ class MembersGuests extends Sales
 
             $intStart = $period->getNext($intStart);
         }
-
-        RowClass::withKey('class')->addEvenOdd()->applyTo($arrData['rows']);
 
         return $arrData;
     }

@@ -14,7 +14,6 @@ namespace Isotope\Module;
 use Contao\Controller;
 use Contao\Environment;
 use Contao\Input;
-use Haste\Generator\RowClass;
 use Isotope\CompatibilityHelper;
 use Isotope\Isotope;
 use Isotope\Model\Config;
@@ -94,8 +93,6 @@ class ConfigSwitcher extends Module
                 );
             }
         }
-
-        RowClass::withKey('class')->addFirstLast()->applyTo($arrConfigs);
 
         $this->Template->configs = $arrConfigs;
     }

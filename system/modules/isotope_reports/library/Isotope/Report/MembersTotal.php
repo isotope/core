@@ -15,7 +15,6 @@ use Contao\Database;
 use Contao\Date;
 use Contao\Message;
 use Contao\Session;
-use Haste\Generator\RowClass;
 use Isotope\Isotope;
 use Isotope\Model\Config;
 use Isotope\Report\Period\PeriodFactory;
@@ -158,8 +157,6 @@ class MembersTotal extends Sales
                 'attributes' => ' style="text-align:right"',
             ],
         ];
-
-        RowClass::withKey('class')->addEvenOdd()->applyTo($arrData['rows']);
 
         while ($objData->next()) {
             $arrCurrencies[$objData->currency] = $objData->config_id;

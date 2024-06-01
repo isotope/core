@@ -21,7 +21,6 @@ use Contao\StringUtil;
 use Contao\System;
 use Contao\Widget;
 use Hashids\Hashids;
-use Haste\Generator\RowClass;
 use Isotope\Units\Mass\Weight;
 use Isotope\Units\Mass\WeightAggregate;
 use Haste\Util\Url;
@@ -624,8 +623,6 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
                 ->generate('isotope_product_hits', ['hashid' => $hashids->encode($this->id)])
             ;
         };
-
-        RowClass::withKey('rowClass')->addCustom('product_option')->addFirstLast()->addEvenOdd()->applyTo($arrProductOptions);
 
         $objTemplate->actions = $actions;
         $objTemplate->useQuantity = $arrConfig['useQuantity'] && null === $this->getCollectionItem();

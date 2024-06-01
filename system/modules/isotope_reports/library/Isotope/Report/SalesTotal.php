@@ -17,7 +17,6 @@ use Contao\Message;
 use Contao\Session;
 use Isotope\Isotope;
 use Isotope\Model\Config;
-use Haste\Generator\RowClass;
 use Isotope\Report\Period\PeriodFactory;
 use Isotope\Report\Period\PeriodInterface;
 
@@ -190,8 +189,6 @@ class SalesTotal extends Sales
 
             $intStart = $period->getNext($intStart);
         }
-
-        RowClass::withKey('class')->addEvenOdd()->applyTo($arrData['rows']);
 
         return $arrData;
     }
