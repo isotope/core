@@ -922,7 +922,7 @@ class DC_ProductData extends DC_Table
 
                 if (!$this->ptable)
                 {
-                    $this->redirect(TL_SCRIPT . '?do=' . Input::get('do'));
+                    $this->redirect(System::getContainer()->get('router')->generate('contao_backend') . '?do=' . Input::get('do'));
                 }
                 // TODO: try to abstract this
                 elseif (($this->ptable == 'tl_theme' && $this->strTable == 'tl_style_sheet') || ($this->ptable == 'tl_page' && $this->strTable == 'tl_article'))
@@ -938,7 +938,7 @@ class DC_ProductData extends DC_Table
             {
                 Message::reset();
 
-                $strUrl = TL_SCRIPT . '?do=' . Input::get('do');
+                $strUrl = System::getContainer()->get('router')->generate('contao_backend') . '?do=' . Input::get('do');
 
                 if (isset($_GET['table']))
                 {
@@ -969,7 +969,7 @@ class DC_ProductData extends DC_Table
             {
                 Message::reset();
 
-                $strUrl = TL_SCRIPT . '?do=' . Input::get('do');
+                $strUrl = System::getContainer()->get('router')->generate('contao_backend') . '?do=' . Input::get('do');
 
                 if (isset($_GET['table']))
                 {

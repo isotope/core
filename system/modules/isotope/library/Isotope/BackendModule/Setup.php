@@ -14,6 +14,7 @@ namespace Isotope\BackendModule;
 use Contao\BackendTemplate;
 use Contao\BackendUser;
 use Contao\StringUtil;
+use Contao\System;
 
 class Setup extends BackendOverview
 {
@@ -37,7 +38,7 @@ class Setup extends BackendOverview
                     $return[$strGroup]['modules'][$strModule] = array_merge($arrConfig, [
                         'label' => StringUtil::specialchars($GLOBALS['TL_LANG']['IMD'][$strModule][0] ?? $strModule),
                         'description' => StringUtil::specialchars(strip_tags($GLOBALS['TL_LANG']['IMD'][$strModule][1] ?? '')),
-                        'href' => TL_SCRIPT.'?do=iso_setup&mod='.$strModule,
+                        'href' => System::getContainer()->get('router')->generate('contao_backend').'?do=iso_setup&mod='.$strModule,
                         'class' => $arrConfig['class'] ?? '',
                     ]);
 

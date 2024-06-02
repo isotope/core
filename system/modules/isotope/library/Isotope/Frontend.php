@@ -657,7 +657,6 @@ class Frontend extends \Contao\Frontend
         $isDebugMode = System::getContainer()->getParameter('kernel.debug');
         self::define('TL_FILES_URL', ($objPage->staticFiles != '' && !$isDebugMode) ? $objPage->staticFiles . TL_PATH . '/' : '');
         self::define('TL_ASSETS_URL', ($objPage->staticPlugins != '' && !$isDebugMode) ? $objPage->staticPlugins . TL_PATH . '/' : '');
-        self::define('TL_SCRIPT_URL', TL_ASSETS_URL);
         self::define('TL_PLUGINS_URL', TL_ASSETS_URL);
 
         $objLayout = Database::getInstance()->prepare("
