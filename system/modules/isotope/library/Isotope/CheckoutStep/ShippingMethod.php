@@ -103,7 +103,6 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
                 'options'     => $this->options,
                 'value'       => Isotope::getCart()->shipping_id,
                 'storeValues' => true,
-                'tableless'   => true,
             ]
         );
 

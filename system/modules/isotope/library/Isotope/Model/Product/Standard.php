@@ -774,7 +774,6 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         }
 
         $arrField['storeValues'] = true;
-        $arrField['tableless'] = true;
         $arrField['product'] = $this;
         $arrField['id'] .= '_' . $this->getFormId();
 

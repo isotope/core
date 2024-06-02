@@ -11,11 +11,11 @@
 
 namespace Isotope\Module;
 
+use Codefog\HasteBundle\Form\Form;
 use Contao\Controller;
 use Contao\Input;
 use Contao\StringUtil;
 use Contao\System;
-use Haste\Form\Form;
 use Isotope\CompatibilityHelper;
 use Isotope\Isotope;
 use Isotope\Model\Address;
@@ -99,7 +99,6 @@ class CartAddress extends Module
             function(Form $objHaste) {
                 return Input::post('FORM_SUBMIT') === $objHaste->getFormId();
             },
-            isset($this->tableless) ? (bool) $this->tableless : true
         );
 
         $objForm->bindModel($objAddress);

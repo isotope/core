@@ -11,11 +11,11 @@
 
 namespace Isotope\CheckoutStep;
 
+use Codefog\HasteBundle\Form\Form;
 use Contao\FormModel;
 use Contao\Input;
 use Contao\StringUtil;
 use Contao\System;
-use Haste\Form\Form;
 use Isotope\Interfaces\IsotopeCheckoutStep;
 use Isotope\Interfaces\IsotopeNotificationTokens;
 use Isotope\Interfaces\IsotopeProductCollection;
@@ -30,7 +30,6 @@ class OrderConditions extends CheckoutStep implements IsotopeCheckoutStep, Isoto
 
     /**
      * Haste form
-     * @var \Haste\Form\Form
      */
     protected $objForm;
 
@@ -65,10 +64,6 @@ class OrderConditions extends CheckoutStep implements IsotopeCheckoutStep, Isoto
 
         if (null === $objFormConfig) {
             throw new \InvalidArgumentException('Order condition form "' . $this->formId . '" not found.');
-        }
-
-        if (isset($objFormConfig->tableless)) {
-            $this->objForm->setTableless($objFormConfig->tableless);
         }
 
         $this->objForm->addFieldsFromFormGenerator(

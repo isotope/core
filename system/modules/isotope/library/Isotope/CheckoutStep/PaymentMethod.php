@@ -102,7 +102,6 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
             'options'       => $this->options,
             'value'         => Isotope::getCart()->payment_id,
             'storeValues'   => true,
-            'tableless'     => true,
         ));
 
         // If there is only one payment method, mark it as selected by default
