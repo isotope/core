@@ -12,7 +12,7 @@
 namespace Isotope\Model\Shipping;
 
 use Contao\StringUtil;
-use Isotope\Units\Mass\Weight;
+use Isotope\Haste\Units\Mass\Weight;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\Shipping;

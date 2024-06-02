@@ -15,15 +15,16 @@ use Contao\Controller;
 use Contao\Database;
 use Contao\Database\Result;
 use Contao\MemberModel;
+use Contao\Model\Registry;
 use Contao\StringUtil;
 use Contao\System;
 use Contao\Template;
-use Isotope\Units\Mass\Scale;
-use Isotope\Units\Mass\Weighable;
-use Isotope\Units\Mass\WeightAggregate;
-use Isotope\Util\Format;
 use Isotope\CompatibilityHelper;
 use Isotope\Frontend;
+use Isotope\Haste\Units\Mass\Scale;
+use Isotope\Haste\Units\Mass\Weighable;
+use Isotope\Haste\Units\Mass\WeightAggregate;
+use Isotope\Haste\Util\Format;
 use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Interfaces\IsotopePayment;
@@ -34,7 +35,6 @@ use Isotope\Isotope;
 use Isotope\Message;
 use Isotope\Model\Gallery\Standard as StandardGallery;
 use Isotope\Model\ProductCollectionSurcharge\Tax;
-use Contao\Model\Registry;
 
 /**
  * Class ProductCollection

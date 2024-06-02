@@ -21,8 +21,8 @@ use Contao\Model\Collection;
 use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
-use Haste\Util\Url;
 use Isotope\CompatibilityHelper;
+use Isotope\Haste\Util\Url;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\ProductCollection\Order;
 

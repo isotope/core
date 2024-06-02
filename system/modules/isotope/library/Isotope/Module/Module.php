@@ -17,7 +17,7 @@ use Contao\Date;
 use Contao\Environment;
 use Contao\FrontendUser;
 use Contao\System;
-use Haste\Input\Input;
+use Isotope\Haste\Input\Input;
 use Isotope\CompatibilityHelper;
 use Isotope\Frontend;
 use Isotope\Interfaces\IsotopeProduct;
@@ -274,7 +274,7 @@ abstract class Module extends AbstractFrontendModule
      * Use Input::setGet('var', null) to remove a parameter from the final URL.
      *
      * @return string
-     * @deprecated use \Haste\Util\Url::addQueryString instead
+     * @deprecated use \Isotope\Haste\Util\Url::addQueryString instead
      */
     protected function generateRequestUrl()
     {

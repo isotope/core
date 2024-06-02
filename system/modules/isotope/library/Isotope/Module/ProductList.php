@@ -20,7 +20,7 @@ use Contao\Date;
 use Contao\Environment;
 use Contao\Pagination;
 use Contao\System;
-use Haste\Input\Input;
+use Isotope\Haste\Input\Input;
 use Isotope\Collection\ProductPrice as ProductPriceCollection;
 use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeProduct;

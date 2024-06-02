@@ -13,8 +13,8 @@ namespace Isotope\Module;
 
 use Contao\Controller;
 use Contao\Input;
-use Haste\Util\Url;
 use Isotope\Frontend\ProductCollectionAction\AddToCartAction;
+use Isotope\Haste\Util\Url;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\ProductCollectionItem;

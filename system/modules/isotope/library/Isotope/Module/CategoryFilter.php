@@ -18,9 +18,9 @@ use Contao\FrontendTemplate;
 use Contao\FrontendUser;
 use Contao\PageModel;
 use Contao\StringUtil;
-use Haste\Input\Input;
-use Haste\Util\Url;
+use Isotope\Haste\Input\Input;
 use Isotope\CompatibilityHelper;
+use Isotope\Haste\Util\Url;
 use Isotope\Interfaces\IsotopeFilterModule;
 use Isotope\Isotope;
 

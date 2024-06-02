@@ -20,7 +20,7 @@ use Contao\Image;
 use Contao\Input;
 use Contao\StringUtil;
 use Contao\System;
-use Haste\Util\Format;
+use Isotope\Haste\Util\Format;
 
 
 class Callback extends Backend

@@ -12,7 +12,7 @@
 namespace Isotope\EventListener;
 
 use Contao\StringUtil;
-use Isotope\Units\Mass\Unit;
+use Isotope\Haste\Units\Mass\Unit;
 use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\Address;
 use Isotope\Model\Config;

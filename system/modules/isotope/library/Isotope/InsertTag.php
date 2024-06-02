@@ -12,7 +12,7 @@
 namespace Isotope;
 
 use Contao\StringUtil;
-use Haste\Input\Input;
+use Isotope\Haste\Input\Input;
 use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;

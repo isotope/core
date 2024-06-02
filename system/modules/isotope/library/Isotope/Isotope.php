@@ -11,18 +11,17 @@
 
 namespace Isotope;
 
-use Isotope\CompatibilityHelper;
 use Contao\Controller;
 use Contao\Environment;
 use Contao\Input;
 use Contao\System;
 use Contao\Widget;
-use Haste\Data\Plain;
-use Isotope\Util\Format;
+use Isotope\Haste\Data\Plain;
 use Isotope\Frontend\ProductAction\CartAction;
 use Isotope\Frontend\ProductAction\FavoriteAction;
 use Isotope\Frontend\ProductAction\ProductActionInterface;
 use Isotope\Frontend\ProductAction\UpdateAction;
+use Isotope\Haste\Util\Format;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Config;

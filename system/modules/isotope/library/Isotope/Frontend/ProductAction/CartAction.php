@@ -14,7 +14,7 @@ namespace Isotope\Frontend\ProductAction;
 use Contao\Controller;
 use Contao\Environment;
 use Contao\Input;
-use Haste\Util\Url;
+use Isotope\Haste\Util\Url;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
 use Isotope\Message;

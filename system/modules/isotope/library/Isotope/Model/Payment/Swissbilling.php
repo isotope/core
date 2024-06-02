@@ -15,7 +15,7 @@ use Contao\Environment;
 use Contao\Input;
 use Contao\Module;
 use Contao\System;
-use Haste\Util\Url;
+use Isotope\Haste\Util\Url;
 use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;

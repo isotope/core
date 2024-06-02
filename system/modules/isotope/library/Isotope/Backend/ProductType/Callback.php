@@ -21,12 +21,10 @@ use Contao\Image;
 use Contao\Input;
 use Contao\StringUtil;
 use Contao\System;
-use Isotope\Util\Format;
 use Isotope\Backend\Permission;
+use Isotope\Haste\Util\Format;
 use Isotope\Interfaces\IsotopeAttributeForVariants;
 use Isotope\Model\Attribute;
-use Isotope\Model\Product;
-use Isotope\Model\ProductType;
 
 
 class Callback extends Permission

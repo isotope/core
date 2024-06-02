@@ -16,7 +16,7 @@ use Contao\Input;
 use Contao\Module;
 use Contao\StringUtil;
 use Contao\System;
-use Haste\Util\StringUtil as HasteStringUtil;
+use Isotope\Haste\Util\StringUtil as HasteStringUtil;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\Product;

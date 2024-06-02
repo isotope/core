@@ -13,7 +13,6 @@ namespace Isotope;
 
 use Contao\Controller;
 use Contao\Database;
-use Haste\Util\RepositoryVersion;
 use Isotope\Model\Config;
 use Isotope\Model\ProductCache;
 use Isotope\Model\RequestCache;
@@ -39,7 +38,7 @@ class Upgrade extends Controller
 
             if (preg_match('/To[0-9]{10}/', $strVersion)) {
                 $strClass   = 'Isotope\Upgrade\\' . $strVersion;
-                $strStep    = 'Version ' . RepositoryVersion::format(substr($strVersion, 2));
+                $strStep    = 'Version ' . $strVersion;
 
                 try {
                     $objUpgrade = new $strClass();

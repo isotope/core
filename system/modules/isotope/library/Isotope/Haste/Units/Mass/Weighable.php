@@ -10,15 +10,21 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
-namespace Isotope\Units\Mass;
+namespace Isotope\Haste\Units\Mass;
 
-interface WeightAggregate
+interface Weighable
 {
 
     /**
-     * Returns an object that implements the weightable interface
-     *
-     * @return Weighable
+     * Get the weight amount based on weight unit
+     * @return  float
      */
-    public function getWeight();
+    public function getWeightValue();
+
+    /**
+     * Get the weight unit
+     * @return  string
+     */
+    public function getWeightUnit();
+
 }

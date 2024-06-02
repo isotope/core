@@ -14,7 +14,7 @@ namespace Isotope\Model\Payment;
 use Contao\Input;
 use Contao\Module;
 use Contao\System;
-use Haste\Util\StringUtil;
+use Isotope\Haste\Util\StringUtil;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Isotope;

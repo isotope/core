@@ -15,7 +15,7 @@ use Contao\Backend;
 use Contao\Database;
 use Contao\Database\Result;
 use Contao\StringUtil;
-use Isotope\Util\Format;
+use Isotope\Haste\Util\Format;
 
 
 class Callback extends Backend

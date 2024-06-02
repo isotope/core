@@ -10,7 +10,7 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
-namespace Isotope\Units\Mass;
+namespace Isotope\Haste\Units\Mass;
 
 class Scale
 {
@@ -24,7 +24,6 @@ class Scale
 
     /**
      * Add weight to the scale
-     * @param   WeightInterface
      */
     public function add(Weighable $objWeight)
     {
@@ -36,7 +35,6 @@ class Scale
 
     /**
      * Remove a weight object from scale
-     * @param   WeightInterface
      * @return  self
      */
     public function remove(Weighable $objWeight)
@@ -79,7 +77,6 @@ class Scale
 
     /**
      * Check if weight on scale is less than given weight
-     * @param   WeightInterface
      * @return  bool
      */
     public function isLessThan(Weighable $objWeight)
@@ -89,7 +86,6 @@ class Scale
 
     /**
      * Check if weight on scale is equal to or less than given weight
-     * @param   WeightInterface
      * @return  bool
      */
     public function isEqualOrLessThan(Weighable $objWeight)
@@ -99,7 +95,6 @@ class Scale
 
     /**
      * Check if weight on scale is more than given weight
-     * @param   WeightInterface
      * @return  bool
      */
     public function isMoreThan(Weighable $objWeight)
@@ -109,7 +104,6 @@ class Scale
 
     /**
      * Check if weight on scale is equal to or more than given weight
-     * @param   WeightInterface
      * @return  bool
      */
     public function isEqualOrMoreThan(Weighable $objWeight)

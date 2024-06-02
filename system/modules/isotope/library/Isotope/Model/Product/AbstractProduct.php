@@ -15,7 +15,7 @@ use Contao\Database;
 use Contao\Date;
 use Contao\StringUtil;
 use Contao\System;
-use Haste\Input\Input;
+use Isotope\Haste\Input\Input;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\Product;

@@ -12,14 +12,14 @@
 namespace Isotope\Model;
 
 use Contao\Controller;
+use Contao\Database\Result;
 use Contao\MemberModel;
 use Contao\Model;
 use Contao\Model\Collection;
 use Contao\StringUtil;
 use Contao\System;
-use Contao\Database\Result;
-use Isotope\Util\Format;
 use Isotope\Backend;
+use Isotope\Haste\Util\Format;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopeVatNoValidator;
 use Isotope\Isotope;

@@ -12,7 +12,7 @@
 namespace Isotope\Model;
 
 use Contao\StringUtil;
-use Haste\Util\StringUtil as HasteStringUtil;
+use Isotope\Haste\Util\StringUtil as HasteStringUtil;
 use Isotope\Interfaces\IsotopeProductCollection;
 
 /**

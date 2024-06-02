@@ -12,7 +12,6 @@
 namespace Isotope\ContentElement;
 
 use Contao\ContentElement as Contao_ContentElement;
-use Haste\Util\RepositoryVersion;
 use Isotope\CompatibilityHelper;
 use Isotope\Isotope;
 
@@ -29,10 +28,8 @@ abstract class ContentElement extends Contao_ContentElement
 
         // Load Isotope JavaScript and style sheet
         if (CompatibilityHelper::isFrontend()) {
-            $version = RepositoryVersion::encode(Isotope::VERSION);
-
-            $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/assets/js/isotope.min.js|static|'.$version;
-            $GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/css/isotope.min.css|screen|static|'.$version;
+            $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/assets/js/isotope.min.js|static|'.Isotope::VERSION;
+            $GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/css/isotope.min.css|screen|static|'.Isotope::VERSION;
         }
     }
 }

@@ -20,7 +20,7 @@ use Contao\Environment;
 use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
-use Haste\Input\Input;
+use Isotope\Haste\Input\Input;
 use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Product;

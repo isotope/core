@@ -13,11 +13,11 @@ namespace Isotope\Module;
 
 use Contao\StringUtil;
 use Contao\System;
-use Haste\Util\Url;
 use Isotope\Frontend\ProductCollectionAction\ContinueShoppingAction;
 use Isotope\Frontend\ProductCollectionAction\GoToCartAction;
 use Isotope\Frontend\ProductCollectionAction\GoToCheckoutAction;
 use Isotope\Frontend\ProductCollectionAction\UpdateCartAction;
+use Isotope\Haste\Util\Url;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\ProductCollectionItem;

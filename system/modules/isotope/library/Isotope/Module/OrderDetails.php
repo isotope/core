@@ -17,9 +17,9 @@ use Contao\Input;
 use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
-use Isotope\Util\Format;
 use Isotope\CompatibilityHelper;
 use Isotope\Frontend\ProductCollectionAction\ReorderAction;
+use Isotope\Haste\Util\Format;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Template;
 

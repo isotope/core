@@ -11,7 +11,7 @@
 
 namespace Isotope\EventListener;
 
-use Haste\Input\Input;
+use Isotope\Haste\Input\Input;
 use Isotope\Model\Product;
 use Terminal42\ChangeLanguage\Event\ChangelanguageNavigationEvent;
 

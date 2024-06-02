@@ -10,7 +10,7 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
  */
 
-namespace Isotope\Units\Mass;
+namespace Isotope\Haste\Units\Mass;
 
 class Weight implements Weighable
 {

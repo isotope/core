@@ -17,7 +17,7 @@ use Contao\FilesModel;
 use Contao\Picture;
 use Contao\StringUtil;
 use Contao\System;
-use Haste\Image\Image;
+use Isotope\Haste\Image\Image;
 use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeGallery;
 use Isotope\Model\Gallery;

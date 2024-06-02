@@ -15,7 +15,7 @@ use Contao\Controller;
 use Contao\Environment;
 use Contao\FormSelectMenu;
 use Contao\Input;
-use Haste\Util\Url;
+use Isotope\Haste\Util\Url;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Message;
 use Isotope\Model\ProductCollection\Wishlist;

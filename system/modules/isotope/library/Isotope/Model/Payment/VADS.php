@@ -15,7 +15,6 @@ use Contao\Input;
 use Contao\Module;
 use Contao\StringUtil;
 use Contao\System;
-use Haste\DateTime\DateTime;
 use Isotope\Currency;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
@@ -137,7 +136,7 @@ abstract class VADS extends Postsale
         $successUrl = Checkout::generateUrlForStep(Checkout::STEP_COMPLETE, $objOrder, null, true);
         $failureUrl = Checkout::generateUrlForStep(Checkout::STEP_FAILED, null, null, true);
 
-        $transDate  = new DateTime();
+        $transDate  = new \DateTime();
         $transDate->setTimezone(new \DateTimeZone('UTC'));
 
         return array(

@@ -13,8 +13,8 @@ namespace Isotope\Module;
 
 use Contao\Date;
 use Contao\PageModel;
-use Haste\Util\Url;
 use Isotope\CompatibilityHelper;
+use Isotope\Haste\Util\Url;
 use Isotope\Isotope;
 use Isotope\Model\ProductCollection\Wishlist;
 use Isotope\Template;
