@@ -106,10 +106,7 @@
                 "system/modules/isotope": "system/modules/isotope",
                 "system/modules/isotope_reports": "system/modules/isotope_reports",
                 "system/modules/isotope_rules": "system/modules/isotope_rules"
-            },
-            "runonce": [
-                "system/modules/isotope/config/upgrade.php"
-            ]
+            }
         }
     }
 }
