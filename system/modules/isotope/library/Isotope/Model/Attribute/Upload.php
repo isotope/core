@@ -14,6 +14,7 @@ namespace Isotope\Model\Attribute;
 use Contao\Config;
 use Contao\Files;
 use Contao\Folder;
+use Contao\System;
 use Contao\Widget;
 use Isotope\Haste\Util\FileUpload;
 use Isotope\Interfaces\IsotopeProduct;
@@ -71,7 +72,7 @@ class Upload extends Attribute implements \uploadable
         }
 
         /** @var ProductCollectionItem $item */
-        if (($item = $options['item']) instanceof ProductCollectionItem && !is_file(TL_ROOT . '/' . $value)) {
+        if (($item = $options['item']) instanceof ProductCollectionItem && !is_file(System::getContainer()->getParameter('kernel.project_dir') . '/' . $value)) {
             $item->addError('File does not exist.'); // TODO add real error message
         }
 

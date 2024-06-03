@@ -49,12 +49,12 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware, IsotopeBacke
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
         if (!$objOrder instanceof IsotopePurchasableCollection) {
-            System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Product collection ID "' . $objOrder->getId() . '" is not purchasable', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
             return;
         }
 
         if ($objOrder->isCheckoutComplete()) {
-            System::log('Postsale checkout for Order ID "' . $objOrder->getId() . '" already completed', __METHOD__, TL_ERROR);
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Postsale checkout for Order ID "' . $objOrder->getId() . '" already completed', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
             return;
         }
 
@@ -73,7 +73,7 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware, IsotopeBacke
 
             // Stop if verification is not working
             if (0 !== strpos(strtoupper($objRequest->response), 'OK:')) {
-                System::log(sprintf('Payment not successfull. See log files for further details.'), __METHOD__, TL_ERROR);
+                \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, sprintf('Payment not successfull. See log files for further details.'), ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
                 $this->debugLog(sprintf('Payment not successfull. Message was: "%s".', $objRequest->response));
 
                 return;
@@ -98,7 +98,7 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware, IsotopeBacke
                     || $json['Transaction']['Amount']['Value'] != round($objOrder->getTotal() * 100)
                     || $json['Transaction']['Amount']['CurrencyCode'] !== $objOrder->getCurrency()
                 ) {
-                    System::log('Saferpay assertion failed, possible order manipulation! See log files for further details.', __METHOD__, TL_ERROR);
+                    \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Saferpay assertion failed, possible order manipulation! See log files for further details.', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
                     $this->debugLog(sprintf("Saferpay assertion failed, possible manipulation for order ID %s! JSON Response: %s", $objOrder->getId(), print_r($json, true)));
 
                     return;
@@ -113,7 +113,7 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware, IsotopeBacke
         }
 
         if (!$objOrder->checkout()) {
-            System::log('Postsale checkout for Order ID "' . $objOrder->getId() . '" failed', __METHOD__, TL_ERROR);
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Postsale checkout for Order ID "' . $objOrder->getId() . '" failed', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
 
             return;
         }
@@ -318,7 +318,7 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware, IsotopeBacke
 
             // Stop if capture was not successful
             if ($objRequest->hasError() || 0 !== strpos(strtoupper($objRequest->response), 'OK:')) {
-                System::log(sprintf('Saferpay PayComplete failed. See log files for further details.'), __METHOD__, TL_ERROR);
+                \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, sprintf('Saferpay PayComplete failed. See log files for further details.'), ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
                 $this->debugLog(sprintf('Saferpay PayComplete failed. Message was: "%s".', $objRequest->response));
 
                 return false;
@@ -354,21 +354,21 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware, IsotopeBacke
         @trigger_error('The Saferpay HTTPS interface will be discontinued soon! Please switch to the JSON API asap.', E_USER_DEPRECATED);
 
         if ($this->getPostValue('ACCOUNTID') != $this->saferpay_accountid) {
-            System::log('XML data wrong, possible manipulation (accountId validation failed)! See log files for further details.', __METHOD__, TL_ERROR);
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'XML data wrong, possible manipulation (accountId validation failed)! See log files for further details.', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
             $this->debugLog(sprintf('XML data wrong, possible manipulation (accountId validation failed)! XML was: "%s". Order was: "%s"', $this->getPostValue('ACCOUNTID'), $this->saferpay_accountid));
 
             return false;
         }
 
         if ($this->getPostValue('AMOUNT') != round($objOrder->getTotal() * 100)) {
-            System::log('XML data wrong, possible manipulation (amount validation failed)! See log files for further details.', __METHOD__, TL_ERROR);
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'XML data wrong, possible manipulation (amount validation failed)! See log files for further details.', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
             $this->debugLog(sprintf('XML data wrong, possible manipulation (amount validation failed)! XML was: "%s". Order was: "%s"', $this->getPostValue('AMOUNT'), $objOrder->getTotal()));
 
             return false;
         }
 
         if ($this->getPostValue('CURRENCY') !== $objOrder->getCurrency()) {
-            System::log('XML data wrong, possible manipulation (currency validation failed)! See log files for further details.', __METHOD__, TL_ERROR);
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'XML data wrong, possible manipulation (currency validation failed)! See log files for further details.', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
             $this->debugLog(sprintf('XML data wrong, possible manipulation (currency validation failed)! XML was: "%s". Order was: "%s"', $this->getPostValue('CURRENCY'), $this->currency));
 
             return false;
@@ -390,7 +390,7 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware, IsotopeBacke
             $objRequest->send($this->getApiUrl('CreatePayInit.asp'), http_build_query($this->generatePaymentPostData($objOrder), null, '&'), 'POST');
 
             if ((int) $objRequest->code !== 200 || 0 === strpos($objRequest->response, 'ERROR:')) {
-                System::log(sprintf('Could not get the redirect URI from Saferpay. See log files for further details.'), __METHOD__, TL_ERROR);
+                \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, sprintf('Could not get the redirect URI from Saferpay. See log files for further details.'), ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
                 $this->debugLog(sprintf('Could not get the redirect URI from Saferpay. Response was: "%s".', $objRequest->response));
 
                 return null;
@@ -406,7 +406,7 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware, IsotopeBacke
             );
 
             if (!isset($json['RedirectUrl'], $json['Token'])) {
-                System::log(sprintf('Could not get the redirect URI from Saferpay. See log files for further details.'), __METHOD__, TL_ERROR);
+                \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, sprintf('Could not get the redirect URI from Saferpay. See log files for further details.'), ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
                 $this->debugLog(sprintf("Could not get the redirect URI from Saferpay. JSON Response:\n%s", print_r($json, true)));
             }
 
@@ -457,7 +457,7 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware, IsotopeBacke
         $objRequest->send($this->getApiUrl($script), json_encode($data), 'POST');
 
         if ($objRequest->code !== 200) {
-            System::log(sprintf('Saferpay request failed with error %s. See log files for further details.', $objRequest->code), __METHOD__, TL_ERROR);
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, sprintf('Saferpay request failed with error %s. See log files for further details.', $objRequest->code), ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
             $this->debugLog(sprintf(
                 "Saferpay request failed with error %s.\n\nRequest:%s\n\nResponse:\n%s.",
                 $objRequest->code,

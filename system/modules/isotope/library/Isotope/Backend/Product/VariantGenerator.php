@@ -91,7 +91,7 @@ class VariantGenerator extends Backend
 <form id="tl_iso_product_generate" class="tl_form" method="post">
 <div class="tl_formbody_edit">
 <input type="hidden" name="FORM_SUBMIT" value="tl_iso_product_generate">
-<input type="hidden" name="REQUEST_TOKEN" value="' . REQUEST_TOKEN . '">
+<input type="hidden" name="REQUEST_TOKEN" value="' . \Contao\System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue() . '">
 
 <fieldset class="tl_tbox block">
 ' . $strBuffer . '

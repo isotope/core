@@ -2,6 +2,7 @@
 
 namespace Isotope\Haste\Util;
 
+use Contao\CoreBundle\Monolog\ContaoContext;
 use Contao\Message;
 use Contao\System;
 
@@ -60,7 +61,7 @@ class FileUpload extends \Contao\FileUpload
 
         $this->setName($name);
 
-        $this->extensions     = trimsplit(',', strtolower($GLOBALS['TL_CONFIG']['uploadTypes']));
+        $this->extensions     = \Contao\StringUtil::trimsplit(',', strtolower($GLOBALS['TL_CONFIG']['uploadTypes']));
         $this->maxFileSize    = $GLOBALS['TL_CONFIG']['maxFileSize'];
         $this->imageWidth     = $GLOBALS['TL_CONFIG']['imageWidth'];
         $this->imageHeight    = $GLOBALS['TL_CONFIG']['imageHeight'];
@@ -290,7 +291,7 @@ class FileUpload extends \Contao\FileUpload
             foreach ($files as $k => $file) {
                 if (!$file['error'] && $file['size'] < $this->minFileSize) {
                     Message::addError(sprintf($GLOBALS['TL_LANG']['ERR']['minFileSize'], $minlength_kb_readable));
-                    System::log('File "'.$file['name'].'" exceeds the minimum file size of '.$minlength_kb_readable, __METHOD__, TL_ERROR);
+                    System::getContainer()->get('monolog.logger.contao')->error('File "'.$file['name'].'" exceeds the minimum file size of '.$minlength_kb_readable, ['contao' => new ContaoContext(__METHOD__, ContaoContext::ERROR)]);
                     $this->blnHasError = true;
                     unset($files[$k]);
                 }
@@ -348,7 +349,9 @@ class FileUpload extends \Contao\FileUpload
      */
     public static function getFileName($strFile, $strFolder)
     {
-        if (!file_exists(TL_ROOT . '/' . $strFolder . '/' . $strFile)) {
+        $projectDir = System::getContainer()->getParameter('kernel.project_dir');
+
+        if (!file_exists($projectDir . '/' . $strFolder . '/' . $strFile)) {
             return $strFile;
         }
 
@@ -356,7 +359,7 @@ class FileUpload extends \Contao\FileUpload
         $pathinfo = pathinfo($strFile);
         $name = $pathinfo['filename'];
 
-        $arrAll = scan(TL_ROOT . '/' . $strFolder);
+        $arrAll = \Contao\Folder::scan($projectDir . '/' . $strFolder);
         $arrFiles = preg_grep('/^' . preg_quote($name, '/') . '.*\.' . preg_quote($pathinfo['extension'], '/') . '/', $arrAll);
 
         foreach ($arrFiles as $file) {

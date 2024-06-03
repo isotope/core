@@ -97,7 +97,7 @@ class Currency
     private static function load($currencyCode = null)
     {
         if (null === static::$currencies) {
-            static::$currencies = include(TL_ROOT . '/system/modules/isotope/config/currencies.php');
+            static::$currencies = include(\Contao\System::getContainer()->getParameter('kernel.project_dir') . '/system/modules/isotope/config/currencies.php');
         }
 
         if (null !== $currencyCode && !isset(static::$currencies[$currencyCode])) {

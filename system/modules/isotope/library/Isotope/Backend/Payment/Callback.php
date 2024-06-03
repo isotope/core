@@ -15,6 +15,7 @@ use Contao\Backend;
 use Contao\BackendUser;
 use Contao\Controller;
 use Contao\CoreBundle\Exception\AccessDeniedException;
+use Contao\CoreBundle\Monolog\ContaoContext;
 use Contao\Database;
 use Contao\DataContainer;
 use Contao\Image;
@@ -26,6 +27,7 @@ use Contao\Versions;
 use Isotope\Backend\Permission;
 use Isotope\Model\Payment;
 use Isotope\Model\Shipping;
+use Psr\Log\LogLevel;
 
 
 class Callback extends Permission
@@ -263,6 +265,6 @@ class Callback extends Permission
                                 ->execute($intId);
 
         $objVersions->create();
-        System::log('A new version of record "tl_iso_payment.id=' . $intId . '" has been created' . $this->getParentEntries('tl_iso_payment', $intId), __METHOD__, TL_GENERAL);
+        System::getContainer()->get('monolog.logger.contao')->info('A new version of record "tl_iso_payment.id=' . $intId . '" has been created' . $this->getParentEntries('tl_iso_payment', $intId), ['contao' => new ContaoContext(__METHOD__, ContaoContext::GENERAL)]);
     }
 }

@@ -41,12 +41,12 @@ class Worldpay extends Postsale
     public function processPostSale(IsotopeProductCollection $objOrder)
     {
         if (!$objOrder instanceof IsotopePurchasableCollection) {
-            System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Product collection ID "' . $objOrder->getId() . '" is not purchasable', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
             return $this->postsaleError();
         }
 
         if (Input::post('instId') != $this->worldpay_instId) {
-            System::log('Installation ID does not match', __METHOD__, TL_ERROR);
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Installation ID does not match', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
             return $this->postsaleError();
         }
 
@@ -57,7 +57,7 @@ class Worldpay extends Postsale
             $this->worldpay_callbackPW != Input::post('callbackPW') ||
             (!$this->debug && Input::post('testMode') == '100')
         ) {
-            System::log('Data manipulation in payment from "' . Input::post('email') . '" !', __METHOD__, TL_ERROR);
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Data manipulation in payment from "' . Input::post('email') . '" !', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
             return $this->postsaleError();
         }
 
@@ -67,13 +67,13 @@ class Worldpay extends Postsale
         }
 
         if ($objOrder->isCheckoutComplete()) {
-            System::log('Checkout for Order ID "' . $objOrder->getId() . '" already completed', __METHOD__, TL_ERROR);
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Checkout for Order ID "' . $objOrder->getId() . '" already completed', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
             return $this->postsaleSuccess($objOrder);
         }
 
         if ('Y' === Input::post('transStatus')) {
             if (!$objOrder->checkout()) {
-                System::log('Checkout for Order ID "' . $objOrder->getId() . '" failed', __METHOD__, TL_ERROR);
+                \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Checkout for Order ID "' . $objOrder->getId() . '" failed', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
                 return $this->postsaleError();
             }
 
@@ -105,7 +105,7 @@ class Worldpay extends Postsale
     public function checkoutForm(IsotopeProductCollection $objOrder, Module $objModule)
     {
         if (!$objOrder instanceof IsotopePurchasableCollection) {
-            System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Product collection ID "' . $objOrder->getId() . '" is not purchasable', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
             return false;
         }
 

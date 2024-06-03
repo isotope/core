@@ -149,7 +149,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
             'exclude'               => true,
             'inputType'             => 'imageSize',
             'options_callback'      => function () {
-                return \Contao\System::getImageSizes();
+                return \Contao\System::getContainer()->get('contao.image.sizes')->getAllOptions();
             },
             'reference'             => &$GLOBALS['TL_LANG']['MSC'],
             'eval'                  => array('includeBlankOption'=>true, 'rgxp'=>'digit', 'nospace'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
@@ -160,7 +160,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
             'exclude'               => true,
             'inputType'             => 'imageSize',
             'options_callback'      => function () {
-                return \Contao\System::getImageSizes();
+                return \Contao\System::getContainer()->get('contao.image.sizes')->getAllOptions();
             },
             'reference'             => &$GLOBALS['TL_LANG']['MSC'],
             'eval'                  => array('includeBlankOption'=>true, 'rgxp'=>'digit', 'nospace'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
@@ -185,7 +185,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
             'exclude'               => true,
             'inputType'             => 'imageSize',
             'options_callback'      => function () {
-                return \Contao\System::getImageSizes();
+                return \Contao\System::getContainer()->get('contao.image.sizes')->getAllOptions();
             },
             'reference'             => &$GLOBALS['TL_LANG']['MSC'],
             'eval'                  => array('includeBlankOption'=>true, 'rgxp'=>'digit', 'nospace'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
@@ -196,7 +196,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
             'exclude'               => true,
             'inputType'             => 'imageSize',
             'options_callback'      => function () {
-                return \Contao\System::getImageSizes();
+                return \Contao\System::getContainer()->get('contao.image.sizes')->getAllOptions();
             },
             'reference'             => &$GLOBALS['TL_LANG']['MSC'],
             'eval'                  => array('includeBlankOption'=>true, 'rgxp'=>'digit', 'nospace'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),

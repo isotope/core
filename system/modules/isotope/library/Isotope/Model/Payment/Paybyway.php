@@ -104,7 +104,7 @@ class Paybyway extends Payment implements IsotopePostsale
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
         if (!$objOrder instanceof IsotopePurchasableCollection) {
-            System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Product collection ID "' . $objOrder->getId() . '" is not purchasable', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
             return;
         }
 
@@ -121,12 +121,12 @@ class Paybyway extends Payment implements IsotopePostsale
         ));
 
         if (Input::post('AUTHCODE') != $strChecksum) {
-            System::log('Postsale manipulation for order ID ' . $objOrder->getId(), __METHOD__, TL_ERROR);
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Postsale manipulation for order ID ' . $objOrder->getId(), ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
             Checkout::redirectToStep('failed');
         }
 
         if ($objOrder->isCheckoutComplete()) {
-            System::log('Paybyway checkout for Order ID "' . $objOrder->getId() . '" already completed', __METHOD__, TL_ERROR);
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Paybyway checkout for Order ID "' . $objOrder->getId() . '" already completed', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
             return;
         }
 
@@ -142,7 +142,7 @@ class Paybyway extends Payment implements IsotopePostsale
 
             case 4: // Transaction status could not be updated after customer returned from the web page of a bank. Please use the merchant UI to resolve the payment status.
                 if (null === $objOrder->getConfig()) {
-                    System::log('Config for Order ID ' . $objOrder->getId() . ' not found', __METHOD__, TL_ERROR);
+                    \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Config for Order ID ' . $objOrder->getId() . ' not found', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
 
                 } elseif ($objOrder->checkout()) {
                     $objOrder->updateOrderStatus($objOrder->getConfig()->orderstatus_error);
@@ -158,7 +158,7 @@ class Paybyway extends Payment implements IsotopePostsale
                 break;
         }
 
-        System::log('Paybyway checkout failed for order ID ' . $objOrder->getId(), __METHOD__, TL_ERROR);
+        \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Paybyway checkout failed for order ID ' . $objOrder->getId(), ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
 
         Checkout::redirectToStep('failed');
     }

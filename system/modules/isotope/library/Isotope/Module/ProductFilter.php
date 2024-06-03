@@ -132,7 +132,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
             $data = array_map(function (IsotopeProduct $product) {
                 $value = $product->{$this->iso_searchAutocomplete};
 
-                return Controller::replaceInsertTags($value);
+                return \Contao\System::getContainer()->get('contao.insert_tag.parser')->replace($value);
             }, $products);
 
             // Make sure we don't show duplicate autocomplete options and JSON generates an array not an object

@@ -120,7 +120,7 @@ class DC_ProductData extends DC_Table
         }
 
         if (\count($arrPageLanguages) > 1) {
-            $this->arrTranslationLabels = System::getLanguages();
+            $this->arrTranslationLabels = \Contao\System::getContainer()->get('contao.intl.locales')->getLocales(null, true);
             $this->arrTranslations      = array_intersect(array_keys($this->arrTranslationLabels), $arrPageLanguages);
         }
     }
@@ -694,10 +694,10 @@ class DC_ProductData extends DC_Table
             $version = str_replace(
                 '<div class="tl_version_panel">',
                 '<div class="tl_version_panel tl_iso_products_panel">
-<form action="' . ampersand(Environment::get('request'), true) . '" id="tl_language" class="tl_form" method="post">
+<form action="' . \Contao\StringUtil::ampersand(Environment::get('request'), true) . '" id="tl_language" class="tl_form" method="post">
 <div class="tl_formbody">
 <input type="hidden" name="FORM_SUBMIT" value="tl_language">
-<input type="hidden" name="REQUEST_TOKEN" value="' . REQUEST_TOKEN . '">
+<input type="hidden" name="REQUEST_TOKEN" value="' . \Contao\System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue() . '">
 <select name="language" class="tl_select' . (!empty($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId]) ? ' active' : '') . '" onchange="document.id(this).getParent(\'form\').submit()">
     <option value="">' . $GLOBALS['TL_LANG']['MSC']['defaultLanguage'] . '</option>' . $available . $undefined . '
 </select>
@@ -819,7 +819,7 @@ class DC_ProductData extends DC_Table
 <form id="' . $this->strTable . '" class="tl_form tl_edit_form" method="post" enctype="' . ($this->blnUploadable ? 'multipart/form-data' : 'application/x-www-form-urlencoded') . '"' . (!empty($this->onsubmit) ? ' onsubmit="' . implode(' ', $this->onsubmit) . '"' : '') . '>
 <div class="tl_formbody_edit">
 <input type="hidden" name="FORM_SUBMIT" value="' . $this->strTable . '">
-<input type="hidden" name="REQUEST_TOKEN" value="' . REQUEST_TOKEN . '">' . $strVersionField . '
+<input type="hidden" name="REQUEST_TOKEN" value="' . \Contao\System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue() . '">' . $strVersionField . '
 <input type="hidden" name="FORM_FIELDS[]" value="' . StringUtil::specialchars($this->strPalette) . '">' . $return;
 
         // Reload the page to prevent _POST variables from being sent twice
@@ -963,7 +963,7 @@ class DC_ProductData extends DC_Table
                     $strUrl .= $this->ptable ? '&amp;act=create&amp;mode=2&amp;pid=' . CURRENT_ID : '&amp;act=create';
                 }
 
-                $this->redirect($strUrl . '&amp;rt=' . REQUEST_TOKEN);
+                $this->redirect($strUrl . '&amp;rt=' . \Contao\System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue());
             }
             elseif (isset($_POST['saveNduplicate']))
             {
@@ -994,7 +994,7 @@ class DC_ProductData extends DC_Table
                     $strUrl .= $this->ptable ? '&amp;act=copy&amp;mode=2&amp;pid=' . CURRENT_ID . '&amp;id=' . CURRENT_ID : '&amp;act=copy&amp;id=' . CURRENT_ID;
                 }
 
-                $this->redirect($strUrl . '&amp;rt=' . REQUEST_TOKEN);
+                $this->redirect($strUrl . '&amp;rt=' . \Contao\System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue());
             }
 
             $this->reload();
@@ -1240,7 +1240,7 @@ class DC_ProductData extends DC_Table
 <form id="' . $this->strTable . '" class="tl_form tl_edit_form" method="post" enctype="' . ($this->blnUploadable ? 'multipart/form-data' : 'application/x-www-form-urlencoded') . '">
 <div class="tl_formbody_edit nogrid">
 <input type="hidden" name="FORM_SUBMIT" value="' . $this->strTable . '">
-<input type="hidden" name="REQUEST_TOKEN" value="' . REQUEST_TOKEN . '">' . ($this->noReload ? '
+<input type="hidden" name="REQUEST_TOKEN" value="' . \Contao\System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue() . '">' . ($this->noReload ? '
 <p class="tl_error">' . $GLOBALS['TL_LANG']['ERR']['general'] . '</p>' : '') . $return . '
 </div>
 <div class="tl_formbody_submit">
@@ -1310,10 +1310,10 @@ class DC_ProductData extends DC_Table
 
             // Return the select menu
             $return .= '
-<form action="' . ampersand(Environment::get('request')) . '&amp;fields=1" id="' . $this->strTable . '_all" class="tl_form tl_edit_form" method="post">
+<form action="' . \Contao\StringUtil::ampersand(Environment::get('request')) . '&amp;fields=1" id="' . $this->strTable . '_all" class="tl_form tl_edit_form" method="post">
 <div class="tl_formbody_edit">
 <input type="hidden" name="FORM_SUBMIT" value="' . $this->strTable . '_all">
-<input type="hidden" name="REQUEST_TOKEN" value="' . REQUEST_TOKEN . '">' . ($blnIsError ? '
+<input type="hidden" name="REQUEST_TOKEN" value="' . \Contao\System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue() . '">' . ($blnIsError ? '
 <p class="tl_error">' . $GLOBALS['TL_LANG']['ERR']['general'] . '</p>' : '') . '
 <div class="tl_tbox">
 <div class="widget">
@@ -1498,7 +1498,7 @@ class DC_ProductData extends DC_Table
 <form id="tl_select" class="tl_form' . ((Input::get('act') == 'select') ? ' unselectable' : '') . '" method="post" novalidate>
 <div class="tl_formbody_edit">
 <input type="hidden" name="FORM_SUBMIT" value="tl_select">
-<input type="hidden" name="REQUEST_TOKEN" value="' . REQUEST_TOKEN . '">' : '') . '
+<input type="hidden" name="REQUEST_TOKEN" value="' . \Contao\System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue() . '">' : '') . '
 
 <div class="tl_listing_container iso_listing_container list_view" id="tl_listing"' . $this->getPickerValueAttribute() . '>' . (isset($GLOBALS['TL_DCA'][$table]['list']['sorting']['breadcrumb']) ? $GLOBALS['TL_DCA'][$table]['list']['sorting']['breadcrumb'] : '') . ((Input::get('act') == 'select' || $this->strPickerFieldType == 'checkbox') ? '
 
@@ -1808,7 +1808,7 @@ class DC_ProductData extends DC_Table
 <form id="tl_select" class="tl_form' . ((Input::get('act') == 'select') ? ' unselectable' : '') . '" method="post" novalidate>
 <div class="tl_formbody_edit">
 <input type="hidden" name="FORM_SUBMIT" value="tl_select">
-<input type="hidden" name="REQUEST_TOKEN" value="' . REQUEST_TOKEN . '">' : '') . ($blnClipboard ? '
+<input type="hidden" name="REQUEST_TOKEN" value="' . \Contao\System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue() . '">' : '') . ($blnClipboard ? '
 <div id="paste_hint" data-add-to-scroll-offset="20">
   <p>' . $GLOBALS['TL_LANG']['MSC']['selectNewPosition'] . '</p>
 </div>' : '') . '
@@ -1902,7 +1902,7 @@ class DC_ProductData extends DC_Table
                 {
                     $_v = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['reference'][$_v];
                 }
-                elseif (($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['isAssociative'] ?? null) || array_is_assoc($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['options'] ?? null))
+                elseif (($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['isAssociative'] ?? null) || \Contao\ArrayUtil::isAssoc($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['options'] ?? null))
                 {
                     $_v = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['options'][$_v] ?? null;
                 }
@@ -3090,7 +3090,7 @@ class DC_ProductData extends DC_Table
                     }
 
                     // Associative array
-                    elseif (($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['eval']['isAssociative'] ?? null) || array_is_assoc($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['options'] ?? null))
+                    elseif (($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['eval']['isAssociative'] ?? null) || \Contao\ArrayUtil::isAssoc($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['options'] ?? null))
                     {
                         $option_label = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['options'][$vv] ?? null;
                     }
@@ -3175,7 +3175,7 @@ class DC_ProductData extends DC_Table
 
                 $objVersions->create();
 
-                $this->log(sprintf('A new version of record ID %s (table %s) has been created', $language->id, $this->strTable), __METHOD__, TL_GENERAL);
+                \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::INFO, sprintf('A new version of record ID %s (table %s) has been created', $language->id, $this->strTable), ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::GENERAL)]);
             }
         }
 

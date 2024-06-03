@@ -40,7 +40,7 @@ class Sparkasse extends Postsale
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
         if (!$objOrder instanceof IsotopePurchasableCollection) {
-            System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Product collection ID "' . $objOrder->getId() . '" is not purchasable', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
             return new Response('', Response::HTTP_BAD_REQUEST);
         }
 
@@ -57,7 +57,7 @@ class Sparkasse extends Postsale
 
         // Check the data hash to prevent manipulations
         if (Input::post('mac') != $this->calculateHash($arrData)) {
-            System::log('Security hash mismatch in Sparkasse payment!', __METHOD__, TL_ERROR);
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Security hash mismatch in Sparkasse payment!', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
             return $this->redirectError($arrData);
         }
 
@@ -66,22 +66,22 @@ class Sparkasse extends Postsale
 
         // Validate payment data
         if ($objOrder->getCurrency() !== $arrData['currency']) {
-            System::log(sprintf('Data manipulation: currency mismatch ("%s" != "%s")', $objOrder->getCurrency(), $arrData['currency']), __METHOD__, TL_ERROR);
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, sprintf('Data manipulation: currency mismatch ("%s" != "%s")', $objOrder->getCurrency(), $arrData['currency']), ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
             return $this->redirectError($arrData);
         }
 
         if ($objOrder->getTotal() != $arrData['amount']) {
-            System::log(sprintf('Data manipulation: amount mismatch ("%s" != "%s")', $objOrder->getTotal(), $arrData['amount']), __METHOD__, TL_ERROR);
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, sprintf('Data manipulation: amount mismatch ("%s" != "%s")', $objOrder->getTotal(), $arrData['amount']), ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
             return $this->redirectError($arrData);
         }
 
         if ($objOrder->isCheckoutComplete()) {
-            System::log('Postsale checkout for Order ID "' . $objOrder->getId() . '" already completed', __METHOD__, TL_ERROR);
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Postsale checkout for Order ID "' . $objOrder->getId() . '" already completed', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
             return new Response();
         }
 
         if (!$objOrder->checkout()) {
-            System::log('Postsale checkout for order ID "' . $objOrder->getId() . '" failed', __METHOD__, TL_ERROR);
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Postsale checkout for order ID "' . $objOrder->getId() . '" failed', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
             return $this->redirectError($arrData);
         }
 
@@ -128,7 +128,7 @@ class Sparkasse extends Postsale
         $objTemplate->merchantref = '';
 
         if ($this->sparkasse_merchantref != '') {
-            $objTemplate->merchantref = substr(Controller::replaceInsertTags($this->sparkasse_merchantref), 0, 30);
+            $objTemplate->merchantref = substr(\Contao\System::getContainer()->get('contao.insert_tag.parser')->replace($this->sparkasse_merchantref), 0, 30);
         }
 
         $objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0];

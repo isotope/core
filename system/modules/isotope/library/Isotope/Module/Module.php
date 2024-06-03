@@ -73,7 +73,7 @@ abstract class Module extends AbstractFrontendModule
         parent::__construct($objModule, $strColumn);
 
         if ($this->iso_list_where != '') {
-            $this->iso_list_where = Controller::replaceInsertTags($this->iso_list_where);
+            $this->iso_list_where = \Contao\System::getContainer()->get('contao.insert_tag.parser')->replace($this->iso_list_where);
         }
 
         Isotope::initialize();

@@ -12,6 +12,7 @@
 namespace Isotope\Model\ProductCollection;
 
 use Contao\Controller;
+use Contao\CoreBundle\Monolog\ContaoContext;
 use Contao\Message;
 use Contao\StringUtil;
 use Contao\System;
@@ -182,7 +183,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
             $this->lock();
         }
 
-        System::log('New order ID ' . $this->id . ' has been placed', __METHOD__, TL_ACCESS);
+        System::getContainer()->get('monolog.logger.contao')->info('New order ID ' . $this->id . ' has been placed', ['contao' => new ContaoContext(__METHOD__, ContaoContext::ACCESS)]);
 
         // Delete cart after migrating to order
         if (($objCart = Cart::findByPk($this->source_collection_id)) !== null) {
@@ -220,7 +221,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
             }
 
             if ($blnNotificationError === true) {
-                System::log('Error sending new order notification for order ID ' . $this->id, __METHOD__, TL_ERROR);
+                System::getContainer()->get('monolog.logger.contao')->error('Error sending new order notification for order ID ' . $this->id, ['contao' => new ContaoContext(__METHOD__, ContaoContext::ERROR)]);
             }
         }
 
@@ -348,16 +349,12 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
 
                     if (\in_array(false, $arrResult, true)) {
                         $blnNotificationError = true;
-                        System::log(
-                            'Error sending status update notification for order ID ' . $this->id,
-                            __METHOD__,
-                            TL_ERROR
-                        );
+                        System::getContainer()->get('monolog.logger.contao')->error('Error sending status update notification for order ID ' . $this->id, ['contao' => new ContaoContext(__METHOD__, ContaoContext::ERROR)]);
                     } elseif (\count($arrResult) > 0) {
                         $blnNotificationError = false;
                     }
                 } else {
-                    System::log('Invalid notification for order status ID ' . $objNewStatus->id, __METHOD__, TL_ERROR);
+                    System::getContainer()->get('monolog.logger.contao')->error('Invalid notification for order status ID ' . $objNewStatus->id, ['contao' => new ContaoContext(__METHOD__, ContaoContext::ERROR)]);
                 }
             }
 
@@ -420,7 +417,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
         $arrTokens                    = StringUtil::deserialize($this->email_data, true);
         $arrTokens['uniqid']          = $this->uniqid;
         $arrTokens['order_status_id'] = $this->order_status;
-        $arrTokens['order_status']    = Controller::replaceInsertTags($this->getStatusLabel());
+        $arrTokens['order_status']    = \Contao\System::getContainer()->get('contao.insert_tag.parser')->replace($this->getStatusLabel());
         $arrTokens['recipient_email'] = $this->getEmailRecipient();
         $arrTokens['order_id']        = $this->id;
         $arrTokens['order_items']     = $this->sumItemsQuantity();
@@ -479,8 +476,8 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
         // Add payment method info
         if ($this->hasPayment() && ($objPayment = $this->getPaymentMethod()) !== null) {
             $arrTokens['payment_id']        = $objPayment->getId();
-            $arrTokens['payment_label']     = Controller::replaceInsertTags($objPayment->getLabel());
-            $arrTokens['payment_note']      = Controller::replaceInsertTags($objPayment->getNote());
+            $arrTokens['payment_label']     = \Contao\System::getContainer()->get('contao.insert_tag.parser')->replace($objPayment->getLabel());
+            $arrTokens['payment_note']      = \Contao\System::getContainer()->get('contao.insert_tag.parser')->replace($objPayment->getNote());
 
             if ($objPayment instanceof IsotopeNotificationTokens) {
                 $arrTokens = array_merge($arrTokens, $objPayment->getNotificationTokens($this));
@@ -490,8 +487,8 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
         // Add shipping method info
         if ($this->hasShipping() && ($objShipping = $this->getShippingMethod()) !== null) {
             $arrTokens['shipping_id']        = $objShipping->getId();
-            $arrTokens['shipping_label']     = Controller::replaceInsertTags($objShipping->getLabel());
-            $arrTokens['shipping_note']      = Controller::replaceInsertTags($objShipping->getNote());
+            $arrTokens['shipping_label']     = \Contao\System::getContainer()->get('contao.insert_tag.parser')->replace($objShipping->getLabel());
+            $arrTokens['shipping_note']      = \Contao\System::getContainer()->get('contao.insert_tag.parser')->replace($objShipping->getNote());
 
             if ($objShipping instanceof IsotopeNotificationTokens) {
                 $arrTokens = array_merge($arrTokens, $objShipping->getNotificationTokens($this));
@@ -526,17 +523,17 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
                 )
             );
 
-            $arrTokens['cart_html'] = Controller::replaceInsertTags($objTemplate->parse(), false);
+            $arrTokens['cart_html'] = \Contao\System::getContainer()->get('contao.insert_tag.parser')->replaceInline($objTemplate->parse());
             $objTemplate->textOnly  = true;
-            $arrTokens['cart_text'] = strip_tags(Controller::replaceInsertTags($objTemplate->parse(), false));
+            $arrTokens['cart_text'] = strip_tags(\Contao\System::getContainer()->get('contao.insert_tag.parser')->replaceInline($objTemplate->parse()));
 
             // Generate and "attach" document
             /** @var \Isotope\Interfaces\IsotopeDocument $objDocument */
             if ($objNotification->iso_document > 0
                 && (($objDocument = Document::findByPk($objNotification->iso_document)) !== null)
             ) {
-                $strFilePath           = $objDocument->outputToFile($this, TL_ROOT . '/system/tmp');
-                $arrTokens['document'] = str_replace(TL_ROOT . '/', '', $strFilePath);
+                $strFilePath           = $objDocument->outputToFile($this, System::getContainer()->getParameter('kernel.project_dir') . '/system/tmp');
+                $arrTokens['document'] = str_replace(System::getContainer()->getParameter('kernel.project_dir') . '/', '', $strFilePath);
             }
         }
 
@@ -603,7 +600,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
         }
 
         return uniqid(
-            Controller::replaceInsertTags((string) $objConfig->orderPrefix, false),
+            \Contao\System::getContainer()->get('contao.insert_tag.parser')->replaceInline((string) $objConfig->orderPrefix),
             true
         );
     }

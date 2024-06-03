@@ -17,6 +17,7 @@ use Contao\Controller;
 use Contao\CoreBundle\Exception\AccessDeniedException;
 use Contao\Database;
 use Contao\File;
+use Contao\Folder;
 use Contao\Image;
 use Contao\Input;
 use Contao\StringUtil;
@@ -51,12 +52,13 @@ class Callback extends Backend
         }
 
         $path = $objDownload->getRelated('singleSRC')->path;
+        $projectDir = System::getContainer()->getParameter('kernel.project_dir');
 
         if ('folder' === $objDownload->getRelated('singleSRC')->type) {
             $arrDownloads = array();
 
-            foreach (\Contao\Folder::scan(TL_ROOT . '/' . $path) as $file) {
-                if (is_file(TL_ROOT . '/' . $path . '/' . $file)) {
+            foreach (Folder::scan($projectDir . '/' . $path) as $file) {
+                if (is_file($projectDir . '/' . $path . '/' . $file)) {
                     $objFile        = new File($path . '/' . $file);
                     $icon           = 'background:url(' . TL_ASSETS_URL . 'assets/contao/images/' . $objFile->icon . ') left center no-repeat; padding-left: 22px';
                     $arrDownloads[] = sprintf('<div style="margin-bottom:5px;height:16px;%s">%s</div>', $icon, $path . '/' . $file);
@@ -70,7 +72,7 @@ class Callback extends Backend
             return '<div style="margin-bottom:5px;height:16px;font-weight:bold">' . $path . '</div>' . implode("\n", $arrDownloads);
         }
 
-        if (is_file(TL_ROOT . '/' . $path)) {
+        if (is_file($projectDir . '/' . $path)) {
             $objFile = new File($path);
             $icon    = 'background: url(' . TL_ASSETS_URL . 'assets/contao/images/' . $objFile->icon . ') left center no-repeat; padding-left: 22px';
         }
@@ -204,6 +206,6 @@ class Callback extends Backend
         Database::getInstance()->prepare("UPDATE tl_iso_download SET published='" . ($blnVisible ? 1 : '') . "' WHERE id=?")->execute($intId);
 
         $objVersions->create();
-        System::log('A new version of record "tl_iso_download.id='.$intId.'" has been created'.$this->getParentEntries('tl_iso_download', $intId), __METHOD__, TL_GENERAL);
+        System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::INFO, 'A new version of record "tl_iso_download.id='.$intId.'" has been created'.$this->getParentEntries('tl_iso_download', $intId), ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::GENERAL)]);
     }
 }

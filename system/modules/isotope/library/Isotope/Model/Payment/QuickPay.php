@@ -38,7 +38,7 @@ class QuickPay extends Postsale
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
         if (!$objOrder instanceof IsotopePurchasableCollection) {
-            System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Product collection ID "' . $objOrder->getId() . '" is not purchasable', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
             return;
         }
 
@@ -47,12 +47,12 @@ class QuickPay extends Postsale
         }
 
         if ($objOrder->isCheckoutComplete()) {
-            System::log('Postsale checkout for Order ID "' . $objOrder->getId() . '" already completed', __METHOD__, TL_ERROR);
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Postsale checkout for Order ID "' . $objOrder->getId() . '" already completed', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
             return;
         }
 
         if (!$objOrder->checkout()) {
-            System::log('Postsale checkout for Order ID "' . $objOrder->getId() . '" failed', __METHOD__, TL_ERROR);
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Postsale checkout for Order ID "' . $objOrder->getId() . '" failed', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
             return;
         }
 
@@ -125,11 +125,7 @@ class QuickPay extends Postsale
         $checksum = hash_hmac("sha256", file_get_contents("php://input"), $this->quickpay_privateKey);
 
         if ($checksum != $_SERVER['HTTP_QUICKPAY_CHECKSUM_SHA256']) {
-            System::log(
-                'Invalid hash for QuickPay payment. See system/logs/isotope_quickpay.log for more details.',
-                __METHOD__,
-                TL_ERROR
-            );
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Invalid hash for QuickPay payment. See system/logs/isotope_quickpay.log for more details.', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
 
             $this->debugLog(
                 sprintf(
@@ -156,11 +152,7 @@ class QuickPay extends Postsale
             || 0 != $data['balance']
             || $data['test_mode'] != $this->debug
         ) {
-            System::log(
-                'QuickPay data was not accepted. See system/logs/isotope_quickpay.log for more details.',
-                __METHOD__,
-                TL_ERROR
-            );
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'QuickPay data was not accepted. See system/logs/isotope_quickpay.log for more details.', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
 
             $this->debugLog(
                 sprintf(
@@ -197,11 +189,7 @@ class QuickPay extends Postsale
         $data = json_decode(file_get_contents("php://input"), true);
 
         if (null === $data) {
-            System::log(
-                'Unable to read JSON for QuickPay payment. See system/logs/isotope_quickpay.log for more details.',
-                __METHOD__,
-                TL_ERROR
-            );
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Unable to read JSON for QuickPay payment. See system/logs/isotope_quickpay.log for more details.', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
 
             $this->debugLog(
                 sprintf(

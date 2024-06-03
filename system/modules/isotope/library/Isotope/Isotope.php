@@ -484,7 +484,7 @@ class Isotope extends Controller
             $arrOptions[$field] = array
             (
                 'label' => Format::dcaLabel($strTable, $field),
-                'value' => Controller::replaceInsertTags(Format::dcaValue($strTable, $field, $value)),
+                'value' => \Contao\System::getContainer()->get('contao.insert_tag.parser')->replace(Format::dcaValue($strTable, $field, $value)),
             );
         }
 
@@ -562,7 +562,7 @@ class Isotope extends Controller
                 $v,
                 Format::dcaLabel($strTable, $k),
                 array (
-                    'formatted' => Controller::replaceInsertTags($formatted),
+                    'formatted' => \Contao\System::getContainer()->get('contao.insert_tag.parser')->replace($formatted),
                 )
             );
         }

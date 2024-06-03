@@ -13,6 +13,7 @@ namespace Isotope\Backend\Product;
 
 use Contao\Backend;
 use Contao\BackendUser;
+use Contao\CoreBundle\Monolog\ContaoContext;
 use Contao\Database;
 use Contao\Image;
 use Contao\Input;
@@ -53,7 +54,7 @@ class Panel extends Backend
             new Request.Contao({
               evalScripts: false,
               onRequest: AjaxRequest.displayBox(Contao.lang.loading + \' …\')
-            }).post({action:"filterGroups", value:value[0], REQUEST_TOKEN:"' . REQUEST_TOKEN . '"});
+            }).post({action:"filterGroups", value:value[0], REQUEST_TOKEN:"' . \Contao\System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue() . '"});
           }
         })
       });
@@ -73,7 +74,7 @@ class Panel extends Backend
             new Request.Contao({
               evalScripts: false,
               onRequest: AjaxRequest.displayBox(Contao.lang.loading + \' …\')
-            }).post({action:"filterPages", value:value[0], REQUEST_TOKEN:"' . REQUEST_TOKEN . '"});
+            }).post({action:"filterPages", value:value[0], REQUEST_TOKEN:"' . \Contao\System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue() . '"});
           }
         })
       });
@@ -275,7 +276,7 @@ class Panel extends Backend
                         }
                     }
 
-                    System::log('Advanced product filter "' . $k . '" not found.', __METHOD__, TL_ERROR);
+                    System::getContainer()->get('monolog.logger.contao')->error('Advanced product filter "' . $k . '" not found.', ['contao' => new ContaoContext(__METHOD__, ContaoContext::ERROR)]);
                     break;
             }
         }

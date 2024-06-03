@@ -46,12 +46,12 @@ class Paypal extends Postsale
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
         if (!$objOrder instanceof IsotopePurchasableCollection) {
-            System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Product collection ID "' . $objOrder->getId() . '" is not purchasable', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
             return new Response('', Response::HTTP_BAD_REQUEST);
         }
 
         if ('Completed' !== Input::post('payment_status')) {
-            System::log('PayPal IPN: payment status "' . Input::post('payment_status') . '" not implemented', __METHOD__, TL_GENERAL);
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::INFO, 'PayPal IPN: payment status "' . Input::post('payment_status') . '" not implemented', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::GENERAL)]);
             return new Response();
         }
 
@@ -60,7 +60,7 @@ class Paypal extends Postsale
         }
 
         if (!$this->debug && 0 !== strcasecmp(Input::post('receiver_email', true), $this->paypal_account)) {
-            System::log('PayPal IPN: Account email does not match (got ' . Input::post('receiver_email', true) . ', expected ' . $this->paypal_account . ')', __METHOD__, TL_ERROR);
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'PayPal IPN: Account email does not match (got ' . Input::post('receiver_email', true) . ', expected ' . $this->paypal_account . ')', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
             return new Response('', Response::HTTP_BAD_REQUEST);
         }
 
@@ -68,17 +68,17 @@ class Paypal extends Postsale
         if ($objOrder->getCurrency() !== Input::post('mc_currency')
             || $objOrder->getTotal() != Input::post('mc_gross')
         ) {
-            System::log('PayPal IPN: manipulation in payment from "' . Input::post('payer_email') . '" !', __METHOD__, TL_ERROR);
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'PayPal IPN: manipulation in payment from "' . Input::post('payer_email') . '" !', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
             return new Response('', Response::HTTP_BAD_REQUEST);
         }
 
         if ($objOrder->isCheckoutComplete()) {
-            System::log('PayPal IPN: checkout for Order ID "' . Input::post('invoice') . '" already completed', __METHOD__, TL_GENERAL);
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::INFO, 'PayPal IPN: checkout for Order ID "' . Input::post('invoice') . '" already completed', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::GENERAL)]);
             return new Response();
         }
 
         if (!$objOrder->checkout()) {
-            System::log('PayPal IPN: checkout for Order ID "' . Input::post('invoice') . '" failed', __METHOD__, TL_ERROR);
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'PayPal IPN: checkout for Order ID "' . Input::post('invoice') . '" failed', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
             return new Response('', Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
@@ -92,7 +92,7 @@ class Paypal extends Postsale
 
         $objOrder->save();
 
-        System::log('PayPal IPN: data accepted', __METHOD__, TL_GENERAL);
+        \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::INFO, 'PayPal IPN: data accepted', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::GENERAL)]);
 
         return new Response();
     }
@@ -114,7 +114,7 @@ class Paypal extends Postsale
     public function checkoutForm(IsotopeProductCollection $objOrder, Module $objModule)
     {
         if (!$objOrder instanceof IsotopePurchasableCollection) {
-            System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Product collection ID "' . $objOrder->getId() . '" is not purchasable', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
             return false;
         }
 
@@ -278,12 +278,12 @@ class Paypal extends Postsale
             ]);
 
             if ('VERIFIED' !== $response->getContent()) {
-                System::log('PayPal IPN: data rejected (' . $response->getContent() . ')', __METHOD__, TL_ERROR);
+                \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'PayPal IPN: data rejected (' . $response->getContent() . ')', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
 
                 return false;
             }
         } catch (ExceptionInterface $exception) {
-            System::log('PayPal IPN: Request Error (' . $exception->getMessage() . ')', __METHOD__, TL_ERROR);
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'PayPal IPN: Request Error (' . $exception->getMessage() . ')', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
 
             return false;
         }

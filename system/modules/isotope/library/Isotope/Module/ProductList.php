@@ -113,7 +113,7 @@ class ProductList extends Module
     {
         // return message if no filter is set
         if ($this->iso_emptyFilter && !Input::get('isorc') && !Input::get('keywords')) {
-            $this->Template->message  = Controller::replaceInsertTags($this->iso_noFilter);
+            $this->Template->message  = \Contao\System::getContainer()->get('contao.insert_tag.parser')->replace($this->iso_noFilter);
             $this->Template->type     = 'noFilter';
             $this->Template->products = array();
 
@@ -262,7 +262,7 @@ class ProductList extends Module
                 && !$this->iso_disable_options
             ) {
                 $content = $objProduct->generate($arrConfig);
-                $content = Controller::replaceInsertTags($content, false);
+                $content = \Contao\System::getContainer()->get('contao.insert_tag.parser')->replaceInline($content);
 
                 throw new ResponseException(new Response($content));
             }

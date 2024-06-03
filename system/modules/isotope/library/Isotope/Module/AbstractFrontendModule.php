@@ -35,7 +35,7 @@ abstract class AbstractFrontendModule extends Module
             }
 
             if (array_key_exists($name, $this->arrData)) {
-                $this->arrData[$name] = deserialize($this->arrData[$name], $force);
+                $this->arrData[$name] = \Contao\StringUtil::deserialize($this->arrData[$name], $force);
             }
         }
     }
@@ -45,7 +45,7 @@ abstract class AbstractFrontendModule extends Module
      */
     public function generate()
     {
-        if ('BE' === TL_MODE && $this->showWildcard()) {
+        if (\Contao\System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest(\Contao\System::getContainer()->get('request_stack')->getCurrentRequest() ?? \Symfony\Component\HttpFoundation\Request::create('')) && $this->showWildcard()) {
             return $this->generateWildcard();
         }
 

@@ -66,7 +66,7 @@ class Frontend extends \Contao\Frontend
     public function findShippingAndPaymentSurcharges(IsotopeProductCollection $objCollection)
     {
         if (!$objCollection instanceof IsotopeOrderableCollection) {
-            System::log('Product collection ID "' . $objCollection->getId() . '" is not orderable', __METHOD__, TL_ERROR);
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Product collection ID "' . $objCollection->getId() . '" is not orderable', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
             return false;
         }
 

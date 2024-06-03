@@ -1724,7 +1724,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
 
         try {
             if ($this->arrData['document_number'] == '') {
-                $strPrefix = Controller::replaceInsertTags($strPrefix, false);
+                $strPrefix = \Contao\System::getContainer()->get('contao.insert_tag.parser')->replaceInline($strPrefix);
                 $intPrefix = mb_strlen($strPrefix);
 
                 // Lock tables so no other order can get the same ID

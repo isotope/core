@@ -45,7 +45,7 @@ class Panel extends Backend
             new Request.Contao({
               evalScripts: false,
               onRequest: AjaxRequest.displayBox(Contao.lang.loading + \' …\')
-            }).post({action:"filterProducts", value:value[0], REQUEST_TOKEN:"' . REQUEST_TOKEN . '"});
+            }).post({action:"filterProducts", value:value[0], REQUEST_TOKEN:"' . \Contao\System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue() . '"});
           }
         })
       });

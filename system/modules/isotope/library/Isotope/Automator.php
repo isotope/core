@@ -41,7 +41,7 @@ class Automator extends Controller
         );
 
         if (($intPurged = $this->deleteOldCollections($objCarts)) > 0) {
-            System::log('Deleted ' . $intPurged . ' old guest carts', __METHOD__, TL_CRON);
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::INFO, 'Deleted ' . $intPurged . ' old guest carts', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::CRON)]);
         }
     }
 
@@ -62,7 +62,7 @@ class Automator extends Controller
         );
 
         if (($intPurged = $this->deleteOldCollections($objOrders)) > 0) {
-            System::log('Deleted ' . $intPurged . ' incomplete orders', __METHOD__, TL_CRON);
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::INFO, 'Deleted ' . $intPurged . ' incomplete orders', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::CRON)]);
         }
     }
 
@@ -99,7 +99,7 @@ class Automator extends Controller
                     $objRequest->send('https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml');
 
                     if ($objRequest->hasError()) {
-                        System::log('Error retrieving data from European Central Bank (ecb.int): ' . $objRequest->error . ' (Code ' . $objRequest->code . ')', __METHOD__, TL_ERROR);
+                        \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Error retrieving data from European Central Bank (ecb.int): ' . $objRequest->error . ' (Code ' . $objRequest->code . ')', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
 
                         return;
                     }
@@ -120,7 +120,7 @@ class Automator extends Controller
 
                     // Log if one of the currencies is not available
                     if (!$fltCourse || !$fltCourseOrigin) {
-                        System::log('Could not find currency to convert in European Central Bank (ecb.int).', __METHOD__, TL_ERROR);
+                        \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Could not find currency to convert in European Central Bank (ecb.int).', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
 
                         return;
                     }
@@ -138,7 +138,7 @@ class Automator extends Controller
                     $objRequest->send('http://www.afd.admin.ch/publicdb/newdb/mwst_kurse/wechselkurse.php');
 
                     if ($objRequest->hasError()) {
-                        System::log('Error retrieving data from Swiss Federal Department of Finance (admin.ch): ' . $objRequest->error . ' (Code ' . $objRequest->code . ')', __METHOD__, TL_ERROR);
+                        \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Error retrieving data from Swiss Federal Department of Finance (admin.ch): ' . $objRequest->error . ' (Code ' . $objRequest->code . ')', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
 
                         return;
                     }
@@ -157,7 +157,7 @@ class Automator extends Controller
 
                     // Log if one of the currencies is not available
                     if (!$fltCourse || !$fltCourseOrigin) {
-                        System::log('Could not find currency to convert in Swiss Federal Department of Finance (admin.ch).', __METHOD__, TL_ERROR);
+                        \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Could not find currency to convert in Swiss Federal Department of Finance (admin.ch).', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
 
                         return;
                     }

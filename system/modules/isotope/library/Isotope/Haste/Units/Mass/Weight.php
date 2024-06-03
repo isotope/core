@@ -12,6 +12,8 @@
 
 namespace Isotope\Haste\Units\Mass;
 
+use Contao\StringUtil;
+
 class Weight implements Weighable
 {
 
@@ -51,7 +53,7 @@ class Weight implements Weighable
      */
     public static function createFromTimePeriod($arrData)
     {
-        $arrData = deserialize($arrData);
+        $arrData = StringUtil::deserialize($arrData);
 
         if (empty($arrData)
             || !is_array($arrData)

@@ -175,7 +175,7 @@ class Backend extends ContaoBackend
         if (null !== $objConfig) {
             while ($objConfig->next()) {
                 if ($objConfig->templateGroup != '') {
-                    $arrConfigTemplates = glob(TL_ROOT . '/' . $objConfig->templateGroup . '/' . $strPrefix . '*');
+                    $arrConfigTemplates = glob(\Contao\System::getContainer()->getParameter('kernel.project_dir') . '/' . $objConfig->templateGroup . '/' . $strPrefix . '*');
 
                     if (\is_array($arrConfigTemplates)) {
                         foreach ($arrConfigTemplates as $strFile) {
@@ -348,7 +348,7 @@ class Backend extends ContaoBackend
 
                 // The field does not exist
                 if (!isset($GLOBALS['TL_DCA'][$dc->table]['fields'][$strField])) {
-                    System::log('Field "' . $strField . '" does not exist in DCA "' . $dc->table . '"', __METHOD__, TL_ERROR);
+                    \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Field "' . $strField . '" does not exist in DCA "' . $dc->table . '"', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
                     header('HTTP/1.1 400 Bad Request');
                     die('Bad Request');
                 }
@@ -360,7 +360,7 @@ class Backend extends ContaoBackend
 
                     // The record does not exist
                     if ($objRow->numRows < 1) {
-                        System::log('A record with the ID "' . $intId . '" does not exist in table "' . $dc->table . '"', __METHOD__, TL_ERROR);
+                        \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'A record with the ID "' . $intId . '" does not exist in table "' . $dc->table . '"', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
                         header('HTTP/1.1 400 Bad Request');
                         die('Bad Request');
                     }

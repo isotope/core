@@ -78,11 +78,11 @@ class Standard extends Document implements IsotopeDocument
 
         // Include TCPDF config
         define('K_TCPDF_EXTERNAL_CONFIG', true);
-        define('K_PATH_MAIN', TL_ROOT . '/vendor/tecnickcom/tcpdf/');
+        define('K_PATH_MAIN', \Contao\System::getContainer()->getParameter('kernel.project_dir') . '/vendor/tecnickcom/tcpdf/');
         define('K_PATH_URL', Environment::get('base') . 'vendor/tecnickcom/tcpdf/');
         define('K_PATH_FONTS', K_PATH_MAIN . 'fonts/');
-        define('K_PATH_CACHE', TL_ROOT . '/system/tmp/');
-        define('K_PATH_URL_CACHE', TL_ROOT . '/system/tmp/');
+        define('K_PATH_CACHE', \Contao\System::getContainer()->getParameter('kernel.project_dir') . '/system/tmp/');
+        define('K_PATH_URL_CACHE', \Contao\System::getContainer()->getParameter('kernel.project_dir') . '/system/tmp/');
         define('K_PATH_IMAGES', K_PATH_MAIN . 'images/');
         define('K_BLANK_IMAGE', K_PATH_IMAGES . '_blank.png');
         define('PDF_PAGE_FORMAT', 'A4');
@@ -198,7 +198,7 @@ class Standard extends Document implements IsotopeDocument
         }
 
         // Generate template and fix PDF issues, see Contao's ModuleArticle
-        $strBuffer = Controller::replaceInsertTags($objTemplate->parse(), false);
+        $strBuffer = \Contao\System::getContainer()->get('contao.insert_tag.parser')->replaceInline($objTemplate->parse());
         $strBuffer = html_entity_decode($strBuffer, ENT_QUOTES, $GLOBALS['TL_CONFIG']['characterSet']);
         $strBuffer = Controller::convertRelativeUrls($strBuffer, '', true);
 
@@ -226,11 +226,11 @@ class Standard extends Document implements IsotopeDocument
             }
 
             $blnOverrideRoot = true;
-            return $args[1] . TL_ROOT . '/' . $path . $args[3];
+            return $args[1] . \Contao\System::getContainer()->getParameter('kernel.project_dir') . '/' . $path . $args[3];
         }, $strBuffer);
 
         if ($blnOverrideRoot) {
-            $_SERVER['DOCUMENT_ROOT'] = TL_ROOT;
+            $_SERVER['DOCUMENT_ROOT'] = \Contao\System::getContainer()->getParameter('kernel.project_dir');
         }
 
         // Handle line breaks in preformatted text

@@ -17,6 +17,7 @@ use Contao\BackendUser;
 use Contao\Controller;
 use Contao\CoreBundle\Exception\AccessDeniedException;
 use Contao\CoreBundle\Exception\InternalServerErrorException;
+use Contao\CoreBundle\Monolog\ContaoContext;
 use Contao\Database;
 use Contao\DataContainer;
 use Contao\DcaExtractor;
@@ -124,7 +125,7 @@ class Callback extends Backend
         Input::setGet('uid', $objOrder->uniqid);
         $objModule = new OrderDetails($moduleModel);
 
-        return Controller::replaceInsertTags($objModule->generate(true));
+        return \Contao\System::getContainer()->get('contao.insert_tag.parser')->replace($objModule->generate(true));
     }
 
     /**
@@ -186,7 +187,7 @@ class Callback extends Backend
                                     'act' => 'show',
                                     'id' => $dc->activeRecord->{$field},
                                     'popup' => 1,
-                                    'rt' => REQUEST_TOKEN,
+                                    'rt' => \Contao\System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue(),
                                 ]),
                                 $title,
                                 $title,
@@ -206,7 +207,7 @@ class Callback extends Backend
                                     'table' => $relatedTable,
                                     'act' => 'edit',
                                     'id' => $dc->activeRecord->{$field},
-                                    'rt' => REQUEST_TOKEN,
+                                    'rt' => \Contao\System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue(),
                                 ]),
                                 sprintf($GLOBALS['TL_DCA'][$relatedTable]['list']['operations']['edit']['label'][0], $dc->activeRecord->{$field}),
                                 $name,
@@ -619,7 +620,7 @@ class Callback extends Backend
 <form id="tl_iso_product_import" class="tl_form" method="post">
 <div class="tl_formbody_edit">
 <input type="hidden" name="FORM_SUBMIT" value="tl_iso_print_document">
-<input type="hidden" name="REQUEST_TOKEN" value="' . REQUEST_TOKEN . '">
+<input type="hidden" name="REQUEST_TOKEN" value="' . \Contao\System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue() . '">
 
 <div class="block tl_tbox">
   <div class="clr widget">
@@ -892,11 +893,7 @@ class Callback extends Backend
 
             if (\in_array(false, $arrResult, true)) {
                 $blnNotificationError = true;
-                System::log(
-                    'Error sending status update notification for order ID ' . $order->id,
-                    __METHOD__,
-                    TL_ERROR
-                );
+                System::getContainer()->get('monolog.logger.contao')->error('Error sending status update notification for order ID ' . $order->id, ['contao' => new ContaoContext(__METHOD__, ContaoContext::ERROR)]);
             } elseif (\count($arrResult) > 0) {
                 $blnNotificationError = false;
             }

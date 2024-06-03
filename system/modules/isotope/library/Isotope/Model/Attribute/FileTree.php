@@ -75,9 +75,10 @@ class FileTree extends Attribute
 
         if (null !== $objFiles) {
             $files = [];
+            $projectDir = \Contao\System::getContainer()->getParameter('kernel.project_dir');
 
             foreach ($objFiles as $objFile) {
-                if (!is_file(TL_ROOT.'/'.$objFile->path)) {
+                if (!is_file($projectDir.'/'.$objFile->path)) {
                     continue;
                 }
 

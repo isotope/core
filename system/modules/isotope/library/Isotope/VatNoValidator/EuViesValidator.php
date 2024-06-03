@@ -48,7 +48,7 @@ class EuViesValidator implements IsotopeVatNoValidator
             $this->soap = new \SoapClient(static::$url_vies, ['exceptions' => true]);
         } catch (\SoapFault $e) {
             $this->soap = false;
-            System::log('EU VAT validation failed: ' . $e->getMessage(), __METHOD__, TL_ERROR);
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'EU VAT validation failed: ' . $e->getMessage(), ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
         }
     }
 

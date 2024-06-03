@@ -239,7 +239,7 @@ class Checkout extends Module
                     foreach ($GLOBALS['ISO_HOOKS']['preCheckout'] as $callback) {
 
                         if (System::importStatic($callback[0])->{$callback[1]}($objOrder, $this) === false) {
-                            System::log('Callback ' . $callback[0] . '::' . $callback[1] . '() cancelled checkout for Order ID ' . $this->id, __METHOD__, TL_ERROR);
+                            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Callback ' . $callback[0] . '::' . $callback[1] . '() cancelled checkout for Order ID ' . $this->id, ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
 
                             static::redirectToStep(self::STEP_FAILED);
                         }

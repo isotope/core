@@ -13,6 +13,7 @@ namespace Isotope;
 
 use Contao\FrontendTemplate;
 use Contao\StringUtil;
+use Contao\System;
 use Contao\TemplateLoader;
 
 /**
@@ -38,7 +39,7 @@ class Template extends FrontendTemplate
         }
 
         $strKey      = $strTemplate . '.' . $strFormat;
-        $strPath     = TL_ROOT . '/templates';
+        $strPath     = System::getContainer()->getParameter('kernel.project_dir') . '/templates';
         $strTemplate = basename($strTemplate);
 
         // Check the templates subfolder

@@ -89,13 +89,13 @@ class Datatrans extends Postsale implements IsotopeNotificationTokens, IsotopeBa
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
         if (!$objOrder instanceof IsotopePurchasableCollection) {
-            System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Product collection ID "' . $objOrder->getId() . '" is not purchasable', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
             return;
         }
 
         // Verify payment status
         if (Input::post('status') !== 'success') {
-            System::log('Payment for order ID "' . Input::post('refno') . '" failed.', __METHOD__, TL_ERROR);
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Payment for order ID "' . Input::post('refno') . '" failed.', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
             $this->debugLog('Expected status "success", got "'.Input::post('status').'"');
             $this->debugLog($_POST);
 
@@ -106,7 +106,7 @@ class Datatrans extends Postsale implements IsotopeNotificationTokens, IsotopeBa
         $hash = $this->createHash($this->datatrans_id . Input::post('amount') . Input::post('currency') . Input::post('uppTransactionId'));
 
         if (Input::post('sign2') != $hash) {
-            System::log('Invalid HMAC signature for Order ID ' . Input::post('refno'), __METHOD__, TL_ERROR);
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Invalid HMAC signature for Order ID ' . Input::post('refno'), ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
             $this->debugLog('Expected hash "'.$hash.'", got "'.Input::post('sign2').'"');
             $this->debugLog($_POST);
 
@@ -131,12 +131,12 @@ class Datatrans extends Postsale implements IsotopeNotificationTokens, IsotopeBa
         ];
 
         if ($objOrder->isCheckoutComplete()) {
-            System::log('Postsale checkout for Order ID "' . $objOrder->getId() . '" already completed', __METHOD__, TL_ERROR);
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Postsale checkout for Order ID "' . $objOrder->getId() . '" already completed', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
             return;
         }
 
         if (!$objOrder->checkout()) {
-            System::log('Postsale checkout for Order ID "' . Input::post('refno') . '" failed', __METHOD__, TL_ERROR);
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Postsale checkout for Order ID "' . Input::post('refno') . '" failed', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
 
             return;
         }
@@ -163,7 +163,7 @@ class Datatrans extends Postsale implements IsotopeNotificationTokens, IsotopeBa
     public function checkoutForm(IsotopeProductCollection $objOrder, Module $objModule)
     {
         if (!$objOrder instanceof IsotopePurchasableCollection) {
-            System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Product collection ID "' . $objOrder->getId() . '" is not purchasable', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
             return false;
         }
 
@@ -229,11 +229,7 @@ class Datatrans extends Postsale implements IsotopeNotificationTokens, IsotopeBa
     {
         foreach ($arrData as $key => $value) {
             if (Input::post($key) != $value) {
-                System::log(
-                    'Wrong data for parameter "' . $key . '" (Order ID "' . Input::post('refno') . ').',
-                    __METHOD__,
-                    TL_ERROR
-                );
+                \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Wrong data for parameter "' . $key . '" (Order ID "' . Input::post('refno') . ').', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
 
                 $this->debugLog('Failed to validate parameters');
                 $this->debugLog($arrData);

@@ -78,7 +78,7 @@ class OpenPaymentPlatform extends Payment
     public function checkoutForm(IsotopeProductCollection $objOrder, Module $objModule)
     {
         if (!$objOrder instanceof IsotopePurchasableCollection) {
-            System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Product collection ID "' . $objOrder->getId() . '" is not purchasable', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
             return false;
         }
 
@@ -96,14 +96,10 @@ class OpenPaymentPlatform extends Payment
         $this->debugLog($response);
 
         if ('000.200.100' !== $response['result']['code']) {
-            System::log(
-                sprintf(
-                    'Payment for order ID %s could not be initialized. See log files for more information.',
-                    $objOrder->getId()
-                ),
-                __METHOD__,
-                TL_ERROR
-            );
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, sprintf(
+                'Payment for order ID %s could not be initialized. See log files for more information.',
+                $objOrder->getId()
+            ), ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
 
             Checkout::redirectToStep('failed');
         }
@@ -128,7 +124,7 @@ class OpenPaymentPlatform extends Payment
     public function processPayment(IsotopeProductCollection $objOrder, Module $objModule)
     {
         if (!$objOrder instanceof IsotopePurchasableCollection) {
-            System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Product collection ID "' . $objOrder->getId() . '" is not purchasable', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
             return false;
         }
 
@@ -156,14 +152,10 @@ class OpenPaymentPlatform extends Payment
             || $objOrder->getTotal() != $response['amount']
             || $objOrder->getCurrency() != $response['currency']
         ) {
-            System::log(
-                sprintf(
-                    'Payment data for order ID %s could not be verified. See log files for more information.',
-                    $objOrder->getId()
-                ),
-                __METHOD__,
-                TL_ERROR
-            );
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, sprintf(
+                'Payment data for order ID %s could not be verified. See log files for more information.',
+                $objOrder->getId()
+            ), ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
 
             return false;
         }
@@ -196,14 +188,10 @@ class OpenPaymentPlatform extends Payment
                 || $objOrder->getTotal() != $response['amount']
                 || $objOrder->getCurrency() != $response['currency']
             ) {
-                System::log(
-                    sprintf(
-                        'Payment for order ID %s could not be captured. See log files for more information.',
-                        $objOrder->getId()
-                    ),
-                    __METHOD__,
-                    TL_ERROR
-                );
+                \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, sprintf(
+                    'Payment for order ID %s could not be captured. See log files for more information.',
+                    $objOrder->getId()
+                ), ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
 
                 return false;
             }

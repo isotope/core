@@ -14,6 +14,7 @@ namespace Isotope\Model;
 use Contao\FilesModel;
 use Contao\Model;
 use Contao\StringUtil;
+use Contao\System;
 use Isotope\Interfaces\IsotopeProduct;
 
 /**
@@ -53,7 +54,7 @@ class Download extends Model
             return $arrFiles;
         }
 
-        if (is_file(TL_ROOT . '/' . $objFile->path)) {
+        if (is_file(System::getContainer()->getParameter('kernel.project_dir') . '/' . $objFile->path)) {
             return array($objFile);
         }
 

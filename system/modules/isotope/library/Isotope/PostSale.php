@@ -109,11 +109,7 @@ class PostSale extends \Contao\Frontend
             $intId  = $this->getModuleId();
 
             if ($strMod == '' || $intId == 0) {
-                System::log(
-                    'Invalid post-sale request (param error): ' . $this->request->getUri(),
-                    __METHOD__,
-                    TL_ERROR
-                );
+                \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Invalid post-sale request (param error): ' . $this->request->getUri(), ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
 
                 return new Response('Bad Request', Response::HTTP_BAD_REQUEST);
             }
@@ -129,23 +125,15 @@ class PostSale extends \Contao\Frontend
             }
 
             if (null === $objMethod) {
-                System::log(
-                    'Invalid post-sale request (model not found): ' . $this->request->getUri(),
-                    __METHOD__,
-                    TL_ERROR
-                );
+                \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Invalid post-sale request (model not found): ' . $this->request->getUri(), ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
 
                 return new Response('Not Found', Response::HTTP_NOT_FOUND);
             }
 
-            System::log('New post-sale request: ' . $this->request->getUri(), __METHOD__, TL_ACCESS);
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::INFO, 'New post-sale request: ' . $this->request->getUri(), ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ACCESS)]);
 
             if (!($objMethod instanceof IsotopePostsale)) {
-                System::log(
-                    'Invalid post-sale request (interface not implemented): ' . $this->request->getUri(),
-                    __METHOD__,
-                    TL_ERROR
-                );
+                \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Invalid post-sale request (interface not implemented): ' . $this->request->getUri(), ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
 
                 return new Response('Not Implemented', Response::HTTP_NOT_IMPLEMENTED);
             }
@@ -154,7 +142,7 @@ class PostSale extends \Contao\Frontend
             $objOrder = $objMethod->getPostsaleOrder();
 
             if (null === $objOrder || !($objOrder instanceof IsotopeProductCollection)) {
-                System::log(\get_class($objMethod) . ' did not return a valid order', __METHOD__, TL_ERROR);
+                \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, \get_class($objMethod) . ' did not return a valid order', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
 
                 return new Response('Failed Dependency', Response::HTTP_FAILED_DEPENDENCY);
             }
@@ -170,11 +158,7 @@ class PostSale extends \Contao\Frontend
                 return $e->getResponse();
             }
 
-            System::log(
-                'Exception in post-sale request. See system/logs/isotope_postsale.log for details.',
-                __METHOD__,
-                TL_ERROR
-            );
+            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Exception in post-sale request. See system/logs/isotope_postsale.log for details.', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
 
             log_message((string) $e, 'isotope_postsale-' . date('Y-m-d') . '.log');
 

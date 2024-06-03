@@ -223,7 +223,7 @@ abstract class BackendOverview extends BackendModule
             case 'showAll':
             case 'undo':
                 if (!$this->objDc instanceof \listable) {
-                    System::log('Data container ' . $strTable . ' is not listable', __METHOD__, TL_ERROR);
+                    \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Data container ' . $strTable . ' is not listable', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
                     trigger_error('The current data container is not listable', E_USER_ERROR);
                 }
                 break;
@@ -236,7 +236,7 @@ abstract class BackendOverview extends BackendModule
             case 'move':
             case 'edit':
                 if (!$this->objDc instanceof \editable) {
-                    System::log('Data container ' . $strTable . ' is not editable', __METHOD__, TL_ERROR);
+                    \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Data container ' . $strTable . ' is not editable', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
                     trigger_error('The current data container is not editable', E_USER_ERROR);
                 }
                 break;

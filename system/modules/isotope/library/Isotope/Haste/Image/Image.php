@@ -17,6 +17,7 @@ use Contao\File;
 use Contao\Files;
 use Contao\FilesModel;
 use Contao\Frontend;
+use Contao\StringUtil;
 use Contao\System;
 
 class Image
@@ -38,8 +39,9 @@ class Image
     public static function addWatermark($image, $watermark, $position = 'br', $target = null)
     {
         $image = urldecode($image);
+        $projectDir = System::getContainer()->getParameter('kernel.project_dir');
 
-        if (!is_file(TL_ROOT . '/' . $image) || !is_file(TL_ROOT . '/' . $watermark)) {
+        if (!is_file($projectDir . '/' . $image) || !is_file($projectDir . '/' . $watermark)) {
             return $image;
         }
 
@@ -47,7 +49,7 @@ class Image
         $strCacheName = 'assets/images/' . substr($objFile->filename, -1) . '/' . $objFile->filename . '-' . substr(md5($watermark . '-' . $position . '-' . $objFile->mtime), 0, 8) . '.' . $objFile->extension;
 
         // Return the path of the new image if it exists already
-        if (is_file(TL_ROOT . '/' . $strCacheName)) {
+        if (is_file($projectDir . '/' . $strCacheName)) {
             return $strCacheName;
         }
 
@@ -70,20 +72,20 @@ class Image
         switch ($objFile->extension) {
             case 'gif':
                 if ($arrGdinfo['GIF Read Support']) {
-                    $strImage = imagecreatefromgif(TL_ROOT . '/' . $image);
+                    $strImage = imagecreatefromgif($projectDir . '/' . $image);
                 }
                 break;
 
             case 'jpg':
             case 'jpeg':
                 if ($arrGdinfo['JPG Support'] || $arrGdinfo['JPEG Support']) {
-                    $strImage = imagecreatefromjpeg(TL_ROOT . '/' . $image);
+                    $strImage = imagecreatefromjpeg($projectDir . '/' . $image);
                 }
                 break;
 
             case 'png':
                 if ($arrGdinfo['PNG Support']) {
-                    $strImage = imagecreatefrompng(TL_ROOT . '/' . $image);
+                    $strImage = imagecreatefrompng($projectDir . '/' . $image);
                 }
                 break;
         }
@@ -100,26 +102,26 @@ class Image
         switch ($objWatermark->extension) {
             case 'gif':
                 if ($arrGdinfo['GIF Read Support']) {
-                    $resWatermark = imagecreatefromgif(TL_ROOT . '/' . $watermark);
+                    $resWatermark = imagecreatefromgif($projectDir . '/' . $watermark);
                 }
                 break;
 
             case 'jpg':
             case 'jpeg':
                 if ($arrGdinfo['JPG Support'] || $arrGdinfo['JPEG Support']) {
-                    $resWatermark = imagecreatefromjpeg(TL_ROOT . '/' . $watermark);
+                    $resWatermark = imagecreatefromjpeg($projectDir . '/' . $watermark);
                 }
                 break;
 
             case 'png':
                 if ($arrGdinfo['PNG Support']) {
-                    $resWatermark = imagecreatefrompng(TL_ROOT . '/' . $watermark);
+                    $resWatermark = imagecreatefrompng($projectDir . '/' . $watermark);
                 }
                 break;
         }
 
         // Image could not be read
-        if (!is_resource($resWatermark) && !$resWatermark instanceof \GdImage) {
+        if (!is_resource($resWatermark) && !$resWatermark instanceof \Contao\GdImage) {
             return $image;
         }
 
@@ -179,23 +181,23 @@ class Image
         }
 
         // Create an image parent folder if it does not exist yet
-        if (!is_dir(TL_ROOT . '/' . dirname($strCacheName))) {
+        if (!is_dir($projectDir . '/' . dirname($strCacheName))) {
             Files::getInstance()->mkdir(dirname($strCacheName));
         }
 
         // Create the new image
         switch ($objFile->extension) {
             case 'gif':
-                imagegif($strImage, TL_ROOT . '/' . $strCacheName);
+                imagegif($strImage, $projectDir . '/' . $strCacheName);
                 break;
 
             case 'jpg':
             case 'jpeg':
-                imagejpeg($strImage, TL_ROOT . '/' . $strCacheName, (!$GLOBALS['TL_CONFIG']['jpgQuality'] ? 80 : $GLOBALS['TL_CONFIG']['jpgQuality']));
+                imagejpeg($strImage, $projectDir . '/' . $strCacheName, (!$GLOBALS['TL_CONFIG']['jpgQuality'] ? 80 : $GLOBALS['TL_CONFIG']['jpgQuality']));
                 break;
 
             case 'png':
-                imagepng($strImage, TL_ROOT . '/' . $strCacheName);
+                imagepng($strImage, $projectDir . '/' . $strCacheName);
                 break;
         }
 
@@ -263,7 +265,7 @@ class Image
     {
         $images = [];
 
-        $files = deserialize($uuids, true);
+        $files = StringUtil::deserialize($uuids, true);
 
         $fileModels = FilesModel::findMultipleByUuids($files);
 
@@ -333,7 +335,7 @@ class Image
 
         // Use the file name as title if none is given
         if ('' === ($meta['title'] ?? null)) {
-            $meta['title'] = specialchars($file->basename);
+            $meta['title'] = StringUtil::specialchars($file->basename);
         }
 
         $image = [
@@ -433,7 +435,7 @@ class Image
                     throw new \InvalidArgumentException('When sorting by custom order, you need to provide the "orderSRC" array option containing the UUIDs in correct order.');
                 }
 
-                $order = deserialize($options['orderSRC'], true);
+                $order = StringUtil::deserialize($options['orderSRC'], true);
 
                 // Remove all values
                 $order = array_map(function () {}, array_flip($order));

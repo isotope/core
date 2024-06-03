@@ -11,6 +11,7 @@
 
 namespace Isotope\CheckoutStep;
 
+use Contao\CoreBundle\Monolog\ContaoContext;
 use Contao\Database;
 use Contao\Input;
 use Contao\StringUtil;
@@ -81,7 +82,7 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
         if (empty($this->modules)) {
             $this->blnError = true;
 
-            System::log('No shipping methods available for cart ID ' . Isotope::getCart()->id, __METHOD__, TL_ERROR);
+            System::getContainer()->get('monolog.logger.contao')->error('No shipping methods available for cart ID ' . Isotope::getCart()->id, ['contao' => new ContaoContext(__METHOD__, ContaoContext::ERROR)]);
 
             /** @var Template|\stdClass $objTemplate */
             $objTemplate           = new Template('mod_message');
@@ -167,7 +168,7 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
         if (!empty($arrIds) && \is_array($arrIds)) {
             $arrColumns = array('id IN (' . implode(',', $arrIds) . ')');
 
-            if (!\Contao\System::getContainer()->get('contao.security.token_checker')->isPreviewMode()) {
+            if (!System::getContainer()->get('contao.security.token_checker')->isPreviewMode()) {
                 $arrColumns[] = "enabled='1'";
             }
 

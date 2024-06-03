@@ -86,7 +86,7 @@ class DatabaseUpdate extends DcaExtractor
         $cacheDir = System::getContainer()->getParameter('kernel.cache_dir');
         $file = sprintf(
             '%s/contao/sql/%s.php',
-            $filesystem->makePathRelative($cacheDir, TL_ROOT),
+            $filesystem->makePathRelative($cacheDir, \Contao\System::getContainer()->getParameter('kernel.project_dir')),
             $this->strTable
         );
 

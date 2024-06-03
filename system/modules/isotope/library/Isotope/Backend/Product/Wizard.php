@@ -28,7 +28,7 @@ class Wizard
             sprintf(
                 'contao/main.php?do=iso_setup&amp;mod=producttypes&amp;table=tl_iso_producttype&amp;act=edit&amp;id=%s&amp;popup=1&amp;nb=1&amp;rt=%s',
                 $dc->value,
-                REQUEST_TOKEN
+                \Contao\System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue()
             ),
             sprintf(StringUtil::specialchars($GLOBALS['TL_LANG']['tl_iso_producttype']['edit'][1]), $dc->value),
             StringUtil::specialchars(str_replace("'", "\\'", sprintf($GLOBALS['TL_LANG']['tl_iso_producttype']['edit'][1], $dc->value))),

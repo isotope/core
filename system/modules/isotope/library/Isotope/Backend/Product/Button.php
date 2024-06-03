@@ -15,6 +15,7 @@ use Contao\Backend;
 use Contao\BackendUser;
 use Contao\Controller;
 use Contao\CoreBundle\Exception\AccessDeniedException;
+use Contao\CoreBundle\Monolog\ContaoContext;
 use Contao\Database;
 use Contao\Environment;
 use Contao\Image;
@@ -291,7 +292,7 @@ class Button extends Backend
               onSuccess: function () {
                 window.location.href = '.json_encode(StringUtil::decodeEntities(Backend::addToUrl($href . '&pid=' . (int) Input::get('pid') . '&id=' . $row['id']))).'
               }
-            }).post({action:"moveProduct", value:value[0], REQUEST_TOKEN:"' . REQUEST_TOKEN . '"});
+            }).post({action:"moveProduct", value:value[0], REQUEST_TOKEN:"' . \Contao\System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue() . '"});
           }
         })
       });
@@ -330,7 +331,7 @@ class Button extends Backend
                 var hidden = new Element("input", { type:"hidden", name:"cut" }).inject(form, "top");
                 form.submit();
               }
-            }).post({action:"moveProducts", value:value[0], REQUEST_TOKEN:"' . REQUEST_TOKEN . '"});
+            }).post({action:"moveProducts", value:value[0], REQUEST_TOKEN:"' . \Contao\System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue() . '"});
           }
         })
       });
@@ -375,7 +376,7 @@ class Button extends Backend
         Database::getInstance()->prepare("UPDATE tl_iso_product SET published='" . ($blnVisible ? 1 : '') . "' WHERE id=?")->execute($intId);
 
         $objVersions->create();
-        System::log('A new version of record "tl_iso_product.id='.$intId.'" has been created'.$this->getParentEntries('tl_iso_product', $intId), __METHOD__, TL_GENERAL);
+        System::getContainer()->get('monolog.logger.contao')->info('A new version of record "tl_iso_product.id='.$intId.'" has been created'.$this->getParentEntries('tl_iso_product', $intId), ['contao' => new ContaoContext(__METHOD__, ContaoContext::GENERAL)]);
     }
 
 

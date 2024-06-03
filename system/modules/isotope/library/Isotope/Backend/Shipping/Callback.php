@@ -226,6 +226,6 @@ class Callback extends Permission
         Database::getInstance()->prepare('UPDATE tl_iso_shipping SET tstamp=' . time() . ", enabled='" . ($blnVisible ? 1 : '') . "' WHERE id=?")->execute($intId);
 
         $objVersions->create();
-        System::log('A new version of record "tl_iso_shipping.id=' . $intId . '" has been created' . $this->getParentEntries('tl_iso_shipping', $intId), __METHOD__, TL_GENERAL);
+        \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::INFO, 'A new version of record "tl_iso_shipping.id=' . $intId . '" has been created' . $this->getParentEntries('tl_iso_shipping', $intId), ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::GENERAL)]);
     }
 }

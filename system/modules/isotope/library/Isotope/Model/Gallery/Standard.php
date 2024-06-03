@@ -11,6 +11,7 @@
 
 namespace Isotope\Model\Gallery;
 
+use Contao\CoreBundle\Monolog\ContaoContext;
 use Contao\Environment;
 use Contao\File;
 use Contao\FilesModel;
@@ -359,7 +360,7 @@ class Standard extends Gallery implements IsotopeGallery
             $strImage = \Contao\Image::create($strFile, $size)->executeResize()->getResizedPath();
             $picture = Picture::create($strFile, $size)->getTemplateData();
         } catch (\Exception $e) {
-            System::log('Image "' . $strFile . '" could not be processed: ' . $e->getMessage(), __METHOD__, TL_ERROR);
+            System::getContainer()->get('monolog.logger.contao')->error('Image "' . $strFile . '" could not be processed: ' . $e->getMessage(), ['contao' => new ContaoContext(__METHOD__, ContaoContext::ERROR)]);
 
             $strImage = '';
             $picture = array('img'=>array('src'=>'', 'srcset'=>''), 'sources'=>array());

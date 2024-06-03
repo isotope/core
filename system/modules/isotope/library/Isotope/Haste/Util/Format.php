@@ -143,7 +143,7 @@ class Format
      */
     public static function dcaValueFromArray(array $arrField, $varValue, DataContainer $objDc = null)
     {
-        $varValue = deserialize($varValue);
+        $varValue = \Contao\StringUtil::deserialize($varValue);
 
         if (is_array($arrField['options_callback'] ?? null) && $objDc !== null) { // Options callback (array)
 
@@ -199,7 +199,7 @@ class Format
             return is_array($arrField['reference'][$varValue]) ? $arrField['reference'][$varValue][0] : $arrField['reference'][$varValue];
         }
 
-        if ((($arrField['eval']['isAssociative'] ?? null) || array_is_assoc($arrField['options'] ?? null)) && isset($arrField['options'][$varValue])) {
+        if ((($arrField['eval']['isAssociative'] ?? null) || \Contao\ArrayUtil::isAssoc($arrField['options'] ?? null)) && isset($arrField['options'][$varValue])) {
             return is_array($arrField['options'][$varValue]) ? $arrField['options'][$varValue][0] : $arrField['options'][$varValue];
         }
 

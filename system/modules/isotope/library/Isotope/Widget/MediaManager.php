@@ -115,6 +115,7 @@ class MediaManager extends Widget implements \uploadable
         $objUploader = new FileUpload();
         $objUploader->setName($this->strName);
         $uploadFolder = $this->strTempFolder;
+        $projectDir = System::getContainer()->getParameter('kernel.project_dir');
 
         // Convert the $_FILES array to Contao format
         if (!empty($_FILES[$this->strName])) {
@@ -122,8 +123,8 @@ class MediaManager extends Widget implements \uploadable
             $strCacheName = StringUtil::standardize($pathinfo['filename']) . '.' . $pathinfo['extension'];
             $uploadFolder = $this->strTempFolder . '/' .$strCacheName[0];
 
-            if (is_file(TL_ROOT . '/' . $uploadFolder . '/' . $strCacheName)
-                && md5_file($_FILES[$this->strName]['tmp_name']) != md5_file(TL_ROOT . '/' . $uploadFolder . '/' . $strCacheName)
+            if (is_file($projectDir . '/' . $uploadFolder . '/' . $strCacheName)
+                && md5_file($_FILES[$this->strName]['tmp_name']) != md5_file($projectDir . '/' . $uploadFolder . '/' . $strCacheName)
             ) {
                 $strCacheName = StringUtil::standardize($pathinfo['filename']) . '-' . substr(md5_file($_FILES[$this->strName]['tmp_name']), 0, 8) . '.' . $pathinfo['extension'];
                 $uploadFolder = $this->strTempFolder . '/' .$strCacheName[0];
@@ -186,6 +187,7 @@ class MediaManager extends Widget implements \uploadable
 
         // Fetch fallback language record
         $arrFallback = $this->getFallbackData();
+        $projectDir = System::getContainer()->getParameter('kernel.project_dir');
 
         if (\is_array($arrFallback)) {
             foreach ($arrFallback as $k => $arrImage) {
@@ -209,12 +211,12 @@ class MediaManager extends Widget implements \uploadable
             if (stripos($v['src'], $this->strTempFolder) !== false) {
                 $strFile = $this->getFilePath(basename($v['src']));
 
-                if (is_file(TL_ROOT . '/' . $strFile)
-                    && md5_file(TL_ROOT . '/' .  $v['src']) != md5_file(TL_ROOT . '/' . $strFile)
+                if (is_file($projectDir . '/' . $strFile)
+                    && md5_file($projectDir . '/' .  $v['src']) != md5_file($projectDir . '/' . $strFile)
                 ) {
                     $pathinfo = pathinfo($v['src']);
                     $strFile = $this->getFilePath(
-                        StringUtil::standardize($pathinfo['filename']) . '-' . substr(md5_file(TL_ROOT . '/' .  $strFile), 0, 8) . '.' . $pathinfo['extension']
+                        StringUtil::standardize($pathinfo['filename']) . '-' . substr(md5_file($projectDir . '/' .  $strFile), 0, 8) . '.' . $pathinfo['extension']
                     );
                 }
 
@@ -232,7 +234,7 @@ class MediaManager extends Widget implements \uploadable
         // Check if there are values
         if ($this->mandatory) {
             foreach ($this->varValue as $file) {
-                if (is_file(TL_ROOT . '/' . $this->getFilePath($file['src']))) {
+                if (is_file($projectDir . '/' . $this->getFilePath($file['src']))) {
                     return;
                 }
             }
@@ -260,11 +262,12 @@ class MediaManager extends Widget implements \uploadable
 
         $blnLanguage = false;
         $arrFallback = $this->getFallbackData();
+        $projectDir = System::getContainer()->getParameter('kernel.project_dir');
 
         // Adapt the temporary files
         if (\is_array($this->varValue) && !empty($this->varValue['files']) && \is_array($this->varValue['files'])) {
             foreach ($this->varValue['files'] as $v) {
-                if (!is_file(TL_ROOT . '/' . $this->getFilePath($v))) {
+                if (!is_file($projectDir . '/' . $this->getFilePath($v))) {
                     continue;
                 }
 
@@ -377,7 +380,7 @@ class MediaManager extends Widget implements \uploadable
         for ($i=0, $count=\count($this->varValue); $i<$count; $i++) {
             $strFile = $this->getFilePath($this->varValue[$i]['src']);
 
-            if (!is_file(TL_ROOT . '/' . $strFile)) {
+            if (!is_file($projectDir . '/' . $strFile)) {
                 continue;
             }
 

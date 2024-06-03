@@ -31,7 +31,7 @@ class Url
     public static function addQueryString($strQuery, $varUrl = null)
     {
         $strUrl = static::prepareUrl($varUrl);
-        $strQuery = trim(ampersand($strQuery, false), '&');
+        $strQuery = trim(\Contao\StringUtil::ampersand($strQuery, false), '&');
 
         list($strScript, $strQueryString) = explode('?', $strUrl, 2) + array('', '');
 
@@ -142,7 +142,7 @@ class Url
             }
         }
 
-        $varUrl = ampersand($varUrl, false);
+        $varUrl = \Contao\StringUtil::ampersand($varUrl, false);
 
         return $varUrl;
     }

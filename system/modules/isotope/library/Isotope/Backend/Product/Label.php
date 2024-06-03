@@ -16,6 +16,7 @@ use Contao\DataContainer;
 use Contao\Environment;
 use Contao\Image;
 use Contao\StringUtil;
+use Contao\System;
 use Isotope\Haste\Util\Format;
 use Isotope\Model\Product;
 use Isotope\Model\ProductPrice;
@@ -89,13 +90,14 @@ class Label
     public static function generateImage(Product $objProduct)
     {
         $arrImages = StringUtil::deserialize($objProduct->images);
+        $projectDir = System::getContainer()->getParameter('kernel.project_dir');
 
         if (!empty($arrImages) && \is_array($arrImages)) {
             foreach ($arrImages as $image) {
                 $strImage = 'isotope/' . strtolower(substr($image['src'], 0, 1)) . '/' . $image['src'];
 
-                if (is_file(TL_ROOT . '/' . $strImage)) {
-                    $size = @getimagesize(TL_ROOT . '/' . $strImage);
+                if (is_file($projectDir . '/' . $strImage)) {
+                    $size = @getimagesize($projectDir . '/' . $strImage);
 
                     $script = sprintf(
                         "Backend.openModalImage({'width':%s,'title':'%s','url':'%s'});return false",

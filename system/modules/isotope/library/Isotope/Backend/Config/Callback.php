@@ -15,10 +15,12 @@ use Contao\Backend;
 use Contao\CoreBundle\Exception\AccessDeniedException;
 use Contao\Database;
 use Contao\DataContainer;
+use Contao\Folder;
 use Contao\Image;
 use Contao\Input;
 use Contao\Session;
 use Contao\StringUtil;
+use Contao\System;
 use Isotope\Automator;
 use Isotope\Backend\Permission;
 use Isotope\Model\Config;
@@ -284,9 +286,10 @@ class Callback extends Permission
     protected function doGetTemplateFolders($path, $level = 0)
     {
         $return = array();
+        $projectDir = System::getContainer()->getParameter('kernel.project_dir');
 
-        foreach (\Contao\Folder::scan(TL_ROOT . '/' . $path) as $file) {
-            if (is_dir(TL_ROOT . '/' . $path . '/' . $file)) {
+        foreach (Folder::scan($projectDir . '/' . $path) as $file) {
+            if (is_dir($projectDir . '/' . $path . '/' . $file)) {
                 $return[$path . '/' . $file] = str_repeat(' &nbsp; &nbsp; ', $level) . $file;
                 $return                      = array_merge($return, $this->doGetTemplateFolders($path . '/' . $file, $level + 1));
             }

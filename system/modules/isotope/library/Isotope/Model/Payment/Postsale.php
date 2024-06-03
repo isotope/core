@@ -62,7 +62,7 @@ abstract class Postsale extends Payment implements IsotopePostsale
         }
 
         unset($_SESSION['POSTSALE_TIMEOUT']);
-        System::log('Payment could not be processed.', __METHOD__, TL_ERROR);
+        \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Payment could not be processed.', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
 
         return false;
     }

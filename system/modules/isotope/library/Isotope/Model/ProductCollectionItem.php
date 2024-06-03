@@ -11,6 +11,7 @@
 
 namespace Isotope\Model;
 
+use Contao\CoreBundle\Monolog\ContaoContext;
 use Contao\Database;
 use Contao\Model;
 use Contao\StringUtil;
@@ -161,7 +162,7 @@ class ProductCollectionItem extends Model
             $strClass = Product::getClassForModelType($this->type);
 
             if ($strClass == '' || !class_exists($strClass)) {
-                System::log('Error creating product object of type "' . $this->type . '"', __METHOD__, TL_ERROR);
+                System::getContainer()->get('monolog.logger.contao')->error('Error creating product object of type "' . $this->type . '"', ['contao' => new ContaoContext(__METHOD__, ContaoContext::ERROR)]);
 
                 return null;
             }

@@ -110,7 +110,7 @@ class ProductReader extends Module
         ) {
             try {
                 $content = $objProduct->generate($arrConfig);
-                $content = Controller::replaceInsertTags($content, false);
+                $content = \Contao\System::getContainer()->get('contao.insert_tag.parser')->replaceInline($content);
             } catch (\InvalidArgumentException $e) {
                 return;
             }

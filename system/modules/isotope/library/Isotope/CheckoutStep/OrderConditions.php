@@ -99,7 +99,7 @@ class OrderConditions extends CheckoutStep implements IsotopeCheckoutStep, Isoto
                 if ($this->objForm->getWidget($strField) instanceof \uploadable) {
                     if (isset($_SESSION['FILES'][$strField])) {
                         $arrFile = $_SESSION['FILES'][$strField];
-                        $varValue = str_replace(TL_ROOT . '/', '', \dirname($arrFile['tmp_name'])) . '/' . rawurlencode($arrFile['name']);
+                        $varValue = str_replace(System::getContainer()->getParameter('kernel.project_dir') . '/', '', \dirname($arrFile['tmp_name'])) . '/' . rawurlencode($arrFile['name']);
                     } else {
                         $varValue = null;
                     }

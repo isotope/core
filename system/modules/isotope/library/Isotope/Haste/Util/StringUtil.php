@@ -48,10 +48,10 @@ class StringUtil
         $strText = \Contao\StringUtil::decodeEntities($strText);
 
         // first parse the tokens as they might have if-else clauses
-        $strBuffer = \Contao\StringUtil::parseSimpleTokens($strText, $arrTokens);
+        $strBuffer = \Contao\System::getContainer()->get('contao.string.simple_token_parser')->parse($strText, $arrTokens);
 
         // then replace the insert tags
-        $strBuffer = Controller::replaceInsertTags($strBuffer, false);
+        $strBuffer = \Contao\System::getContainer()->get('contao.insert_tag.parser')->replaceInline($strBuffer);
 
         // check if the insert tags have returned a simple token
         if (strpos($strBuffer, '##') !== false && $strBuffer != $strText) {
@@ -118,7 +118,7 @@ class StringUtil
         }
 
         if ($options & static::NO_INSERTTAGS) {
-            $varValue = strip_insert_tags($varValue);
+            $varValue = \Contao\StringUtil::stripInsertTags($varValue);
         }
 
         // Remove line breaks (e.g. for subject)
@@ -155,7 +155,7 @@ class StringUtil
             return;
         }
 
-        $blnAssoc = array_is_assoc($varValue);
+        $blnAssoc = \Contao\ArrayUtil::isAssoc($varValue);
         $arrValues = array();
 
         foreach ($varValue as $k => $v) {

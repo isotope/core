@@ -36,7 +36,7 @@ class DC_TablePageId extends DC_Table
         $return = '';
         $this->limit = '';
 
-        /** @var Session $objSession */
+        /** @var \Contao\Session $objSession */
         $objSession = System::getContainer()->get('session');
 
         $this->reviseTable();
@@ -126,7 +126,7 @@ class DC_TablePageId extends DC_Table
             $cr[] = $this->intId;
         }
 
-        /** @var Session $objSession */
+        /** @var \Contao\Session $objSession */
         $objSession = System::getContainer()->get('session');
 
         // Empty clipboard
@@ -208,7 +208,7 @@ class DC_TablePageId extends DC_Table
             $this->redirect($this->getReferer());
         }
 
-        /** @var Session $objSession */
+        /** @var \Contao\Session $objSession */
         $objSession = System::getContainer()->get('session');
 
         $arrClipboard = $objSession->get('CLIPBOARD');
@@ -252,7 +252,7 @@ class DC_TablePageId extends DC_Table
                 $newSorting = null;
                 $filter = ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 4) ? $this->strTable . '_' . CURRENT_ID : $this->strTable;
 
-                /** @var Session $objSession */
+                /** @var \Contao\Session $objSession */
                 $objSession = System::getContainer()->get('session');
                 $session = $objSession->all();
 
@@ -666,7 +666,7 @@ class DC_TablePageId extends DC_Table
      */
     protected function parentView()
     {
-        /** @var Session $objSession */
+        /** @var \Contao\Session $objSession */
         $objSession = System::getContainer()->get('session');
 
         $blnClipboard = false;
@@ -724,7 +724,7 @@ class DC_TablePageId extends DC_Table
 <form id="tl_select" class="tl_form' . ((Input::get('act') == 'select') ? ' unselectable' : '') . '" method="post" novalidate>
 <div class="tl_formbody_edit">
 <input type="hidden" name="FORM_SUBMIT" value="tl_select">
-<input type="hidden" name="REQUEST_TOKEN" value="' . REQUEST_TOKEN . '">' : '') . ($blnClipboard ? '
+<input type="hidden" name="REQUEST_TOKEN" value="' . \Contao\System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue() . '">' : '') . ($blnClipboard ? '
 <div id="paste_hint" data-add-to-scroll-offset="20">
   <p>' . $GLOBALS['TL_LANG']['MSC']['selectNewPosition'] . '</p>
 </div>' : '') . '
@@ -810,7 +810,7 @@ class DC_TablePageId extends DC_Table
                 {
                     $_v = $GLOBALS['TL_DCA'][$this->ptable]['fields'][$v]['reference'][$_v];
                 }
-                elseif (($GLOBALS['TL_DCA'][$this->ptable]['fields'][$v]['eval']['isAssociative'] ?? null) || array_is_assoc($GLOBALS['TL_DCA'][$this->ptable]['fields'][$v]['options'] ?? null))
+                elseif (($GLOBALS['TL_DCA'][$this->ptable]['fields'][$v]['eval']['isAssociative'] ?? null) || \Contao\ArrayUtil::isAssoc($GLOBALS['TL_DCA'][$this->ptable]['fields'][$v]['options'] ?? null))
                 {
                     $_v = $GLOBALS['TL_DCA'][$this->ptable]['fields'][$v]['options'][$_v] ?? null;
                 }
@@ -1284,7 +1284,7 @@ Isotope.makeParentViewSortable("ul_' . CURRENT_ID . '");
                         $keys = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['options'] ?? array();
                     }
 
-                    if (($GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['eval']['isAssociative'] ?? null) || array_is_assoc($keys))
+                    if (($GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['eval']['isAssociative'] ?? null) || \Contao\ArrayUtil::isAssoc($keys))
                     {
                         $keys = array_keys($keys);
                     }
@@ -1359,7 +1359,7 @@ Isotope.makeParentViewSortable("ul_' . CURRENT_ID . '");
 <form id="tl_select" class="tl_form' . ((Input::get('act') == 'select') ? ' unselectable' : '') . '" method="post" novalidate>
 <div class="tl_formbody_edit">
 <input type="hidden" name="FORM_SUBMIT" value="tl_select">
-<input type="hidden" name="REQUEST_TOKEN" value="' . REQUEST_TOKEN . '">' : '') . '
+<input type="hidden" name="REQUEST_TOKEN" value="' . \Contao\System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue() . '">' : '') . '
 <div class="tl_listing_container list_view" id="tl_listing"' . $this->getPickerValueAttribute() . '>' . ((Input::get('act') == 'select' || $this->strPickerFieldType == 'checkbox') ? '
 <div class="tl_select_trigger">
 <label for="tl_select_trigger" class="tl_select_label">' . $GLOBALS['TL_LANG']['MSC']['selectAll'] . '</label> <input type="checkbox" id="tl_select_trigger" onclick="Backend.toggleCheckboxes(this)" class="tl_tree_checkbox">
@@ -1483,7 +1483,7 @@ Isotope.makeParentViewSortable("ul_' . CURRENT_ID . '");
                         {
                             $args[$k] = \is_array($GLOBALS['TL_DCA'][$table]['fields'][$v]['reference'][$row[$v]] ?? null) ? $GLOBALS['TL_DCA'][$table]['fields'][$v]['reference'][$row[$v]][0] : $GLOBALS['TL_DCA'][$table]['fields'][$v]['reference'][$row[$v]];
                         }
-                        elseif ((($GLOBALS['TL_DCA'][$table]['fields'][$v]['eval']['isAssociative'] ?? null) || array_is_assoc($GLOBALS['TL_DCA'][$table]['fields'][$v]['options'] ?? null)) && isset($GLOBALS['TL_DCA'][$table]['fields'][$v]['options'][$row[$v]]))
+                        elseif ((($GLOBALS['TL_DCA'][$table]['fields'][$v]['eval']['isAssociative'] ?? null) || \Contao\ArrayUtil::isAssoc($GLOBALS['TL_DCA'][$table]['fields'][$v]['options'] ?? null)) && isset($GLOBALS['TL_DCA'][$table]['fields'][$v]['options'][$row[$v]]))
                         {
                             $args[$k] = $GLOBALS['TL_DCA'][$table]['fields'][$v]['options'][$row[$v]];
                         }
