@@ -17,6 +17,7 @@ use Contao\FrontendUser;
 use Contao\Model;
 use Contao\StringUtil;
 use Contao\System;
+use Isotope\CompatibilityHelper;
 use Isotope\Translation;
 
 /**
@@ -232,7 +233,7 @@ class Config extends Model
             $arrCountries = StringUtil::deserialize($this->billing_countries);
 
             if (empty($arrCountries) || !\is_array($arrCountries)) {
-                $arrCountries = array_keys(System::getCountries());
+                $arrCountries = array_keys(CompatibilityHelper::getCountries());
             }
 
             $this->arrCache['billingCountries'] = $arrCountries;
@@ -252,7 +253,7 @@ class Config extends Model
             $arrCountries = StringUtil::deserialize($this->shipping_countries);
 
             if (empty($arrCountries) || !\is_array($arrCountries)) {
-                $arrCountries = array_keys(System::getCountries());
+                $arrCountries = array_keys(CompatibilityHelper::getCountries());
             }
 
             $this->arrCache['shippingCountries'] = $arrCountries;

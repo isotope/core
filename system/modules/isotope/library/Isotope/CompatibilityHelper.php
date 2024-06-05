@@ -13,6 +13,9 @@ namespace Isotope;
 
 use Contao\System;
 
+/**
+ * @internal
+ */
 class CompatibilityHelper
 {
     /**
@@ -44,5 +47,12 @@ class CompatibilityHelper
         }
 
         return $container->get('contao.routing.scope_matcher')->isFrontendRequest($request);
+    }
+
+    public static function getCountries(): array
+    {
+        $arrCountries = System::getContainer()->get('contao.intl.countries')->getCountries();
+
+        return array_combine(array_map('strtolower', array_keys($arrCountries)), $arrCountries);
     }
 }

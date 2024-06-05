@@ -238,7 +238,7 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = array
             'filter'                => true,
             'sorting'               => true,
             'inputType'             => 'select',
-            'options'               => \Contao\System::getCountries(),
+            'options'               => \Isotope\CompatibilityHelper::getCountries(),
             // Do not use options_callback, countries are modified by store config in the frontend
             'eval'                  => array('mandatory'=>true, 'feEditable'=>true, 'feGroup'=>'address', 'tl_class'=>'w50', 'chosen'=>true),
             'sql'                   => "varchar(32) NOT NULL default ''",

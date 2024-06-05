@@ -176,7 +176,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
             'exclude'               => true,
             'inputType'             => 'select',
             'options_callback'      => function() {
-                return \Contao\System::getCountries();
+                return \Isotope\CompatibilityHelper::getCountries();
             },
             'eval'                  => array('multiple'=>true, 'size'=>8, 'tl_class'=>'w50 w50h', 'chosen'=>true),
             'sql'                   => "blob NULL",
