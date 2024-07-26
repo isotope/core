@@ -105,7 +105,7 @@ class MembersRegistration extends Sales
                 'attributes'    => ' style="text-align:right"',
             ],
             "all_members" => [
-                'value'         => &$GLOBALS['TL_LANG']['ISO_REPORT']['members_total'],
+                'value'         => &$GLOBALS['TL_LANG']['ISO_REPORT']['members_all'],
                 'attributes'    => ' style="text-align:right"',
             ],
         ];
@@ -139,7 +139,7 @@ class MembersRegistration extends Sales
     {
         $arrData = array();
         $arrData['series'] = [[
-            'name' => &$GLOBALS['TL_LANG']['ISO_REPORT']['members_total'],
+            'name' => &$GLOBALS['TL_LANG']['ISO_REPORT']['members_all'],
             'type' => 'line'
         ],
             [

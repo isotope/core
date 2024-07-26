@@ -35,7 +35,7 @@
       <trans-unit id="ISO_REPORT.members_new">
         <source>New Members</source>
       </trans-unit>
-      <trans-unit id="ISO_REPORT.members_total">
+      <trans-unit id="ISO_REPORT.members_all">
         <source>Members Total</source>
       </trans-unit>
       <trans-unit id="ISO_REPORT.members_currency">
