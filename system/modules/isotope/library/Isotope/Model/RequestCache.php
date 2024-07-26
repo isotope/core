@@ -404,7 +404,8 @@ class RequestCache extends Model
             return $this;
         }
 
-        $objCache = static::findOneBy(array('store_id=?', 'config=?'), $this->preSave(array((int) $this->store_id)));
+        $arrSet = $this->preSave(['store_id' => (int) $this->store_id]);
+        $objCache = static::findOneBy(['store_id=?', 'config_hash=?'], [$arrSet['store_id'], $arrSet['config_hash']]);
 
         if (null === $objCache) {
             $objCache = clone $this;
@@ -455,6 +456,7 @@ class RequestCache extends Model
             'sortings'  => empty($this->arrSortings) ? null : $this->arrSortings,
             'limits'    => empty($this->arrLimits) ? null : $this->arrLimits
         );
+        $arrSet['config_hash'] = md5(serialize($arrSet['config']));
 
         return $arrSet;
     }
