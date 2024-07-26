@@ -858,7 +858,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
         if (!isset($this->arrCache['taxFreeTotal'])) {
             $arrSurcharges = $this->getSurcharges();
 
-            if (Config::PRICE_DISPLAY_GROSS === $this->getConfig()->priceDisplay) {
+            if (\in_array($this->getConfig()->getPriceDisplay(), [Config::PRICE_DISPLAY_GROSS, Config::PRICE_DISPLAY_FIXED], true)) {
                 $fltAmount = $this->getTotal();
 
                 foreach ($arrSurcharges as $objSurcharge) {
