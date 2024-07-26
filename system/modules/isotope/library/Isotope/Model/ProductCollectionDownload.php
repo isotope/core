@@ -96,7 +96,7 @@ class ProductCollectionDownload extends Model
             /** @var Order $order */
             $order = $this->getRelated('pid')->getRelated('pid');
 
-            $baseUrl = $orderDetailsPage->getFrontendUrl().'?uid='.$order->uniqid;
+            $baseUrl = $orderDetailsPage->getAbsoluteUrl().'?uid='.$order->uniqid;
         }
 
         foreach ($objDownload->getFiles() as $objFileModel) {
@@ -108,11 +108,13 @@ class ProductCollectionDownload extends Model
                 continue;
             }
 
+            $uuid = StringUtil::binToUuid($objFileModel->uuid);
+
             // Send file to the browser
             if ($blnOrderPaid &&
                 $this->canDownload() &&
                 Input::get('download') == $objDownload->id &&
-                Input::get('file') == $objFileModel->path
+                (Input::get('file') == $uuid || Input::get('file') == $objFileModel->path)
             ) {
                 $path = $objFileModel->path;
 
@@ -140,9 +142,9 @@ class ProductCollectionDownload extends Model
             }
 
             $strHref = '';
-            if (CompatibilityHelper::isFrontend()) {
+            if ($baseUrl) {
                 $strHref = Url::addQueryString(
-                    'download=' . $objDownload->id . '&amp;file=' . $objFileModel->path,
+                    'download=' . $objDownload->id . '&amp;file=' . $uuid,
                     $baseUrl
                 );
             }

@@ -59,6 +59,7 @@ class DatabaseUpdater extends Installer
 
         if (str_starts_with($strCommand, "ALTER TABLE $strTable ")) {
             $this->fixStringToInt($strCommand, $strTable);
+            $this->fixNullValues($strCommand, $strTable);
             $this->connection->executeStatement($strCommand);
         }
     }
@@ -80,7 +81,20 @@ class DatabaseUpdater extends Installer
             return;
         }
 
-        Database::getInstance()->query("UPDATE `$strTable` SET `$match[1]`='0' WHERE `$match[1]`=''");
+        Database::getInstance()->query("UPDATE `$strTable` SET `$match[1]`='0' WHERE `$match[1]`='' OR `$match[1]` IS NULL");
+    }
+
+    /**
+     * Try to fix NULL values when field is changed to type that does not allow NULL
+     */
+    private function fixNullValues(string $strCommand, string $strTable): void
+    {
+        // New field type is not integer
+        if (!preg_match("/^ALTER TABLE $strTable CHANGE `?(\w+)`? .+ NOT NULL/i", $strCommand, $match)) {
+            return;
+        }
+
+        Database::getInstance()->query("UPDATE `$strTable` SET `$match[1]`='' WHERE `$match[1]` IS NULL");
     }
 
     private function isStringType(Type $type): bool

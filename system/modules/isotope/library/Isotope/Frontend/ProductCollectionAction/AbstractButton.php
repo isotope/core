@@ -45,6 +45,6 @@ abstract class AbstractButton implements ProductCollectionActionInterface
      */
     public function handleSubmit(IsotopeProductCollection $collection)
     {
-        return '' !== (string) Input::post('button_' . $this->getName());
+        return null !== Input::post('button_' . $this->getName());
     }
 }

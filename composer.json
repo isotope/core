@@ -36,6 +36,7 @@
         "composer-runtime-api": "^2",
         "contao/core-bundle": "^4.13",
         "contao-community-alliance/composer-plugin": "^2.4 || ^3.0",
+        "doctrine/dbal": "^3.0",
         "terminal42/contao-conditionalselectmenu":"^3.0.3 || ^4.0",
         "terminal42/dcawizard": "^2.3 || ^3.0",
         "codefog/contao-haste": "^4.24.3",
@@ -91,8 +92,11 @@
     },
     "config": {
         "allow-plugins": {
-            "contao-community-alliance/composer-plugin": true,
-            "terminal42/contao-build-tools": true
+            "terminal42/contao-build-tools": true,
+            "contao/manager-plugin": false,
+            "contao-community-alliance/composer-plugin": false,
+            "contao-components/installer": false,
+            "php-http/discovery": false
         }
     },
     "extra":{

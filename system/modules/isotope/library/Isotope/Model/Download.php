@@ -30,7 +30,7 @@ class Download extends Model
     /**
      * Gets array of files for this download (could be multiple for folder selection).
      *
-     * @return array
+     * @return array<FilesModel>
      */
     public function getFiles()
     {
@@ -75,7 +75,7 @@ class Download extends Model
 
         $arrExpires = StringUtil::deserialize($this->expires, true);
 
-        if ($arrExpires['value'] == 0 || $arrExpires['unit'] == '') {
+        if (empty($arrExpires['value']) || empty($arrExpires['unit'])) {
             return null;
         }
 

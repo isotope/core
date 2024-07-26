@@ -171,9 +171,13 @@ class Callback extends Backend
                     }
 
                     if ($module && BackendUser::getInstance()->hasAccess($name, 'modules')) {
+                        System::loadLanguageFile($relatedTable);
                         Controller::loadDataContainer($relatedTable);
 
                         if (isset($GLOBALS['TL_DCA'][$relatedTable]['list']['operations']['show'])) {
+                            $title = $GLOBALS['TL_DCA'][$relatedTable]['list']['operations']['show']['label'] ?? '';
+                            $title = \is_array($title) ? ($title[0] ?? '') : $title;
+                            $title = sprintf($title, $dc->activeRecord->{$field});
                             $operations[] = sprintf(
                                 '<a href="%s" title="%s" onclick="Backend.openModalIframe({\'title\':\'%s\',\'url\':this.href});return false" class="%s">%s</a>',
                                 System::getContainer()->get('router')->generate('contao_backend', [
@@ -184,8 +188,8 @@ class Callback extends Backend
                                     'popup' => 1,
                                     'rt' => REQUEST_TOKEN,
                                 ]),
-                                sprintf($GLOBALS['TL_DCA'][$relatedTable]['list']['operations']['show']['label'], $dc->activeRecord->{$field}),
-                                sprintf($GLOBALS['TL_DCA'][$relatedTable]['list']['operations']['show']['label'], $dc->activeRecord->{$field}),
+                                $title,
+                                $title,
                                 $name,
                                 Image::getHtml('show')
                             );

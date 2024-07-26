@@ -1,0 +1,80 @@
+<div id="tl_buttons">
+  <a href="<?= \Contao\StringUtil::ampersand(str_replace('&key=payment', '', Contao\Environment::get('request'))) ?>" class="header_back" title="<?= Contao\StringUtil::specialcharsAttribute($this->trans('MSC.backBT')) ?>"><?= $this->trans('MSC.backBT') ?></a>
+</div>
+
+<h2 class="sub_headline"><?= $this->name ?> (<?= $this->trans('MODEL.tl_iso_payment.saferpay.0') ?>)</h2>
+
+<?php foreach ($this->paymentData['POSTSALE'] as $postsale): ?>
+  <table class="tl_show">
+    <tbody>
+      <?php if ($postsale['Transaction'] ?? null): ?>
+        <tr>
+          <td class="tl_bg"><span class="tl_label">Transaction type: </span></td>
+          <td class="tl_bg"><?= $postsale['Transaction']['Type'] ?></td>
+        </tr>
+        <tr>
+          <td class="tl_bg"><span class="tl_label">Transaction ID: </span></td>
+          <td class="tl_bg"><?= $postsale['Transaction']['Id'] ?></td>
+        </tr>
+      <?php endif; ?>
+      <?php if ($payment = ($postsale['PaymentMeans'] ?? null)): ?>
+        <tr>
+          <td class="tl_bg"><span class="tl_label">Payment method: </span></td>
+          <td class="tl_bg"><?= $payment['Brand']['Name'] ?> (<?= $payment['Brand']['PaymentMethod'] ?>)</td>
+        </tr>
+        <?php if ($bank = ($payment['BankAccount'] ?? null)): ?>
+          <?php if ($bank['HolderName'] ?? null): ?>
+            <tr>
+              <td class="tl_bg"><span class="tl_label">Account holder: </span></td>
+              <td class="tl_bg"><?= $bank['HolderName'] ?></td>
+            </tr>
+          <?php endif; ?>
+          <?php if ($bank['IBAN'] ?? null): ?>
+            <tr>
+              <td class="tl_bg"><span class="tl_label">IBAN: </span></td>
+              <td class="tl_bg"><?= $bank['IBAN'] ?></td>
+            </tr>
+          <?php endif; ?>
+          <?php if ($bank['BIC'] ?? null): ?>
+            <tr>
+              <td class="tl_bg"><span class="tl_label">BIC: </span></td>
+              <td class="tl_bg"><?= $bank['BIC'] ?></td>
+            </tr>
+          <?php endif; ?>
+          <?php if ($bank['CountryCode'] ?? null): ?>
+            <tr>
+              <td class="tl_bg"><span class="tl_label">Country: </span></td>
+              <td class="tl_bg"><?= Contao\System::getContainer()->get(Contao\CoreBundle\Intl\Countries::class)->getCountries()[$bank['CountryCode']] ?? $bank['CountryCode'] ?> (<?= $bank['CountryCode'] ?>)</td>
+            </tr>
+          <?php endif; ?>
+        <?php endif; ?>
+        <?php if ($card = ($payment['Card'] ?? null)): ?>
+          <?php if ($card['HolderName'] ?? null): ?>
+            <tr>
+              <td class="tl_bg"><span class="tl_label">Account holder: </span></td>
+              <td class="tl_bg"><?= $card['HolderName'] ?></td>
+            </tr>
+          <?php endif; ?>
+          <?php if ($card['MaskedNumber'] ?? null): ?>
+            <tr>
+              <td class="tl_bg"><span class="tl_label">Masked number: </span></td>
+              <td class="tl_bg"><?= $card['MaskedNumber'] ?></td>
+            </tr>
+          <?php endif; ?>
+          <?php if ($card['ExpYear'] ?? null): ?>
+            <tr>
+              <td class="tl_bg"><span class="tl_label">Expiry: </span></td>
+              <td class="tl_bg"><?= $card['ExpMonth'] ?? '-' ?>/<?= $card['ExpYear'] ?></td>
+            </tr>
+          <?php endif; ?>
+          <?php if ($card['CountryCode'] ?? null): ?>
+            <tr>
+              <td class="tl_bg"><span class="tl_label">Country: </span></td>
+              <td class="tl_bg"><?= Contao\System::getContainer()->get(Contao\CoreBundle\Intl\Countries::class)->getCountries()[$card['CountryCode']] ?? $card['CountryCode'] ?> (<?= $card['CountryCode'] ?>)</td>
+            </tr>
+          <?php endif; ?>
+        <?php endif; ?>
+      <?php endif; ?>
+    </tbody>
+  </table>
+<?php endforeach; ?>

@@ -421,7 +421,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
         $arrTokens                    = StringUtil::deserialize($this->email_data, true);
         $arrTokens['uniqid']          = $this->uniqid;
         $arrTokens['order_status_id'] = $this->order_status;
-        $arrTokens['order_status']    = $this->getStatusLabel();
+        $arrTokens['order_status']    = Controller::replaceInsertTags($this->getStatusLabel());
         $arrTokens['recipient_email'] = $this->getEmailRecipient();
         $arrTokens['order_id']        = $this->id;
         $arrTokens['order_items']     = $this->sumItemsQuantity();
@@ -480,8 +480,8 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
         // Add payment method info
         if ($this->hasPayment() && ($objPayment = $this->getPaymentMethod()) !== null) {
             $arrTokens['payment_id']        = $objPayment->getId();
-            $arrTokens['payment_label']     = $objPayment->getLabel();
-            $arrTokens['payment_note']      = $objPayment->getNote();
+            $arrTokens['payment_label']     = Controller::replaceInsertTags($objPayment->getLabel());
+            $arrTokens['payment_note']      = Controller::replaceInsertTags($objPayment->getNote());
 
             if ($objPayment instanceof IsotopeNotificationTokens) {
                 $arrTokens = array_merge($arrTokens, $objPayment->getNotificationTokens($this));
@@ -491,8 +491,8 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
         // Add shipping method info
         if ($this->hasShipping() && ($objShipping = $this->getShippingMethod()) !== null) {
             $arrTokens['shipping_id']        = $objShipping->getId();
-            $arrTokens['shipping_label']     = $objShipping->getLabel();
-            $arrTokens['shipping_note']      = $objShipping->getNote();
+            $arrTokens['shipping_label']     = Controller::replaceInsertTags($objShipping->getLabel());
+            $arrTokens['shipping_note']      = Controller::replaceInsertTags($objShipping->getNote());
 
             if ($objShipping instanceof IsotopeNotificationTokens) {
                 $arrTokens = array_merge($arrTokens, $objShipping->getNotificationTokens($this));
@@ -529,7 +529,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
 
             $arrTokens['cart_html'] = Controller::replaceInsertTags($objTemplate->parse(), false);
             $objTemplate->textOnly  = true;
-            $arrTokens['cart_text'] = strip_tags(Controller::replaceInsertTags($objTemplate->parse(), true));
+            $arrTokens['cart_text'] = strip_tags(Controller::replaceInsertTags($objTemplate->parse(), false));
 
             // Generate and "attach" document
             /** @var \Isotope\Interfaces\IsotopeDocument $objDocument */
