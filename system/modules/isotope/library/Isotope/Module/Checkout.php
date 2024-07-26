@@ -393,7 +393,7 @@ class Checkout extends Module
         }
 
         // User pressed "back" button
-        if (\strlen(Input::post('previousStep'))) {
+        if (null !== Input::post('previousStep')) {
             $this->redirectToPreviousStep();
         } // Valid input data, redirect to next step
         elseif (Input::post('FORM_SUBMIT') == $this->strFormId && !$this->doNotSubmit) {

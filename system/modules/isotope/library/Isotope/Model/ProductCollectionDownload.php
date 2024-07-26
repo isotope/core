@@ -96,7 +96,7 @@ class ProductCollectionDownload extends Model
             /** @var Order $order */
             $order = $this->getRelated('pid')->getRelated('pid');
 
-            $baseUrl = $orderDetailsPage->getFrontendUrl().'?uid='.$order->uniqid;
+            $baseUrl = $orderDetailsPage->getAbsoluteUrl().'?uid='.$order->uniqid;
         }
 
         foreach ($objDownload->getFiles() as $objFileModel) {
@@ -142,7 +142,7 @@ class ProductCollectionDownload extends Model
             }
 
             $strHref = '';
-            if (CompatibilityHelper::isFrontend()) {
+            if ($baseUrl) {
                 $strHref = Url::addQueryString(
                     'download=' . $objDownload->id . '&amp;file=' . $uuid,
                     $baseUrl

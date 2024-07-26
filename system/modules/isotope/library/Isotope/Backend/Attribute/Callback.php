@@ -11,6 +11,7 @@
 
 namespace Isotope\Backend\Attribute;
 
+use Ausi\SlugGenerator\SlugOptions;
 use Contao\Backend;
 use Contao\Controller;
 use Contao\CoreBundle\DataContainer\PaletteManipulator;
@@ -90,7 +91,10 @@ class Callback extends Backend
     {
         Controller::loadDataContainer('tl_iso_product');
 
-        $varValue = str_replace('-', '_', StringUtil::standardize($varValue));
+        $varValue = System::getContainer()->get('contao.slug')->generate(
+            StringUtil::prepareSlug($varValue),
+            (new SlugOptions())->setValidChars('A-Za-z0-9_')->setLocale($GLOBALS['TL_LANGUAGE']),
+        );
 
         if (isset($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$varValue])
             && $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$varValue]['attributes']['systemColumn']

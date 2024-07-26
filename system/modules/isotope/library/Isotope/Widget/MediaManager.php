@@ -396,8 +396,8 @@ class MediaManager extends Widget implements \uploadable
             $return .= '
   <tr>
     <td class="col_0 col_first"><input type="hidden" name="' . $this->strName . '['.$i.'][src]" value="' . StringUtil::specialchars($this->varValue[$i]['src']) . '"><a href="' . TL_FILES_URL . $strFile . '" onclick="Backend.openModalImage({\'width\':' . $objFile->width . ',\'title\':\'' . str_replace("'", "\\'", $GLOBALS['TL_LANG'][$this->strTable]['mmSrc']) . '\',\'url\':\'' . TL_FILES_URL . $strFile . '\'});return false"><img src="' . TL_ASSETS_URL . $strPreview . '" alt="' . StringUtil::specialchars($this->varValue[$i]['src']) . '"></a></td>
-    <td class="col_1"><input type="text" class="tl_text_2" name="' . $this->strName . '['.$i.'][alt]" value="' . StringUtil::specialchars($this->varValue[$i]['alt'], true) . '"'.$strTranslateNone.'><br><input type="text" class="tl_text_2" name="' . $this->strName . '['.$i.'][link]" value="' . StringUtil::specialchars($this->varValue[$i]['link'], true) . '"'.$strTranslateText.'></td>
-    <td class="col_2"><textarea name="' . $this->strName . '['.$i.'][desc]" cols="40" rows="3" class="tl_textarea"'.$strTranslateNone.' >' . StringUtil::specialchars($this->varValue[$i]['desc']) . '</textarea></td>
+    <td class="col_1"><input type="text" class="tl_text_2" name="' . $this->strName . '['.$i.'][alt]" value="' . StringUtil::specialchars($this->varValue[$i]['alt'] ?? '', true) . '"'.$strTranslateNone.'><br><input type="text" class="tl_text_2" name="' . $this->strName . '['.$i.'][link]" value="' . StringUtil::specialchars($this->varValue[$i]['link'], true) . '"'.$strTranslateText.'></td>
+    <td class="col_2"><textarea name="' . $this->strName . '['.$i.'][desc]" cols="40" rows="3" class="tl_textarea"'.$strTranslateNone.' >' . StringUtil::specialchars($this->varValue[$i]['desc'] ?? '') . '</textarea></td>
     <td class="col_3">
         '.($blnLanguage ? ('<input type="hidden" name="' . $this->strName . '['.$i.'][translate]" value="'.$this->varValue[$i]['translate'].'">') : '').'
         <fieldset class="radio_container">
