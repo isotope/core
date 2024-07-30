@@ -31,7 +31,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.new.1">
         <source>Create a new base price</source>
-        <target>Skapa ett nytt grundpris</target>
+        <target>Skapa ett nytt baspris</target>
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.edit.0">
         <source>Edit base price</source>

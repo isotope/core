@@ -185,6 +185,12 @@
         <source>Forward the user to the review page if no data is required on any step.</source>
         <target>Forward utente alal pagina riassunto se nessun dato è richiesto in nessuna tappa.</target>
       </trans-unit>
+      <trans-unit id="tl_module.iso_show_skipped.0">
+        <source>Show skipped steps</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_show_skipped.1">
+        <source>Show skipped steps in the checkout step navigation to keep the layout consistent.</source>
+      </trans-unit>
       <trans-unit id="tl_module.iso_checkout_skippable.0">
         <source>Skip checkout steps</source>
         <target>Salta le fasi di checkout</target>
@@ -307,7 +313,7 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_noProducts.1">
         <source>Enter a custom message if there is nothing to show (empty product list, empty cart, etc.).</source>
-        <target>Lasci non compilato per il messaggio preimpostato.</target>
+        <target>Inserisci un messaggio personalizzato se non c'è nulla da mostrare (elenco prodotti vuoto, carrello vuoto, ecc.).</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_emptyFilter.0">
         <source>Define a message if no filter is set</source>
@@ -407,18 +413,23 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_rangeFields.mode">
         <source>Filter mode</source>
+        <target>Modalità filtro</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_rangeFieldsMode.range">
         <source>Range</source>
+        <target>Gamma</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_rangeFieldsMode.min">
         <source>Higher than</source>
+        <target>Superiore a</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_rangeFieldsMode.max">
         <source>Lower than</source>
+        <target>Inferiore a</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_rangeFieldsMode.fields">
         <source>Value within</source>
+        <target>Valore entro</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_rangeFields.attribute">
         <source>Attribute</source>
@@ -426,9 +437,11 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_rangeFields.attribute_max">
         <source>Attribute to</source>
+        <target>Attribuito a</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_rangeFields.attribute_max_blank">
         <source>(only select for mode &quot;Value within&quot;)</source>
+        <target>(selezionare solo per la modalità &quot;valore interno&quot;)</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_rangeFields.min">
         <source>Range from</source>
@@ -582,6 +595,12 @@
         <source>Add a link to the currently added product to the cart.</source>
         <target>Aggiungi un link al prodotto attualmente aggiunto al carrello.</target>
       </trans-unit>
+      <trans-unit id="tl_module.iso_moveFavorites.0">
+        <source>Remove when adding to cart</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_moveFavorites.1">
+        <source>Check here if products should be removed from favorites when they are added to the cart.</source>
+      </trans-unit>
       <trans-unit id="tl_module.iso_address.0">
         <source>Address types</source>
         <target>Tipi di indirizzo</target>
@@ -605,6 +624,12 @@
       <trans-unit id="tl_module.iso_addressFields.1">
         <source>Choose the available address fields you would like to display.</source>
         <target>Scegliete i campi dell'indirizzo che desiderate visualizzare.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_orderdetails_module.0">
+        <source>Render list with details</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_orderdetails_module.1">
+        <source>Select an order details module to render the details of each order in the list.</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_tsid.0">
         <source>Trusted Shops ID</source>

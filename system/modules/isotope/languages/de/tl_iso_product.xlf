@@ -229,6 +229,10 @@
         <source>Please choose the folder where product assets are located.</source>
         <target>Bitte wählen Sie den Ordner in dem sich die Produktanlagen befinden.</target>
       </trans-unit>
+      <trans-unit id="tl_iso_product.hitCount.0">
+        <source>Hit counter</source>
+        <target>Besucherzähler</target>
+      </trans-unit>
       <trans-unit id="tl_iso_product.mmSrc">
         <source>Preview</source>
         <target>Vorschau</target>

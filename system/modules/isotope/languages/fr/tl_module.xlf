@@ -172,6 +172,12 @@
         <source>Forward the user to the review page if no data is required on any step.</source>
         <target>Avancer l'utilisateur à la page résumé si aucune donnée n'est requise lors des étapes suivantes.</target>
       </trans-unit>
+      <trans-unit id="tl_module.iso_show_skipped.0">
+        <source>Show skipped steps</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_show_skipped.1">
+        <source>Show skipped steps in the checkout step navigation to keep the layout consistent.</source>
+      </trans-unit>
       <trans-unit id="tl_module.iso_checkout_skippable.0">
         <source>Skip checkout steps</source>
       </trans-unit>
@@ -533,6 +539,12 @@
         <source>Add a link to the currently added product to the cart.</source>
         <target>Add a link to the currently added product to the cart.</target>
       </trans-unit>
+      <trans-unit id="tl_module.iso_moveFavorites.0">
+        <source>Remove when adding to cart</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_moveFavorites.1">
+        <source>Check here if products should be removed from favorites when they are added to the cart.</source>
+      </trans-unit>
       <trans-unit id="tl_module.iso_address.0">
         <source>Address types</source>
       </trans-unit>
@@ -552,6 +564,12 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_addressFields.1">
         <source>Choose the available address fields you would like to display.</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_orderdetails_module.0">
+        <source>Render list with details</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_orderdetails_module.1">
+        <source>Select an order details module to render the details of each order in the list.</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_tsid.0">
         <source>Trusted Shops ID</source>

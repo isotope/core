@@ -223,21 +223,27 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.minval.0">
         <source>Minimum value</source>
+        <target>Valore minimo</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.minval.1">
         <source>Here you can set the minimum value for numeric fields.</source>
+        <target>Qui è possibile impostare il valore minimo per i campi numerici.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.maxval.0">
         <source>Maximum value</source>
+        <target>Valore massimo</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.maxval.1">
         <source>Here you can set the maximum value for numeric fields.</source>
+        <target>Qui è possibile impostare il valore massimo per i campi numerici.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.step.0">
         <source>Step</source>
+        <target>Passo</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.step.1">
         <source>Here you can set the discrete step size of the field.</source>
+        <target>Qui è possibile impostare la dimensione del passo discreto del campo.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.foreignKey.0">
         <source>Foreign table &amp; field</source>
@@ -270,6 +276,12 @@
       <trans-unit id="tl_iso_attribute.filesOnly.1">
         <source>Remove the radio buttons or checkboxes next to folders.</source>
         <target>Rimuovere i pulsanti radio o le caselle di controllo accanto alle cartelle.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.inline.0">
+        <source>Show in browser</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.inline.1">
+        <source>Show the file in the browser instead of opening the download dialog.</source>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.isGallery.0">
         <source>Mark as gallery</source>
@@ -720,8 +732,7 @@
         <target>Cancella Attributo</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.delete.1">
-        <source>Delete attribute ID %s. The database column will not be deleted, you need to manually update the database using the install tool or repository manager.</source>
-        <target>Cancella attributo ID %s. La colonna nel database non è stata cancellata, devi aggiornare il database manualmente usando il tool di installazione o il repository manager.</target>
+        <source>Delete attribute ID %s. The database column will not be deleted, you need to manually update the database using the Contao Manager.</source>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.show.0">
         <source>Attribute details</source>
@@ -732,8 +743,7 @@
         <target>Mostra i dettagli per l'attributo ID %s.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.deleteConfirm">
-        <source>Do you really want to delete attribute ID %s? The database column will not be deleted, you need to manually update the database using the install tool or repository manager.</source>
-        <target>Vuole veramente cancellare l'attributo ID %s. La colonna nel database non è stata cancellata, devi aggiornare il database manualmente usando il tool di installazione o il repository manager.</target>
+        <source>Do you really want to delete attribute ID %s? The database column will not be deleted, you need to manually update the database using the Contao Manager.</source>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.attribute_legend">
         <source>Attribute name &amp; type</source>

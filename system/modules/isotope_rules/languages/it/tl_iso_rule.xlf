@@ -475,6 +475,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_group.group_legend">
         <source>Group configuration</source>
+        <target>Configurazione del gruppo</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.coupon_legend">
         <source>Coupon Code</source>

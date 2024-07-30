@@ -67,9 +67,11 @@ Selezionate quali categorie di prodotti (pagine) devono essere prese in consider
       </trans-unit>
       <trans-unit id="XPL.checkoutTargetFile">
         <source>&lt;p class=&quot;tl_help_table&quot;&gt;Use these simple tokens to generate a dynamic file name.&lt;/p&gt;</source>
+        <target>&lt;p class=&quot;tl_help_table&quot;&gt;Utilizzate questi semplici token per generare un nome di file dinamico.&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="XPL.checkoutTargetFolder">
         <source>&lt;p class=&quot;tl_help_table&quot;&gt;Use these simple tokens to generate a dynamic folder name.&lt;/p&gt;</source>
+        <target>&lt;p class=&quot;tl_help_table&quot;&gt;Utilizzate questi semplici token per generare un nome di cartella dinamico.&lt;/p&gt;</target>
       </trans-unit>
     </body>
   </file>
