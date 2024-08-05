@@ -34,8 +34,6 @@ interface ProductActionInterface
     /**
      * Returns whether the action is available for the given product.
      *
-     * @param IsotopeProduct $product
-     * @param array          $config
      *
      * @return bool
      */
@@ -44,8 +42,6 @@ interface ProductActionInterface
     /**
      * Generates HTML content for this action.
      *
-     * @param IsotopeProduct $product
-     * @param array          $config
      *
      * @return string
      */
@@ -54,8 +50,6 @@ interface ProductActionInterface
     /**
      * Handles submit of the product. Must self-check if this action applies.
      *
-     * @param IsotopeProduct $product
-     * @param array          $config
      *
      * @return bool
      */

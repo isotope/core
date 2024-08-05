@@ -37,8 +37,8 @@ use Isotope\Model\ProductType;
  */
 abstract class AbstractProductFilter extends Module
 {
-    const FILTER_NEW = 'show_new';
-    const FILTER_OLD = 'show_old';
+    public const FILTER_NEW = 'show_new';
+    public const FILTER_OLD = 'show_old';
 
     /**
      * Constructor.
@@ -72,10 +72,8 @@ abstract class AbstractProductFilter extends Module
      * Returns an array of attribute values found in the product table
      *
      * @param string $attribute
-     * @param array  $categories
      * @param string $newFilter
      * @param string $sqlWhere
-     *
      * @return array
      */
     protected function getUsedValuesForAttribute($attribute, array $categories, $newFilter = '', $sqlWhere = '')
@@ -95,9 +93,10 @@ abstract class AbstractProductFilter extends Module
         $categoryWhere  = '';
         $published      = '';
         $time           = Date::floorToMinute();
+        $isPreviewModel = \Contao\System::getContainer()->get('contao.security.token_checker')->isPreviewMode();
 
         if ('' !== (string) $sqlWhere) {
-            $sqlWhere = ' AND ' . (string) $sqlWhere;
+            $sqlWhere = ' AND ' . $sqlWhere;
         }
 
         // Apply new/old product filter
@@ -107,7 +106,7 @@ abstract class AbstractProductFilter extends Module
             $sqlWhere .= ' AND tl_iso_product.dateAdded<' . Isotope::getConfig()->getNewProductLimit();
         }
 
-        if (BE_USER_LOGGED_IN !== true) {
+        if (!$isPreviewModel) {
             $published = "
                 AND tl_iso_product.published='1'
                 AND (tl_iso_product.start='' OR tl_iso_product.start<'$time')
@@ -128,7 +127,7 @@ abstract class AbstractProductFilter extends Module
                                     WHERE page_id IN (' . implode(',', $categories) . ')
                                 )';
 
-            if (BE_USER_LOGGED_IN !== true) {
+            if (!$isPreviewModel) {
                 $published .= " AND (
                     tl_iso_product.pid=0 OR (
                         translation.published='1'
@@ -242,14 +241,14 @@ abstract class AbstractProductFilter extends Module
             if (null !== $productTypes) {
                 foreach ($productTypes as $type) {
                     foreach ($type->attributes as $attribute => $config) {
-                        if ($config['enabled']) {
+                        if ($config['enabled'] ?? false) {
                             $cache['attributes'][$attribute][] = $type->id;
                         }
                     }
 
                     if ($type->variants) {
                         foreach ($type->variant_attributes as $attribute => $config) {
-                            if ($config['enabled']) {
+                            if ($config['enabled'] ?? false) {
                                 $cache['variant_attributes'][$attribute][] = $type->id;
                             }
                         }
@@ -262,6 +261,6 @@ abstract class AbstractProductFilter extends Module
             return (array) ($cache['variant_attributes'][$attributeName] ?? null);
         }
 
-        return (array) $cache['attributes'][$attributeName];
+        return (array) ($cache['attributes'][$attributeName] ?? null);
     }
 }

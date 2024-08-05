@@ -17,9 +17,9 @@ use Contao\System;
 use Haste\Util\Url;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
+use Isotope\Isotope;
 use Isotope\Module\Checkout;
 use Isotope\Template;
-use Isotope\Isotope;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class PaypalCheckout extends PaypalApi
@@ -54,7 +54,7 @@ class PaypalCheckout extends PaypalApi
         return parent::isAvailable();
     }
 
-    public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
+    public function checkoutForm(IsotopeProductCollection $objOrder, Module $objModule)
     {
         if (!$objOrder instanceof IsotopePurchasableCollection) {
             System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);

@@ -12,13 +12,14 @@
 namespace Isotope\Widget;
 
 
+use Contao\CheckBox;
 use Contao\Input;
 use Contao\StringUtil;
 
 /**
  * Provide methods to inherit checkbox fields.
  */
-class InheritCheckBox extends \CheckBox
+class InheritCheckBox extends CheckBox
 {
 
     /**

@@ -6,7 +6,7 @@
 
 <form action="<?= $this->action ?>" method="get">
 <div class="formbody">
-<label for="ctrl_coupon_<?= $this->id ?>"><?= $this->label ?></label>
+<label for="ctrl_coupon_<?= $this->id ?>"><?= $this->inputLabel ?></label>
 <input type="text" name="coupon_<?= $this->id ?>" id="ctrl_coupon_<?= $this->id ?>" class="text"> <input class="submit" type="submit" value="<?= $this->sLabel ?>">
 </div>
 </form>

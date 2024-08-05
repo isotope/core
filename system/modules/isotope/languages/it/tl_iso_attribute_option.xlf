@@ -51,7 +51,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.cssClass.1">
         <source>The class(es) will be added to this option in the front end.</source>
-        <target>La classe o le classi saranno aggiunte a questa opzione nel front-end.</target>
+        <target>Le classi verranno aggiunte a questa opzione nella visualizzazione finale</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.published.0">
         <source>Published</source>

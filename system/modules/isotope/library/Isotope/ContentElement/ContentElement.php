@@ -11,9 +11,10 @@
 
 namespace Isotope\ContentElement;
 
-use ContentElement as Contao_ContentElement;
+use Contao\ContentElement as Contao_ContentElement;
 use Haste\Util\Debug;
 use Haste\Util\RepositoryVersion;
+use Isotope\CompatibilityHelper;
 use Isotope\Isotope;
 
 abstract class ContentElement extends Contao_ContentElement
@@ -28,7 +29,7 @@ abstract class ContentElement extends Contao_ContentElement
         parent::__construct($objElement);
 
         // Load Isotope JavaScript and style sheet
-        if (TL_MODE == 'FE') {
+        if (CompatibilityHelper::isFrontend()) {
             $version = RepositoryVersion::encode(Isotope::VERSION);
 
             $GLOBALS['TL_JAVASCRIPT'][] = Debug::uncompressedFile(

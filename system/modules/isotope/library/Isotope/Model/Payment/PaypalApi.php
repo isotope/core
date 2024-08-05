@@ -36,7 +36,6 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 abstract class PaypalApi extends Payment
 {
     /**
-     * @param IsotopePurchasableCollection $order
      *
      * @return ResponseInterface
      * @throws TransportExceptionInterface
@@ -73,7 +72,7 @@ abstract class PaypalApi extends Payment
         }
 
         $billingAddress = $order->getBillingAddress();
-        $shippingAddress = $order->getShippingAddress();
+        //$shippingAddress = $order->getShippingAddress();
 
         $data = [
             'intent'        => 'sale',
@@ -144,7 +143,6 @@ abstract class PaypalApi extends Payment
     }
 
     /**
-     * @param IsotopePurchasableCollection $order
      * @param string $paymentId
      *
      * @return ResponseInterface
@@ -152,7 +150,7 @@ abstract class PaypalApi extends Payment
      */
     public function patchPayment(IsotopePurchasableCollection $order, $paymentId)
     {
-        $billingAddress = $order->getBillingAddress();
+        //$billingAddress = $order->getBillingAddress();
         $shippingAddress = $order->getShippingAddress();
 
         $data = [
@@ -191,10 +189,6 @@ abstract class PaypalApi extends Payment
         return $this->sendRequest('/payments/payment/' . $paymentId . '/execute', $data, 'POST');
     }
 
-    /**
-     * @param IsotopeProductCollection $collection
-     * @param array                    $paypalData
-     */
     protected function storePayment(IsotopeProductCollection $collection, array $paypalData)
     {
         $paymentData = StringUtil::deserialize($collection->payment_data, true);
@@ -205,8 +199,6 @@ abstract class PaypalApi extends Payment
     }
 
     /**
-     * @param IsotopeProductCollection $collection
-     *
      * @return array
      */
     protected function retrievePayment(IsotopeProductCollection $collection)
@@ -216,10 +208,6 @@ abstract class PaypalApi extends Payment
         return \array_key_exists('PAYPAL', $paymentData) ? $paymentData['PAYPAL'] : [];
     }
 
-    /**
-     * @param IsotopeProductCollection $collection
-     * @param array                    $paypalData
-     */
     protected function storeHistory(IsotopeProductCollection $collection, array $paypalData)
     {
         $paymentData = StringUtil::deserialize($collection->payment_data, true);
@@ -251,7 +239,7 @@ abstract class PaypalApi extends Payment
 
         $strBuffer = '
 <div id="tl_buttons">
-<a href="' . ampersand(str_replace('&key=payment', '', Environment::get('request'))) . '" class="header_back" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
+<a href="' . \Contao\StringUtil::ampersand(str_replace('&key=payment', '', Environment::get('request'))) . '" class="header_back" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
 </div>';
 
         foreach ($arrPayment['PAYPAL_HISTORY'] as $response) {

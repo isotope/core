@@ -38,9 +38,6 @@ class RelatedProduct extends Model
     /**
      * Find related products of a product
      *
-     * @param IsotopeProduct $objProduct
-     * @param array          $arrCategories
-     * @param array          $arrOptions
      *
      * @return Collection|null
      */

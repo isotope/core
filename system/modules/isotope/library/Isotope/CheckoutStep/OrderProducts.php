@@ -12,7 +12,6 @@
 namespace Isotope\CheckoutStep;
 
 use Isotope\Interfaces\IsotopeCheckoutStep;
-use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\ProductCollection;
 use Isotope\Template;

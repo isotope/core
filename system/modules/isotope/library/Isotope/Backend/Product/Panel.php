@@ -16,10 +16,9 @@ use Contao\BackendUser;
 use Contao\Database;
 use Contao\Image;
 use Contao\Input;
+use Contao\RequestToken;
 use Contao\Session;
-use Contao\StringUtil;
 use Contao\System;
-use Isotope\Model\Group;
 
 class Panel extends Backend
 {
@@ -42,7 +41,7 @@ class Panel extends Backend
         // Check if user can manage groups
         if ($user->isAdmin || (\is_array($user->iso_groups) && 0 !== \count($user->iso_groups))) {
             $buttons[] = '
-    <a href="' . ampersand(System::getContainer()->get('contao.picker.builder')->getUrl('dc.tl_iso_group', ['fieldType' => 'radio'])) . '" class="tl_submit'.(!empty($session['iso_products_gid']) ? ' active' : '').'" id="groupFilter">' . $GLOBALS['TL_LANG']['MSC']['filterByGroups'] . '</a>
+    <a href="' . \Contao\StringUtil::ampersand(System::getContainer()->get('contao.picker.builder')->getUrl('dc.tl_iso_group', ['fieldType' => 'radio'])) . '" class="tl_submit'.(!empty($session['iso_products_gid']) ? ' active' : '').'" id="groupFilter">' . $GLOBALS['TL_LANG']['MSC']['filterByGroups'] . '</a>
     <script>
       document.getElementById("groupFilter").addEventListener("click", function(e) {
         e.preventDefault();
@@ -62,7 +61,7 @@ class Panel extends Backend
         }
 
         $buttons[] = '
-    <a href="' . ampersand(System::getContainer()->get('contao.picker.builder')->getUrl('dc.tl_page', ['fieldType' => 'radio'])) . '" class="tl_submit'.($intPage > 0 ? ' active' : '').'" id="pageFilter">' . $GLOBALS['TL_LANG']['MSC']['filterByPages'] . '</a>
+    <a href="' . \Contao\StringUtil::ampersand(System::getContainer()->get('contao.picker.builder')->getUrl('dc.tl_page', ['fieldType' => 'radio'])) . '" class="tl_submit'.($intPage > 0 ? ' active' : '').'" id="pageFilter">' . $GLOBALS['TL_LANG']['MSC']['filterByPages'] . '</a>
     <script>
       document.getElementById("pageFilter").addEventListener("click", function(e) {
         e.preventDefault();
@@ -153,9 +152,33 @@ class Panel extends Backend
             return '';
         }
 
+        $target = System::getContainer()->get('router')->generate('contao_backend', [
+            'do' => 'iso_products',
+            'table' => 'tl_iso_product_category',
+            'id' => '_value_',
+            'page_id' => '_value_',
+            'rt' => RequestToken::get(),
+
+            // TODO: for Contao 4.13+
+            //'rt' => System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue()
+        ]);
+
         return '
 <div class="tl_subpanel tl_iso_category_sorting">
-<a href="#" onclick="Backend.getScrollOffset();Isotope.openModalPageSelector({\'width\':765,\'title\':\'' . StringUtil::specialchars($GLOBALS['TL_LANG']['MOD']['page'][0]) . '\',\'url\':\'contao/page.php?do=' . Input::get('do') . '&amp;table=tl_iso_product_category&amp;field=page_id&amp;value=0\',\'action\':\'sortByPage\'});return false" title="' . $GLOBALS['TL_LANG']['tl_iso_product']['sorting'] . '">' . Image::getHtml('pagemounts.svg', $GLOBALS['TL_LANG']['tl_iso_product']['sorting']) . '</a>
+<a href="' . \Contao\StringUtil::ampersand(System::getContainer()->get('contao.picker.builder')->getUrl('dc.tl_page')) . '" id="tl_iso_category_sorting" title="' . $GLOBALS['TL_LANG']['tl_iso_product']['sorting'] . '">' . Image::getHtml('pagemounts.svg', $GLOBALS['TL_LANG']['tl_iso_product']['sorting']) . '</a></p>
+    <script>
+      $("tl_iso_category_sorting").addEvent("click", function(e) {
+        e.preventDefault();
+        Backend.openModalSelector({
+          "id": "tl_listing",
+          "title": ' . json_encode($GLOBALS['TL_LANG']['MOD']['page'][0]) . ',
+          "url": this.href,
+          "callback": function (table, value) {
+            window.location.href = "'.$target.'".replace(\'_value_\', value);
+          }
+        });
+      });
+    </script>
 </div>';
     }
 

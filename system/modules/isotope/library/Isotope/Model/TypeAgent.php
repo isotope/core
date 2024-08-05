@@ -43,13 +43,13 @@ abstract class TypeAgent extends Model
      *
      * @throws \RuntimeException if model does not have a valid type
      */
-    public function __construct(Result $objResult = null)
+    public function __construct($objResult = null)
     {
         parent::__construct($objResult);
 
         // Register model type
         if (!isset($this->arrRelations['type'])) {
-            $strType = array_search(\get_called_class(), static::$arrModelTypes);
+            $strType = array_search(static::class, static::$arrModelTypes);
 
             if ($strType != '') {
                 $this->arrData['type'] = $strType;
@@ -59,7 +59,7 @@ abstract class TypeAgent extends Model
         if ($this->arrData['type'] == '') {
             throw new \RuntimeException(sprintf(
                 '%s (%s.%s) has no model type',
-                \get_called_class(), static::$strTable, $this->arrData['id']
+                static::class, static::$strTable, $this->arrData['id']
             ));
         }
     }
@@ -191,18 +191,17 @@ abstract class TypeAgent extends Model
     /**
      * Return a model or collection based on the database result type
      *
-     * @param array $arrOptions
      *
-     * @return Model|Collection|null
+     * @return Model|Collection|array|null
      */
     protected static function find(array $arrOptions)
     {
-        if (static::$strTable == '') {
-            return null;
+        if (empty(static::$strTable)) {
+            throw new \RuntimeException('Empty $strTable property on '.self::class);
         }
 
-        // if find() method is called in a specific model type, results must be of that type
-        if (($strType = array_search(\get_called_class(), static::getModelTypes())) !== false) {
+        // if the find() method is called in a specific model type, results must be of that type
+        if (($strType = array_search(static::class, static::getModelTypes())) !== false) {
 
             // Convert to array if necessary
             $arrOptions['value'] = (array) $arrOptions['value'];
@@ -231,7 +230,7 @@ abstract class TypeAgent extends Model
 
         $arrOptions['table'] = static::$strTable;
         // @deprecated use static::buildFindQuery once we drop BC support for buildQueryString
-        $strQuery            = static::buildQueryString($arrOptions);
+        $strQuery = static::buildQueryString($arrOptions);
 
         $objStatement = Database::getInstance()->prepare($strQuery);
 
@@ -252,7 +251,7 @@ abstract class TypeAgent extends Model
         $objResult    = $objStatement->execute($arrOptions['value'] ?? null);
 
         if ($objResult->numRows < 1) {
-            return null;
+            return 'Array' === $arrOptions['return'] ? array() : null;
         }
 
         $objResult = static::postFind($objResult);
@@ -260,7 +259,10 @@ abstract class TypeAgent extends Model
         if ('Model' === $arrOptions['return']) {
             // @deprecated use static::createModelFromDbResult once we drop BC support for buildModelType
             return static::buildModelType($objResult);
+        }
 
+        if ('Array' === $arrOptions['return']) {
+            return static::createCollectionFromDbResult($objResult, static::$strTable)->getModels();
         }
 
         return static::createCollectionFromDbResult($objResult, static::$strTable);
@@ -303,7 +305,7 @@ abstract class TypeAgent extends Model
 
         // Try to use the current class as fallback
         if ($strClass == '') {
-            $strClass = \get_called_class();
+            $strClass = static::class;
 
             $objReflection = new \ReflectionClass($strClass);
             if ($objReflection->isAbstract()) {

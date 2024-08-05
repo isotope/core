@@ -20,9 +20,9 @@ use Contao\PageModel;
 use Contao\StringUtil;
 use Haste\Input\Input;
 use Haste\Util\Url;
+use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeFilterModule;
 use Isotope\Isotope;
-use Isotope\RequestCache\Filter;
 
 class CategoryFilter extends AbstractProductFilter implements IsotopeFilterModule
 {
@@ -56,7 +56,7 @@ class CategoryFilter extends AbstractProductFilter implements IsotopeFilterModul
      */
     public function generate()
     {
-        if ('BE' === TL_MODE) {
+        if (CompatibilityHelper::isBackend()) {
             return $this->generateWildcard();
         }
 
@@ -86,7 +86,7 @@ class CategoryFilter extends AbstractProductFilter implements IsotopeFilterModul
         }
 
         $currentIds = [];
-        $filter = Isotope::getRequestCache()->getFiltersForModules([$this->id])[0];
+        $filter = Isotope::getRequestCache()->getFiltersForModules([$this->id])[0] ?? null;
 
         if ($filter instanceof \Isotope\RequestCache\CategoryFilter) {
             $currentIds = $filter['value'];
@@ -94,7 +94,7 @@ class CategoryFilter extends AbstractProductFilter implements IsotopeFilterModul
 
         $allIds = [];
 
-        $this->Template->request = ampersand(Environment::get('indexFreeRequest'));
+        $this->Template->request = \Contao\StringUtil::ampersand(Environment::get('indexFreeRequest'));
         $this->Template->skipId = 'skipNavigation' . $this->id;
         $this->Template->skipNavigation = StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['skipNavigation']);
         $this->Template->items = $this->renderFilterTree($trail[$level], 1, $currentIds, $trail, $allIds);
@@ -159,7 +159,7 @@ class CategoryFilter extends AbstractProductFilter implements IsotopeFilterModul
         $groups = array();
 
         // Get all groups of the current front end user
-        if (FE_USER_LOGGED_IN) {
+        if (\Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER')) {
             $groups = FrontendUser::getInstance()->groups;
         }
 
@@ -175,7 +175,7 @@ class CategoryFilter extends AbstractProductFilter implements IsotopeFilterModul
             // Do not show protected pages unless a back end or front end user is logged in
             if (!$this->showProtected
                 && $subpage->protected
-                && BE_USER_LOGGED_IN !== true
+                && !\Contao\System::getContainer()->get('contao.security.token_checker')->isPreviewMode()
                 && (!\is_array($_groups) || !\count(array_intersect($_groups, $groups)))
             ) {
                 continue;

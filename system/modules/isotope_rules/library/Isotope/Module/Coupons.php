@@ -15,6 +15,8 @@ use Contao\Controller;
 use Contao\Environment;
 use Contao\Input;
 use Contao\StringUtil;
+use Contao\System;
+use Isotope\CompatibilityHelper;
 use Isotope\Isotope;
 use Isotope\Message;
 use Isotope\Model\Rule;
@@ -39,7 +41,7 @@ class Coupons extends Module
     {
         $this->cart = Isotope::getCart();
 
-        if ('FE' === TL_MODE && ($this->cart->isEmpty() || null === Rule::findForCartWithCoupons())) {
+        if (CompatibilityHelper::isFrontend() && ($this->cart->isEmpty() || null === Rule::findForCartWithCoupons())) {
             return '';
         }
 
@@ -67,6 +69,7 @@ class Coupons extends Module
         $this->Template->coupons = $coupons;
         $this->Template->inputLabel = $GLOBALS['TL_LANG']['MSC']['couponLabel'];
         $this->Template->sLabel = $GLOBALS['TL_LANG']['MSC']['couponApply'];
+        $this->Template->requestToken = System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue();
     }
 
     private function addCoupon($coupon, array &$coupons)

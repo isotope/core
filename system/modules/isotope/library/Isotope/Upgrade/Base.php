@@ -33,7 +33,7 @@ abstract class Base extends System
             return false;
         }
 
-        if (!\Database::getInstance()->fieldExists($strField, $strTable, true)) {
+        if (!Database::getInstance()->fieldExists($strField, $strTable, true)) {
             Database::getInstance()->query("
                 ALTER TABLE $strTable
                 ADD COLUMN `$strField` " . $this->getSqlForField($strField, $strTable)
@@ -84,8 +84,8 @@ abstract class Base extends System
      */
     protected function updateDatabaseField($strField, $strTable)
     {
-        if (!\Database::getInstance()->tableExists($strTable)
-            || !\Database::getInstance()->fieldExists($strField, $strTable)
+        if (!Database::getInstance()->tableExists($strTable)
+            || !Database::getInstance()->fieldExists($strField, $strTable)
         ) {
             return false;
         }

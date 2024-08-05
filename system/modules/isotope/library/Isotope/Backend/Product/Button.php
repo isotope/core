@@ -19,10 +19,10 @@ use Contao\Database;
 use Contao\Environment;
 use Contao\Image;
 use Contao\Input;
+use Contao\Session;
 use Contao\StringUtil;
 use Contao\System;
 use Contao\Versions;
-use Isotope\Model\Group;
 use Isotope\Model\ProductType;
 
 
@@ -67,7 +67,7 @@ class Button extends Backend
     public function forCopy($row, $href, $label, $title, $icon, $attributes)
     {
         if ($row['pid'] > 0) {
-            return '<a href="' . preg_replace('/&(amp;)?id=[^& ]*/i', '', ampersand(Environment::get('request'))) . '&amp;act=paste&amp;mode=copy&amp;table=tl_iso_product&amp;id=' . $row['id'] . '&amp;pid=' . Input::get('id') . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . ' onclick="Backend.getScrollOffset();">' . Image::getHtml($icon, $label) . '</a> ';
+            return '<a href="' . preg_replace('/&(amp;)?id=[^& ]*/i', '', \Contao\StringUtil::ampersand(Environment::get('request'))) . '&amp;act=paste&amp;mode=copy&amp;table=tl_iso_product&amp;id=' . $row['id'] . '&amp;pid=' . Input::get('id') . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . ' onclick="Backend.getScrollOffset();">' . Image::getHtml($icon, $label) . '</a> ';
         }
 
         return '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ';
@@ -91,7 +91,7 @@ class Button extends Backend
             return '';
         }
 
-        return '<a href="' . preg_replace('/&(amp;)?id=[^& ]*/i', '', ampersand(Environment::get('request'))) . '&amp;act=paste&amp;mode=cut&amp;table=tl_iso_product&amp;id=' . $row['id'] . '&amp;pid=' . Input::get('id') . '&rt=' . Input::get('rt') . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . ' onclick="Backend.getScrollOffset();">' . Image::getHtml($icon, $label) . '</a> ';
+        return '<a href="' . preg_replace('/&(amp;)?id=[^& ]*/i', '', \Contao\StringUtil::ampersand(Environment::get('request'))) . '&amp;act=paste&amp;mode=cut&amp;table=tl_iso_product&amp;id=' . $row['id'] . '&amp;pid=' . Input::get('id') . '&rt=' . Input::get('rt') . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . ' onclick="Backend.getScrollOffset();">' . Image::getHtml($icon, $label) . '</a> ';
     }
 
     /**
@@ -276,7 +276,7 @@ class Button extends Backend
         }
 
         return '
-    <a href="' . ampersand(System::getContainer()->get('contao.picker.builder')->getUrl('dc.tl_iso_group', ['fieldType' => 'radio'])) . '" id="groupOperation'.$row['id'].'" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a>
+    <a href="' . \Contao\StringUtil::ampersand(System::getContainer()->get('contao.picker.builder')->getUrl('dc.tl_iso_group', ['fieldType' => 'radio'])) . '" id="groupOperation'.$row['id'].'" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a>
     <script>
       document.getElementById("groupOperation'.$row['id'].'").addEventListener("click", function(e) {
         e.preventDefault();
@@ -320,7 +320,7 @@ class Button extends Backend
         Backend.openModalSelector({
           id: "tl_listing",
           title: ' . json_encode($GLOBALS['TL_LANG']['tl_iso_product']['product_groups'][0]) . ',
-          url: '.json_encode(ampersand(System::getContainer()->get('contao.picker.builder')->getUrl('dc.tl_iso_group', ['fieldType' => 'radio'])).\Session::getInstance()->get('iso_products_gid')).',
+          url: '.json_encode(\Contao\StringUtil::ampersand(System::getContainer()->get('contao.picker.builder')->getUrl('dc.tl_iso_group', ['fieldType' => 'radio'])). Session::getInstance()->get('iso_products_gid')).',
           callback: function(table, value) {
               new Request.Contao({
               evalScripts: false,
@@ -401,6 +401,6 @@ class Button extends Backend
             }
         }
 
-        return (int) $arrDownloads[$intProduct];
+        return (int) ($arrDownloads[$intProduct] ?? 0);
     }
 }

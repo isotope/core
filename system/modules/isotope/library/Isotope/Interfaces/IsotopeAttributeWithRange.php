@@ -23,7 +23,6 @@ interface IsotopeAttributeWithRange extends IsotopeAttribute
     /**
      * Gets array of values for range filter.
      *
-     * @param IsotopeProduct $product
      *
      * @return array
      */

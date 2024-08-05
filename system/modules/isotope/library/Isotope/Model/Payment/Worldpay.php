@@ -11,7 +11,6 @@
 
 namespace Isotope\Model\Payment;
 
-use Contao\Environment;
 use Contao\Input;
 use Contao\Module;
 use Contao\PageModel;
@@ -183,8 +182,6 @@ Redirecting back to shop...
 
     /**
      * Redirect client on WorldPay site to the confirmation page
-     *
-     * @param IsotopeProductCollection $objOrder
      */
     protected function postsaleSuccess(IsotopeProductCollection $objOrder)
     {

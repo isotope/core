@@ -13,7 +13,7 @@ namespace Isotope\Backend\Address;
 
 use Contao\Backend;
 use Contao\Database;
-use Contao\System;
+use Contao\DataContainer;
 use Isotope\Model\Address;
 
 class Callback extends Backend
@@ -26,8 +26,6 @@ class Callback extends Backend
      */
     public function renderLabel($arrAddress)
     {
-        System::loadLanguageFile('addresses');
-
         $objAddress = new Address();
         $objAddress->setRow($arrAddress);
         $strBuffer = $objAddress->generate();
@@ -42,9 +40,7 @@ class Callback extends Backend
             $strBuffer .= ', ' . $GLOBALS['TL_LANG']['tl_iso_address']['isDefaultShipping'][0];
         }
 
-        $strBuffer .= '</div>';
-
-        return $strBuffer;
+        return $strBuffer . '</div>';
     }
 
 
@@ -57,6 +53,10 @@ class Callback extends Backend
      */
     public function updateDefault($varValue, $dc)
     {
+        if (!$dc instanceof DataContainer) {
+            return $varValue;
+        }
+
         if ($varValue == '1' && $dc->activeRecord->{$dc->field} != $varValue) {
             Database::getInstance()
                 ->prepare("UPDATE tl_iso_address SET {$dc->field}='' WHERE pid=? AND ptable=? AND store_id=?")

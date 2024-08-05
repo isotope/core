@@ -11,6 +11,7 @@
 
 namespace Isotope\Frontend\ProductCollectionAction;
 
+use Contao\Controller;
 use Isotope\Interfaces\IsotopeProductCollection;
 
 class UpdateCartAction extends AbstractButton
@@ -30,5 +31,18 @@ class UpdateCartAction extends AbstractButton
     public function getLabel(IsotopeProductCollection $collection)
     {
         return $GLOBALS['TL_LANG']['MSC']['updateCartBT'];
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return false|void
+     */
+    public function handleSubmit(IsotopeProductCollection $collection)
+    {
+        if (!parent::handleSubmit($collection)) {
+            return false;
+        }
+
+        Controller::reload();
     }
 }

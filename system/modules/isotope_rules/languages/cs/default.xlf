@@ -7,7 +7,7 @@
       </trans-unit>
       <trans-unit id="MSC.couponHeadline">
         <source>Apply Promotional Codes</source>
-        <target>Použijte propagační kódy</target>
+        <target>Použijte slevový kód</target>
       </trans-unit>
       <trans-unit id="MSC.couponLabel">
         <source>Promotional code</source>

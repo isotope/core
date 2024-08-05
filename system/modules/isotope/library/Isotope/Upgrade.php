@@ -34,7 +34,7 @@ class Upgrade extends Controller
         // Check if shop has been installed
         $blnInstalled = Database::getInstance()->tableExists(Config::getTable());
 
-        foreach (scan(TL_ROOT . '/system/modules/isotope/library/Isotope/Upgrade') as $strFile) {
+        foreach (\Contao\Folder::scan(TL_ROOT . '/system/modules/isotope/library/Isotope/Upgrade') as $strFile) {
             $strVersion = pathinfo($strFile, PATHINFO_FILENAME);
 
             if (preg_match('/To[0-9]{10}/', $strVersion)) {

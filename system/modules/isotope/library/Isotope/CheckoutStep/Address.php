@@ -21,7 +21,7 @@ use Haste\Generator\RowClass;
 use Isotope\Model\Address as AddressModel;
 use Isotope\Module\Checkout;
 use Isotope\Template;
-use Model\Registry;
+use Contao\Model\Registry;
 
 abstract class Address extends CheckoutStep
 {
@@ -40,8 +40,6 @@ abstract class Address extends CheckoutStep
 
     /**
      * Load data container and create template
-     *
-     * @param Checkout $objModule
      */
     public function __construct(Checkout $objModule)
     {
@@ -63,7 +61,7 @@ abstract class Address extends CheckoutStep
         $blnValidate = Input::post('FORM_SUBMIT') === $this->objModule->getFormId();
 
         $this->Template->class     = $this->getStepClass();
-        $this->Template->tableless = isset($this->objModule->tableless) ? $this->objModule->tableless : true;
+        $this->Template->tableless = $this->objModule->tableless ?? true;
         $this->Template->options   = $this->generateOptions($blnValidate);
         $this->Template->fields    = $this->generateFields($blnValidate);
 
@@ -200,11 +198,25 @@ abstract class Address extends CheckoutStep
                     }
                 }
 
+                if (\is_array($objWidget->dca_config['save_callback'] ?? null) && $objWidget->submitInput() && !$objWidget->hasErrors()) {
+                    foreach ($objWidget->dca_config['save_callback'] as $callback) {
+                        try {
+                            if (\is_array($callback)) {
+                                $this->import($callback[0]);
+                                $varValue = $this->{$callback[0]}->{$callback[1]}($varValue, $this);
+                            } elseif (\is_callable($callback)) {
+                                $varValue = $callback($varValue, $this);
+                            }
+                        } catch (\Exception $e) {
+                            $objWidget->addError($e->getMessage());
+                        }
+                    }
+                }
+
                 // Do not submit if there are errors
                 if ($objWidget->hasErrors()) {
                     $this->blnError = true;
-                } // Store current value
-                elseif ($objWidget->submitInput()) {
+                } elseif ($objWidget->submitInput()) {
                     $arrAddress[$strName] = $varValue;
                 }
 
@@ -214,6 +226,22 @@ abstract class Address extends CheckoutStep
 
                 $objValidator = clone $objWidget;
                 $objValidator->validate();
+                $varValue = (string) $objWidget->value;
+
+                if (\is_array($objWidget->dca_config['save_callback'] ?? null) && $objWidget->submitInput() && !$objWidget->hasErrors()) {
+                    foreach ($objWidget->dca_config['save_callback'] as $callback) {
+                        try {
+                            if (\is_array($callback)) {
+                                $this->import($callback[0]);
+                                $varValue = System::importStatic($callback[0])->{$callback[1]}($varValue, $this);
+                            } elseif (\is_callable($callback)) {
+                                $varValue = $callback($varValue, $this);
+                            }
+                        } catch (\Exception $e) {
+                            $this->blnError = true;
+                        }
+                    }
+                }
 
                 if ($objValidator->hasErrors()) {
                     $this->blnError = true;
@@ -249,7 +277,7 @@ abstract class Address extends CheckoutStep
                 if (!\is_array($field['dca'])
                     || !($field['enabled'] ?? null)
                     || !($field['dca']['eval']['feEditable'] ?? null)
-                    || (($field['dca']['eval']['membersOnly'] ?? null) && FE_USER_LOGGED_IN !== true)
+                    || (($field['dca']['eval']['membersOnly'] ?? null) && !\Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER'))
                 ) {
                     continue;
                 }
@@ -284,7 +312,7 @@ abstract class Address extends CheckoutStep
 
                 $objWidget->mandatory   = $field['mandatory'] ? true : false;
                 $objWidget->required    = $objWidget->mandatory;
-                $objWidget->tableless   = isset($this->objModule->tableless) ? $this->objModule->tableless : true;
+                $objWidget->tableless   = $this->objModule->tableless ?? true;
                 $objWidget->storeValues = true;
                 $objWidget->dca_config  = $field['dca'];
 
@@ -306,7 +334,7 @@ abstract class Address extends CheckoutStep
     {
         $arrOptions = array();
 
-        if (FE_USER_LOGGED_IN === true) {
+        if (\Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER')) {
 
             /** @var AddressModel[] $arrAddresses */
             $arrAddresses = $this->getAddresses();
@@ -324,7 +352,7 @@ abstract class Address extends CheckoutStep
                     $arrOptions[] = [
                         'value'   => $objAddress->id,
                         'label'   => $objAddress->generate($arrFields),
-                        'default' => $objAddress->id == $objDefault->id ? '1' : '',
+                        'default' => $objAddress->id == ($objDefault->id ?? false) ? '1' : '',
                     ];
                 }
             }
@@ -401,15 +429,12 @@ abstract class Address extends CheckoutStep
 
     /**
      * Set new address in cart
-     *
-     * @param AddressModel $objAddress
      */
     abstract protected function setAddress(AddressModel $objAddress);
 
     /**
      * Append DCA configuration to fields so it can be changed in hook.
      *
-     * @param array $fieldConfig
      *
      * @return array
      */

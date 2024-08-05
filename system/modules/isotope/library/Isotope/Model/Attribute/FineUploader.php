@@ -16,7 +16,6 @@ use Contao\Files;
 use Contao\Folder;
 use Contao\Widget;
 use Haste\Util\FileUpload;
-use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
 use Isotope\Model\ProductCollectionItem;
@@ -98,8 +97,6 @@ class FineUploader extends Attribute implements \uploadable
 
     /**
      * @param mixed          $value
-     * @param IsotopeProduct $product
-     * @param Widget         $widget
      *
      * @return mixed
      */

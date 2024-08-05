@@ -22,6 +22,7 @@ use Contao\Input;
 use Contao\Session;
 use Contao\StringUtil;
 use Contao\System;
+use Contao\Versions;
 use Isotope\Backend\Permission;
 use Isotope\Model\Shipping;
 
@@ -211,7 +212,7 @@ class Callback extends Permission
             throw new AccessDeniedException('Not enough permissions to enable/disable shipping method ID "' . $intId . '"');
         }
 
-        $objVersions = new \Versions('tl_iso_shipping', $intId);
+        $objVersions = new Versions('tl_iso_shipping', $intId);
         $objVersions->initialize();
 
         // Trigger the save_callback

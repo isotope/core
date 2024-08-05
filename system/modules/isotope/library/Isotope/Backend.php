@@ -11,7 +11,7 @@
 
 namespace Isotope;
 
-use Backend as Contao_Backend;
+use Contao\Backend as ContaoBackend;
 use Contao\BackendUser;
 use Contao\Controller;
 use Contao\CoreBundle\Exception\NoContentResponseException;
@@ -35,7 +35,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Provide methods to handle Isotope back end components.
  */
-class Backend extends Contao_Backend
+class Backend extends ContaoBackend
 {
 
     /**
@@ -111,9 +111,9 @@ class Backend extends Contao_Backend
         }
 
         if (\is_array($arrSubdivisions[$country])) {
-            foreach ($arrSubdivisions[$country] as $groupCode => $regionGroup) {
+            foreach ($arrSubdivisions[$country] as $regionGroup) {
                 if (\is_array($regionGroup)) {
-                    foreach ($regionGroup as $groupLabel => $regions) {
+                    foreach ($regionGroup as $regions) {
                         if (isset($regions[$subdivision])) {
                             return $regions[$subdivision];
                         }
@@ -225,7 +225,7 @@ class Backend extends Contao_Backend
     {
         $objUser = BackendUser::getInstance();
 
-        if (!\Database::getInstance()->tableExists(OrderStatus::getTable())
+        if (!Database::getInstance()->tableExists(OrderStatus::getTable())
             || !$objUser->hasAccess('iso_orders', 'modules')
         ) {
             return '';
@@ -303,13 +303,13 @@ class Backend extends Contao_Backend
                 Controller::reload();
                 break;
 
-            // Sort products by page
-            case 'sortByPage':
-                if (Input::post('value') > 0) {
-                    Controller::redirect(Backend::addToUrl('table=tl_iso_product_category&amp;id=' . (int) Input::post('value') . '&amp;page_id=' . (int) Input::post('value')));
-                } else {
-                    Controller::reload();
-                }
+            // Filter product collection by product
+            case 'filterProducts':
+                $filter = Session::getInstance()->get('filter');
+                $filter['tl_iso_product_collection']['iso_product'] = (int) Input::post('value');
+                Session::getInstance()->set('filter', $filter);
+                Controller::reload();
+                break;
         }
     }
 
@@ -462,7 +462,7 @@ class Backend extends Contao_Backend
             && Group::getTable() === Input::get('table')
             && 'be_main' === $objTemplate->getName()
         ) {
-            $objTemplate->managerHref = ampersand($this->Session->get('groupPickerRef'));
+            $objTemplate->managerHref = \Contao\StringUtil::ampersand($this->Session->get('groupPickerRef'));
             $objTemplate->manager     = $GLOBALS['TL_LANG']['MSC']['groupPickerHome'];
         }
     }

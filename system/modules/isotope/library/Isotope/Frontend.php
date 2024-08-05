@@ -42,6 +42,7 @@ use Isotope\Model\ProductCollection\Order;
 use Isotope\Model\ProductCollectionSurcharge;
 use Isotope\Model\TaxClass;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Routing\Exception\ExceptionInterface;
 
 /**
  * Provide methods to handle Isotope front end components.
@@ -59,7 +60,6 @@ class Frontend extends \Contao\Frontend
     /**
      * Get shipping and payment surcharges for given collection
      *
-     * @param IsotopeProductCollection $objCollection
      *
      * @return ProductCollectionSurcharge[]
      */
@@ -446,9 +446,7 @@ class Frontend extends \Contao\Frontend
      * Return pages in the current root available to the member
      * Necessary to check if a product is allowed in the current site and cache the value
      *
-     * @param array                      $arrPages
      * @param MemberModel|FrontendUser $objMember
-     *
      * @return array
      */
     public static function getPagesInCurrentRoot(array $arrPages, $objMember = null)
@@ -559,29 +557,33 @@ class Frontend extends \Contao\Frontend
             $arrItems[$last]['title'] = $this->prepareMetaDescription($objProduct->meta_title ? : $objProduct->name);
             $arrItems[$last]['link']  = $objProduct->name;
         } else {
-            $listPage = $objIsotopeListPage ?: $objPage;
-            $originalRow = $listPage->originalRow();
+            try {
+                $listPage = $objIsotopeListPage ?: $objPage;
+                $originalRow = $listPage->originalRow();
 
-            // Replace the current page (if breadcrumb is insert tag, it would already be the product name)
-            $arrItems[$last] = array(
-                'isRoot'   => (bool) $arrItems[$last]['isRoot'],
-                'isActive' => false,
-                'href'     => $listPage->getFrontendUrl(),
-                'title'    => StringUtil::specialchars($originalRow['pageTitle'] ?: $originalRow['title']),
-                'link'     => $originalRow['title'],
-                'data'     => $originalRow,
-                'class'    => ''
-            );
+                // Replace the current page (if breadcrumb is insert tag, it would already be the product name)
+                $arrItems[$last] = array(
+                    'isRoot' => (bool) $arrItems[$last]['isRoot'],
+                    'isActive' => false,
+                    'href' => $listPage->getFrontendUrl(),
+                    'title' => StringUtil::specialchars($originalRow['pageTitle'] ?: $originalRow['title']),
+                    'link' => $originalRow['title'],
+                    'data' => $originalRow,
+                    'class' => ''
+                );
 
-            // Add a new item for the current product
-            $arrItems[] = array(
-                'isRoot'   => false,
-                'isActive' => true,
-                'href'     => $objProduct->generateUrl($objPage),
-                'title'    => StringUtil::specialchars($this->prepareMetaDescription($objProduct->meta_title ? : $objProduct->name)),
-                'link'     => $objProduct->name,
-                'data'     => $objPage->row(),
-            );
+                // Add a new item for the current product
+                $arrItems[] = array(
+                    'isRoot' => false,
+                    'isActive' => true,
+                    'href' => $objProduct->generateUrl($objPage),
+                    'title' => StringUtil::specialchars($this->prepareMetaDescription($objProduct->meta_title ?: $objProduct->name)),
+                    'link' => $objProduct->name,
+                    'data' => $objPage->row(),
+                );
+            } catch (ExceptionInterface $exception) {
+                // Ignore exceptions when generating front end URLs
+            }
         }
 
         return $arrItems;
@@ -590,7 +592,6 @@ class Frontend extends \Contao\Frontend
     /**
      * Initialize environment (language, objPage) for a given order
      *
-     * @param Order  $objOrder
      * @param string $strLanguage
      */
     public static function loadOrderEnvironment(Order $objOrder, $strLanguage = null)
@@ -600,8 +601,11 @@ class Frontend extends \Contao\Frontend
         $strLanguage = $strLanguage ?: $objOrder->language;
 
         // Load page configuration
-        if ($objOrder->pageId > 0 && (null === $objPage || $objPage->id != $objOrder->pageId)) {
-            $objPage = PageModel::findWithDetails($objOrder->pageId);
+        if (
+            $objOrder->pageId > 0
+            && (null === $objPage || $objPage->id != $objOrder->pageId)
+            && ($objPage = PageModel::findWithDetails($objOrder->pageId))
+        ) {
             $objPage = static::loadPageConfig($objPage);
         }
 
@@ -625,6 +629,10 @@ class Frontend extends \Contao\Frontend
      */
     public static function loadPageConfig($objPage)
     {
+        if (!\is_object($objPage)) {
+            return $objPage;
+        }
+
         // Use the global date format if none is set
         if ($objPage->dateFormat == '') {
             $objPage->dateFormat = $GLOBALS['TL_CONFIG']['dateFormat'];
@@ -647,10 +655,10 @@ class Frontend extends \Contao\Frontend
 
         // Define the static URL constants
         $isDebugMode = System::getContainer()->getParameter('kernel.debug');
-        \define('TL_FILES_URL', ($objPage->staticFiles != '' && !$isDebugMode) ? $objPage->staticFiles . TL_PATH . '/' : '');
-        \define('TL_ASSETS_URL', ($objPage->staticPlugins != '' && !$isDebugMode) ? $objPage->staticPlugins . TL_PATH . '/' : '');
-        \define('TL_SCRIPT_URL', TL_ASSETS_URL);
-        \define('TL_PLUGINS_URL', TL_ASSETS_URL);
+        self::define('TL_FILES_URL', ($objPage->staticFiles != '' && !$isDebugMode) ? $objPage->staticFiles . TL_PATH . '/' : '');
+        self::define('TL_ASSETS_URL', ($objPage->staticPlugins != '' && !$isDebugMode) ? $objPage->staticPlugins . TL_PATH . '/' : '');
+        self::define('TL_SCRIPT_URL', TL_ASSETS_URL);
+        self::define('TL_PLUGINS_URL', TL_ASSETS_URL);
 
         $objLayout = Database::getInstance()->prepare("
             SELECT l.*, t.templates
@@ -666,7 +674,7 @@ class Frontend extends \Contao\Frontend
             $objPage->templateGroup = $objLayout->templates;
 
             // Store the output format
-            [$strFormat, $strVariant] = explode('_', $objLayout->doctype);
+            [$strFormat, $strVariant] = explode('_', $objLayout->doctype) + [null, null];
             $objPage->outputFormat  = $strFormat;
             $objPage->outputVariant = $strVariant;
         }
@@ -678,8 +686,6 @@ class Frontend extends \Contao\Frontend
 
     /**
      * Adjust module and module id for certain payment and/or shipping modules
-     *
-     * @param PostSale $objPostsale
      */
     public function setPostsaleModuleSettings(PostSale $objPostsale)
     {
@@ -700,14 +706,13 @@ class Frontend extends \Contao\Frontend
      * @param object $objSource
      * @param string $strField
      * @param int    $intTaxClass
-     * @param array  $arrOptions
      *
      * @return float
      * @throws \Exception
      */
     public function addOptionsPrice($fltPrice, $objSource, $strField, $intTaxClass, array $arrOptions)
     {
-        $fltAmount = $fltPrice;
+        $fltAmount = (float) $fltPrice;
 
         if ($objSource instanceof IsotopePrice
             && ($objProduct = $objSource->getRelated('pid')) instanceof IsotopeProduct
@@ -735,7 +740,7 @@ class Frontend extends \Contao\Frontend
                     foreach ($objOptions as $objOption) {
                         if (\in_array($objOption->getLanguageId(), $value)) {
                             // Do not use getAmount() for non-percentage price, it would run Isotope::calculatePrice again (see isotope/core#2342)
-                            $amount = $objOption->isPercentage() ? $objOption->getAmount($fltPrice, 0) : $objOption->price;
+                            $amount = $objOption->isPercentage() ? $objOption->getAmount($fltPrice, 0) : (float) $objOption->price;
                             $objTax = $objSource->getRelated('tax_class');
 
                             if ($objOption->isPercentage() || !$objTax instanceof TaxClass) {
@@ -762,8 +767,6 @@ class Frontend extends \Contao\Frontend
     /**
      * Callback for add_to_cart button
      *
-     * @param IsotopeProduct $objProduct
-     * @param array          $arrConfig
      *
      * @deprecated Deprecated since Isotope 2.5
      */
@@ -776,8 +779,6 @@ class Frontend extends \Contao\Frontend
     /**
      * Callback for add_to_cart button if a product is being edited.
      *
-     * @param IsotopeProduct $objProduct
-     * @param array          $arrConfig
      *
      * @deprecated Deprecated since Isotope 2.5
      */
@@ -790,8 +791,6 @@ class Frontend extends \Contao\Frontend
     /**
      * Callback for toggle_favorites button
      *
-     * @param IsotopeProduct $objProduct
-     * @param array          $arrConfig
      *
      * @deprecated Deprecated since Isotope 2.5
      */
@@ -864,5 +863,14 @@ class Frontend extends \Contao\Frontend
         }
 
         System::loadLanguageFile('default', $language, true);
+    }
+
+    private static function define(string $constant_name, $value): void
+    {
+        if (defined($constant_name)) {
+            return;
+        }
+
+        \define($constant_name, $value);
     }
 }

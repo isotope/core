@@ -17,15 +17,11 @@ use Contao\FrontendUser;
 use Haste\Util\FileUpload;
 use Haste\Util\StringUtil;
 use Isotope\Interfaces\IsotopeOrderableCollection;
-use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Attribute;
 use Isotope\Model\ProductCollectionItem;
 
 class PostCheckoutUploads
 {
-    /**
-     * @param IsotopeOrderableCollection $order
-     */
     public function onPostCheckout(IsotopeOrderableCollection $order)
     {
         $items    = $order->getItems();
@@ -70,17 +66,17 @@ class PostCheckoutUploads
     }
 
     /**
-     * @param IsotopeOrderableCollection $order
      * @param ProductCollectionItem    $item
      * @param int                      $position
      * @param int                      $total
      * @param Attribute                $attribute
      * @param string                   $source
-     *
      * @return array
      */
     private function generateTokens(IsotopeOrderableCollection $order, $item, $position, $total, $attribute, $source)
     {
+        $isMember = \Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER');
+
         $tokens = [
             'document_number'  => $order->getDocumentNumber() ?: $order->getId(),
             'order_id'         => $order->getId(),
@@ -93,10 +89,10 @@ class PostCheckoutUploads
             'attribute_name'   => $attribute->name,
             'file_name'        => basename($source),
             'file_extension'   => pathinfo($source, PATHINFO_EXTENSION),
-            'has_member'       => true === FE_USER_LOGGED_IN ? '1' : '0'
+            'has_member'       => $isMember ? '1' : '0'
         ];
 
-        if (true === FE_USER_LOGGED_IN) {
+        if ($isMember) {
             $userData = FrontendUser::getInstance()->getData();
             unset($userData['password']);
 

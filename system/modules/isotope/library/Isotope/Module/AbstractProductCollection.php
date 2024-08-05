@@ -12,7 +12,6 @@
 namespace Isotope\Module;
 
 use Contao\Controller;
-use Contao\Environment;
 use Contao\Input;
 use Contao\StringUtil;
 use Haste\Util\Url;
@@ -196,9 +195,6 @@ abstract class AbstractProductCollection extends Module
     }
 
     /**
-     * @param IsotopeProductCollection $collection
-     * @param array                    $data
-     * @param array                    $quantity
      * @param bool                     $hasChanges
      *
      * @return array
@@ -269,10 +265,8 @@ abstract class AbstractProductCollection extends Module
     /**
      * Generate buttons for collection view template
      *
-     * @param array $buttons
      *
      * @return array
-     *
      * @deprecated Deprecated since Isotope 2.5
      */
     protected function generateButtons(array $buttons = [])
@@ -281,11 +275,9 @@ abstract class AbstractProductCollection extends Module
     }
 
     /**
-     * @param array           $buttons
      * @param string          $name
      * @param string          $label
      * @param \Closure|string $action
-     * @param array           $additional
      *
      * @deprecated Deprecated since Isotope 2.5
      */
@@ -306,7 +298,7 @@ abstract class AbstractProductCollection extends Module
 
         if (null !== $action
             && Input::post('FORM_SUBMIT') === $this->strFormId
-            && '' !== (string) Input::post('button_' . $name)
+            && null !== Input::post('button_' . $name)
         ) {
             if (\is_string($action)) {
                 Controller::redirect($action);

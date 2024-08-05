@@ -16,11 +16,11 @@ use Isotope\Collection\AttributeOption;
 
 interface IsotopeAttributeWithOptions extends IsotopeAttribute
 {
-    const SOURCE_NAME       = 'name';
-    const SOURCE_TABLE      = 'table';
-    const SOURCE_FOREIGNKEY = 'foreignKey';
-    const SOURCE_ATTRIBUTE  = 'attribute';
-    const SOURCE_PRODUCT    = 'product';
+    public const SOURCE_NAME       = 'name';
+    public const SOURCE_TABLE      = 'table';
+    public const SOURCE_FOREIGNKEY = 'foreignKey';
+    public const SOURCE_ATTRIBUTE  = 'attribute';
+    public const SOURCE_PRODUCT    = 'product';
 
     /**
      * Returns the options source
@@ -42,7 +42,6 @@ interface IsotopeAttributeWithOptions extends IsotopeAttribute
     /**
      * Get field options
      *
-     * @param IsotopeProduct $objProduct
      *
      * @return array
      */
@@ -51,7 +50,6 @@ interface IsotopeAttributeWithOptions extends IsotopeAttribute
     /**
      * Get AttributeOption models for current attribute
      *
-     * @param IsotopeProduct $objProduct
      *
      * @return AttributeOption
      */
@@ -60,7 +58,6 @@ interface IsotopeAttributeWithOptions extends IsotopeAttribute
     /**
      * Get a list of options for the frontend product filter
      *
-     * @param array $arrValues
      *
      * @return array
      */

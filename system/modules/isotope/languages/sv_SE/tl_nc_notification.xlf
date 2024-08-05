@@ -7,7 +7,7 @@
       </trans-unit>
       <trans-unit id="tl_nc_notification.iso_collectionTpl.1">
         <source>Please choose a template to render the products for the notification content.</source>
-        <target>Om du placerar modulen i en artikel kommer den att visa produkter som tilldelats artikelns delsida, även om du placerar artikeln på en annan sida (t.ex. med hjälp av insert tag).</target>
+        <target>Välj en mall för att återge produkterna för meddelandeinnehållet.</target>
       </trans-unit>
       <trans-unit id="tl_nc_notification.iso_orderCollectionBy.0">
         <source>Sorting</source>

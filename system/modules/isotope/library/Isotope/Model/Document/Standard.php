@@ -64,8 +64,6 @@ class Standard extends Document implements IsotopeDocument
     /**
      * Generate the pdf document
      *
-     * @param IsotopeProductCollection $objCollection
-     * @param array                    $arrTokens
      *
      * @return \TCPDF
      */
@@ -122,7 +120,7 @@ class Standard extends Document implements IsotopeDocument
         // Set document information
         $pdf->SetCreator(PDF_CREATOR);
         $pdf->SetAuthor(PDF_AUTHOR);
-        $pdf->SetTitle(StringUtil::parseSimpleTokens($this->documentTitle, $arrTokens));
+        $pdf->SetTitle(\Contao\System::getContainer()->get('contao.string.simple_token_parser')->parse($this->documentTitle, $arrTokens));
 
         // Prevent font subsetting (huge speed improvement)
         $pdf->setFontSubsetting(false);
@@ -160,26 +158,24 @@ class Standard extends Document implements IsotopeDocument
     /**
      * Generate and return document template
      *
-     * @param IsotopeProductCollection $objCollection
-     * @param array                    $arrTokens
      *
      * @return string
      */
     protected function generateTemplate(IsotopeProductCollection $objCollection, array $arrTokens)
     {
-        $objPage = PageModel::findWithDetails($objCollection->page_id);
+        $objPage = PageModel::findWithDetails($objCollection->pageId);
 
         /** @var Template|\stdClass $objTemplate */
         $objTemplate = new Template($this->documentTpl);
         $objTemplate->setData($this->arrData);
 
-        $objTemplate->title         = StringUtil::parseSimpleTokens($this->documentTitle, $arrTokens);
+        $objTemplate->title         = \Contao\System::getContainer()->get('contao.string.simple_token_parser')->parse($this->documentTitle, $arrTokens);
         $objTemplate->collection    = $objCollection;
         $objTemplate->config        = $objCollection->getConfig();
         $objTemplate->page          = $objPage;
-        $objTemplate->dateFormat    = $objPage->dateFormat ?: $GLOBALS['TL_CONFIG']['dateFormat'];
-        $objTemplate->timeFormat    = $objPage->timeFormat ?: $GLOBALS['TL_CONFIG']['timeFormat'];
-        $objTemplate->datimFormat   = $objPage->datimFormat ?: $GLOBALS['TL_CONFIG']['datimFormat'];
+        $objTemplate->dateFormat    = $objPage->dateFormat ?? $GLOBALS['TL_CONFIG']['dateFormat'];
+        $objTemplate->timeFormat    = $objPage->timeFormat ?? $GLOBALS['TL_CONFIG']['timeFormat'];
+        $objTemplate->datimFormat   = $objPage->datimFormat ?? $GLOBALS['TL_CONFIG']['datimFormat'];
 
         // Render the collection
         $objCollectionTemplate = new Template($this->collectionTpl);
@@ -261,22 +257,21 @@ class Standard extends Document implements IsotopeDocument
             'href="$1$4"'
         );
 
-        $strBuffer = preg_replace($arrSearch, $arrReplace, $strBuffer);
-
-        return $strBuffer;
+        return preg_replace($arrSearch, $arrReplace, $strBuffer);
     }
 
     /**
      * Loads the page configuration and language before generating a PDF.
-     *
-     * @param IsotopeProductCollection $objCollection
      */
     protected function prepareEnvironment(IsotopeProductCollection $objCollection)
     {
         global $objPage;
 
-        if (!\is_object($objPage) && $objCollection->pageId > 0) {
-            $objPage = PageModel::findWithDetails($objCollection->pageId);
+        if (
+            !\is_object($objPage)
+            && $objCollection->pageId > 0
+            && ($objPage = PageModel::findWithDetails($objCollection->pageId))
+        ) {
             $objPage = \Isotope\Frontend::loadPageConfig($objPage);
 
             System::loadLanguageFile('default', $GLOBALS['TL_LANGUAGE'], true);

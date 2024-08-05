@@ -23,8 +23,6 @@ interface IsotopeAttributeForVariants
     /**
      * Get available variant options for a product
      *
-     * @param array $arrIds
-     * @param array $arrOptions
      *
      * @return array
      */

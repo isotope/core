@@ -12,11 +12,12 @@
 namespace Isotope\Module;
 
 use Contao\Controller;
-use Contao\Environment;
+use Contao\FrontendUser;
 use Contao\Input;
 use Contao\PageModel;
 use Haste\Generator\RowClass;
 use Haste\Util\Url;
+use Isotope\CompatibilityHelper;
 use Isotope\Isotope;
 use Isotope\Model\ProductCollection\Wishlist;
 use Isotope\Template;
@@ -58,11 +59,11 @@ class WishlistManager extends Module
      */
     public function generate()
     {
-        if ('BE' === TL_MODE) {
+        if (CompatibilityHelper::isBackend()) {
             return $this->generateWildcard();
         }
 
-        if (FE_USER_LOGGED_IN !== true || 0 === \count($this->iso_config_ids)) {
+        if (!\Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER') || 0 === \count($this->iso_config_ids)) {
             return '';
         }
 
@@ -84,7 +85,7 @@ class WishlistManager extends Module
                 'tl_iso_product_collection.member=?',
                 /*'config_id IN (' . implode(',', array_map('intval', $this->iso_config_ids)) . ')',*/
             ],
-            [\FrontendUser::getInstance()->id]
+            [FrontendUser::getInstance()->id]
         );
 
         if (null === $wishlists) {

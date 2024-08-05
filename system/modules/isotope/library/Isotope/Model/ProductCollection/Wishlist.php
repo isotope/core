@@ -13,6 +13,7 @@ namespace Isotope\Model\ProductCollection;
 
 use Contao\FrontendUser;
 use Contao\PageModel;
+use Isotope\CompatibilityHelper;
 use Isotope\Model\ProductCollection;
 
 class Wishlist extends ProductCollection
@@ -49,7 +50,7 @@ class Wishlist extends ProductCollection
 
     public static function findByIdForCurrentUser($id)
     {
-        if ('FE' !== TL_MODE || true !== FE_USER_LOGGED_IN || ($storeId = static::getCurrentStoreId()) === null) {
+        if (!CompatibilityHelper::isFrontend() || !\Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER') || ($storeId = static::getCurrentStoreId()) === null) {
             return null;
         }
 
@@ -64,7 +65,7 @@ class Wishlist extends ProductCollection
      */
     public static function findAllForCurrentUser()
     {
-        if ('FE' !== TL_MODE || true !== FE_USER_LOGGED_IN || ($storeId = static::getCurrentStoreId()) === null) {
+        if (!CompatibilityHelper::isFrontend() || !\Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER') || ($storeId = static::getCurrentStoreId()) === null) {
             return null;
         }
 
@@ -84,7 +85,7 @@ class Wishlist extends ProductCollection
 
     private static function getCurrentStoreId()
     {
-        if ('FE' !== TL_MODE) {
+        if (!CompatibilityHelper::isFrontend()) {
             return null;
         }
 

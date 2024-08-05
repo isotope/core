@@ -34,6 +34,7 @@ class UpdateAction extends AbstractButton
 
     /**
      * {@inheritdoc}
+     * @return void
      */
     public function handleSubmit(IsotopeProduct $product, array $config = [])
     {

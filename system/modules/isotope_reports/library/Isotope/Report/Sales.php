@@ -125,7 +125,7 @@ abstract class Sales extends Report
                 break;
 
             default:
-                throw new \Exception('Invalid period "' . $strPeriod . '". Reset your session to continue.');
+                throw new \RuntimeException('Invalid period "' . $strPeriod . '". Reset your session to continue.');
         }
 
         return array($publicDate, $privateDate, $sqlDate, $jsDate);
@@ -153,7 +153,7 @@ abstract class Sales extends Report
             'label'     => &$GLOBALS['TL_LANG']['ISO_REPORT']['status'],
             'type'      => 'filter',
             'value'     => $varValue,
-            'active'    => ($varValue != ''),
+            'active'    => (bool) $varValue,
             'class'     => 'iso_status',
             'options'   => $arrStatus,
         ];

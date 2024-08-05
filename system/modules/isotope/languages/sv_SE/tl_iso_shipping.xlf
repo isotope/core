@@ -415,7 +415,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_shipping.new.0">
         <source>New shipping method</source>
-        <target>Nytt fraktsätt</target>
+        <target>Ny fraktmetod</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.new.1">
         <source>Create a New shipping method</source>

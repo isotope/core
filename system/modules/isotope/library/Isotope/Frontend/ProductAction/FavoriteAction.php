@@ -40,14 +40,6 @@ class FavoriteAction extends AbstractButton
     /**
      * {@inheritdoc}
      */
-    public function isAvailable(IsotopeProduct $product, array $config = [])
-    {
-        return true === FE_USER_LOGGED_IN;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function handleSubmit(IsotopeProduct $product, array $config = [])
     {
         if (!isset($_POST[$this->getName()])) {
@@ -82,8 +74,6 @@ class FavoriteAction extends AbstractButton
     }
 
     /**
-     * @param IsotopeProduct $product
-     *
      * @return bool
      */
     private function isFavorited(IsotopeProduct $product = null)

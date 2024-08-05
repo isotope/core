@@ -11,6 +11,7 @@
 
 namespace Isotope;
 
+use Contao\Database;
 use Contao\Model\Collection;
 use Contao\StringUtil;
 use Isotope\Model\Label;
@@ -43,7 +44,7 @@ class Translation
      */
     public static function get($varLabel, $strLanguage = null)
     {
-        if (!\Database::getInstance()->tableExists(Label::getTable())) {
+        if (!Database::getInstance()->tableExists(Label::getTable())) {
             return $varLabel;
         }
 
@@ -68,11 +69,7 @@ class Translation
 
         $varLabel = StringUtil::decodeEntities($varLabel);
 
-        if (isset(static::$arrLabels[$strLanguage][$varLabel])) {
-            return static::$arrLabels[$strLanguage][$varLabel];
-        }
-
-        return $varLabel;
+        return static::$arrLabels[$strLanguage][$varLabel] ?? $varLabel;
     }
 
     /**

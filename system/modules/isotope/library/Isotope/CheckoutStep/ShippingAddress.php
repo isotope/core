@@ -12,7 +12,6 @@
 namespace Isotope\CheckoutStep;
 
 use Isotope\Interfaces\IsotopeCheckoutStep;
-use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\Address as AddressModel;
 use Isotope\Module\Checkout;
@@ -208,8 +207,6 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
 
     /**
      * Set new address in cart
-     *
-     * @param AddressModel $objAddress
      */
     protected function setAddress(AddressModel $objAddress)
     {

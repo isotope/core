@@ -135,7 +135,7 @@ $GLOBALS['TL_DCA']['tl_iso_document'] = array
         (
             'exclude'               => true,
             'inputType'             => 'select',
-            'options_callback'      => function(\DataContainer $dc) {
+            'options_callback'      => function() {
                 return \Isotope\Backend::getTemplates('iso_document_');
             },
             'eval'                  => array('includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50', 'mandatory'=>true),
@@ -146,7 +146,7 @@ $GLOBALS['TL_DCA']['tl_iso_document'] = array
             'exclude'               => true,
             'default'               => 'iso_collection_invoice',
             'inputType'             => 'select',
-            'options_callback'      => function(\DataContainer $dc) {
+            'options_callback'      => function() {
                 return \Isotope\Backend::getTemplates('iso_collection_');
             },
             'eval'                  => array('includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50', 'mandatory'=>true),

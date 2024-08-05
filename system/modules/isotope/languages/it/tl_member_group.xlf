@@ -7,6 +7,7 @@
       </trans-unit>
       <trans-unit id="tl_member_group.iso_priceDisplay.1">
         <source>Select if you want to override price display for this member group. See the help wizard for more information.</source>
+        <target>Selezionare se si desidera ignorare la visualizzazione dei prezzi per questo gruppo di membri. Per ulteriori informazioni, consultare la Guida guidata.</target>
       </trans-unit>
       <trans-unit id="tl_member_group.isotope_legend">
         <source>Isotope eCommerce</source>

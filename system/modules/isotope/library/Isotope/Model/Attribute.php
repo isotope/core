@@ -60,6 +60,7 @@ use Isotope\Translation;
  * @property string        $fieldType
  * @property bool          $files
  * @property bool          $filesOnly
+ * @property bool          $inline
  * @property string        $sortBy
  * @property string        $path
  * @property bool          $storeFile
@@ -175,7 +176,7 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
         }
 
         $this->field_name  = $strName;
-        $this->type        = array_search(\get_called_class(), static::getModelTypes(), true);
+        $this->type        = array_search(static::class, static::getModelTypes(), true);
         $this->name        = \is_array($arrField['label'] ?? null) ? $arrField['label'][0] : ($arrField['label'] ?? $strName);
         $this->description = \is_array($arrField['label'] ?? null) ? $arrField['label'][1] : '';
         $this->be_filter   = ($arrField['filter'] ?? false) ? '1' : '';
@@ -252,7 +253,7 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
                     $foreignKey = $this->parseForeignKey($this->foreignKey, $GLOBALS['TL_LANGUAGE']);
                     $arrKey     = explode('.', $foreignKey, 2);
 
-                    if ('' !== (string) $arrKey[0] && '' !== $arrKey[1]) {
+                    if ('' !== $arrKey[0] && '' !== $arrKey[1]) {
                         $arrOptions = Database::getInstance()
                             ->execute("SELECT id AS value, {$arrKey[1]} AS label FROM {$arrKey[0]} ORDER BY label")
                             ->fetchAllAssoc()
@@ -348,7 +349,6 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
      * Get available variant options for a product
      *
      * @param int[] $arrIds
-     * @param array $arrOptions
      *
      * @return array
      * @deprecated will only be available when IsotopeAttributeForVariants interface is implemented
@@ -398,8 +398,6 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
     /**
      * Generate HTML markup of product data for this attribute
      *
-     * @param IsotopeProduct $objProduct
-     * @param array          $arrOptions
      *
      * @return mixed
      */
@@ -413,11 +411,11 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
         }
 
         // Generate a HTML table for associative arrays
-        if (!array_is_assoc($varValue) && \is_array($varValue[0])) {
-            return $arrOptions['noHtml'] ? $varValue : $this->generateTable($varValue, $objProduct);
+        if (!\Contao\ArrayUtil::isAssoc($varValue) && \is_array($varValue[0])) {
+            return ($arrOptions['noHtml'] ?? false) ? $varValue : $this->generateTable($varValue, $objProduct);
         }
 
-        if ($arrOptions['noHtml']) {
+        if ($arrOptions['noHtml'] ?? false) {
             $result = array();
 
             foreach ($varValue as $v1) {
@@ -437,7 +435,6 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
 
     /**
      * @param mixed $value
-     * @param array $options
      *
      * @return string
      */
@@ -494,8 +491,6 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
     /**
      * Generate HTML table for associative array values
      *
-     * @param array          $arrValues
-     * @param IsotopeProduct $objProduct
      *
      * @return string
      */
@@ -511,7 +506,7 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
     <tr>';
 
         foreach (array_keys($arrValues[0]) as $i => $name) {
-            if ($arrFormat[$name]['doNotShow']) {
+            if ($arrFormat[$name]['doNotShow'] ?? null) {
                 continue;
             }
 
@@ -533,11 +528,11 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
             $c = -1;
 
             foreach ($row as $name => $value) {
-                if ($arrFormat[$name]['doNotShow']) {
+                if ($arrFormat[$name]['doNotShow'] ?? null) {
                     continue;
                 }
 
-                if ('price' === $arrFormat[$name]['rgxp']) {
+                if ('price' === $arrFormat[$name]['rgxp'] ?? null) {
                     $intTax = (int) $row['tax_class'];
 
                     $value = Isotope::formatPriceWithCurrency(Isotope::calculatePrice($value, $objProduct, $this->field_name, $intTax));
@@ -553,17 +548,14 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
     </tr>';
         }
 
-        $strBuffer .= '
+        return $strBuffer . '
   </tbody>
 </table>';
-
-        return $strBuffer;
     }
 
     /**
      * Generate HTML list for array values
      *
-     * @param array $arrValues
      *
      * @return string
      */
@@ -581,9 +573,7 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
             ++$current;
         }
 
-        $strBuffer .= "\n</ul>";
-
-        return $strBuffer;
+        return $strBuffer . "\n</ul>";
     }
 
     /**
@@ -602,7 +592,7 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
             $arrDCA    = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
 
             foreach ($arrDCA as $field => $config) {
-                if ($config['attributes']['systemColumn']) {
+                if ($config['attributes']['systemColumn'] ?? false) {
                     $arrFields[] = $field;
                 }
             }
@@ -962,7 +952,6 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
      * Get an attribute by database field name
      *
      * @param string $strField
-     * @param array  $arrOptions
      *
      * @return Model|null
      */

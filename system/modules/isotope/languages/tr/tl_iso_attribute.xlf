@@ -271,6 +271,12 @@
         <source>Remove the radio buttons or checkboxes next to folders.</source>
         <target>Klasörlerin yanındaki radyo düğmelerini veya onay kutularını kaldırın.</target>
       </trans-unit>
+      <trans-unit id="tl_iso_attribute.inline.0">
+        <source>Show in browser</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.inline.1">
+        <source>Show the file in the browser instead of opening the download dialog.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_attribute.isGallery.0">
         <source>Mark as gallery</source>
         <target>Galeri olarak işaretle</target>
@@ -718,8 +724,7 @@
         <target>Özelliği sil</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.delete.1">
-        <source>Delete attribute ID %s. The database column will not be deleted, you need to manually update the database using the install tool or repository manager.</source>
-        <target>%s ID'Li özelliği sil. Veritabanı sütunu silinmez, yükleme aracını veya depo yöneticisini kullanarak veritabanını manuel olarak güncellemeniz gerekir.</target>
+        <source>Delete attribute ID %s. The database column will not be deleted, you need to manually update the database using the Contao Manager.</source>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.show.0">
         <source>Attribute details</source>
@@ -730,8 +735,7 @@
         <target>%s ID'li özellğin detaylarını gör</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.deleteConfirm">
-        <source>Do you really want to delete attribute ID %s? The database column will not be deleted, you need to manually update the database using the install tool or repository manager.</source>
-        <target>%s ID'Li özelliği gerçekten silmek istiyor musunuz? Veritabanı sütunu silinmez, yükleme aracını veya depo yöneticisini kullanarak veritabanını manuel olarak güncellemeniz gerekir.</target>
+        <source>Do you really want to delete attribute ID %s? The database column will not be deleted, you need to manually update the database using the Contao Manager.</source>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.attribute_legend">
         <source>Attribute name &amp; type</source>

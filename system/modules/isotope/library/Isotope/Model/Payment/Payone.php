@@ -11,7 +11,6 @@
 
 namespace Isotope\Model\Payment;
 
-use Contao\Environment;
 use Contao\Input;
 use Contao\Module;
 use Contao\System;
@@ -143,7 +142,7 @@ class Payone extends Postsale
                 array_walk(
                     $arrConfig,
                     function(&$option) {
-                        $option = $option['label'] . ': ' . (string) $option;
+                        $option = $option['label'] . ': ' . $option;
                     }
                 );
 

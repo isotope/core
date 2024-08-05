@@ -22,6 +22,7 @@ use Contao\System;
 use Contao\User;
 use Haste\Form\Form;
 use Haste\Generator\RowClass;
+use Isotope\CompatibilityHelper;
 use Isotope\Isotope;
 use Isotope\Model\Address;
 use Isotope\Model\Config;
@@ -60,11 +61,11 @@ class AddressBook extends Module
      */
     public function generate()
     {
-        if ('BE' === TL_MODE) {
+        if (CompatibilityHelper::isBackend()) {
             return $this->generateWildcard();
         }
 
-        if (FE_USER_LOGGED_IN !== true) {
+        if (!\Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER')) {
             return '';
         }
 
@@ -144,8 +145,8 @@ class AddressBook extends Module
                     'id'                => $objAddress->id,
                     'class'             => ($objAddress->isDefaultBilling ? 'default_billing' : '') . ($objAddress->isDefaultShipping ? ' default_shipping' : ''),
                     'text'              => $objAddress->generate(),
-                    'edit_url'          => ampersand($strUrl . '?act=edit&address=' . $objAddress->id),
-                    'delete_url'        => ampersand($strUrl . '?act=delete&address=' . $objAddress->id),
+                    'edit_url'          => \Contao\StringUtil::ampersand($strUrl . '?act=edit&address=' . $objAddress->id),
+                    'delete_url'        => \Contao\StringUtil::ampersand($strUrl . '?act=delete&address=' . $objAddress->id),
                     'default_billing'   => $objAddress->isDefaultBilling ? true : false,
                     'default_shipping'  => $objAddress->isDefaultShipping ? true : false,
                 ));
@@ -164,7 +165,7 @@ class AddressBook extends Module
         $this->Template->deleteAddressLabel   = $GLOBALS['TL_LANG']['MSC']['deleteAddressLabel'];
         $this->Template->deleteAddressConfirm = StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['deleteAddressConfirm']);
         $this->Template->addresses            = $arrAddresses;
-        $this->Template->addNewAddress        = ampersand($strUrl . '?act=create');
+        $this->Template->addNewAddress        = \Contao\StringUtil::ampersand($strUrl . '?act=create');
     }
 
 
@@ -178,7 +179,7 @@ class AddressBook extends Module
         $table = Address::getTable();
         System::loadLanguageFile(MemberModel::getTable());
 
-        $this->Template            = new Template($this->memberTpl);
+        $this->Template            = new Template($this->memberTpl ?: 'member_default');
         $this->Template->hasError  = false;
         $this->Template->slabel    = StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['saveData']);
 
@@ -299,10 +300,7 @@ class AddressBook extends Module
     /**
      * Send a notification when address has been changed
      *
-     * @param Address $objAddress
-     * @param array   $arrOldAddress
      * @param User    $objMember
-     * @param Config  $objConfig
      */
     protected function triggerNotificationCenter(Address $objAddress, array $arrOldAddress, $objMember, Config $objConfig)
     {

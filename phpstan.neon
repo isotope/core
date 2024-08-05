@@ -1,0 +1,7 @@
+parameters:
+    level: 0
+    ignoreErrors:
+        - '#Unsafe usage of new static\(\)\.#'
+        - '#Function file_exists is unsafe to use#'
+    excludePaths:
+        - system/modules/isotope/library/UnitedPrototype
