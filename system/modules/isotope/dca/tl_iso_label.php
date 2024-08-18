@@ -17,7 +17,7 @@ $GLOBALS['TL_DCA']['tl_iso_label'] = array
     // Config
     'config' => array
     (
-        'dataContainer'               => 'Table',
+        'dataContainer' => \Contao\DC_Table::class,
         'enableVersioning'            => true,
         'backlink'                    => 'do=iso_setup',
         'sql' => array

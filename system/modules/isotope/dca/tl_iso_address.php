@@ -18,7 +18,7 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = array
     // Config
     'config' => array
     (
-        'dataContainer'             => 'Table',
+        'dataContainer' => \Contao\DC_Table::class,
         'enableVersioning'          => false,
         'ptable'                    => '',
         'dynamicPtable'             => true,

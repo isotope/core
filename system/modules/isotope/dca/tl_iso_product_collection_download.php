@@ -18,7 +18,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_download'] = array
     // Config
     'config' => array
     (
-        'dataContainer'         => 'Table',
+        'dataContainer' => \Contao\DC_Table::class,
         'closed'                => true,
         'notEditable'           => true,
         'ptable'                => 'tl_iso_product_collection_item',

@@ -18,7 +18,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
     // Config
     'config' => array
     (
-        'dataContainer'             => 'Table',
+        'dataContainer' => \Contao\DC_Table::class,
         'enableVersioning'          => true,
         'backlink'                  => 'do=iso_setup',
         'onload_callback' => array
@@ -141,7 +141,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         (
             'exclude'               => true,
             'inputType'             => 'fileTree',
-            'eval'                  => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>$GLOBALS['TL_CONFIG']['validImageTypes'], 'tl_class'=>'w50 w50h'),
+            'eval'                  => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>'%contao.image.valid_extensions%', 'tl_class'=>'w50 w50h'),
             'sql'                   => "binary(16) NULL",
         ),
         'main_size' => array
@@ -268,7 +268,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         (
             'exclude'               => true,
             'inputType'             => 'fileTree',
-            'eval'                  => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>$GLOBALS['TL_CONFIG']['validImageTypes'], 'tl_class'=>'clr w50 w50h'),
+            'eval'                  => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>'%contao.image.valid_extensions%', 'tl_class'=>'clr w50 w50h'),
             'sql'                   => "binary(16) NULL",
         ),
         'main_watermark_position' => array
@@ -284,7 +284,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         (
             'exclude'               => true,
             'inputType'             => 'fileTree',
-            'eval'                  => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>$GLOBALS['TL_CONFIG']['validImageTypes'], 'tl_class'=>'clr w50 w50h'),
+            'eval'                  => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>'%contao.image.valid_extensions%', 'tl_class'=>'clr w50 w50h'),
             'sql'                   => "binary(16) NULL",
         ),
         'gallery_watermark_position' => array
@@ -300,7 +300,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         (
             'exclude'               => true,
             'inputType'             => 'fileTree',
-            'eval'                  => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>$GLOBALS['TL_CONFIG']['validImageTypes'], 'tl_class'=>'clr w50 w50h'),
+            'eval'                  => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>'%contao.image.valid_extensions%', 'tl_class'=>'clr w50 w50h'),
             'sql'                   => "binary(16) NULL",
         ),
         'lightbox_watermark_position' => array
@@ -316,7 +316,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         (
             'exclude'               => true,
             'inputType'             => 'fileTree',
-            'eval'                  => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>$GLOBALS['TL_CONFIG']['validImageTypes'], 'tl_class'=>'clr w50 w50h'),
+            'eval'                  => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>'%contao.image.valid_extensions%', 'tl_class'=>'clr w50 w50h'),
             'sql'                   => "binary(16) NULL",
         ),
         'zoom_watermark_position' => array

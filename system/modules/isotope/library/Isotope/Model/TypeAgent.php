@@ -248,7 +248,7 @@ abstract class TypeAgent extends Model
         }
 
         $objStatement = static::preFind($objStatement);
-        $objResult    = $objStatement->execute($arrOptions['value'] ?? null);
+        $objResult    = $objStatement->execute(...($arrOptions['value'] ?? []));
 
         if ($objResult->numRows < 1) {
             return 'Array' === $arrOptions['return'] ? array() : null;

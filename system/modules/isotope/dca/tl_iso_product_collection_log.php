@@ -16,7 +16,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_log'] = [
 
     // Config
     'config' => [
-        'dataContainer' => 'Table',
+        'dataContainer' => \Contao\DC_Table::class,
         'ptable' => \Isotope\Model\ProductCollection::getTable(),
         'sql' => [
             'keys' => [

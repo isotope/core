@@ -18,7 +18,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_price'] = array
     // Config
     'config' => array
     (
-        'dataContainer'             => 'Table',
+        'dataContainer' => \Contao\DC_Table::class,
         'enableVersioning'          => true,
         'ptable'                    => 'tl_iso_product',
         'ctable'                    => array('tl_iso_product_pricetier'),

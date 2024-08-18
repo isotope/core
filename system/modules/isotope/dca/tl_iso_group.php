@@ -18,7 +18,7 @@ $GLOBALS['TL_DCA']['tl_iso_group'] = array
     // Config
     'config' => array
     (
-        'dataContainer'             => 'Table',
+        'dataContainer' => \Contao\DC_Table::class,
         'label'                     => &$GLOBALS['TL_LANG']['tl_iso_group']['label'],
         'backlink'                  => \Contao\Input::get('popup') ? null : 'do=iso_products',
         'enableVersioning'          => true,

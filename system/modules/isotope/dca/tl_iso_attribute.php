@@ -24,7 +24,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
     // Config
     'config' => array
     (
-        'dataContainer'             => 'Table',
+        'dataContainer' => \Contao\DC_Table::class,
         'enableVersioning'          => true,
         'backlink'                  => 'do=iso_setup',
         'ctable'                    => array(\Isotope\Model\AttributeOption::getTable()),
@@ -373,7 +373,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
         'extensions' => array
         (
             'exclude'               => true,
-            'default'               => $GLOBALS['TL_CONFIG']['validImageTypes'],
+            'default'               => '',
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'rgxp'=>'extnd', 'maxlength'=>255, 'tl_class'=>'w50'),
             'sql'                   => "varchar(255) NOT NULL default ''",

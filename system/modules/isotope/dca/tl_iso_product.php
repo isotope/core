@@ -520,7 +520,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
             'exclude'               => true,
             'inputType'             => 'mediaManager',
             'explanation'           => 'mediaManager',
-            'eval'                  => array('extensions'=>$GLOBALS['TL_CONFIG']['validImageTypes'], 'helpwizard'=>true, 'tl_class'=>'clr'),
+            'eval'                  => array('extensions'=>'%contao.image.valid_extensions%', 'helpwizard'=>true, 'tl_class'=>'clr'),
             'attributes'            => array('legend'=>'media_legend', 'fixed'=>true, 'multilingual'=>true, 'dynamic'=>true, 'systemColumn'=>true, 'fetch_fallback'=>true),
             'sql'                   => "blob NULL",
         ),
