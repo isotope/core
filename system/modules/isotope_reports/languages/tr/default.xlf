@@ -41,6 +41,12 @@
         <source>Sales statistics by member</source>
         <target>Üyeler bazında satış istatistikleri</target>
       </trans-unit>
+      <trans-unit id="ISO_REPORT.members_new">
+        <source>New Members</source>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.members_all">
+        <source>Members Total</source>
+      </trans-unit>
       <trans-unit id="ISO_REPORT.members_currency">
         <source>%s - Members</source>
         <target>%s - Üye</target>
@@ -89,13 +95,17 @@
         <source>Statistics about coupon usage</source>
         <target>Kuponların kullanımı ile ilgili istatistikler</target>
       </trans-unit>
+        <trans-unit id="ISO_REPORT.summary">
+            <source>Sales summary</source>
+        </trans-unit>
       <trans-unit id="ISO_REPORT.24h_summary">
-        <source>Sales in the last 24 hours</source>
-        <target>Son 24 saat içindeki satışlar </target>
+        <source>last 24 hours</source>
       </trans-unit>
-      <trans-unit id="ISO_REPORT.24h_empty">
-        <source>No orders have been placed in the last 24 hours.</source>
-        <target>Son 24 saat içinde hiçbir sipariş verilmemiş.</target>
+      <trans-unit id="ISO_REPORT.month_summary">
+        <source>this month</source>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.year_summary">
+        <source>this year</source>
       </trans-unit>
       <trans-unit id="ISO_REPORT.shop_config">
         <source>Shop configuration</source>
@@ -117,9 +127,29 @@
         <source>Number of items</source>
         <target>Öğe sayısı</target>
       </trans-unit>
+      <trans-unit id="ISO_REPORT.customer#">
+        <source>Customer</source>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.city#">
+        <source>City</source>
+        <target>Şehir</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.comparePrevYear#">
+        <source>Cf. prior year</source>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.sales_headline">
+        <source>Period</source>
+        <target>Dönem</target>
+      </trans-unit>
       <trans-unit id="ISO_REPORT.sales#">
         <source>Sales Total</source>
         <target>Satış Toplamı</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.discounts#">
+        <source>Discounts Total</source>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.sales_avg">
+        <source>Sales Ø</source>
       </trans-unit>
       <trans-unit id="ISO_REPORT.filter_config">
         <source>Shop-Config</source>
@@ -208,6 +238,9 @@
       <trans-unit id="ISO_REPORT.variants">
         <source>Variants</source>
         <target>Çeşitler</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.guestOrders">
+        <source>Guest orders</source>
       </trans-unit>
     </body>
   </file>

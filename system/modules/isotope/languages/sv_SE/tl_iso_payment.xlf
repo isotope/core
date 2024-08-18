@@ -151,7 +151,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.trans_type.1">
         <source>Select if you want to instantly capture the money or authorize (and hold) for a later transaction (e.g. when shipping).</source>
-        <target>Välj om du omedelbart vill fånga pengarna eller auktorisera (och behålla) för en senare transaktion (t.ex. vid leverans).</target>
+        <target>Välj om du omedelbart vill få pengarna eller auktorisera (och behålla) för en senare transaktion (t.ex. vid leverans).</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.paybyway_merchant_id.0">
         <source>Merchant ID</source>
@@ -187,7 +187,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.paypal_secret.0">
         <source>Secret</source>
-        <target>Hemligt</target>
+        <target>Hemlighet</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.paypal_secret.1">
         <source>Enter your PayPal API secret.</source>
@@ -251,7 +251,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.psp_dynamic_template.1">
         <source>Enter a valid &lt;strong&gt;absolute&lt;/strong&gt; URL to a dynamic template here.</source>
-        <target>Ange en giltig absolut URL till en dynamisk mall här.</target>
+        <target>Ange en giltig &lt;strong&gt;absolut&lt;/strong&gt; URL till en dynamisk mall här.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.psp_payment_method.0">
         <source>Payment method</source>
@@ -359,7 +359,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.sparkasse_sslmerchant.1">
         <source>Please enter your seller ID (Händlerkennung).</source>
-        <target>Ange ditt säljar-ID</target>
+        <target>Ange ditt säljar-ID (Säljar-ID)</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.sparkasse_sslpassword.0">
         <source>Password</source>
@@ -383,7 +383,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.sofortueberweisung_user_id.1">
         <source>Your customer ID for sofortüberweisung.de</source>
-        <target>Ditt kund-ID för sofortüberweisung.de</target>
+        <target>Ditt kund-ID för DIRECTebanking.com</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.sofortueberweisung_project_id.0">
         <source>Project ID</source>
@@ -391,7 +391,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.sofortueberweisung_project_id.1">
         <source>Your project ID for sofortüberweisung.de</source>
-        <target>Ditt projekt-ID för sofortüberweisung.de</target>
+        <target>Ditt projekt-ID för DIRECTebanking.com</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.sofortueberweisung_project_password.0">
         <source>Projekt password</source>
@@ -491,7 +491,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.expercash_paymentMethod.elv_authorize">
         <source>Prüfung und Speicherung von Kontodaten zum späteren Einzug</source>
-        <target>Kontrollera och spara kontodata för senare insamling</target>
+        <target>Kontrollera och spara kontodata för senare indragning</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.expercash_paymentMethod.cc_buy">
         <source>Kreditkartenzahlung</source>
@@ -543,7 +543,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.payone_clearingtype.0">
         <source>Clearing type</source>
-        <target>Clearing typ</target>
+        <target>Clearingtyp</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.payone_clearingtype.1">
         <source>Please choose a clearing type.</source>
@@ -635,7 +635,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.quickpay_apiKey.1">
         <source>Please enter your API key.</source>
-        <target>Ange ditt avtals-ID.</target>
+        <target>Ange ditt API-nyckel.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.quickpay_privateKey.0">
         <source>Private key</source>
@@ -895,7 +895,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.toggle.1">
         <source>Enable/disable payment method ID %s</source>
-        <target>Enable/disable payment method ID %s</target>
+        <target>Aktivera/inaktivera betalningsmetod ID %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.show.0">
         <source>Payment method details</source>

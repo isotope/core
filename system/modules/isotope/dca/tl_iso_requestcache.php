@@ -21,9 +21,10 @@ $GLOBALS['TL_DCA']['tl_iso_requestcache'] = array
         (
             'keys' => array
             (
-                'id'            => 'primary',
-                'id,store_id'   => 'index'
-            )
+                'id' => 'primary',
+                'id,store_id' => 'index',
+                'store_id,config_hash' => 'index',
+            ),
         ),
     ),
 
@@ -33,19 +34,23 @@ $GLOBALS['TL_DCA']['tl_iso_requestcache'] = array
 
         'id' => array
         (
-            'sql'                 =>  "int(10) unsigned NOT NULL auto_increment",
+            'sql' => 'int(10) unsigned NOT NULL auto_increment',
         ),
         'tstamp' => array
         (
-            'sql'                 =>  "int(10) unsigned NOT NULL default '0'",
+            'sql' => 'int(10) unsigned NOT NULL default 0',
         ),
         'store_id' => array
         (
-            'sql'                 =>  "int(10) unsigned NOT NULL default '0'",
+            'sql' => 'int(10) unsigned NOT NULL default 0',
+        ),
+        'config_hash' => array
+        (
+            'sql' => "varchar(32) NOT NULL default ''",
         ),
         'config' => array
         (
-            'sql'                 =>  "blob NULL",
+            'sql' => 'blob NULL',
         ),
     ),
 );

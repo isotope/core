@@ -221,6 +221,9 @@
         <source>Please choose the folder where product assets are located.</source>
         <target>Kies een folder waar bestanden voor dit product staan.</target>
       </trans-unit>
+      <trans-unit id="tl_iso_product.hitCount.0">
+        <source>Hit counter</source>
+      </trans-unit>
       <trans-unit id="tl_iso_product.mmSrc">
         <source>Preview</source>
         <target>Voorvertoning</target>

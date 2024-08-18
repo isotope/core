@@ -143,7 +143,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.bankAccount.1">
         <source>Please enter your bank account number (IBAN).</source>
-        <target>Lütfen banka hesap numaranızı (IBAN) giriniz.</target>
+        <target>Lütfen banka hesap numaranızı (IBAN) girin.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.bankCode.0">
         <source>Bank code (BIC/SWIFT)</source>

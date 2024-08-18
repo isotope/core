@@ -13,7 +13,7 @@ namespace Isotope\EventListener;
 
 use Contao\CoreBundle\Event\GenerateSymlinksEvent;
 use Symfony\Component\Filesystem\Filesystem;
-use Webmozart\PathUtil\Path;
+use Symfony\Component\Filesystem\Path;
 
 /**
  * Adds a symlink from isotope images directory to the public web dir.

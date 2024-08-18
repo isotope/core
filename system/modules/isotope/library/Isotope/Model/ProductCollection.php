@@ -91,7 +91,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
      * Cache
      * @var array
      */
-    protected $arrCache;
+    protected $arrCache = [];
 
     /**
      * Cache product items in this collection
@@ -670,8 +670,8 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
             );
         }
 
-        $this->arrCache      = array();
-        $this->arrItems      = null;
+        $this->arrCache = [];
+        $this->arrItems = null;
         $this->arrSurcharges = null;
 
         // !HOOK: additional functionality when deleting a collection
@@ -857,7 +857,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
         if (!isset($this->arrCache['taxFreeTotal'])) {
             $arrSurcharges = $this->getSurcharges();
 
-            if (Config::PRICE_DISPLAY_GROSS === $this->getConfig()->priceDisplay) {
+            if (\in_array($this->getConfig()->getPriceDisplay(), [Config::PRICE_DISPLAY_GROSS, Config::PRICE_DISPLAY_FIXED], true)) {
                 $fltAmount = $this->getTotal();
 
                 foreach ($arrSurcharges as $objSurcharge) {
@@ -1421,7 +1421,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
 
         // Empty cache
         $this->arrSurcharges = null;
-        $this->arrCache = null;
+        $this->arrCache = [];
 
         return $arrIds;
     }
@@ -1937,8 +1937,8 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
     {
         $this->arrItems = null;
         $this->arrSurcharges = null;
-        $this->arrCache = null;
-        $this->arrErrors = array();
+        $this->arrCache = [];
+        $this->arrErrors = [];
         $this->objPayment = false;
         $this->objShipping = false;
     }

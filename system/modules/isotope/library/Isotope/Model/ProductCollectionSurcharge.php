@@ -337,26 +337,41 @@ abstract class ProductCollectionSurcharge extends TypeAgent
 
         if ($intTaxClass == -1) {
             $objSurcharge->applySplittedTax($objCollection, $objSource);
-        } elseif ($intTaxClass > 0) {
+        } elseif ($intTaxClass > 0 && ($objTaxClass = TaxClass::findByPk($intTaxClass)) !== null) {
+
+            $fltPrice = $objSurcharge->total_price;
+            $fltNetPrice = $objSurcharge->total_price;
+            $arrAddresses = array(
+                'billing'  => $objCollection->getBillingAddress(),
+                'shipping' => $objCollection->getShippingAddress(),
+            );
+
+            /** @var TaxRate $objIncludes */
+            if (
+                ($objIncludes = $objTaxClass->getRelated('includes')) !== null
+                && $objIncludes->isApplicable($fltPrice, $arrAddresses)
+            ) {
+                $fltNetPrice -= $objIncludes->calculateAmountIncludedInPrice($fltPrice);
+            }
 
             /** @var TaxClass $objTaxClass */
-            if (($objTaxClass = TaxClass::findByPk($intTaxClass)) !== null) {
+            if (Config::PRICE_DISPLAY_FIXED === $objCollection->getConfig()->getPriceDisplay()) {
+                if (($objRates = $objTaxClass->getRelated('rates')) !== null) {
 
-                /** @var TaxRate $objIncludes */
-                if (($objIncludes = $objTaxClass->getRelated('includes')) !== null) {
+                    /** @var \Isotope\Model\TaxRate $objTaxRate */
+                    foreach ($objRates as $objTaxRate) {
+                        if ($objTaxRate->isApplicable($objSurcharge->total_price, $arrAddresses)) {
+                            $fltNetPrice -= $objTaxRate->calculateAmountIncludedInPrice($objSurcharge->total_price);
 
-                    $fltPrice = $objSurcharge->total_price;
-                    $arrAddresses = array(
-                        'billing'  => $objCollection->getBillingAddress(),
-                        'shipping' => $objCollection->getShippingAddress(),
-                    );
-
-                    if ($objIncludes->isApplicable($fltPrice, $arrAddresses)) {
-                        $fltTax = $objIncludes->calculateAmountIncludedInPrice($fltPrice);
-                        $objSurcharge->tax_free_total_price = $fltPrice - $fltTax;
+                            if ($objTaxRate->stop) {
+                                break;
+                            }
+                        }
                     }
                 }
             }
+
+            $objSurcharge->tax_free_total_price = $fltNetPrice;
         }
 
         return $objSurcharge;

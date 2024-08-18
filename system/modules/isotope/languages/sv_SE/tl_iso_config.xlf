@@ -199,7 +199,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.shipping_country.0">
         <source>Default shipping country</source>
-        <target>Standard fraktland</target>
+        <target>Standard leveransland</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.shipping_country.1">
         <source>Select a default country for new shipping addresses.</source>

@@ -174,7 +174,8 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
                 // Do not use \Isotope\Backend::getTemplates() here, as they cannot be selected in a page layout!
                 return array_merge(
                     \Contao\Controller::getTemplateGroup('moo_'),
-                    \Contao\Controller::getTemplateGroup('j_')
+                    \Contao\Controller::getTemplateGroup('j_'),
+                    \Contao\Controller::getTemplateGroup('js_'),
                 );
             },
             'eval'                  => array('mandatory'=>true, 'multiple'=>true, 'tl_class'=>'w50 w50h'),

@@ -32,6 +32,12 @@
       <trans-unit id="ISO_REPORT.members_total.1">
         <source>Sales statistics by member</source>
       </trans-unit>
+      <trans-unit id="ISO_REPORT.members_new">
+        <source>New Members</source>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.members_all">
+        <source>Members Total</source>
+      </trans-unit>
       <trans-unit id="ISO_REPORT.members_currency">
         <source>%s - Members</source>
       </trans-unit>

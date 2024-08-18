@@ -3,7 +3,8 @@
     <body>
       <trans-unit id="ERR.systemColumn">
         <source>Name &quot;%s&quot; is reserved for system use. Please choose a different name.</source>
-        <target>Questo nome &quot;%s&quot; è riservato per l'uso del sistema. Si prega di scegliere un nome diverso.</target>
+        <target>Questo &quot;1%s&quot; nome è riservato per l'uso del sistema. 
+Si prega di scegliere un nome diverso.</target>
       </trans-unit>
       <trans-unit id="ERR.noStoreConfigurationSet">
         <source>No store configuration available</source>
@@ -95,6 +96,7 @@
       </trans-unit>
       <trans-unit id="ERR.rangeAttributeMax">
         <source>Please select an &quot;Attribute to&quot; on row %s.</source>
+        <target>Selezionare un &quot;attributo a&quot; nella riga %s.</target>
       </trans-unit>
       <trans-unit id="ERR.uploadNotFound">
         <source>The uploaded file is no longer available.</source>
@@ -119,6 +121,10 @@
       <trans-unit id="MSC.filterByPages">
         <source>Pages</source>
         <target>Pagine</target>
+      </trans-unit>
+      <trans-unit id="MSC.filterByProducts">
+        <source>Products</source>
+        <target>Prodotti</target>
       </trans-unit>
       <trans-unit id="MSC.groupPickerHome">
         <source>Back to the group picker</source>
@@ -274,7 +280,7 @@
       </trans-unit>
       <trans-unit id="MSC.defaultWishlistName">
         <source>Wishlist 1</source>
-        <target>Lista dei favoriti N° 1</target>
+        <target>Lista dei desideri 1</target>
       </trans-unit>
       <trans-unit id="MSC.orderByLabel">
         <source>Order By:</source>
@@ -366,7 +372,7 @@
       </trans-unit>
       <trans-unit id="MSC.shippingLabel">
         <source>Shipping (%s)</source>
-        <target>Spedizione (%s)</target>
+        <target>Livraison (%s)</target>
       </trans-unit>
       <trans-unit id="MSC.paymentLabel">
         <source>Payment (%s)</source>
@@ -718,7 +724,7 @@
       </trans-unit>
       <trans-unit id="MSC.newOrders">
         <source>You have %s order(s) with status &quot;%s&quot;</source>
-        <target>Avete %s ordine/i con lo stato &quot;%s&quot;.</target>
+        <target>Avete %s ordine/ordini (i) con lo stato &quot;%s&quot;.</target>
       </trans-unit>
       <trans-unit id="MSC.checkoutStep">
         <source>Step %s of %s (%s) - </source>
@@ -943,6 +949,12 @@
       <trans-unit id="MODEL.tl_iso_payment.paypal_plus.1">
         <source>Paypal PLUS is currently only available in Germany.</source>
         <target>Paypal PLUS è attualmente disponibile solo in Germania.</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.paypal_checkout.0">
+        <source>PayPal Checkout</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.paypal_checkout.1">
+        <source>Checkout is the latest PayPal payment method.</source>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.postfinance.0">
         <source>PostFinance</source>
@@ -1174,9 +1186,11 @@
       </trans-unit>
       <trans-unit id="ATTR.quantitySurcharge.0">
         <source>Surcharge per quantity</source>
+        <target>Supplemento per quantità</target>
       </trans-unit>
       <trans-unit id="ATTR.quantitySurcharge.1">
         <source>Adds an amount to the product price multiplied by quantity entered by the customer.</source>
+        <target>Aggiunge un importo al prezzo del prodotto moltiplicato per la quantità inserita dal cliente.</target>
       </trans-unit>
       <trans-unit id="ATTR.fineUploader.0">
         <source>Fine Uploader</source>

@@ -215,6 +215,9 @@
         <source>Please choose the folder where product assets are located.</source>
         <target>Elija la carpeta donde se encuentran los valores del producto.</target>
       </trans-unit>
+      <trans-unit id="tl_iso_product.hitCount.0">
+        <source>Hit counter</source>
+      </trans-unit>
       <trans-unit id="tl_iso_product.mmSrc">
         <source>Preview</source>
         <target>Previsualización</target>

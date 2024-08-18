@@ -87,7 +87,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_producttype.cssClass.1">
         <source>The class(es) will be added to the product list and reader templates.</source>
-        <target>Klassen/klasserna kommer att läggas till i produktlistan och läsarmallarna.</target>
+        <target>Klassen (klasserna) kommer att läggas till i produktlistan och läsarmallarna.</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.attributes.0">
         <source>Attributes</source>

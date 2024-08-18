@@ -277,6 +277,14 @@
         <source>Remove the radio buttons or checkboxes next to folders.</source>
         <target>Auswahl von Ordnern nicht erlauben.</target>
       </trans-unit>
+      <trans-unit id="tl_iso_attribute.inline.0">
+        <source>Show in browser</source>
+        <target>Im Browser anzeigen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.inline.1">
+        <source>Show the file in the browser instead of opening the download dialog.</source>
+        <target> Die Datei im Browser anzeigen, anstatt den Download-Dialog zu öffnen.</target>
+      </trans-unit>
       <trans-unit id="tl_iso_attribute.isGallery.0">
         <source>Mark as gallery</source>
         <target>Als Galerie markieren</target>
@@ -726,8 +734,8 @@
         <target>Attribut löschen</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.delete.1">
-        <source>Delete attribute ID %s. The database column will not be deleted, you need to manually update the database using the install tool or repository manager.</source>
-        <target>Löscht das Attribut mit der ID %s. Die Datenbank-Spalte wird nicht gelöscht. Sie müssen die Datenbank manuell aktualisieren indem Sie das Installationstool oder die Erweiterungsverwaltung benutzen.</target>
+        <source>Delete attribute ID %s. The database column will not be deleted, you need to manually update the database using the Contao Manager.</source>
+        <target>Löscht das Attribut mit der ID %s. Die Datenbank-Spalte wird nicht gelöscht. Sie müssen die Datenbank manuell aktualisieren indem Sie den Contao Manager benutzen.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.show.0">
         <source>Attribute details</source>
@@ -738,8 +746,8 @@
         <target>Details des Attributs mit der ID %s anzeigen.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.deleteConfirm">
-        <source>Do you really want to delete attribute ID %s? The database column will not be deleted, you need to manually update the database using the install tool or repository manager.</source>
-        <target>Möchten Sie wirklich das Attribut mit der ID %s löschen? Die Datenbank-Spalte wird nicht gelöscht. Sie müssen die Datenbank manuell aktualisieren indem Sie das Installationstool oder die Erweiterungsverwaltung benutzen.</target>
+        <source>Do you really want to delete attribute ID %s? The database column will not be deleted, you need to manually update the database using the Contao Manager.</source>
+        <target>Möchten Sie wirklich das Attribut mit der ID %s löschen? Die Datenbank-Spalte wird nicht gelöscht. Sie müssen die Datenbank manuell aktualisieren indem Sie den Contao Manager benutzen.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.attribute_legend">
         <source>Attribute name &amp; type</source>

@@ -7,7 +7,7 @@
       </trans-unit>
       <trans-unit id="tl_maintenance_jobs.iso_productcache.1">
         <source>Truncates the &lt;em&gt;tl_iso_productcache&lt;/em&gt; table which caches the products found for each product list on your page.</source>
-        <target>Avkorta tabellen tl_iso_productcache som cachar produkterna som hittas för varje produktlista på din sida.</target>
+        <target>Avkorta tabellen &lt;em&gt;tl_iso_productcache&lt;/em&gt; som cachar produkterna som hittas för varje produktlista på din sida.</target>
       </trans-unit>
       <trans-unit id="tl_maintenance_jobs.iso_requestcache.0">
         <source>Purge Isotope request cache</source>

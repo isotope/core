@@ -41,6 +41,14 @@
         <source>Sales statistics by member</source>
         <target>Verkaufs-Statistiken nach Mitglied</target>
       </trans-unit>
+      <trans-unit id="ISO_REPORT.members_new">
+        <source>New Members</source>
+        <target>Neue Mitglieder</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.members_all">
+        <source>Members Total</source>
+        <target>Mitglieder Total</target>
+      </trans-unit>
       <trans-unit id="ISO_REPORT.members_currency">
         <source>%s - Members</source>
         <target>%s - Mitglieder</target>
@@ -89,13 +97,21 @@
         <source>Statistics about coupon usage</source>
         <target>Statistiken zur Gutschein-Nutzung</target>
       </trans-unit>
+        <trans-unit id="ISO_REPORT.summary">
+            <source>Sales summary</source>
+            <target>Verkäufe gesamt</target>
+        </trans-unit>
       <trans-unit id="ISO_REPORT.24h_summary">
-        <source>Sales in the last 24 hours</source>
-        <target>Verkäufe in den letzten 24 Stunden</target>
+        <source>last 24 hours</source>
+        <target>letzte 24 Stunden</target>
       </trans-unit>
-      <trans-unit id="ISO_REPORT.24h_empty">
-        <source>No orders have been placed in the last 24 hours.</source>
-        <target>In den vergangenen 24 Stunden gab es keine Bestellungen.</target>
+      <trans-unit id="ISO_REPORT.month_summary">
+        <source>this month</source>
+        <target>diesen Monat</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.year_summary">
+        <source>this year</source>
+        <target>dieses Jahr</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.shop_config">
         <source>Shop configuration</source>
@@ -117,9 +133,33 @@
         <source>Number of items</source>
         <target>Anzahl der Einträge</target>
       </trans-unit>
+      <trans-unit id="ISO_REPORT.customer#">
+        <source>Customer</source>
+        <target>Kunden</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.city#">
+        <source>City</source>
+        <target>Ort</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.comparePrevYear#">
+        <source>Cf. prior year</source>
+        <target>Vergleich Vorjahr</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.sales_headline">
+        <source>Period</source>
+        <target>Zeitraum</target>
+      </trans-unit>
       <trans-unit id="ISO_REPORT.sales#">
         <source>Sales Total</source>
         <target>Verkäufe gesamt</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.discounts#">
+        <source>Discounts Total</source>
+        <target>Rabatt Total</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.sales_avg">
+        <source>Sales Ø</source>
+        <target>Verkäufe Ø</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.filter_config">
         <source>Shop-Config</source>
@@ -208,6 +248,10 @@
       <trans-unit id="ISO_REPORT.variants">
         <source>Variants</source>
         <target>Varianten</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.guestOrders">
+        <source>Guest orders</source>
+        <target>Gastbestellungen</target>
       </trans-unit>
     </body>
   </file>

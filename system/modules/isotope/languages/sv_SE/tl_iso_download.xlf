@@ -15,15 +15,15 @@
       </trans-unit>
       <trans-unit id="tl_iso_download.downloads_allowed.1">
         <source>The number of times these file(s) can be downloaded per order (multiplied by the quantity sold). Enter 0 for unlimited downloads.</source>
-        <target>Antalet gånger dessa filer kan laddas ner per beställning (multiplicerat med den sålda kvantiteten). Ange 0 för obegränsade nedladdningar.</target>
+        <target>Antalet gånger dessa fil(er) kan laddas ner per beställning (multiplicerat med den sålda kvantiteten). Ange 0 för obegränsade nedladdningar.</target>
       </trans-unit>
       <trans-unit id="tl_iso_download.expires.0">
         <source>Expiration</source>
-        <target>Ablauf</target>
+        <target>Utgång</target>
       </trans-unit>
       <trans-unit id="tl_iso_download.expires.1">
         <source>Define if the download(s) expires after a certain time period.</source>
-        <target>Definiera om nedladdningen/erna går ut efter en viss tidsperiod.</target>
+        <target>Definiera om nedladdningen(erna) går ut efter en viss tidsperiod.</target>
       </trans-unit>
       <trans-unit id="tl_iso_download.published.0">
         <source>Download available</source>
@@ -67,11 +67,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_download.delete.0">
         <source>Delete download</source>
-        <target>Delete download</target>
+        <target>Ta bort nedladdning</target>
       </trans-unit>
       <trans-unit id="tl_iso_download.delete.1">
         <source>Delete download ID %s</source>
-        <target>Delete download ID %s</target>
+        <target>Ta bort nedladdning ID %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_download.toggle.0">
         <source>Publish/unpublish download</source>
@@ -123,7 +123,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_download.publish_legend">
         <source>Publishing</source>
-        <target>Publishing</target>
+        <target>Publicering</target>
       </trans-unit>
     </body>
   </file>

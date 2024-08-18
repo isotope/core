@@ -43,7 +43,7 @@
 
         toggleAddressFields: function (el, id) {
             if (el.value == '0' && el.checked) {
-                _doc.getElementById(id).style.display = 'block';
+                _doc.getElementById(id).style.display = '';
             } else {
                 _doc.getElementById(id).style.display = 'none';
             }

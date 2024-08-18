@@ -68,7 +68,7 @@ class TaxClass extends Model
     {
         switch (Isotope::getConfig()->getPriceDisplay()) {
             case Config::PRICE_DISPLAY_NET:
-                return $this->calculateNetPrice($fltPrice);
+                return $this->calculateNetPrice($fltPrice, $arrAddresses);
 
             case Config::PRICE_DISPLAY_GROSS:
                 return $this->calculateGrossPrice($fltPrice, $arrAddresses);
@@ -90,14 +90,39 @@ class TaxClass extends Model
      *
      * @return float
      */
-    public function calculateNetPrice($fltPrice)
+    public function calculateNetPrice($fltPrice, array $arrAddresses = null)
     {
-        /** @var \Isotope\Model\TaxRate $objIncludes */
-        if (($objIncludes = $this->getRelated('includes')) !== null) {
-            $fltPrice -= $objIncludes->calculateAmountIncludedInPrice($fltPrice);
+        if (!\is_array($arrAddresses)) {
+            $arrAddresses = array(
+                'billing'  => Isotope::getCart()->getBillingAddress(),
+                'shipping' => Isotope::getCart()->getShippingAddress(),
+            );
         }
 
-        return $fltPrice;
+        $fltNetPrice = $fltPrice;
+
+        /** @var \Isotope\Model\TaxRate $objIncludes */
+        if (($objIncludes = $this->getRelated('includes')) !== null) {
+            $fltNetPrice -= $objIncludes->calculateAmountIncludedInPrice($fltPrice);
+        }
+
+        if (Config::PRICE_DISPLAY_FIXED === Isotope::getConfig()->getPriceDisplay()) {
+            if (($objRates = $this->getRelated('rates')) !== null) {
+
+                /** @var \Isotope\Model\TaxRate $objTaxRate */
+                foreach ($objRates as $objTaxRate) {
+                    if ($objTaxRate->isApplicable($fltPrice, $arrAddresses)) {
+                        $fltNetPrice -= $objTaxRate->calculateAmountIncludedInPrice($fltPrice);
+
+                        if ($objTaxRate->stop) {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        return $fltNetPrice;
     }
 
 

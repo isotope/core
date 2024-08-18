@@ -79,7 +79,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.teaser.0">
         <source>Teaser</source>
-        <target>Förhandstitt</target>
+        <target>Teaser</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.teaser.1">
         <source>Please enter the teaser.</source>
@@ -123,7 +123,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.price.1">
         <source>Please enter the price(s) for this product and select the tax class.</source>
-        <target>Vänligen ange priset/priserna för denna produkt och välj skatteklass.</target>
+        <target>Vänligen ange priset (priserna) för denna produkt och välj skatteklass.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.shipping_exempt.0">
         <source>Exempt from shipping</source>
@@ -143,7 +143,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.baseprice.0">
         <source>Base price amount</source>
-        <target>Grundpreisbetrag</target>
+        <target>Basprisbelopp</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.baseprice.1">
         <source>Enter the amount to calculate the base price (e.g. &quot;1500&quot; if your product is 1500 grams).</source>
@@ -228,6 +228,9 @@
       <trans-unit id="tl_iso_product.source.1">
         <source>Please choose the folder where product assets are located.</source>
         <target>Vänligen välj mappen där produkttillgångarna finns.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.hitCount.0">
+        <source>Hit counter</source>
       </trans-unit>
       <trans-unit id="tl_iso_product.mmSrc">
         <source>Preview</source>
@@ -411,7 +414,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.variants.1">
         <source>Show variants for product ID %s</source>
-        <target>Show variants for product ID %s</target>
+        <target>Visa varianter för produkt ID %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.generate.0">
         <source>Generate variants</source>

@@ -120,6 +120,10 @@
         <source>Pages</source>
         <target>Stranice</target>
       </trans-unit>
+      <trans-unit id="MSC.filterByProducts">
+        <source>Products</source>
+        <target>Proizvodi</target>
+      </trans-unit>
       <trans-unit id="MSC.groupPickerHome">
         <source>Back to the group picker</source>
         <target>Povratak na odabir grupe</target>
@@ -931,6 +935,12 @@
       <trans-unit id="MODEL.tl_iso_payment.paypal_plus.1">
         <source>Paypal PLUS is currently only available in Germany.</source>
         <target>Paypal PLUS je trenutno dostupan samo u Njemačkoj.</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.paypal_checkout.0">
+        <source>PayPal Checkout</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.paypal_checkout.1">
+        <source>Checkout is the latest PayPal payment method.</source>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.postfinance.0">
         <source>PostFinance</source>
