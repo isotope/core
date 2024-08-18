@@ -311,12 +311,6 @@
       <trans-unit id="tl_iso_config.newProductPeriod.1">
         <source>If you would like to highlight new products, you can enter a time period here. It will automatically add a CSS class "new" to every product everywhere within Isotope eCommerce.</source>
       </trans-unit>
-      <trans-unit id="tl_iso_config.ga_enable.0">
-        <source>Enable Google Analytics</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_config.ga_enable.1">
-        <source>Enable e-commerce tracking with Google Analytics.</source>
-      </trans-unit>
       <trans-unit id="tl_iso_config.ga_account.0">
         <source>Account</source>
       </trans-unit>

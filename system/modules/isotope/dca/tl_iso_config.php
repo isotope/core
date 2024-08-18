@@ -95,7 +95,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
     // Palettes
     'palettes' => array
     (
-        '__selector__'              => array('currencySymbol', 'currencyAutomator', 'ga_enable'),
+        '__selector__'              => array('currencySymbol', 'currencyAutomator'),
         'default'                   => '
             {name_legend},name,label,fallback;
             {address_legend:hide},firstname,lastname,company,vat_no,street_1,street_2,street_3,postal,city,country,subdivision,email,phone;
@@ -106,8 +106,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             {converter_legend:hide},priceCalculateFactor,priceCalculateMode,currencyAutomator;
             {order_legend:hide},orderPrefix,orderDigits,orderstatus_new,orderstatus_error,orderDetailsModule;
             {config_legend},templateGroup,cartMinSubtotal;
-            {products_legend},newProductPeriod;
-            {analytics_legend},ga_enable',
+            {products_legend},newProductPeriod',
     ),
 
     // Subpalettes
@@ -115,7 +114,6 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
     (
         'currencySymbol'            => 'currencySpace',
         'currencyAutomator'         => 'currencyOrigin,currencyProvider',
-        'ga_enable'                 => 'ga_account,ga_member',
     ),
 
     // Fields
@@ -586,27 +584,6 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'reference'             => &$GLOBALS['TL_LANG']['MSC']['timePeriod'],
             'eval'                  => array('rgxp'=>'digit', 'maxlength'=>5, 'tl_class'=>'w50'),
             'sql'                   => "varchar(255) NOT NULL default ''"
-        ),
-        'ga_enable' => array
-        (
-            'exclude'               => true,
-            'inputType'             => 'checkbox',
-            'eval'                  => array('submitOnChange'=>true, 'doNotCopy'=>true, 'tl_class'=>'clr'),
-            'sql'                   => "char(1) NOT NULL default ''",
-        ),
-        'ga_account' => array
-        (
-            'exclude'               => true,
-            'inputType'             => 'text',
-            'eval'                  => array('mandatory'=>true, 'unique'=>true, 'maxlength'=>64, 'tl_class'=>'w50'),
-            'sql'                   => "varchar(64) NOT NULL default ''",
-        ),
-        'ga_member' => array
-        (
-            'exclude'               => true,
-            'inputType'             => 'text',
-            'eval'                  => array('maxlength'=>255, 'decodeEntities'=>true, 'tl_class'=>'w50'),
-            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
     )
 );

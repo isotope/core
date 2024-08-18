@@ -72,7 +72,6 @@ use Isotope\Translation;
  * @property int    $orderstatus_error
  * @property string $templateGroup
  * @property array  $newProductPeriod
- * @property bool   $ga_enable
  * @property string $ga_account
  * @property string $ga_member
  */
