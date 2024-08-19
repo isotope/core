@@ -25,6 +25,7 @@ use Isotope\Backend\Permission;
 use Isotope\Haste\Util\Format;
 use Isotope\Interfaces\IsotopeAttributeForVariants;
 use Isotope\Model\Attribute;
+use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 
 
 class Callback extends Permission
@@ -91,13 +92,16 @@ class Callback extends Permission
             case 'editAll':
             case 'deleteAll':
             case 'overrideAll':
-                $session = $this->Session->getData();
+                /** @var AttributeBagInterface $sessionBag */
+                $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
+
+                $session = $sessionBag->all();
                 if ('deleteAll' === Input::get('act') && !$this->User->hasAccess('delete', 'iso_product_typep')) {
                     $session['CURRENT']['IDS'] = array();
                 } else {
                     $session['CURRENT']['IDS'] = array_intersect($session['CURRENT']['IDS'], $root);
                 }
-                $this->Session->setData($session);
+                $sessionBag->replace($session);
                 break;
 
             default:

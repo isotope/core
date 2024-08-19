@@ -12,12 +12,13 @@
 namespace Isotope\Report;
 
 use Contao\Database;
-use Contao\Session;
 use Contao\StringUtil;
+use Contao\System;
 use Isotope\Isotope;
 use Isotope\Model\ProductType;
 use Isotope\Report\Period\PeriodFactory;
 use Isotope\Report\Period\PeriodInterface;
+use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 
 
 class SalesProduct extends Sales
@@ -36,8 +37,9 @@ class SalesProduct extends Sales
 
     protected function compile()
     {
-        $arrSession = Session::getInstance()->get('iso_reports')
-        ;
+        /** @var AttributeBagInterface $sessionBag */
+        $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
+        $arrSession = $sessionBag->get('iso_reports');
 
         $strPeriod = (string) $arrSession[$this->name]['period'];
         $intColumns = (int) $arrSession[$this->name]['columns'];
@@ -223,7 +225,9 @@ class SalesProduct extends Sales
 
     protected function getSelectVariantsPanel()
     {
-        $arrSession = Session::getInstance()->get('iso_reports');
+        /** @var AttributeBagInterface $sessionBag */
+        $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
+        $arrSession = $sessionBag->get('iso_reports');
 
         return array(
             'name' => 'variants',
@@ -242,6 +246,9 @@ class SalesProduct extends Sales
 
     protected function initializeDefaultValues()
     {
+        /** @var AttributeBagInterface $sessionBag */
+        $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
+
         $this->arrSearchOptions = array(
             'product_name' => &$GLOBALS['TL_LANG']['ISO_REPORT']['product_name'],
         );
@@ -252,15 +259,13 @@ class SalesProduct extends Sales
         );
 
         // Set default session data
-        $arrSession = Session::getInstance()->get('iso_reports')
-        ;
+        $arrSession = $sessionBag->get('iso_reports');
 
         if (empty($arrSession[$this->name]['tl_sort'])) {
             $arrSession[$this->name]['tl_sort'] = 'total';
         }
 
-        Session::getInstance()->set('iso_reports', $arrSession)
-        ;
+        $sessionBag->set('iso_reports', $arrSession);
 
         parent::initializeDefaultValues();
     }

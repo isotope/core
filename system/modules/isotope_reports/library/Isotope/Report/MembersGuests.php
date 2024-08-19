@@ -14,11 +14,12 @@ namespace Isotope\Report;
 use Contao\Database;
 use Contao\Date;
 use Contao\Message;
-use Contao\Session;
+use Contao\System;
 use Isotope\Isotope;
 use Isotope\Model\Config;
 use Isotope\Report\Period\PeriodFactory;
 use Isotope\Report\Period\PeriodInterface;
+use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 
 class MembersGuests extends Sales
 {
@@ -32,7 +33,10 @@ class MembersGuests extends Sales
 
     protected function compile()
     {
-        $arrSession    = Session::getInstance()->get('iso_reports');
+        /** @var AttributeBagInterface $sessionBag */
+        $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
+
+        $arrSession    = $sessionBag->get('iso_reports');
 
         $intConfig = (int) ($arrSession[$this->name]['iso_config'] ?? 0);
         $strPeriod = (string) ($arrSession[$this->name]['period'] ?? '');
@@ -223,7 +227,10 @@ class MembersGuests extends Sales
 
     protected function initializeChart(PeriodInterface $period, $intStart, $intStop)
     {
-        $arrSession = Session::getInstance()->get('iso_reports');
+        /** @var AttributeBagInterface $sessionBag */
+        $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
+
+        $arrSession = $sessionBag->get('iso_reports');
         $intConfig  = (int) ($arrSession[$this->name]['iso_config'] ?? 0);
 
         $arrData       = array();
@@ -285,8 +292,11 @@ class MembersGuests extends Sales
 
     protected function initializeDefaultValues()
     {
+        /** @var AttributeBagInterface $sessionBag */
+        $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
+
         // Set default session data
-        $arrSession = Session::getInstance()->get('iso_reports');
+        $arrSession = $sessionBag->get('iso_reports');
 
         if (empty($arrSession[$this->name]['period'])) {
             $arrSession[$this->name]['period'] = 'month';
@@ -318,7 +328,7 @@ class MembersGuests extends Sales
             }
         }
 
-        Session::getInstance()->set('iso_reports', $arrSession);
+        $sessionBag->set('iso_reports', $arrSession);
 
         parent::initializeDefaultValues();
     }

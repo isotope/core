@@ -20,11 +20,11 @@ use Contao\Database;
 use Contao\Environment;
 use Contao\Image;
 use Contao\Input;
-use Contao\Session;
 use Contao\StringUtil;
 use Contao\System;
 use Contao\Versions;
 use Isotope\Model\ProductType;
+use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 
 
 class Button extends Backend
@@ -309,9 +309,11 @@ class Button extends Backend
     public function forSelect($arrButtons)
     {
         if ('select' === Input::get('act') && !Input::get('id')) {
-
             unset($arrButtons['copy']);
             unset($arrButtons['cut']);
+
+            /** @var AttributeBagInterface $sessionBag */
+            $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
 
             $arrButtons['group'] = '
     <button type="submit" name="group" id="group" class="tl_submit">' . $GLOBALS['TL_LANG']['tl_iso_product']['groupSelected'] . '</a>
@@ -321,7 +323,7 @@ class Button extends Backend
         Backend.openModalSelector({
           id: "tl_listing",
           title: ' . json_encode($GLOBALS['TL_LANG']['tl_iso_product']['product_groups'][0]) . ',
-          url: '.json_encode(\Contao\StringUtil::ampersand(System::getContainer()->get('contao.picker.builder')->getUrl('dc.tl_iso_group', ['fieldType' => 'radio'])). Session::getInstance()->get('iso_products_gid')).',
+          url: '.json_encode(\Contao\StringUtil::ampersand(System::getContainer()->get('contao.picker.builder')->getUrl('dc.tl_iso_group', ['fieldType' => 'radio'])). $sessionBag->get('iso_products_gid')).',
           callback: function(table, value) {
               new Request.Contao({
               evalScripts: false,

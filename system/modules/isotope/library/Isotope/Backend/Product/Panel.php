@@ -18,8 +18,8 @@ use Contao\Database;
 use Contao\Image;
 use Contao\Input;
 use Contao\RequestToken;
-use Contao\Session;
 use Contao\System;
+use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 
 class Panel extends Backend
 {
@@ -34,8 +34,11 @@ class Panel extends Backend
             return '';
         }
 
+        /** @var AttributeBagInterface $sessionBag */
+        $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
+
         $user      = BackendUser::getInstance();
-        $session   = Session::getInstance()->getData();
+        $session   = $sessionBag->all();
         $intPage   = $session['filter']['tl_iso_product']['iso_page'] ?? 0;
         $buttons   = [];
 
@@ -96,7 +99,9 @@ class Panel extends Backend
             return '';
         }
 
-        $session = Session::getInstance()->getData();
+        /** @var AttributeBagInterface $sessionBag */
+        $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
+        $session = $sessionBag->all();
 
         // Filters
         $arrFilters = [
@@ -189,7 +194,9 @@ class Panel extends Backend
      */
     public function applyAdvancedFilters()
     {
-        $session = Session::getInstance()->getData();
+        /** @var AttributeBagInterface $sessionBag */
+        $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
+        $session = $sessionBag->all();
 
         // Store filter values in the session
         foreach ($_POST as $k => $v) {
@@ -206,7 +213,7 @@ class Panel extends Backend
             }
         }
 
-        Session::getInstance()->setData($session);
+        $sessionBag->replace($session);
 
         if (Input::get('id') > 0 || !isset($session['filter']['tl_iso_product'])) {
             return;

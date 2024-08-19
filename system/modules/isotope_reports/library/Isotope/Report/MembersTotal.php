@@ -14,10 +14,11 @@ namespace Isotope\Report;
 use Contao\Database;
 use Contao\Date;
 use Contao\Message;
-use Contao\Session;
+use Contao\System;
 use Isotope\Isotope;
 use Isotope\Model\Config;
 use Isotope\Report\Period\PeriodFactory;
+use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 
 class MembersTotal extends Sales
 {
@@ -29,7 +30,10 @@ class MembersTotal extends Sales
 
     protected function compile()
     {
-        $arrSession = Session::getInstance()->get('iso_reports');
+        /** @var AttributeBagInterface $sessionBag */
+        $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
+
+        $arrSession = $sessionBag->get('iso_reports');
 
         $intConfig = (int) ($arrSession[$this->name]['iso_config'] ?? 0);
         $intStart = (int) ($arrSession[$this->name]['start'] ?? 0);
@@ -283,8 +287,11 @@ class MembersTotal extends Sales
 
     protected function initializeDefaultValues(): void
     {
+        /** @var AttributeBagInterface $sessionBag */
+        $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
+
         // Set default session data
-        $arrSession = Session::getInstance()->get('iso_reports');
+        $arrSession = $sessionBag->get('iso_reports');
 
         if (empty($arrSession[$this->name]['stop'])) {
             $arrSession[$this->name]['stop'] = time();
@@ -312,7 +319,7 @@ class MembersTotal extends Sales
             }
         }
 
-        Session::getInstance()->set('iso_reports', $arrSession);
+        $sessionBag->set('iso_reports', $arrSession);
 
         parent::initializeDefaultValues();
     }

@@ -18,10 +18,10 @@ use Contao\CoreBundle\Exception\InternalServerErrorException;
 use Contao\Database;
 use Contao\Input;
 use Contao\Message;
-use Contao\Session;
 use Contao\System;
 use Isotope\Model\Group;
 use Isotope\Model\Product;
+use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 
 class Permission extends Backend
 {
@@ -32,7 +32,10 @@ class Permission extends Backend
      */
     public static function check()
     {
-        $session = Session::getInstance()->getData();
+        /** @var AttributeBagInterface $sessionBag */
+        $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
+
+        $session = $sessionBag->all();
 
         if ('delete' === Input::get('act') && \in_array(Input::get('id'), static::getUndeletableIds())) {
             throw new InternalServerErrorException('Product ID '.Input::get('id').' is used in an order and can\'t be deleted');
@@ -52,7 +55,7 @@ class Permission extends Backend
 
                 // Remove undeletable products from selection
                 $session['CURRENT']['IDS'] = array_values($arrDeletable);
-                Session::getInstance()->setData($session);
+                $sessionBag->replace($session);
 
                 Message::addInfo($GLOBALS['TL_LANG']['MSC']['undeletableUnpublished']);
             }
@@ -97,7 +100,7 @@ class Permission extends Backend
             }
 
             // Overwrite session
-            Session::getInstance()->setData($session);
+            $sessionBag->replace($session);
 
             // Check if the product is accessible by user
             if (Input::get('id') > 0

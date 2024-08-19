@@ -13,11 +13,12 @@ namespace Isotope\BackendModule;
 
 use Contao\BackendUser;
 use Contao\Database;
-use Contao\Session;
 use Contao\StringUtil;
+use Contao\System;
 use Isotope\Isotope;
 use Isotope\Model\Config;
 use Isotope\Report\Report;
+use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 
 class Reports extends BackendOverview
 {
@@ -77,7 +78,9 @@ class Reports extends BackendOverview
      */
     private function getSummary(array $data): string
     {
-        $session = Session::getInstance()->get('fieldset_states');
+        /** @var AttributeBagInterface $sessionBag */
+        $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
+        $session = $sessionBag->get('fieldset_states');
 
         $strBuffer = '
 <fieldset id="pal_summary" class="tl_tbox '.(($session['iso_be_overview_legend']['summary'] ?? null) ? '' : ' collapsed').'">

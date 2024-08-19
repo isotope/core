@@ -18,12 +18,12 @@ use Contao\DataContainer;
 use Contao\Folder;
 use Contao\Image;
 use Contao\Input;
-use Contao\Session;
 use Contao\StringUtil;
 use Contao\System;
 use Isotope\Automator;
 use Isotope\Backend\Permission;
 use Isotope\Model\Config;
+use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 
 class Callback extends Permission
 {
@@ -96,13 +96,16 @@ class Callback extends Permission
             case 'editAll':
             case 'deleteAll':
             case 'overrideAll':
-                $session = Session::getInstance()->getData();
+                /** @var AttributeBagInterface $sessionBag */
+                $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
+
+                $session = $sessionBag->all();
                 if ('deleteAll' === Input::get('act') && !$this->User->hasAccess('delete', 'iso_configp')) {
                     $session['CURRENT']['IDS'] = array();
                 } else {
                     $session['CURRENT']['IDS'] = array_intersect($session['CURRENT']['IDS'], $root);
                 }
-                Session::getInstance()->setData($session);
+                $sessionBag->replace($session);
                 break;
 
             default:

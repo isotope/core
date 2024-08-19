@@ -18,8 +18,8 @@ use Contao\CoreBundle\Exception\AccessDeniedException;
 use Contao\Database;
 use Contao\Environment;
 use Contao\Input;
-use Contao\Session;
 use Contao\StringUtil;
+use Contao\System;
 use Isotope\Backend\Group\Breadcrumb;
 use Isotope\Haste\Util\Format;
 use Isotope\Interfaces\IsotopeAttribute;
@@ -30,6 +30,7 @@ use Isotope\Model\Group;
 use Isotope\Model\Product;
 use Isotope\Model\ProductType;
 use Isotope\Model\RelatedCategory;
+use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 
 
 class DcaManager extends Backend
@@ -75,8 +76,11 @@ class DcaManager extends Backend
             return;
         }
 
+        /** @var AttributeBagInterface $sessionBag */
+        $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
+
         $intType  = 0;
-        $intGroup = (int) Session::getInstance()->get('iso_products_gid');
+        $intGroup = (int) $sessionBag->get('iso_products_gid');
 
         if (!$intGroup) {
             $objUser = BackendUser::getInstance();
@@ -246,7 +250,10 @@ class DcaManager extends Backend
      */
     public function addBreadcrumb()
     {
-        $strBreadcrumb = Breadcrumb::generate(Session::getInstance()->get('iso_products_gid'));
+        /** @var AttributeBagInterface $sessionBag */
+        $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
+
+        $strBreadcrumb = Breadcrumb::generate((int) $sessionBag->get('iso_products_gid'));
         $strBreadcrumb .= static::getPagesBreadcrumb();
 
         $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['breadcrumb'] = $strBreadcrumb;
@@ -536,12 +543,14 @@ class DcaManager extends Backend
      */
     protected static function getPagesBreadcrumb()
     {
-        $session = Session::getInstance()->getData();
+        /** @var AttributeBagInterface $sessionBag */
+        $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
+        $session = $sessionBag->all();
 
         // Set a new gid
         if (isset($_GET['page'])) {
             $session['filter']['tl_iso_product']['iso_page'] = (int) Input::get('page');
-            Session::getInstance()->setData($session);
+            $sessionBag->replace($session);
             Controller::redirect(preg_replace('/&page=[^&]*/', '', Environment::get('request')));
         }
 
@@ -570,7 +579,7 @@ class DcaManager extends Backend
                     // Currently selected page does not exits
                     if ($intId == $intNode) {
                         $session['filter']['tl_iso_product']['iso_page'] = 0;
-                        Session::getInstance()->setData($session);
+                        $sessionBag->replace($session);
 
                         return '';
                     }
@@ -599,7 +608,7 @@ class DcaManager extends Backend
         // Check whether the node is mounted
         if (!$objUser->isAdmin && !$objUser->hasAccess($arrIds, 'pagemounts')) {
             $session['filter']['tl_iso_product']['iso_page'] = 0;
-            Session::getInstance()->setData($session);
+            $sessionBag->replace($session);
 
             throw new AccessDeniedException('Page ID ' . $intNode . ' was not mounted');
         }

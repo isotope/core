@@ -37,7 +37,7 @@ class DC_TablePageId extends DC_Table
         $this->limit = '';
 
         /** @var \Contao\Session $objSession */
-        $objSession = System::getContainer()->get('session');
+        $objSession = \Contao\System::getContainer()->get('request_stack')->getSession();
 
         $this->reviseTable();
 
@@ -127,7 +127,7 @@ class DC_TablePageId extends DC_Table
         }
 
         /** @var \Contao\Session $objSession */
-        $objSession = System::getContainer()->get('session');
+        $objSession = \Contao\System::getContainer()->get('request_stack')->getSession();
 
         // Empty clipboard
         $arrClipboard = $objSession->get('CLIPBOARD');
@@ -209,7 +209,7 @@ class DC_TablePageId extends DC_Table
         }
 
         /** @var \Contao\Session $objSession */
-        $objSession = System::getContainer()->get('session');
+        $objSession = \Contao\System::getContainer()->get('request_stack')->getSession();
 
         $arrClipboard = $objSession->get('CLIPBOARD');
 
@@ -253,7 +253,7 @@ class DC_TablePageId extends DC_Table
                 $filter = ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 4) ? $this->strTable . '_' . CURRENT_ID : $this->strTable;
 
                 /** @var \Contao\Session $objSession */
-                $objSession = System::getContainer()->get('session');
+                $objSession = \Contao\System::getContainer()->get('request_stack')->getSession();
                 $session = $objSession->all();
 
                 // Consider the pagination menu when inserting at the top (see #7895)
@@ -508,7 +508,7 @@ class DC_TablePageId extends DC_Table
         }
 
         /** @var AttributeBagInterface $objSessionBag */
-        $objSessionBag = System::getContainer()->get('session')->getBag('contao_backend');
+        $objSessionBag = \Contao\System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
 
         $new_records = $objSessionBag->get('new_records');
 
@@ -667,7 +667,7 @@ class DC_TablePageId extends DC_Table
     protected function parentView()
     {
         /** @var \Contao\Session $objSession */
-        $objSession = System::getContainer()->get('session');
+        $objSession = \Contao\System::getContainer()->get('request_stack')->getSession();
 
         $blnClipboard = false;
         $arrClipboard = $objSession->get('CLIPBOARD');

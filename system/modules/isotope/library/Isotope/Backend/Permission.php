@@ -14,8 +14,9 @@ namespace Isotope\Backend;
 use Contao\Backend;
 use Contao\BackendUser;
 use Contao\Database;
-use Contao\Session;
 use Contao\StringUtil;
+use Contao\System;
+use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 
 class Permission extends Backend
 {
@@ -32,11 +33,13 @@ class Permission extends Backend
     protected function addNewRecordPermissions($id, $table, $accessField, $permissionField)
     {
         $user    = BackendUser::getInstance();
-        $session = Session::getInstance();
         $db      = Database::getInstance();
         $groups  = StringUtil::deserialize($user->groups);
 
-        $newRecords = $session->get('new_records');
+        /** @var AttributeBagInterface $sessionBag */
+        $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
+
+        $newRecords = $sessionBag->get('new_records');
 
         if (\is_array($newRecords[$table]) && \in_array($id, $newRecords[$table])) {
 

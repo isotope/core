@@ -14,7 +14,8 @@ namespace Isotope\Backend\Product;
 use Contao\Automator;
 use Contao\Backend;
 use Contao\DataContainer;
-use Contao\Session;
+use Contao\System;
+use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 
 class XmlSitemap extends Backend
 {
@@ -30,10 +31,13 @@ class XmlSitemap extends Backend
             return;
         }
 
+        /** @var AttributeBagInterface $sessionBag */
+        $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
+
         // Store the ID in the session
-        $session   = Session::getInstance()->get('iso_product_updater');
+        $session   = $sessionBag->get('iso_product_updater');
         $session[] = $dc->id;
-        Session::getInstance()->set('iso_product_updater', array_unique($session));
+        $sessionBag->set('iso_product_updater', array_unique($session));
     }
 
     /**
@@ -41,7 +45,10 @@ class XmlSitemap extends Backend
      */
     public function generate()
     {
-        $session = $this->Session->get('iso_product_updater');
+        /** @var AttributeBagInterface $sessionBag */
+        $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
+
+        $session = $sessionBag->get('iso_product_updater');
 
         if (!\is_array($session) || empty($session)) {
             return;
@@ -50,6 +57,6 @@ class XmlSitemap extends Backend
         $objAutomator = new Automator();
         $objAutomator->generateSitemap();
 
-        $this->Session->set('iso_product_updater', null);
+        $sessionBag->remove('iso_product_updater');
     }
 }

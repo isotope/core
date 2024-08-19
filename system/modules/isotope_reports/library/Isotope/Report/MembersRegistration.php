@@ -15,10 +15,11 @@ namespace Isotope\Report;
 use Contao\Database;
 use Contao\Date;
 use Contao\Message;
-use Contao\Session;
+use Contao\System;
 use Haste\Generator\RowClass;
 use Isotope\Report\Period\PeriodFactory;
 use Isotope\Report\Period\PeriodInterface;
+use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 
 class MembersRegistration extends Sales
 {
@@ -30,7 +31,10 @@ class MembersRegistration extends Sales
 
     protected function compile(): void
     {
-        $arrSession    = Session::getInstance()->get('iso_reports');
+        /** @var AttributeBagInterface $sessionBag */
+        $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
+
+        $arrSession    = $sessionBag->get('iso_reports');
 
         $strPeriod = (string) $arrSession[$this->name]['period'];
         $intStart  = (int) $arrSession[$this->name]['start'];
@@ -158,8 +162,11 @@ class MembersRegistration extends Sales
     }
     protected function initializeDefaultValues(): void
     {
+        /** @var AttributeBagInterface $sessionBag */
+        $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
+
         // Set default session data
-        $arrSession = Session::getInstance()->get('iso_reports');
+        $arrSession = $sessionBag->get('iso_reports');
 
         if (empty($arrSession[$this->name]['period'])) {
             $arrSession[$this->name]['period'] = 'month';
@@ -191,7 +198,7 @@ class MembersRegistration extends Sales
             }
         }
 
-        Session::getInstance()->set('iso_reports', $arrSession);
+        $sessionBag->set('iso_reports', $arrSession);
 
         parent::initializeDefaultValues();
     }

@@ -70,7 +70,10 @@ class DC_ProductData extends DC_Table
      */
     public function __construct($strTable)
     {
-        $this->intGroupId = (int) \Contao\Session::getInstance()->get('iso_products_gid');
+        /** @var AttributeBagInterface $sessionBag */
+        $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
+
+        $this->intGroupId = (int) $sessionBag->get('iso_products_gid');
 
         // Check if the group exists
         if ($this->intGroupId > 0) {
@@ -90,7 +93,7 @@ class DC_ProductData extends DC_Table
 
         // Move multiple products to group
         /** @var Session $objSession */
-        $objSession = System::getContainer()->get('session');
+        $objSession = \Contao\System::getContainer()->get('request_stack')->getSession();
         $arrClipboard = $objSession->get('CLIPBOARD');
         if (($arrClipboard[$strTable]['mode'] ?? null) === 'cutAll' && Input::get('act') !== 'cutAll') {
             $firstPid = (int) Database::getInstance()
@@ -135,8 +138,7 @@ class DC_ProductData extends DC_Table
         $return = '';
         $this->limit = '';
 
-        /** @var Session $objSession */
-        $objSession = System::getContainer()->get('session');
+        $objSession = System::getContainer()->get('request_stack')->getSession();
 
         $this->reviseTable();
 
@@ -445,7 +447,10 @@ class DC_ProductData extends DC_Table
         if (!empty($this->arrTranslations))
         {
             $blnLanguageUpdated = false;
-            $session = \Contao\Session::getInstance()->getData();
+
+            /** @var AttributeBagInterface $sessionBag */
+            $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
+            $session = $sessionBag->all();
 
             if (Input::post('FORM_SUBMIT') === 'tl_language')
             {
@@ -469,7 +474,7 @@ class DC_ProductData extends DC_Table
 
             if ($blnLanguageUpdated)
             {
-                \Contao\Session::getInstance()->setData($session);
+                $sessionBag->replace($session);
                 unset($_SESSION['TL_INFO']);
                 \Contao\Controller::reload();
             }
@@ -534,8 +539,7 @@ class DC_ProductData extends DC_Table
                 }
             }
 
-            /** @var Session $objSessionBag */
-            $objSessionBag = System::getContainer()->get('session')->getBag('contao_backend');
+            $objSessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
 
             $class = 'tl_tbox';
             $fs = $objSessionBag->get('fieldset_states');
@@ -1032,7 +1036,7 @@ class DC_ProductData extends DC_Table
         $this->import(BackendUser::class, 'User');
 
         /** @var Session $objSession */
-        $objSession = System::getContainer()->get('session');
+        $objSession = \Contao\System::getContainer()->get('request_stack')->getSession();
 
         // Get current IDs from session
         $session = $objSession->all();
@@ -1753,7 +1757,7 @@ class DC_ProductData extends DC_Table
     protected function parentView()
     {
         /** @var Session $objSession */
-        $objSession = System::getContainer()->get('session');
+        $objSession = \Contao\System::getContainer()->get('request_stack')->getSession();
 
         $blnClipboard = false;
         $arrClipboard = $objSession->get('CLIPBOARD');
@@ -2319,7 +2323,7 @@ class DC_ProductData extends DC_Table
         }
 
         /** @var AttributeBagInterface $objSessionBag */
-        $objSessionBag = System::getContainer()->get('session')->getBag('contao_backend');
+        $objSessionBag = \Contao\System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
 
         $session = $objSessionBag->all();
         $sessionKey = Input::get('id') ? $this->strTable . '_' . CURRENT_ID : $this->strTable;
@@ -2394,7 +2398,7 @@ class DC_ProductData extends DC_Table
         $searchFields = array();
 
         /** @var AttributeBagInterface $objSessionBag */
-        $objSessionBag = System::getContainer()->get('session')->getBag('contao_backend');
+        $objSessionBag = \Contao\System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
 
         $session = $objSessionBag->all();
         $sessionKey = Input::get('id') ? $this->strTable . '_' . CURRENT_ID : $this->strTable;
@@ -2540,7 +2544,7 @@ class DC_ProductData extends DC_Table
     protected function limitMenu($blnOptional=false)
     {
         /** @var AttributeBagInterface $objSessionBag */
-        $objSessionBag = System::getContainer()->get('session')->getBag('contao_backend');
+        $objSessionBag = \Contao\System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
 
         $session = $objSessionBag->all();
         $filter = Input::get('id') ? $this->strTable . '_' . CURRENT_ID : $this->strTable;
@@ -2685,7 +2689,7 @@ class DC_ProductData extends DC_Table
     protected function filterMenu($intFilterPanel)
     {
         /** @var AttributeBagInterface $objSessionBag */
-        $objSessionBag = System::getContainer()->get('session')->getBag('contao_backend');
+        $objSessionBag = \Contao\System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
 
         $fields = '';
         $sortingFields = array();
@@ -3148,7 +3152,7 @@ class DC_ProductData extends DC_Table
     public function copyFallback()
     {
         /** @var AttributeBagInterface $objSessionBag */
-        $objSessionBag = System::getContainer()->get('session')->getBag('contao_backend');
+        $objSessionBag = \Contao\System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
 
         $session = $objSessionBag->all();
         $strLanguage = $session['language'][$this->strTable][$this->intId] ?? null;

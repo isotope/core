@@ -18,10 +18,11 @@ use Contao\Database;
 use Contao\DataContainer;
 use Contao\Image;
 use Contao\Input;
-use Contao\Session;
 use Contao\StringUtil;
+use Contao\System;
 use Isotope\Backend\Permission;
 use Isotope\Model\Group;
+use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 
 
 class Callback extends Permission
@@ -43,7 +44,9 @@ class Callback extends Permission
     {
         /** @var BackendUser $user */
         $user    = BackendUser::getInstance();
-        $session = Session::getInstance();
+
+        /** @var AttributeBagInterface $sessionBag */
+        $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
 
         if ($user->isAdmin) {
             return;
@@ -131,13 +134,13 @@ class Callback extends Permission
             case 'editAll':
             case 'deleteAll':
             case 'overrideAll':
-                $sessionData = $session->getData();
+                $sessionData = $sessionBag->all();
                 if ('deleteAll' === Input::get('act') && !$user->hasAccess('delete', 'iso_groupp')) {
                     $sessionData['CURRENT']['IDS'] = array();
                 } else {
                     $sessionData['CURRENT']['IDS'] = array_intersect($sessionData['CURRENT']['IDS'], $root);
                 }
-                $session->setData($sessionData);
+                $sessionBag->replace($sessionData);
                 break;
 
             default:

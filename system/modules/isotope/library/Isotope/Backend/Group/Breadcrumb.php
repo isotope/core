@@ -17,9 +17,10 @@ use Contao\Controller;
 use Contao\Database;
 use Contao\Environment;
 use Contao\Input;
-use Contao\Session;
 use Contao\StringUtil;
+use Contao\System;
 use Isotope\Model\Group;
+use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 
 
 class Breadcrumb extends Backend
@@ -33,17 +34,19 @@ class Breadcrumb extends Backend
      */
     public static function generate($intId, $intProductId = null)
     {
+        /** @var AttributeBagInterface $sessionBag */
+        $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
+
         $arrGroups  = array();
-        $objSession = Session::getInstance();
 
         // Set a new gid
         if (isset($_GET['gid'])) {
-            $objSession->set('iso_products_gid', Input::get('gid'));
+            $sessionBag->set('iso_products_gid', Input::get('gid'));
             Controller::redirect(preg_replace('/&gid=[^&]*/', '', Environment::get('request')));
         }
 
         // Return if there is no trail
-        if (!$objSession->get('iso_products_gid') && !$intProductId) {
+        if (!$sessionBag->get('iso_products_gid') && !$intProductId) {
             return '';
         }
 

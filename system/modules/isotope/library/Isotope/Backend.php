@@ -20,7 +20,6 @@ use Contao\Database;
 use Contao\DataContainer;
 use Contao\Input;
 use Contao\Model;
-use Contao\Session;
 use Contao\System;
 use Contao\Widget;
 use Isotope\Backend\Product\Permission;
@@ -31,6 +30,7 @@ use Isotope\Model\ProductCache;
 use Isotope\Model\RequestCache;
 use Isotope\Model\TypeAgent;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 
 /**
  * Provide methods to handle Isotope back end components.
@@ -278,36 +278,39 @@ class Backend extends ContaoBackend
      */
     public function executePreActions($action)
     {
+        /** @var AttributeBagInterface $sessionBag */
+        $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
+
         switch ($action) {
             // Move the product
             case 'moveProduct':
-                Session::getInstance()->set('iso_products_gid', (int) Input::post('value'));
+                $sessionBag->set('iso_products_gid', (int) Input::post('value'));
                 throw new NoContentResponseException();
 
             // Move multiple products
             case 'moveProducts':
-                Session::getInstance()->set('iso_products_gid', (int) Input::post('value'));
+                $sessionBag->set('iso_products_gid', (int) Input::post('value'));
                 throw new NoContentResponseException();
 
             // Filter the groups
             case 'filterGroups':
-                Session::getInstance()->set('iso_products_gid', (int) Input::post('value'));
+                $sessionBag->set('iso_products_gid', (int) Input::post('value'));
                 Controller::reload();
                 break;
 
             // Filter the pages
             case 'filterPages':
-                $filter = Session::getInstance()->get('filter');
+                $filter = $sessionBag->get('filter');
                 $filter['tl_iso_product']['iso_page'] = (int) Input::post('value');
-                Session::getInstance()->set('filter', $filter);
+                $sessionBag->set('filter', $filter);
                 Controller::reload();
                 break;
 
             // Filter product collection by product
             case 'filterProducts':
-                $filter = Session::getInstance()->get('filter');
+                $filter = $sessionBag->get('filter');
                 $filter['tl_iso_product_collection']['iso_product'] = (int) Input::post('value');
-                Session::getInstance()->set('filter', $filter);
+                $sessionBag->set('filter', $filter);
                 Controller::reload();
                 break;
         }
@@ -462,7 +465,10 @@ class Backend extends ContaoBackend
             && Group::getTable() === Input::get('table')
             && 'be_main' === $objTemplate->getName()
         ) {
-            $objTemplate->managerHref = \Contao\StringUtil::ampersand($this->Session->get('groupPickerRef'));
+            /** @var AttributeBagInterface $sessionBag */
+            $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
+
+            $objTemplate->managerHref = \Contao\StringUtil::ampersand($sessionBag->get('groupPickerRef'));
             $objTemplate->manager     = $GLOBALS['TL_LANG']['MSC']['groupPickerHome'];
         }
     }

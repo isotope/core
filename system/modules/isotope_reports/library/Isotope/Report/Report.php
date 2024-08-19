@@ -17,11 +17,11 @@ use Contao\BackendUser;
 use Contao\Controller;
 use Contao\Date;
 use Contao\Input;
-use Contao\Session;
 use Contao\StringUtil;
 use Contao\System;
 use Isotope\Backend\Product\Permission;
 use Isotope\Model\Config;
+use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 
 
 abstract class Report extends Backend
@@ -89,7 +89,9 @@ abstract class Report extends Backend
     public function generate()
     {
         if ('tl_filters' === Input::post('FORM_SUBMIT')) {
-            $session = Session::getInstance()->getData();
+            /** @var AttributeBagInterface $sessionBag */
+            $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
+            $session = $sessionBag->all();
 
             if (Input::post('filter_reset')) {
                 $session['iso_reports'][$this->name] = [];
@@ -99,7 +101,7 @@ abstract class Report extends Backend
                 }
             }
 
-            Session::getInstance()->setData($session);
+            $sessionBag->replace($session);
             Controller::reload();
         }
 
@@ -161,7 +163,10 @@ abstract class Report extends Backend
             return null;
         }
 
-        $arrSession = Session::getInstance()->get('iso_reports');
+        /** @var AttributeBagInterface $sessionBag */
+        $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
+
+        $arrSession = $sessionBag->get('iso_reports');
 
         return [
             'name'          => 'tl_limit',
@@ -181,7 +186,10 @@ abstract class Report extends Backend
             return null;
         }
 
-        $arrSession = Session::getInstance()->get('iso_reports');
+        /** @var AttributeBagInterface $sessionBag */
+        $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
+
+        $arrSession = $sessionBag->get('iso_reports');
         $varValue = array('tl_field'=>(string) $arrSession[$this->name]['tl_field'], 'tl_value'=>(string) $arrSession[$this->name]['tl_value']);
 
         return [
@@ -201,7 +209,10 @@ abstract class Report extends Backend
             return null;
         }
 
-        $arrSession = Session::getInstance()->get('iso_reports');
+        /** @var AttributeBagInterface $sessionBag */
+        $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
+
+        $arrSession = $sessionBag->get('iso_reports');
         $varValue = (string) $arrSession[$this->name]['tl_sort'];
 
         return [
@@ -226,7 +237,9 @@ abstract class Report extends Backend
             }
         }
 
-        $arrSession = Session::getInstance()->get('iso_reports');
+        /** @var AttributeBagInterface $sessionBag */
+        $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
+        $arrSession = $sessionBag->get('iso_reports');
         $varValue = (string) ($arrSession[$this->name]['iso_config'] ?? '');
 
         return [
@@ -243,7 +256,9 @@ abstract class Report extends Backend
 
     protected function getSelectPeriodPanel()
     {
-        $arrSession = Session::getInstance()->get('iso_reports');
+        /** @var AttributeBagInterface $sessionBag */
+        $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
+        $arrSession = $sessionBag->get('iso_reports');
 
         return [
             'name'      => 'period',
@@ -264,7 +279,9 @@ abstract class Report extends Backend
 
     protected function getSelectStartPanel()
     {
-        $arrSession = Session::getInstance()->get('iso_reports');
+        /** @var AttributeBagInterface $sessionBag */
+        $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
+        $arrSession = $sessionBag->get('iso_reports');
 
         return [
             'name'      => 'start',
@@ -279,7 +296,9 @@ abstract class Report extends Backend
 
     protected function getSelectStopPanel()
     {
-        $arrSession = Session::getInstance()->get('iso_reports');
+        /** @var AttributeBagInterface $sessionBag */
+        $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
+        $arrSession = $sessionBag->get('iso_reports');
 
         return [
             'name'      => 'stop',

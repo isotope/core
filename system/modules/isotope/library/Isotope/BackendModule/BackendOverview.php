@@ -20,10 +20,10 @@ use Contao\CoreBundle\Exception\AccessDeniedException;
 use Contao\CoreBundle\Exception\ResponseException;
 use Contao\Environment;
 use Contao\Input;
-use Contao\Session;
 use Contao\System;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 
 abstract class BackendOverview extends BackendModule
 {
@@ -62,8 +62,11 @@ abstract class BackendOverview extends BackendModule
     {
         $this->arrModules = array();
 
+        /** @var AttributeBagInterface $sessionBag */
+        $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
+
         // enable collapsing legends
-        $session = Session::getInstance()->get('fieldset_states');
+        $session = $sessionBag->get('fieldset_states');
         foreach ($this->getModules() as $k => $arrGroup) {
             $hide = null;
             if (strpos($k, ':') !== false) {
