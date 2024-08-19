@@ -87,7 +87,7 @@ class Panel extends Backend
         /** @var AttributeBagInterface $sessionBag */
         $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
 
-        $session = $sessionBag->getData();
+        $session = $sessionBag->all();
 
         if (empty($session['filter']['tl_iso_product_collection']['iso_product'])) {
             return;
