@@ -163,10 +163,7 @@ class Panel extends Backend
             'table' => 'tl_iso_product_category',
             'id' => '_value_',
             'page_id' => '_value_',
-            'rt' => RequestToken::get(),
-
-            // TODO: for Contao 4.13+
-            //'rt' => System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue()
+            'rt' => \Contao\System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue(),
         ]);
 
         return '
