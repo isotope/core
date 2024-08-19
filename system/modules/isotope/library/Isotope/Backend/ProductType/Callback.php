@@ -96,7 +96,7 @@ class Callback extends Permission
                 $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
 
                 $session = $sessionBag->all();
-                if ('deleteAll' === Input::get('act') && !$this->User->hasAccess('delete', 'iso_product_typep')) {
+                if ('deleteAll' === Input::get('act') && !\Contao\BackendUser::getInstance()->hasAccess('delete', 'iso_product_typep')) {
                     $session['CURRENT']['IDS'] = array();
                 } else {
                     $session['CURRENT']['IDS'] = array_intersect($session['CURRENT']['IDS'], $root);

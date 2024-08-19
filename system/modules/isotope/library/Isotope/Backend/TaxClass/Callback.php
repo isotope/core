@@ -36,7 +36,6 @@ class Callback extends Permission
             return;
         }
 
-        $this->import('BackendUser', 'User');
         $user = BackendUser::getInstance();
 
         if ($user->isAdmin) {
@@ -73,14 +72,14 @@ class Callback extends Permission
                     && $this->addNewRecordPermissions(Input::get('id'), 'tl_iso_tax_class', 'iso_tax_classes', 'iso_tax_classp')
                 ) {
                     $root[] = Input::get('id');
-                    $this->User->iso_tax_classes = $root;
+                    \Contao\BackendUser::getInstance()->iso_tax_classes = $root;
                 }
             // No break;
 
             case 'copy':
             case 'delete':
             case 'show':
-                if (!\in_array(Input::get('id'), $root) || ('delete' === Input::get('act') && !$this->User->hasAccess('delete', 'iso_tax_classp'))) {
+                if (!\in_array(Input::get('id'), $root) || ('delete' === Input::get('act') && !\Contao\BackendUser::getInstance()->hasAccess('delete', 'iso_tax_classp'))) {
                     throw new AccessDeniedException('Not enough permissions to ' . Input::get('act') . ' tax class ID "' . Input::get('id') . '"');
                 }
                 break;

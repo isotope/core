@@ -12,6 +12,7 @@
 namespace Isotope\Backend\Config;
 
 use Contao\Backend;
+use Contao\BackendUser;
 use Contao\CoreBundle\Exception\AccessDeniedException;
 use Contao\Database;
 use Contao\DataContainer;
@@ -44,24 +45,24 @@ class Callback extends Permission
             $GLOBALS['TL_DCA']['tl_iso_config']['fields']['fallback']['default'] = '1';
         }
 
-        $this->import('BackendUser', 'User');
+        $user = BackendUser::getInstance();
 
         // Return if user is admin
-        if ($this->User->isAdmin) {
+        if ($user->isAdmin) {
             return;
         }
 
         // Set root IDs
-        if (!\is_array($this->User->iso_configs) || \count($this->User->iso_configs) < 1) {
+        if (!\is_array($user->iso_configs) || \count($user->iso_configs) < 1) {
             $root = array(0);
         } else {
-            $root = $this->User->iso_configs;
+            $root = $user->iso_configs;
         }
 
         $GLOBALS['TL_DCA']['tl_iso_config']['list']['sorting']['root'] = $root;
 
         // Check permissions to add configs
-        if (!$this->User->hasAccess('create', 'iso_configp')) {
+        if (!$user->hasAccess('create', 'iso_configp')) {
             $GLOBALS['TL_DCA']['tl_iso_config']['config']['closed'] = true;
             unset($GLOBALS['TL_DCA']['tl_iso_config']['list']['global_operations']['new']);
         }
@@ -81,14 +82,14 @@ class Callback extends Permission
                     && $this->addNewRecordPermissions(Input::get('id'), 'tl_iso_config', 'iso_configs', 'iso_configp')
                 ) {
                     $root[] = Input::get('id');
-                    $this->User->iso_configs = $root;
+                    $user->iso_configs = $root;
                 }
                 // No break;
 
             case 'copy':
             case 'delete':
             case 'show':
-                if (!\in_array(Input::get('id'), $root) || ('delete' === Input::get('act') && !$this->User->hasAccess('delete', 'iso_configp'))) {
+                if (!\in_array(Input::get('id'), $root) || ('delete' === Input::get('act') && !$user->hasAccess('delete', 'iso_configp'))) {
                     throw new AccessDeniedException('Not enough permissions to ' . Input::get('act') . ' store configuration ID "' . Input::get('id') . '"');
                 }
                 break;
@@ -100,7 +101,7 @@ class Callback extends Permission
                 $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
 
                 $session = $sessionBag->all();
-                if ('deleteAll' === Input::get('act') && !$this->User->hasAccess('delete', 'iso_configp')) {
+                if ('deleteAll' === Input::get('act') && !$user->hasAccess('delete', 'iso_configp')) {
                     $session['CURRENT']['IDS'] = array();
                 } else {
                     $session['CURRENT']['IDS'] = array_intersect($session['CURRENT']['IDS'], $root);
@@ -212,7 +213,7 @@ class Callback extends Permission
      */
     public function copyConfig($row, $href, $label, $title, $icon, $attributes)
     {
-        return ($this->User->isAdmin || $this->User->hasAccess('create', 'iso_configp')) ? '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ' : Image::getHtml(preg_replace('/\.svg$/i', '_.svg', $icon)) . ' ';
+        return (BackendUser::getInstance()->isAdmin || BackendUser::getInstance()->hasAccess('create', 'iso_configp')) ? '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ' : Image::getHtml(preg_replace('/\.svg$/i', '_.svg', $icon)) . ' ';
     }
 
     /**
@@ -229,7 +230,7 @@ class Callback extends Permission
      */
     public function deleteConfig($row, $href, $label, $title, $icon, $attributes)
     {
-        return ($this->User->isAdmin || $this->User->hasAccess('delete', 'iso_configp')) ? '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ' : Image::getHtml(preg_replace('/\.svg$/i', '_.svg', $icon)) . ' ';
+        return (BackendUser::getInstance()->isAdmin || BackendUser::getInstance()->hasAccess('delete', 'iso_configp')) ? '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ' : Image::getHtml(preg_replace('/\.svg$/i', '_.svg', $icon)) . ' ';
     }
 
     /**

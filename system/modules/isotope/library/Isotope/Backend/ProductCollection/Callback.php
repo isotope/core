@@ -350,9 +350,7 @@ class Callback extends Backend
      */
     public function checkPermission()
     {
-        $this->import('BackendUser', 'User');
-
-        if ($this->User->isAdmin) {
+        if (BackendUser::getInstance()->isAdmin) {
             return;
         }
 
@@ -365,12 +363,12 @@ class Callback extends Backend
         $arrIds = [0];
         $arrWhere = [];
 
-        $arrConfigs = $this->User->iso_configs;
+        $arrConfigs = \Contao\BackendUser::getInstance()->iso_configs;
         if (\is_array($arrConfigs) && !empty($arrConfigs)) {
             $arrWhere[] = 'config_id IN ('.implode(',', $arrConfigs).')';
         }
 
-        $arrGroups = $this->User->iso_member_groups;
+        $arrGroups = \Contao\BackendUser::getInstance()->iso_member_groups;
         if (\is_array($arrGroups) && !empty($arrGroups)) {
             $blnGuests = \in_array(-1, $arrGroups, false);
             $arrLike = [];

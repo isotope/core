@@ -12,6 +12,7 @@
 namespace Isotope\Backend\Rule;
 
 use Contao\Backend;
+use Contao\BackendUser;
 use Contao\Controller;
 use Contao\CoreBundle\Exception\AccessDeniedException;
 use Contao\Database;
@@ -29,8 +30,6 @@ class Callback extends Backend
     public function __construct()
     {
         parent::__construct();
-
-        $this->import('BackendUser', 'User');
     }
 
     /**
@@ -113,7 +112,7 @@ class Callback extends Backend
         }
 
         // Check permissions AFTER checking the tid, so hacking attempts are logged
-        if (!$this->User->isAdmin && !$this->User->hasAccess('tl_iso_rule::enabled', 'alexf')) {
+        if (!BackendUser::getInstance()->isAdmin && !BackendUser::getInstance()->hasAccess('tl_iso_rule::enabled', 'alexf')) {
             return Image::getHtml($icon, $label) . ' ';
         }
 
@@ -139,7 +138,7 @@ class Callback extends Backend
 //        $this->checkPermission();
 
         // Check permissions to publish
-        if (!$this->User->isAdmin && !$this->User->hasAccess('tl_iso_rule::enabled', 'alexf')) {
+        if (!BackendUser::getInstance()->isAdmin && !BackendUser::getInstance()->hasAccess('tl_iso_rule::enabled', 'alexf')) {
             throw new AccessDeniedException('Not enough permissions to enable/disable rule ID "' . $intId . '"');
         }
 

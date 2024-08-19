@@ -38,24 +38,22 @@ class Callback extends Permission
             return;
         }
 
-        $this->import('BackendUser', 'User');
-
-        if ($this->User->isAdmin) {
+        if (\Contao\BackendUser::getInstance()->isAdmin) {
             return;
         }
 
         // Set root IDs
-        if (!\is_array($this->User->iso_tax_rates) || \count($this->User->iso_tax_rates) < 1) // Can't use empty() because its an object property (using __get)
+        if (!\is_array(\Contao\BackendUser::getInstance()->iso_tax_rates) || \count(\Contao\BackendUser::getInstance()->iso_tax_rates) < 1) // Can't use empty() because its an object property (using __get)
         {
             $root = array(0);
         } else {
-            $root = $this->User->iso_tax_rates;
+            $root = \Contao\BackendUser::getInstance()->iso_tax_rates;
         }
 
         $GLOBALS['TL_DCA']['tl_iso_tax_rate']['list']['sorting']['root'] = $root;
 
         // Check permissions to add tax rates
-        if (!$this->User->hasAccess('create', 'iso_tax_ratep')) {
+        if (!\Contao\BackendUser::getInstance()->hasAccess('create', 'iso_tax_ratep')) {
             $GLOBALS['TL_DCA']['tl_iso_tax_rate']['config']['closed'] = true;
             unset($GLOBALS['TL_DCA']['tl_iso_tax_rate']['list']['global_operations']['new']);
         }
@@ -74,7 +72,7 @@ class Callback extends Permission
                     && $this->addNewRecordPermissions(Input::get('id'), 'tl_iso_tax_rate', 'iso_tax_rates', 'iso_tax_ratep')
                 ) {
                     $root[] = Input::get('id');
-                    $this->User->iso_tax_rates = $root;
+                    \Contao\BackendUser::getInstance()->iso_tax_rates = $root;
                 }
             // No break;
 
@@ -82,7 +80,7 @@ class Callback extends Permission
             case 'delete':
             case 'show':
                 if (!\in_array(Input::get('id'), $root)
-                    || ('delete' === Input::get('act') && !$this->User->hasAccess('delete', 'iso_tax_ratep'))
+                    || ('delete' === Input::get('act') && !\Contao\BackendUser::getInstance()->hasAccess('delete', 'iso_tax_ratep'))
                 ) {
                     throw new AccessDeniedException('Not enough permissions to ' . Input::get('act') . ' tax rate ID "' . Input::get('id') . '"');
                 }
@@ -95,7 +93,7 @@ class Callback extends Permission
                 $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
 
                 $session = $sessionBag->all();
-                if ('deleteAll' === Input::get('act') && !$this->User->hasAccess('delete', 'iso_tax_ratep')) {
+                if ('deleteAll' === Input::get('act') && !\Contao\BackendUser::getInstance()->hasAccess('delete', 'iso_tax_ratep')) {
                     $session['CURRENT']['IDS'] = array();
                 } else {
                     $session['CURRENT']['IDS'] = array_intersect($session['CURRENT']['IDS'], $root);
@@ -159,7 +157,7 @@ class Callback extends Permission
      */
     public function copyTaxRate($row, $href, $label, $title, $icon, $attributes)
     {
-        return ($this->User->isAdmin || $this->User->hasAccess('create', 'iso_tax_ratep')) ? '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ' : Image::getHtml(preg_replace('/\.svg$/i', '_.svg', $icon)) . ' ';
+        return (\Contao\BackendUser::getInstance()->isAdmin || \Contao\BackendUser::getInstance()->hasAccess('create', 'iso_tax_ratep')) ? '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ' : Image::getHtml(preg_replace('/\.svg$/i', '_.svg', $icon)) . ' ';
     }
 
 
@@ -175,6 +173,6 @@ class Callback extends Permission
      */
     public function deleteTaxRate($row, $href, $label, $title, $icon, $attributes)
     {
-        return ($this->User->isAdmin || $this->User->hasAccess('delete', 'iso_tax_ratep')) ? '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ' : Image::getHtml(preg_replace('/\.svg$/i', '_.svg', $icon)) . ' ';
+        return (\Contao\BackendUser::getInstance()->isAdmin || \Contao\BackendUser::getInstance()->hasAccess('delete', 'iso_tax_ratep')) ? '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ' : Image::getHtml(preg_replace('/\.svg$/i', '_.svg', $icon)) . ' ';
     }
 }
