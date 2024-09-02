@@ -234,10 +234,15 @@ abstract class TypeAgent extends Model
 
         $objStatement = Database::getInstance()->prepare($strQuery);
 
+        if (!isset($arrOptions['value'])) {
+            $arrOptions['value'] = \is_string($arrOptions['column'] ?? null) ? array(null) : array();
+        }
+
         // Defaults for limit and offset
         if (!isset($arrOptions['limit'])) {
             $arrOptions['limit'] = 0;
         }
+
         if (!isset($arrOptions['offset'])) {
             $arrOptions['offset'] = 0;
         }
@@ -248,7 +253,7 @@ abstract class TypeAgent extends Model
         }
 
         $objStatement = static::preFind($objStatement);
-        $objResult    = $objStatement->execute(...($arrOptions['value'] ?? []));
+        $objResult    = $objStatement->execute(...(array) $arrOptions['value']);
 
         if ($objResult->numRows < 1) {
             return 'Array' === $arrOptions['return'] ? array() : null;

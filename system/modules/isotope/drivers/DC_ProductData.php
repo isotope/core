@@ -17,12 +17,14 @@ use Contao\Config;
 use Contao\Controller;
 use Contao\CoreBundle\Exception\AccessDeniedException;
 use Contao\CoreBundle\Exception\InternalServerErrorException;
+use Contao\CoreBundle\Exception\NotFoundException;
 use Contao\CoreBundle\Exception\ResponseException;
 use Contao\CoreBundle\Security\ContaoCorePermissions;
+use Contao\CoreBundle\Security\DataContainer\CreateAction;
+use Contao\CoreBundle\Security\DataContainer\UpdateAction;
 use Contao\Database;
 use Contao\Date;
 use Contao\DC_Table;
-use Contao\Encryption;
 use Contao\Environment;
 use Contao\FilesModel;
 use Contao\Image;
@@ -40,7 +42,6 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 class DC_ProductData extends DC_Table
 {
-
     /**
      * True if we are editing a language
      */
@@ -145,19 +146,37 @@ class DC_ProductData extends DC_Table
         // Add to clipboard
         if (Input::get('act') == 'paste')
         {
+            $this->denyAccessUnlessGranted(...$this->getClipboardPermission(Input::get('mode'), (int) Input::get('id')));
+
+            $children = Input::get('children');
+
+            // Backwards compatibility
+            if (Input::get('childs') !== null)
+            {
+                trigger_deprecation('contao/core-bundle', '5.3', 'Using the "childs" query parameter has been deprecated and will no longer work in Contao 6. Use the "children" parameter instead.');
+                $children = Input::get('childs');
+            }
+
             $arrClipboard = $objSession->get('CLIPBOARD');
 
             $arrClipboard[$this->strTable] = array
             (
                 'id' => Input::get('id'),
-                'childs' => Input::get('childs'),
+                'childs' => $children, // backwards compatibility
+                'children' => $children,
                 'mode' => Input::get('mode')
             );
 
             $objSession->set('CLIPBOARD', $arrClipboard);
 
-            // Perform a redirect (this is the CURRENT_ID fix)
-            \Contao\Controller::redirect('contao/main.php?do=' . Input::get('do') . (Input::get('pid') ? '&id=' . Input::get('pid') : '') . '&rt=' . Input::get('rt') . '&ref=' . Input::get('ref'));
+            if ($this->currentPid)
+            {
+                $this->redirect(Backend::addToUrl('id=' . $this->currentPid, false, array('act', 'mode')));
+            }
+            else
+            {
+                $this->redirect(Backend::addToUrl('', false, array('act', 'mode', 'id')));
+            }
         }
 
         // Do not show the language records
@@ -190,12 +209,7 @@ class DC_ProductData extends DC_Table
         }
 
         $return .= $this->panel();
-        $return .= (CURRENT_ID && (Input::get('pid') === null || (Input::get('pid') != '' && (int) Input::get('pid') != 0))) ? $this->parentView() : $this->listView();
-
-        // Store the current IDs
-        $session = $objSession->all();
-        $session['CURRENT']['IDS'] = $this->current;
-        $objSession->replace($session);
+        $return .= ($this->intId && (Input::get('pid') === null || (Input::get('pid') != '' && (int) Input::get('pid') != 0))) ? $this->parentView() : $this->listView();
 
         return $return;
     }
@@ -216,15 +230,24 @@ class DC_ProductData extends DC_Table
      * @param integer $id
      * @param integer $parentId
      */
-    protected function copyChilds($table, $insertID, $id, $parentId)
+    protected function copyChildren($table, $insertID, $id, $parentId)
     {
         $time = time();
         $copy = array();
         $cctable = array();
         $ctable = $GLOBALS['TL_DCA'][$table]['config']['ctable'] ?? array();
+        $db = Database::getInstance();
+        $children = Input::get('children');
+
+        // Backwards compatibility
+        if (Input::get('childs') !== null)
+        {
+            trigger_deprecation('contao/core-bundle', '5.3', 'Using the "childs" query parameter has been deprecated and will no longer work in Contao 6. Use the "children" parameter instead.');
+            $children = Input::get('childs');
+        }
 
         /** PATCH: removed check for sorting field */
-        if (!($GLOBALS['TL_DCA'][$table]['config']['ptable'] ?? null) && Input::get('childs') && $this->Database->fieldExists('pid', $table))
+        if (!($GLOBALS['TL_DCA'][$table]['config']['ptable'] ?? null) && $children && $db->fieldExists('pid', $table))
         {
             $ctable[] = $table;
         }
@@ -240,19 +263,19 @@ class DC_ProductData extends DC_Table
             $this->loadDataContainer($v);
             $cctable[$v] = $GLOBALS['TL_DCA'][$v]['config']['ctable'] ?? null;
 
-            if (!($GLOBALS['TL_DCA'][$v]['config']['doNotCopyRecords'] ?? null) && \strlen($v))
+            if (!($GLOBALS['TL_DCA'][$v]['config']['doNotCopyRecords'] ?? null))
             {
                 // Consider the dynamic parent table (see #4867)
                 if ($GLOBALS['TL_DCA'][$v]['config']['dynamicPtable'] ?? null)
                 {
-                    $cond = ($table === 'tl_article') ? "(ptable=? OR ptable='')" : "ptable=?";
-
-                    $objCTable = $this->Database->prepare("SELECT * FROM $v WHERE pid=? AND $cond" . ($this->Database->fieldExists('sorting', $v) ? " ORDER BY sorting" : ""))
+                    $objCTable = $db
+                        ->prepare("SELECT * FROM $v WHERE pid=? AND ptable=?" . ($db->fieldExists('sorting', $v) ? " ORDER BY sorting, id" : ""))
                                                 ->execute($id, $table);
                 }
                 else
                 {
-                    $objCTable = $this->Database->prepare("SELECT * FROM $v WHERE pid=?" . ($this->Database->fieldExists('sorting', $v) ? " ORDER BY sorting" : ""))
+                    $objCTable = $db
+                        ->prepare("SELECT * FROM $v WHERE pid=?" . ($db->fieldExists('sorting', $v) ? " ORDER BY sorting, id" : ""))
                                                 ->execute($id);
                 }
 
@@ -280,7 +303,7 @@ class DC_ProductData extends DC_Table
                         // Empty unique fields or add a unique identifier in copyAll mode
                         elseif ($GLOBALS['TL_DCA'][$v]['fields'][$kk]['eval']['unique'] ?? null)
                         {
-                            $vv = (Input::get('act') == 'copyAll') ? $vv . '-' . substr(md5(uniqid(mt_rand(), true)), 0, 8) : Widget::getEmptyValueByFieldType($GLOBALS['TL_DCA'][$v]['fields'][$kk]['sql'] ?? array());
+                            $vv = (Input::get('act') == 'copyAll' && !$GLOBALS['TL_DCA'][$v]['fields'][$kk]['eval']['doNotCopy']) ? $vv . '-' . substr(md5(uniqid(mt_rand(), true)), 0, 8) : Widget::getEmptyValueByFieldType($GLOBALS['TL_DCA'][$v]['fields'][$kk]['sql'] ?? array());
                         }
 
                         // Reset doNotCopy and fallback fields to their default value
@@ -291,13 +314,14 @@ class DC_ProductData extends DC_Table
                             // Use array_key_exists to allow NULL (see #5252)
                             if (\array_key_exists('default', $GLOBALS['TL_DCA'][$v]['fields'][$kk] ?? array()))
                             {
-                                $vv = \is_array($GLOBALS['TL_DCA'][$v]['fields'][$kk]['default']) ? serialize($GLOBALS['TL_DCA'][$v]['fields'][$kk]['default']) : $GLOBALS['TL_DCA'][$v]['fields'][$kk]['default'];
-                            }
+                                $default = $GLOBALS['TL_DCA'][$v]['fields'][$kk]['default'];
 
-                            // Encrypt the default value (see #3740)
-                            if ($GLOBALS['TL_DCA'][$v]['fields'][$kk]['eval']['encrypt'] ?? null)
-                            {
-                                $vv = Encryption::encrypt($vv);
+                                if ($default instanceof \Closure)
+                                {
+                                    $default = $default($this);
+                                }
+
+                                $vv = \is_array($default) ? serialize($default) : $default;
                             }
                         }
 
@@ -317,17 +341,34 @@ class DC_ProductData extends DC_Table
             {
                 foreach ($v as $kk=>$vv)
                 {
-                    $objInsertStmt = $this->Database->prepare("INSERT INTO " . $k . " %s")
-                                                    ->set($vv)
-                                                    ->execute();
+                    $objInsertStmt = $db->prepare("INSERT INTO " . $k . " %s")->set($vv)->execute();
 
                     if ($objInsertStmt->affectedRows)
                     {
                         $insertID = $objInsertStmt->insertId;
 
-                        if ($kk != $parentId && (!empty($cctable[$k]) || ($GLOBALS['TL_DCA'][$k]['list']['sorting']['mode'] ?? null) == 5))
+                        if ($kk != $parentId && (!empty($cctable[$k]) || ($GLOBALS['TL_DCA'][$k]['list']['sorting']['mode'] ?? null) == self::MODE_TREE))
                         {
-                            $this->copyChilds($k, $insertID, $kk, $parentId);
+                            $this->copyChildren($k, $insertID, $kk, $parentId);
+                        }
+
+                        if (\is_array($GLOBALS['TL_DCA'][$k]['config']['oncopy_callback'] ?? null))
+                        {
+                            foreach ($GLOBALS['TL_DCA'][$k]['config']['oncopy_callback'] as $callback)
+                            {
+                                $dc = (new \ReflectionClass(self::class))->newInstanceWithoutConstructor();
+                                $dc->table = $k;
+                                $dc->id = $kk;
+
+                                if (\is_array($callback))
+                        {
+                                    System::importStatic($callback[0])->{$callback[1]}($insertID, $dc);
+                                }
+                                elseif (\is_callable($callback))
+                                {
+                                    $callback($insertID, $dc);
+                                }
+                            }
                         }
                     }
                 }
@@ -344,11 +385,10 @@ class DC_ProductData extends DC_Table
     {
         if ($GLOBALS['TL_DCA'][$this->strTable]['config']['notCopyable'] ?? null)
         {
-            throw new InternalServerErrorException('Table "' . $this->strTable . '" is not copyable.');
+            throw new AccessDeniedException('Table "' . $this->strTable . '" is not copyable.');
         }
 
-        /** @var Session $objSession */
-        $objSession = System::getContainer()->get('session');
+        $objSession = System::getContainer()->get('request_stack')->getSession();
 
         $arrClipboard = $objSession->get('CLIPBOARD');
 
@@ -359,7 +399,16 @@ class DC_ProductData extends DC_Table
             foreach ($arrClipboard[$this->strTable]['id'] as $id)
             {
                 $this->intId = $id;
+
+                try
+                {
                 $id = $this->copy(true);
+                }
+                catch (AccessDeniedException)
+                {
+                    continue;
+                }
+
                 Input::setGet('pid', $id);
                 Input::setGet('mode', 1);
                 $arrIds[] = $id;
@@ -386,7 +435,7 @@ class DC_ProductData extends DC_Table
     {
         if ($GLOBALS['TL_DCA'][$this->strTable]['config']['notEditable'] ?? null)
         {
-            throw new InternalServerErrorException('Table "' . $this->strTable . '" is not editable.');
+            throw new AccessDeniedException('Table "' . $this->strTable . '" is not editable.');
         }
 
         if ($intId)
@@ -395,28 +444,29 @@ class DC_ProductData extends DC_Table
         }
 
         // Get the current record
-        $objRow = $this->Database->prepare("SELECT * FROM " . $this->strTable . " WHERE id=?")
-            ->limit(1)
-            ->execute($this->intId);
+        $currentRecord = $this->getCurrentRecord();
 
         // Redirect if there is no record with the given ID
-        if ($objRow->numRows < 1)
+        if (null === $currentRecord)
         {
-            throw new AccessDeniedException('Cannot load record "' . $this->strTable . '.id=' . $this->intId . '".');
+            throw new NotFoundException('Cannot load record "' . $this->strTable . '.id=' . $this->intId . '".');
         }
 
+        $this->denyAccessUnlessGranted(ContaoCorePermissions::DC_PREFIX . $this->strTable, new UpdateAction($this->strTable, $currentRecord));
+
         // ID of a language record is not allowed
-        if ($objRow->language != '')
+        if (!empty($currentRecord['language']))
         {
             throw new AccessDeniedException('Cannot edit language record "'.$this->strTable.'.id='.$this->intId.'"');
         }
 
-        $this->objActiveRecord = $objRow;
+        // Store the active record (backwards compatibility)
+        $this->objActiveRecord = (object) $currentRecord;
 
         $return = '';
         $this->values[] = $this->intId;
         $this->procedure[] = 'id=?';
-
+        $this->arrSubmit = array();
         $this->blnCreateNewVersion = false;
         $objVersions = new Versions($this->strTable, $this->intId);
 
@@ -440,6 +490,9 @@ class DC_ProductData extends DC_Table
         }
 
         $objVersions->initialize();
+        $intLatestVersion = $objVersions->getLatestVersion();
+
+        $security = System::getContainer()->get('security.helper');
 
         // Load and/or change language
         $this->blnEditLanguage = false;
@@ -522,7 +575,7 @@ class DC_ProductData extends DC_Table
                         $legends[$k] = substr($vv, 1, -1);
                         unset($boxes[$k][$kk]);
                     }
-                    elseif (!\is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$vv] ?? null) || ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$vv]['exclude'] ?? null))
+                    elseif (!\is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$vv] ?? null) || (\Contao\DataContainer::isFieldExcluded($this->strTable, $vv) && !$security->isGranted(ContaoCorePermissions::USER_CAN_EDIT_FIELD_OF_TABLE, $this->strTable . '::' . $vv)))
                     {
                         unset($boxes[$k][$kk]);
                     }
@@ -557,19 +610,28 @@ class DC_ProductData extends DC_Table
                 {
                     list($key, $cls) = explode(':', $legends[$k]) + array(null, null);
 
-                    $legend = "\n" . '<legend onclick="AjaxRequest.toggleFieldset(this,\'' . $key . '\',\'' . $this->strTable . '\')">' . ($GLOBALS['TL_LANG'][$this->strTable][$key] ?? $key) . '</legend>';
+                    $legend = "\n" . '<legend data-action="click->contao--toggle-fieldset#toggle">' . ($GLOBALS['TL_LANG'][$this->strTable][$key] ?? $key) . '</legend>';
                 }
 
-                if (isset($fs[$this->strTable][$key]))
+                if ($legend)
                 {
-                    $class .= ($fs[$this->strTable][$key] ? '' : ' collapsed');
-                }
-                else
-                {
-                    $class .= (($cls && $legend) ? ' ' . $cls : '');
+                    if (isset($fs[$this->strTable][$key]))
+                    {
+                        $class .= ($fs[$this->strTable][$key] ? '' : ' collapsed');
+                    }
+                    elseif ($cls)
+                    {
+                        // Convert the ":hide" suffix from the DCA
+                        if ($cls == 'hide')
+                        {
+                            $cls = 'collapsed';
+                        }
+
+                        $class .= ' ' . $cls;
+                    }
                 }
 
-                $return .= "\n\n" . '<fieldset' . ($key ? ' id="pal_' . $key . '"' : '') . ' class="' . $class . ($legend ? '' : ' nolegend') . '">' . $legend;
+                $return .= "\n\n" . '<fieldset class="' . $class . ($legend ? '' : ' nolegend') . '" data-controller="contao--toggle-fieldset" data-contao--toggle-fieldset-id-value="' . $key . '" data-contao--toggle-fieldset-table-value="' . $this->strTable . '" data-contao--toggle-fieldset-collapsed-class="collapsed" data-contao--jump-targets-target="section" data-contao--jump-targets-label-value="' . ($GLOBALS['TL_LANG'][$this->strTable][$key] ?? $key) . '" data-action="contao--jump-targets:scrollto->contao--toggle-fieldset#open">' . $legend;
                 $thisId = '';
 
                 // Build rows of the current box
@@ -586,7 +648,7 @@ class DC_ProductData extends DC_Table
                                     $arrAjax[$thisId] .= '<input type="hidden" name="VERSION_NUMBER" value="' . $intLatestVersion . '">';
                                 }
 
-                                return $arrAjax[$thisId] . '<input type="hidden" name="FORM_FIELDS[]" value="' . StringUtil::specialchars($this->strPalette) . '">';
+                                return $arrAjax[$thisId];
                             }
 
                             if (\count($arrAjax) > 1)
@@ -616,7 +678,7 @@ class DC_ProductData extends DC_Table
 
                     $this->strField = $vv;
                     $this->strInputName = $vv;
-                    $this->varValue = $objRow->$vv;
+                    $this->varValue = $currentRecord[$vv] ?? null;
 
                     // Convert CSV fields (see #2890)
                     if (($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['multiple'] ?? null) && isset($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['csv']))
@@ -631,8 +693,7 @@ class DC_ProductData extends DC_Table
                         {
                             if (\is_array($callback))
                             {
-                                $this->import($callback[0]);
-                                $this->varValue = $this->{$callback[0]}->{$callback[1]}($this->varValue, $this);
+                                $this->varValue = System::importStatic($callback[0])->{$callback[1]}($this->varValue, $this);
                             }
                             elseif (\is_callable($callback))
                             {
@@ -645,12 +706,138 @@ class DC_ProductData extends DC_Table
                     $this->objActiveRecord->{$this->strField} = $this->varValue;
 
                     // Build the row and pass the current palette string (thanks to Tristan Lins)
-                    $blnAjax ? $arrAjax[$thisId] .= $this->row($this->strPalette) : $return .= $this->row($this->strPalette);
+                    $blnAjax ? $arrAjax[$thisId] .= $this->row() : $return .= $this->row();
                 }
 
                 $class = 'tl_box';
                 $return .= "\n" . '</fieldset>';
             }
+
+            $this->submit();
+        }
+
+        // Reload the page to prevent _POST variables from being sent twice
+        if (!$this->noReload && Input::post('FORM_SUBMIT') == $this->strTable)
+        {
+            // Show a warning if the record has been saved by another user (see #8412)
+            if ($intLatestVersion !== null && Input::post('VERSION_NUMBER') !== null && $intLatestVersion > Input::post('VERSION_NUMBER'))
+            {
+                $objTemplate = new BackendTemplate('be_conflict');
+                $objTemplate->language = $GLOBALS['TL_LANGUAGE'];
+                $objTemplate->title = StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['versionConflict']);
+                $objTemplate->theme = Backend::getTheme();
+                $objTemplate->charset = System::getContainer()->getParameter('kernel.charset');
+                $objTemplate->h1 = $GLOBALS['TL_LANG']['MSC']['versionConflict'];
+                $objTemplate->explain1 = \sprintf($GLOBALS['TL_LANG']['MSC']['versionConflict1'], $intLatestVersion, Input::post('VERSION_NUMBER'));
+                $objTemplate->explain2 = \sprintf($GLOBALS['TL_LANG']['MSC']['versionConflict2'], $intLatestVersion + 1, $intLatestVersion);
+                $objTemplate->diff = $objVersions->compare(true);
+                $objTemplate->href = Environment::get('requestUri');
+                $objTemplate->button = $GLOBALS['TL_LANG']['MSC']['continue'];
+
+                throw new ResponseException($objTemplate->getResponse());
+            }
+
+            // Redirect
+            if (Input::post('saveNclose') !== null)
+            {
+                Message::reset();
+
+                $this->redirect($this->getReferer());
+            }
+            elseif (Input::post('saveNedit') !== null)
+            {
+                Message::reset();
+
+                $this->redirect($this->addToUrl($GLOBALS['TL_DCA'][$this->strTable]['list']['operations']['children']['href'] ?? '', false, array('s2e', 'act', 'mode', 'pid')));
+            }
+            elseif (Input::post('saveNback') !== null)
+            {
+                Message::reset();
+
+                if (!$this->ptable)
+                {
+                    $this->redirect(System::getContainer()->get('router')->generate('contao_backend') . '?do=' . Input::get('do'));
+                }
+                // TODO: try to abstract this
+                elseif ($this->ptable == 'tl_page' && $this->strTable == 'tl_article')
+                {
+                    $this->redirect($this->getReferer(false, $this->strTable));
+                }
+                else
+                {
+                    $this->redirect($this->getReferer(false, $this->ptable));
+                }
+            }
+            elseif (Input::post('saveNcreate') !== null)
+            {
+                Message::reset();
+
+                $strUrl = System::getContainer()->get('router')->generate('contao_backend') . '?do=' . Input::get('do');
+
+                if (Input::get('table') !== null)
+                {
+                    $strUrl .= '&amp;table=' . Input::get('table');
+                }
+
+                // Tree view
+                if ($this->treeView)
+                {
+                    $strUrl .= '&amp;act=create&amp;mode=1&amp;pid=' . $this->intId;
+                }
+
+                // Parent view
+                // PATCH: check for parent ID instead of sorting mode
+                elseif ($this->activeRecord->pid > 0)
+                {
+                    $strUrl .= Database::getInstance()->fieldExists('sorting', $this->strTable) ? '&amp;act=create&amp;mode=1&amp;pid=' . $this->intId . '&amp;id=' . ($currentRecord['pid'] ?? null) : '&amp;act=create&amp;mode=2&amp;pid=' . ($currentRecord['pid'] ?? null);
+                }
+
+                // List view
+                else
+                {
+                    $strUrl .= $this->ptable ? '&amp;act=create&amp;mode=2&amp;pid=' . $this->intCurrentPid : '&amp;act=create';
+                }
+
+                $this->redirect($strUrl . '&amp;rt=' . System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue());
+            }
+            elseif (Input::post('saveNduplicate') !== null)
+            {
+                Message::reset();
+
+                $strUrl = System::getContainer()->get('router')->generate('contao_backend') . '?do=' . Input::get('do');
+
+                if (Input::get('table') !== null)
+                {
+                    $strUrl .= '&amp;table=' . Input::get('table');
+                }
+
+                // Tree view
+                if ($this->treeView)
+                {
+                    $strUrl .= '&amp;act=copy&amp;mode=1&amp;id=' . $this->intId . '&amp;pid=' . $this->intId;
+                }
+
+                // Parent view
+                elseif (($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] ?? null) == self::MODE_PARENT)
+                {
+                    $strUrl .= Database::getInstance()->fieldExists('sorting', $this->strTable) ? '&amp;act=copy&amp;mode=1&amp;pid=' . $this->intId . '&amp;id=' . $this->intId : '&amp;act=copy&amp;mode=2&amp;pid=' . $this->intCurrentPid . '&amp;id=' . $this->intId;
+
+                    if (($currentRecord['ptable'] ?? null) === $this->strTable)
+                    {
+                        $strUrl .= '&amp;ptable=' . $currentRecord['ptable'];
+                    }
+                }
+
+                // List view
+                else
+                {
+                    $strUrl .= $this->ptable ? '&amp;act=copy&amp;mode=2&amp;pid=' . $this->intCurrentPid . '&amp;id=' . $this->intId : '&amp;act=copy&amp;id=' . $this->intId;
+                }
+
+                $this->redirect($strUrl . '&amp;rt=' . System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue());
+            }
+
+            $this->reload();
         }
 
         // Versions overview
@@ -721,28 +908,28 @@ class DC_ProductData extends DC_Table
 
         if (!Input::get('nb'))
         {
-            $arrButtons['saveNclose'] = '<button type="submit" name="saveNclose" id="saveNclose" class="tl_submit" accesskey="c">' . $GLOBALS['TL_LANG']['MSC']['saveNclose'] . '</button>';
+            $arrButtons['saveNclose'] = '<button type="submit" name="saveNclose" id="saveNclose" class="tl_submit" accesskey="c" data-action="contao--scroll-offset#discard">' . $GLOBALS['TL_LANG']['MSC']['saveNclose'] . '</button>';
 
             if (!Input::get('nc'))
             {
-                if (!($GLOBALS['TL_DCA'][$this->strTable]['config']['closed'] ?? null) && !($GLOBALS['TL_DCA'][$this->strTable]['config']['notCreatable'] ?? null))
+                if (!($GLOBALS['TL_DCA'][$this->strTable]['config']['closed'] ?? null) && !($GLOBALS['TL_DCA'][$this->strTable]['config']['notCreatable'] ?? null) && $security->isGranted(ContaoCorePermissions::DC_PREFIX . $this->strTable, new CreateAction($this->strTable, array('pid' => $this->intCurrentPid))))
                 {
-                    $arrButtons['saveNcreate'] = '<button type="submit" name="saveNcreate" id="saveNcreate" class="tl_submit" accesskey="n">' . $GLOBALS['TL_LANG']['MSC']['saveNcreate'] . '</button>';
+                    $arrButtons['saveNcreate'] = '<button type="submit" name="saveNcreate" id="saveNcreate" class="tl_submit" accesskey="n" data-action="contao--scroll-offset#discard">' . $GLOBALS['TL_LANG']['MSC']['saveNcreate'] . '</button>';
 
                     if (!($GLOBALS['TL_DCA'][$this->strTable]['config']['notCopyable'] ?? null))
                     {
-                        $arrButtons['saveNduplicate'] = '<button type="submit" name="saveNduplicate" id="saveNduplicate" class="tl_submit" accesskey="d">' . $GLOBALS['TL_LANG']['MSC']['saveNduplicate'] . '</button>';
+                        $arrButtons['saveNduplicate'] = '<button type="submit" name="saveNduplicate" id="saveNduplicate" class="tl_submit" accesskey="d" data-action="contao--scroll-offset#discard">' . $GLOBALS['TL_LANG']['MSC']['saveNduplicate'] . '</button>';
                     }
                 }
 
                 if ($GLOBALS['TL_DCA'][$this->strTable]['config']['switchToEdit'] ?? null)
                 {
-                    $arrButtons['saveNedit'] = '<button type="submit" name="saveNedit" id="saveNedit" class="tl_submit" accesskey="e">' . $GLOBALS['TL_LANG']['MSC']['saveNedit'] . '</button>';
+                    $arrButtons['saveNedit'] = '<button type="submit" name="saveNedit" id="saveNedit" class="tl_submit" accesskey="e" data-action="contao--scroll-offset#discard">' . $GLOBALS['TL_LANG']['MSC']['saveNedit'] . '</button>';
                 }
 
-                if ($this->ptable || ($GLOBALS['TL_DCA'][$this->strTable]['config']['switchToEdit'] ?? null) || ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] ?? null) == 4)
+                if ($this->ptable || ($GLOBALS['TL_DCA'][$this->strTable]['config']['switchToEdit'] ?? null) || ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] ?? null) == self::MODE_PARENT)
                 {
-                    $arrButtons['saveNback'] = '<button type="submit" name="saveNback" id="saveNback" class="tl_submit" accesskey="g">' . $GLOBALS['TL_LANG']['MSC']['saveNback'] . '</button>';
+                    $arrButtons['saveNback'] = '<button type="submit" name="saveNback" id="saveNback" class="tl_submit" accesskey="g" data-action="contao--scroll-offset#discard">' . $GLOBALS['TL_LANG']['MSC']['saveNback'] . '</button>';
                 }
 
                 if ($this->blnEditLanguage)
@@ -759,8 +946,7 @@ class DC_ProductData extends DC_Table
             {
                 if (\is_array($callback))
                 {
-                    $this->import($callback[0]);
-                    $arrButtons = $this->{$callback[0]}->{$callback[1]}($arrButtons, $this);
+                    $arrButtons = System::importStatic($callback[0])->{$callback[1]}($arrButtons, $this);
                 }
                 elseif (\is_callable($callback))
                 {
@@ -797,212 +983,40 @@ class DC_ProductData extends DC_Table
 </div>
 </form>';
 
-        // Always create a new version if something has changed, even if the form has errors (see #237)
-        if ($this->noReload && $this->blnCreateNewVersion && Input::post('FORM_SUBMIT') == $this->strTable)
-        {
-            $objVersions->create();
-        }
-
         $strVersionField = '';
 
         // Store the current version number (see #8412)
-        if (($intLatestVersion = $objVersions->getLatestVersion()) !== null)
+        if ($intLatestVersion !== null)
         {
             $strVersionField = '
 <input type="hidden" name="VERSION_NUMBER" value="' . $intLatestVersion . '">';
         }
 
+        $strBackUrl = $this->getReferer(true);
+
+        if ((string) $currentRecord['tstamp'] === '0')
+        {
+            $strBackUrl = preg_replace('/&(?:amp;)?revise=[^&]+|$/', '&amp;revise=' . $this->strTable . '.' . ((int) $this->intId), $strBackUrl, 1);
+
+            $return .= '
+<script>
+  history.pushState({}, "");
+  window.addEventListener("popstate", () => fetch(document.querySelector(".header_back").href).then(() => history.back()));
+</script>';
+        }
+
         $copyFallback = $this->blnEditLanguage ? '&nbsp;&nbsp;::&nbsp;&nbsp;<a href="' . Backend::addToUrl('act=copyFallback') . '" class="header_iso_copy" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['copyFallback'] ?? '') . '" accesskey="d" onclick="Backend.getScrollOffset();">' . ($GLOBALS['TL_LANG']['MSC']['copyFallback'] ?? 'copyFallback') . '</a>' : '';
 
         // Begin the form (-> DO NOT CHANGE THIS ORDER -> this way the onsubmit attribute of the form can be changed by a field)
-        $return = $version . Message::generate() . ($this->noReload ? '
-<p class="tl_error">' . $GLOBALS['TL_LANG']['ERR']['general'] . '</p>' : '') . '
-<div id="tl_buttons">' . (Input::get('nb') ? '&nbsp;' : '
-<a href="' . $this->getReferer(true) . '" class="header_back" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBTTitle']) . '" accesskey="b" onclick="Backend.getScrollOffset()">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>') . $copyFallback . '
-</div>
+        $return = $version . ($this->noReload ? '
+<p class="tl_error">' . $GLOBALS['TL_LANG']['ERR']['submit'] . '</p>' : '') . Message::generate() . '
+<div id="tl_buttons">' . (Input::get('nb') ? '' : '
+<a href="' . $strBackUrl . '" class="header_back" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBTTitle']) . '" accesskey="b" data-action="contao--scroll-offset#discard">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>') . $copyFallback . '
+</div>' . '
 <form id="' . $this->strTable . '" class="tl_form tl_edit_form" method="post" enctype="' . ($this->blnUploadable ? 'multipart/form-data' : 'application/x-www-form-urlencoded') . '"' . (!empty($this->onsubmit) ? ' onsubmit="' . implode(' ', $this->onsubmit) . '"' : '') . '>
 <div class="tl_formbody_edit">
 <input type="hidden" name="FORM_SUBMIT" value="' . $this->strTable . '">
-<input type="hidden" name="REQUEST_TOKEN" value="' . \Contao\System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue() . '">' . $strVersionField . '
-<input type="hidden" name="FORM_FIELDS[]" value="' . StringUtil::specialchars($this->strPalette) . '">' . $return;
-
-        // Reload the page to prevent _POST variables from being sent twice
-        if (!$this->noReload && Input::post('FORM_SUBMIT') == $this->strTable)
-        {
-            $arrValues = $this->values;
-            array_unshift($arrValues, time());
-
-            // Trigger the onsubmit_callback
-            if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['config']['onsubmit_callback'] ?? null))
-            {
-                foreach ($GLOBALS['TL_DCA'][$this->strTable]['config']['onsubmit_callback'] as $callback)
-                {
-                    if (\is_array($callback))
-                    {
-                        $this->import($callback[0]);
-                        $this->{$callback[0]}->{$callback[1]}($this);
-                    }
-                    elseif (\is_callable($callback))
-                    {
-                        $callback($this);
-                    }
-                }
-            }
-
-            // Set the current timestamp before adding a new version
-            if ($GLOBALS['TL_DCA'][$this->strTable]['config']['dynamicPtable'] ?? null)
-            {
-                $this->Database->prepare("UPDATE " . $this->strTable . " SET ptable=?, tstamp=? WHERE id=?")
-                               ->execute($this->ptable, time(), $this->intId);
-            }
-            else
-            {
-                $this->Database->prepare("UPDATE " . $this->strTable . " SET tstamp=? WHERE id=?")
-                               ->execute(time(), $this->intId);
-            }
-
-            // Save the current version
-            if ($this->blnCreateNewVersion)
-            {
-                $objVersions->create();
-
-                // Call the onversion_callback
-                if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['config']['onversion_callback'] ?? null))
-                {
-                    @trigger_error('Using the "onversion_callback" has been deprecated and will no longer work in Contao 5.0. Use the "oncreate_version_callback" instead.', E_USER_DEPRECATED);
-
-                    foreach ($GLOBALS['TL_DCA'][$this->strTable]['config']['onversion_callback'] as $callback)
-                    {
-                        if (\is_array($callback))
-                        {
-                            $this->import($callback[0]);
-                            $this->{$callback[0]}->{$callback[1]}($this->strTable, $this->intId, $this);
-                        }
-                        elseif (\is_callable($callback))
-                        {
-                            $callback($this->strTable, $this->intId, $this);
-                        }
-                    }
-                }
-            }
-
-            // Show a warning if the record has been saved by another user (see #8412)
-            if ($intLatestVersion !== null && isset($_POST['VERSION_NUMBER']) && $intLatestVersion > Input::post('VERSION_NUMBER'))
-            {
-                $objTemplate = new BackendTemplate('be_conflict');
-                $objTemplate->language = $GLOBALS['TL_LANGUAGE'];
-                $objTemplate->title = StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['versionConflict']);
-                $objTemplate->theme = Backend::getTheme();
-                $objTemplate->charset = Config::get('characterSet');
-                $objTemplate->base = Environment::get('base');
-                $objTemplate->h1 = $GLOBALS['TL_LANG']['MSC']['versionConflict'];
-                $objTemplate->explain1 = sprintf($GLOBALS['TL_LANG']['MSC']['versionConflict1'], $intLatestVersion, Input::post('VERSION_NUMBER'));
-                $objTemplate->explain2 = sprintf($GLOBALS['TL_LANG']['MSC']['versionConflict2'], $intLatestVersion + 1, $intLatestVersion);
-                $objTemplate->diff = $objVersions->compare(true);
-                $objTemplate->href = Environment::get('request');
-                $objTemplate->button = $GLOBALS['TL_LANG']['MSC']['continue'];
-
-                throw new ResponseException($objTemplate->getResponse());
-            }
-
-            $this->invalidateCacheTags();
-
-            // Redirect
-            if (isset($_POST['saveNclose']))
-            {
-                Message::reset();
-
-                $this->redirect($this->getReferer());
-            }
-            elseif (isset($_POST['saveNedit']))
-            {
-                Message::reset();
-
-                $this->redirect($this->addToUrl($GLOBALS['TL_DCA'][$this->strTable]['list']['operations']['edit']['href'] ?? '', false, array('s2e', 'act', 'mode', 'pid')));
-            }
-            elseif (isset($_POST['saveNback']))
-            {
-                Message::reset();
-
-                if (!$this->ptable)
-                {
-                    $this->redirect(System::getContainer()->get('router')->generate('contao_backend') . '?do=' . Input::get('do'));
-                }
-                // TODO: try to abstract this
-                elseif (($this->ptable == 'tl_theme' && $this->strTable == 'tl_style_sheet') || ($this->ptable == 'tl_page' && $this->strTable == 'tl_article'))
-                {
-                    $this->redirect($this->getReferer(false, $this->strTable));
-                }
-                else
-                {
-                    $this->redirect($this->getReferer(false, $this->ptable));
-                }
-            }
-            elseif (isset($_POST['saveNcreate']))
-            {
-                Message::reset();
-
-                $strUrl = System::getContainer()->get('router')->generate('contao_backend') . '?do=' . Input::get('do');
-
-                if (isset($_GET['table']))
-                {
-                    $strUrl .= '&amp;table=' . Input::get('table');
-                }
-
-                // Tree view
-                if ($this->treeView)
-                {
-                    $strUrl .= '&amp;act=create&amp;mode=1&amp;pid=' . $this->intId;
-                }
-
-                // Parent view
-                elseif ($this->activeRecord->pid > 0)
-                {
-                    $strUrl .= $this->Database->fieldExists('sorting', $this->strTable) ? '&amp;act=create&amp;mode=1&amp;pid=' . $this->intId . '&amp;id=' . $this->activeRecord->pid : '&amp;act=create&amp;mode=2&amp;pid=' . $this->activeRecord->pid;
-                }
-
-                // List view
-                else
-                {
-                    $strUrl .= $this->ptable ? '&amp;act=create&amp;mode=2&amp;pid=' . CURRENT_ID : '&amp;act=create';
-                }
-
-                $this->redirect($strUrl . '&amp;rt=' . \Contao\System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue());
-            }
-            elseif (isset($_POST['saveNduplicate']))
-            {
-                Message::reset();
-
-                $strUrl = System::getContainer()->get('router')->generate('contao_backend') . '?do=' . Input::get('do');
-
-                if (isset($_GET['table']))
-                {
-                    $strUrl .= '&amp;table=' . Input::get('table');
-                }
-
-                // Tree view
-                if ($this->treeView)
-                {
-                    $strUrl .= '&amp;act=copy&amp;mode=1&amp;id=' . $this->intId . '&amp;pid=' . $this->intId;
-                }
-
-                // Parent view
-                elseif (($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] ?? null) == 4)
-                {
-                    $strUrl .= $this->Database->fieldExists('sorting', $this->strTable) ? '&amp;act=copy&amp;mode=1&amp;pid=' . $this->intId . '&amp;id=' . $this->intId : '&amp;act=copy&amp;mode=2&amp;pid=' . CURRENT_ID . '&amp;id=' . $this->intId;
-                }
-
-                // List view
-                else
-                {
-                    $strUrl .= $this->ptable ? '&amp;act=copy&amp;mode=2&amp;pid=' . CURRENT_ID . '&amp;id=' . CURRENT_ID : '&amp;act=copy&amp;id=' . CURRENT_ID;
-                }
-
-                $this->redirect($strUrl . '&amp;rt=' . \Contao\System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue());
-            }
-
-            $this->reload();
-        }
+<input type="hidden" name="REQUEST_TOKEN" value="' . htmlspecialchars(System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue(), ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5) . '">' . $strVersionField . $return;
 
         // Set the focus if there is an error
         if ($this->noReload)
@@ -1010,10 +1024,17 @@ class DC_ProductData extends DC_Table
             $return .= '
 <script>
   window.addEvent(\'domready\', function() {
-    Backend.vScrollTo(($(\'' . $this->strTable . '\').getElement(\'label.error\').getPosition().y - 20));
+    var error = $(\'' . $this->strTable . '\').getElement(\'label.error\');
+    if (error) Backend.vScrollTo((error.getPosition().y - 20));
   });
 </script>';
         }
+
+        $return = '
+<div data-controller="contao--jump-targets">
+    <div class="jump-targets"><div class="inner" data-contao--jump-targets-target="navigation"></div></div>
+    ' . $return . '
+</div>';
 
         return $return;
     }
@@ -1287,7 +1308,7 @@ class DC_ProductData extends DC_Table
             $fields = array_merge($fields, array_keys($GLOBALS['TL_DCA'][$this->strTable]['fields'] ?? array()));
 
             // Add meta fields if the current user is an administrator
-            if ($this->User->isAdmin)
+            if (\Contao\BackendUser::getInstance()->isAdmin)
             {
                 if ($this->Database->fieldExists('sorting', $this->strTable) && !\in_array('sorting', $fields))
                 {
@@ -1476,7 +1497,7 @@ class DC_ProductData extends DC_Table
             $objRowStmt->limit($arrLimit[1], $arrLimit[0]);
         }
 
-        $objRow = $objRowStmt->execute($this->values);
+        $objRow = $objRowStmt->execute(...$this->values);
 
         // Display buttos
         $return = Message::generate() . '
@@ -2606,7 +2627,7 @@ class DC_ProductData extends DC_Table
                 $query .= " WHERE " . implode(' AND ', $arrProcedure);
             }
 
-            $objTotal = $this->Database->prepare($query)->execute($arrValues);
+            $objTotal = $this->Database->prepare($query)->execute(...$arrValues);
             $this->total = $objTotal->count;
             $options_total = 0;
             $maxResultsPerPage = Config::get('maxResultsPerPage');
@@ -2901,7 +2922,7 @@ class DC_ProductData extends DC_Table
             }
 
             $objFields = $this->Database->prepare("SELECT DISTINCT " . $what . " FROM " . $this->strTable . ((\is_array($arrProcedure) && isset($arrProcedure[0])) ? ' WHERE ' . implode(' AND ', $arrProcedure) : ''))
-                                        ->execute($arrValues);
+                                        ->execute(...$arrValues);
 
             // Begin select menu
             $fields .= '

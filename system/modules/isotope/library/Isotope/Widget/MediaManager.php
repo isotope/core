@@ -25,6 +25,7 @@ use Contao\Input;
 use Contao\Message;
 use Contao\StringUtil;
 use Contao\System;
+use Contao\UploadableWidgetInterface;
 use Contao\Widget;
 use Isotope\Model\Gallery;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -33,7 +34,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 /**
  * Provide methods to handle media files.
  */
-class MediaManager extends Widget implements \uploadable
+class MediaManager extends Widget implements UploadableWidgetInterface
 {
 
     /**
@@ -320,12 +321,11 @@ class MediaManager extends Widget implements \uploadable
 
         if (!$blnIsAjax) {
             $return .= '<div id="ctrl_' . $this->strId . '" class="tl_mediamanager">';
-            $extensions = StringUtil::trimsplit(',', $this->extensions);
 
             $upload .= '<div id="fineuploader_'.$this->strId.'" class="upload_container"></div>
   <script>
     window.addEvent("domready", function() {
-      Isotope.MediaManager.init($("fineuploader_'.$this->strId.'"), "'.$this->strId.'", '.json_encode($extensions).');
+      Isotope.MediaManager.init($("fineuploader_'.$this->strId.'"), "'.$this->strId.'", '.json_encode($this->extensions).');
     });
   </script>
   <script type="text/template" id="qq-template">

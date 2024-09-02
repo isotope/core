@@ -410,13 +410,13 @@ class Backend extends ContaoBackend
             $strKey = 'tl_iso_product';
         }
 
-        if (
-            TL_SCRIPT !== 'contao/help.php' ||
-            !isset($GLOBALS['TL_DCA'][$strTable]['fields'][$strField]) ||
-            !is_subclass_of(Model::getClassFromTable($strKey), TypeAgent::class)
-        ) {
+        //if (
+        //    TL_SCRIPT !== 'contao/help.php' ||
+        //    !isset($GLOBALS['TL_DCA'][$strTable]['fields'][$strField]) ||
+        //    !is_subclass_of(Model::getClassFromTable($strKey), TypeAgent::class)
+        //) {
             return;
-        }
+        //}
 
         $arrField = &$GLOBALS['TL_DCA'][$strTable]['fields'][$strField];
 

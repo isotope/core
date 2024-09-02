@@ -440,17 +440,17 @@ class ProductPrice extends Model implements IsotopePrice
      */
     protected static function buildFindQuery(array $arrOptions)
     {
-        $arrOptions['group'] = (($arrOptions['group'] ?? null) ? $arrOptions['group'].', ' : '') . 'tl_iso_product_price.id';
-
         $query = QueryBuilder::find($arrOptions);
         $from  = substr($query, strpos($query, '*')+1);
         $query = "SELECT tl_iso_product_price.*, GROUP_CONCAT(tl_iso_product_pricetier.min) AS tier_keys, GROUP_CONCAT(tl_iso_product_pricetier.price) AS tier_values" . $from;
 
-        return str_replace(
+        $query = str_replace(
             'FROM tl_iso_product_price',
             'FROM tl_iso_product_price LEFT JOIN tl_iso_product_pricetier ON tl_iso_product_pricetier.pid = tl_iso_product_price.id',
             $query
         );
+
+        return $query.' GROUP BY tl_iso_product_price.id';
     }
 
     /**

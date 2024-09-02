@@ -18,8 +18,10 @@ use Contao\BackendUser;
 use Contao\Controller;
 use Contao\CoreBundle\Exception\AccessDeniedException;
 use Contao\CoreBundle\Exception\ResponseException;
+use Contao\EditableDataContainerInterface;
 use Contao\Environment;
 use Contao\Input;
+use Contao\ListableDataContainerInterface;
 use Contao\System;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -132,7 +134,7 @@ abstract class BackendOverview extends BackendModule
 
         // Check whether the current user has access to the current module
         if (!$this->checkUserAccess($module)) {
-            throw new AccessDeniedException('Module "'.$module.'" was not allowed for user "'.$this->User->username.'"');
+            throw new AccessDeniedException('Module "'.$module.'" was not allowed for user "'.\Contao\BackendUser::getInstance()->username.'"');
         }
 
         // Redirect the user to the specified page
@@ -140,8 +142,7 @@ abstract class BackendOverview extends BackendModule
             Controller::redirect($arrModule['redirect']);
         }
 
-        /** @var \Symfony\Component\HttpFoundation\Session\Session $objSession */
-        $objSession = System::getContainer()->get('session');
+        $objSession = System::getContainer()->get('request_stack')->getSession();
         $objSession->set('CURRENT_ID', Input::get('id'));
 
         $strTable = Input::get('table');
@@ -217,7 +218,7 @@ abstract class BackendOverview extends BackendModule
         $act = (string) Input::get('act');
 
         if ('' === $act || 'paste' === $act || 'select' === $act) {
-            $act = ($this->objDc instanceof \listable) ? 'showAll' : 'edit';
+            $act = ($this->objDc instanceof ListableDataContainerInterface) ? 'showAll' : 'edit';
         }
 
         switch ($act) {
@@ -225,7 +226,7 @@ abstract class BackendOverview extends BackendModule
             case 'show':
             case 'showAll':
             case 'undo':
-                if (!$this->objDc instanceof \listable) {
+                if (!$this->objDc instanceof ListableDataContainerInterface) {
                     \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Data container ' . $strTable . ' is not listable', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
                     trigger_error('The current data container is not listable', E_USER_ERROR);
                 }
@@ -238,7 +239,7 @@ abstract class BackendOverview extends BackendModule
             case 'copyAll':
             case 'move':
             case 'edit':
-                if (!$this->objDc instanceof \editable) {
+                if (!$this->objDc instanceof EditableDataContainerInterface) {
                     \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Data container ' . $strTable . ' is not editable', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
                     trigger_error('The current data container is not editable', E_USER_ERROR);
                 }

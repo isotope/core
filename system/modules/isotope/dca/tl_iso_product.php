@@ -21,7 +21,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
     'config' => array
     (
         'label'                     => &$GLOBALS['TL_LANG']['MOD']['iso_products'][0],
-        'dataContainer'             => 'ProductData',
+        'dataContainer'             => DC_ProductData::class,
         'enableVersioning'          => true,
         'switchToEdit'              => true,
         'ctable'                    => array(\Isotope\Model\Download::getTable(), \Isotope\Model\ProductCategory::getTable(), \Isotope\Model\ProductPrice::getTable(), \Isotope\Model\AttributeOption::getTable()),
