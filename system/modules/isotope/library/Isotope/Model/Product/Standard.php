@@ -655,7 +655,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         // !HOOK: alter product data before output
         if (isset($GLOBALS['ISO_HOOKS']['generateProduct']) && \is_array($GLOBALS['ISO_HOOKS']['generateProduct'])) {
             foreach ($GLOBALS['ISO_HOOKS']['generateProduct'] as $callback) {
-                System::importStatic($callback[0])->{$callback[1]}($objTemplate, $this);
+                System::importStatic($callback[0])->{$callback[1]}($objTemplate, $this, $arrConfig);
             }
         }
 
