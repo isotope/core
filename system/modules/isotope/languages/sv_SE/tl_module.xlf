@@ -187,9 +187,11 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_show_skipped.0">
         <source>Show skipped steps</source>
+        <target>Visa överhoppade steg</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_show_skipped.1">
         <source>Show skipped steps in the checkout step navigation to keep the layout consistent.</source>
+        <target>Visa överhoppade steg i stegnavigeringen för kassan för att hålla layouten konsekvent.</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_checkout_skippable.0">
         <source>Skip checkout steps</source>
@@ -597,9 +599,11 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_moveFavorites.0">
         <source>Remove when adding to cart</source>
+        <target>Ta bort när du lägger till i varukorgen</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_moveFavorites.1">
         <source>Check here if products should be removed from favorites when they are added to the cart.</source>
+        <target>Markera här om produkter ska tas bort från favoriter när de läggs till i varukorgen.</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_address.0">
         <source>Address types</source>
@@ -627,9 +631,11 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_orderdetails_module.0">
         <source>Render list with details</source>
+        <target>Rendera lista med detaljer</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_orderdetails_module.1">
         <source>Select an order details module to render the details of each order in the list.</source>
+        <target>Välj en modul för orderdetaljer för att visa detaljerna för varje order i listan.</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_tsid.0">
         <source>Trusted Shops ID</source>

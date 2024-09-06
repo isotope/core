@@ -43,9 +43,11 @@
       </trans-unit>
       <trans-unit id="ISO_REPORT.members_new">
         <source>New Members</source>
+        <target>Nya medlemmar</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.members_all">
         <source>Members Total</source>
+        <target>Medlemmar Totalt</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.members_currency">
         <source>%s - Members</source>
@@ -97,15 +99,19 @@
       </trans-unit>
         <trans-unit id="ISO_REPORT.summary">
             <source>Sales summary</source>
+            <target>Sammanfattning av försäljningen</target>
         </trans-unit>
       <trans-unit id="ISO_REPORT.24h_summary">
         <source>last 24 hours</source>
+        <target>senaste 24 timmarna</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.month_summary">
         <source>this month</source>
+        <target>denna månad</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.year_summary">
         <source>this year</source>
+        <target>detta år</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.shop_config">
         <source>Shop configuration</source>
@@ -129,6 +135,7 @@
       </trans-unit>
       <trans-unit id="ISO_REPORT.customer#">
         <source>Customer</source>
+        <target>Kund</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.city#">
         <source>City</source>
@@ -136,6 +143,7 @@
       </trans-unit>
       <trans-unit id="ISO_REPORT.comparePrevYear#">
         <source>Cf. prior year</source>
+        <target>Jämför föregående år</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.sales_headline">
         <source>Period</source>
@@ -147,9 +155,11 @@
       </trans-unit>
       <trans-unit id="ISO_REPORT.discounts#">
         <source>Discounts Total</source>
+        <target>Rabatter Totalt</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.sales_avg">
         <source>Sales Ø</source>
+        <target>Försäljning Ø</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.filter_config">
         <source>Shop-Config</source>
@@ -241,6 +251,7 @@
       </trans-unit>
       <trans-unit id="ISO_REPORT.guestOrders">
         <source>Guest orders</source>
+        <target>Beställningar från gäster</target>
       </trans-unit>
     </body>
   </file>
