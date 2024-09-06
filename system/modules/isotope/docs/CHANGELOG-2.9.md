@@ -1,6 +1,13 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.9.1 (2024-09-06)
+--------------------------
+
+- Fixed return path from hook for downloads not used (#2534)
+- Fixed member country limit in front end (#2535)
+
+
 Version 2.9.0 (2024-07-30)
 --------------------------
 
