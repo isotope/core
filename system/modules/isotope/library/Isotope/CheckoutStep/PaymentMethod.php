@@ -116,7 +116,16 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
             $objWidget->validate();
 
             if (!$objWidget->hasErrors()) {
-                Isotope::getCart()->setPaymentMethod($this->modules[$objWidget->value]);
+                $objPayment = $this->modules[$objWidget->value];
+
+                // !HOOK: checkout payment
+                if (isset($GLOBALS['ISO_HOOKS']['checkoutPayment']) && \is_array($GLOBALS['ISO_HOOKS']['checkoutPayment'])) {
+                    foreach ($GLOBALS['ISO_HOOKS']['checkoutPayment'] as $callback) {
+                        $objPayment = System::importStatic($callback[0])->{$callback[1]}($objPayment, Isotope::getCart());
+                    }
+                }
+
+                Isotope::getCart()->setPaymentMethod($objPayment);
             }
         }
 

@@ -260,6 +260,13 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
                 $objCart->config_id = $this->config_id;
             }
 
+            // !HOOK: complete checkout
+            if (isset($GLOBALS['ISO_HOOKS']['checkoutComplete']) && \is_array($GLOBALS['ISO_HOOKS']['checkoutComplete'])) {
+                foreach ($GLOBALS['ISO_HOOKS']['checkoutComplete'] as $callback) {
+                    System::importStatic($callback[0])->{$callback[1]}($this);
+                }
+            }
+
             return true;
         }
 
