@@ -155,7 +155,11 @@ class Reports extends BackendOverview
                             IFNULL(SUM(discounts.total_price),0) AS total_discounts
                        FROM tl_iso_product_collection o
                        INNER JOIN tl_iso_orderstatus os ON o.order_status = os.id
-                       LEFT JOIN tl_iso_product_collection_item i ON o.id=i.pid
+                       LEFT JOIN (SELECT
+                            pid,      
+                            SUM(quantity) AS quantity
+                            FROM tl_iso_product_collection_item
+                            GROUP BY pid) AS i ON o.id=i.pid
                        LEFT JOIN (SELECT
                             pid,
                             total_price
