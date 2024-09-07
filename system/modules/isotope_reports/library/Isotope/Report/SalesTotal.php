@@ -18,6 +18,7 @@ use Contao\Session;
 use Isotope\Isotope;
 use Isotope\Model\Config;
 use Haste\Generator\RowClass;
+use Isotope\Model\ProductCollection;
 use Isotope\Report\Period\PeriodFactory;
 use Isotope\Report\Period\PeriodInterface;
 
@@ -31,6 +32,36 @@ class SalesTotal extends Sales
      */
     protected $strTemplate = 'iso_report_sales_total';
 
+    protected function getVisitorsPanel()
+    {
+
+        $tableVisitorsExists = Database::getInstance()->tableExists('tl_visitors');
+        $arrVisitorConfigs = array();
+        if($tableVisitorsExists){
+            $objData = Database::getInstance()->query("
+            SELECT id, visitors_name
+            FROM tl_visitors
+            ");
+
+            while ($objData->next()) {
+                $arrVisitorConfigs[$objData->id] = $objData->visitors_name;
+            }
+        }
+
+        $arrVisitorConfigs[0] = &$GLOBALS['TL_LANG']['ISO_REPORT']['visitors_config_no_choice'];
+        $arrSession = Session::getInstance()->get('iso_reports');
+        $varValue = (string) ($arrSession[$this->name]['visitors_config'] ?? 0);
+
+        return [
+            'name'      => 'visitors_config',
+            'label'     => &$GLOBALS['TL_LANG']['ISO_REPORT']['visitors_config'],
+            'type'      => 'filter',
+            'value'     => $varValue,
+            'active'    => ($varValue != 0),
+            'class'     => 'visitors_config',
+            'options'   => $arrVisitorConfigs,
+        ];
+    }
 
     protected function compile()
     {
@@ -47,6 +78,8 @@ class SalesTotal extends Sales
         $intStop  = $period->getPeriodEnd($intStop);
         $dateFrom = $period->getKey($intStart);
         $dateTo   = $period->getKey($intStop);
+
+        $visitorsConfigId = (int) ($arrSession[$this->name]['visitors_config'] ?? 0);
 
         if ('locked' === $this->strDateField) {
             $this->strDateField = $arrSession[$this->name]['date_field'];
@@ -69,7 +102,7 @@ class SalesTotal extends Sales
             LEFT JOIN tl_iso_product_collection_item i ON o.id=i.pid
             LEFT JOIN tl_iso_orderstatus os ON os.id=o.order_status
             LEFT OUTER JOIN tl_iso_config c ON o.config_id=c.id
-            WHERE o.type='order' AND o.order_status>0 AND o.{$this->strDateField} IS NOT NULL
+            WHERE o.type='order' AND o.order_status > 0 AND o.{$this->strDateField} IS NOT NULL
             " . ($intStatus > 0 ? " AND o.order_status=".$intStatus : '') . "
             " . static::getProductProcedure('i', 'product_id') . "
             " . ($intConfig > 0 ? " AND c.id=".$intConfig : '') . "
@@ -79,34 +112,79 @@ class SalesTotal extends Sales
         ");
 
         $arrCurrencies = array();
-        $arrData = $this->initializeData($period, $intStart, $intStop);
-        $arrChart = $this->initializeChart($period, $intStart, $intStop);
+        $arrData = $this->initializeData($period, $intStart, $intStop, $visitorsConfigId);
+        $arrChartData = $this->initializeChart($period, $intStart, $intStop);
 
         while ($objData->next()) {
             $arrCurrencies[$objData->currency] = $objData->config_id;
 
-            $arrData['rows'][$objData->dateGroup]['columns'][1]['value'] += $objData->total_orders;
-            $arrData['rows'][$objData->dateGroup]['columns'][2]['value'] += $objData->total_products;
-            $arrData['rows'][$objData->dateGroup]['columns'][3]['value'] += $objData->total_items;
+            $arrData['rows'][$objData->dateGroup]['columns']['orders']['value'] = $objData->total_orders;
+            $arrData['rows'][$objData->dateGroup]['columns']['products']['value'] = $objData->total_products;
+            $arrData['rows'][$objData->dateGroup]['columns']['items']['value'] = $objData->total_items;
 
-            if (!\is_array($arrData['rows'][$objData->dateGroup]['columns'][4]['value'])) {
-                $arrData['rows'][$objData->dateGroup]['columns'][4]['value'] = array();
+            if (!\is_array($arrData['rows'][$objData->dateGroup]['columns']['sales']['value'])) {
+                $arrData['rows'][$objData->dateGroup]['columns']['sales']['value'] = array();
             }
-
-            $arrData['rows'][$objData->dateGroup]['columns'][4]['value'][$objData->currency] = ($arrData['rows'][$objData->dateGroup]['columns'][4]['value'][$objData->currency] ?? 0) + $objData->total_sales;
+            $arrData['rows'][$objData->dateGroup]['columns']['sales']['value'][$objData->currency] = ($arrData['rows'][$objData->dateGroup]['columns']['sales']['value'][$objData->currency] ?? 0) + $objData->total_sales;
 
             // Summary in the footer
-            $arrData['footer'][1]['value'] += $objData->total_orders;
-            $arrData['footer'][2]['value'] += $objData->total_products;
-            $arrData['footer'][3]['value'] += $objData->total_items;
-            $arrData['footer'][4]['value'][$objData->currency] = ((float) ($arrData['footer'][4]['value'][$objData->currency] ?? 0) + $objData->total_sales);
+            $arrData['footer']['orders']['value'] += $objData->total_orders;
+            $arrData['footer']['products']['value'] += $objData->total_products;
+            $arrData['footer']['items']['value'] += $objData->total_items;
+            $arrData['footer']['sales']['value'][$objData->currency] = ((float) ($arrData['footer']['sales']['value'][$objData->currency] ?? 0) + $objData->total_sales);
 
             // Generate chart data
-            $arrChart[$objData->currency]['data'][$objData->dateGroup]['y'] = ((float) $arrChart[$objData->currency]['data'][$objData->dateGroup]['y'] + $objData->total_sales);
+            $arrChartData[$objData->currency]['data'][$objData->dateGroup][1] = ((float) $arrChartData[$objData->currency]['data'][$objData->dateGroup][1] + $objData->total_sales);
+        }
+
+        if($visitorsConfigId > 0) {
+            $dateGroupVisitor = $period->getSqlField('visitors_date', false);
+            $objVisitorData = Database::getInstance()->query("
+            SELECT
+                sum(visitors_visit) as visitors,
+                $dateGroupVisitor AS dateGroup
+            FROM `tl_visitors_counter`
+            WHERE vid = $visitorsConfigId
+            GROUP BY dateGroup
+            HAVING dateGroup>=$dateFrom AND dateGroup<=$dateTo
+            ");
+
+            while ($objVisitorData->next()) {
+                $arrData['rows'][$objVisitorData->dateGroup]['columns']['visitors']['value'] = $objVisitorData->visitors;
+
+                $orders = $arrData['rows'][$objVisitorData->dateGroup]['columns']['orders']['value'];
+                $arrData['rows'][$objVisitorData->dateGroup]['columns']['cr']['value'] = $this->calculateConversationRate($objVisitorData->visitors, $orders);
+
+                $arrData['footer']['visitors']['value'] += $objVisitorData->visitors;
+                $arrData['footer']['cr']['value'] = $this->calculateConversationRate($arrData['footer']['visitors']['value'], $arrData['footer']['orders']['value']);
+            }
         }
 
         // Apply formatting
-        $arrData = $this->formatValues($arrData, $arrCurrencies);
+        $arrData = $this->formatValues($arrData, $arrCurrencies, $visitorsConfigId > 0);
+        // Generate format for apexcharts
+        $arrChart = array_reduce($arrChartData, function ($carry, $item) {
+            $carry['series'][] = [
+                'name' => $item['name'],
+                'type' => 'line',
+                'data' => array_column($item['data'], 1),
+            ];
+            $carry['labels'] = array_map(function ($itemLabel) {
+                return (string)$itemLabel;
+            }, array_column($item['data'], 0));
+            return $carry;
+        }, array());
+
+        if($visitorsConfigId > 0) {
+            $this->fillEmptyVisitorData($arrData, $period, $intStart, $intStop);
+            $arrChart['series'][] = [
+                'name' => $GLOBALS['TL_LANG']['ISO_REPORT']['visitors'],
+                'type' => 'column',
+                'data' => array_map(function ($dateGroupItem) {
+                    return $dateGroupItem['columns']['visitors']['value'];
+                }, array_values($arrData['rows'])),
+            ];
+        }
 
         $this->Template->data         = $arrData;
         $this->Template->chart        = $arrChart;
@@ -114,94 +192,122 @@ class SalesTotal extends Sales
     }
 
 
-    protected function initializeData(PeriodInterface $period, $intStart, $intStop)
+    protected function initializeData(PeriodInterface $period, $intStart, $intStop, $visitorsConfigId): array
     {
         $arrData = ['rows' => []];
 
         $arrData['header'] = [
-            [
+            "period" => [
                 'value'         => &$GLOBALS['TL_LANG']['ISO_REPORT']['period'],
                 'header'        => true,
             ],
-            [
+            "orders" => [
                 'value'         => &$GLOBALS['TL_LANG']['ISO_REPORT']['orders#'],
                 'attributes'    => ' style="text-align:right"',
             ],
-            [
+            "products" => [
                 'value'         => &$GLOBALS['TL_LANG']['ISO_REPORT']['products#'],
                 'attributes'    => ' style="text-align:right"',
             ],
-            [
+            "items" => [
                 'value'         => &$GLOBALS['TL_LANG']['ISO_REPORT']['items#'],
                 'attributes'    => ' style="text-align:right"',
             ],
-            [
+            "sales" => [
                 'value'         => &$GLOBALS['TL_LANG']['ISO_REPORT']['sales#'],
                 'attributes'    => ' style="text-align:right"',
             ],
         ];
 
+        if($visitorsConfigId > 0){
+            $arrData['header']['visitors'] = [
+                'value'         => &$GLOBALS['TL_LANG']['ISO_REPORT']['visitors'],
+                'attributes'    => ' style="text-align:right"',
+            ];
+            $arrData['header']['cr'] = [
+                'value'         => &$GLOBALS['TL_LANG']['ISO_REPORT']['conversation_rate'],
+                'attributes'    => ' style="text-align:right"',
+            ];
+        }
+
         $arrData['footer'] = [
-            [
+            "period" => [
                 'value'         => $GLOBALS['TL_LANG']['ISO_REPORT']['sums'],
             ],
-            [
+            "orders" => [
                 'value'         => 0,
                 'attributes'    => ' style="text-align:right"',
             ],
-            [
+            "products" => [
                 'value'         => 0,
                 'attributes'    => ' style="text-align:right"',
             ],
-            [
+            "items" => [
                 'value'         => 0,
                 'attributes'    => ' style="text-align:right"',
             ],
-            [
+            "sales" => [
                 'value'         => [],
                 'attributes'    => ' style="text-align:right"',
             ],
         ];
 
+        if($visitorsConfigId > 0){
+            $arrData['footer']['visitors'] = [
+                'value'         => 0,
+                'attributes'    => ' style="text-align:right"',
+            ];
+            $arrData['footer']['cr'] = [
+                'value'         => 0,
+                'attributes'    => ' style="text-align:right"',
+            ];
+        }
+
         while ($intStart <= $intStop) {
             $arrData['rows'][$period->getKey($intStart)] = [
                 'columns' => [
-                    [
+                    "period" => [
                         'value'         => $period->format($intStart),
                     ],
-                    [
+                    "orders" => [
                         'value'         => 0,
                         'attributes'    => ' style="text-align:right"',
                     ],
-                    [
+                    "products" => [
                         'value'         => 0,
                         'attributes'    => ' style="text-align:right"',
                     ],
-                    [
+                    "items" => [
                         'value'         => 0,
                         'attributes'    => ' style="text-align:right"',
                     ],
-                    [
+                    "sales" => [
                         'value'         => 0,
                         'attributes'    => ' style="text-align:right"',
                     ],
                 ],
             ];
-
+            if($visitorsConfigId){
+                $arrData['rows'][$period->getKey($intStart)]['columns']['visitors'] = [
+                    'value'         => 0,
+                    'attributes'    => ' style="text-align:right"',
+                ];
+                $arrData['rows'][$period->getKey($intStart)]['columns']['cr'] = [
+                    'value'         => 0,
+                    'attributes'    => ' style="text-align:right"',
+                ];
+            }
             $intStart = $period->getNext($intStart);
         }
-
         RowClass::withKey('class')->addEvenOdd()->applyTo($arrData['rows']);
-
         return $arrData;
     }
 
 
-    protected function initializeChart(PeriodInterface $period, $intStart, $intStop)
+    protected function initializeChart(PeriodInterface $period, $intStart, $intStop): array
     {
         $arrSession  = Session::getInstance()->get('iso_reports');
         $intConfig   = (int) ($arrSession[$this->name]['iso_config'] ?? 0);
-        $intStart    = strtotime('first day of this month', $intStart);
 
         $arrData = array();
         $arrCurrencies = Database::getInstance()->execute("
@@ -211,14 +317,13 @@ class SalesTotal extends Sales
         ")->fetchEach('currency');
 
         foreach ($arrCurrencies as $currency) {
-            $arrData[$currency]['label'] = $currency;
+            $arrData[$currency]['name'] = $currency;
             $arrData[$currency]['className'] = '.'.strtolower($currency);
         }
 
         while ($intStart <= $intStop) {
             foreach ($arrCurrencies as $currency) {
-                $arrData[$currency]['data'][$period->getKey($intStart)]['x'] = $intStart;
-                $arrData[$currency]['data'][$period->getKey($intStart)]['y'] = 0;
+                $arrData[$currency]['data'][$period->getKey($intStart)] = [$intStart,0];
             }
 
             $intStart = $period->getNext($intStart);
@@ -227,40 +332,45 @@ class SalesTotal extends Sales
         return $arrData;
     }
 
-
-    protected function formatValues($arrData, $arrCurrencies)
+    protected function formatValues($arrData, $arrCurrencies, $showVisitors): array
     {
         // Format row totals
         foreach ($arrData['rows'] as $dateGroup => $arrRow) {
-            if (\is_array($arrRow['columns'][4]['value'])) {
-                foreach ($arrRow['columns'][4]['value'] as $currency => $varValue) {
+            if($showVisitors){
+                // Use Method to format cr value in %
+                $arrData['rows'][$dateGroup]['columns']['cr']['value'] = Isotope::formatPrice($arrData['rows'][$dateGroup]['columns']['cr']['value']). " %";
+            }
+            if (\is_array($arrRow['columns']['sales']['value'])) {
+                foreach ($arrRow['columns']['sales']['value'] as $currency => $varValue) {
                     /** @type Config $objConfig */
                     $objConfig = Config::findByPk($arrCurrencies[$currency]);
                     Isotope::setConfig($objConfig);
 
-                    $arrData['rows'][$dateGroup]['columns'][4]['value'][$currency] = Isotope::formatPriceWithCurrency($varValue);
+                    $arrData['rows'][$dateGroup]['columns']['sales']['value'][$currency] = Isotope::formatPriceWithCurrency($varValue);
                 }
             }
         }
 
         // Format footer totals
-        foreach ($arrData['footer'][4]['value'] as $currency => $varValue) {
+        if($showVisitors){
+            // Use Method to format cr value in %
+            $arrData['footer']['cr']['value'] = Isotope::formatPrice($arrData['footer']['cr']['value']) . " %";
+        }
+        foreach ($arrData['footer']['sales']['value'] as $currency => $varValue) {
             /** @type Config $objConfig */
             $objConfig = Config::findByPk($arrCurrencies[$currency]);
             Isotope::setConfig($objConfig);
-
-            $arrData['footer'][4]['value'][$currency] = Isotope::formatPriceWithCurrency($varValue);
+            $arrData['footer']['sales']['value'][$currency] = Isotope::formatPriceWithCurrency($varValue);
         }
 
-        if (empty($arrData['footer'][4]['value'])) {
-            $arrData['footer'][4]['value'] = 0;
+        if (empty($arrData['footer']['sales']['value'])) {
+            $arrData['footer']['sales']['value'] = 0;
         }
-
         return $arrData;
     }
 
 
-    protected function initializeDefaultValues()
+    protected function initializeDefaultValues(): void
     {
         // Set default session data
         $arrSession = Session::getInstance()->get('iso_reports');
@@ -298,5 +408,46 @@ class SalesTotal extends Sales
         Session::getInstance()->set('iso_reports', $arrSession);
 
         parent::initializeDefaultValues();
+    }
+
+    private function calculateConversationRate($visitors, $orders)
+    {
+        return  $visitors > 0 ?  $orders * 100 / $visitors : 0;
+    }
+
+    private function fillEmptyVisitorData(array &$arrData, $period, $intStart, $intStop): void
+    {
+        if ($arrData['header'] && !array_key_exists("visitors", $arrData['header'])) {
+            $arrData['header']['visitors'] = [
+                'value' => $GLOBALS['TL_LANG']['ISO_REPORT']['visitors'],
+                'attributes' => ' style="text-align:right"',
+            ];
+            $arrData['header']['cr'] = [
+                'value' => $GLOBALS['TL_LANG']['ISO_REPORT']['conversation_rate'],
+                'attributes' => ' style="text-align:right"',
+            ];
+        }
+        if ($arrData['footer'] && !array_key_exists("visitors", $arrData['footer'])) {
+            $arrData['footer']['visitors']['value'] = 0;
+            // Use Method to format cr value in %
+            $arrData['footer']['cr']['value'] = Isotope::formatPrice(0) . " %";
+        }
+        $arrData['footer']['visitors']['attributes'] = ' style="text-align:right"';
+        $arrData['footer']['cr']['attributes'] = ' style="text-align:right"';
+
+        while ($intStart <= $intStop) {
+            $arrColumns = &$arrData['rows'][$period->getKey($intStart)]['columns'];
+            if($arrColumns){
+                if(!array_key_exists("visitors", $arrColumns)){
+                    $arrColumns['visitors']['value'] = 0;
+                    // Use Method to format cr value in %
+                    $arrColumns['cr']['value'] = Isotope::formatPrice(0) . " %";
+                }
+                $arrColumns['visitors']['attributes'] = ' style="text-align:right"';
+                $arrColumns['cr']['attributes'] = ' style="text-align:right"';
+            }
+
+            $intStart = $period->getNext($intStart);
+        }
     }
 }
