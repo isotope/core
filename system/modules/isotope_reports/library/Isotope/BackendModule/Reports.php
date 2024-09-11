@@ -81,7 +81,7 @@ class Reports extends BackendOverview
 
         $strBuffer = '
 <fieldset id="pal_summary" class="tl_tbox '.(($session['iso_be_overview_legend']['summary'] ?? null) ? '' : ' collapsed').'">
-<legend onclick="AjaxRequest.toggleFieldset(this,\'summary\',\'iso_be_overview_legend\')">'.$GLOBALS['TL_LANG']['ISO_REPORT']['summary'].'</b></legend>
+<legend onclick="AjaxRequest.toggleFieldset(this,\'summary\',\'iso_be_overview_legend\')">'.$GLOBALS['TL_LANG']['ISO_REPORT']['summary'].'</legend>
 <div class="summary">
 <div class="tl_listing_container list_view">
     <table class="tl_listing">';
