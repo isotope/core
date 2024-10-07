@@ -454,9 +454,9 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
         if ($this->iso_enableLimit) {
             $arrOptions = [];
             $arrLimit   = array_map('intval', StringUtil::trimsplit(',', $this->iso_perPage));
-            $objLimit   = Isotope::getRequestCache()->getFirstLimitForModules([$this->id]);
             $arrLimit   = array_unique($arrLimit);
             sort($arrLimit);
+            $objLimit   = Isotope::getRequestCache()->getFirstLimitForModules([$this->id], $arrLimit[0] ?? 0);
 
             if ($this->blnUpdateCache && \in_array(Input::post('limit'), $arrLimit)) {
                 // Cache new request value
