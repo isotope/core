@@ -208,7 +208,7 @@ class CategoryFilter extends AbstractProductFilter implements IsotopeFilterModul
                 'categoryfilter=' . $value,
                 Url::removeQueryStringCallback(function ($value, $key) {
                     return strpos($key, 'page_iso') !== 0;
-                })
+                }, $this->defineRoot && $this->rootPage > 0 ? $this->rootPage : null)
             );
 
             $row['subitems'] = $subitems;
