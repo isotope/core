@@ -212,7 +212,7 @@ abstract class PaypalApi extends Payment
     {
         $paymentData = StringUtil::deserialize($collection->payment_data, true);
 
-        if (!\is_array($paymentData['PAYPAL_HISTORY'])) {
+        if (!\is_array($paymentData['PAYPAL_HISTORY'] ?? null)) {
             $paymentData['PAYPAL_HISTORY'] = [];
         }
 
