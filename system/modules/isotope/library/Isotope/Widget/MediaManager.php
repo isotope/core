@@ -156,7 +156,7 @@ class MediaManager extends Widget implements \uploadable
         }
 
         if ($objUploader->hasError()) {
-            $messages = System::getContainer()->get('session')->getFlashBag()->peek('contao_be_error');
+            $messages = System::getContainer()->get('session')->getFlashBag()->peek('contao.BE.error');
 
             if (\is_array($messages)) {
                 foreach ($messages as $strError) {
