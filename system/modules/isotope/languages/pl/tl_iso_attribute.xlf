@@ -252,6 +252,12 @@
         <source>Remove the radio buttons or checkboxes next to folders.</source>
         <target>Usuń przyciski radio i checkbox obok folderów.</target>
       </trans-unit>
+      <trans-unit id="tl_iso_attribute.inline.0">
+        <source>Show in browser</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.inline.1">
+        <source>Show the file in the browser instead of opening the download dialog.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_attribute.isGallery.0">
         <source>Mark as gallery</source>
       </trans-unit>
@@ -657,8 +663,7 @@
         <target>Usuń atrybut</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.delete.1">
-        <source>Delete attribute ID %s. The database column will not be deleted, you need to manually update the database using the install tool or repository manager.</source>
-        <target>Usuń atrybut ID %s. Pole w bazie danych nie zostanie usunięte, w tym celu użyj narzędzia instalacyjnego Contao lub Menadżera rozszerzeń.</target>
+        <source>Delete attribute ID %s. The database column will not be deleted, you need to manually update the database using the Contao Manager.</source>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.show.0">
         <source>Attribute details</source>
@@ -669,8 +674,7 @@
         <target>Pokaż szczegóły atrybutu ID %s.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.deleteConfirm">
-        <source>Do you really want to delete attribute ID %s? The database column will not be deleted, you need to manually update the database using the install tool or repository manager.</source>
-        <target>Czy na pewno chcesz usunąć atrybut ID %s? Pole w bazie danych nie zostanie usunięte, w tym celu użyj narzędzia instalacyjnego Contao lub Menadżera rozszerzeń.</target>
+        <source>Do you really want to delete attribute ID %s? The database column will not be deleted, you need to manually update the database using the Contao Manager.</source>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.attribute_legend">
         <source>Attribute name &amp; type</source>

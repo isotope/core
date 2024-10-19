@@ -11,6 +11,7 @@
 
 namespace Isotope\Model\Payment;
 
+use Contao\BackendTemplate;
 use Contao\Environment;
 use Contao\Input;
 use Contao\Message;
@@ -18,6 +19,8 @@ use Contao\Module;
 use Contao\Request;
 use Contao\StringUtil;
 use Contao\System;
+use Isotope\CompatibilityHelper;
+use Isotope\Interfaces\IsotopeBackendInterface;
 use Isotope\Interfaces\IsotopeOrderStatusAware;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
@@ -36,7 +39,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  * @property string $saferpay_vtconfig
  * @property string $saferpay_paymentmethods
  */
-class Saferpay extends Postsale implements IsotopeOrderStatusAware
+class Saferpay extends Postsale implements IsotopeOrderStatusAware, IsotopeBackendInterface
 {
     protected $objXML;
 
@@ -165,9 +168,7 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
     /**
      * Update order on Saferpay terminal when changing order status in backend
      *
-     * @param Order       $objOrder
      * @param int         $intOldStatus
-     * @param OrderStatus $objNewStatus
      */
     public function onOrderStatusUpdate(Order $objOrder, $intOldStatus, OrderStatus $objNewStatus)
     {
@@ -176,7 +177,7 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
             $arrPayment = StringUtil::deserialize($objOrder->payment_data, true);
             $blnResult = $this->sendPayComplete($arrPayment['PAYCONFIRM']['ID'], $arrPayment['PAYCONFIRM']['TOKEN']);
 
-            if ('BE' === TL_MODE) {
+            if (CompatibilityHelper::isBackend()) {
                 if ($blnResult) {
                     Message::addInfo($GLOBALS['TL_LANG']['tl_iso_product_collection']['saferpayStatusSuccess']);
                 } else {
@@ -184,15 +185,38 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
                 }
             }
 
-        } elseif ('cancel' === $objNewStatus->saferpay_status && 'BE' === TL_MODE) {
+        } elseif ('cancel' === $objNewStatus->saferpay_status && CompatibilityHelper::isBackend()) {
             Message::addInfo($GLOBALS['TL_LANG']['tl_iso_product_collection']['saferpayStatusCancel']);
         }
+    }
+
+    public function hasBackendInterface(int $collectionId): bool
+    {
+        return true;
+    }
+
+    public function renderBackendInterface(int $collectionId): string
+    {
+        if (($objOrder = Order::findByPk($collectionId)) === null) {
+            return '<p class="tl_gerror">' . $GLOBALS['TL_LANG']['MSC']['backendPaymentNotFound'] . '</p>';
+        }
+
+        $arrPayment = StringUtil::deserialize($objOrder->payment_data);
+
+        if (empty($arrPayment) || !\is_array($arrPayment) || !isset($arrPayment['POSTSALE'])) {
+            return '<p class="tl_gerror">' . $GLOBALS['TL_LANG']['MSC']['backendPaymentNotFound'] . '</p>';
+        }
+
+        $template = new BackendTemplate('be_iso_payment_saferpay');
+        $template->name = $this->name;
+        $template->paymentData = $arrPayment;
+
+        return $template->parse();
     }
 
     /**
      * Generate POST data to initialize payment
      *
-     * @param IsotopeProductCollection $objOrder
      *
      * @return array
      * @deprecated
@@ -321,7 +345,6 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
     /**
      * Check XML data, add to log if debugging is enabled
      *
-     * @param IsotopeProductCollection $objOrder
      *
      * @return bool
      * @deprecated

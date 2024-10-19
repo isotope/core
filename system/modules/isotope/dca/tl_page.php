@@ -16,7 +16,7 @@ use Contao\PageModel;
 /**
  * Callbacks
  */
-$GLOBALS['TL_DCA']['tl_page']['config']['onload_callback'][] = function(\DataContainer $dc) {
+$GLOBALS['TL_DCA']['tl_page']['config']['onload_callback'][] = function(\Contao\DataContainer $dc) {
     if (Input::get('do') === 'page' && Input::get('table') === 'tl_page' && Input::get('field') === 'iso_readerJumpTo') {
         if (($objPage = PageModel::findWithDetails($dc->id)) !== null) {
             $GLOBALS['TL_DCA']['tl_page']['fields']['iso_readerJumpTo']['rootNodes'] = array($objPage->rootId);

@@ -25,7 +25,6 @@ interface ProductCollectionActionInterface
     /**
      * Gets the action label.
      *
-     * @param IsotopeProductCollection $collection
      *
      * @return string
      */
@@ -34,7 +33,6 @@ interface ProductCollectionActionInterface
     /**
      * Returns whether the action is available for the given product.
      *
-     * @param IsotopeProductCollection $collection
      *
      * @return bool
      */
@@ -43,7 +41,6 @@ interface ProductCollectionActionInterface
     /**
      * Generates HTML content for this action.
      *
-     * @param IsotopeProductCollection $collection
      *
      * @return string
      */
@@ -52,7 +49,6 @@ interface ProductCollectionActionInterface
     /**
      * Handles submit of the product collection. Must self-check if this action applies.
      *
-     * @param IsotopeProductCollection $collection
      *
      * @return bool
      */

@@ -17,7 +17,6 @@ use Contao\StringUtil;
 use Contao\System;
 use Contao\Widget;
 use Isotope\Interfaces\IsotopeCheckoutStep;
-use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\Shipping;
 use Isotope\Module\Checkout;
@@ -119,7 +118,16 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
             $objWidget->validate();
 
             if (!$objWidget->hasErrors()) {
-                Isotope::getCart()->setShippingMethod($this->modules[$objWidget->value]);
+                $objShipping = $this->modules[$objWidget->value];
+
+                // !HOOK: checkout shipping
+                if (isset($GLOBALS['ISO_HOOKS']['checkoutShipping']) && \is_array($GLOBALS['ISO_HOOKS']['checkoutShipping'])) {
+                    foreach ($GLOBALS['ISO_HOOKS']['checkoutShipping'] as $callback) {
+                        $objShipping = System::importStatic($callback[0])->{$callback[1]}($objShipping, Isotope::getCart());
+                    }
+                }
+
+                Isotope::getCart()->setShippingMethod($objShipping);
             }
         }
 
@@ -169,7 +177,7 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
         if (!empty($arrIds) && \is_array($arrIds)) {
             $arrColumns = array('id IN (' . implode(',', $arrIds) . ')');
 
-            if (true !== BE_USER_LOGGED_IN) {
+            if (!\Contao\System::getContainer()->get('contao.security.token_checker')->isPreviewMode()) {
                 $arrColumns[] = "enabled='1'";
             }
 

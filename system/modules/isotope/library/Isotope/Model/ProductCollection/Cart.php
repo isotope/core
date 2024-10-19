@@ -16,6 +16,7 @@ use Contao\FrontendUser;
 use Contao\Input;
 use Contao\PageModel;
 use Contao\System;
+use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Isotope;
 use Isotope\Message;
@@ -75,7 +76,7 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
         $objAddress = parent::getBillingAddress();
 
         // Try to load the default member address
-        if (null === $objAddress && FE_USER_LOGGED_IN === true) {
+        if (null === $objAddress && \Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER')) {
             $objAddress = Address::findDefaultBillingForMember(FrontendUser::getInstance()->id);
         }
 
@@ -112,7 +113,7 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
         $objAddress = parent::getShippingAddress();
 
         // Try to load the default member address
-        if (null === $objAddress && FE_USER_LOGGED_IN === true) {
+        if (null === $objAddress && \Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER')) {
             $objAddress = Address::findDefaultShippingForMember(FrontendUser::getInstance()->id);
         }
 
@@ -148,7 +149,7 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
         $strHash = (string) Input::cookie(static::$strCookie);
 
         // Temporary cart available, move to this cart. Must be after creating a new cart!
-        if (FE_USER_LOGGED_IN === true && '' !== $strHash && $this->member > 0) {
+        if (\Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER') && '' !== $strHash && $this->member > 0) {
             $blnMerge = $this->countItems() > 0;
             $objTemp = static::findOneBy(array('uniqid=?', 'store_id=?'), array($strHash, $this->store_id));
 
@@ -311,7 +312,7 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
         /** @var PageModel $objPage */
         global $objPage;
 
-        if ('FE' !== TL_MODE || null === $objPage || 0 === (int) $objPage->rootId) {
+        if (!CompatibilityHelper::isFrontend() || null === $objPage || 0 === (int) $objPage->rootId) {
             return null;
         }
 
@@ -322,8 +323,9 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
         $objCart    = null;
         $cookieHash = null;
         $storeId    = (int) $rootPage->iso_store_id;
+        $isMember = \Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER');
 
-        if (true === FE_USER_LOGGED_IN) {
+        if ($isMember) {
             $objCart = static::findOneBy(
                 array('tl_iso_product_collection.member=?', 'store_id=?'),
                 array(FrontendUser::getInstance()->id, $storeId)
@@ -348,10 +350,11 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
             // Can't call the individual rows here, it would trigger markModified and a save()
             $objCart->setRow(array_merge($objCart->row(), array(
                 'tstamp'    => $time,
-                'member'    => FE_USER_LOGGED_IN === true ? FrontendUser::getInstance()->id : 0,
+                'member'    => $isMember ? FrontendUser::getInstance()->id : 0,
                 'uniqid'    => $cookieHash,
                 'config_id' => $objConfig->id,
                 'store_id'  => $storeId,
+                'currency'  => $objConfig->currency,
             )));
 
             return $objCart;

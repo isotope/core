@@ -45,13 +45,7 @@ class Rules extends Controller
     protected function __construct()
     {
         parent::__construct();
-
-        // User object must be loaded from cart, e.g. for postsale handling
-        if (Isotope::getCart()->member > 0) {
-            $this->User = Database::getInstance()->prepare('SELECT * FROM tl_member WHERE id=?')->execute(Isotope::getCart()->member);
-        }
     }
-
 
     /**
      * Instantiate the singleton if necessary and return it
@@ -97,7 +91,7 @@ class Rules extends Controller
                         }
 
                         if (($objRules->minItemQuantity > 0 && $objRules->minItemQuantity > $intTotal) || ($objRules->maxItemQuantity > 0 && $objRules->maxItemQuantity < $intTotal)) {
-                    continue;
+                            continue;
                         }
                     }
 
@@ -111,7 +105,7 @@ class Rules extends Controller
                         $fltDiscount = round($fltPrice - ($fltPrice / 100 * $fltDiscount), 10);
 
                         $precision = Isotope::getConfig()->priceRoundPrecision;
-                        $factor    = pow(10, 2);
+                        $factor    = 10 ** 2;
                         $up        = $fltDiscount > 0 ? 'ceil' : 'floor';
                         $down      = $fltDiscount > 0 ? 'floor' : 'ceil';
 
@@ -329,9 +323,6 @@ class Rules extends Controller
 
     /**
      * Transfer coupons from one cart to another. This happens if a guest cart is moved to user cart.
-     *
-     * @param IsotopeProductCollection $oldCollection
-     * @param IsotopeProductCollection $newCollection
      */
     public function transferCoupons(IsotopeProductCollection $oldCollection, IsotopeProductCollection $newCollection)
     {

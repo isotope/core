@@ -34,13 +34,12 @@ class Setup extends BackendOverview
                         $GLOBALS['BE_MOD']['isotope']['iso_setup']['tables'] += $arrConfig['tables'];
                     }
 
-                    $return[$strGroup]['modules'][$strModule] = array_merge($arrConfig, array
-                    (
-                        'label'         => StringUtil::specialchars($GLOBALS['TL_LANG']['IMD'][$strModule][0] ?: $strModule),
-                        'description'   => StringUtil::specialchars(strip_tags($GLOBALS['TL_LANG']['IMD'][$strModule][1])),
-                        'href'          => TL_SCRIPT . '?do=iso_setup&mod=' . $strModule,
-                        'class'         => $arrConfig['class'] ?? '',
-                    ));
+                    $return[$strGroup]['modules'][$strModule] = array_merge($arrConfig, [
+                        'label' => StringUtil::specialchars($GLOBALS['TL_LANG']['IMD'][$strModule][0] ?? $strModule),
+                        'description' => StringUtil::specialchars(strip_tags($GLOBALS['TL_LANG']['IMD'][$strModule][1] ?? '')),
+                        'href' => TL_SCRIPT.'?do=iso_setup&mod='.$strModule,
+                        'class' => $arrConfig['class'] ?? '',
+                    ]);
 
                     $strLabel = str_replace(':hide', '', $strGroup);
                     $return[$strGroup]['label'] = $GLOBALS['TL_LANG']['IMD'][$strLabel] ?: $strLabel;
@@ -62,8 +61,6 @@ class Setup extends BackendOverview
 
     /**
      * Adds first steps and fundraising hints
-     *
-     * @param array $return
      */
     protected function addIntroduction(array &$return)
     {

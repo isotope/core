@@ -14,9 +14,9 @@ namespace Isotope\Module;
 use Contao\CoreBundle\Exception\AccessDeniedException;
 use Contao\FrontendUser;
 use Contao\Input;
-use Contao\PageError403;
 use Contao\PageModel;
 use Haste\Util\Url;
+use Isotope\CompatibilityHelper;
 use Isotope\Frontend\ProductCollectionAction\ShareWishlistAction;
 use Isotope\Model\ProductCollection\Wishlist as WishlistCollection;
 use Isotope\Template;
@@ -73,7 +73,7 @@ class WishlistDetails extends AbstractProductCollection
         }
 
         // Wishlist belongs to a member but not logged in
-        if ('FE' === TL_MODE && !$this->public && FrontendUser::getInstance()->id != $wishlist->member) {
+        if (CompatibilityHelper::isFrontend() && !$this->public && FrontendUser::getInstance()->id != $wishlist->member) {
             throw new AccessDeniedException();
         }
 

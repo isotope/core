@@ -18,6 +18,7 @@ use Contao\Picture;
 use Contao\StringUtil;
 use Contao\System;
 use Haste\Image\Image;
+use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeGallery;
 use Isotope\Model\Gallery;
 use Isotope\Template;
@@ -66,7 +67,7 @@ class Standard extends Gallery implements IsotopeGallery
      */
     public function setRow(array $arrData)
     {
-        if ($arrData['customTpl'] != '' && 'FE' === TL_MODE) {
+        if ($arrData['customTpl'] != '' && CompatibilityHelper::isFrontend()) {
             $this->strTemplate = $arrData['customTpl'];
         }
 
@@ -116,8 +117,6 @@ class Standard extends Gallery implements IsotopeGallery
 
     /**
      * Set image files
-     *
-     * @param array $arrFiles
      */
     public function setFiles(array $arrFiles)
     {
@@ -259,10 +258,7 @@ class Standard extends Gallery implements IsotopeGallery
      *
      * @param Template|object $objTemplate
      * @param string          $strType
-     * @param array           $arrFile
      * @param bool            $blnWatermark
-     *
-     * @return string
      */
     protected function addImageToTemplate(Template $objTemplate, $strType, array $arrFile, $blnWatermark = true)
     {
@@ -294,7 +290,7 @@ class Standard extends Gallery implements IsotopeGallery
 
             case 'lightbox':
                 $arrFile = $this->getImageForType('lightbox', $arrFile, $blnWatermark);
-                [$link, $rel] = explode('|', $arrFile['link'], 2) + [null, null];
+                [$link, $rel] = explode('|', $arrFile['link'] ?? '', 2) + [null, null];
                 $attributes = ($rel ? ' data-lightbox="' . $rel . '"' : ' target="_blank"');
 
                 $objTemplate->hasLink    = true;
@@ -330,7 +326,6 @@ class Standard extends Gallery implements IsotopeGallery
      * Gets the image for a given file and given type and optionally adds a watermark to it
      *
      * @param   string $strType
-     * @param   array $arrFile
      * @param   bool  $blnWatermark
      *
      * @return  array

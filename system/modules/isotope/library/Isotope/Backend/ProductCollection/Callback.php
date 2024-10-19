@@ -19,14 +19,17 @@ use Contao\CoreBundle\Exception\AccessDeniedException;
 use Contao\CoreBundle\Exception\InternalServerErrorException;
 use Contao\Database;
 use Contao\DataContainer;
+use Contao\DcaExtractor;
 use Contao\Environment;
 use Contao\Image;
 use Contao\Input;
 use Contao\Message;
+use Contao\ModuleModel;
 use Contao\SelectMenu;
 use Contao\StringUtil;
 use Contao\System;
 use Haste\Util\Format;
+use Isotope\CompatibilityHelper;
 use Isotope\Frontend;
 use Isotope\Interfaces\IsotopeBackendInterface;
 use Isotope\Interfaces\IsotopePayment;
@@ -51,7 +54,6 @@ class Callback extends Backend
      *
      * @param array          $row
      * @param string         $label
-     * @param array          $args
      *
      * @return array
      */
@@ -113,7 +115,7 @@ class Callback extends Backend
         if (($config = $objOrder->getRelated('config_id')) === null
             || ($moduleModel = $config->getRelated('orderDetailsModule')) === null
         ) {
-            $moduleModel = new \ModuleModel();
+            $moduleModel = new ModuleModel();
             $moduleModel->type = 'iso_orderdetails';
             $moduleModel->iso_collectionTpl = 'iso_collection_default';
         }
@@ -136,6 +138,8 @@ class Callback extends Backend
             Controller::redirect('contao/main.php?act=error');
         }
 
+        $arrRelations = DcaExtractor::getInstance('tl_iso_product_collection')->getRelations();
+
         $strBuffer = '
 <div>
 <table class="tl_show">
@@ -146,18 +150,84 @@ class Callback extends Backend
                 continue;
             }
 
+            $operations = [];
+
+            if (isset($arrRelations[$field]['table']) && 'tl_iso_product_collection' !== $arrRelations[$field]['table'] && $dc->activeRecord->{$field}) {
+                $relatedTable = $arrRelations[$field]['table'];
+                $module = null;
+                $name = null;
+
+                $objRecord = Database::getInstance()->prepare("SELECT id FROM $relatedTable WHERE id=?")->execute($dc->activeRecord->{$field});
+
+                if ($objRecord->numRows) {
+                    foreach ($GLOBALS['BE_MOD'] as $modules) {
+                        foreach ($modules as $moduleName => $moduleConfig) {
+                            if (isset($moduleConfig['tables']) && \in_array($relatedTable, $moduleConfig['tables'], true)) {
+                                $module = $moduleConfig;
+                                $name = $moduleName;
+                                break;
+                            }
+                        }
+                    }
+
+                    if ($module && BackendUser::getInstance()->hasAccess($name, 'modules')) {
+                        System::loadLanguageFile($relatedTable);
+                        Controller::loadDataContainer($relatedTable);
+
+                        if (isset($GLOBALS['TL_DCA'][$relatedTable]['list']['operations']['show'])) {
+                            $title = $GLOBALS['TL_DCA'][$relatedTable]['list']['operations']['show']['label'] ?? '';
+                            $title = \is_array($title) ? ($title[0] ?? '') : $title;
+                            $title = sprintf($title, $dc->activeRecord->{$field});
+                            $operations[] = sprintf(
+                                '<a href="%s" title="%s" onclick="Backend.openModalIframe({\'title\':\'%s\',\'url\':this.href});return false" class="%s">%s</a>',
+                                System::getContainer()->get('router')->generate('contao_backend', [
+                                    'do' => $name,
+                                    'table' => $relatedTable,
+                                    'act' => 'show',
+                                    'id' => $dc->activeRecord->{$field},
+                                    'popup' => 1,
+                                    'rt' => REQUEST_TOKEN,
+                                ]),
+                                $title,
+                                $title,
+                                $name,
+                                Image::getHtml('show')
+                            );
+                        }
+
+                        if (
+                            isset($GLOBALS['TL_DCA'][$relatedTable]['list']['operations']['edit'])
+                            && BackendUser::getInstance()->canEditFieldsOf($relatedTable)
+                        ) {
+                            array_unshift($operations, sprintf(
+                                '<a href="%s" title="%s" class="%s">%s</a>',
+                                System::getContainer()->get('router')->generate('contao_backend', [
+                                    'do' => $name,
+                                    'table' => $relatedTable,
+                                    'act' => 'edit',
+                                    'id' => $dc->activeRecord->{$field},
+                                    'rt' => REQUEST_TOKEN,
+                                ]),
+                                sprintf($GLOBALS['TL_DCA'][$relatedTable]['list']['operations']['edit']['label'][0], $dc->activeRecord->{$field}),
+                                $name,
+                                Image::getHtml('edit')
+                            ));
+                        }
+                    }
+                }
+            }
+
             $strBuffer .= '
   <tr>
     <td class="tl_label">' . Format::dcaLabel($dc->table, $field) . ' <small>'.$field.'</small></td>
     <td>' . Format::dcaValue($dc->table, $field, $objOrder->{$field}, $dc) . '</td>
+    <td>' . implode(' ', $operations) . '</td>
   </tr>';
         }
 
-        $strBuffer .= '
+        return $strBuffer . '
 </tbody></table>
 </div>';
-
-        return $strBuffer;
     }
 
     /**
@@ -202,11 +272,9 @@ class Callback extends Backend
   </tr>';
         }
 
-        $strBuffer .= '
+        return $strBuffer . '
 </tbody></table>
 </div>';
-
-        return $strBuffer;
     }
 
     /**
@@ -242,7 +310,6 @@ class Callback extends Backend
     /**
      * Generate address details amd return it as string
      *
-     * @param Address $objAddress
      *
      * @return string
      */
@@ -272,11 +339,9 @@ class Callback extends Backend
   </tr>';
         }
 
-        $strBuffer .= '
+        return $strBuffer . '
 </tbody></table>
 </div>';
-
-        return $strBuffer;
     }
 
     /**
@@ -546,7 +611,7 @@ class Callback extends Backend
         // Return form
         return '
 <div id="tl_buttons">
-<a href="' . ampersand($strRedirectUrl) . '" class="header_back" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
+<a href="' . \Contao\StringUtil::ampersand($strRedirectUrl) . '" class="header_back" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
 </div>
 
 <h2 class="sub_headline">' . sprintf($GLOBALS['TL_LANG']['tl_iso_product_collection']['print_document'][1], $dc->id) . '</h2>' . $strMessages . '
@@ -556,7 +621,7 @@ class Callback extends Backend
 <input type="hidden" name="FORM_SUBMIT" value="tl_iso_print_document">
 <input type="hidden" name="REQUEST_TOKEN" value="' . REQUEST_TOKEN . '">
 
-<div class="tl_tbox block">
+<div class="block tl_tbox">
   <div class="clr widget">
     ' . $objSelect->parse() . '
     <p class="tl_help">' . $objSelect->description . '</p>
@@ -610,7 +675,6 @@ class Callback extends Backend
     /**
      * Generate the "show" action
      *
-     * @param DataContainer $dc
      *
      * @return string
      */
@@ -680,7 +744,7 @@ class Callback extends Backend
                         continue;
                     }
 
-                    $fieldConfig = isset($GLOBALS['TL_DCA'][$dc->table]['fields'][$field]) ? $GLOBALS['TL_DCA'][$dc->table]['fields'][$field] : [];
+                    $fieldConfig = $GLOBALS['TL_DCA'][$dc->table]['fields'][$field] ?? [];
 
                     // Skip the values that did not change since last log
                     if ($previousLogModel !== null && (!isset($fieldConfig['eval']['logAlwaysVisible']) || !$fieldConfig['eval']['logAlwaysVisible'])) {
@@ -744,7 +808,7 @@ class Callback extends Backend
             $GLOBALS['TL_DCA']['tl_iso_product_collection']['edit']['buttons_callback'][] = static function () { return []; };
         }
 
-        foreach ($GLOBALS['TL_DCA']['tl_iso_product_collection']['fields'] as $k => &$v) {
+        foreach ($GLOBALS['TL_DCA']['tl_iso_product_collection']['fields'] as &$v) {
             $v['eval']['doNotSaveEmpty'] = true;
             $v['save_callback'][] = static function ($value, DataContainer $dc) use ($v) {
                 $GLOBALS['ISO_ORDER_LOG'][$dc->field] = $value;
@@ -768,7 +832,7 @@ class Callback extends Backend
         $logData = $GLOBALS['ISO_ORDER_LOG'];
         $GLOBALS['ISO_ORDER_LOG'] = [];
 
-        if ('BE' === TL_MODE) {
+        if (CompatibilityHelper::isBackend()) {
             if ($order->pageId == 0) {
                 unset($GLOBALS['objPage']);
             }
@@ -838,7 +902,7 @@ class Callback extends Backend
             }
         }
 
-        if ('BE' === TL_MODE) {
+        if (CompatibilityHelper::isBackend()) {
             Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusUpdate']);
 
             if ($blnNotificationError === true) {

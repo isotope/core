@@ -197,9 +197,9 @@ class Datatrans extends Postsale implements IsotopeNotificationTokens, IsotopeBa
             'uppCustomerZipCode'    => $objAddress->postal,
             'uppCustomerPhone'      => $objAddress->phone,
             'uppCustomerEmail'      => $objAddress->email,
-            'successUrl'            => ampersand($successUrl),
-            'errorUrl'              => ampersand($failedUrl),
-            'cancelUrl'             => ampersand($failedUrl),
+            'successUrl'            => \Contao\StringUtil::ampersand($successUrl),
+            'errorUrl'              => \Contao\StringUtil::ampersand($failedUrl),
+            'cancelUrl'             => \Contao\StringUtil::ampersand($failedUrl),
             'mod'                   => 'pay',
             'id'                    => $this->id,
         );
@@ -268,12 +268,10 @@ class Datatrans extends Postsale implements IsotopeNotificationTokens, IsotopeBa
     {
         $paymentData = StringUtil::deserialize($collection->payment_data);
 
-        $tokens = [
+        return [
             'payment_datatrans_pmethod' => self::PAYMENT_METHODS[$paymentData['pmethod']] ?? $paymentData['pmethod'],
             'payment_datatrans_cardno' => $paymentData['cardno'],
         ];
-
-        return $tokens;
     }
 
     public function hasBackendInterface(int $collectionId): bool
@@ -293,9 +291,9 @@ class Datatrans extends Postsale implements IsotopeNotificationTokens, IsotopeBa
             return '<p class="tl_gerror">' . $GLOBALS['TL_LANG']['MSC']['backendPaymentNotFound'] . '</p>';
         }
 
-        $strBuffer = '
+        return '
 <div id="tl_buttons">
-<a href="' . ampersand(str_replace('&key=payment', '', Environment::get('request'))) . '" class="header_back" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
+<a href="' . \Contao\StringUtil::ampersand(str_replace('&key=payment', '', Environment::get('request'))) . '" class="header_back" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
 </div>
 
 <h2 class="sub_headline">' . $this->name . ' (' . $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment']['datatrans'][0] . ')' . '</h2>
@@ -312,7 +310,5 @@ class Datatrans extends Postsale implements IsotopeNotificationTokens, IsotopeBa
   </tr>
 </tbody></table>
 </div>';
-
-        return $strBuffer;
     }
 }

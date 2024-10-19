@@ -58,6 +58,6 @@ class  ContinueShoppingAction extends AbstractLink
      */
     public function getHref()
     {
-        return ampersand(base64_decode(Input::get('continue', true)));
+        return \Contao\StringUtil::ampersand(base64_decode(Input::get('continue', true)));
     }
 }

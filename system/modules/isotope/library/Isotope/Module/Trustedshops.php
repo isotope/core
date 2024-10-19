@@ -11,7 +11,6 @@
 
 namespace Isotope\Module;
 
-use Contao\Environment;
 use Contao\Input;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCollection\Order;

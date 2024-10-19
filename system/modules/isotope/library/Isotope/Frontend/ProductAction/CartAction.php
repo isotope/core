@@ -101,8 +101,6 @@ class CartAction extends AbstractButton
     }
 
     /**
-     * @param IsotopeProduct $product
-     * @param array          $config
      *
      * @return bool
      */
@@ -128,8 +126,6 @@ class CartAction extends AbstractButton
     }
 
     /**
-     * @param ProductCollectionItem $item
-     * @param IsotopeProduct        $product
      *
      * @return bool
      */

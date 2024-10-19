@@ -14,10 +14,11 @@ namespace Isotope\Module;
 use Contao\CoreBundle\Exception\AccessDeniedException;
 use Contao\FrontendUser;
 use Contao\Input;
-use Contao\PageError403;
 use Contao\PageModel;
 use Contao\StringUtil;
+use Contao\System;
 use Haste\Util\Format;
+use Isotope\CompatibilityHelper;
 use Isotope\Frontend\ProductCollectionAction\ReorderAction;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Template;
@@ -82,17 +83,12 @@ class OrderDetails extends AbstractProductCollection
      */
     protected function getCollection()
     {
-        static $order = false;
-
-        if (false !== $order) {
-            return $order;
-        }
-
         $order = Order::findOneBy('uniqid', (string) Input::get('uid'));
+        $isMember = System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER');
 
         // Also check owner (see #126)
         if (null === $order
-            || (FE_USER_LOGGED_IN === true
+            || ($isMember
                 && $order->member > 0
                 && FrontendUser::getInstance()->id != $order->member
             )
@@ -105,11 +101,11 @@ class OrderDetails extends AbstractProductCollection
         }
 
         // Order belongs to a member but not logged in
-        if ('FE' === TL_MODE && $this->iso_loginRequired && $order->member > 0 && FE_USER_LOGGED_IN !== true) {
+        if (CompatibilityHelper::isFrontend() && $this->iso_loginRequired && $order->member > 0 && !$isMember) {
             throw new AccessDeniedException();
         }
 
-        if ('FE' === TL_MODE) {
+        if (CompatibilityHelper::isFrontend()) {
             /** @var PageModel $objPage */
             global $objPage;
 
@@ -150,7 +146,7 @@ class OrderDetails extends AbstractProductCollection
      */
     protected function getActions()
     {
-        if ('BE' === TL_MODE) {
+        if (CompatibilityHelper::isBackend()) {
             return [];
         }
 

@@ -18,6 +18,7 @@ use Contao\Widget;
 use Haste\Generator\RowClass;
 use Haste\Input\Input;
 use Haste\Util\Url;
+use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeFilterModule;
 use Isotope\Isotope;
@@ -26,6 +27,7 @@ use Isotope\Model\Product;
 use Isotope\RequestCache\CsvFilter;
 use Isotope\RequestCache\Filter;
 use Isotope\RequestCache\FilterQueryBuilder;
+use Isotope\RequestCache\Sort;
 use Isotope\Template;
 
 /**
@@ -33,10 +35,10 @@ use Isotope\Template;
  */
 class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterModule
 {
-    const QUERY_AND = 'and';
-    const QUERY_OR  = 'or';
-    const COUNT_ALL = 'all';
-    const COUNT_NEW = 'new';
+    public const QUERY_AND = 'and';
+    public const QUERY_OR  = 'or';
+    public const COUNT_ALL = 'all';
+    public const COUNT_NEW = 'new';
 
     /**
      * Template
@@ -52,7 +54,7 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
     /**
      * @var bool
      */
-    private $canShowMatches;
+    protected $canShowMatches;
 
     /**
      * Constructor.
@@ -68,7 +70,7 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
         $fields                     = array();
 
         if (\is_array($this->iso_cumulativeFields)) {
-            foreach ($this->iso_cumulativeFields as $k => $v) {
+            foreach ($this->iso_cumulativeFields as $v) {
                 $attribute = $v['attribute'];
                 unset($v['attribute']);
 
@@ -100,7 +102,7 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
      */
     public function generate()
     {
-        if ('BE' === TL_MODE) {
+        if (CompatibilityHelper::isBackend()) {
             return $this->generateWildcard();
         }
 
@@ -130,7 +132,7 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
 
         $this->generateFilter();
 
-        $this->Template->linkClearAll  = ampersand(preg_replace('/\?.*/', '', Environment::get('request')));
+        $this->Template->linkClearAll  = \Contao\StringUtil::ampersand(preg_replace('/\?.*/', '', Environment::get('request')));
         $this->Template->labelClearAll = $GLOBALS['TL_LANG']['MSC']['clearFiltersLabel'];
     }
 
@@ -217,11 +219,9 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
 
     /**
      * @param string $attribute
-     * @param array  $options
      * @param string $queryType
      * @param string $countType
      * @param bool   $filterActive
-     *
      * @return array
      */
     protected function generateOptions($attribute, array $options, $queryType, $countType, &$filterActive)
@@ -313,6 +313,8 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
             'accesskey' => '',
             'tabindex' => '',
             'target' => '',
+            'rel' => '',
+            'subitems' => '',
         );
     }
 
@@ -334,7 +336,7 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
         );
 
         if (empty($usedValues)) {
-            return array();
+            return [];
         }
 
         // Use the default routine to initialize options data
@@ -343,26 +345,24 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
             $attribute
         );
 
-        $label   = $arrWidget['label'];
-        $options = $arrWidget['options'];
+        $label = $arrWidget['label'] ?? $attribute;
 
         if (($objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$attribute]) !== null
             && $objAttribute instanceof IsotopeAttributeWithOptions
         ) {
-            $options = $objAttribute->getOptionsForProductFilter($usedValues);
+            return $objAttribute->getOptionsForProductFilter($usedValues);
+        }
 
-        } elseif (\is_array($options)) {
-            $options = array_filter(
-                $options,
+        if (\is_array($arrWidget['options'] ?? null)) {
+            return array_filter(
+                $arrWidget['options'],
                 function ($option) use ($usedValues) {
                     return \in_array($option['value'], $usedValues);
                 }
             );
-        } else {
-            $options = array();
         }
 
-        return $options;
+        return array_map(static fn ($v) => ['value' => $v, 'label' => $v], $usedValues);
     }
 
     private function countNewMatches($attribute, $value, array $filters)
@@ -450,14 +450,27 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
      */
     private function saveFilter($action, $attribute, $value)
     {
-        if ($action == 'add') {
+        if ('add' === $action) {
             Isotope::getRequestCache()->setFiltersForModule(
                 $this->addFilter($this->activeFilters, $attribute, $value),
                 $this->id
             );
+
+            if ('' === Isotope::getRequestCache()->getFirstSortingFieldForModule($this->id)) {
+                Isotope::getRequestCache()->setSortingForModule(
+                    $this->iso_listingSortField,
+                    'DESC' === $this->iso_listingSortDirection ? Sort::descending() : Sort::ascending(),
+                    $this->id
+                );
+            }
         } else {
             Isotope::getRequestCache()->removeFilterForModule(
                 $this->generateFilterKey($attribute, $value),
+                $this->id
+            );
+
+            Isotope::getRequestCache()->removeSortingForModule(
+                $this->iso_listingSortField,
                 $this->id
             );
         }

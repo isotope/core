@@ -11,7 +11,6 @@
 
 namespace Isotope\Model\Payment;
 
-use Contao\Environment;
 use Contao\Module;
 use Contao\System;
 use Isotope\Currency;
@@ -118,7 +117,6 @@ class QuickPay extends Postsale
     /**
      * Validate input parameters and hash
      *
-     * @param IsotopeProductCollection $objOrder
      *
      * @return bool
      */

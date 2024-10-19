@@ -45,7 +45,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_pricetier'] = array
         ),
         'min' => array
         (
-            'sql'                 =>  "int(10) unsigned NOT NULL default '0'",
+            'sql'                 =>  "int(10) unsigned NOT NULL default '1'",
         ),
         'price' => array
         (

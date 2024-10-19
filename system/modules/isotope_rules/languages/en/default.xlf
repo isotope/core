@@ -14,6 +14,9 @@
       <trans-unit id="MSC.couponApply">
         <source>Apply</source>
       </trans-unit>
+        <trans-unit id="MSC.couponRemove">
+            <source>Remove</source>
+        </trans-unit>
       <trans-unit id="MSC.couponInvalid">
         <source>Your coupon %s is not valid.</source>
       </trans-unit>

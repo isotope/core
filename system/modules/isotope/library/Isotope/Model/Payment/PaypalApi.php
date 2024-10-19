@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @noinspection PhpPossiblePolymorphicInvocationInspection
+ * @noinspection UnsupportedStringOffsetOperationsInspection
+ */
+
 /*
  * Isotope eCommerce for Contao Open Source CMS
  *
@@ -11,11 +16,13 @@
 
 namespace Isotope\Model\Payment;
 
+use Contao\Date;
 use Contao\Environment;
 use Contao\StringUtil;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\Payment;
+use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Checkout;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
@@ -29,7 +36,6 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 abstract class PaypalApi extends Payment
 {
     /**
-     * @param IsotopePurchasableCollection $order
      *
      * @return ResponseInterface
      * @throws TransportExceptionInterface
@@ -66,7 +72,7 @@ abstract class PaypalApi extends Payment
         }
 
         $billingAddress = $order->getBillingAddress();
-        $shippingAddress = $order->getShippingAddress();
+        //$shippingAddress = $order->getShippingAddress();
 
         $data = [
             'intent'        => 'sale',
@@ -137,7 +143,6 @@ abstract class PaypalApi extends Payment
     }
 
     /**
-     * @param IsotopePurchasableCollection $order
      * @param string $paymentId
      *
      * @return ResponseInterface
@@ -145,7 +150,7 @@ abstract class PaypalApi extends Payment
      */
     public function patchPayment(IsotopePurchasableCollection $order, $paymentId)
     {
-        $billingAddress = $order->getBillingAddress();
+        //$billingAddress = $order->getBillingAddress();
         $shippingAddress = $order->getShippingAddress();
 
         $data = [
@@ -184,10 +189,6 @@ abstract class PaypalApi extends Payment
         return $this->sendRequest('/payments/payment/' . $paymentId . '/execute', $data, 'POST');
     }
 
-    /**
-     * @param IsotopeProductCollection $collection
-     * @param array                    $paypalData
-     */
     protected function storePayment(IsotopeProductCollection $collection, array $paypalData)
     {
         $paymentData = StringUtil::deserialize($collection->payment_data, true);
@@ -198,8 +199,6 @@ abstract class PaypalApi extends Payment
     }
 
     /**
-     * @param IsotopeProductCollection $collection
-     *
      * @return array
      */
     protected function retrievePayment(IsotopeProductCollection $collection)
@@ -209,15 +208,11 @@ abstract class PaypalApi extends Payment
         return \array_key_exists('PAYPAL', $paymentData) ? $paymentData['PAYPAL'] : [];
     }
 
-    /**
-     * @param IsotopeProductCollection $collection
-     * @param array                    $paypalData
-     */
     protected function storeHistory(IsotopeProductCollection $collection, array $paypalData)
     {
         $paymentData = StringUtil::deserialize($collection->payment_data, true);
 
-        if (!\is_array($paymentData['PAYPAL_HISTORY'])) {
+        if (!\is_array($paymentData['PAYPAL_HISTORY'] ?? null)) {
             $paymentData['PAYPAL_HISTORY'] = [];
         }
 
@@ -225,6 +220,109 @@ abstract class PaypalApi extends Payment
 
         $collection->payment_data = $paymentData;
         $collection->save();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function backendInterface($orderId)
+    {
+        if (($objOrder = Order::findByPk($orderId)) === null) {
+            return parent::backendInterface($orderId);
+        }
+
+        $arrPayment = StringUtil::deserialize($objOrder->payment_data, true);
+
+        if (!\is_array($arrPayment['PAYPAL_HISTORY']) || empty($arrPayment['PAYPAL_HISTORY'])) {
+            return parent::backendInterface($orderId);
+        }
+
+        $strBuffer = '
+<div id="tl_buttons">
+<a href="' . \Contao\StringUtil::ampersand(str_replace('&key=payment', '', Environment::get('request'))) . '" class="header_back" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
+</div>';
+
+        foreach ($arrPayment['PAYPAL_HISTORY'] as $response) {
+            if ($response['intent'] === 'sale'
+                && $response['state'] === 'approved'
+                && isset($response['transactions'][0]['related_resources'][0]['sale']['id'])
+            ) {
+                $saleId = $response['transactions'][0]['related_resources'][0]['sale']['id'];
+
+                $strBuffer .= '
+<div class="maintenance_inactive">
+<h2 class="sub_headline">' . $this->name . ' (' . $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment'][$this->type][0] . ')' . '</h2>
+<div class="tl_tbox">
+<p><strong>' . sprintf($GLOBALS['TL_LANG']['MSC']['paypalTransaction'], $saleId) . '</strong></p>
+<p>' . $GLOBALS['TL_LANG']['MSC']['paypalTransactionOnline'] .'</p>
+<a class="tl_submit" href="https://www.paypal.com/activity/payment/' . $saleId . '" target="_blank">' . $GLOBALS['TL_LANG']['MSC']['paypalTransactionButton'] . '</a>
+</div>
+</div>';
+
+                break;
+            }
+        }
+
+        foreach (array_reverse($arrPayment['PAYPAL_HISTORY']) as $transaction) {
+            if (isset($transaction['create_time'])) {
+                $dateCreated = Date::parse(
+                    $GLOBALS['TL_CONFIG']['datimFormat'],
+                    strtotime($transaction['create_time'])
+                );
+            } else {
+                $dateCreated = '<i>UNKNOWN</i>';
+            }
+
+            $strBuffer .= '
+<div class="maintenance_inactive">
+<h2 class="sub_headline">' . sprintf($GLOBALS['TL_LANG']['MSC']['paypalTransactionDetails'], $dateCreated) . '</h2>
+<table class="tl_show">
+  <tbody>
+';
+
+            $render = function($k, $v, &$i) use (&$strBuffer) {
+                $strBuffer .= '
+  <tr>
+    <td' . ($i % 2 ? '' : ' class="tl_bg"') . ' style="width:auto"><span class="tl_label">' . $k . ': </span></td>
+    <td' . ($i % 2 ? '' : ' class="tl_bg"') . '>' . $v . '</td>
+  </tr>';
+
+                ++$i;
+            };
+
+            $loop = function($data, $loop, $i=0) use ($render, &$strBuffer) {
+                foreach ($data as $k => $v) {
+                    if (\in_array($k, ['potential_payer_info', 'links', 'create_time'], true)) {
+                        continue;
+                    }
+
+                    if (\is_array($v)) {
+                        $strBuffer .= '
+  <tr>
+    <td' . ($i % 2 ? '' : ' class="tl_bg"') . ' style="width:auto"><span class="tl_label">' . $k . ': </span></td>
+    <td' . ($i % 2 ? '' : ' class="tl_bg"') . '>
+      <table class="tl_show" style="border:1px solid #d0d0d2; background:#fff"><tbody>';
+
+                        $i++;
+                        $loop($v, $loop, (int) $i % 2);
+
+                        $strBuffer .= '</td></tbody></table></tr>';
+
+                        continue;
+                    }
+
+                    $render($k, $v, $i);
+                }
+            };
+
+            $loop($transaction, $loop);
+
+            $strBuffer .= '
+</tbody></table>
+</div>';
+        }
+
+        return $strBuffer;
     }
 
     /**

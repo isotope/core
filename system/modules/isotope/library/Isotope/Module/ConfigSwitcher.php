@@ -15,6 +15,7 @@ use Contao\Controller;
 use Contao\Environment;
 use Contao\Input;
 use Haste\Generator\RowClass;
+use Isotope\CompatibilityHelper;
 use Isotope\Isotope;
 use Isotope\Model\Config;
 
@@ -49,7 +50,7 @@ class ConfigSwitcher extends Module
      */
     public function generate()
     {
-        if ('BE' === TL_MODE) {
+        if (CompatibilityHelper::isBackend()) {
             return $this->generateWildcard();
         }
 
@@ -61,7 +62,7 @@ class ConfigSwitcher extends Module
 
         // If the module config has only one config, always override the current cart
         if (1 === $optionsCount) {
-            $this->overrideConfig(reset($this->iso_config_ids));
+            $this->overrideConfig((int) reset($this->iso_config_ids));
         }
 
         if ($optionsCount < 2) {
@@ -99,9 +100,9 @@ class ConfigSwitcher extends Module
         $this->Template->configs = $arrConfigs;
     }
 
-    private function overrideConfig($configId, $forceReload = false)
+    private function overrideConfig(int $configId, bool $forceReload = false): void
     {
-        if (Isotope::getCart()->config_id === $configId && !$forceReload) {
+        if ((int) Isotope::getCart()->config_id === $configId && !$forceReload) {
             return;
         }
 

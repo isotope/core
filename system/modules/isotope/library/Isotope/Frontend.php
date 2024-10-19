@@ -60,7 +60,6 @@ class Frontend extends \Contao\Frontend
     /**
      * Get shipping and payment surcharges for given collection
      *
-     * @param IsotopeProductCollection $objCollection
      *
      * @return ProductCollectionSurcharge[]
      */
@@ -447,9 +446,7 @@ class Frontend extends \Contao\Frontend
      * Return pages in the current root available to the member
      * Necessary to check if a product is allowed in the current site and cache the value
      *
-     * @param array                      $arrPages
      * @param MemberModel|FrontendUser $objMember
-     *
      * @return array
      */
     public static function getPagesInCurrentRoot(array $arrPages, $objMember = null)
@@ -595,7 +592,6 @@ class Frontend extends \Contao\Frontend
     /**
      * Initialize environment (language, objPage) for a given order
      *
-     * @param Order  $objOrder
      * @param string $strLanguage
      */
     public static function loadOrderEnvironment(Order $objOrder, $strLanguage = null)
@@ -690,8 +686,6 @@ class Frontend extends \Contao\Frontend
 
     /**
      * Adjust module and module id for certain payment and/or shipping modules
-     *
-     * @param PostSale $objPostsale
      */
     public function setPostsaleModuleSettings(PostSale $objPostsale)
     {
@@ -712,7 +706,6 @@ class Frontend extends \Contao\Frontend
      * @param object $objSource
      * @param string $strField
      * @param int    $intTaxClass
-     * @param array  $arrOptions
      *
      * @return float
      * @throws \Exception
@@ -774,8 +767,6 @@ class Frontend extends \Contao\Frontend
     /**
      * Callback for add_to_cart button
      *
-     * @param IsotopeProduct $objProduct
-     * @param array          $arrConfig
      *
      * @deprecated Deprecated since Isotope 2.5
      */
@@ -788,8 +779,6 @@ class Frontend extends \Contao\Frontend
     /**
      * Callback for add_to_cart button if a product is being edited.
      *
-     * @param IsotopeProduct $objProduct
-     * @param array          $arrConfig
      *
      * @deprecated Deprecated since Isotope 2.5
      */
@@ -802,8 +791,6 @@ class Frontend extends \Contao\Frontend
     /**
      * Callback for toggle_favorites button
      *
-     * @param IsotopeProduct $objProduct
-     * @param array          $arrConfig
      *
      * @deprecated Deprecated since Isotope 2.5
      */

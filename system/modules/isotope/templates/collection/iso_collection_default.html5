@@ -42,7 +42,7 @@
         </td>
         <td class="col_<?= $i++ ?> quantity">
         <?php if($this->isEditable): ?>
-            <input name="quantity[<?= $item['id'] ?>]" type="text" class="text" value="<?= $item['quantity'] ?>" maxlength="10">
+            <input name="quantity[<?= $item['id'] ?>]" type="number" class="text" value="<?= $item['quantity'] ?>" maxlength="10">
         <?php else: ?>
             <?= $item['quantity'] ?> x
         <?php endif; ?>

@@ -49,7 +49,7 @@
                                         new Picker.Date($$("#ctrl_<?= $subpanel['name'] ?>"), {
                                             draggable:false,
                                             toggle:$$("#toggle_<?= $subpanel['name'] ?>"),
-                                            format:"<?= Date::formatToJs($subpanel['format']) ?>",
+                                            format:"<?= \Contao\Date::formatToJs($subpanel['format']) ?>",
                                             positionOffset:{x:-197,y:-182},
                                             pickerClass:"datepicker_bootstrap",
                                             useFadeInOut:!Browser.ie,

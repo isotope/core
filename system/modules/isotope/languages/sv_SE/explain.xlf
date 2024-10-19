@@ -56,15 +56,14 @@ erbjuda verklig frakt för dessa produkttyper.
       </trans-unit>
       <trans-unit id="XPL.elevatezoom_position">
         <source>Positioning the window can be done in by setting a default position, and then using x and y offset to adjust. You can also position the window into a container - See more at: &lt;a href=&quot;http://www.elevateweb.co.uk/image-zoom/examples#window-position&quot; target=&quot;_blank&quot;&gt;http://www.elevateweb.co.uk/image-zoom/examples#window-position&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;img src=&quot;system/modules/isotope/assets/images/elevatezoom-positions.png&quot; alt=&quot;&quot;&gt;</source>
-        <target>Du kan placera fönstret i genom att ställa in en standardposition och sedan använda x och y offset för att justera. Du kan också placera fönstret i en container - Se mer på: &lt;a href=&quot;http://www.elevateweb.co.uk/image-zoom/examples#window-position&quot; target=&quot;_blank&quot;&gt;http://www.elevateweb.co.uk/image-zoom/examples#window-position&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;img src=&quot;system/ modules/isotope/assets/images/elevatezoom-positions.png&quot; alt=&quot;&quot;&gt;</target>
+        <target>Du kan placera fönstret i genom att ställa in en standardposition och sedan använda x och y offset för att justera. Du kan också placera fönstret i en container - Se mer på: &lt;a href=&quot;http://www.elevateweb.co.uk/image-zoom/examples#window-position&quot; target=&quot;_blank&quot;&gt;http://www.elevateweb.co.uk/image-zoom/examples#window-position&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;img src=&quot;system/modules/isotope/assets/images/elevatezoom-positions.png&quot; alt=&quot;&quot;&gt;</target>
       </trans-unit>
       <trans-unit id="XPL.iso_category_scope">
         <source><![CDATA[
             Select which product categories (pages) should be considered for the products.<br><br><u>If this is a product list module and you configured a category filter module, the category filter selection will override this configuration!</u><br><br>
         ]]></source>
         <target>
-             Välj vilka produktkategorier (sidor) som ska beaktas för produkterna.&lt;br&gt;&lt;br&gt;&lt;u&gt;Om detta är en produktlistamodul och du har konfigurerat en kategorifiltermodul, kommer kategorifiltervalet att åsidosätta denna konfiguration!&lt;/u &gt;&lt;br&gt;&lt;br&gt;
-         </target>
+Välj vilka produktkategorier (sidor) som ska beaktas för produkterna. &lt;br&gt;&lt;br&gt;&lt;u&gt;Om detta är en produktlistmodul och du har konfigurerat en kategorifiltermodul, kommer kategorifiltervalet att åsidosätta denna konfiguration!&lt;/u&gt;&lt;br&gt;&lt;br&gt;</target>
       </trans-unit>
       <trans-unit id="XPL.checkoutTargetFile">
         <source>&lt;p class=&quot;tl_help_table&quot;&gt;Use these simple tokens to generate a dynamic file name.&lt;/p&gt;</source>

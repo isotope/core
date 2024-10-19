@@ -1,6 +1,38 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.8.17 (2023-10-16)
+--------------------------
+
+- Acknowledge PayPal IPNs with unsupported payment_status
+- Fixed support for input_field_callback in tl_iso_product
+- Fixed loading address labels
+- Fixed various PHP8 issues
+- Hide multilingual fields for attribute options
+
+
+Version 2.8.16 (2023-07-31)
+--------------------------
+
+- Correctly generate URLs for the order confirmation page
+- Correctly load the member labels for address groups
+- Improve conversion of string to int attributes (#2480)
+- Fixed missing label in coupon template (#2443)
+- Fixed various PHP8 issues
+
+
+Version 2.8.15 (2023-07-19)
+--------------------------
+
+- Fixed encoding issues with Saferpay credentials
+- Generate correct redirects in checkout module (#2471)
+- Fixed "not equal" condition for attribute restriction in rules
+- Update database when attribute type is changed to integer (#2470)
+- Added image width and height to inline gallery template (#2473)
+- Update name of product in cart if site language is switched (#2467)
+- Support returning Array result on model queries
+- Fixed various PHP8 issues (#2466, #2476, #2478)
+
 
 Version 2.8.14 (2023-06-19)
 --------------------------

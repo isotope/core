@@ -252,6 +252,12 @@
         <source>Remove the radio buttons or checkboxes next to folders.</source>
         <target>Retire los botones de opción o casillas junto a las carpetas.</target>
       </trans-unit>
+      <trans-unit id="tl_iso_attribute.inline.0">
+        <source>Show in browser</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.inline.1">
+        <source>Show the file in the browser instead of opening the download dialog.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_attribute.isGallery.0">
         <source>Mark as gallery</source>
       </trans-unit>
@@ -656,8 +662,7 @@
         <target>Borrar atributo</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.delete.1">
-        <source>Delete attribute ID %s. The database column will not be deleted, you need to manually update the database using the install tool or repository manager.</source>
-        <target>Borrar atributo ID %s. La columna de base de datos no será eliminada, es necesario actualizar manualmente la base de datos utilizando la herramienta de instalación o el repository manager.</target>
+        <source>Delete attribute ID %s. The database column will not be deleted, you need to manually update the database using the Contao Manager.</source>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.show.0">
         <source>Attribute details</source>
@@ -668,8 +673,7 @@
         <target>Mostrar los detalles del atributo ID %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.deleteConfirm">
-        <source>Do you really want to delete attribute ID %s? The database column will not be deleted, you need to manually update the database using the install tool or repository manager.</source>
-        <target>¿Está seguro que quiere eliminar el atributo ID %s? La columna de la base de datos no será eliminada, es necesario actualizar manualmente la base de datos utilizando la herramienta de instalación o el repository manager.</target>
+        <source>Do you really want to delete attribute ID %s? The database column will not be deleted, you need to manually update the database using the Contao Manager.</source>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.attribute_legend">
         <source>Attribute name &amp; type</source>

@@ -52,12 +52,13 @@ class Paypal extends Postsale
 
         if ('Completed' !== Input::post('payment_status')) {
             System::log('PayPal IPN: payment status "' . Input::post('payment_status') . '" not implemented', __METHOD__, TL_GENERAL);
-            return new Response('', Response::HTTP_NOT_IMPLEMENTED);
+            return new Response();
         }
 
         if (!$this->validateInput()) {
             return new Response('', Response::HTTP_BAD_REQUEST);
         }
+
         if (!$this->debug && 0 !== strcasecmp(Input::post('receiver_email', true), $this->paypal_account)) {
             System::log('PayPal IPN: Account email does not match (got ' . Input::post('receiver_email', true) . ', expected ' . $this->paypal_account . ')', __METHOD__, TL_ERROR);
             return new Response('', Response::HTTP_BAD_REQUEST);
@@ -136,7 +137,7 @@ class Paypal extends Postsale
                 array_walk(
                     $arrConfig,
                     function(&$option) {
-                        $option = $option['label'] . ': ' . (string) $option;
+                        $option = $option['label'] . ': ' . $option;
                     }
                 );
 
@@ -226,7 +227,7 @@ class Paypal extends Postsale
 
         $strBuffer = '
 <div id="tl_buttons">
-<a href="' . ampersand(str_replace('&key=payment', '', Environment::get('request'))) . '" class="header_back" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
+<a href="' . \Contao\StringUtil::ampersand(str_replace('&key=payment', '', Environment::get('request'))) . '" class="header_back" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
 </div>
 
 <h2 class="sub_headline">' . $this->name . ' (' . $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment']['paypal'][0] . ')' . '</h2>
@@ -254,11 +255,9 @@ class Paypal extends Postsale
             ++$i;
         }
 
-        $strBuffer .= '
+        return $strBuffer . '
 </tbody></table>
 </div>';
-
-        return $strBuffer;
     }
 
     /**
@@ -279,7 +278,7 @@ class Paypal extends Postsale
             ]);
 
             if ('VERIFIED' !== $response->getContent()) {
-                \System::log('PayPal IPN: data rejected (' . $response->getContent() . ')', __METHOD__, TL_ERROR);
+                System::log('PayPal IPN: data rejected (' . $response->getContent() . ')', __METHOD__, TL_ERROR);
 
                 return false;
             }

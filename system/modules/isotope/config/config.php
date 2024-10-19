@@ -9,15 +9,17 @@
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
+use Contao\ArrayUtil;
+
 /**
  * Backend modules
  */
 if (!\is_array($GLOBALS['BE_MOD']['isotope'] ?? null))
 {
-    array_insert($GLOBALS['BE_MOD'], 1, array('isotope' => array()));
+    ArrayUtil::arrayInsert($GLOBALS['BE_MOD'], 1, array('isotope' => array()));
 }
 
-array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
+ArrayUtil::arrayInsert($GLOBALS['BE_MOD']['isotope'], 0, array
 (
     'iso_products' => array
     (
@@ -38,7 +40,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
     'iso_setup' => array
     (
         'callback'          => 'Isotope\BackendModule\Setup',
-        'tables'            => array(),
+        'tables'            => array(\Isotope\Model\Payment::getTable(), \Isotope\Model\Shipping::getTable(), \Isotope\Model\OrderStatus::getTable()),
         'javascript'        => 'system/modules/isotope/assets/js/backend.js',
     ),
 ));
@@ -194,6 +196,7 @@ $GLOBALS['BE_FFL']['inheritCheckbox']        = 'Isotope\Widget\InheritCheckBox';
 \Isotope\Model\Payment::registerModelType('payone', 'Isotope\Model\Payment\Payone');
 \Isotope\Model\Payment::registerModelType('paypal', 'Isotope\Model\Payment\Paypal');
 \Isotope\Model\Payment::registerModelType('paypal_plus', 'Isotope\Model\Payment\PaypalPlus');
+\Isotope\Model\Payment::registerModelType('paypal_checkout', 'Isotope\Model\Payment\PaypalCheckout');
 \Isotope\Model\Payment::registerModelType('postfinance', 'Isotope\Model\Payment\Postfinance');
 \Isotope\Model\Payment::registerModelType('quickpay', 'Isotope\Model\Payment\QuickPay');
 \Isotope\Model\Payment::registerModelType('saferpay', 'Isotope\Model\Payment\Saferpay');
@@ -330,6 +333,8 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_statu
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['email_subject'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['email_text'];
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['email_html'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['email_text'];
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['email_replyTo'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['recipients'];
+$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['email_sender_name'] = array('recipient_email', 'admin_email', 'admin_name', 'config_*');
+$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['email_sender_address'] = array('recipient_email', 'admin_email', 'config_*');
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['email_recipient_cc'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['recipients'];
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['email_recipient_bcc'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['recipients'];
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['file_name'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['email_text'];
@@ -524,5 +529,5 @@ $GLOBALS['TL_AUTO_ITEM'][] = 'step';
 /**
  * Default configuration
  */
-$GLOBALS['TL_CONFIG']['iso_cartTimeout'] = 2592000;
+$GLOBALS['TL_CONFIG']['iso_cartTimeout'] = 2_592_000;
 $GLOBALS['TL_CONFIG']['iso_orderTimeout'] = 604800;

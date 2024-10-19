@@ -18,6 +18,7 @@ use Contao\System;
 use Contao\Template;
 use Haste\Generator\RowClass;
 use Haste\Util\Format;
+use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeNotificationTokens;
 use Isotope\Interfaces\IsotopeOrderStatusAware;
 use Isotope\Interfaces\IsotopePurchasableCollection;
@@ -50,8 +51,8 @@ use NotificationCenter\Model\Notification;
  */
 class Order extends ProductCollection implements IsotopePurchasableCollection
 {
-    const STATUS_UPDATE_SKIP_NOTIFICATION = 1;
-    const STATUS_UPDATE_SKIP_LOG = 2;
+    public const STATUS_UPDATE_SKIP_NOTIFICATION = 1;
+    public const STATUS_UPDATE_SKIP_LOG = 2;
 
 
     /**
@@ -203,26 +204,24 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
         $notificationIds = array_filter(explode(',', $this->nc_notification));
 
         // Send the notifications
-        if (\count($notificationIds) > 0) {
-            foreach ($notificationIds as $notificationId) {
-                // Generate tokens
-                $arrTokens = $this->getNotificationTokens($notificationId);
+        foreach ($notificationIds as $notificationId) {
+            // Generate tokens
+            $arrTokens = $this->getNotificationTokens($notificationId);
 
-                // Send notification
-                $blnNotificationError = true;
+            // Send notification
+            $blnNotificationError = true;
 
-                /** @var Notification $objNotification */
-                if (($objNotification = Notification::findByPk($notificationId)) !== null) {
-                    $arrResult = $objNotification->send($arrTokens, $this->language);
+            /** @var Notification $objNotification */
+            if (($objNotification = Notification::findByPk($notificationId)) !== null) {
+                $arrResult = $objNotification->send($arrTokens, $this->language);
 
-                    if (\count($arrResult) > 0 && !\in_array(false, $arrResult, true)) {
-                        $blnNotificationError = false;
-                    }
+                if (\count($arrResult) > 0 && !\in_array(false, $arrResult, true)) {
+                    $blnNotificationError = false;
                 }
+            }
 
-                if ($blnNotificationError === true) {
-                    System::log('Error sending new order notification for order ID ' . $this->id, __METHOD__, TL_ERROR);
-                }
+            if ($blnNotificationError === true) {
+                System::log('Error sending new order notification for order ID ' . $this->id, __METHOD__, TL_ERROR);
             }
         }
 
@@ -259,6 +258,13 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
             // Retain custom config ID
             if (($objCart = Isotope::getCart()) !== null && $objCart->config_id != $this->config_id) {
                 $objCart->config_id = $this->config_id;
+            }
+
+            // !HOOK: complete checkout
+            if (isset($GLOBALS['ISO_HOOKS']['checkoutComplete']) && \is_array($GLOBALS['ISO_HOOKS']['checkoutComplete'])) {
+                foreach ($GLOBALS['ISO_HOOKS']['checkoutComplete'] as $callback) {
+                    System::importStatic($callback[0])->{$callback[1]}($this);
+                }
             }
 
             return true;
@@ -363,7 +369,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
                 }
             }
 
-            if ('BE' === TL_MODE) {
+            if (CompatibilityHelper::isBackend()) {
                 Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusUpdate']);
 
                 if ($blnNotificationError === true) {
@@ -422,7 +428,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
         $arrTokens                    = StringUtil::deserialize($this->email_data, true);
         $arrTokens['uniqid']          = $this->uniqid;
         $arrTokens['order_status_id'] = $this->order_status;
-        $arrTokens['order_status']    = $this->getStatusLabel();
+        $arrTokens['order_status']    = Controller::replaceInsertTags($this->getStatusLabel());
         $arrTokens['recipient_email'] = $this->getEmailRecipient();
         $arrTokens['order_id']        = $this->id;
         $arrTokens['order_items']     = $this->sumItemsQuantity();
@@ -481,8 +487,8 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
         // Add payment method info
         if ($this->hasPayment() && ($objPayment = $this->getPaymentMethod()) !== null) {
             $arrTokens['payment_id']        = $objPayment->getId();
-            $arrTokens['payment_label']     = $objPayment->getLabel();
-            $arrTokens['payment_note']      = $objPayment->getNote();
+            $arrTokens['payment_label']     = Controller::replaceInsertTags($objPayment->getLabel());
+            $arrTokens['payment_note']      = Controller::replaceInsertTags($objPayment->getNote());
 
             if ($objPayment instanceof IsotopeNotificationTokens) {
                 $arrTokens = array_merge($arrTokens, $objPayment->getNotificationTokens($this));
@@ -492,8 +498,8 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
         // Add shipping method info
         if ($this->hasShipping() && ($objShipping = $this->getShippingMethod()) !== null) {
             $arrTokens['shipping_id']        = $objShipping->getId();
-            $arrTokens['shipping_label']     = $objShipping->getLabel();
-            $arrTokens['shipping_note']      = $objShipping->getNote();
+            $arrTokens['shipping_label']     = Controller::replaceInsertTags($objShipping->getLabel());
+            $arrTokens['shipping_note']      = Controller::replaceInsertTags($objShipping->getNote());
 
             if ($objShipping instanceof IsotopeNotificationTokens) {
                 $arrTokens = array_merge($arrTokens, $objShipping->getNotificationTokens($this));
@@ -530,7 +536,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
 
             $arrTokens['cart_html'] = Controller::replaceInsertTags($objTemplate->parse(), false);
             $objTemplate->textOnly  = true;
-            $arrTokens['cart_text'] = strip_tags(Controller::replaceInsertTags($objTemplate->parse(), true));
+            $arrTokens['cart_text'] = strip_tags(Controller::replaceInsertTags($objTemplate->parse(), false));
 
             // Generate and "attach" document
             /** @var \Isotope\Interfaces\IsotopeDocument $objDocument */

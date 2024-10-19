@@ -13,8 +13,10 @@ namespace Isotope\Module;
 
 use Contao\Controller;
 use Contao\Environment;
+use Contao\System;
 use Haste\Input\Input;
 use Haste\Util\Url;
+use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeFilterModule;
 use Isotope\Isotope;
 use Isotope\RequestCache\Filter;
@@ -50,11 +52,11 @@ class RangeFilter extends AbstractProductFilter implements IsotopeFilterModule
      */
     public function generate()
     {
-        if ('BE' === TL_MODE) {
+        if (CompatibilityHelper::isBackend()) {
             return $this->generateWildcard();
         }
 
-        if ('FE' === TL_MODE && 0 === \count($this->iso_rangeFields)) {
+        if (CompatibilityHelper::isFrontend() && 0 === \count($this->iso_rangeFields)) {
             return '';
         }
 
@@ -165,6 +167,7 @@ class RangeFilter extends AbstractProductFilter implements IsotopeFilterModule
         $this->Template->jsonFields = json_encode($fields);
         $this->Template->formId = 'iso_filter_'.$this->id;
         $this->Template->slabel = $GLOBALS['TL_LANG']['MSC']['submitLabel'];
+        $this->Template->requestToken = System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue();
     }
 
     private function getRangeConfig(): array

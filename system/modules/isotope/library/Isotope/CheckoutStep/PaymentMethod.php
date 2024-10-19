@@ -17,7 +17,6 @@ use Contao\StringUtil;
 use Contao\System;
 use Contao\Widget;
 use Isotope\Interfaces\IsotopeCheckoutStep;
-use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\Payment;
 use Isotope\Module\Checkout;
@@ -117,7 +116,16 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
             $objWidget->validate();
 
             if (!$objWidget->hasErrors()) {
-                Isotope::getCart()->setPaymentMethod($this->modules[$objWidget->value]);
+                $objPayment = $this->modules[$objWidget->value];
+
+                // !HOOK: checkout payment
+                if (isset($GLOBALS['ISO_HOOKS']['checkoutPayment']) && \is_array($GLOBALS['ISO_HOOKS']['checkoutPayment'])) {
+                    foreach ($GLOBALS['ISO_HOOKS']['checkoutPayment'] as $callback) {
+                        $objPayment = System::importStatic($callback[0])->{$callback[1]}($objPayment, Isotope::getCart());
+                    }
+                }
+
+                Isotope::getCart()->setPaymentMethod($objPayment);
             }
         }
 
@@ -169,7 +177,7 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
         if (!empty($arrIds) && \is_array($arrIds)) {
             $arrColumns = array('id IN (' . implode(',', $arrIds) . ')');
 
-            if (BE_USER_LOGGED_IN !== true) {
+            if (!\Contao\System::getContainer()->get('contao.security.token_checker')->isPreviewMode()) {
                 $arrColumns[] = "enabled='1'";
             }
 

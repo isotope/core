@@ -7,7 +7,9 @@
       </trans-unit>
       <trans-unit id="XPT.isotopeOldError">
         <source>An old version of Isotope eCommerce has been detected on your installation. If you would update the database now, your existing customer data and configuration might be lost. To prevent this, the database update tools have been locked automatically.</source>
-        <target>Una versione datata di Isotope eCommerce è stata rilevata sulla tua istallazione.  </target>
+        <target>Nella tua installazione è stata rilevata una vecchia versione di Isotope eCommerce.
+Se aggiornassi il database adesso, i dati dei clienti esistenti e la configurazione potrebbero andare persi.
+Per evitare ciò, gli strumenti di aggiornamento del database sono stati bloccati automaticamente.</target>
       </trans-unit>
       <trans-unit id="XPT.isotopeOldFix">
         <source>There are multiple options to get your installation back:</source>
@@ -19,7 +21,7 @@
       </trans-unit>
       <trans-unit id="XPT.isotopeOldFix2">
         <source>We are currently running a fundraising to develop an update tool. The more people that help, the sooner you will be able to update your old installation. &lt;a href=&quot;http://isotopeecommerce.com/en/&quot; target=&quot;_blank&quot;&gt;Please consider participating&lt;/a&gt;.</source>
-        <target>Stiamo attualmente gestendo una raccolta fondi per sviluppare uno strumento aggiornato. Maggiore è il numero di persone che aiutano, prima sarà possibile aggiornare la tua vecchia istallazione. &lt;a href=&quot;http://isotopeecommerce.com/en/&quot; target=&quot;_blank&quot;&gt;Prego considera la tua partecipazione</target>
+        <target>Stiamo attualmente gestendo una raccolta fondi per sviluppare uno strumento aggiornato. Maggiore è il numero di persone che aiutano, prima sarà possibile aggiornare la tua vecchia istallazione. &lt;a href=&quot;http://isotopeecommerce.com/en/&quot; target=&quot;_blank&quot;&gt;Prego considera la tua partecipazione&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="XPT.isotopeOldFix3">
         <source>Get an experienced Contao developer to migrate your data manually. We suggest to take a look at &lt;a href=&quot;http://contao.org/en/&quot; target=&quot;_blank&quot;&gt;the Contao partner listing&lt;/a&gt;.</source>

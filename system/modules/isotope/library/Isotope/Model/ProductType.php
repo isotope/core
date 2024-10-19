@@ -64,7 +64,6 @@ class ProductType extends Model
     /**
      * Initialize serialized values
      *
-     * @param array $arrData
      *
      * @return $this
      */
@@ -187,7 +186,6 @@ class ProductType extends Model
     /**
      * Get all product types that are in use
      *
-     * @param array $arrOptions
      *
      * @return Collection|null
      */
@@ -201,7 +199,6 @@ class ProductType extends Model
     /**
      * Find fallback product type
      *
-     * @param array $arrOptions
      *
      * @return static|null
      */
@@ -213,8 +210,6 @@ class ProductType extends Model
     /**
      * Find product type for product data (as array)
      *
-     * @param array $row
-     * @param array $arrOptions
      *
      * @return static|null
      */

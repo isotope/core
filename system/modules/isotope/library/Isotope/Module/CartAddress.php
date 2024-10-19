@@ -16,6 +16,7 @@ use Contao\Input;
 use Contao\StringUtil;
 use Contao\System;
 use Haste\Form\Form;
+use Isotope\CompatibilityHelper;
 use Isotope\Isotope;
 use Isotope\Model\Address;
 
@@ -50,7 +51,7 @@ class CartAddress extends Module
      */
     public function generate()
     {
-        if ('BE' === TL_MODE) {
+        if (CompatibilityHelper::isBackend()) {
             return $this->generateWildcard();
         }
 
@@ -78,6 +79,7 @@ class CartAddress extends Module
         $table = Address::getTable();
 
         System::loadLanguageFile($table);
+        System::loadLanguageFile('tl_member');
         Controller::loadDataContainer($table);
 
         // Call onload_callback (e.g. to check permissions)
@@ -107,7 +109,7 @@ class CartAddress extends Module
 
             if (!\in_array($strName, $arrFields, true)
                 || !($arrDca['eval']['feEditable'] ?? null)
-                || (($arrDca['eval']['membersOnly'] ?? null) && FE_USER_LOGGED_IN !== true)
+                || (($arrDca['eval']['membersOnly'] ?? null) && !\Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER'))
             ) {
                 return false;
             }

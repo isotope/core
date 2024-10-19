@@ -22,8 +22,6 @@ interface IsotopeProductWithOptions
 
     /**
      * Sets the product options.
-     *
-     * @param array $options
      */
     public function setOptions(array $options);
 

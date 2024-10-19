@@ -17,7 +17,7 @@ class To0020070001 extends Base
     {
         if (!$db->tableExists('tl_iso_product_collection', null, true)
             || !$db->tableExists('tl_iso_product_collection_log', null, true)
-            || !$db->fieldExists('order_status', 'tl_iso_product_collection_log', null, true)
+            || !$db->fieldExists('order_status', 'tl_iso_product_collection_log', true)
         ) {
             return;
         }

@@ -121,6 +121,10 @@
         <source>Pages</source>
         <target>Sidor</target>
       </trans-unit>
+      <trans-unit id="MSC.filterByProducts">
+        <source>Products</source>
+        <target>Produkter</target>
+      </trans-unit>
       <trans-unit id="MSC.groupPickerHome">
         <source>Back to the group picker</source>
         <target>Tillbaka till gruppväljaren</target>
@@ -944,6 +948,14 @@
       <trans-unit id="MODEL.tl_iso_payment.paypal_plus.1">
         <source>Paypal PLUS is currently only available in Germany.</source>
         <target>Paypal PLUS är för närvarande endast tillgängligt i Tyskland.</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.paypal_checkout.0">
+        <source>PayPal Checkout</source>
+        <target>PayPal-kassan</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.paypal_checkout.1">
+        <source>Checkout is the latest PayPal payment method.</source>
+        <target>Checkout är den senaste betalningsmetoden för PayPal.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.postfinance.0">
         <source>PostFinance</source>

@@ -22,6 +22,7 @@ use Contao\Widget;
 use Haste\Input\Input;
 use Haste\Util\Format;
 use Haste\Util\Url;
+use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeFilterModule;
 use Isotope\Interfaces\IsotopeProduct;
@@ -63,7 +64,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
      */
     public function generate()
     {
-        if ('BE' === TL_MODE) {
+        if (CompatibilityHelper::isBackend()) {
             return $this->generateWildcard();
         }
 
@@ -196,9 +197,10 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
 
         $this->Template->id = $this->id;
         $this->Template->formId = 'iso_filter_'.$this->id;
-        $this->Template->actionClear = ampersand(strtok(Environment::get('request'), '?'));
+        $this->Template->actionClear = \Contao\StringUtil::ampersand(strtok(Environment::get('request'), '?'));
         $this->Template->clearLabel = $GLOBALS['TL_LANG']['MSC']['clearFiltersLabel'];
         $this->Template->slabel = $GLOBALS['TL_LANG']['MSC']['submitLabel'];
+        $this->Template->requestToken = System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue();
     }
 
     /**
@@ -259,106 +261,112 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
     {
         $this->Template->hasFilters = false;
 
-        if (0 !== \count($this->iso_filterFields)) {
-            $arrFilters    = [];
-            $arrInput      = Input::post('filter');
-            $arrCategories = $this->findCategories();
+        if (empty($this->iso_filterFields)) {
+            return;
+        }
 
-            foreach ($this->iso_filterFields as $strField) {
-                $arrValues = $this->getUsedValuesForAttribute(
+        $arrFilters    = [];
+        $arrInput      = Input::post('filter');
+        $arrCategories = $this->findCategories();
+
+        foreach ($this->iso_filterFields as $strField) {
+            $arrValues = $this->getUsedValuesForAttribute(
+                $strField,
+                $arrCategories,
+                $this->iso_newFilter,
+                $this->iso_list_where
+            );
+
+            if ($this->blnUpdateCache && \in_array($arrInput[$strField], $arrValues)) {
+                if ($this->isCsv($strField)) {
+                    $filter = CsvFilter::attribute($strField)->contains($arrInput[$strField]);
+                } else {
+                    $filter = Filter::attribute($strField)->isEqualTo($arrInput[$strField]);
+                }
+
+                Isotope::getRequestCache()->setFilterForModule(
                     $strField,
-                    $arrCategories,
-                    $this->iso_newFilter,
-                    $this->iso_list_where
+                    $filter,
+                    $this->id
                 );
 
-                if ($this->blnUpdateCache && \in_array($arrInput[$strField], $arrValues)) {
-                    if ($this->isCsv($strField)) {
-                        $filter = CsvFilter::attribute($strField)->contains($arrInput[$strField]);
-                    } else {
-                        $filter = Filter::attribute($strField)->isEqualTo($arrInput[$strField]);
-                    }
+                continue;
+            }
 
-                    Isotope::getRequestCache()->setFilterForModule(
-                        $strField,
-                        $filter,
-                        $this->id
-                    );
+            if ($this->blnUpdateCache && empty($arrInput[$strField])) {
+                Isotope::getRequestCache()->removeFilterForModule($strField, $this->id);
+                continue;
+            }
 
-                } elseif ($this->blnUpdateCache && $arrInput[$strField] == '') {
-                    Isotope::getRequestCache()->removeFilterForModule($strField, $this->id);
+            // Request cache contains wrong value, delete it!
+            if (null !== ($objFilter = Isotope::getRequestCache()->getFilterForModule($strField, $this->id))
+                && $objFilter->valueNotIn($arrValues)
+            ) {
+                $this->blnUpdateCache = true;
+                Isotope::getRequestCache()->removeFilterForModule($strField, $this->id);
 
-                } elseif (($objFilter = Isotope::getRequestCache()->getFilterForModule($strField, $this->id)) !== null
-                    && $objFilter->valueNotIn($arrValues)
+                RequestCache::deleteById(Input::get('isorc'));
+                continue;
+            }
+
+            // Only generate options if we do not reload anyway
+            if (!$this->blnUpdateCache) {
+                if (0 === \count($arrValues)) {
+                    continue;
+                }
+
+                $arrData = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strField];
+
+                // Use the default routine to initialize options data
+                $arrWidget = Widget::getAttributesFromDca($arrData, $strField);
+                $objFilter = Isotope::getRequestCache()->getFilterForModule($strField, $this->id);
+
+                if (($objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$strField]) !== null
+                    && $objAttribute instanceof IsotopeAttributeWithOptions
                 ) {
-                    // Request cache contains wrong value, delete it!
-
-                    $this->blnUpdateCache = true;
-                    Isotope::getRequestCache()->removeFilterForModule($strField, $this->id);
-
-                    RequestCache::deleteById(Input::get('isorc'));
-
-                } elseif (!$this->blnUpdateCache) {
-                    // Only generate options if we do not reload anyway
-
-                    if (0 === \count($arrValues)) {
-                        continue;
-                    }
-
-                    $arrData = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strField];
-
-                    // Use the default routine to initialize options data
-                    $arrWidget = Widget::getAttributesFromDca($arrData, $strField);
-                    $objFilter = Isotope::getRequestCache()->getFilterForModule($strField, $this->id);
-
-                    if (($objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$strField]) !== null
-                        && $objAttribute instanceof IsotopeAttributeWithOptions
-                    ) {
-                        $arrWidget['options'] = $objAttribute->getOptionsForProductFilter($arrValues);
-                    }
-
-                    // Must have options to apply the filter
-                    if (!\is_array($arrWidget['options'])) {
-                        continue;
-                    }
-
-                    foreach ($arrWidget['options'] as $k => $option) {
-                        if ($option['value'] == '') {
-                            $arrWidget['blankOptionLabel'] = $option['label'];
-                            unset($arrWidget['options'][$k]);
-                            continue;
-                        }
-
-                        if ('-' === $option['value'] || !\in_array($option['value'], $arrValues)) {
-                            // @deprecated IsotopeAttributeWithOptions::getOptionsForProductFilter already checks this
-
-                            unset($arrWidget['options'][$k]);
-                            continue;
-                        }
-
-                        $arrWidget['options'][$k]['default'] = ((null !== $objFilter && $objFilter->valueEquals($option['value'])) ? '1' : '');
-                    }
-
-                    // Hide fields with just one option (if enabled)
-                    if ($this->iso_filterHideSingle && \count($arrWidget['options']) < 2) {
-                        continue;
-                    }
-
-                    $arrFilters[$strField] = $arrWidget;
+                    $arrWidget['options'] = $objAttribute->getOptionsForProductFilter($arrValues);
                 }
-            }
 
-            // !HOOK: alter the filters
-            if (isset($GLOBALS['ISO_HOOKS']['generateFilters']) && \is_array($GLOBALS['ISO_HOOKS']['generateFilters'])) {
-                foreach ($GLOBALS['ISO_HOOKS']['generateFilters'] as $callback) {
-                    $arrFilters = System::importStatic($callback[0])->{$callback[1]}($arrFilters);
+                // Generate options from database values (e.g. for text fields)
+                if (!\is_array($arrWidget['options'] ?? null)) {
+                    $arrWidget['options'] = array_map(static fn ($v) => ['value' => $v, 'label' => $v], $arrValues);
                 }
-            }
 
-            if (0 !== \count($arrFilters)) {
-                $this->Template->hasFilters    = true;
-                $this->Template->filterOptions = $arrFilters;
+                foreach ($arrWidget['options'] as $k => $option) {
+                    if ($option['value'] == '') {
+                        $arrWidget['blankOptionLabel'] = $option['label'];
+                        unset($arrWidget['options'][$k]);
+                        continue;
+                    }
+
+                    // @deprecated IsotopeAttributeWithOptions::getOptionsForProductFilter already checks this
+                    if ('-' === $option['value'] || !\in_array($option['value'], $arrValues)) {
+                        unset($arrWidget['options'][$k]);
+                        continue;
+                    }
+
+                    $arrWidget['options'][$k]['default'] = ((null !== $objFilter && $objFilter->valueEquals($option['value'])) ? '1' : '');
+                }
+
+                // Hide fields with just one option (if enabled)
+                if ($this->iso_filterHideSingle && \count($arrWidget['options']) < 2) {
+                    continue;
+                }
+
+                $arrFilters[$strField] = $arrWidget;
             }
+        }
+
+        // !HOOK: alter the filters
+        if (isset($GLOBALS['ISO_HOOKS']['generateFilters']) && \is_array($GLOBALS['ISO_HOOKS']['generateFilters'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['generateFilters'] as $callback) {
+                $arrFilters = System::importStatic($callback[0])->{$callback[1]}($arrFilters);
+            }
+        }
+
+        if (!empty($arrFilters)) {
+            $this->Template->hasFilters    = true;
+            $this->Template->filterOptions = $arrFilters;
         }
     }
 

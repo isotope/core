@@ -9,12 +9,14 @@
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
+ use Isotope\CompatibilityHelper;
+
 $this->loadLanguageFile(\Isotope\Model\Group::getTable());
 
 /**
  * Add the Isotope style sheet
  */
-if (TL_MODE == 'BE') {
+if (CompatibilityHelper::isBackend()) {
     $GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/css/backend.css';
 }
 
@@ -38,7 +40,7 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['iso_reports'] = array
 );
 
 
-class tl_iso_reports extends Backend
+class tl_iso_reports extends \Contao\Backend
 {
 
     public function getReports()
@@ -53,7 +55,7 @@ class tl_iso_reports extends Backend
 
             foreach ($arrGroup as $strName => $arrConfig)
             {
-                $arrReports[$strLegend][$strName] = ($arrConfig['label'][0] ? $arrConfig['label'][0] : $strName);
+                $arrReports[$strLegend][$strName] = ($arrConfig['label'][0] ?: $strName);
             }
         }
 

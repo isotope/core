@@ -11,7 +11,6 @@
 
 namespace Isotope\Module;
 
-use Contao\Controller;
 use Contao\CoreBundle\Exception\PageNotFoundException;
 use Contao\CoreBundle\Exception\RedirectResponseException;
 use Contao\CoreBundle\Exception\ResponseException;
@@ -23,6 +22,7 @@ use Haste\Generator\RowClass;
 use Haste\Input\Input;
 use Haste\Util\Url;
 use Isotope\CheckoutStep\OrderConditions;
+use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeCheckoutStep;
 use Isotope\Interfaces\IsotopeNotificationTokens;
 use Isotope\Interfaces\IsotopeProductCollection;
@@ -39,6 +39,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @property array $iso_payment_modules
  * @property array $iso_shipping_modules
  * @property bool  $iso_forward_review
+ * @property bool  $iso_show_skipped
  * @property array $iso_notifications
  * @property bool  $iso_addToAddressbook
  * @property array $iso_checkout_skippable
@@ -47,13 +48,13 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class Checkout extends Module
 {
-    const STEP_ADDRESS = 'address';
-    const STEP_SHIPPING = 'shipping';
-    const STEP_PAYMENT = 'payment';
-    const STEP_REVIEW = 'review';
-    const STEP_PROCESS = 'process';
-    const STEP_COMPLETE = 'complete';
-    const STEP_FAILED = 'failed';
+    public const STEP_ADDRESS = 'address';
+    public const STEP_SHIPPING = 'shipping';
+    public const STEP_PAYMENT = 'payment';
+    public const STEP_REVIEW = 'review';
+    public const STEP_PROCESS = 'process';
+    public const STEP_COMPLETE = 'complete';
+    public const STEP_FAILED = 'failed';
 
     /**
      * Template
@@ -111,7 +112,7 @@ class Checkout extends Module
      */
     public function generate()
     {
-        if ('BE' === TL_MODE) {
+        if (CompatibilityHelper::isBackend()) {
             return $this->generateWildcard();
         }
 
@@ -152,6 +153,7 @@ class Checkout extends Module
         $this->Template->showNext = true;
         $this->Template->showForm = true;
         $this->Template->steps = array();
+        $this->Template->requestToken = System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue();
 
         // These steps are handled internally by the checkout module and are not in the config array
         switch ($this->strCurrentStep) {
@@ -170,7 +172,9 @@ class Checkout extends Module
 
                 // Order already completed (see #1441)
                 if ($objOrder->checkout_complete) {
-                    Controller::redirect(Url::addQueryString('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo));
+                    throw new RedirectResponseException(
+                        PageModel::findByPk($this->orderCompleteJumpTo)->getAbsoluteUrl().'?uid=' . $objOrder->uniqid
+                    );
                 }
 
                 $strBuffer = $objOrder->hasPayment() ? $objOrder->getPaymentMethod()->processPayment($objOrder, $this) : true;
@@ -179,8 +183,8 @@ class Checkout extends Module
                 if ($strBuffer === true) {
                     // If checkout is successful, complete order and redirect to confirmation page
                     if ($objOrder->checkout() && $objOrder->complete()) {
-                        Controller::redirect(
-                            Url::addQueryString('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo)
+                        throw new RedirectResponseException(
+                            PageModel::findByPk($this->orderCompleteJumpTo)->getAbsoluteUrl().'?uid=' . $objOrder->uniqid
                         );
                     }
 
@@ -287,7 +291,6 @@ class Checkout extends Module
     /**
      * Run through all steps until we find the current one or one reports failure
      *
-     * @param array $arrSteps
      *
      * @return array
      */
@@ -340,7 +343,7 @@ class Checkout extends Module
                 }
             }
 
-            if ($this->skippableSteps[$step] ?? false) {
+            if (!$this->iso_show_skipped && $this->skippableSteps[$step] ?? false) {
                 unset($arrStepKeys[array_search($step, $arrStepKeys)]);
                 $intCurrentStep -= 1;
                 $intTotalSteps -= 1;
@@ -390,7 +393,7 @@ class Checkout extends Module
         }
 
         // User pressed "back" button
-        if (\strlen(Input::post('previousStep'))) {
+        if (null !== Input::post('previousStep')) {
             $this->redirectToPreviousStep();
         } // Valid input data, redirect to next step
         elseif (Input::post('FORM_SUBMIT') == $this->strFormId && !$this->doNotSubmit) {
@@ -454,7 +457,6 @@ class Checkout extends Module
     /**
      * Return the checkout information as array
      *
-     * @param array $arrSteps
      *
      * @return array
      */
@@ -466,7 +468,7 @@ class Checkout extends Module
 
         $arrCheckoutInfo = array();
 
-        // Run trough all steps to collect checkout information
+        // Run through all steps to collect checkout information
         /** @var IsotopeCheckoutStep[] $arrModules */
         foreach ($arrSteps as $arrModules) {
             foreach ($arrModules as $objModule) {
@@ -488,8 +490,6 @@ class Checkout extends Module
     /**
      * Retrieve the array of notification data for parsing simple tokens
      *
-     * @param array                    $arrSteps
-     * @param IsotopeProductCollection $objOrder
      *
      * @return array
      */
@@ -520,7 +520,7 @@ class Checkout extends Module
     protected function canCheckout()
     {
         // Redirect to login page if not logged in
-        if ('member' === $this->iso_checkout_method && true !== FE_USER_LOGGED_IN) {
+        if ('member' === $this->iso_checkout_method && !\Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER')) {
 
             /** @var PageModel $objJump */
             $objJump = PageModel::findPublishedById($this->iso_login_jumpTo);
@@ -533,10 +533,11 @@ class Checkout extends Module
                 return false;
             }
 
-            $objJump->loadDetails();
-            Controller::redirect($objJump->getFrontendUrl(null, $objJump->language));
+            throw new RedirectResponseException($objJump->getAbsoluteUrl());
 
-        } elseif ('guest' === $this->iso_checkout_method && true === FE_USER_LOGGED_IN) {
+        }
+
+        if ('guest' === $this->iso_checkout_method && \Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER')) {
             $this->Template          = new Template('mod_message');
             $this->Template->type    = 'error';
             $this->Template->message = $GLOBALS['TL_LANG']['ERR']['checkoutNotAllowed'];
@@ -561,8 +562,7 @@ class Checkout extends Module
                 $objJump = PageModel::findPublishedById($this->iso_cart_jumpTo);
 
                 if (null !== $objJump) {
-                    $objJump->loadDetails();
-                    Controller::redirect($objJump->getFrontendUrl(null, $objJump->language));
+                    throw new RedirectResponseException($objJump->getAbsoluteUrl());
                 }
             }
 
@@ -671,7 +671,6 @@ class Checkout extends Module
     /**
      * Generate checkout step navigation
      *
-     * @param array $arrStepKeys
      *
      * @return array
      */
@@ -691,7 +690,7 @@ class Checkout extends Module
                 $blnActive = true;
                 $class .= ' active';
             } elseif ($blnPassed) {
-                $href = static::generateUrlForStep($step);
+                $href = ($this->skippableSteps[$step] ?? false) ? '' : static::generateUrlForStep($step);
                 $class .= ' passed';
             }
 
@@ -715,7 +714,6 @@ class Checkout extends Module
      * Redirect to given checkout step
      *
      * @param string                   $strStep
-     * @param IsotopeProductCollection $objCollection
      */
     public static function redirectToStep($strStep, IsotopeProductCollection $objCollection = null)
     {

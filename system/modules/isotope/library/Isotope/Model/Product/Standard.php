@@ -14,13 +14,13 @@ namespace Isotope\Model\Product;
 use Contao\ContentElement;
 use Contao\Database;
 use Contao\Date;
-use Contao\Environment;
 use Contao\FrontendUser;
 use Contao\Input;
 use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
 use Contao\Widget;
+use Hashids\Hashids;
 use Haste\Generator\RowClass;
 use Haste\Units\Mass\Weight;
 use Haste\Units\Mass\WeightAggregate;
@@ -39,7 +39,6 @@ use Isotope\Isotope;
 use Isotope\Model\Attribute;
 use Isotope\Model\Gallery;
 use Isotope\Model\Gallery\Standard as StandardGallery;
-use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\ProductPrice;
 use Isotope\Model\ProductType;
 use Isotope\Template;
@@ -158,7 +157,6 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
     /**
      * Get product price model
      *
-     * @param IsotopeProductCollection $objCollection
      *
      * @return \Isotope\Interfaces\IsotopePrice|ProductPrice
      */
@@ -261,6 +259,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             $time            = Date::floorToMinute();
             $blnHasProtected = false;
             $blnHasGuests    = false;
+            $isMember = \Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER');
             $strQuery        = '
                 SELECT tl_iso_product.id, tl_iso_product.protected, tl_iso_product.groups
                 FROM tl_iso_product
@@ -272,16 +271,16 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
                     AND (stop='' OR stop>'" . ($time + 60) . "')
             ";
 
-            if (BE_USER_LOGGED_IN !== true) {
+            if (!\Contao\System::getContainer()->get('contao.security.token_checker')->isPreviewMode()) {
                 $arrAttributes   = $this->getType()->getVariantAttributes();
                 $blnHasProtected = \in_array('protected', $arrAttributes, true);
                 $blnHasGuests = \in_array('guests', $arrAttributes, true);
 
                 // Hide guests-only products when logged in
-                if (FE_USER_LOGGED_IN === true && $blnHasGuests) {
+                if ($isMember && $blnHasGuests) {
                     $strQuery .= " AND (guests=''" . ($blnHasProtected ? " OR protected='1'" : '') . ')';
                 } // Hide protected if no user is logged in
-                elseif (FE_USER_LOGGED_IN !== true && $blnHasProtected) {
+                elseif (!$isMember && $blnHasProtected) {
                     $strQuery .= " AND (protected=''" . ($blnHasGuests ? " OR guests='1'" : '') . ")";
                 }
             }
@@ -290,7 +289,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             $objVariants = Database::getInstance()->query($strQuery);
 
             while ($objVariants->next()) {
-                if (FE_USER_LOGGED_IN !== true
+                if (!$isMember
                     && $blnHasProtected
                     && $objVariants->protected
                     && (!$blnHasGuests || !$objVariants->guests)
@@ -298,7 +297,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
                     continue;
                 }
 
-                if (FE_USER_LOGGED_IN === true
+                if ($isMember
                     && $blnHasGuests
                     && $objVariants->guests
                     && (!$blnHasProtected || $objVariants->protected)
@@ -438,10 +437,8 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
     /**
      * Generate a product template
      *
-     * @param array $arrConfig
      *
      * @return string
-     *
      * @throws \InvalidArgumentException
      */
     public function generate(array $arrConfig)
@@ -512,9 +509,16 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             return $objPrice->generate($objType->showPriceTiers(), 1, $objProduct->getOptions());
         };
 
-        /** @var StandardGallery $currentGallery */
-        $currentGallery          = null;
-        $objTemplate->getGallery = function ($strAttribute) use ($objProduct, $arrConfig, &$currentGallery) {
+        /** @var StandardGallery|null $currentGallery */
+        $currentGallery = null;
+        $objTemplate->getGallery = static function (string $strAttribute, int $galleryId = null) use ($objProduct, $arrConfig, &$currentGallery) {
+            if ($galleryId) {
+                $arrConfig['gallery'] = $galleryId;
+
+                if ($currentGallery && $currentGallery->id != $galleryId) {
+                    $currentGallery = null;
+                }
+            }
 
             if (null === $currentGallery
                 || $currentGallery->getName() !== $objProduct->getFormId() . '_' . $strAttribute
@@ -555,7 +559,6 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             }
         }
 
-        /** @var ProductActionInterface[] $actions */
         $handleButtons = false;
         $actions = array_filter(
             Registry::all(true, $this),
@@ -613,6 +616,15 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             return $arrButtons;
         };
 
+        $objTemplate->hitCountUrl = function () {
+            $hashids = new Hashids(System::getContainer()->getParameter('kernel.secret'), 8);
+
+            return System::getContainer()
+                ->get('router')
+                ->generate('isotope_product_hits', ['hashid' => $hashids->encode($this->id)])
+            ;
+        };
+
         RowClass::withKey('rowClass')->addCustom('product_option')->addFirstLast()->addEvenOdd()->applyTo($arrProductOptions);
 
         $objTemplate->actions = $actions;
@@ -630,6 +642,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         $objTemplate->formSubmit = $this->getFormId();
         $objTemplate->product_id = $this->getProductId();
         $objTemplate->module_id = $arrConfig['module']->id ?? null;
+        $objTemplate->requestToken = System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue();
 
         if (!($arrConfig['jumpTo'] ?? null) instanceof PageModel || $arrConfig['jumpTo']->iso_readerMode !== 'none') {
             $objTemplate->href = $this->generateUrl($arrConfig['jumpTo']);
@@ -642,7 +655,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         // !HOOK: alter product data before output
         if (isset($GLOBALS['ISO_HOOKS']['generateProduct']) && \is_array($GLOBALS['ISO_HOOKS']['generateProduct'])) {
             foreach ($GLOBALS['ISO_HOOKS']['generateProduct'] as $callback) {
-                System::importStatic($callback[0])->{$callback[1]}($objTemplate, $this);
+                System::importStatic($callback[0])->{$callback[1]}($objTemplate, $this, $arrConfig);
             }
         }
 
@@ -734,7 +747,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         // @deprecated Remove in Isotope 3.0, the options should match for frontend if attribute is customer defined
         if (
             \is_array($arrField['options'] ?? null)
-            && array_is_assoc($arrField['options'])
+            && \Contao\ArrayUtil::isAssoc($arrField['options'])
             && \count(
                 array_filter(
                     $arrField['options'], function($v) {
@@ -938,7 +951,6 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
     /**
      * Validate data and remove non-available attributes
      *
-     * @param array $arrData
      *
      * @return $this
      */
@@ -1021,7 +1033,6 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
      * Prevent reload of the database record
      * We would need to fetch parent data etc. again, pretty useless
      *
-     * @param array $arrData
      *
      * @return $this
      */

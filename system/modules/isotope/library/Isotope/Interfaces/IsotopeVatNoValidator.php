@@ -20,7 +20,6 @@ interface IsotopeVatNoValidator
     /**
      * Return true if vat number could be validated, false if not
      *
-     * @param Address $objAddress
      *
      * @return bool
      * @throws \RuntimeException to add a custom error message (e.g. to the form field)
@@ -30,8 +29,6 @@ interface IsotopeVatNoValidator
     /**
      * Check if tax should be exempted because of a valid tax number
      *
-     * @param Address $address
-     * @param TaxRate $tax
      *
      * @return bool
      */

@@ -62,12 +62,12 @@ use Isotope\Translation;
  */
 class Rule extends Model
 {
-    const ROUND_NORMAL = 'normal';
-    const ROUND_UP = 'up';
-    const ROUND_DOWN = 'down';
+    public const ROUND_NORMAL = 'normal';
+    public const ROUND_UP = 'up';
+    public const ROUND_DOWN = 'down';
 
-    const GROUP_FIRST = 'first';
-    const GROUP_ALL = 'all';
+    public const GROUP_FIRST = 'first';
+    public const GROUP_ALL = 'all';
 
     /**
      * Name of the current table
@@ -299,17 +299,26 @@ class Rule extends Model
                     continue;
                 }
 
-                $strRestriction = "(productRestrictions='attribute' AND attributeName='" . $restriction['attribute'] . "' AND attributeCondition='" . $restriction['condition'] . "' AND ";
+                $strRestriction = "(productRestrictions='attribute' AND attributeName='" . $restriction['attribute'] . "' AND attributeCondition='" . $restriction['condition'] . "' ";
 
                 switch ($restriction['condition']) {
                     case 'eq':
-                    case 'neq':
                         $strRestriction .= sprintf(
-                            "attributeValue %s IN (%s)",
-                            ('neq' === $restriction['condition'] ? 'NOT' : ''),
+                            "AND attributeValue IN (%s)",
                             implode(', ', array_fill(0, \count($restriction['values']), '?'))
                         );
+
                         $arrValues = array_merge($arrValues, $restriction['values']);
+                        break;
+
+                    // We cannot handle this as `attributeValue NOT IN (...)`, since we want to handle the rule if at
+                    // least one of the products in the cart does not equal the value. So if exactly one product (value)
+                    // is in the cart, it might not match. Otherwise it always matches at least one of the cart products.
+                    case 'neq':
+                        if (1 === \count($restriction['values'])) {
+                            $strRestriction .= 'AND attributeValue = ?';
+                            $arrValues = array_merge($arrValues, $restriction['values']);
+                        }
                         break;
 
                     case 'lt':
@@ -325,7 +334,7 @@ class Rule extends Model
                             );
                             $arrValues[] = $value;
                         }
-                        $strRestriction .= '(' . implode(' OR ', $arrOR) . ')';
+                        $strRestriction .= 'AND (' . implode(' OR ', $arrOR) . ')';
                         break;
 
                     case 'starts':
@@ -340,7 +349,7 @@ class Rule extends Model
                             );
                             $arrValues[] = $value;
                         }
-                        $strRestriction .= '(' . implode(' OR ', $arrOR) . ')';
+                        $strRestriction .= 'AND (' . implode(' OR ', $arrOR) . ')';
                         break;
 
                     default:

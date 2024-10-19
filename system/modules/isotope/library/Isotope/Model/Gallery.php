@@ -58,10 +58,8 @@ abstract class Gallery extends TypeAgent
     /**
      * Create a gallery for product, falls back to standard gallery if none is defined
      *
-     * @param IsotopeProduct $objProduct
      * @param string         $strAttribute
      * @param array          $arrConfig
-     *
      * @return static
      */
     public static function createForProductAttribute(IsotopeProduct $objProduct, $strAttribute, $arrConfig)

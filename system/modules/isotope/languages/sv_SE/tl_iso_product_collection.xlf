@@ -71,7 +71,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.notification_shipping_tracking.1">
         <source>Here you can enter the shipping tracking information. Use the &lt;em&gt;##order_status_tracking_numbers##&lt;/em&gt; simple token in the notification.</source>
-        <target>Här kan du ange fraktspårningsinformationen. Använd ##order_status_tracking_numbers## enkla token i meddelandet.</target>
+        <target>Här kan du ange fraktspårningsinformationen. Använd &lt;em&gt;##order_status_tracking_numbers##&lt;/em&gt; enkla token i meddelandet.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.notification_customer_notes.0">
         <source>Customer notes</source>
@@ -127,7 +127,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.notes.0">
         <source>Order notes</source>
-        <target>Beställ anteckningar</target>
+        <target>Beställnings anteckningar</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.notes.1">
         <source>If you would like to convey information to other backend users, please do so here.</source>

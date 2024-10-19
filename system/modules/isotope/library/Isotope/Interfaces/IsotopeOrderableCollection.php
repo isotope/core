@@ -44,8 +44,6 @@ interface IsotopeOrderableCollection extends IsotopeProductCollection
 
     /**
      * Set payment method for this collection
-     *
-     * @param IsotopePayment $objPayment
      */
     public function setPaymentMethod(IsotopePayment $objPayment = null);
 
@@ -65,8 +63,6 @@ interface IsotopeOrderableCollection extends IsotopeProductCollection
 
     /**
      * Set billing address for collection
-     *
-     * @param Address $objAddress
      */
     public function setBillingAddress(Address $objAddress = null);
 
@@ -93,8 +89,6 @@ interface IsotopeOrderableCollection extends IsotopeProductCollection
 
     /**
      * Set shipping method for this collection
-     *
-     * @param IsotopeShipping $objShipping
      */
     public function setShippingMethod(IsotopeShipping $objShipping = null);
 
@@ -114,8 +108,6 @@ interface IsotopeOrderableCollection extends IsotopeProductCollection
 
     /**
      * Set shipping address for collection
-     *
-     * @param Address $objAddress
      */
     public function setShippingAddress(Address $objAddress = null);
 

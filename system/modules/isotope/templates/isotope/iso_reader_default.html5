@@ -1,9 +1,10 @@
 <form id="<?= $this->formId ?>" name="iso<?= rand() ?>" method="post" enctype="<?= $this->enctype ?>">
 <div class="formbody" itemscope itemtype="http://schema.org/Product">
 <input type="hidden" name="FORM_SUBMIT" value="<?= $this->formSubmit ?>">
-<input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
+<input type="hidden" name="REQUEST_TOKEN" value="<?= $this->requestToken ?>">
 <input type="hidden" name="AJAX_PRODUCT" value="<?= $this->product_id ?>">
 <input type="hidden" name="AJAX_MODULE" value="<?= $this->module_id ?>">
+<img src="<?= $this->hitCountUrl() ?>" alt="" width="1" height="1" aria-hidden="true" style="position:absolute">
 
 <h2 itemprop="name"><?= $this->generateAttribute('name') ?></h2>
 
@@ -30,7 +31,7 @@
 <div class="submit_container">
 <?php if ($this->useQuantity): ?>
 <div class="quantity_container">
-<label for="quantity_requested_<?= $this->raw['id'] ?>"><?= $GLOBALS['TL_LANG']['MSC']['quantity'] ?>:</label> <input type="text" class="text" id="quantity_requested_<?= $this->raw['id'] ?>" name="quantity_requested" placeholder="<?= $this->minimum_quantity ?>" value="<?= \Contao\StringUtil::specialchars(Input::post('quantity_requested')); ?>" maxlength="10">
+<label for="quantity_requested_<?= $this->raw['id'] ?>"><?= $GLOBALS['TL_LANG']['MSC']['quantity'] ?>:</label> <input type="text" class="text" id="quantity_requested_<?= $this->raw['id'] ?>" name="quantity_requested" placeholder="<?= $this->minimum_quantity ?>" value="<?= \Contao\StringUtil::specialchars(\Contao\Input::post('quantity_requested')); ?>" maxlength="10">
 </div>
 <?php endif; ?>
 <?php foreach ($this->actions as $action) echo $action->generate($this->product); ?>

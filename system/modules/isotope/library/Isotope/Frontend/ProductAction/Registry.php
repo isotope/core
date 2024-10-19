@@ -22,8 +22,6 @@ class Registry
 
     /**
      * Adds an action to the registry.
-     *
-     * @param ProductActionInterface $action
      */
     public static function add(ProductActionInterface $action)
     {
@@ -32,8 +30,6 @@ class Registry
 
     /**
      * Removes an action from the registry.
-     *
-     * @param ProductActionInterface $action
      */
     public static function remove(ProductActionInterface $action)
     {
@@ -51,8 +47,7 @@ class Registry
         $actions = static::$actions;
 
         if ($includeButtons
-            && isset($arrConfig['buttons'], $GLOBALS['ISO_HOOKS']['buttons'])
-            && \is_array($arrConfig['buttons'])
+            && isset($GLOBALS['ISO_HOOKS']['buttons'])
             && \is_array($GLOBALS['ISO_HOOKS']['buttons'])
         ) {
             $buttons = [];

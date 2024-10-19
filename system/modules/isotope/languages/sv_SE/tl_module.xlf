@@ -179,11 +179,19 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_forward_review.0">
         <source>Forward to review page</source>
-        <target>Vidarebefordra till recensionssida</target>
+        <target>Vidarebefordra till granskningssidan</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_forward_review.1">
         <source>Forward the user to the review page if no data is required on any step.</source>
         <target>Vidarebefordra användaren till granskningssidan om ingen data krävs för något steg.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_show_skipped.0">
+        <source>Show skipped steps</source>
+        <target>Visa överhoppade steg</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_show_skipped.1">
+        <source>Show skipped steps in the checkout step navigation to keep the layout consistent.</source>
+        <target>Visa överhoppade steg i stegnavigeringen för kassan för att hålla layouten konsekvent.</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_checkout_skippable.0">
         <source>Skip checkout steps</source>
@@ -371,7 +379,7 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_cumulativeFields.queryType.0">
         <source>Query Type</source>
-        <target>Frågetyp</target>
+        <target>Query typ</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_cumulativeFields.queryType.and">
         <source>AND</source>
@@ -439,7 +447,7 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_rangeFields.min">
         <source>Range from</source>
-        <target>Allt från</target>
+        <target>Räckvidd från</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_rangeFields.max">
         <source>Range to</source>
@@ -589,6 +597,14 @@
         <source>Add a link to the currently added product to the cart.</source>
         <target>Lägg till en länk till den för närvarande tillagda produkten i kundvagnen.</target>
       </trans-unit>
+      <trans-unit id="tl_module.iso_moveFavorites.0">
+        <source>Remove when adding to cart</source>
+        <target>Ta bort när du lägger till i varukorgen</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_moveFavorites.1">
+        <source>Check here if products should be removed from favorites when they are added to the cart.</source>
+        <target>Markera här om produkter ska tas bort från favoriter när de läggs till i varukorgen.</target>
+      </trans-unit>
       <trans-unit id="tl_module.iso_address.0">
         <source>Address types</source>
         <target>Adresstyper</target>
@@ -612,6 +628,14 @@
       <trans-unit id="tl_module.iso_addressFields.1">
         <source>Choose the available address fields you would like to display.</source>
         <target>Välj de tillgängliga adressfälten du vill visa.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_orderdetails_module.0">
+        <source>Render list with details</source>
+        <target>Rendera lista med detaljer</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_orderdetails_module.1">
+        <source>Select an order details module to render the details of each order in the list.</source>
+        <target>Välj en modul för orderdetaljer för att visa detaljerna för varje order i listan.</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_tsid.0">
         <source>Trusted Shops ID</source>
@@ -639,7 +663,7 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_tsdirection.0">
         <source>Card Display Mode</source>
-        <target>Kortvisningsläge</target>
+        <target>Card visningsläge</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_tsdirection.1">
         <source>Select how the Trusted Shops Card should be displayed.</source>
@@ -687,7 +711,7 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_tsdirection.bottomRight">
         <source>Bottom Right</source>
-        <target>Nere till höger</target>
+        <target>Nedre höger</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_tsdirection.bottomLeft">
         <source>Bottom Left</source>

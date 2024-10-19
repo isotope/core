@@ -11,6 +11,7 @@
 
 namespace Isotope\Module;
 
+use Isotope\CompatibilityHelper;
 use Isotope\Message;
 
 
@@ -34,7 +35,7 @@ class Messages extends Module
      */
     public function generate()
     {
-        if ('BE' === TL_MODE) {
+        if (CompatibilityHelper::isBackend()) {
             return $this->generateWildcard();
         }
 

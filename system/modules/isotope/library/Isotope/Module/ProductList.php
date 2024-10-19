@@ -23,6 +23,7 @@ use Contao\System;
 use Haste\Generator\RowClass;
 use Haste\Input\Input;
 use Isotope\Collection\ProductPrice as ProductPriceCollection;
+use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
 use Isotope\Model\Attribute;
@@ -81,7 +82,7 @@ class ProductList extends Module
      */
     public function generate()
     {
-        if ('BE' === TL_MODE) {
+        if (CompatibilityHelper::isBackend()) {
             return $this->generateWildcard();
         }
 
@@ -91,7 +92,7 @@ class ProductList extends Module
         }
 
         // Disable the cache in frontend preview or debug mode
-        if (BE_USER_LOGGED_IN === true || System::getContainer()->getParameter('kernel.debug')) {
+        if (\Contao\System::getContainer()->get('contao.security.token_checker')->isPreviewMode() || System::getContainer()->getParameter('kernel.debug')) {
             $this->blnCacheProducts = false;
         }
 
@@ -587,7 +588,7 @@ class ProductList extends Module
     {
         $query = "SELECT c.pid, GROUP_CONCAT(c.page_id) AS page_ids FROM tl_iso_product_category c JOIN tl_page p ON c.page_id=p.id WHERE p.type!='error_403' AND p.type!='error_404'";
 
-        if (!BE_USER_LOGGED_IN) {
+        if (!\Contao\System::getContainer()->get('contao.security.token_checker')->isPreviewMode()) {
             $time = Date::floorToMinute();
             $query .= " AND p.published='1' AND (p.start='' OR p.start<'$time') AND (p.stop='' OR p.stop>'" . ($time + 60) . "')";
         }

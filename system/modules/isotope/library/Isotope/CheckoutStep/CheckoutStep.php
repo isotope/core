@@ -32,8 +32,6 @@ abstract class CheckoutStep extends Controller
 
     /**
      * Constructor.
-     *
-     * @param Checkout $objModule
      */
     public function __construct(Checkout $objModule)
     {

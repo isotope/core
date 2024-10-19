@@ -29,14 +29,16 @@ class Label
      *
      * @param array          $row
      * @param string         $label
-     * @param \DataContainer $dc
      * @param array          $args
-     *
      * @return array
      */
-    public function generate($row, $label, $dc, $args)
+    public function generate($row, $label, DataContainer $dc, $args)
     {
         $objProduct = Product::findByPk($row['id']);
+
+        if (!$objProduct) {
+            return $args;
+        }
 
         foreach ($GLOBALS['TL_DCA'][$dc->table]['list']['label']['fields'] as $i => $field) {
             switch ($field) {
@@ -82,11 +84,9 @@ class Label
     /**
      * Generate image label for product.
      *
-     * @param Product $objProduct
-     *
      * @return string
      */
-    public static function generateImage($objProduct)
+    public static function generateImage(Product $objProduct)
     {
         $arrImages = StringUtil::deserialize($objProduct->images);
 
@@ -99,7 +99,7 @@ class Label
 
                     $script = sprintf(
                         "Backend.openModalImage({'width':%s,'title':'%s','url':'%s'});return false",
-                        $size[0],
+                        $size[0] ?? 0,
                         str_replace("'", "\\'", $objProduct->name),
                         TL_FILES_URL . $strImage
                     );
@@ -139,7 +139,7 @@ class Label
             /** @noinspection HtmlUnknownTarget */
             return sprintf(
                 '<a href="%s" title="%s">%s</a>',
-                ampersand(Environment::get('request')) . '&amp;id=' . $row['id'],
+                \Contao\StringUtil::ampersand(Environment::get('request')) . '&amp;id=' . $row['id'],
                 StringUtil::specialchars($GLOBALS['TL_LANG'][$dc->table]['showVariants']),
                 $objProduct->name
             );

@@ -1,3 +1,6 @@
+.iso_report_container .sub_headline {
+    margin: 2em 0 1em;
+}
 table.iso_report {
 	width: 100%;
 	border-collapse: separate;

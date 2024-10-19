@@ -89,7 +89,7 @@ abstract class BackendOverview extends BackendModule
             foreach ($this->arrModules as $arrGroup) {
                 if (isset($arrGroup['modules'])) {
                     foreach ($arrGroup['modules'] as $strModule => $arrConfig) {
-                        if (\is_array($arrConfig['tables'])
+                        if (\is_array($arrConfig['tables'] ?? null)
                             && \in_array(Input::get('table'), $arrConfig['tables'], true)
                         ) {
                             Controller::redirect(Backend::addToUrl('mod='.$strModule));

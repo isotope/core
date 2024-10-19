@@ -99,7 +99,7 @@
       </trans-unit>
       <trans-unit id="tl_user.iso_configp.0">
         <source>Store configuration permissions</source>
-        <target>Butikskonfigurations behörigheter</target>
+        <target>Butikskonfigurationsbehörigheter</target>
       </trans-unit>
       <trans-unit id="tl_user.iso_configp.1">
         <source>Here you can define the store configuration permissions.</source>
