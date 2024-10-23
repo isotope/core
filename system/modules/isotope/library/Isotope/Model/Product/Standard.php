@@ -448,7 +448,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
 
         $this->strFormId = (($arrConfig['module'] instanceof ContentElement) ? 'cte' : 'fmd') . $arrConfig['module']->id . '_product_' . $this->getProductId();
 
-        if (!($arrConfig['disableOptions'] ?? false)) {
+        if (!($arrConfig['disableOptions'] ?? false) && ($arrConfig['validateVariant'] ?? true)) {
             $objProduct = $this->validateVariant($loadFallback);
 
             // A variant has been loaded, generate the variant
