@@ -1,5 +1,5 @@
 <div id="paypal_checkout<?= $this->id ?>"></div>
-<script src="https://www.paypal.com/sdk/js?client-id=<?= $this->client_id ?>&currency=<?= $this->currency ?>&debug=<?= $this->debug ? 'true' : 'false' ?>"></script>
+<script src="https://www.paypal.com/sdk/js?client-id=<?= $this->client_id ?>&currency=<?= $this->currency ?>&debug=<?= $this->debug ? 'true' : 'false' ?><?php if($this->enable_funding): ?>&enable-funding=<?= $this->enable_funding ?><?php endif; ?>"></script>
 <script>
   paypal.Buttons({
     createOrder: function () {
