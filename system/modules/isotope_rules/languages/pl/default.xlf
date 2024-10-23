@@ -17,6 +17,10 @@
         <source>Apply</source>
         <target>Zastosuj</target>
       </trans-unit>
+        <trans-unit id="MSC.couponRemove">
+            <source>Remove</source>
+            <target>Usuń</target>
+        </trans-unit>
       <trans-unit id="MSC.couponInvalid">
         <source>Your coupon %s is not valid.</source>
         <target>Twój kupon %s jest niepoprawny.</target>

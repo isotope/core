@@ -17,6 +17,10 @@
         <source>Apply</source>
         <target>Uygula</target>
       </trans-unit>
+        <trans-unit id="MSC.couponRemove">
+            <source>Remove</source>
+            <target>Sil</target>
+        </trans-unit>
       <trans-unit id="MSC.couponInvalid">
         <source>Your coupon %s is not valid.</source>
         <target>%s kuponunuz geçerli değil.</target>

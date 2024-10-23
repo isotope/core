@@ -19,8 +19,8 @@ La pagina del lettore (alias) sarà sempre la stessa pagina che hai selezionato 
         <target>&lt;p class=&quot;tl_help_table&quot;&gt;Per caricare una nuova immagine selezioni il file e salvi il prodotto. Dopo aver caricato con successo, viene visualizzata un'anteprima del messaggio e vicino ad essa puo' inserire il testo alternativo e una descrizione. Per immagini multipli, puo' fare click sulle frecce e cambiare la loro posizione, l'immagine in cima è quella usata come immagine principale per ogni prodotto.&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="XPL.noVariantAttributes">
-        <source>To use product variants with Isotope eCommerce, you must first configure the attributes.&lt;br&gt;Please refer to &lt;a href=&quot;http://isotopeecommerce.org/en/manual.html&quot; target=&quot;_blank&quot; style=&quot;text-decoration:underline&quot;&gt;the manual&lt;/a&gt; for more information about attribute setup.</source>
-        <target>Per utilizzare le varianti di prodotto con Isotope eCommerce, è necessario prima configurare gli attributi. &lt;br&gt;Consultare &lt;a href=&quot;http://isotopeecommerce.org/en/manual.html&quot; target=&quot;_blank&quot; style=&quot;text-decoration:underline&quot;&gt;il manuale&lt;/a&gt; per maggiori informazioni sulla configurazione degli attributi.</target>
+        <source>To use product variants with Isotope eCommerce, you must first configure the attributes.&lt;br&gt;Please refer to &lt;a href=&quot;https://docs.isotopeecommerce.org/&quot; target=&quot;_blank&quot; style=&quot;text-decoration:underline&quot;&gt;the manual&lt;/a&gt; for more information about attribute setup.</source>
+        <target>Per utilizzare le varianti di prodotto con Isotope eCommerce, è necessario prima configurare gli attributi. &lt;br&gt;Consultare &lt;a href=&quot;https://docs.isotopeecommerce.org/&quot; target=&quot;_blank&quot; style=&quot;text-decoration:underline&quot;&gt;il manuale&lt;/a&gt; per maggiori informazioni sulla configurazione degli attributi.</target>
       </trans-unit>
       <trans-unit id="XPL.shippingExempt">
         <source>

@@ -17,6 +17,10 @@
         <source>Apply</source>
         <target>Uveljavi</target>
       </trans-unit>
+        <trans-unit id="MSC.couponRemove">
+            <source>Remove</source>
+            <target>Odstrani</target>
+        </trans-unit>
       <trans-unit id="MSC.couponInvalid">
         <source>Your coupon %s is not valid.</source>
         <target>Vaš kupon %s ni veljaven.</target>
