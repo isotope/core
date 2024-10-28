@@ -12,9 +12,11 @@
     (function() {
         Isotope.displayBox('<?= $this->message ?>');
 
-        var url = window.location.href + (document.location.search ? '&' : '?') + '&buildCache=1',
-            xhr = new XMLHttpRequest();
+        var url = window.location.href;
+        url = url.substr(0, url.indexOf(window.location.hash) || url.length);
+        url = url + (document.location.search ? '&' : '?') + 'buildCache=1';
 
+        var xhr = new XMLHttpRequest();
         xhr.open('GET', encodeURI(url));
         xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
