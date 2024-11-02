@@ -151,11 +151,11 @@ class Reports extends BackendOverview
                             o.config_id,
                             COUNT(DISTINCT o.id) AS total_orders,
                             COUNT(DISTINCT i.id) AS total_products,
-                            SUM(o.tax_free_subtotal) AS total_sales,
+                            SUM(i.quantity) AS total_items,
                             IFNULL(SUM(discounts.total_price),0) AS total_discounts
                        FROM tl_iso_product_collection o
-                       INNER JOIN tl_iso_orderstatus os ON o.order_status = os.id
                        LEFT JOIN tl_iso_product_collection_item i ON o.id=i.pid
+                       LEFT JOIN tl_iso_orderstatus os ON os.id=o.order_status
                        LEFT JOIN (SELECT
                             pid,
                             total_price
