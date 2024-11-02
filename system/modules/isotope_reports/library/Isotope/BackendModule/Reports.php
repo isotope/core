@@ -151,7 +151,7 @@ class Reports extends BackendOverview
                             o.config_id,
                             COUNT(DISTINCT o.id) AS total_orders,
                             COUNT(DISTINCT i.id) AS total_products,
-                            SUM(i.quantity) AS total_items,
+                            SUM(i.tax_free_price * i.quantity) AS total_sales,
                             IFNULL(SUM(discounts.total_price),0) AS total_discounts
                        FROM tl_iso_product_collection o
                        LEFT JOIN tl_iso_product_collection_item i ON o.id=i.pid
