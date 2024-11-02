@@ -252,25 +252,25 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
      */
     public function complete()
     {
-        if ($this->isCheckoutComplete()) {
-            unset($_SESSION['CHECKOUT_DATA'], $_SESSION['FILES']);
-
-            // Retain custom config ID
-            if (($objCart = Isotope::getCart()) !== null && $objCart->config_id != $this->config_id) {
-                $objCart->config_id = $this->config_id;
-            }
-
-            // !HOOK: complete checkout
-            if (isset($GLOBALS['ISO_HOOKS']['checkoutComplete']) && \is_array($GLOBALS['ISO_HOOKS']['checkoutComplete'])) {
-                foreach ($GLOBALS['ISO_HOOKS']['checkoutComplete'] as $callback) {
-                    System::importStatic($callback[0])->{$callback[1]}($this);
-                }
-            }
-
-            return true;
+        if (!$this->isCheckoutComplete()) {
+            return false;
         }
 
-        return false;
+        unset($_SESSION['CHECKOUT_DATA'], $_SESSION['FILES']);
+
+        // Retain custom config ID
+        if (($objCart = Isotope::getCart()) !== null && $objCart->config_id != $this->config_id) {
+            $objCart->config_id = $this->config_id;
+        }
+
+        // !HOOK: complete checkout
+        if (isset($GLOBALS['ISO_HOOKS']['checkoutComplete']) && \is_array($GLOBALS['ISO_HOOKS']['checkoutComplete'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['checkoutComplete'] as $callback) {
+                System::importStatic($callback[0])->{$callback[1]}($this);
+            }
+        }
+
+        return true;
     }
 
     /**

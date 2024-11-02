@@ -156,7 +156,7 @@ class MediaManager extends Widget implements \uploadable
         }
 
         if ($objUploader->hasError()) {
-            $messages = System::getContainer()->get('session')->getFlashBag()->peek('contao_be_error');
+            $messages = System::getContainer()->get('session')->getFlashBag()->peek('contao.BE.error');
 
             if (\is_array($messages)) {
                 foreach ($messages as $strError) {
@@ -171,7 +171,7 @@ class MediaManager extends Widget implements \uploadable
             $this->addError($GLOBALS['TL_LANG']['MSC']['mmUnknownError']);
         }
 
-        return $varInput[0];
+        return $varInput[0] ?? '';
     }
 
     /**

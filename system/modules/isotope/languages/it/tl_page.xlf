@@ -51,6 +51,12 @@ Isotope userà ora questa pagina per generare il sito se un alias di prodotto vi
         <source>Prevent reader pages for this category. This means products will not have a detail page (useful if you have simple lists), and such detail pages will not appear in the sitemap.xml and search index.</source>
         <target>Impedisci le pagine dei lettori per questa categoria. Questo significa che i prodotti non avranno una pagina di dettaglio (utile se hai elenchi semplici), e tali pagine di dettaglio non appariranno nel sitemap.xml e nell'indice di ricerca.</target>
       </trans-unit>
+        <trans-unit id="tl_page.iso_sitemapVariants.0">
+            <source>Link to product variants in sitemap</source>
+        </trans-unit>
+        <trans-unit id="tl_page.iso_sitemapVariants.1">
+            <source>Check here if the sitemap should show the product variants (if available).</source>
+        </trans-unit>
       <trans-unit id="tl_page.iso_readerJumpTo.0">
         <source>Reader page</source>
         <target>Pagina di lettura.</target>

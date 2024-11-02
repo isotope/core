@@ -118,6 +118,11 @@ class ProductReader extends Module
             throw new ResponseException(new Response($content));
         }
 
+        if (!$this->iso_disable_options) {
+            $arrConfig['validateVariant'] = false;
+            $objProduct = $objProduct->validateVariant();
+        }
+
         $this->addMetaTags($objProduct);
         $this->addCanonicalProductUrls($objProduct);
 

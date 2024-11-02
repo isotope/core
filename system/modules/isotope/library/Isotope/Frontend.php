@@ -346,6 +346,12 @@ class Frontend extends \Contao\Frontend
                                 continue;
                             }
 
+                            if ($objProduct->hasVariants()
+                                && (bool) $objPage->iso_sitemapVariants !== (bool) $objProduct->isVariant()
+                            ) {
+                                continue;
+                            }
+
                             // The target page has not been published
                             if (!$objPage->published
                                 || ($objPage->start != '' && $objPage->start > $time)

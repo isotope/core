@@ -14,7 +14,7 @@
         <source>&lt;p class="tl_help_table"&gt;To upload a new picture, select the file and save the product. After successfully uploading, a preview of the image is displayed and next to it you can enter its alternative text and a description. For multiple pictures, you can click on the arrows to the right and change their order, the top image is used as the main image of each product.&lt;/p&gt;</source>
       </trans-unit>
       <trans-unit id="XPL.noVariantAttributes">
-        <source>To use product variants with Isotope eCommerce, you must first configure the attributes.&lt;br&gt;Please refer to &lt;a href="http://isotopeecommerce.org/en/manual.html" target="_blank" style="text-decoration:underline"&gt;the manual&lt;/a&gt; for more information about attribute setup.</source>
+        <source>To use product variants with Isotope eCommerce, you must first configure the attributes.&lt;br&gt;Please refer to &lt;a href="https://docs.isotopeecommerce.org/" target="_blank" style="text-decoration:underline"&gt;the manual&lt;/a&gt; for more information about attribute setup.</source>
       </trans-unit>
       <trans-unit id="XPL.shippingExempt">
         <source>

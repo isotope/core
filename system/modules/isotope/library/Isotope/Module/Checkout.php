@@ -171,7 +171,7 @@ class Checkout extends Module
                 }
 
                 // Order already completed (see #1441)
-                if ($objOrder->checkout_complete) {
+                if ($objOrder->complete()) {
                     throw new RedirectResponseException(
                         PageModel::findByPk($this->orderCompleteJumpTo)->getAbsoluteUrl().'?uid=' . $objOrder->uniqid
                     );

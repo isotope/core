@@ -17,6 +17,10 @@
         <source>Apply</source>
         <target>Tillämpa</target>
       </trans-unit>
+        <trans-unit id="MSC.couponRemove">
+            <source>Remove</source>
+            <target>Ta bort</target>
+        </trans-unit>
       <trans-unit id="MSC.couponInvalid">
         <source>Your coupon %s is not valid.</source>
         <target>Din kupong %s är inte giltig.</target>
