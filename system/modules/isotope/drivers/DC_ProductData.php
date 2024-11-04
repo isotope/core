@@ -34,9 +34,9 @@ use Contao\Versions;
 use Contao\Widget;
 use Doctrine\DBAL\Exception\DriverException;
 use Isotope\Model\Group;
-use Patchwork\Utf8;
 use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\String\UnicodeString;
 
 class DC_ProductData extends DC_Table
 {
@@ -2373,7 +2373,18 @@ class DC_ProductData extends DC_Table
         }
 
         // Sort by option values
-        uksort($options_sorter, array(Utf8::class, 'strnatcasecmp'));
+        uksort($options_sorter, static function ($a, $b)
+        {
+            $a = (new UnicodeString($a))->folded();
+            $b = (new UnicodeString($b))->folded();
+
+            if ($a->toString() === $b->toString())
+            {
+                return 0;
+            }
+
+            return strnatcmp($a->ascii()->toString(), $b->ascii()->toString());
+        });
 
         return '
 <div class="tl_sorting tl_subpanel">
@@ -2515,7 +2526,18 @@ class DC_ProductData extends DC_Table
         }
 
         // Sort by option values
-        uksort($options_sorter, array(Utf8::class, 'strnatcasecmp'));
+        uksort($options_sorter, static function ($a, $b)
+        {
+            $a = (new UnicodeString($a))->folded();
+            $b = (new UnicodeString($b))->folded();
+
+            if ($a->toString() === $b->toString())
+            {
+                return 0;
+            }
+
+            return strnatcmp($a->ascii()->toString(), $b->ascii()->toString());
+        });
 
         $active = isset($session['search'][$sessionKey]['value']) && (string) $session['search'][$sessionKey]['value'] !== '';
 
@@ -3114,7 +3136,18 @@ class DC_ProductData extends DC_Table
                 // Sort by option values
                 if (!$blnDate)
                 {
-                    uksort($options_sorter, array(Utf8::class, 'strnatcasecmp'));
+                    uksort($options_sorter, static function ($a, $b)
+                    {
+                        $a = (new UnicodeString($a))->folded();
+                        $b = (new UnicodeString($b))->folded();
+
+                        if ($a->toString() === $b->toString())
+                        {
+                            return 0;
+                        }
+
+                        return strnatcmp($a->ascii()->toString(), $b->ascii()->toString());
+                    });
 
                     if (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'] ?? null, array(2, 4, 12)))
                     {
