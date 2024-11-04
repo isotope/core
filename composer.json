@@ -48,7 +48,8 @@
         "symfony/filesystem": "^5.4 || ^6.0",
         "symfony/http-client": "^4.4 || ^5.0 || ^6.0",
         "symfony/polyfill-php80": "^1.25",
-        "hashids/hashids": "^4.1"
+        "hashids/hashids": "^4.1",
+        "symfony/string": "^5.4"
     },
     "require-dev": {
         "contao/manager-plugin": "^2.0",
