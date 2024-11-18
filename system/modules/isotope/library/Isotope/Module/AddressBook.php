@@ -201,8 +201,7 @@ class AddressBook extends Module
             'POST',
             function(Form $objForm) {
                 return Input::post('FORM_SUBMIT') === $objForm->getFormId();
-            },
-            isset($this->tableless) ? (bool) $this->tableless : true
+            }
         );
 
         $objForm->bindModel($objAddress);
