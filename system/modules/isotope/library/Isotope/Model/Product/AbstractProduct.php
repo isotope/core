@@ -333,7 +333,7 @@ abstract class AbstractProduct extends Product
             $classes[] = $type->cssClass;
         }
 
-        if ($this->alias === Input::getAutoItem('product')) {
+        if ($this->alias === Input::getAutoItem('product', false, true)) {
             $classes[] = 'active';
         }
 
