@@ -91,7 +91,7 @@ class AddressBook extends Module
         Controller::loadDataContainer($table);
 
         // Call onload_callback (e.g. to check permissions)
-        if (\is_array($GLOBALS['TL_DCA'][$table]['config']['onload_callback'])) {
+        if (\is_array($GLOBALS['TL_DCA'][$table]['config']['onload_callback'] ?? null)) {
             foreach ($GLOBALS['TL_DCA'][$table]['config']['onload_callback'] as $callback) {
                 System::importStatic($callback[0])->{$callback[1]}();
             }
@@ -237,7 +237,7 @@ class AddressBook extends Module
                 $objAddress->save();
 
                 // Call onsubmit_callback
-                if (\is_array($GLOBALS['TL_DCA'][$table]['config']['onsubmit_callback'])) {
+                if (\is_array($GLOBALS['TL_DCA'][$table]['config']['onsubmit_callback'] ?? null)) {
                     foreach ($GLOBALS['TL_DCA'][$table]['config']['onsubmit_callback'] as $callback) {
                         System::importStatic($callback[0])->{$callback[1]}($objAddress);
                     }

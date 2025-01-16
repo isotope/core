@@ -963,7 +963,7 @@ class DC_TablePageId extends DC_Table
             }
 
             // Call the child_record_callback
-            if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['child_record_callback']) || \is_callable($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['child_record_callback']))
+            if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['child_record_callback'] ?? null) || \is_callable($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['child_record_callback'] ?? null))
             {
                 $strGroup = '';
                 $blnIndent = false;

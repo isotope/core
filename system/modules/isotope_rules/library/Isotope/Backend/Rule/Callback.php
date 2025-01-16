@@ -146,7 +146,7 @@ class Callback extends Backend
 //        $this->createInitialVersion('tl_iso_rule', $intId);
 
         // Trigger the save_callback
-        if (\is_array($GLOBALS['TL_DCA']['tl_iso_rule']['fields']['enabled']['save_callback'])) {
+        if (\is_array($GLOBALS['TL_DCA']['tl_iso_rule']['fields']['enabled']['save_callback'] ?? null)) {
             foreach ($GLOBALS['TL_DCA']['tl_iso_rule']['fields']['enabled']['save_callback'] as $callback) {
                 $objCallback = System::importStatic($callback[0]);
                 $blnVisible = $objCallback->{$callback[1]}($blnVisible, $this);
