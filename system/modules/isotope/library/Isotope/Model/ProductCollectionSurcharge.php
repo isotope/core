@@ -165,7 +165,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
                 $fltProductPrice = $this->total_price / 100 * (100 / $fltTotal * $objItem->getTaxFreeTotalPrice());
             }
 
-            $fltProductPrice = $fltProductPrice > 0 ? (floor($fltProductPrice * 100) / 100) : (ceil($fltProductPrice * 100) / 100);
+            $fltProductPrice = $fltProductPrice > 0 ? (floor($fltProductPrice * 100) / 100) : (ceil(round($fltProductPrice * 100, 4)) / 100);
 
             $this->setAmountForCollectionItem($fltProductPrice, $objItem);
         }
