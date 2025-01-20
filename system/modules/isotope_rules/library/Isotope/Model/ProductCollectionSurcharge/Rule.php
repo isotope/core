@@ -234,7 +234,7 @@ class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectio
         if ($objRule->applyTo == 'subtotal' && $blnMatch) {
             // discount total! not related to tax subtraction
             $fltPrice = (float) ($blnPercentage ? ($objSurcharge->total_price / 100 * $fltDiscount) : $objRule->discount);
-            $objSurcharge->total_price = $fltPrice > 0 ? (floor(round($fltPrice * 100, 4)) / 100) : (ceil(round($fltPrice * 100, 4)) / 100);
+            $objSurcharge->total_price = self::calculateDiscount($fltPrice, $objRule->rounding);
             $objSurcharge->before_tax = ($objRule->tax_class != 0 ? true : false);
             $objSurcharge->tax_class = ($objRule->tax_class > 0 ? $objRule->tax_class : 0);
 
