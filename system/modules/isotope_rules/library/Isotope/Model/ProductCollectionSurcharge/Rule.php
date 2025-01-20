@@ -202,14 +202,14 @@ class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectio
             switch ($objRule->applyTo) {
                 case 'products':
                     $fltPrice = (float) ($blnPercentage ? ($objItem->getTotalPrice() / 100 * $fltDiscount) : $objRule->discount);
-                    $fltPrice = $fltPrice > 0 ? (floor($fltPrice * 100) / 100) : (ceil(round($fltPrice * 100, 4)) / 100);
+                    $fltPrice = $fltPrice > 0 ? (floor(round($fltPrice * 100, 4)) / 100) : (ceil(round($fltPrice * 100, 4)) / 100);
                     $objSurcharge->total_price += $fltPrice;
                     $objSurcharge->setAmountForCollectionItem($fltPrice, $objItem);
                     break;
 
                 case 'items':
                     $fltPrice = ((float) ($blnPercentage ? ($objItem->getPrice() / 100 * $fltDiscount) : $objRule->discount)) * $objItem->quantity;
-                    $fltPrice = $fltPrice > 0 ? (floor($fltPrice * 100) / 100) : (ceil(round($fltPrice * 100, 4)) / 100);
+                    $fltPrice = $fltPrice > 0 ? (floor(round($fltPrice * 100, 4)) / 100) : (ceil(round($fltPrice * 100, 4)) / 100);
                     $objSurcharge->total_price += $fltPrice;
                     $objSurcharge->setAmountForCollectionItem($fltPrice, $objItem);
                     break;

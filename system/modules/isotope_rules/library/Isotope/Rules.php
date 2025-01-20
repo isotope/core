@@ -121,12 +121,12 @@ class Rules extends Controller
                         break;
 
                     case Rule::ROUND_UP:
-                        $fltDiscount = $up === 'ceil' ? $up(round($fltDiscount * $factor, 4)) / $factor : $up($fltDiscount * $factor) / $factor;
+                        $fltDiscount = $up(round($fltDiscount * $factor, 4)) / $factor;
                         break;
 
                     case Rule::ROUND_DOWN:
                     default:
-                        $fltDiscount = $down === 'ceil' ? $down(round($fltDiscount * $factor, 4)) / $factor : $down($fltDiscount * $factor) / $factor;
+                        $fltDiscount = $down(round($fltDiscount * $factor, 4)) / $factor;
                         break;
                 }
 
