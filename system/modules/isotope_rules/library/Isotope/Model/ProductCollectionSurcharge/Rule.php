@@ -202,14 +202,14 @@ class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectio
             switch ($objRule->applyTo) {
                 case 'products':
                     $fltPrice = (float) ($blnPercentage ? ($objItem->getTotalPrice() / 100 * $fltDiscount) : $objRule->discount);
-                    $fltPrice = $fltPrice > 0 ? (floor(round($fltPrice * 100, 4)) / 100) : (ceil(round($fltPrice * 100, 4)) / 100);
+                    $fltPrice = self::calculateDiscount($fltPrice, $objRule->rounding);
                     $objSurcharge->total_price += $fltPrice;
                     $objSurcharge->setAmountForCollectionItem($fltPrice, $objItem);
                     break;
 
                 case 'items':
                     $fltPrice = ((float) ($blnPercentage ? ($objItem->getPrice() / 100 * $fltDiscount) : $objRule->discount)) * $objItem->quantity;
-                    $fltPrice = $fltPrice > 0 ? (floor(round($fltPrice * 100, 4)) / 100) : (ceil(round($fltPrice * 100, 4)) / 100);
+                    $fltPrice = self::calculateDiscount($fltPrice, $objRule->rounding);
                     $objSurcharge->total_price += $fltPrice;
                     $objSurcharge->setAmountForCollectionItem($fltPrice, $objItem);
                     break;
@@ -248,5 +248,31 @@ class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectio
         }
 
         return $objSurcharge->total_price == 0 ? null : $objSurcharge;
+    }
+
+    private static function calculateDiscount(float $fltDiscount, string $rounding): float {
+
+        $precision = Isotope::getConfig()->priceRoundPrecision;
+        $factor    = 10 ** 2;
+        $up        = $fltDiscount > 0 ? 'ceil' : 'floor';
+        $down      = $fltDiscount > 0 ? 'floor' : 'ceil';
+
+        switch ($rounding) {
+           case RuleModel::ROUND_NORMAL:
+             $fltDiscount = round($fltDiscount, $precision);
+             break;
+
+           case RuleModel::ROUND_UP:
+             $fltDiscount = $up(round($fltDiscount * $factor, 4)) / $factor;
+             break;
+
+           case RuleModel::ROUND_DOWN:
+           default:
+             $fltDiscount = $down(round($fltDiscount * $factor, 4)) / $factor;
+             break;
+        }
+
+        return $fltDiscount;
+
     }
 }
