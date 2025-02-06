@@ -220,7 +220,7 @@ class Callback extends Backend
             $strBuffer .= '
   <tr>
     <td class="tl_label">' . Format::dcaLabel($dc->table, $field) . ' <small>'.$field.'</small></td>
-    <td>' . Format::dcaValue($dc->table, $field, $objOrder->{$field}, $dc) . '</td>
+    <td>' . ($objOrder->{$field} ? Format::dcaValue($dc->table, $field, $objOrder->{$field}, $dc) : '') . '</td>
     <td>' . implode(' ', $operations) . '</td>
   </tr>';
         }
