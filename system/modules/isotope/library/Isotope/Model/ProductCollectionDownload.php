@@ -131,7 +131,7 @@ class ProductCollectionDownload extends Model
                     }
                 }
 
-                $this->download($objFileModel->path);
+                $this->download($path ?: $objFileModel->path);
             }
 
             $arrMeta = Frontend::getMetaData($objFileModel->meta, $GLOBALS['TL_LANGUAGE']);

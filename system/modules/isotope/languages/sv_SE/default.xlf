@@ -951,9 +951,11 @@
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.paypal_checkout.0">
         <source>PayPal Checkout</source>
+        <target>PayPal-kassan</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.paypal_checkout.1">
         <source>Checkout is the latest PayPal payment method.</source>
+        <target>Checkout är den senaste betalningsmetoden för PayPal.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.postfinance.0">
         <source>PostFinance</source>

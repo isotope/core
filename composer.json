@@ -45,7 +45,6 @@
         "terminal42/notification_center": "^2.0",
         "terminal42/dc_multilingual": "^4.5",
         "tecnickcom/tcpdf": "^6.2.22",
-        "patchwork/utf8": "^1.2",
         "symfony/filesystem": "^6.4",
         "symfony/http-client": "^6.4",
         "hashids/hashids": "^4.1"

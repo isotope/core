@@ -20,8 +20,8 @@ Läsarsidan (alias) kommer alltid att vara samma sida som du valde som kategori 
         <target>&lt;p class=&quot;tl_help_table&quot;&gt;För att ladda upp en ny bild, välj filen och spara produkten. Efter framgångsrik uppladdning visas en förhandsgranskning av bilden och bredvid den kan du ange dess alternativa text och en beskrivning. För flera bilder kan du klicka på pilarna till höger och ändra deras ordning, den översta bilden används som huvudbild för varje produkt.&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="XPL.noVariantAttributes">
-        <source>To use product variants with Isotope eCommerce, you must first configure the attributes.&lt;br&gt;Please refer to &lt;a href=&quot;http://isotopeecommerce.org/en/manual.html&quot; target=&quot;_blank&quot; style=&quot;text-decoration:underline&quot;&gt;the manual&lt;/a&gt; for more information about attribute setup.</source>
-        <target>För att använda produktvarianter med Isotope eCommerce måste du först konfigurera attributen.&lt;br&gt;Se &lt;a href=&quot;http://isotopeecommerce.org/en/manual.html&quot; target=&quot;_blank&quot; style=&quot;text-decoration:underline&quot;&gt;manualen&lt;/a&gt; för mer information om attributinställningar.</target>
+        <source>To use product variants with Isotope eCommerce, you must first configure the attributes.&lt;br&gt;Please refer to &lt;a href=&quot;https://docs.isotopeecommerce.org/&quot; target=&quot;_blank&quot; style=&quot;text-decoration:underline&quot;&gt;the manual&lt;/a&gt; for more information about attribute setup.</source>
+        <target>För att använda produktvarianter med Isotope eCommerce måste du först konfigurera attributen.&lt;br&gt;Se &lt;a href=&quot;https://docs.isotopeecommerce.org/&quot; target=&quot;_blank&quot; style=&quot;text-decoration:underline&quot;&gt;manualen&lt;/a&gt; för mer information om attributinställningar.</target>
       </trans-unit>
       <trans-unit id="XPL.shippingExempt">
         <source>

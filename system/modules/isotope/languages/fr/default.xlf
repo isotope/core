@@ -198,6 +198,7 @@
       </trans-unit>
       <trans-unit id="MSC.reorderLabel">
         <source>Reorder</source>
+        <target>Commander à nouveau</target>
       </trans-unit>
       <trans-unit id="MSC.perPageLabel">
         <source>Products Per Page</source>
@@ -225,6 +226,7 @@
       </trans-unit>
       <trans-unit id="MSC.buttonLabel.add_all_to_cart">
         <source>Add All To Cart</source>
+        <target>Ajouter tout au panier</target>
       </trans-unit>
       <trans-unit id="MSC.buttonLabel.update_cart">
         <source>Update Cart</source>
@@ -232,9 +234,11 @@
       </trans-unit>
       <trans-unit id="MSC.buttonLabel.add_to_favorites">
         <source>Add To Favorites</source>
+        <target>Ajouter aux favoris</target>
       </trans-unit>
       <trans-unit id="MSC.buttonLabel.remove_from_favorites">
         <source>Remove From Favorites</source>
+        <target>Supprimer de vos favoris.</target>
       </trans-unit>
       <trans-unit id="MSC.buttonLabel.add_to_wishlist">
         <source>Add To Wishlist</source>
@@ -292,6 +296,7 @@
       </trans-unit>
       <trans-unit id="MSC.noItemsInFavorites">
         <source>There are no items in your favorites list.</source>
+        <target>Vous n'avez enregistré aucun favori</target>
       </trans-unit>
       <trans-unit id="MSC.noItemsInCart">
         <source>There are no items in your cart.</source>
@@ -302,9 +307,11 @@
       </trans-unit>
       <trans-unit id="MSC.addedToFavorites">
         <source>The selected product has been added to your favorites.</source>
+        <target>Le produit a été ajouté à vos favoris.</target>
       </trans-unit>
       <trans-unit id="MSC.removedFromFavorites">
         <source>The selected product has been removed to your favorites.</source>
+        <target>Le produit a été supprimé de vos favoris.</target>
       </trans-unit>
       <trans-unit id="MSC.addedToWishlist">
         <source>The selected product has been added to your wishlist.</source>
@@ -322,6 +329,7 @@
       </trans-unit>
       <trans-unit id="MSC.reorderConfirmation">
         <source>The products of the selected order have been added to your shopping cart.</source>
+        <target>Le produit séléctionné a bien été ajouté à votre panier.</target>
       </trans-unit>
       <trans-unit id="MSC.editProductLinkTitle">
         <source>Edit %s</source>
@@ -344,6 +352,7 @@
       </trans-unit>
       <trans-unit id="MSC.shippingLabel">
         <source>Shipping (%s)</source>
+        <target>Livraison (%s)</target>
       </trans-unit>
       <trans-unit id="MSC.paymentLabel">
         <source>Payment (%s)</source>

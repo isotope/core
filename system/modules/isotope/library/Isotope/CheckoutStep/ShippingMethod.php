@@ -118,7 +118,16 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
             $objWidget->validate();
 
             if (!$objWidget->hasErrors()) {
-                Isotope::getCart()->setShippingMethod($this->modules[$objWidget->value]);
+                $objShipping = $this->modules[$objWidget->value];
+
+                // !HOOK: checkout shipping
+                if (isset($GLOBALS['ISO_HOOKS']['checkoutShipping']) && \is_array($GLOBALS['ISO_HOOKS']['checkoutShipping'])) {
+                    foreach ($GLOBALS['ISO_HOOKS']['checkoutShipping'] as $callback) {
+                        $objShipping = System::importStatic($callback[0])->{$callback[1]}($objShipping, Isotope::getCart());
+                    }
+                }
+
+                Isotope::getCart()->setShippingMethod($objShipping);
             }
         }
 

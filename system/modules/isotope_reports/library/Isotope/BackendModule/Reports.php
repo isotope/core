@@ -84,7 +84,7 @@ class Reports extends BackendOverview
 
         $strBuffer = '
 <fieldset id="pal_summary" class="tl_tbox '.(($session['iso_be_overview_legend']['summary'] ?? null) ? '' : ' collapsed').'">
-<legend onclick="AjaxRequest.toggleFieldset(this,\'summary\',\'iso_be_overview_legend\')">'.$GLOBALS['TL_LANG']['ISO_REPORT']['summary'].'</b></legend>
+<legend onclick="AjaxRequest.toggleFieldset(this,\'summary\',\'iso_be_overview_legend\')">'.$GLOBALS['TL_LANG']['ISO_REPORT']['summary'].'</legend>
 <div class="summary">
 <div class="tl_listing_container list_view">
     <table class="tl_listing">';
@@ -117,7 +117,7 @@ class Reports extends BackendOverview
     <tr class="row_'.++$i.($i % 2 ? ' odd' : ' even').'">
         <td class="tl_file_list">'.$timeRange.'</td>
         <td class="tl_file_list" style="text-align:right">'.$timeRangeData['total_orders'].'</td>
-        <td class="tl_file_list" style="text-align:right">'.$timeRangeData['total_items'].'</td>
+        <td class="tl_file_list" style="text-align:right">'.$timeRangeData['total_products'].'</td>
         <td class="tl_file_list" style="text-align:right">'.Isotope::formatPriceWithCurrency($timeRangeData['total_sales'], true, null, true, $config).'</td>
         <td class="tl_file_list" style="text-align:right">'.Isotope::formatPriceWithCurrency($timeRangeData['total_discounts'], true, null, true, $config).'</td>
         <td class="tl_file_list" style="text-align:right">'.Isotope::formatPriceWithCurrency($timeRangeData['average_sales'], true, null, true, $config).'</td>
@@ -145,7 +145,7 @@ class Reports extends BackendOverview
             SELECT
                 c.id AS config_id,
                 IFNULL(sub.total_orders,0) AS total_orders,
-                IFNULL(sub.total_items,0) AS total_items,
+                IFNULL(sub.total_products,0) AS total_products,
                 IFNULL(sub.total_sales+sub.total_discounts,0) AS total_sales,
                 IFNULL((sub.total_sales+sub.total_discounts)/sub.total_orders,0) AS average_sales,
                 IFNULL(sub.total_discounts,0) AS total_discounts
@@ -153,12 +153,12 @@ class Reports extends BackendOverview
             LEFT JOIN (SELECT
                             o.config_id,
                             COUNT(DISTINCT o.id) AS total_orders,
-                            SUM(o.tax_free_subtotal) AS total_sales,
-                            SUM(i.quantity) AS total_items,
+                            COUNT(DISTINCT i.id) AS total_products,
+                            SUM(i.tax_free_price * i.quantity) AS total_sales,
                             IFNULL(SUM(discounts.total_price),0) AS total_discounts
                        FROM tl_iso_product_collection o
-                       INNER JOIN tl_iso_orderstatus os ON o.order_status = os.id
                        LEFT JOIN tl_iso_product_collection_item i ON o.id=i.pid
+                       LEFT JOIN tl_iso_orderstatus os ON os.id=o.order_status
                        LEFT JOIN (SELECT
                             pid,
                             total_price
@@ -177,7 +177,7 @@ class Reports extends BackendOverview
             $data[$objOrders->config_id] = [
                 'total_orders' => $objOrders->total_orders,
                 'total_sales' => $objOrders->total_sales,
-                'total_items' => $objOrders->total_items,
+                'total_products' => $objOrders->total_products,
                 'total_discounts' => abs($objOrders->total_discounts),
                 'average_sales' => $objOrders->average_sales,
             ];

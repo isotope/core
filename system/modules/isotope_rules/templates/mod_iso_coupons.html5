@@ -12,7 +12,7 @@
                 <form action="<?= $this->action ?>" method="post">
                     <input type="hidden" name="FORM_SUBMIT" value="remove_coupon_<?= $this->id ?>">
                     <input type="hidden" name="REQUEST_TOKEN" value="<?= $this->requestToken ?>">
-                    <button class="submit" name="coupon" value="<?= $coupon ?>">Remove</button>
+                    <button class="submit" name="coupon" value="<?= $coupon ?>"><?= $GLOBALS['TL_LANG']['MSC']['couponRemove'] ?></button>
                 </form>
             </td>
         </tr>

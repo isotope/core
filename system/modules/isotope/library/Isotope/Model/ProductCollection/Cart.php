@@ -354,6 +354,7 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
                 'uniqid'    => $cookieHash,
                 'config_id' => $objConfig->id,
                 'store_id'  => $storeId,
+                'currency'  => $objConfig->currency,
             )));
 
             return $objCart;

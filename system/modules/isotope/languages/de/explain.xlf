@@ -20,8 +20,8 @@
         <target>&lt;p class=&quot;tl_help_table&quot;&gt;Wenn Sie ein neues Bild hochladen möchten, wählen Sie die Datei aus und speichern Sie das Produkt. Nach dem Sie das Bild erfolgreich hochgeladen haben, wird ein Vorschaubild angezeigt neben dem Sie den Alternativtext und eine Beschreibung eingeben können. Wenn Sie mehrere Bilder nutzen, können Sie ihre Reihenfolge durch Klicken auf die Pfeile rechts verändern. Das oberste Bild wird als Hauptbild des Produktes genutzt.&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="XPL.noVariantAttributes">
-        <source>To use product variants with Isotope eCommerce, you must first configure the attributes.&lt;br&gt;Please refer to &lt;a href=&quot;http://isotopeecommerce.org/en/manual.html&quot; target=&quot;_blank&quot; style=&quot;text-decoration:underline&quot;&gt;the manual&lt;/a&gt; for more information about attribute setup.</source>
-        <target>Um Produktvarianten mit Isotope eCommerce nutzen zu können, müssen Sie erst Attribute konfigurieren.&lt;br&gt;Bitte beachten Sie &lt;a href=&quot;http://isotopeecommerce.org/en/manual.html&quot; target=&quot;_blank&quot; style=&quot;text-decoration:underline&quot;&gt;das Handbuch&lt;/a&gt; für weitere Infos zur Attribut-Erstellung</target>
+        <source>To use product variants with Isotope eCommerce, you must first configure the attributes.&lt;br&gt;Please refer to &lt;a href=&quot;https://docs.isotopeecommerce.org/&quot; target=&quot;_blank&quot; style=&quot;text-decoration:underline&quot;&gt;the manual&lt;/a&gt; for more information about attribute setup.</source>
+        <target>Um Produktvarianten mit Isotope eCommerce nutzen zu können, müssen Sie erst Attribute konfigurieren.&lt;br&gt;Bitte beachten Sie &lt;a href=&quot;https://docs.isotopeecommerce.org&quot; target=&quot;_blank&quot; style=&quot;text-decoration:underline&quot;&gt;das Handbuch&lt;/a&gt; für weitere Infos zur Attribut-Erstellung</target>
       </trans-unit>
       <trans-unit id="XPL.shippingExempt">
         <source>

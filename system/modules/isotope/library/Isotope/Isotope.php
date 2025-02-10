@@ -172,7 +172,7 @@ class Isotope extends Controller
             if (null === static::$objConfig) {
                 global $objPage;
 
-                static::$objConfig = (CompatibilityHelper::isFrontend() ? Config::findByRootPageOrFallback($objPage->rootId) : Config::findByFallback());
+                static::$objConfig = (CompatibilityHelper::isFrontend() ? Config::findByRootPageOrFallback($objPage ? $objPage->rootId : 0) : Config::findByFallback());
             }
 
             // No config at all, create empty model as fallback

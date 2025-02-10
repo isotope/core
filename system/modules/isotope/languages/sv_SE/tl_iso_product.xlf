@@ -231,6 +231,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.hitCount.0">
         <source>Hit counter</source>
+        <target>Träffräknare</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.mmSrc">
         <source>Preview</source>

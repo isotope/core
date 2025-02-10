@@ -1,6 +1,56 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.9.6 (2024-12-18)
+--------------------------
+
+- Use first limit as default (#2540)
+- Keep prdocut `auto_item` unused in `AbstractProduct::getCssClass()` (#2554)
+- Show field name in cumulative filter config
+
+
+Version 2.9.5 (2024-12-05)
+--------------------------
+
+- Fixed product Standard::getVariantIds() (#2552)
+- Fixed PHP8 issues
+- Updated translations
+
+
+Version 2.9.4 (2024-11-05)
+--------------------------
+
+- Fixed product variants not being added to cart
+- Fix count of products and net value calculation of reports overview (#2542)
+- Fix product list caching script (#2547)
+- Dropped the patchwork/utf8 dependency (#2548)
+
+
+Version 2.9.3 (2024-10-31)
+--------------------------
+
+- Always execute the checkoutComplete hook
+- Handle missing $objPage when loading config (#2546)
+- Correctly handle hash in URL for productlist caching (#2545)
+
+
+Version 2.9.2 (2024-10-23)
+--------------------------
+
+- Added config for URLs in sitemap (#2512)
+- Fixed cannonical URL in product reader with query attributes (#2512)
+- Fixed error handling in MediaManager (#2468)
+- Fixed missing translation in coupon module (#2539)
+- Fixed invalid HTML in reports (#2538)
+
+
+Version 2.9.1 (2024-09-06)
+--------------------------
+
+- Fixed return path from hook for downloads not used (#2534)
+- Fixed member country limit in front end (#2535)
+
+
 Version 2.9.0 (2024-07-30)
 --------------------------
 
