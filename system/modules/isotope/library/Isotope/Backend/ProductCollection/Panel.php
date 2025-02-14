@@ -58,16 +58,11 @@ class Panel extends Backend
     .tl_filter {
         display: flex;
         align-items: center;
-        width: 80%;
+        width: auto;
         margin-left: 2em;
     }
     .tl_filter .tl_select {
         max-width: none;
-    }
-}
-@media (min-width: 1200px) {
-    .tl_filter {
-        width: 60%;
     }
 }
 </style>
