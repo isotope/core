@@ -21,10 +21,6 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         'dataContainer' => \Contao\DC_Table::class,
         'enableVersioning'          => true,
         'backlink'                  => 'do=iso_setup',
-        'onload_callback' => array
-        (
-            array('Isotope\\Backend\\Gallery\\Callback', 'showJsLibraryHint'),
-        ),
         'sql' => array
         (
             'keys' => array
@@ -93,7 +89,6 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         'standardlightbox'          => '{name_legend},name,type,anchor,placeholder;{size_legend},main_size,gallery_size;{lightbox_legend},lightbox_template,lightbox_size;{watermark_legend:hide},main_watermark_image,main_watermark_position,gallery_watermark_image,gallery_watermark_position,lightbox_watermark_image,lightbox_watermark_position;{template_legend:hide},customTpl',
         'inline'                    => '{name_legend},name,type,anchor,placeholder;{size_legend},main_size,gallery_size;{watermark_legend:hide},main_watermark_image,main_watermark_position,gallery_watermark_image,gallery_watermark_position;{template_legend:hide},customTpl',
         'inlinelightbox'            => '{name_legend},name,type,anchor,placeholder;{size_legend},main_size,gallery_size;{lightbox_legend},lightbox_template,lightbox_size;{watermark_legend:hide},main_watermark_image,main_watermark_position,gallery_watermark_image,gallery_watermark_position;{template_legend:hide},customTpl',
-        'elevatezoom'               => '{name_legend},name,type,placeholder;{size_legend},main_size,gallery_size,zoom_size;{config_legend},zoom_windowSize,zoom_position,zoom_windowFade,zoom_border;{watermark_legend:hide},main_watermark_image,main_watermark_position,gallery_watermark_image,gallery_watermark_position,zoom_watermark_image,zoom_watermark_position;{template_legend:hide},customTpl',
     ),
 
     // Fields
@@ -192,78 +187,6 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
             'eval'                  => array('includeBlankOption'=>true, 'rgxp'=>'digit', 'nospace'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(64) NOT NULL default ''"
         ),
-        'zoom_size' => array
-        (
-            'exclude'               => true,
-            'inputType'             => 'imageSize',
-            'options_callback'      => function () {
-                return \Contao\System::getContainer()->get('contao.image.sizes')->getAllOptions();
-            },
-            'reference'             => &$GLOBALS['TL_LANG']['MSC'],
-            'eval'                  => array('includeBlankOption'=>true, 'rgxp'=>'digit', 'nospace'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
-            'sql'                   => "varchar(64) NOT NULL default ''"
-        ),
-        'zoom_windowSize' => array
-        (
-            'exclude'               => true,
-            'inputType'             => 'text',
-            'eval'                  => array('multiple'=>true, 'size'=>2, 'rgxp'=>'digit', 'nospace'=>true, 'tl_class'=>'w50'),
-            'sql'                   => "varchar(64) NOT NULL default ''"
-        ),
-        'zoom_position' => array
-        (
-            'exclude'               => true,
-            'inputType'             => 'multiColumnWizard',
-            'eval'                  => array(
-                'rgxp' => 'digit',
-                'helpwizard' => true,
-                'tl_class' => 'w50',
-                'disableSorting' => true,
-                'minCount' => 1,
-                'maxCount' => 1,
-                'hideButtons' => true,
-                'columnFields' => array(
-                    2 => array(
-                        'inputType' => 'select',
-                        'options'   => array('pos1', 'pos2', 'pos3', 'pos4', 'pos5', 'pos6', 'pos7', 'pos8', 'pos9', 'pos10', 'pos11', 'pos12', 'pos13', 'pos14', 'pos15', 'pos16',),
-                        'reference' => &$GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position'],
-                        'eval'      => array('hideHead' => true, 'class' => 'tl_select_interval'),
-                    ),
-                    0 => array(
-                        'inputType' => 'text',
-                        'eval'      => array('hideHead' => true, 'rgxp' => 'digit'),
-                    ),
-                    1 => array(
-                        'inputType' => 'text',
-                        'eval'      => array('hideHead' => true, 'rgxp' => 'digit'),
-                    ),
-                ),
-            ),
-            'sql'                   => "varchar(64) NOT NULL default ''",
-            'explanation'           => 'elevatezoom_position',
-            'load_callback' => [function ($value) {
-                $value = \Contao\StringUtil::deserialize($value);
-                return \is_array($value) && !\is_array($value[0]) ? [$value] : [];
-            }],
-            'save_callback' => [function ($value) {
-                $value = \Contao\StringUtil::deserialize($value);
-                return \is_array($value) ? serialize($value[0]) : '';
-            }],
-        ),
-        'zoom_windowFade' => array
-        (
-            'exclude'               => true,
-            'inputType'             => 'text',
-            'eval'                  => array('multiple'=>true, 'size'=>2, 'rgxp'=>'digit', 'nospace'=>true, 'tl_class'=>'w50'),
-            'sql'                   => "varchar(64) NOT NULL default ''",
-        ),
-        'zoom_border' => array
-        (
-            'exclude'               => true,
-            'inputType'             => 'text',
-            'eval'                  => array('maxlength'=>6, 'multiple'=>true, 'size'=>2, 'colorpicker'=>true, 'isHexColor'=>true, 'decodeEntities'=>true, 'tl_class'=>'w50 wizard'),
-            'sql'                   => "varchar(64) NOT NULL default ''"
-        ),
         'main_watermark_image' => array
         (
             'exclude'               => true,
@@ -309,22 +232,6 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
             'inputType'             => 'select',
             'options'               => array('left_top', 'center_top', 'right_top', 'left_center', 'center_center', 'right_center', 'left_bottom', 'center_bottom', 'right_bottom'),
             'reference'             => &$GLOBALS['TL_LANG']['MSC'],
-            'eval'                  => array('tl_class'=>'w50'),
-            'sql'                   => "varchar(16) NOT NULL default ''",
-        ),
-        'zoom_watermark_image' => array
-        (
-            'exclude'               => true,
-            'inputType'             => 'fileTree',
-            'eval'                  => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>'%contao.image.valid_extensions%', 'tl_class'=>'clr w50 w50h'),
-            'sql'                   => "binary(16) NULL",
-        ),
-        'zoom_watermark_position' => array
-        (
-            'exclude'               => true,
-            'inputType'             => 'select',
-            'options'               => array('left_top', 'center_top', 'right_top', 'left_center', 'center_center', 'right_center', 'left_bottom', 'center_bottom', 'right_bottom'),
-            'reference'             => $GLOBALS['TL_LANG']['MSC'],
             'eval'                  => array('tl_class'=>'w50'),
             'sql'                   => "varchar(16) NOT NULL default ''",
         ),

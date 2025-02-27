@@ -803,12 +803,6 @@
       <trans-unit id="MODEL.tl_iso_gallery.inline.1">
         <source>Clicking on a gallery image will replace the main image.</source>
       </trans-unit>
-      <trans-unit id="MODEL.tl_iso_gallery.elevatezoom.0">
-        <source>Elevate Zoom gallery</source>
-      </trans-unit>
-      <trans-unit id="MODEL.tl_iso_gallery.elevatezoom.1">
-        <source>A gallery that zooms on the image on hover. See &lt;a href="http://www.elevateweb.co.uk/image-zoom" target="_blank"&gt;the script website&lt;/a&gt; for more information.</source>
-      </trans-unit>
       <trans-unit id="MODEL.tl_iso_product.standard.0">
         <source>Standard product</source>
       </trans-unit>

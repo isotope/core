@@ -120,14 +120,6 @@
             return false;
         },
 
-        elevateZoom: function (el, elementId) {
-            Isotope.inlineGallery(el, elementId);
-
-            jQuery('#' + elementId).data('elevateZoom').swaptheimage(el.getAttribute('href'), el.getAttribute('data-zoom-image'));
-
-            return false;
-        },
-
         checkoutButton: function (form) {
             function disableButton(name) {
                 try {
