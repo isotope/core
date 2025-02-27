@@ -366,7 +366,7 @@ class Rule extends Model
 
         $objResult = Database::getInstance()
             ->prepare('SELECT * FROM tl_iso_rule r WHERE ' . implode(' AND ', $arrProcedures))
-            ->execute($arrValues)
+            ->execute(...$arrValues)
         ;
 
         if ($objResult->numRows) {

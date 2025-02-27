@@ -694,6 +694,10 @@ abstract class Product extends TypeAgent implements IsotopeProduct
             $strQuery .= ' GROUP BY ' . $arrOptions['group'];
         }
 
+        if (isset($arrOptions['having'])) {
+            $strQuery .= " HAVING " . $arrOptions['having'];
+        }
+
         // Order by
         if (($arrOptions['order'] ?? null) !== null) {
             $strQuery .= ' ORDER BY ' . $arrOptions['order'];

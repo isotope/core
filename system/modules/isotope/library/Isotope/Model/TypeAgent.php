@@ -214,11 +214,6 @@ abstract class TypeAgent extends Model
             $arrRelations = $objRelations->getRelations();
             $arrFields = $objRelations->getFields();
 
-            // @deprecated use string instead of array for HAVING (introduced in Contao 3.3)
-            if (!empty($arrOptions['having']) && \is_array($arrOptions['having'])) {
-                $arrOptions['having'] = implode(' AND ', $arrOptions['having']);
-            }
-
             if (isset($arrRelations['type'])) {
                 $arrOptions['having'] = (empty($arrOptions['having']) ? '' : ' AND ') . 'type IN (SELECT ' . $arrRelations['type']['field'] . ' FROM ' . $arrRelations['type']['table'] . ' WHERE class=?)';
                 $arrOptions['value'][]  = $strType;

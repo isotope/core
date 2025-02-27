@@ -373,7 +373,7 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
             $this->arrOptionsForVariants[$strKey] = Database::getInstance()->prepare('
                 SELECT DISTINCT ' . $this->field_name . ' FROM tl_iso_product WHERE id IN (' . implode(',', $arrIds) . ')
                 ' . $strWhere
-            )->execute($arrOptions)->fetchEach($this->field_name);
+            )->execute(...$arrOptions)->fetchEach($this->field_name);
         }
 
         return $this->arrOptionsForVariants[$strKey];
