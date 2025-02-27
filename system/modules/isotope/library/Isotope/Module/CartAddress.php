@@ -101,7 +101,7 @@ class CartAddress extends Module
             },
         );
 
-        $objForm->bindModel($objAddress);
+        $objForm->setBoundModel($objAddress);
 
         // Add form fields
         $objForm->addFieldsFromDca($table, function ($strName, &$arrDca) use ($arrFields, $useBilling) {
@@ -163,7 +163,7 @@ class CartAddress extends Module
             $this->jumpToOrReload($this->jumpTo);
         }
 
-        $objForm->addToTemplate($this->Template);
+        $objForm->addToObject($this->Template);
 
         // Predefine the group order (other groups will be appended automatically)
         $arrGroups  = array();

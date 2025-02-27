@@ -201,7 +201,7 @@ class AddressBook extends Module
             },
         );
 
-        $objForm->bindModel($objAddress);
+        $objForm->setBoundModel($objAddress);
 
         // Add form fields and modify for the address book
         $arrFields = $this->arrFields;
@@ -261,7 +261,7 @@ class AddressBook extends Module
             }
         }
 
-        $objForm->addToTemplate($this->Template);
+        $objForm->addToObject($this->Template);
 
         // Predefine the group order (other groups will be appended automatically)
         $arrGroups  = array();
