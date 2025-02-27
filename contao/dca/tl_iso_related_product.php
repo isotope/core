@@ -1,141 +1,113 @@
 <?php
 
-/*
- * Isotope eCommerce for Contao Open Source CMS
- *
- * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
- *
- * @link       https://isotopeecommerce.org
- * @license    https://opensource.org/licenses/lgpl-3.0.html
- */
+use Contao\DC_Table;
+use Isotope\Backend;
+use Isotope\Backend\RelatedProduct\Callback;
+use Isotope\Model\Product;
+use Isotope\Model\RelatedCategory;
 
-/**
+/*
  * Table tl_iso_related_product
  */
-$GLOBALS['TL_DCA']['tl_iso_related_product'] = array
-(
-
+$GLOBALS['TL_DCA']['tl_iso_related_product'] = [
     // Config
-    'config' => array
-    (
-        'dataContainer' => \Contao\DC_Table::class,
-        'enableVersioning'          => true,
-        'ptable'                    => 'tl_iso_product',
-        'onload_callback'           => array
-        (
-            array('Isotope\Backend\RelatedProduct\Callback', 'initDCA')
-        ),
-        'onsubmit_callback' => array
-        (
-            array('Isotope\Backend', 'truncateProductCache'),
-        ),
-        'sql' => array
-        (
-            'keys' => array
-            (
+    'config' => [
+        'dataContainer' => DC_Table::class,
+        'enableVersioning' => true,
+        'ptable' => 'tl_iso_product',
+        'onload_callback' => [
+            [Callback::class, 'initDCA'],
+        ],
+        'onsubmit_callback' => [
+            [Backend::class, 'truncateProductCache'],
+        ],
+        'sql' => [
+            'keys' => [
                 'id' => 'primary',
                 'pid' => 'index',
-            )
-        ),
-    ),
+            ],
+        ],
+    ],
 
     // List
-    'list' => array
-    (
-        'sorting' => array
-        (
-            'mode'                  => 4,
-            'fields'                => array('category'),
-            'flag'                  => 1,
-            'panelLayout'           => 'filter,limit',
-            'headerFields'          => array('type', 'name', 'alias', 'sku'),
-            'disableGrouping'       => true,
-            'child_record_callback' => array('Isotope\Backend\RelatedProduct\Callback', 'listRows')
-        ),
-        'global_operations' => array
-        (
-            'all' => array
-            (
-                'href'              => 'act=select',
-                'class'             => 'header_edit_all',
-                'attributes'        => 'onclick="Backend.getScrollOffset();"',
-            )
-        ),
-        'operations' => array
-        (
-            'edit' => array
-            (
-                'href'              => 'act=edit',
-                'icon'              => 'edit.svg'
-            ),
-            'copy' => array
-            (
-                'href'              => 'act=copy',
-                'icon'              => 'copy.svg'
-            ),
-            'delete' => array
-            (
-                'href'              => 'act=delete',
-                'icon'              => 'delete.svg',
-                'attributes'        => 'onclick="if (!confirm(\'' . ($GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? '') . '\')) return false; Backend.getScrollOffset();"'
-            ),
-            'show' => array
-            (
-                'href'              => 'act=show',
-                'icon'              => 'show.svg'
-            ),
-        )
-    ),
+    'list' => [
+        'sorting' => [
+            'mode' => 4,
+            'fields' => ['category'],
+            'flag' => 1,
+            'panelLayout' => 'filter,limit',
+            'headerFields' => ['type', 'name', 'alias', 'sku'],
+            'disableGrouping' => true,
+            'child_record_callback' => [Callback::class, 'listRows'],
+        ],
+        'global_operations' => [
+            'all' => [
+                'href' => 'act=select',
+                'class' => 'header_edit_all',
+                'attributes' => 'onclick="Backend.getScrollOffset();"',
+            ],
+        ],
+        'operations' => [
+            'edit' => [
+                'href' => 'act=edit',
+                'icon' => 'edit.svg',
+            ],
+            'copy' => [
+                'href' => 'act=copy',
+                'icon' => 'copy.svg',
+            ],
+            'delete' => [
+                'href' => 'act=delete',
+                'icon' => 'delete.svg',
+                'attributes' => 'onclick="if (!confirm(\''.($GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? '').'\')) return false; Backend.getScrollOffset();"',
+            ],
+            'show' => [
+                'href' => 'act=show',
+                'icon' => 'show.svg',
+            ],
+        ],
+    ],
 
     // Palettes
-    'palettes' => array
-    (
-        'default'                   => '{category_legend},category;{products_legend},products',
-    ),
+    'palettes' => [
+        'default' => '{category_legend},category;{products_legend},products',
+    ],
 
     // Fields
-    'fields' => array
-    (
-        'id' => array
-        (
-            'sql'                   => "int(10) unsigned NOT NULL auto_increment",
-        ),
-        'pid' => array
-        (
-            'foreignKey'            => 'tl_iso_product.name',
-            'sql'                   => "int(10) unsigned NOT NULL default '0'",
-            'relation'              => array('type'=>'belongsTo', 'load'=>'lazy'),
-        ),
-        'tstamp' => array
-        (
-            'sql'                   => "int(10) unsigned NOT NULL default '0'",
-        ),
-        'sorting' => array
-        (
-            'sql'                   => "int(10) unsigned NOT NULL default '0'",
-        ),
-        'category' => array
-        (
-            'exclude'               => true,
-            'filter'                => true,
-            'inputType'             => 'select',
-            'foreignKey'            => \Isotope\Model\RelatedCategory::getTable().'.name',
-            'eval'                  => array('mandatory'=>true, 'includeBlankOption'=>true),
-            'sql'                   => "int(10) unsigned NOT NULL default '0'",
-            'relation'              => array('table' => \Isotope\Model\RelatedCategory::getTable(), 'type'=>'hasOne', 'load'=>'lazy'),
-        ),
-        'products' => array
-        (
-            'exclude'               => true,
-            'inputType'             => 'picker',
-            'eval'                  => array('mandatory'=>true, 'multiple' => true, 'csv' => ',', 'tl_class'=>'clr', 'orderField' => 'productsOrder'),
-            'sql'                   => "blob NULL",
-            'relation'              => array('table' => \Isotope\Model\Product::getTable(), 'type' => 'hasMany', 'load' => 'lazy'),
-        ),
-        'productsOrder' => array
-        (
-            'sql'                   => "blob NULL",
-            'eval'                  => array('doNotShow' => true),
-        ),
-    )
-);
+    'fields' => [
+        'id' => [
+            'sql' => 'int(10) unsigned NOT NULL auto_increment',
+        ],
+        'pid' => [
+            'foreignKey' => 'tl_iso_product.name',
+            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'relation' => ['type' => 'belongsTo', 'load' => 'lazy'],
+        ],
+        'tstamp' => [
+            'sql' => "int(10) unsigned NOT NULL default '0'",
+        ],
+        'sorting' => [
+            'sql' => "int(10) unsigned NOT NULL default '0'",
+        ],
+        'category' => [
+            'exclude' => true,
+            'filter' => true,
+            'inputType' => 'select',
+            'foreignKey' => RelatedCategory::getTable().'.name',
+            'eval' => ['mandatory' => true, 'includeBlankOption' => true],
+            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'relation' => ['table' => RelatedCategory::getTable(), 'type' => 'hasOne', 'load' => 'lazy'],
+        ],
+        'products' => [
+            'exclude' => true,
+            'inputType' => 'picker',
+            'eval' => ['mandatory' => true, 'multiple' => true, 'csv' => ',', 'tl_class' => 'clr', 'orderField' => 'productsOrder'],
+            'sql' => 'blob NULL',
+            'relation' => ['table' => Product::getTable(), 'type' => 'hasMany', 'load' => 'lazy'],
+        ],
+        'productsOrder' => [
+            'sql' => 'blob NULL',
+            'eval' => ['doNotShow' => true],
+        ],
+    ],
+];

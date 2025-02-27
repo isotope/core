@@ -89,8 +89,5 @@
     },
     "extra":{
         "contao-manager-plugin": "Isotope\\CoreBundle\\ContaoManager\\Plugin"
-    },
-    "scripts": {
-        "rector": "@php vendor/terminal42/contao-build-tools/tools/rector/vendor/bin/rector process system/modules"
     }
 }

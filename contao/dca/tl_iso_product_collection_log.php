@@ -1,23 +1,16 @@
 <?php
 
-/*
- * Isotope eCommerce for Contao Open Source CMS
- *
- * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
- *
- * @link       https://isotopeecommerce.org
- * @license    https://opensource.org/licenses/lgpl-3.0.html
- */
+use Contao\DC_Table;
+use Isotope\Model\ProductCollection;
 
-/**
+/*
  * Table tl_iso_product_collection_log
  */
 $GLOBALS['TL_DCA']['tl_iso_product_collection_log'] = [
-
     // Config
     'config' => [
-        'dataContainer' => \Contao\DC_Table::class,
-        'ptable' => \Isotope\Model\ProductCollection::getTable(),
+        'dataContainer' => DC_Table::class,
+        'ptable' => ProductCollection::getTable(),
         'sql' => [
             'keys' => [
                 'id' => 'primary',
@@ -29,7 +22,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_log'] = [
     // Fields
     'fields' => [
         'id' => [
-            'sql' => "int(10) unsigned NOT NULL auto_increment",
+            'sql' => 'int(10) unsigned NOT NULL auto_increment',
         ],
         'tstamp' => [
             'sql' => "int(10) unsigned NOT NULL default '0'",
@@ -42,7 +35,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_log'] = [
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
         'data' => [
-            'sql' => "blob NULL",
+            'sql' => 'blob NULL',
         ],
     ],
 ];

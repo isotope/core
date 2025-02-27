@@ -9,284 +9,386 @@
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
+use Composer\InstalledVersions;
 use Contao\ArrayUtil;
+use Contao\System;
+use Isotope\Automator;
+use Isotope\Backend;
+use Isotope\Backend\Product\AssetImport;
+use Isotope\Backend\Product\DcaManager;
+use Isotope\Backend\Product\Fallback;
+use Isotope\Backend\Product\VariantGenerator;
+use Isotope\Backend\ProductCollection\Callback;
+use Isotope\Backend\ProductType\Help;
+use Isotope\Backend\SubtableVersion;
+use Isotope\BackendModule\InitializeListener;
+use Isotope\BackendModule\Integrity;
+use Isotope\BackendModule\Setup;
+use Isotope\CheckoutStep\BillingAddress;
+use Isotope\CheckoutStep\OrderInfo;
+use Isotope\CheckoutStep\OrderProducts;
+use Isotope\CheckoutStep\PaymentMethod;
+use Isotope\CheckoutStep\ShippingAddress;
+use Isotope\CheckoutStep\ShippingMethod;
+use Isotope\CompatibilityHelper;
+use Isotope\EventListener\CalculatePrice\QuantitySurchagePriceListener;
+use Isotope\EventListener\ChangeLanguageListener;
+use Isotope\EventListener\PostCheckoutUploads;
+use Isotope\Frontend;
+use Isotope\Frontend\ProductAction\CartAction;
+use Isotope\Frontend\ProductAction\FavoriteAction;
+use Isotope\Frontend\ProductAction\Registry;
+use Isotope\Frontend\ProductAction\UpdateAction;
+use Isotope\Frontend\ProductAction\WishlistAction;
+use Isotope\IntegrityCheck\AttributeOptionOrphans;
+use Isotope\IntegrityCheck\MultilingualAttributes;
+use Isotope\IntegrityCheck\PriceTable;
+use Isotope\IntegrityCheck\UnusedRules;
+use Isotope\IntegrityCheck\VariantOrphans;
+use Isotope\IntegrityCheck\VariantPrices;
+use Isotope\Isotope;
+use Isotope\Model\Address;
+use Isotope\Model\Attribute;
+use Isotope\Model\Attribute\CheckboxMenu;
+use Isotope\Model\Attribute\Downloads;
+use Isotope\Model\Attribute\FileTree;
+use Isotope\Model\Attribute\FineUploader;
+use Isotope\Model\Attribute\Media;
+use Isotope\Model\Attribute\PageTree;
+use Isotope\Model\Attribute\QuantitySurcharge;
+use Isotope\Model\Attribute\RadioButton;
+use Isotope\Model\Attribute\SelectMenu;
+use Isotope\Model\Attribute\TextArea;
+use Isotope\Model\Attribute\TextField;
+use Isotope\Model\Attribute\Upload;
+use Isotope\Model\AttributeOption;
+use Isotope\Model\BasePrice;
+use Isotope\Model\Config;
+use Isotope\Model\Document;
+use Isotope\Model\Document\Standard;
+use Isotope\Model\Download;
+use Isotope\Model\Gallery;
+use Isotope\Model\Gallery\Inline;
+use Isotope\Model\Group;
+use Isotope\Model\Label;
+use Isotope\Model\OrderStatus;
+use Isotope\Model\Payment;
+use Isotope\Model\Payment\BillpayWithSaferpay;
+use Isotope\Model\Payment\Cash;
+use Isotope\Model\Payment\Concardis;
+use Isotope\Model\Payment\Datatrans;
+use Isotope\Model\Payment\EPay;
+use Isotope\Model\Payment\Expercash;
+use Isotope\Model\Payment\Innopay;
+use Isotope\Model\Payment\Mpay24;
+use Isotope\Model\Payment\OpenPaymentPlatform;
+use Isotope\Model\Payment\Paybyway;
+use Isotope\Model\Payment\Payone;
+use Isotope\Model\Payment\Paypal;
+use Isotope\Model\Payment\PaypalCheckout;
+use Isotope\Model\Payment\PaypalPlus;
+use Isotope\Model\Payment\Postfinance;
+use Isotope\Model\Payment\QuickPay;
+use Isotope\Model\Payment\Saferpay;
+use Isotope\Model\Payment\Sofortueberweisung;
+use Isotope\Model\Payment\Sparkasse;
+use Isotope\Model\Payment\Swissbilling;
+use Isotope\Model\Payment\Viveum;
+use Isotope\Model\Payment\Worldpay;
+use Isotope\Model\Product;
+use Isotope\Model\ProductCache;
+use Isotope\Model\ProductCategory;
+use Isotope\Model\ProductCollection;
+use Isotope\Model\ProductCollection\Order;
+use Isotope\Model\ProductCollection\Wishlist;
+use Isotope\Model\ProductCollectionDownload;
+use Isotope\Model\ProductCollectionItem;
+use Isotope\Model\ProductCollectionLog;
+use Isotope\Model\ProductCollectionSurcharge;
+use Isotope\Model\ProductCollectionSurcharge\Tax;
+use Isotope\Model\ProductPrice;
+use Isotope\Model\ProductType;
+use Isotope\Model\RelatedCategory;
+use Isotope\Model\RelatedProduct;
+use Isotope\Model\RequestCache;
+use Isotope\Model\Shipping;
+use Isotope\Model\Shipping\Flat;
+use Isotope\Model\TaxClass;
+use Isotope\Model\TaxRate;
+use Isotope\Module\AddressBook;
+use Isotope\Module\Cart;
+use Isotope\Module\CartAddress;
+use Isotope\Module\CategoryFilter;
+use Isotope\Module\Checkout;
+use Isotope\Module\ConfigSwitcher;
+use Isotope\Module\CumulativeFilter;
+use Isotope\Module\Favorites;
+use Isotope\Module\Messages;
+use Isotope\Module\OrderDetails;
+use Isotope\Module\OrderHistory;
+use Isotope\Module\ProductFilter;
+use Isotope\Module\ProductList;
+use Isotope\Module\ProductReader;
+use Isotope\Module\ProductVariantList;
+use Isotope\Module\RangeFilter;
+use Isotope\Module\RelatedProducts;
+use Isotope\Module\ShippingCalculator;
+use Isotope\Module\Trustedshops;
+use Isotope\Module\WishlistDetails;
+use Isotope\Module\WishlistManager;
+use Isotope\Module\WishlistViewer;
+use Isotope\VatNoValidator\EuViesValidator;
+use Isotope\Widget\InheritCheckBox;
+use Isotope\Widget\MediaManager;
+use Symfony\Component\HttpFoundation\Request;
 
-/**
+/*
  * Backend modules
  */
-if (!\is_array($GLOBALS['BE_MOD']['isotope'] ?? null))
-{
-    ArrayUtil::arrayInsert($GLOBALS['BE_MOD'], 1, array('isotope' => array()));
+if (!is_array($GLOBALS['BE_MOD']['isotope'] ?? null)) {
+    ArrayUtil::arrayInsert($GLOBALS['BE_MOD'], 1, ['isotope' => []]);
 }
 
-ArrayUtil::arrayInsert($GLOBALS['BE_MOD']['isotope'], 0, array
-(
-    'iso_products' => array
-    (
-        'tables'            => array(\Isotope\Model\Product::getTable(), \Isotope\Model\Group::getTable(), \Isotope\Model\ProductCategory::getTable(), \Isotope\Model\Download::getTable(), \Isotope\Model\RelatedProduct::getTable(), \Isotope\Model\ProductPrice::getTable(), 'tl_iso_product_pricetier', \Isotope\Model\AttributeOption::getTable()),
-        'javascript'        => \Isotope\CompatibilityHelper::asset('backend.js'),
-        'generate'          => array('Isotope\Backend\Product\VariantGenerator', 'generate'),
-        'import'            => array('Isotope\Backend\Product\AssetImport', 'generate'),
-        'fallback'          => array('Isotope\Backend\Product\Fallback', 'setFromUrl'),
-    ),
-    'iso_orders' => array
-    (
-        'tables'            => array(\Isotope\Model\ProductCollection::getTable(), \Isotope\Model\ProductCollectionItem::getTable(), \Isotope\Model\ProductCollectionSurcharge::getTable(), \Isotope\Model\ProductCollectionDownload::getTable(), \Isotope\Model\Address::getTable()),
-        'javascript'        => \Isotope\CompatibilityHelper::asset('backend.js'),
-        'print_document'    => array('Isotope\Backend\ProductCollection\Callback', 'printDocument'),
-        'payment'           => array('Isotope\Backend\ProductCollection\Callback', 'paymentInterface'),
-        'shipping'          => array('Isotope\Backend\ProductCollection\Callback', 'shippingInterface'),
-    ),
-    'iso_setup' => array
-    (
-        'callback'          => 'Isotope\BackendModule\Setup',
-        'tables'            => array(\Isotope\Model\Payment::getTable(), \Isotope\Model\Shipping::getTable(), \Isotope\Model\OrderStatus::getTable()),
-        'javascript'        => \Isotope\CompatibilityHelper::asset('backend.js'),
-    ),
-));
+ArrayUtil::arrayInsert($GLOBALS['BE_MOD']['isotope'], 0, [
+    'iso_products' => [
+        'tables' => [Product::getTable(), Group::getTable(), ProductCategory::getTable(), Download::getTable(), RelatedProduct::getTable(), ProductPrice::getTable(), 'tl_iso_product_pricetier', AttributeOption::getTable()],
+        'javascript' => CompatibilityHelper::asset('backend.js'),
+        'generate' => [VariantGenerator::class, 'generate'],
+        'import' => [AssetImport::class, 'generate'],
+        'fallback' => [Fallback::class, 'setFromUrl'],
+    ],
+    'iso_orders' => [
+        'tables' => [ProductCollection::getTable(), ProductCollectionItem::getTable(), ProductCollectionSurcharge::getTable(), ProductCollectionDownload::getTable(), Address::getTable()],
+        'javascript' => CompatibilityHelper::asset('backend.js'),
+        'print_document' => [Callback::class, 'printDocument'],
+        'payment' => [Callback::class, 'paymentInterface'],
+        'shipping' => [Callback::class, 'shippingInterface'],
+    ],
+    'iso_setup' => [
+        'callback' => Setup::class,
+        'tables' => [Payment::getTable(), Shipping::getTable(), OrderStatus::getTable()],
+        'javascript' => CompatibilityHelper::asset('backend.js'),
+    ],
+]);
 
-$GLOBALS['BE_MOD']['accounts']['member']['tables'][] = \Isotope\Model\Address::getTable();
+$GLOBALS['BE_MOD']['accounts']['member']['tables'][] = Address::getTable();
 
-if (\Contao\System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest(\Contao\System::getContainer()->get('request_stack')->getCurrentRequest() ?? \Symfony\Component\HttpFoundation\Request::create(''))) {
-    $GLOBALS['TL_CSS'][] = \Isotope\CompatibilityHelper::asset('backend.css');
+if (System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest(System::getContainer()->get('request_stack')->getCurrentRequest() ?? Request::create(''))) {
+    $GLOBALS['TL_CSS'][] = CompatibilityHelper::asset('backend.css');
 }
 
-
-/**
+/*
  * Isotope Modules
  */
-$GLOBALS['ISO_MOD'] = array
-(
-    'product' => array
-    (
-        'producttypes' => array
-        (
-            'tables'            => array(\Isotope\Model\ProductType::getTable()),
-            'icon'              => \Isotope\CompatibilityHelper::asset('images/setup-producttypes.png'),
-        ),
-        'attributes' => array
-        (
-            'tables'            => array(\Isotope\Model\Attribute::getTable(), \Isotope\Model\AttributeOption::getTable()),
-            'icon'              => \Isotope\CompatibilityHelper::asset('images/setup-attributes.png'),
-        ),
-        'related_categories' => array
-        (
-            'tables'            => array(\Isotope\Model\RelatedCategory::getTable()),
-            'icon'              => \Isotope\CompatibilityHelper::asset('images/setup-related_categories.png'),
-        ),
-        'baseprice' => array
-        (
-            'tables'            => array(\Isotope\Model\BasePrice::getTable()),
-            'icon'              => \Isotope\CompatibilityHelper::asset('images/setup-baseprice.png'),
-        ),
-    ),
-    'checkout' => array
-    (
-        'payment' => array
-        (
-            'tables'            => array(\Isotope\Model\Payment::getTable()),
-            'icon'              => \Isotope\CompatibilityHelper::asset('images/setup-payment.png'),
-        ),
-        'shipping' => array
-        (
-                'tables'        => array(\Isotope\Model\Shipping::getTable()),
-                'icon'          => \Isotope\CompatibilityHelper::asset('images/setup-shipping.png'),
-        ),
-        'tax_class' => array
-        (
-            'tables'            => array(\Isotope\Model\TaxClass::getTable()),
-            'icon'              => \Isotope\CompatibilityHelper::asset('images/setup-tax_class.png'),
-        ),
-        'tax_rate' => array
-        (
-            'tables'            => array(\Isotope\Model\TaxRate::getTable()),
-            'icon'              => \Isotope\CompatibilityHelper::asset('images/setup-tax_rate.png'),
-        ),
-    ),
-    'config' => array
-    (
-        'configs' => array
-        (
-            'tables'            => array(\Isotope\Model\Config::getTable()),
-            'icon'              => \Isotope\CompatibilityHelper::asset('images/setup-config.png'),
-        ),
-        'orderstatus' => array
-        (
-            'tables'            => array(\Isotope\Model\OrderStatus::getTable()),
-            'icon'              => \Isotope\CompatibilityHelper::asset('images/setup-orderstatus.png'),
-        ),
-        'notifications' => array
-        (
-            'icon'              => \Isotope\CompatibilityHelper::asset('images/setup-notifications.png'),
-            'redirect'          => 'contao/main.php?do=nc_notifications',
-        ),
-        'documents' => array
-        (
-            'tables'            => array(\Isotope\Model\Document::getTable()),
-            'icon'              => \Isotope\CompatibilityHelper::asset('images/setup-documents.png'),
-        ),
-        'gallery' => array
-        (
-            'tables'            => array(\Isotope\Model\Gallery::getTable()),
-            'icon'              => \Isotope\CompatibilityHelper::asset('images/setup-gallery.png',),
-        ),
-    ),
-    'miscellaneous:hide' => array
-    (
-        'labels' => array
-        (
-            'tables'            => array(\Isotope\Model\Label::getTable()),
-            'icon'              => \Isotope\CompatibilityHelper::asset('images/setup-labels.png'),
-        ),
-        'integrity' => array
-        (
-            'callback'          => 'Isotope\BackendModule\Integrity',
-            'icon'              => \Isotope\CompatibilityHelper::asset('images/setup-integrity.png'),
-        ),
-    )
-);
+$GLOBALS['ISO_MOD'] = [
+    'product' => [
+        'producttypes' => [
+            'tables' => [ProductType::getTable()],
+            'icon' => CompatibilityHelper::asset('images/setup-producttypes.png'),
+        ],
+        'attributes' => [
+            'tables' => [Attribute::getTable(), AttributeOption::getTable()],
+            'icon' => CompatibilityHelper::asset('images/setup-attributes.png'),
+        ],
+        'related_categories' => [
+            'tables' => [RelatedCategory::getTable()],
+            'icon' => CompatibilityHelper::asset('images/setup-related_categories.png'),
+        ],
+        'baseprice' => [
+            'tables' => [BasePrice::getTable()],
+            'icon' => CompatibilityHelper::asset('images/setup-baseprice.png'),
+        ],
+    ],
+    'checkout' => [
+        'payment' => [
+            'tables' => [Payment::getTable()],
+            'icon' => CompatibilityHelper::asset('images/setup-payment.png'),
+        ],
+        'shipping' => [
+            'tables' => [Shipping::getTable()],
+            'icon' => CompatibilityHelper::asset('images/setup-shipping.png'),
+        ],
+        'tax_class' => [
+            'tables' => [TaxClass::getTable()],
+            'icon' => CompatibilityHelper::asset('images/setup-tax_class.png'),
+        ],
+        'tax_rate' => [
+            'tables' => [TaxRate::getTable()],
+            'icon' => CompatibilityHelper::asset('images/setup-tax_rate.png'),
+        ],
+    ],
+    'config' => [
+        'configs' => [
+            'tables' => [Config::getTable()],
+            'icon' => CompatibilityHelper::asset('images/setup-config.png'),
+        ],
+        'orderstatus' => [
+            'tables' => [OrderStatus::getTable()],
+            'icon' => CompatibilityHelper::asset('images/setup-orderstatus.png'),
+        ],
+        'notifications' => [
+            'icon' => CompatibilityHelper::asset('images/setup-notifications.png'),
+            'redirect' => 'contao/main.php?do=nc_notifications',
+        ],
+        'documents' => [
+            'tables' => [Document::getTable()],
+            'icon' => CompatibilityHelper::asset('images/setup-documents.png'),
+        ],
+        'gallery' => [
+            'tables' => [Gallery::getTable()],
+            'icon' => CompatibilityHelper::asset('images/setup-gallery.png'),
+        ],
+    ],
+    'miscellaneous:hide' => [
+        'labels' => [
+            'tables' => [Label::getTable()],
+            'icon' => CompatibilityHelper::asset('images/setup-labels.png'),
+        ],
+        'integrity' => [
+            'callback' => Integrity::class,
+            'icon' => CompatibilityHelper::asset('images/setup-integrity.png'),
+        ],
+    ],
+];
 
-
-/**
+/*
  * Frontend modules
  */
-$GLOBALS['FE_MOD']['isotope'] = array
-(
-    'iso_productlist'               => 'Isotope\Module\ProductList',
-    'iso_productvariantlist'        => 'Isotope\Module\ProductVariantList',
-    'iso_productreader'             => 'Isotope\Module\ProductReader',
-    'iso_favorites'                 => 'Isotope\Module\Favorites',
-    'iso_cart'                      => 'Isotope\Module\Cart',
-    'iso_checkout'                  => 'Isotope\Module\Checkout',
-    'iso_productfilter'             => 'Isotope\Module\ProductFilter',
-    'iso_cumulativefilter'          => 'Isotope\Module\CumulativeFilter',
-    'iso_categoryfilter'            => 'Isotope\Module\CategoryFilter',
-    'iso_rangefilter'               => 'Isotope\Module\RangeFilter',
-    'iso_orderhistory'              => 'Isotope\Module\OrderHistory',
-    'iso_orderdetails'              => 'Isotope\Module\OrderDetails',
-    'iso_wishlistmanager'           => 'Isotope\Module\WishlistManager',
-    'iso_wishlistviewer'            => 'Isotope\Module\WishlistViewer',
-    'iso_wishlistdetails'           => 'Isotope\Module\WishlistDetails',
-    'iso_configswitcher'            => 'Isotope\Module\ConfigSwitcher',
-    'iso_addressbook'               => 'Isotope\Module\AddressBook',
-    'iso_relatedproducts'           => 'Isotope\Module\RelatedProducts',
-    'iso_messages'                  => 'Isotope\Module\Messages',
-    'iso_shipping_calculator'       => 'Isotope\Module\ShippingCalculator',
-    'iso_cart_address'              => 'Isotope\Module\CartAddress',
-    'iso_trustedshops'              => 'Isotope\Module\Trustedshops',
-);
+$GLOBALS['FE_MOD']['isotope'] = [
+    'iso_productlist' => ProductList::class,
+    'iso_productvariantlist' => ProductVariantList::class,
+    'iso_productreader' => ProductReader::class,
+    'iso_favorites' => Favorites::class,
+    'iso_cart' => Cart::class,
+    'iso_checkout' => Checkout::class,
+    'iso_productfilter' => ProductFilter::class,
+    'iso_cumulativefilter' => CumulativeFilter::class,
+    'iso_categoryfilter' => CategoryFilter::class,
+    'iso_rangefilter' => RangeFilter::class,
+    'iso_orderhistory' => OrderHistory::class,
+    'iso_orderdetails' => OrderDetails::class,
+    'iso_wishlistmanager' => WishlistManager::class,
+    'iso_wishlistviewer' => WishlistViewer::class,
+    'iso_wishlistdetails' => WishlistDetails::class,
+    'iso_configswitcher' => ConfigSwitcher::class,
+    'iso_addressbook' => AddressBook::class,
+    'iso_relatedproducts' => RelatedProducts::class,
+    'iso_messages' => Messages::class,
+    'iso_shipping_calculator' => ShippingCalculator::class,
+    'iso_cart_address' => CartAddress::class,
+    'iso_trustedshops' => Trustedshops::class,
+];
 
-
-/**
+/*
  * Backend form fields
  */
-$GLOBALS['BE_FFL']['mediaManager']           = 'Isotope\Widget\MediaManager';
-$GLOBALS['BE_FFL']['inheritCheckbox']        = 'Isotope\Widget\InheritCheckBox';
+$GLOBALS['BE_FFL']['mediaManager'] = MediaManager::class;
+$GLOBALS['BE_FFL']['inheritCheckbox'] = InheritCheckBox::class;
 
-/**
+/*
  * Payment methods
  */
-\Isotope\Model\Payment::registerModelType('cash', 'Isotope\Model\Payment\Cash');
-\Isotope\Model\Payment::registerModelType('concardis', 'Isotope\Model\Payment\Concardis');
-\Isotope\Model\Payment::registerModelType('datatrans', 'Isotope\Model\Payment\Datatrans');
-\Isotope\Model\Payment::registerModelType('epay', 'Isotope\Model\Payment\EPay');
-\Isotope\Model\Payment::registerModelType('expercash', 'Isotope\Model\Payment\Expercash');
-\Isotope\Model\Payment::registerModelType('innopay', 'Isotope\Model\Payment\Innopay');
-\Isotope\Model\Payment::registerModelType('paybyway', 'Isotope\Model\Payment\Paybyway');
-\Isotope\Model\Payment::registerModelType('payone', 'Isotope\Model\Payment\Payone');
-\Isotope\Model\Payment::registerModelType('paypal', 'Isotope\Model\Payment\Paypal');
-\Isotope\Model\Payment::registerModelType('paypal_plus', 'Isotope\Model\Payment\PaypalPlus');
-\Isotope\Model\Payment::registerModelType('paypal_checkout', 'Isotope\Model\Payment\PaypalCheckout');
-\Isotope\Model\Payment::registerModelType('postfinance', 'Isotope\Model\Payment\Postfinance');
-\Isotope\Model\Payment::registerModelType('quickpay', 'Isotope\Model\Payment\QuickPay');
-\Isotope\Model\Payment::registerModelType('saferpay', 'Isotope\Model\Payment\Saferpay');
-\Isotope\Model\Payment::registerModelType('billpay_saferpay', 'Isotope\Model\Payment\BillpayWithSaferpay');
-\Isotope\Model\Payment::registerModelType('sparkasse', 'Isotope\Model\Payment\Sparkasse');
-\Isotope\Model\Payment::registerModelType('sofortueberweisung', 'Isotope\Model\Payment\Sofortueberweisung');
-\Isotope\Model\Payment::registerModelType('viveum', 'Isotope\Model\Payment\Viveum');
-\Isotope\Model\Payment::registerModelType('worldpay', 'Isotope\Model\Payment\Worldpay');
-\Isotope\Model\Payment::registerModelType('opp', 'Isotope\Model\Payment\OpenPaymentPlatform');
+Payment::registerModelType('cash', Cash::class);
+Payment::registerModelType('concardis', Concardis::class);
+Payment::registerModelType('datatrans', Datatrans::class);
+Payment::registerModelType('epay', EPay::class);
+Payment::registerModelType('expercash', Expercash::class);
+Payment::registerModelType('innopay', Innopay::class);
+Payment::registerModelType('paybyway', Paybyway::class);
+Payment::registerModelType('payone', Payone::class);
+Payment::registerModelType('paypal', Paypal::class);
+Payment::registerModelType('paypal_plus', PaypalPlus::class);
+Payment::registerModelType('paypal_checkout', PaypalCheckout::class);
+Payment::registerModelType('postfinance', Postfinance::class);
+Payment::registerModelType('quickpay', QuickPay::class);
+Payment::registerModelType('saferpay', Saferpay::class);
+Payment::registerModelType('billpay_saferpay', BillpayWithSaferpay::class);
+Payment::registerModelType('sparkasse', Sparkasse::class);
+Payment::registerModelType('sofortueberweisung', Sofortueberweisung::class);
+Payment::registerModelType('viveum', Viveum::class);
+Payment::registerModelType('worldpay', Worldpay::class);
+Payment::registerModelType('opp', OpenPaymentPlatform::class);
 
 if (class_exists('Mpay24\Mpay24')) {
-    \Isotope\Model\Payment::registerModelType('mpay24', 'Isotope\Model\Payment\Mpay24');
+    Payment::registerModelType('mpay24', Mpay24::class);
 }
 
 if (class_exists('Terminal42\SwissbillingApi\Client')) {
-    \Isotope\Model\Payment::registerModelType('swissbilling', 'Isotope\Model\Payment\Swissbilling');
+    Payment::registerModelType('swissbilling', Swissbilling::class);
 }
 
-/**
+/*
  * Shipping methods
  */
-\Isotope\Model\Shipping::registerModelType('flat', 'Isotope\Model\Shipping\Flat');
-\Isotope\Model\Shipping::registerModelType('group', 'Isotope\Model\Shipping\Group');
-\Isotope\Model\Shipping::registerModelType('product_price', 'Isotope\Model\Shipping\ProductPrice');
+Shipping::registerModelType('flat', Flat::class);
+Shipping::registerModelType('group', Shipping\Group::class);
+Shipping::registerModelType('product_price', Shipping\ProductPrice::class);
 
-/**
+/*
  * Documents
  */
-\Isotope\Model\Document::registerModelType('standard', 'Isotope\Model\Document\Standard');
+Document::registerModelType('standard', Standard::class);
 
-/**
+/*
  * Galleries
  */
-\Isotope\Model\Gallery::registerModelType('standard', 'Isotope\Model\Gallery\Standard');
-\Isotope\Model\Gallery::registerModelType('inline', 'Isotope\Model\Gallery\Inline');
+Gallery::registerModelType('standard', Gallery\Standard::class);
+Gallery::registerModelType('inline', Inline::class);
 
-/**
+/*
  * Products
  */
-\Isotope\Model\Product::registerModelType('standard', 'Isotope\Model\Product\Standard');
+Product::registerModelType('standard', Product\Standard::class);
 
-/**
+/*
  * Product collections
  */
-\Isotope\Model\ProductCollection::registerModelType('cart', 'Isotope\Model\ProductCollection\Cart');
-\Isotope\Model\ProductCollection::registerModelType('order', 'Isotope\Model\ProductCollection\Order');
-\Isotope\Model\ProductCollection::registerModelType('favorites', 'Isotope\Model\ProductCollection\Favorites');
-\Isotope\Model\ProductCollection::registerModelType('wishlist', 'Isotope\Model\ProductCollection\Wishlist');
+ProductCollection::registerModelType('cart', ProductCollection\Cart::class);
+ProductCollection::registerModelType('order', Order::class);
+ProductCollection::registerModelType('favorites', ProductCollection\Favorites::class);
+ProductCollection::registerModelType('wishlist', Wishlist::class);
 
-/**
+/*
  * Product collection surcharge
  */
-\Isotope\Model\ProductCollectionSurcharge::registerModelType('payment', 'Isotope\Model\ProductCollectionSurcharge\Payment');
-\Isotope\Model\ProductCollectionSurcharge::registerModelType('shipping', 'Isotope\Model\ProductCollectionSurcharge\Shipping');
-\Isotope\Model\ProductCollectionSurcharge::registerModelType('tax', 'Isotope\Model\ProductCollectionSurcharge\Tax');
+ProductCollectionSurcharge::registerModelType('payment', ProductCollectionSurcharge\Payment::class);
+ProductCollectionSurcharge::registerModelType('shipping', ProductCollectionSurcharge\Shipping::class);
+ProductCollectionSurcharge::registerModelType('tax', Tax::class);
 
-/**
+/*
  * Attributes
  */
-\Isotope\Model\Attribute::registerModelType('text', 'Isotope\Model\Attribute\TextField');
-\Isotope\Model\Attribute::registerModelType('textarea', 'Isotope\Model\Attribute\TextArea');
-\Isotope\Model\Attribute::registerModelType('select', 'Isotope\Model\Attribute\SelectMenu');
-\Isotope\Model\Attribute::registerModelType('radio', 'Isotope\Model\Attribute\RadioButton');
-\Isotope\Model\Attribute::registerModelType('checkbox', 'Isotope\Model\Attribute\CheckboxMenu');
-\Isotope\Model\Attribute::registerModelType('mediaManager', 'Isotope\Model\Attribute\MediaManager');
-\Isotope\Model\Attribute::registerModelType('fileTree', 'Isotope\Model\Attribute\FileTree');
-\Isotope\Model\Attribute::registerModelType('pageTree', 'Isotope\Model\Attribute\PageTree');
-\Isotope\Model\Attribute::registerModelType('downloads', 'Isotope\Model\Attribute\Downloads');
-\Isotope\Model\Attribute::registerModelType('upload', 'Isotope\Model\Attribute\Upload');
-\Isotope\Model\Attribute::registerModelType('media', 'Isotope\Model\Attribute\Media');
-\Isotope\Model\Attribute::registerModelType('quantitySurcharge', 'Isotope\Model\Attribute\QuantitySurcharge');
+Attribute::registerModelType('text', TextField::class);
+Attribute::registerModelType('textarea', TextArea::class);
+Attribute::registerModelType('select', SelectMenu::class);
+Attribute::registerModelType('radio', RadioButton::class);
+Attribute::registerModelType('checkbox', CheckboxMenu::class);
+Attribute::registerModelType('mediaManager', Attribute\MediaManager::class);
+Attribute::registerModelType('fileTree', FileTree::class);
+Attribute::registerModelType('pageTree', PageTree::class);
+Attribute::registerModelType('downloads', Downloads::class);
+Attribute::registerModelType('upload', Upload::class);
+Attribute::registerModelType('media', Media::class);
+Attribute::registerModelType('quantitySurcharge', QuantitySurcharge::class);
 
-if (\Composer\InstalledVersions::isInstalled('terminal42/contao-fineuploader')) {
-    \Isotope\Model\Attribute::registerModelType('fineUploader', 'Isotope\Model\Attribute\FineUploader');
+if (InstalledVersions::isInstalled('terminal42/contao-fineuploader')) {
+    Attribute::registerModelType('fineUploader', FineUploader::class);
 }
 
-/**
+/*
  * Product actions
  */
-\Isotope\Frontend\ProductAction\Registry::add(new \Isotope\Frontend\ProductAction\UpdateAction());
-\Isotope\Frontend\ProductAction\Registry::add(new \Isotope\Frontend\ProductAction\CartAction());
-\Isotope\Frontend\ProductAction\Registry::add(new \Isotope\Frontend\ProductAction\FavoriteAction());
-\Isotope\Frontend\ProductAction\Registry::add(new \Isotope\Frontend\ProductAction\WishlistAction());
+Registry::add(new UpdateAction());
+Registry::add(new CartAction());
+Registry::add(new FavoriteAction());
+Registry::add(new WishlistAction());
 
-/**
+/*
  * Notification Center notification types
  */
-$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['recipients'] = array('recipient_email', 'form_*', 'billing_address_email', 'shipping_address_email');
-$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['attachment_tokens'] = array('form_*', 'document');
-$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['email_text'] = array(
+$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['recipients'] = ['recipient_email', 'form_*', 'billing_address_email', 'shipping_address_email'];
+$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['attachment_tokens'] = ['form_*', 'document'];
+$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['email_text'] = [
     'uniqid',
     'order_status',
     'order_status_old',
@@ -324,19 +426,19 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_statu
     'shipping_*',
     'config_*', // Store configuration model fields
     'member_*', // Member model fields
-);
+];
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['email_subject'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['email_text'];
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['email_html'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['email_text'];
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['email_replyTo'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['recipients'];
-$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['email_sender_name'] = array('recipient_email', 'admin_email', 'admin_name', 'config_*');
-$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['email_sender_address'] = array('recipient_email', 'admin_email', 'config_*');
+$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['email_sender_name'] = ['recipient_email', 'admin_email', 'admin_name', 'config_*'];
+$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['email_sender_address'] = ['recipient_email', 'admin_email', 'config_*'];
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['email_recipient_cc'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['recipients'];
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['email_recipient_bcc'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['recipients'];
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['file_name'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['email_text'];
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['file_content'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['email_text'];
 
-$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_memberaddress_change']['recipients'] = array('admin_email', 'address_email', 'member_email');
-$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_memberaddress_change']['email_subject'] = array('admin_email', 'address_*', 'address_old_*', 'member_*', 'config_*');
+$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_memberaddress_change']['recipients'] = ['admin_email', 'address_email', 'member_email'];
+$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_memberaddress_change']['email_subject'] = ['admin_email', 'address_*', 'address_old_*', 'member_*', 'config_*'];
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_memberaddress_change']['email_text'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_memberaddress_change']['email_subject'];
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_memberaddress_change']['email_sender_name'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_memberaddress_change']['email_subject'];
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_memberaddress_change']['email_sender_address'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_memberaddress_change']['email_subject'];
@@ -344,68 +446,66 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_memberaddre
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_memberaddress_change']['file_name'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_memberaddress_change']['email_subject'];
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_memberaddress_change']['file_content'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_memberaddress_change']['email_subject'];
 
-/**
+/*
  * Models
  */
-$GLOBALS['TL_MODELS'][\Isotope\Model\Address::getTable()]                       = 'Isotope\Model\Address';
-$GLOBALS['TL_MODELS'][\Isotope\Model\Attribute::getTable()]                     = 'Isotope\Model\Attribute';
-$GLOBALS['TL_MODELS'][\Isotope\Model\AttributeOption::getTable()]               = 'Isotope\Model\AttributeOption';
-$GLOBALS['TL_MODELS'][\Isotope\Model\BasePrice::getTable()]                     = 'Isotope\Model\BasePrice';
-$GLOBALS['TL_MODELS'][\Isotope\Model\Config::getTable()]                        = 'Isotope\Model\Config';
-$GLOBALS['TL_MODELS'][\Isotope\Model\Document::getTable()]                      = 'Isotope\Model\Document';
-$GLOBALS['TL_MODELS'][\Isotope\Model\Download::getTable()]                      = 'Isotope\Model\Download';
-$GLOBALS['TL_MODELS'][\Isotope\Model\Gallery::getTable()]                       = 'Isotope\Model\Gallery';
-$GLOBALS['TL_MODELS'][\Isotope\Model\Group::getTable()]                         = 'Isotope\Model\Group';
-$GLOBALS['TL_MODELS'][\Isotope\Model\Label::getTable()]                         = 'Isotope\Model\Label';
-$GLOBALS['TL_MODELS'][\Isotope\Model\OrderStatus::getTable()]                   = 'Isotope\Model\OrderStatus';
-$GLOBALS['TL_MODELS'][\Isotope\Model\Payment::getTable()]                       = 'Isotope\Model\Payment';
-$GLOBALS['TL_MODELS'][\Isotope\Model\Product::getTable()]                       = 'Isotope\Model\Product';
-$GLOBALS['TL_MODELS'][\Isotope\Model\ProductCategory::getTable()]               = 'Isotope\Model\ProductCategory';
-$GLOBALS['TL_MODELS'][\Isotope\Model\ProductCollection::getTable()]             = 'Isotope\Model\ProductCollection';
-$GLOBALS['TL_MODELS'][\Isotope\Model\ProductCollectionDownload::getTable()]     = 'Isotope\Model\ProductCollectionDownload';
-$GLOBALS['TL_MODELS'][\Isotope\Model\ProductCollectionItem::getTable()]         = 'Isotope\Model\ProductCollectionItem';
-$GLOBALS['TL_MODELS'][\Isotope\Model\ProductCollectionLog::getTable()]          = 'Isotope\Model\ProductCollectionLog';
-$GLOBALS['TL_MODELS'][\Isotope\Model\ProductCollectionSurcharge::getTable()]    = 'Isotope\Model\ProductCollectionSurcharge';
-$GLOBALS['TL_MODELS'][\Isotope\Model\ProductPrice::getTable()]                  = 'Isotope\Model\ProductPrice';
-$GLOBALS['TL_MODELS'][\Isotope\Model\ProductCache::getTable()]                  = 'Isotope\Model\ProductCache';
-$GLOBALS['TL_MODELS'][\Isotope\Model\ProductType::getTable()]                   = 'Isotope\Model\ProductType';
-$GLOBALS['TL_MODELS'][\Isotope\Model\RelatedCategory::getTable()]               = 'Isotope\Model\RelatedCategory';
-$GLOBALS['TL_MODELS'][\Isotope\Model\RelatedProduct::getTable()]                = 'Isotope\Model\RelatedProduct';
-$GLOBALS['TL_MODELS'][\Isotope\Model\RequestCache::getTable()]                  = 'Isotope\Model\RequestCache';
-$GLOBALS['TL_MODELS'][\Isotope\Model\Shipping::getTable()]                      = 'Isotope\Model\Shipping';
-$GLOBALS['TL_MODELS'][\Isotope\Model\TaxClass::getTable()]                      = 'Isotope\Model\TaxClass';
-$GLOBALS['TL_MODELS'][\Isotope\Model\TaxRate::getTable()]                       = 'Isotope\Model\TaxRate';
+$GLOBALS['TL_MODELS'][Address::getTable()] = Address::class;
+$GLOBALS['TL_MODELS'][Attribute::getTable()] = Attribute::class;
+$GLOBALS['TL_MODELS'][AttributeOption::getTable()] = AttributeOption::class;
+$GLOBALS['TL_MODELS'][BasePrice::getTable()] = BasePrice::class;
+$GLOBALS['TL_MODELS'][Config::getTable()] = Config::class;
+$GLOBALS['TL_MODELS'][Document::getTable()] = Document::class;
+$GLOBALS['TL_MODELS'][Download::getTable()] = Download::class;
+$GLOBALS['TL_MODELS'][Gallery::getTable()] = Gallery::class;
+$GLOBALS['TL_MODELS'][Group::getTable()] = Group::class;
+$GLOBALS['TL_MODELS'][Label::getTable()] = Label::class;
+$GLOBALS['TL_MODELS'][OrderStatus::getTable()] = OrderStatus::class;
+$GLOBALS['TL_MODELS'][Payment::getTable()] = Payment::class;
+$GLOBALS['TL_MODELS'][Product::getTable()] = Product::class;
+$GLOBALS['TL_MODELS'][ProductCategory::getTable()] = ProductCategory::class;
+$GLOBALS['TL_MODELS'][ProductCollection::getTable()] = ProductCollection::class;
+$GLOBALS['TL_MODELS'][ProductCollectionDownload::getTable()] = ProductCollectionDownload::class;
+$GLOBALS['TL_MODELS'][ProductCollectionItem::getTable()] = ProductCollectionItem::class;
+$GLOBALS['TL_MODELS'][ProductCollectionLog::getTable()] = ProductCollectionLog::class;
+$GLOBALS['TL_MODELS'][ProductCollectionSurcharge::getTable()] = ProductCollectionSurcharge::class;
+$GLOBALS['TL_MODELS'][ProductPrice::getTable()] = ProductPrice::class;
+$GLOBALS['TL_MODELS'][ProductCache::getTable()] = ProductCache::class;
+$GLOBALS['TL_MODELS'][ProductType::getTable()] = ProductType::class;
+$GLOBALS['TL_MODELS'][RelatedCategory::getTable()] = RelatedCategory::class;
+$GLOBALS['TL_MODELS'][RelatedProduct::getTable()] = RelatedProduct::class;
+$GLOBALS['TL_MODELS'][RequestCache::getTable()] = RequestCache::class;
+$GLOBALS['TL_MODELS'][Shipping::getTable()] = Shipping::class;
+$GLOBALS['TL_MODELS'][TaxClass::getTable()] = TaxClass::class;
+$GLOBALS['TL_MODELS'][TaxRate::getTable()] = TaxRate::class;
 
-/**
+/*
  * Checkout steps
  */
-$GLOBALS['ISO_CHECKOUTSTEP'] = array
-(
-    'address'   => array('Isotope\CheckoutStep\BillingAddress', 'Isotope\CheckoutStep\ShippingAddress'),
-    'shipping'  => array('Isotope\CheckoutStep\ShippingMethod'),
-    'payment'   => array('Isotope\CheckoutStep\PaymentMethod'),
-    'review'    => array('Isotope\CheckoutStep\OrderInfo', 'Isotope\CheckoutStep\OrderProducts'),
-);
+$GLOBALS['ISO_CHECKOUTSTEP'] = [
+    'address' => [BillingAddress::class, ShippingAddress::class],
+    'shipping' => [ShippingMethod::class],
+    'payment' => [PaymentMethod::class],
+    'review' => [OrderInfo::class, OrderProducts::class],
+];
 
-/**
+/*
  * Integrity checks
  */
-$GLOBALS['ISO_INTEGRITY'] = array
-(
-    '\Isotope\IntegrityCheck\PriceTable',
-    '\Isotope\IntegrityCheck\VariantPrices',
-    '\Isotope\IntegrityCheck\VariantOrphans',
-    '\Isotope\IntegrityCheck\AttributeOptionOrphans',
-    '\Isotope\IntegrityCheck\MultilingualAttributes',
-    '\Isotope\IntegrityCheck\UnusedRules',
-);
+$GLOBALS['ISO_INTEGRITY'] = [
+    PriceTable::class,
+    VariantPrices::class,
+    VariantOrphans::class,
+    AttributeOptionOrphans::class,
+    MultilingualAttributes::class,
+    UnusedRules::class,
+];
 
-/**
+/*
  * Vat No Validation
  */
-$GLOBALS['ISO_VAT']['eu_vies'] = '\Isotope\VatNoValidator\EuViesValidator';
+$GLOBALS['ISO_VAT']['eu_vies'] = EuViesValidator::class;
 
-/**
+/*
  * Permissions are access settings for user and groups (fields in tl_user and tl_user_group)
  */
 $GLOBALS['TL_PERMISSIONS'][] = 'iso_modules';
@@ -425,91 +525,87 @@ $GLOBALS['TL_PERMISSIONS'][] = 'iso_groups';
 $GLOBALS['TL_PERMISSIONS'][] = 'iso_groupp';
 $GLOBALS['TL_PERMISSIONS'][] = 'iso_member_groups';
 
-
-/**
+/*
  * Allow to delete the cache in maintenance module
  */
-$GLOBALS['TL_PURGE']['tables']['iso_productcache'] = array(
-    'callback'  => array('\Isotope\Backend', 'truncateProductCache'),
-    'affected'  => array('tl_iso_productcache'),
-);
+$GLOBALS['TL_PURGE']['tables']['iso_productcache'] = [
+    'callback' => [Backend::class, 'truncateProductCache'],
+    'affected' => ['tl_iso_productcache'],
+];
 
-$GLOBALS['TL_PURGE']['tables']['iso_requestcache'] = array(
-    'callback'  => array('\Isotope\Backend', 'truncateRequestCache'),
-    'affected'  => array('tl_iso_requestcache'),
-);
+$GLOBALS['TL_PURGE']['tables']['iso_requestcache'] = [
+    'callback' => [Backend::class, 'truncateRequestCache'],
+    'affected' => ['tl_iso_requestcache'],
+];
 
-
-/**
+/*
  * Number formatting
  */
-$GLOBALS['ISO_NUM']["10000.00"]     = array(2, '.', "");
-$GLOBALS['ISO_NUM']["10,000.00"]    = array(2, '.', ",");
-$GLOBALS['ISO_NUM']["10.000,00"]    = array(2, ',', ".");
-$GLOBALS['ISO_NUM']["10'000.00"]    = array(2, '.', "'");
+$GLOBALS['ISO_NUM']['10000.00'] = [2, '.', ''];
+$GLOBALS['ISO_NUM']['10,000.00'] = [2, '.', ','];
+$GLOBALS['ISO_NUM']['10.000,00'] = [2, ',', '.'];
+$GLOBALS['ISO_NUM']["10'000.00"] = [2, '.', "'"];
 
-
-/**
+/*
  * Hooks
  */
-if (\Contao\Config::getInstance()->isComplete()) {
-    $GLOBALS['TL_HOOKS']['loadDataContainer'][]             = array('Isotope\Backend\Product\DcaManager', 'initialize');
-    $GLOBALS['TL_HOOKS']['getAttributesFromDca'][]          = array('Isotope\Backend\Product\DcaManager', 'addOptionsFromAttribute');
-    $GLOBALS['TL_HOOKS']['addCustomRegexp'][]               = array('Isotope\Isotope', 'validateRegexp');
-    $GLOBALS['TL_HOOKS']['getPageIdFromUrl'][]              = array('Isotope\Frontend', 'loadReaderPageFromUrl');
-    $GLOBALS['TL_HOOKS']['getPageLayout'][]                 = array('Isotope\Frontend', 'overrideReaderPage');
-    $GLOBALS['TL_HOOKS']['getArticles'][]                   = array('Isotope\Frontend', 'overrideArticles');
-    $GLOBALS['TL_HOOKS']['getSearchablePages'][]            = array('Isotope\Frontend', 'addProductsToSearchIndex');
-    $GLOBALS['TL_HOOKS']['replaceInsertTags'][]             = array('Isotope\Frontend', 'replaceIsotopeTags');
-    $GLOBALS['TL_HOOKS']['modifyFrontendPage'][]            = array('Isotope\Frontend', 'injectScripts');
-    $GLOBALS['TL_HOOKS']['executePreActions'][]             = array('Isotope\Backend', 'executePreActions');
-    $GLOBALS['TL_HOOKS']['executePostActions'][]            = array('Isotope\Backend', 'executePostActions');
-    $GLOBALS['TL_HOOKS']['getSystemMessages'][]             = array('Isotope\Backend', 'getOrderMessages');
-    $GLOBALS['TL_HOOKS']['getArticle'][]                    = array('Isotope\Frontend', 'storeCurrentArticle');
-    $GLOBALS['TL_HOOKS']['generateBreadcrumb'][]            = array('Isotope\Frontend', 'addProductToBreadcrumb');
+if (Contao\Config::getInstance()->isComplete()) {
+    $GLOBALS['TL_HOOKS']['loadDataContainer'][] = [DcaManager::class, 'initialize'];
+    $GLOBALS['TL_HOOKS']['getAttributesFromDca'][] = [DcaManager::class, 'addOptionsFromAttribute'];
+    $GLOBALS['TL_HOOKS']['addCustomRegexp'][] = [Isotope::class, 'validateRegexp'];
+    $GLOBALS['TL_HOOKS']['getPageIdFromUrl'][] = [Frontend::class, 'loadReaderPageFromUrl'];
+    $GLOBALS['TL_HOOKS']['getPageLayout'][] = [Frontend::class, 'overrideReaderPage'];
+    $GLOBALS['TL_HOOKS']['getArticles'][] = [Frontend::class, 'overrideArticles'];
+    $GLOBALS['TL_HOOKS']['getSearchablePages'][] = [Frontend::class, 'addProductsToSearchIndex'];
+    $GLOBALS['TL_HOOKS']['replaceInsertTags'][] = [Frontend::class, 'replaceIsotopeTags'];
+    $GLOBALS['TL_HOOKS']['modifyFrontendPage'][] = [Frontend::class, 'injectScripts'];
+    $GLOBALS['TL_HOOKS']['executePreActions'][] = [Backend::class, 'executePreActions'];
+    $GLOBALS['TL_HOOKS']['executePostActions'][] = [Backend::class, 'executePostActions'];
+    $GLOBALS['TL_HOOKS']['getSystemMessages'][] = [Backend::class, 'getOrderMessages'];
+    $GLOBALS['TL_HOOKS']['getArticle'][] = [Frontend::class, 'storeCurrentArticle'];
+    $GLOBALS['TL_HOOKS']['generateBreadcrumb'][] = [Frontend::class, 'addProductToBreadcrumb'];
 
-    $GLOBALS['ISO_HOOKS']['buttons'][]                      = array('Isotope\Isotope', 'defaultButtons');
-    $GLOBALS['ISO_HOOKS']['findSurchargesForCollection'][]  = array('Isotope\Frontend', 'findShippingAndPaymentSurcharges');
-    $GLOBALS['ISO_HOOKS']['postCheckout'][]                 = array('Isotope\Analytics', 'trackOrder');
-    $GLOBALS['ISO_HOOKS']['postCheckout'][]                 = array('Isotope\EventListener\PostCheckoutUploads', 'onPostCheckout');
-    $GLOBALS['ISO_HOOKS']['calculatePrice'][]               = array('Isotope\Frontend', 'addOptionsPrice');
-    $GLOBALS['ISO_HOOKS']['calculatePrice'][]               = array('Isotope\EventListener\CalculatePrice\QuantitySurchagePriceListener', '__invoke');
-    $GLOBALS['ISO_HOOKS']['orderConditions'][]              = array('Isotope\Model\Payment\BillpayWithSaferpay', 'addOrderCondition');
-    $GLOBALS['ISO_HOOKS']['generateDocumentTemplate'][]     = array('Isotope\Model\Payment\BillpayWithSaferpay', 'addToDocumentTemplate');
-    $GLOBALS['ISO_HOOKS']['initializePostsale'][]           = array('Isotope\Frontend', 'setPostsaleModuleSettings');
+    $GLOBALS['ISO_HOOKS']['buttons'][] = [Isotope::class, 'defaultButtons'];
+    $GLOBALS['ISO_HOOKS']['findSurchargesForCollection'][] = [Frontend::class, 'findShippingAndPaymentSurcharges'];
+    $GLOBALS['ISO_HOOKS']['postCheckout'][] = ['Isotope\Analytics', 'trackOrder'];
+    $GLOBALS['ISO_HOOKS']['postCheckout'][] = [PostCheckoutUploads::class, 'onPostCheckout'];
+    $GLOBALS['ISO_HOOKS']['calculatePrice'][] = [Frontend::class, 'addOptionsPrice'];
+    $GLOBALS['ISO_HOOKS']['calculatePrice'][] = [QuantitySurchagePriceListener::class, '__invoke'];
+    $GLOBALS['ISO_HOOKS']['orderConditions'][] = [BillpayWithSaferpay::class, 'addOrderCondition'];
+    $GLOBALS['ISO_HOOKS']['generateDocumentTemplate'][] = [BillpayWithSaferpay::class, 'addToDocumentTemplate'];
+    $GLOBALS['ISO_HOOKS']['initializePostsale'][] = [Frontend::class, 'setPostsaleModuleSettings'];
 
     // changelanguage
-    $GLOBALS['TL_HOOKS']['changelanguageNavigation'][]      = array('Isotope\EventListener\ChangeLanguageListener', '__invoke');
+    $GLOBALS['TL_HOOKS']['changelanguageNavigation'][] = [ChangeLanguageListener::class, '__invoke'];
 
     // Set module and module id for payment and/or shipping modules
-    if (\Contao\System::getContainer()->get('contao.routing.scope_matcher')->isFrontendRequest(\Contao\System::getContainer()->get('request_stack')->getCurrentRequest() ?? \Symfony\Component\HttpFoundation\Request::create(''))) {
+    if (System::getContainer()->get('contao.routing.scope_matcher')->isFrontendRequest(System::getContainer()->get('request_stack')->getCurrentRequest() ?? Request::create(''))) {
         // Only limit countries in FE
-        $GLOBALS['TL_HOOKS']['loadDataContainer'][]         = array('Isotope\Backend\Member\Callback', 'limitCountries');
+        $GLOBALS['TL_HOOKS']['loadDataContainer'][] = [Backend\Member\Callback::class, 'limitCountries'];
     }
 
-    if (\Contao\System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest(\Contao\System::getContainer()->get('request_stack')->getCurrentRequest() ?? \Symfony\Component\HttpFoundation\Request::create(''))) {
+    if (System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest(System::getContainer()->get('request_stack')->getCurrentRequest() ?? Request::create(''))) {
         // Type agent help is only needed in back end
-        $GLOBALS['TL_HOOKS']['loadDataContainer'][]         = array('Isotope\Backend', 'loadTypeAgentHelp');
-        $GLOBALS['TL_HOOKS']['loadLanguageFile'][]          = array('Isotope\Backend\ProductType\Help', 'initializeWizard');
+        $GLOBALS['TL_HOOKS']['loadDataContainer'][] = [Backend::class, 'loadTypeAgentHelp'];
+        $GLOBALS['TL_HOOKS']['loadLanguageFile'][] = [Help::class, 'initializeWizard'];
 
         // Adjust the product groups manager
-        $GLOBALS['TL_HOOKS']['parseTemplate'][]             = array('Isotope\Backend', 'adjustGroupsManager');
-        $GLOBALS['TL_HOOKS']['parseTemplate'][]             = array('Isotope\Backend\SubtableVersion', 'removeFromWelcomeScreen');
+        $GLOBALS['TL_HOOKS']['parseTemplate'][] = [Backend::class, 'adjustGroupsManager'];
+        $GLOBALS['TL_HOOKS']['parseTemplate'][] = [SubtableVersion::class, 'removeFromWelcomeScreen'];
 
         // Enable the module tables in setup
-        $GLOBALS['TL_HOOKS']['initializeSystem'][]          = array('Isotope\BackendModule\InitializeListener', 'enableModuleTablesInSetup');
+        $GLOBALS['TL_HOOKS']['initializeSystem'][] = [InitializeListener::class, 'enableModuleTablesInSetup'];
     }
 }
 
-
-/**
+/*
  * Cron Jobs
  */
-$GLOBALS['TL_CRON']['daily'][] = array('Isotope\Automator', 'deleteOldCarts');
-$GLOBALS['TL_CRON']['daily'][] = array('Isotope\Automator', 'deleteOldOrders');
-$GLOBALS['TL_CRON']['daily'][] = array('Isotope\Automator', 'convertCurrencies');
+$GLOBALS['TL_CRON']['daily'][] = [Automator::class, 'deleteOldCarts'];
+$GLOBALS['TL_CRON']['daily'][] = [Automator::class, 'deleteOldOrders'];
+$GLOBALS['TL_CRON']['daily'][] = [Automator::class, 'convertCurrencies'];
 
-/**
+/*
  * Default configuration
  */
 $GLOBALS['TL_CONFIG']['iso_cartTimeout'] = 2_592_000;

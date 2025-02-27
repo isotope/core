@@ -1,67 +1,49 @@
 <?php
 
-/*
- * Isotope eCommerce for Contao Open Source CMS
- *
- * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
- *
- * @link       https://isotopeecommerce.org
- * @license    https://opensource.org/licenses/lgpl-3.0.html
- */
+use Contao\DC_Table;
+use Isotope\Model\Download;
 
-/**
+/*
  * Table tl_iso_product_collection_download
  */
-$GLOBALS['TL_DCA']['tl_iso_product_collection_download'] = array
-(
-
+$GLOBALS['TL_DCA']['tl_iso_product_collection_download'] = [
     // Config
-    'config' => array
-    (
-        'dataContainer' => \Contao\DC_Table::class,
-        'closed'                => true,
-        'notEditable'           => true,
-        'ptable'                => 'tl_iso_product_collection_item',
-        'sql'                   => array
-        (
-            'keys' => array
-            (
+    'config' => [
+        'dataContainer' => DC_Table::class,
+        'closed' => true,
+        'notEditable' => true,
+        'ptable' => 'tl_iso_product_collection_item',
+        'sql' => [
+            'keys' => [
                 'id' => 'primary',
                 'pid' => 'index',
-            )
-        ),
-    ),
+            ],
+        ],
+    ],
 
     // Fields
-    'fields' => array
-    (
-        'id' => array
-        (
-            'sql'               => "int(10) unsigned NOT NULL auto_increment",
-        ),
-        'pid' => array
-        (
-            'foreignKey'        => 'tl_iso_product_collection_item.name',
-            'sql'               => "int(10) unsigned NOT NULL default '0'",
-            'relation'          => array('type'=>'belongsTo', 'load'=>'lazy'),
-        ),
-        'tstamp' => array
-        (
-            'sql'               => "int(10) unsigned NOT NULL default '0'",
-        ),
-        'download_id' => array
-        (
-            'foreignKey'        => \Isotope\Model\Download::getTable().'.id',
-            'sql'               => "int(10) unsigned NOT NULL default '0'",
-            'relation'          => array('type'=>'hasOne', 'load'=>'eager'),
-        ),
-        'downloads_remaining' => array
-        (
-            'sql'               => "varchar(10) NOT NULL default ''",
-        ),
-        'expires' => array
-        (
-            'sql'               => "varchar(10) NOT NULL default ''",
-        ),
-    )
-);
+    'fields' => [
+        'id' => [
+            'sql' => 'int(10) unsigned NOT NULL auto_increment',
+        ],
+        'pid' => [
+            'foreignKey' => 'tl_iso_product_collection_item.name',
+            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'relation' => ['type' => 'belongsTo', 'load' => 'lazy'],
+        ],
+        'tstamp' => [
+            'sql' => "int(10) unsigned NOT NULL default '0'",
+        ],
+        'download_id' => [
+            'foreignKey' => Download::getTable().'.id',
+            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'relation' => ['type' => 'hasOne', 'load' => 'eager'],
+        ],
+        'downloads_remaining' => [
+            'sql' => "varchar(10) NOT NULL default ''",
+        ],
+        'expires' => [
+            'sql' => "varchar(10) NOT NULL default ''",
+        ],
+    ],
+];

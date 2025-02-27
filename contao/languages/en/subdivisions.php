@@ -10,7 +10,8 @@
  */
 
 /**
- * Subdivisions (regions) by country code
+ * Subdivisions (regions) by country code.
+ *
  * @see http://en.wikipedia.org/wiki/ISO_3166-2
  * @see http://docs.equest.com/eQuestCountryAndStateCodes.xls
  */
@@ -4061,7 +4062,6 @@ $GLOBALS['TL_LANG']['DIV']['zw']['ZW-MV'] = 'Masvingo';
 $GLOBALS['TL_LANG']['DIV']['zw']['ZW-MN'] = 'Matabeleland North';
 $GLOBALS['TL_LANG']['DIV']['zw']['ZW-MS'] = 'Matabeleland South';
 $GLOBALS['TL_LANG']['DIV']['zw']['ZW-MI'] = 'Midlands';
-
 
 $GLOBALS['TL_LANG']['DIV']['ax']['AX-AX'] = 'Åland Islands';
 $GLOBALS['TL_LANG']['DIV']['cw']['CW-CW'] = 'Curaçao';

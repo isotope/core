@@ -1,14 +1,5 @@
 <?php
 
-/*
- * Isotope eCommerce for Contao Open Source CMS
- *
- * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
- *
- * @link       https://isotopeecommerce.org
- * @license    https://opensource.org/licenses/lgpl-3.0.html
- */
-
 use Contao\CoreBundle\DataContainer\PaletteManipulator;
 
 PaletteManipulator::create()
@@ -18,18 +9,15 @@ PaletteManipulator::create()
     ->applyToPalette('default', 'tl_settings')
 ;
 
-
-/**
+/*
  * Add fields to tl_settings
  */
-$GLOBALS['TL_DCA']['tl_settings']['fields']['iso_cartTimeout'] = array
-(
-    'inputType'             => 'text',
-    'eval'                  => array('mandatory'=>true, 'rgxp'=>'digit', 'nospace'=>true, 'tl_class'=>'w50'),
-);
+$GLOBALS['TL_DCA']['tl_settings']['fields']['iso_cartTimeout'] = [
+    'inputType' => 'text',
+    'eval' => ['mandatory' => true, 'rgxp' => 'digit', 'nospace' => true, 'tl_class' => 'w50'],
+];
 
-$GLOBALS['TL_DCA']['tl_settings']['fields']['iso_orderTimeout'] = array
-(
-    'inputType'             => 'text',
-    'eval'                  => array('mandatory'=>true, 'rgxp'=>'digit', 'nospace'=>true, 'tl_class'=>'w50'),
-);
+$GLOBALS['TL_DCA']['tl_settings']['fields']['iso_orderTimeout'] = [
+    'inputType' => 'text',
+    'eval' => ['mandatory' => true, 'rgxp' => 'digit', 'nospace' => true, 'tl_class' => 'w50'],
+];

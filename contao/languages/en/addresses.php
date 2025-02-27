@@ -9,7 +9,7 @@
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
-/**
+/*
  * Address formatting for different countries
  *
  * ATTENTION: This file is not supposed to be translated.
