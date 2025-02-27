@@ -1098,10 +1098,6 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
 
         if ($objJumpTo->iso_readerMode !== 'none') {
             $strParams = '/'.($this->arrData['alias'] ?: $this->getProductId());
-
-            if (!$GLOBALS['TL_CONFIG']['useAutoItem'] || !\in_array('product', $GLOBALS['TL_AUTO_ITEM'], true)) {
-                $strParams = '/product'.$strParams;
-            }
         }
 
         $url = $absolute ? $objJumpTo->getAbsoluteUrl($strParams) : $objJumpTo->getFrontendUrl($strParams);

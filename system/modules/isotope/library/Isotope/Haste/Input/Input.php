@@ -26,15 +26,6 @@ class Input extends \Contao\Input
      */
     public static function getAutoItem($strKey, $blnDecodeEntities=false, $blnKeepUnused=false)
     {
-        if (($GLOBALS['TL_CONFIG']['useAutoItem'] ?? false) && isset($GLOBALS['TL_AUTO_ITEM']) && in_array($strKey, $GLOBALS['TL_AUTO_ITEM'])) {
-            $strKey = 'auto_item';
-        }
-
-        // Fix "unused" bug in Contao Core (see https://github.com/contao/core/issues/7185)
-        if (!$blnKeepUnused) {
-            unset(static::$arrUnusedGet[$strKey]);
-        }
-
-        return static::get($strKey, $blnDecodeEntities, $blnKeepUnused);
+        return static::get('auto_item', $blnDecodeEntities, $blnKeepUnused);
     }
 }

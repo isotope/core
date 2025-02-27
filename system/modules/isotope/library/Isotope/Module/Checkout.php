@@ -728,10 +728,6 @@ class Checkout extends Module
             $objTarget = $objPage;
         }
 
-        if (!$GLOBALS['TL_CONFIG']['useAutoItem'] || !\in_array('step', $GLOBALS['TL_AUTO_ITEM'], true)) {
-            $strStep = 'step/' . $strStep;
-        }
-
         $strUrl = $absolute ? $objTarget->getAbsoluteUrl('/' . $strStep) : $objTarget->getFrontendUrl('/' . $strStep);
 
         if (null !== $objCollection) {

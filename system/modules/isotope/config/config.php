@@ -518,14 +518,6 @@ $GLOBALS['TL_CRON']['daily'][] = array('Isotope\Automator', 'deleteOldCarts');
 $GLOBALS['TL_CRON']['daily'][] = array('Isotope\Automator', 'deleteOldOrders');
 $GLOBALS['TL_CRON']['daily'][] = array('Isotope\Automator', 'convertCurrencies');
 
-
-/**
- * Auto_item keywords
- */
-$GLOBALS['TL_AUTO_ITEM'][] = 'product';
-$GLOBALS['TL_AUTO_ITEM'][] = 'step';
-
-
 /**
  * Default configuration
  */

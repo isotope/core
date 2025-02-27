@@ -98,16 +98,10 @@ class Frontend extends \Contao\Frontend
      */
     public function loadReaderPageFromUrl($arrFragments)
     {
-        $strKey   = 'product';
         $strAlias = '';
 
-        // Find products alias. Can't use Input because they're not yet initialized
-        if ($GLOBALS['TL_CONFIG']['useAutoItem'] && \in_array($strKey, $GLOBALS['TL_AUTO_ITEM'], true)) {
-            $strKey = 'auto_item';
-        }
-
         for ($i = 1, $c = \count($arrFragments); $i < $c; $i += 2) {
-            if ($arrFragments[$i] == $strKey) {
+            if ('auto_item' === $arrFragments[$i]) {
                 $strAlias = $arrFragments[$i + 1];
             }
         }
