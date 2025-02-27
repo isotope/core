@@ -1,42 +1,36 @@
-(function(_win, _doc, jQuery, MooTools) {
+(function(_win, _doc) {
     "use strict";
 
-    if (!jQuery && !MooTools) {
-        var polyfill = _doc.createElement('script');
-        polyfill.src = 'system/modules/isotope/assets/js/polyfills.min.js';
+    function formToQueryString(form) {
+        var queryString = [],
+            fields = form.querySelectorAll('input, select, textarea'),
+            i, x, o, el, type, value, options;
 
-        var script = _doc.getElementsByTagName('script')[0];
-        script.parentNode.insertBefore(polyfill, script);
-    }
+        for (i=0; i<fields.length; i++) {
+            el = fields[i];
+            type = el.type.toLowerCase();
+            if (!el.name || el.disabled || type == 'submit' || type == 'reset' || type == 'file' || type == 'image') continue;
 
-    function addEventListener(el, name, callback) {
-        if (jQuery) {
-            jQuery(el).on(name, callback);
-        } else if (MooTools) {
-            el.addEvent(name, callback);
-        } else {
-            el.addEventListener(name, callback, false);
+            value = [];
+
+            if (el.tagName == 'SELECT') {
+                options = el.querySelectorAll('option');
+                for (o=0; o<options.length; o++) {
+                    if (options[o].selected) {
+                        value.push(options[o].value);
+                    }
+                }
+
+            } else if ((type != 'radio' && type != 'checkbox') || el.checked) {
+                value.push(el.value);
+            }
+
+            for (x=0; x<value.length; x++) {
+                if (typeof value[x] != 'undefined') queryString.push(encodeURIComponent(el.name) + '=' + encodeURIComponent(value[x]));
+            }
         }
-    }
 
-    function dispatchEvent(name, data) {
-        if (jQuery) {
-            jQuery(window).trigger(jQuery.Event(name, data));
-        } else if (MooTools) {
-            window.fireEvent(name, data);
-        } else {
-            window.dispatchEvent(new CustomEvent(name, data));
-        }
-    }
-
-    function serializeForm(form) {
-        if (jQuery) {
-            return jQuery(form).serialize();
-        } else if (MooTools) {
-            return form.toQueryString();
-        } else {
-            return formToQueryString(form);
-        }
+        return queryString.join('&');
     }
 
     _win.Isotope = _win.Isotope || {
@@ -66,8 +60,8 @@
             }
 
             if (btnClose) {
-                addEventListener(overlay, 'click', Isotope.hideBox);
-                addEventListener(box, 'click', Isotope.hideBox);
+                overlay.addEventListener('click', Isotope.hideBox, false);
+                box.addEventListener('click', Isotope.hideBox, false);
                 if (!box.className.search(/btnClose/) != -1) {
                     box.className = box.className + ' btnClose';
                 }
@@ -128,19 +122,19 @@
                 } catch (e) {}
             }
 
-            addEventListener(form, 'submit', function () {
+            form.addEventListener('submit', function () {
                 disableButton('nextStep');
                 disableButton('previousStep');
 
                 setTimeout(function () {
                     window.location.reload()
                 }, 30000);
-            });
+            }, false);
         },
 
         initAwesomplete: function (id, searchField) {
             var requested = false;
-            addEventListener(searchField, 'focus', function() {
+            searchField.addEventListener('focus', function() {
                 if (requested) return false;
 
                 requested = true;
@@ -161,7 +155,7 @@
                 };
 
                 xhr.send();
-            });
+            }, false);
         }
     };
 
@@ -242,7 +236,7 @@
                     _doc.head.removeChild(script);
                 }
 
-                dispatchEvent('isotopeProductReload', { detail: config });
+                window.dispatchEvent(new CustomEvent('isotopeProductReload', { detail: config }));
             }
 
             function submitForm() {
@@ -258,7 +252,7 @@
                 for (i=0; i<config.attributes.length; i++) {
                     el = _doc.getElementById(('ctrl_'+config.attributes[i]+'_'+config.formId));
                     if (el) {
-                        addEventListener(el, 'change', submitForm);
+                        el.addEventListener('change', submitForm, false);
                     }
                 }
             }
@@ -291,4 +285,4 @@
             }
         };
     })();
-})(window, document, window.jQuery, window.MooTools);
+})(window, document);
