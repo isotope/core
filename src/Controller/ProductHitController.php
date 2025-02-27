@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Isotope\Controller;
+namespace Isotope\CoreBundle\Controller;
 
 use Doctrine\DBAL\Connection;
 use Hashids\Hashids;

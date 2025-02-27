@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Isotope\Controller;
+namespace Isotope\CoreBundle\Controller;
 
 use Contao\CoreBundle\Framework\ContaoFramework;
 use Isotope\PostSale;

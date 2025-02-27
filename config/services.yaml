@@ -1,12 +1,12 @@
 services:
-    Isotope\Controller\PostsaleController:
+    Isotope\CoreBundle\Controller\PostsaleController:
         arguments:
             - '@contao.framework'
             - '@uri_signer'
         tags:
             - { name: controller.service_arguments }
 
-    Isotope\Controller\ProductHitController:
+    Isotope\CoreBundle\Controller\ProductHitController:
         arguments:
             - '@database_connection'
             - '%kernel.secret%'

@@ -3,7 +3,7 @@
     "description":"Isotope is the premier open source eCommerce solution for Contao Open Source CMS",
     "homepage": "https://isotopeecommerce.org",
     "keywords":["contao", "isotope"],
-    "type":"contao-module",
+    "type":"contao-bundle",
     "license":"LGPL-3.0-or-later",
     "authors": [
         {
@@ -35,7 +35,6 @@
         "php": "^8.1",
         "composer-runtime-api": "^2",
         "contao/core-bundle": "^5.3",
-        "contao-community-alliance/composer-plugin": "^2.4 || ^3.0",
         "doctrine/dbal": "^3.0",
         "terminal42/contao-conditionalselectmenu":"^4.1",
         "terminal42/dcawizard": "^3.0",
@@ -65,6 +64,9 @@
         "contao/manager-plugin": "<2.0 || >= 3.0"
     },
     "autoload": {
+        "psr-4": {
+            "Isotope\\CoreBundle\\": "src/"
+        },
         "psr-0": {
             "Isotope\\": [
                 "system/modules/isotope/library",
@@ -86,14 +88,7 @@
         }
     },
     "extra":{
-        "contao-manager-plugin": "Isotope\\ContaoManager\\Plugin",
-        "contao": {
-            "sources":{
-                "system/modules/isotope": "system/modules/isotope",
-                "system/modules/isotope_reports": "system/modules/isotope_reports",
-                "system/modules/isotope_rules": "system/modules/isotope_rules"
-            }
-        }
+        "contao-manager-plugin": "Isotope\\CoreBundle\\ContaoManager\\Plugin"
     },
     "scripts": {
         "rector": "@php vendor/terminal42/contao-build-tools/tools/rector/vendor/bin/rector process system/modules"
