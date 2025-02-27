@@ -133,7 +133,7 @@ class Url
                 throw new \InvalidArgumentException('Given page id does not exist.');
             }
 
-            $varUrl = Controller::generateFrontendUrl($objJump->row());
+            $varUrl = $objJump->getFrontendUrl();
 
             $strQueryString = Environment::get('queryString');
 

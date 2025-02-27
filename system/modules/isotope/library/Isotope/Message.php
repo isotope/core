@@ -145,7 +145,7 @@ class Message
             }
         }
 
-        $request = System::getContainer()->get('request_stack')->getMasterRequest();
+        $request = System::getContainer()->get('request_stack')->getMainRequest();
         if ($request && $request->isMethod('GET')) {
             static::reset();
         }

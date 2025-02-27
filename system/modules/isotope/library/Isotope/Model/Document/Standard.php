@@ -72,7 +72,7 @@ class Standard extends Document implements IsotopeDocument
         // TCPDF configuration
         $l                    = array();
         $l['a_meta_dir']      = 'ltr';
-        $l['a_meta_charset']  = $GLOBALS['TL_CONFIG']['characterSet'];
+        $l['a_meta_charset']  = 'UTF-8';
         $l['a_meta_language'] = substr($GLOBALS['TL_LANGUAGE'], 0, 2);
         $l['w_page']          = 'page';
 
@@ -199,7 +199,7 @@ class Standard extends Document implements IsotopeDocument
 
         // Generate template and fix PDF issues, see Contao's ModuleArticle
         $strBuffer = \Contao\System::getContainer()->get('contao.insert_tag.parser')->replaceInline($objTemplate->parse());
-        $strBuffer = html_entity_decode($strBuffer, ENT_QUOTES, $GLOBALS['TL_CONFIG']['characterSet']);
+        $strBuffer = html_entity_decode($strBuffer, ENT_QUOTES, 'UTF-8');
         $strBuffer = Controller::convertRelativeUrls($strBuffer, '', true);
 
         // Remove form elements and JavaScript links

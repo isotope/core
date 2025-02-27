@@ -254,7 +254,7 @@ class AddressBook extends Module
                 /** @var PageModel $objPage */
                 global $objPage;
 
-                Controller::redirect(Controller::generateFrontendUrl($objPage->row()));
+                Controller::redirect($objPage->getFrontendUrl());
 
             } else {
                 $this->Template->hasError = true;
@@ -350,6 +350,6 @@ class AddressBook extends Module
         /** @var PageModel $objPage */
         global $objPage;
 
-        Controller::redirect(Controller::generateFrontendUrl($objPage->row()));
+        Controller::redirect($objPage->getFrontendUrl());
     }
 }

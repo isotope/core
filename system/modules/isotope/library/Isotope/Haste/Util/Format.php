@@ -15,6 +15,7 @@ namespace Isotope\Haste\Util;
 use Contao\Controller;
 use Contao\Database;
 use Contao\DataContainer;
+use Contao\Date;
 use Contao\System;
 
 class Format
@@ -29,7 +30,7 @@ class Format
     {
         $strFormat = isset($GLOBALS['objPage']) ? $GLOBALS['objPage']->dateFormat : $GLOBALS['TL_CONFIG']['dateFormat'];
 
-        return System::parseDate($strFormat, $intTstamp);
+        return Date::parse($strFormat, $intTstamp);
     }
 
 
@@ -42,7 +43,7 @@ class Format
     {
         $strFormat = isset($GLOBALS['objPage']) ? $GLOBALS['objPage']->timeFormat : $GLOBALS['TL_CONFIG']['timeFormat'];
 
-        return System::parseDate($strFormat, $intTstamp);
+        return Date::parse($strFormat, $intTstamp);
     }
 
 
@@ -55,7 +56,7 @@ class Format
     {
         $strFormat = isset($GLOBALS['objPage']) ? $GLOBALS['objPage']->datimFormat : $GLOBALS['TL_CONFIG']['datimFormat'];
 
-        return System::parseDate($strFormat, $intTstamp);
+        return Date::parse($strFormat, $intTstamp);
     }
 
     /**

@@ -527,9 +527,8 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
 
         if (trim($strName) != '') {
             // Romanize friendly name to prevent email issues
-            $strName = html_entity_decode($strName, ENT_QUOTES, $GLOBALS['TL_CONFIG']['characterSet']);
+            $strName = html_entity_decode($strName, ENT_QUOTES, 'UTF-8');
             $strName = StringUtil::stripInsertTags($strName);
-            $strName = utf8_romanize($strName);
             $strName = preg_replace('/[^A-Za-z0-9.!#$%&\'*+-\/=?^_ `{|}~]+/i', '_', $strName);
 
             $strEmail = sprintf('"%s" <%s>', $strName, $strEmail);
