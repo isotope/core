@@ -14,7 +14,7 @@ services:
             - { name: controller.service_arguments }
 
     isotope.listener.symlink:
-        class: Isotope\EventListener\SymlinkListener
+        class: Isotope\CoreBundle\EventListener\SymlinkListener
         arguments:
             - '%kernel.project_dir%'
             - '%contao.web_dir%'
