@@ -159,7 +159,7 @@ class ProductCollectionDownload extends Model
                 'caption'       => $arrMeta['caption'] ?? '',
                 'href'          => $strHref,
                 'filesize'      => System::getReadableSize($objFile->filesize, 1),
-                'icon'          => TL_ASSETS_URL . 'assets/contao/images/' . $objFile->icon,
+                'icon'          => 'assets/contao/images/' . $objFile->icon,
                 'mime'          => $objFile->mime,
                 'meta'          => $arrMeta,
                 'extension'     => $objFile->extension,

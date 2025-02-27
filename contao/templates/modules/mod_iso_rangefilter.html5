@@ -1,0 +1,63 @@
+<?php
+
+$this->extend('block_unsearchable');
+
+$GLOBALS['TL_CSS'][] = $this->asset('plugins/noUiSlider/nouislider.min.css', 'isotope_core');
+$script = $this->asset('plugins/noUiSlider/nouislider.min.js', 'isotope_core');
+
+$GLOBALS['TL_BODY'][] = <<<HTML
+<script src="$script"></script>
+<script>
+(function() {
+    JSON.parse('{$this->jsonFields}').forEach(function (config) {
+        var slider = document.getElementById('slider-' + config.id + '-{$this->id}'),
+            inputs = [];
+
+        config.inputs.forEach(function (input) {
+            inputs.push(document.getElementById(input.id));
+        });
+
+        noUiSlider.create(slider, {
+            start: config.value,
+            connect: true,
+            tooltips: config.inputs.map(function () { return true; }),
+            range: {'min':config.min, 'max':config.max},
+            step: config.step
+        });
+
+        slider.noUiSlider.on('change', function(values) {
+            if (Array.isArray(values)) {
+                values.forEach(function (value, i) {
+                    inputs[i].value = value;
+                })
+            } else {
+                inputs[0].value = values;
+            }
+        });
+    });
+})();
+</script>
+
+HTML;
+
+$this->block('content');
+?>
+
+<form id="<?= $this->formId ?>" method="post">
+    <div class="formbody">
+        <input type="hidden" name="FORM_SUBMIT" value="<?= $this->formId ?>">
+        <input type="hidden" name="REQUEST_TOKEN" value="<?= $this->requestToken ?>">
+
+        <?php foreach ($this->fields as $config): ?>
+        <div id="slider-<?= $config['id'] ?>-<?= $this->id ?>">
+          <?php foreach ($config['inputs'] as $input): ?>
+            <input type="hidden" name="<?= $input['name'] ?>" id="<?= $input['id'] ?>" value="<?= $input['value'] ?>">
+          <?php endforeach; ?>
+        </div>
+        <?php endforeach; ?>
+
+        <div class="submit_container"><input type="submit" class="submit" value="<?= $this->slabel ?>"></div>
+    </div>
+</form>
+
+<?php $this->endblock(); ?>

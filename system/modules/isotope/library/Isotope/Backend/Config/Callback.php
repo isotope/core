@@ -23,6 +23,7 @@ use Contao\StringUtil;
 use Contao\System;
 use Isotope\Automator;
 use Isotope\Backend\Permission;
+use Isotope\CompatibilityHelper;
 use Isotope\Model\Config;
 use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 
@@ -194,7 +195,7 @@ class Callback extends Permission
                 $image = 'money';
         }
 
-        $style = 'background-image:url(\'system/modules/isotope/assets/images/' . $image . '.png\');line-height:16px';
+        $style = 'background-image:url(\''.CompatibilityHelper::asset('images/' . $image . '.png').'\');line-height:16px';
 
         return sprintf('<div class="list_icon" style="%s" title="%s">%s</div>', $style, $GLOBALS['TL_LANG']['CUR'][$row['currency']], $label);
     }

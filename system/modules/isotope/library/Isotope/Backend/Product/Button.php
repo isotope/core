@@ -23,6 +23,7 @@ use Contao\Input;
 use Contao\StringUtil;
 use Contao\System;
 use Contao\Versions;
+use Isotope\CompatibilityHelper;
 use Isotope\Model\ProductType;
 use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 
@@ -150,7 +151,7 @@ class Button extends Backend
         }
 
         if ((($arrAttributes['start']['enabled'] ?? false) && $row['start'] != '' && $row['start'] > $time) || (($arrAttributes['stop']['enabled'] ?? false) && $row['stop'] != '' && $row['stop'] < $time)) {
-            return Image::getHtml('system/modules/isotope/assets/images/invisible-startstop.png', $label) . ' ';
+            return Image::getHtml(CompatibilityHelper::asset('images/invisible-startstop.png'), $label) . ' ';
         }
 
         if ($row['published'] != '1') {

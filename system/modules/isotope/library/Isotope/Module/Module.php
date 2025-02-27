@@ -80,9 +80,9 @@ abstract class Module extends AbstractFrontendModule
 
         // Load Isotope JavaScript and style sheet
         if (CompatibilityHelper::isFrontend()) {
-            $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/assets/js/isotope.min.js|static';
+            $GLOBALS['TL_JAVASCRIPT'][] = CompatibilityHelper::asset('isotope.js');
 
-            $GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/css/isotope.min.css|screen|static';
+            $GLOBALS['TL_CSS'][] = CompatibilityHelper::asset('isotope.css');
 
             // Disable caching for pages with certain modules (eg. Cart)
             if ($this->blnDisableCache) {

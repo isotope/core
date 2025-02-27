@@ -60,7 +60,7 @@ class Callback extends Backend
             foreach (Folder::scan($projectDir . '/' . $path) as $file) {
                 if (is_file($projectDir . '/' . $path . '/' . $file)) {
                     $objFile        = new File($path . '/' . $file);
-                    $icon           = 'background:url(' . TL_ASSETS_URL . 'assets/contao/images/' . $objFile->icon . ') left center no-repeat; padding-left: 22px';
+                    $icon           = 'background:url(assets/contao/images/' . $objFile->icon . ') left center no-repeat; padding-left: 22px';
                     $arrDownloads[] = sprintf('<div style="margin-bottom:5px;height:16px;%s">%s</div>', $icon, $path . '/' . $file);
                 }
             }
@@ -74,7 +74,7 @@ class Callback extends Backend
 
         if (is_file($projectDir . '/' . $path)) {
             $objFile = new File($path);
-            $icon    = 'background: url(' . TL_ASSETS_URL . 'assets/contao/images/' . $objFile->icon . ') left center no-repeat; padding-left: 22px';
+            $icon    = 'background: url(assets/contao/images/' . $objFile->icon . ') left center no-repeat; padding-left: 22px';
         }
 
         return sprintf('<div style="height: 16px;%s">%s</div>', $icon, $path);

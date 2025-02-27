@@ -28,8 +28,8 @@ abstract class ContentElement extends Contao_ContentElement
 
         // Load Isotope JavaScript and style sheet
         if (CompatibilityHelper::isFrontend()) {
-            $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/assets/js/isotope.min.js|static|'.Isotope::VERSION;
-            $GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/css/isotope.min.css|screen|static|'.Isotope::VERSION;
+            $GLOBALS['TL_JAVASCRIPT'][] = CompatibilityHelper::asset('isotope.js');
+            $GLOBALS['TL_CSS'][] = CompatibilityHelper::asset('isotope.css');
         }
     }
 }

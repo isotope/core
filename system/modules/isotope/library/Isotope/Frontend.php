@@ -653,12 +653,6 @@ class Frontend extends \Contao\Frontend
             [$GLOBALS['TL_ADMIN_NAME'], $GLOBALS['TL_ADMIN_EMAIL']] = StringUtil::splitFriendlyEmail($GLOBALS['TL_CONFIG']['adminEmail']);
         }
 
-        // Define the static URL constants
-        $isDebugMode = System::getContainer()->getParameter('kernel.debug');
-        self::define('TL_FILES_URL', ($objPage->staticFiles != '' && !$isDebugMode) ? $objPage->staticFiles . TL_PATH . '/' : '');
-        self::define('TL_ASSETS_URL', ($objPage->staticPlugins != '' && !$isDebugMode) ? $objPage->staticPlugins . TL_PATH . '/' : '');
-        self::define('TL_PLUGINS_URL', TL_ASSETS_URL);
-
         $objLayout = Database::getInstance()->prepare("
             SELECT l.*, t.templates
             FROM tl_layout l

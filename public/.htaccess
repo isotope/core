@@ -1,0 +1,53 @@
+# Brotli compression
+<IfModule mod_brotli.c>
+  <IfModule mod_filter.c>
+    AddOutputFilterByType BROTLI_COMPRESS text/html text/plain text/css application/json
+    AddOutputFilterByType BROTLI_COMPRESS application/javascript
+    AddOutputFilterByType BROTLI_COMPRESS text/xml application/xml text/x-component
+    AddOutputFilterByType BROTLI_COMPRESS application/xhtml+xml application/rss+xml application/atom+xml
+    AddOutputFilterByType BROTLI_COMPRESS image/x-icon image/svg+xml
+    AddOutputFilterByType BROTLI_COMPRESS font/ttf font/opentype font/woff font/woff2
+  </IfModule>
+</IfModule>
+
+# Gzip compression
+<IfModule mod_deflate.c>
+  <IfModule mod_filter.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/css application/json
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE text/xml application/xml text/x-component
+    AddOutputFilterByType DEFLATE application/xhtml+xml application/rss+xml application/atom+xml
+    AddOutputFilterByType DEFLATE image/x-icon image/svg+xml
+    AddOutputFilterByType DEFLATE font/ttf font/opentype font/woff font/woff2
+  </IfModule>
+</IfModule>
+
+# Expires headers (for better cache control)
+<IfModule mod_expires.c>
+  ExpiresActive on
+  ExpiresByType image/gif                     "access plus 1 year"
+  ExpiresByType image/png                     "access plus 1 year"
+  ExpiresByType image/jpeg                    "access plus 1 year"
+  ExpiresByType image/webp                    "access plus 1 year"
+  ExpiresByType image/svg+xml                 "access plus 1 year"
+  ExpiresByType image/x-icon                  "access plus 1 year"
+  ExpiresByType video/ogg                     "access plus 1 year"
+  ExpiresByType audio/ogg                     "access plus 1 year"
+  ExpiresByType video/mp4                     "access plus 1 year"
+  ExpiresByType video/webm                    "access plus 1 year"
+  ExpiresByType text/x-component              "access plus 1 year"
+  ExpiresByType font/opentype                 "access plus 1 year"
+  ExpiresByType font/ttf                      "access plus 1 year"
+  ExpiresByType font/woff                     "access plus 1 year"
+  ExpiresByType font/woff2                    "access plus 1 year"
+  ExpiresByType text/css                      "access plus 1 year"
+  ExpiresByType application/javascript        "access plus 1 year"
+</IfModule>
+
+# Do not cache source map files
+<IfModule mod_headers.c>
+  <FilesMatch "\.map$">
+    Header set Expires "0"
+    Header set Cache-Control "no-cache, no-store, must-revalidate, max-age=0, proxy-revalidate, no-transform"
+  </FilesMatch>
+</IfModule>

@@ -24,7 +24,7 @@ ArrayUtil::arrayInsert($GLOBALS['BE_MOD']['isotope'], 0, array
     'iso_products' => array
     (
         'tables'            => array(\Isotope\Model\Product::getTable(), \Isotope\Model\Group::getTable(), \Isotope\Model\ProductCategory::getTable(), \Isotope\Model\Download::getTable(), \Isotope\Model\RelatedProduct::getTable(), \Isotope\Model\ProductPrice::getTable(), 'tl_iso_product_pricetier', \Isotope\Model\AttributeOption::getTable()),
-        'javascript'        => 'system/modules/isotope/assets/js/backend.js',
+        'javascript'        => \Isotope\CompatibilityHelper::asset('backend.js'),
         'generate'          => array('Isotope\Backend\Product\VariantGenerator', 'generate'),
         'import'            => array('Isotope\Backend\Product\AssetImport', 'generate'),
         'fallback'          => array('Isotope\Backend\Product\Fallback', 'setFromUrl'),
@@ -32,7 +32,7 @@ ArrayUtil::arrayInsert($GLOBALS['BE_MOD']['isotope'], 0, array
     'iso_orders' => array
     (
         'tables'            => array(\Isotope\Model\ProductCollection::getTable(), \Isotope\Model\ProductCollectionItem::getTable(), \Isotope\Model\ProductCollectionSurcharge::getTable(), \Isotope\Model\ProductCollectionDownload::getTable(), \Isotope\Model\Address::getTable()),
-        'javascript'        => 'system/modules/isotope/assets/js/backend.js',
+        'javascript'        => \Isotope\CompatibilityHelper::asset('backend.js'),
         'print_document'    => array('Isotope\Backend\ProductCollection\Callback', 'printDocument'),
         'payment'           => array('Isotope\Backend\ProductCollection\Callback', 'paymentInterface'),
         'shipping'          => array('Isotope\Backend\ProductCollection\Callback', 'shippingInterface'),
@@ -41,14 +41,14 @@ ArrayUtil::arrayInsert($GLOBALS['BE_MOD']['isotope'], 0, array
     (
         'callback'          => 'Isotope\BackendModule\Setup',
         'tables'            => array(\Isotope\Model\Payment::getTable(), \Isotope\Model\Shipping::getTable(), \Isotope\Model\OrderStatus::getTable()),
-        'javascript'        => 'system/modules/isotope/assets/js/backend.js',
+        'javascript'        => \Isotope\CompatibilityHelper::asset('backend.js'),
     ),
 ));
 
 $GLOBALS['BE_MOD']['accounts']['member']['tables'][] = \Isotope\Model\Address::getTable();
 
-if ('BE' === TL_MODE) {
-    $GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/css/backend.css|static';
+if (\Contao\System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest(\Contao\System::getContainer()->get('request_stack')->getCurrentRequest() ?? \Symfony\Component\HttpFoundation\Request::create(''))) {
+    $GLOBALS['TL_CSS'][] = \Isotope\CompatibilityHelper::asset('backend.css');
 }
 
 
@@ -62,22 +62,22 @@ $GLOBALS['ISO_MOD'] = array
         'producttypes' => array
         (
             'tables'            => array(\Isotope\Model\ProductType::getTable()),
-            'icon'              => 'system/modules/isotope/assets/images/setup-producttypes.png'
+            'icon'              => \Isotope\CompatibilityHelper::asset('images/setup-producttypes.png'),
         ),
         'attributes' => array
         (
             'tables'            => array(\Isotope\Model\Attribute::getTable(), \Isotope\Model\AttributeOption::getTable()),
-            'icon'              => 'system/modules/isotope/assets/images/setup-attributes.png',
+            'icon'              => \Isotope\CompatibilityHelper::asset('images/setup-attributes.png'),
         ),
         'related_categories' => array
         (
             'tables'            => array(\Isotope\Model\RelatedCategory::getTable()),
-            'icon'              => 'system/modules/isotope/assets/images/setup-related_categories.png',
+            'icon'              => \Isotope\CompatibilityHelper::asset('images/setup-related_categories.png'),
         ),
         'baseprice' => array
         (
             'tables'            => array(\Isotope\Model\BasePrice::getTable()),
-            'icon'              => 'system/modules/isotope/assets/images/setup-baseprice.png',
+            'icon'              => \Isotope\CompatibilityHelper::asset('images/setup-baseprice.png'),
         ),
     ),
     'checkout' => array
@@ -85,22 +85,22 @@ $GLOBALS['ISO_MOD'] = array
         'payment' => array
         (
             'tables'            => array(\Isotope\Model\Payment::getTable()),
-            'icon'              => 'system/modules/isotope/assets/images/setup-payment.png',
+            'icon'              => \Isotope\CompatibilityHelper::asset('images/setup-payment.png'),
         ),
         'shipping' => array
         (
                 'tables'        => array(\Isotope\Model\Shipping::getTable()),
-                'icon'          => 'system/modules/isotope/assets/images/setup-shipping.png',
+                'icon'          => \Isotope\CompatibilityHelper::asset('images/setup-shipping.png'),
         ),
         'tax_class' => array
         (
             'tables'            => array(\Isotope\Model\TaxClass::getTable()),
-            'icon'              => 'system/modules/isotope/assets/images/setup-tax_class.png',
+            'icon'              => \Isotope\CompatibilityHelper::asset('images/setup-tax_class.png'),
         ),
         'tax_rate' => array
         (
             'tables'            => array(\Isotope\Model\TaxRate::getTable()),
-            'icon'              => 'system/modules/isotope/assets/images/setup-tax_rate.png',
+            'icon'              => \Isotope\CompatibilityHelper::asset('images/setup-tax_rate.png'),
         ),
     ),
     'config' => array
@@ -108,27 +108,27 @@ $GLOBALS['ISO_MOD'] = array
         'configs' => array
         (
             'tables'            => array(\Isotope\Model\Config::getTable()),
-            'icon'              => 'system/modules/isotope/assets/images/setup-config.png',
+            'icon'              => \Isotope\CompatibilityHelper::asset('images/setup-config.png'),
         ),
         'orderstatus' => array
         (
             'tables'            => array(\Isotope\Model\OrderStatus::getTable()),
-            'icon'              => 'system/modules/isotope/assets/images/setup-orderstatus.png',
+            'icon'              => \Isotope\CompatibilityHelper::asset('images/setup-orderstatus.png'),
         ),
         'notifications' => array
         (
-            'icon'              => 'system/modules/isotope/assets/images/setup-notifications.png',
+            'icon'              => \Isotope\CompatibilityHelper::asset('images/setup-notifications.png'),
             'redirect'          => 'contao/main.php?do=nc_notifications',
         ),
         'documents' => array
         (
             'tables'            => array(\Isotope\Model\Document::getTable()),
-            'icon'              => 'system/modules/isotope/assets/images/setup-documents.png'
+            'icon'              => \Isotope\CompatibilityHelper::asset('images/setup-documents.png'),
         ),
         'gallery' => array
         (
             'tables'            => array(\Isotope\Model\Gallery::getTable()),
-            'icon'              => 'system/modules/isotope/assets/images/setup-gallery.png',
+            'icon'              => \Isotope\CompatibilityHelper::asset('images/setup-gallery.png',),
         ),
     ),
     'miscellaneous:hide' => array
@@ -136,12 +136,12 @@ $GLOBALS['ISO_MOD'] = array
         'labels' => array
         (
             'tables'            => array(\Isotope\Model\Label::getTable()),
-            'icon'              => 'system/modules/isotope/assets/images/setup-labels.png'
+            'icon'              => \Isotope\CompatibilityHelper::asset('images/setup-labels.png'),
         ),
         'integrity' => array
         (
             'callback'          => 'Isotope\BackendModule\Integrity',
-            'icon'              => 'system/modules/isotope/assets/images/setup-integrity.png'
+            'icon'              => \Isotope\CompatibilityHelper::asset('images/setup-integrity.png'),
         ),
     )
 );
@@ -486,12 +486,12 @@ if (\Contao\Config::getInstance()->isComplete()) {
     $GLOBALS['TL_HOOKS']['changelanguageNavigation'][]      = array('Isotope\EventListener\ChangeLanguageListener', '__invoke');
 
     // Set module and module id for payment and/or shipping modules
-    if ('FE' === TL_MODE) {
+    if (\Contao\System::getContainer()->get('contao.routing.scope_matcher')->isFrontendRequest(\Contao\System::getContainer()->get('request_stack')->getCurrentRequest() ?? \Symfony\Component\HttpFoundation\Request::create(''))) {
         // Only limit countries in FE
         $GLOBALS['TL_HOOKS']['loadDataContainer'][]         = array('Isotope\Backend\Member\Callback', 'limitCountries');
     }
 
-    if ('BE' === TL_MODE) {
+    if (\Contao\System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest(\Contao\System::getContainer()->get('request_stack')->getCurrentRequest() ?? \Symfony\Component\HttpFoundation\Request::create(''))) {
         // Type agent help is only needed in back end
         $GLOBALS['TL_HOOKS']['loadDataContainer'][]         = array('Isotope\Backend', 'loadTypeAgentHelp');
         $GLOBALS['TL_HOOKS']['loadLanguageFile'][]          = array('Isotope\Backend\ProductType\Help', 'initializeWizard');

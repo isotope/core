@@ -55,4 +55,9 @@ class CompatibilityHelper
 
         return array_combine(array_map('strtolower', array_keys($arrCountries)), $arrCountries);
     }
+
+    public static function asset(string $path): string
+    {
+        return System::getContainer()->get('assets.packages')->getUrl($path, 'isotope_core');
+    }
 }

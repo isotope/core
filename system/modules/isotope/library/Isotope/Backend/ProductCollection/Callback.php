@@ -110,8 +110,6 @@ class Callback extends Backend
             return '';
         }
 
-        $GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/css/print.css|print';
-
         // Try to find a order details module or create a dummy FE module model
         if (($config = $objOrder->getRelated('config_id')) === null
             || ($moduleModel = $config->getRelated('orderDetailsModule')) === null

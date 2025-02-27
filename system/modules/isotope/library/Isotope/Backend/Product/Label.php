@@ -103,16 +103,16 @@ class Label
                         "Backend.openModalImage({'width':%s,'title':'%s','url':'%s'});return false",
                         $size[0] ?? 0,
                         str_replace("'", "\\'", $objProduct->name),
-                        TL_FILES_URL . $strImage
+                        $strImage
                     );
 
                     /** @noinspection BadExpressionStatementJS */
                     /** @noinspection HtmlUnknownTarget */
                     return sprintf(
                         '<a href="%s" onclick="%s"><img src="%s" alt="%s"></a>',
-                        TL_FILES_URL . $strImage,
+                        $strImage,
                         $script,
-                        TL_ASSETS_URL . Image::get($strImage, 50, 50, 'proportional'),
+                        Image::get($strImage, 50, 50, 'proportional'),
                         $image['alt'] ?? ''
                     );
                 }

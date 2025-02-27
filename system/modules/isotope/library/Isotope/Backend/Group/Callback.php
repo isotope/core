@@ -21,6 +21,7 @@ use Contao\Input;
 use Contao\StringUtil;
 use Contao\System;
 use Isotope\Backend\Permission;
+use Isotope\CompatibilityHelper;
 use Isotope\Model\Group;
 use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 
@@ -161,7 +162,7 @@ class Callback extends Permission
      */
     public function addIcon($row, $label, DataContainer $dc = null, $imageAttribute = '')
     {
-        $image = Image::getHtml('system/modules/isotope/assets/images/folder-network.png', '', $imageAttribute);
+        $image = Image::getHtml(CompatibilityHelper::asset('images/folder-network.png'), '', $imageAttribute);
 
         if ('tl_iso_product' === $dc->table) {
             return $image . ' <span style="font-weight:bold">' . $label . '</span>';
