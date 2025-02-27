@@ -15,6 +15,7 @@ use Isotope\Backend\Product\Wizard;
 use Isotope\Backend\Product\XmlSitemap;
 use Isotope\Backend\ProductType\Callback;
 use Isotope\CompatibilityHelper;
+use Isotope\CoreBundle\DataContainer\ProductData;
 use Isotope\Model\Attribute\BasePrice;
 use Isotope\Model\Attribute\Price;
 use Isotope\Model\Attribute\PriceTiers;
@@ -38,7 +39,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
     // Config
     'config' => [
         'label' => &$GLOBALS['TL_LANG']['MOD']['iso_products'][0],
-        'dataContainer' => DC_ProductData::class,
+        'dataContainer' => ProductData::class,
         'enableVersioning' => true,
         'switchToEdit' => true,
         'ctable' => [Download::getTable(), ProductCategory::getTable(), ProductPrice::getTable(), AttributeOption::getTable()],

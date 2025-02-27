@@ -1,13 +1,6 @@
 <?php
 
-/*
- * Isotope eCommerce for Contao Open Source CMS
- *
- * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
- *
- * @link       https://isotopeecommerce.org
- * @license    https://opensource.org/licenses/lgpl-3.0.html
- */
+namespace Isotope\CoreBundle\DataContainer;
 
 use Contao\ArrayUtil;
 use Contao\Backend;
@@ -40,7 +33,7 @@ use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\String\UnicodeString;
 
-class DC_ProductData extends DC_Table
+class ProductData extends DC_Table
 {
     /**
      * True if we are editing a language

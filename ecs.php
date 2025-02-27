@@ -5,5 +5,10 @@ declare(strict_types=1);
 use Symplify\EasyCodingStandard\Config\ECSConfig;
 
 return static function (ECSConfig $ecsConfig): void {
-    $ecsConfig->skip(['./system/modules/isotope', './system/modules/isotope_rules', './system/modules/isotope_reports']);
+    $ecsConfig->skip([
+        './system/modules/isotope',
+        './system/modules/isotope_rules',
+        './system/modules/isotope_reports',
+        './src/DataContainer/*'
+    ]);
 };

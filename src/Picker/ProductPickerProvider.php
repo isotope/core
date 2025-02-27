@@ -6,6 +6,7 @@ namespace Isotope\CoreBundle\Picker;
 
 use Contao\CoreBundle\DependencyInjection\Attribute\AsPickerProvider;
 use Contao\CoreBundle\Picker\AbstractTablePickerProvider;
+use Isotope\CoreBundle\DataContainer\ProductData;
 
 #[AsPickerProvider]
 class ProductPickerProvider extends AbstractTablePickerProvider
@@ -17,6 +18,6 @@ class ProductPickerProvider extends AbstractTablePickerProvider
 
     protected function getDataContainer(): string
     {
-        return 'ProductData';
+        return ProductData::class;
     }
 }

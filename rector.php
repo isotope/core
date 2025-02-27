@@ -9,5 +9,8 @@ use Contao\Rector\ValueObject\LegacyFrameworkCallToServiceCall;
 use Rector\Config\RectorConfig;
 
 return static function (RectorConfig $rectorConfig): void {
-    $rectorConfig->skip([__DIR__.'/system/modules/*']);
+    $rectorConfig->skip([
+        __DIR__.'/system/modules/*',
+        __DIR__.'/src/DataContainer/*'
+    ]);
 };

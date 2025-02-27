@@ -1,13 +1,6 @@
 <?php
 
-/*
- * Isotope eCommerce for Contao Open Source CMS
- *
- * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
- *
- * @link       https://isotopeecommerce.org
- * @license    https://opensource.org/licenses/lgpl-3.0.html
- */
+namespace Isotope\CoreBundle\DataContainer;
 
 use Contao\BackendUser;
 use Contao\Config;
@@ -22,8 +15,9 @@ use Contao\Input;
 use Contao\Message;
 use Contao\StringUtil;
 use Contao\System;
+use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 
-class DC_TablePageId extends DC_Table
+class TablePageId extends DC_Table
 {
 
     /**

@@ -73,10 +73,7 @@
                 "system/modules/isotope_reports/library",
                 "system/modules/isotope_rules/library"
             ]
-        },
-        "classmap": [
-            "system/modules/isotope/drivers/"
-        ]
+        }
     },
     "config": {
         "allow-plugins": {

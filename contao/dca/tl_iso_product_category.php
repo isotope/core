@@ -13,7 +13,7 @@ use Isotope\CoreBundle\DataContainer\TablePageId;
 $GLOBALS['TL_DCA']['tl_iso_product_category'] = [
     // Config
     'config' => [
-        'dataContainer' => 'TablePageId',
+        'dataContainer' => TablePageId::class,
         'ptable' => 'tl_page',
         'closed' => true,
         'notEditable' => true,
