@@ -16,8 +16,10 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Autoconfigure(bind: ['$secret' => '%kernel.secret%'])]
 class ProductHitController
 {
-    public function __construct(private readonly Connection $connection, private readonly string $secret)
-    {
+    public function __construct(
+        private readonly Connection $connection,
+        private readonly string $secret,
+    ) {
     }
 
     public function __invoke(string $hashid): Response
@@ -28,13 +30,13 @@ class ProductHitController
             $this->connection->executeStatement(
                 'UPDATE tl_iso_product SET hitCount=hitCount+1 WHERE id IN (?)',
                 [$hashids->decode($hashid)],
-                [Connection::PARAM_INT_ARRAY]
+                [Connection::PARAM_INT_ARRAY],
             );
         } catch (\Throwable) {
             // ignore
         }
 
-        $response = new Response(base64_decode('R0lGODlhAQABAJAAAP8AAAAAACH5BAUQAAAALAAAAAABAAEAAAICBAEAOw=='));
+        $response = new Response(base64_decode('R0lGODlhAQABAJAAAP8AAAAAACH5BAUQAAAALAAAAAABAAEAAAICBAEAOw==', true));
         $response->headers->set('Content-Type', 'image/gif');
         $response->setPrivate();
         $response->headers->addCacheControlDirective('no-cache');

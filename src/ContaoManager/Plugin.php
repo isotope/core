@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Isotope\CoreBundle\ContaoManager;
 
 use Contao\CoreBundle\ContaoCoreBundle;

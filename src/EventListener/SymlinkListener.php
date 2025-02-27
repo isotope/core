@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Isotope\CoreBundle\EventListener;
 
 use Contao\CoreBundle\Event\GenerateSymlinksEvent;
@@ -20,8 +22,11 @@ class SymlinkListener
      */
     private $filesystem;
 
-    public function __construct(private readonly string $projectDir, private readonly string $webDir, Filesystem $filesystem = null)
-    {
+    public function __construct(
+        private readonly string $projectDir,
+        private readonly string $webDir,
+        Filesystem|null $filesystem = null,
+    ) {
         $this->filesystem = $filesystem ?: new Filesystem();
     }
 

@@ -1,13 +1,6 @@
 <?php
 
-/*
- * Isotope eCommerce for Contao Open Source CMS
- *
- * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
- *
- * @link       https://isotopeecommerce.org
- * @license    https://opensource.org/licenses/lgpl-3.0.html
- */
+declare(strict_types=1);
 
 namespace Isotope\CoreBundle\EventListener;
 
@@ -20,10 +13,10 @@ class FrontendPreviewListener
 {
     public function __invoke(PreviewUrlCreateEvent $event): void
     {
-        if ($event->getKey() !== 'iso_products' || Input::get('table') !== 'tl_iso_product_category' || !Input::get('page_id')) {
+        if ('iso_products' !== $event->getKey() || 'tl_iso_product_category' !== Input::get('table') || !Input::get('page_id')) {
             return;
         }
 
-        $event->setQuery('page=' . Input::get('page_id'));
+        $event->setQuery('page='.Input::get('page_id'));
     }
 }
