@@ -87,7 +87,7 @@ class Download extends Model
      * Finds downloads for a given product or variant.
      *
      *
-     * @return Download[]|\Model\Collection|null
+     * @return Download[]|\Contao\Model\Collection|null
      */
     public static function findByProduct(IsotopeProduct $product)
     {

@@ -59,7 +59,7 @@ class ProductCategory extends Model
      *
      * @param int   $intProduct
      *
-     * @return \Model\Collection|null
+     * @return \Contao\Model\Collection|null
      */
     public static function findByPidForPublishedPages($intProduct, array $arrOptions = array())
     {

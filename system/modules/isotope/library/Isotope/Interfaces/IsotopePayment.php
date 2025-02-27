@@ -79,7 +79,7 @@ interface IsotopePayment
      * Process payment on checkout confirmation page.
      *
      * @param IsotopeProductCollection $objOrder  The order being places
-     * @param \Module                  $objModule The checkout module instance
+     * @param \Contao\Module $objModule The checkout module instance
      *
      * @return mixed
      */
@@ -89,7 +89,7 @@ interface IsotopePayment
      * Return a html form for checkout or false.
      *
      * @param IsotopeProductCollection $objOrder  The order being places
-     * @param \Module                  $objModule The checkout module instance
+     * @param \Contao\Module $objModule The checkout module instance
      *
      * @return mixed
      */

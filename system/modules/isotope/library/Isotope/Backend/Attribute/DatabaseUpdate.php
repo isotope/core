@@ -32,7 +32,7 @@ class DatabaseUpdate extends DcaExtractor
     /**
      * Update tl_iso_product table in database based on attribute configuration.
      *
-     * @param \DataContainer $dc
+     * @param \Contao\DataContainer $dc
      */
     public function onSubmit($dc)
     {

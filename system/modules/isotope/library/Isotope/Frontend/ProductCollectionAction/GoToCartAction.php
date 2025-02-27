@@ -19,7 +19,7 @@ use Isotope\Interfaces\IsotopeProductCollection;
 class GoToCartAction extends AbstractButton
 {
     /**
-     * @var \Module
+     * @var \Contao\Module
      */
     private $module;
 
