@@ -9,32 +9,19 @@ use Isotope\PostSale;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\UriSigner;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
-/**
- * @Route(name="isotope_postsale", path="/_isotope/postsale/{mod}/{id}", requirements={"mod" = "(pay|ship)", "id" = "\d+"}, defaults={"_scope" = "frontend", "_token_check" = false, "_bypass_maintenance" = true})
- * @Route(path="/system/modules/isotope/postsale.php", defaults={"_scope" = "frontend", "_token_check" = false, "_bypass_maintenance" = true})
- */
+#[AsController]
+#[Route(path: '/_isotope/postsale/{mod}/{id}', name: 'isotope_postsale', requirements: ['mod' => '(pay|ship)', 'id' => '\d+'], defaults: ['_scope' => 'frontend', '_token_check' => false, '_bypass_maintenance' => true])]
 class PostsaleController
 {
-    /**
-     * @var ContaoFramework
-     */
-    private $framework;
-
-    /**
-     * @var UriSigner
-     */
-    private $uriSigner;
-
-    public function __construct(ContaoFramework $framework, UriSigner $uriSigner)
+    public function __construct(private readonly ContaoFramework $framework, private readonly \Symfony\Component\HttpFoundation\UriSigner $uriSigner)
     {
-        $this->framework = $framework;
-        $this->uriSigner = $uriSigner;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Response
     {
         // Allow redirects to bypass POST data issues in payment return URLs
         if ($request->query->has('redirect')) {
@@ -47,8 +34,6 @@ class PostsaleController
 
         $this->framework->initialize();
 
-        $postsale = new PostSale($request);
-
-        return $postsale->run();
+        return (new PostSale($request))->run();
     }
 }

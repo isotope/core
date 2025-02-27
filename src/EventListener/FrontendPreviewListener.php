@@ -9,14 +9,16 @@
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
-namespace Isotope\EventListener;
+namespace Isotope\CoreBundle\EventListener;
 
 use Contao\CoreBundle\Event\PreviewUrlCreateEvent;
 use Contao\Input;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
+#[AsEventListener('contao.preview_url_create')]
 class FrontendPreviewListener
 {
-    public function onPreviewUrlCreate(PreviewUrlCreateEvent $event)
+    public function __invoke(PreviewUrlCreateEvent $event): void
     {
         if ($event->getKey() !== 'iso_products' || Input::get('table') !== 'tl_iso_product_category' || !Input::get('page_id')) {
             return;

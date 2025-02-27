@@ -1,43 +1,12 @@
 services:
-    Isotope\CoreBundle\Controller\PostsaleController:
-        arguments:
-            - '@contao.framework'
-            - '@uri_signer'
-        tags:
-            - { name: controller.service_arguments }
+    _defaults:
+        autoconfigure: true
+        autowire: true
 
-    Isotope\CoreBundle\Controller\ProductHitController:
-        arguments:
-            - '@database_connection'
-            - '%kernel.secret%'
-        tags:
-            - { name: controller.service_arguments }
+    Isotope\CoreBundle\:
+        resource: ../src/
 
-    isotope.listener.symlink:
-        class: Isotope\CoreBundle\EventListener\SymlinkListener
-        arguments:
-            - '%kernel.project_dir%'
-            - '%contao.web_dir%'
-            - '@?filesystem'
-        tags:
-            - { name: kernel.event_listener, event: contao.generate_symlinks }
-
-    isotope.listener.frontend_preview:
-        class: Isotope\EventListener\FrontendPreviewListener
-        tags:
-            - { name: kernel.event_listener, event: contao.preview_url_create, method: onPreviewUrlCreate }
-
-    isotope.picker.product:
-        class: Isotope\Picker\ProductPickerProvider
-        arguments:
-            - '@contao.framework'
-            - '@knp_menu.factory'
-            - '@router'
-            - '@translator'
-            - '@database_connection'
-        tags:
-            - contao.picker_provider
-
+    # Used to find Isotope filter modules for checkbox options in tl_module settings
     isotope.fragment.registry:
         alias: contao.fragment.registry
         public: true

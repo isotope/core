@@ -6,21 +6,18 @@ namespace Isotope\CoreBundle\Controller;
 
 use Doctrine\DBAL\Connection;
 use Hashids\Hashids;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpKernel\Attribute\AsController;
+use Symfony\Component\Routing\Attribute\Route;
 
-/**
- * @Route(name="isotope_product_hits", path="/_isotope/product-hit/{hashid}", requirements={"id" = ".+"}, defaults={"_scope" = "frontend"})
- */
+#[AsController]
+#[Route(path: '/_isotope/product-hit/{hashid}', name: 'isotope_product_hits', requirements: ['id' => '.+'], defaults: ['_scope' => 'frontend'])]
+#[Autoconfigure(bind: ['$secret' => '%kernel.secret%'])]
 class ProductHitController
 {
-    private Connection $connection;
-    private string $secret;
-
-    public function __construct(Connection $connection, string $secret)
+    public function __construct(private readonly Connection $connection, private readonly string $secret)
     {
-        $this->connection = $connection;
-        $this->secret = $secret;
     }
 
     public function __invoke(string $hashid): Response
@@ -33,7 +30,7 @@ class ProductHitController
                 [$hashids->decode($hashid)],
                 [Connection::PARAM_INT_ARRAY]
             );
-        } catch (\Throwable $e) {
+        } catch (\Throwable) {
             // ignore
         }
 
