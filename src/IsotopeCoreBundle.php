@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle;
 
+use Isotope\CoreBundle\DependencyInjection\Compiler\RegisterHookListenersPass;
 use Isotope\CoreBundle\DependencyInjection\IsotopeCoreExtension;
-use Isotope\DependencyInjection\Compiler\RegisterHookListenersPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

@@ -7,3 +7,4 @@
 - The ElevateZoom gallery has been removed
 - The DHL Business shipping method has been removed
 - The `/system/modules/isotope/postsale.php` entry point has been removed. Use `/_isotope/postsale/{mod}/{id}` instead.
+- The `@IsotopeHook` annotation has been replaced by `#[AsIsotopeHook]` attribute

@@ -1,17 +1,16 @@
 <?php
 
-namespace Isotope\EventListener;
+declare(strict_types=1);
+
+namespace Isotope\CoreBundle\EventListener;
 
 class RegisterHooksListener
 {
     /**
-     * @var array
+     * @param array<string, array<int, array<callable>>> $hookListeners
      */
-    private $hookListeners;
-
-    public function __construct(array $hookListeners)
+    public function __construct(private readonly array $hookListeners)
     {
-        $this->hookListeners = $hookListeners;
     }
 
     public function __invoke(): void
@@ -19,14 +18,14 @@ class RegisterHooksListener
         foreach ($this->hookListeners as $hookName => $priorities) {
             if (isset($GLOBALS['ISO_HOOKS'][$hookName]) && \is_array($GLOBALS['ISO_HOOKS'][$hookName])) {
                 if (isset($priorities[0])) {
-                    $priorities[0] = array_merge($GLOBALS['ISO_HOOKS'][$hookName], $priorities[0]);
+                    $priorities[0] = [...array_values($GLOBALS['ISO_HOOKS'][$hookName]), ...$priorities[0]];
                 } else {
                     $priorities[0] = $GLOBALS['ISO_HOOKS'][$hookName];
                     krsort($priorities);
                 }
             }
 
-            $GLOBALS['ISO_HOOKS'][$hookName] = array_merge(...$priorities);
+            $GLOBALS['ISO_HOOKS'][$hookName] = array_merge(...array_values($priorities));
         }
     }
 }
