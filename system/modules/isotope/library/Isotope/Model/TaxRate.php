@@ -11,6 +11,7 @@
 
 namespace Isotope\Model;
 
+use Contao\CoreBundle\Security\ContaoCorePermissions;
 use Contao\FrontendUser;
 use Contao\Model;
 use Contao\StringUtil;
@@ -37,7 +38,6 @@ use Isotope\Translation;
  * @property int    $config
  * @property bool   $exemptOnValidVAT
  * @property bool   $stop
- * @property bool   $guests
  * @property bool   $protected
  * @property array  $groups
  */
@@ -66,25 +66,9 @@ class TaxRate extends Model
             return false;
         }
 
-        $isMember = \Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER');
-
-        // Tax rate is for guests only
-        if ($this->guests && $isMember && !$this->protected) {
+        // Tax rate is protected, check member groups
+        if ($this->protected && !System::getContainer()->get('security.helper')->isGranted(ContaoCorePermissions::MEMBER_IN_GROUPS, $this->groups)) {
             return false;
-        }
-
-        // Tax rate is protected but no member is logged in
-        if ($this->protected && !$isMember && !$this->guests) {
-            return false;
-        }
-
-        // Tax rate is protected and member logged in, check member groups
-        if ($this->protected && $isMember) {
-            $groups = StringUtil::deserialize($this->groups);
-
-            if (!\is_array($groups) || empty($groups) || !\count(array_intersect($groups, FrontendUser::getInstance()->groups))) {
-                return false;
-            }
         }
 
         // !HOOK: use tax rate

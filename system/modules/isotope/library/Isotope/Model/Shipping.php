@@ -11,6 +11,7 @@
 
 namespace Isotope\Model;
 
+use Contao\CoreBundle\Security\ContaoCorePermissions;
 use Contao\Environment;
 use Contao\FrontendUser;
 use Contao\StringUtil;
@@ -52,7 +53,6 @@ use Isotope\Translation;
  * @property string $price
  * @property int    $tax_class
  * @property array  $shipping_weight
- * @property bool   $guests
  * @property bool   $protected
  * @property array  $groups
  * @property bool   $debug
@@ -126,21 +126,8 @@ abstract class Shipping extends TypeAgent implements IsotopeShipping, WeightAggr
             }
         }
 
-        $isMember = \Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER');
-
-        if (($this->guests && $isMember) || ($this->protected && !$isMember)) {
+        if ($this->protected && !System::getContainer()->get('security.helper')->isGranted(ContaoCorePermissions::MEMBER_IN_GROUPS, $this->groups)) {
             return false;
-        }
-
-        if ($this->protected) {
-            $arrGroups = StringUtil::deserialize($this->groups);
-
-            if (!\is_array($arrGroups)
-                || empty($arrGroups)
-                || !\count(array_intersect($arrGroups, FrontendUser::getInstance()->groups))
-            ) {
-                return false;
-            }
         }
 
         if (($this->minimum_total > 0 && $this->minimum_total > Isotope::getCart()->getSubtotal())

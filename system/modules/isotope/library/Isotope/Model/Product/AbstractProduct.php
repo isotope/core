@@ -11,10 +11,12 @@
 
 namespace Isotope\Model\Product;
 
+use Contao\CoreBundle\Security\ContaoCorePermissions;
 use Contao\Database;
 use Contao\Date;
 use Contao\StringUtil;
 use Contao\System;
+use Isotope\CompatibilityHelper;
 use Isotope\Haste\Input\Input;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
@@ -130,34 +132,12 @@ abstract class AbstractProduct extends Product
             return false;
         }
 
-        $member = $objCollection->getMember();
-
-        $arrAttributes   = $this->getType()->getAttributes();
-        $blnHasProtected = \in_array('protected', $arrAttributes, true);
-        $blnHasGuests = \in_array('guests', $arrAttributes, true);
-
-        // Show to guests only
-        if ($blnHasGuests && $this->guests && null !== $member && !$this->protected) {
+        if (
+            \in_array('protected', $this->getType()->getAttributes(), true)
+            && $this->protected
+            && !CompatibilityHelper::isGranted($objCollection->getMember(), $this->groups)
+        ) {
             return false;
-        }
-
-        // Protected product
-        if ($blnHasProtected && $this->protected) {
-            if (null === $member) {
-                return $blnHasGuests && $this->guests;
-            }
-
-            $groups       = StringUtil::deserialize($this->groups);
-            $memberGroups = StringUtil::deserialize($member->groups);
-
-            if (!\is_array($groups)
-                || empty($groups)
-                || !\is_array($memberGroups)
-                || empty($memberGroups)
-                || !\count(array_intersect($groups, $memberGroups))
-            ) {
-                return false;
-            }
         }
 
         return true;

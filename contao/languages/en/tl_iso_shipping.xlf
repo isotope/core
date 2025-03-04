@@ -212,23 +212,17 @@
       <trans-unit id="tl_iso_shipping.group_calculation.1">
         <source>Select how the price of this shipping method should be calculated.</source>
       </trans-unit>
-      <trans-unit id="tl_iso_shipping.groups.0">
-        <source>Member Groups</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_shipping.groups.1">
-        <source>Restrict this shipping option to certain member groups.</source>
-      </trans-unit>
       <trans-unit id="tl_iso_shipping.protected.0">
-        <source>Protect module</source>
+        <source>Protect shipping method</source>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.protected.1">
-        <source>Show the module to certain member groups only.</source>
+        <source>Show the shipping method to certain member groups only.</source>
       </trans-unit>
-      <trans-unit id="tl_iso_shipping.guests.0">
-        <source>Show to guests only</source>
+      <trans-unit id="tl_iso_shipping.groups.0">
+        <source>Allowed member groups</source>
       </trans-unit>
-      <trans-unit id="tl_iso_shipping.guests.1">
-        <source>Hide the module if a member is logged in.</source>
+      <trans-unit id="tl_iso_shipping.groups.1">
+        <source>These groups will be able to see the shipping methods.</source>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.debug.0">
         <source>Debug mode</source>

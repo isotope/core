@@ -482,13 +482,6 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'sql' => 'blob NULL',
             'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
         ],
-        'guests' => [
-            'exclude' => true,
-            'inputType' => 'checkbox',
-            'eval' => ['tl_class' => 'w50'],
-            'attributes' => ['legend' => 'expert_legend', 'systemColumn' => true],
-            'sql' => "char(1) NOT NULL default ''",
-        ],
         'cssID' => [
             'exclude' => true,
             'inputType' => 'text',

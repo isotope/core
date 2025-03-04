@@ -12,12 +12,14 @@
 namespace Isotope\Module;
 
 use Contao\Controller;
+use Contao\CoreBundle\Security\ContaoCorePermissions;
 use Contao\Database;
 use Contao\Environment;
 use Contao\FrontendTemplate;
 use Contao\FrontendUser;
 use Contao\PageModel;
 use Contao\StringUtil;
+use Contao\System;
 use Isotope\Haste\Input\Input;
 use Isotope\CompatibilityHelper;
 use Isotope\Haste\Util\Url;
@@ -149,40 +151,32 @@ class CategoryFilter extends AbstractProductFilter implements IsotopeFilterModul
     private function renderFilterTree($pid, $level = 1, array $currentIds = [], &$hasActive = false, array &$allIds = [])
     {
         // Get all active subpages
-        $pages = PageModel::findPublishedSubpagesWithoutGuestsByPid($pid, $this->showHidden);
+        $pages = static::getPublishedSubpagesByPid($pid, $this->showHidden);
 
-        if ($pages === null) {
+        if (null === $pages) {
             return '';
         }
 
         $items = array();
-        $groups = array();
-
-        // Get all groups of the current front end user
-        if (\Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER')) {
-            $groups = FrontendUser::getInstance()->groups;
-        }
-
-        /** @var PageModel $objPage */
-        global $objPage;
+        $security = System::getContainer()->get('security.helper');
 
         // Browse subpages
-        foreach ($pages as $subpage) {
+        foreach ($pages as list('page' => $subpage, 'hasSubpages' => $blnHasSubpages)) {
+            $subpage->loadDetails();
+
             $subitems = '';
             $trail = false;
-            $_groups = StringUtil::deserialize($subpage->groups);
 
             // Do not show protected pages unless a back end or front end user is logged in
             if (!$this->showProtected
                 && $subpage->protected
-                && !\Contao\System::getContainer()->get('contao.security.token_checker')->isPreviewMode()
-                && (!\is_array($_groups) || !\count(array_intersect($_groups, $groups)))
+                && !$security->isGranted(ContaoCorePermissions::MEMBER_IN_GROUPS, $subpage->groups)
             ) {
                 continue;
             }
 
             // Check whether there will be subpages
-            if ($subpage->subpages > 0 && (!$this->showLevel || $this->showLevel >= $level)) {
+            if ($blnHasSubpages && (!$this->showLevel || $this->showLevel >= $level)) {
                 $subitems = $this->renderFilterTree($subpage->id, $level + 1, $currentIds, $trail, $allIds);
             }
 
@@ -238,13 +232,12 @@ class CategoryFilter extends AbstractProductFilter implements IsotopeFilterModul
             return '';
         }
 
-        /** @var FrontendTemplate|object $objTemplate */
-        $objTemplate = new FrontendTemplate($this->navigationTpl);
-
+        $objTemplate = new FrontendTemplate($this->navigationTpl ?: 'nav_default');
         $objTemplate->pid = $pid;
-        $objTemplate->type = \get_class($this);
+        $objTemplate->type = static::class;
         $objTemplate->cssID = $this->cssID;
         $objTemplate->level = 'level_'.$level;
+        $objTemplate->module = $this;
         $objTemplate->items = $items;
 
         return $objTemplate->parse();

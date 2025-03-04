@@ -73,7 +73,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = [
     // Palettes
     'palettes' => [
         '__selector__' => ['protected'],
-        'default' => '{name_legend},name,label;{rate_legend},rate;{location_legend},address,countries,subdivisions,postalCodes;{condition_legend},amount;{config_legend:hide},config,exemptOnValidVAT,stop,guests,protected',
+        'default' => '{name_legend},name,label;{rate_legend},rate;{location_legend},address,countries,subdivisions,postalCodes;{condition_legend},amount;{config_legend:hide},config,exemptOnValidVAT,stop,protected',
     ],
 
     // Subpalettes
@@ -170,12 +170,6 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = [
             'exclude' => true,
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
-            'sql' => "char(1) NOT NULL default ''",
-        ],
-        'guests' => [
-            'exclude' => true,
-            'inputType' => 'checkbox',
-            'eval' => ['tl_class' => 'clr'],
             'sql' => "char(1) NOT NULL default ''",
         ],
         'protected' => [

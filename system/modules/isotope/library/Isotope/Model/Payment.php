@@ -11,6 +11,7 @@
 
 namespace Isotope\Model;
 
+use Contao\CoreBundle\Security\ContaoCorePermissions;
 use Contao\Environment;
 use Contao\FrontendUser;
 use Contao\Module;
@@ -46,7 +47,6 @@ use Isotope\Translation;
  * @property array  $product_types
  * @property string $product_types_condition
  * @property array  $config_ids
- * @property bool   $guests
  * @property bool   $protected
  * @property array  $groups
  * @property bool   $debug
@@ -124,21 +124,8 @@ abstract class Payment extends TypeAgent implements IsotopePayment
             return false;
         }
 
-        $isMember = \Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER');
-
-        if (($this->guests && $isMember) || ($this->protected && !$isMember)) {
+        if ($this->protected && !System::getContainer()->get('security.helper')->isGranted(ContaoCorePermissions::MEMBER_IN_GROUPS, $this->groups)) {
             return false;
-        }
-
-        if ($this->protected) {
-            $arrGroups = StringUtil::deserialize($this->groups);
-
-            if (!\is_array($arrGroups)
-                || 0 === \count($arrGroups)
-                || 0 === \count(array_intersect($arrGroups, FrontendUser::getInstance()->groups))
-            ) {
-                return false;
-            }
         }
 
         if (($this->minimum_total > 0 && $this->minimum_total > Isotope::getCart()->getSubtotal())

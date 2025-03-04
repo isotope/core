@@ -12,7 +12,6 @@
 namespace Isotope\Backend\User;
 
 use Contao\Backend;
-use Contao\Database;
 use Contao\DataContainer;
 use Isotope\Model\Group;
 
@@ -51,18 +50,5 @@ class Callback extends Backend
                 $this->generateGroups($arrGroups, $objGroup->id, $intLevel + 1);
             }
         }
-    }
-
-    public function getMemberGroups()
-    {
-        $groups = Database::getInstance()->execute("SELECT id, name FROM tl_member_group")->fetchEach('name');
-
-        $result = [-1 => $GLOBALS['TL_LANG']['tl_user']['iso_member_groups'][2]];
-
-        foreach ($groups as $k => $v) {
-            $result[$k] = $v;
-        }
-
-        return $result;
     }
 }

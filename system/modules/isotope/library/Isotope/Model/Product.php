@@ -45,7 +45,6 @@ use Contao\Model\Collection;
  * @property array  $images
  * @property bool   $protected
  * @property array  $groups
- * @property bool   $guests
  * @property array  $cssID
  * @property bool   $published
  * @property string $start

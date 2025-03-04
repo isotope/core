@@ -12,6 +12,7 @@
 namespace Isotope\Model\Product;
 
 use Contao\ContentElement;
+use Contao\CoreBundle\Security\ContaoCorePermissions;
 use Contao\Database;
 use Contao\Date;
 use Contao\FrontendUser;
@@ -257,10 +258,8 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
 
             $time            = Date::floorToMinute();
             $blnHasProtected = false;
-            $blnHasGuests    = false;
-            $isMember = \Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER');
             $strQuery        = '
-                SELECT tl_iso_product.id, tl_iso_product.protected, tl_iso_product.groups, tl_iso_product.guests
+                SELECT tl_iso_product.id, tl_iso_product.protected, tl_iso_product.groups
                 FROM tl_iso_product
                 WHERE
                     pid=' . $this->getProductId() . "
@@ -273,43 +272,17 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             if (!\Contao\System::getContainer()->get('contao.security.token_checker')->isPreviewMode()) {
                 $arrAttributes   = $this->getType()->getVariantAttributes();
                 $blnHasProtected = \in_array('protected', $arrAttributes, true);
-                $blnHasGuests = \in_array('guests', $arrAttributes, true);
-
-                // Hide guests-only products when logged in
-                if ($isMember && $blnHasGuests) {
-                    $strQuery .= " AND (guests=''" . ($blnHasProtected ? " OR protected='1'" : '') . ')';
-                } // Hide protected if no user is logged in
-                elseif (!$isMember && $blnHasProtected) {
-                    $strQuery .= " AND (protected=''" . ($blnHasGuests ? " OR guests='1'" : '') . ")";
-                }
             }
 
-            /** @var object $objVariants */
             $objVariants = Database::getInstance()->query($strQuery);
 
             while ($objVariants->next()) {
-                if (!$isMember
-                    && $blnHasProtected
+                if (
+                    $blnHasProtected
                     && $objVariants->protected
-                    && (!$blnHasGuests || !$objVariants->guests)
+                    && !System::getContainer()->get('security.helper')->isGranted(ContaoCorePermissions::MEMBER_IN_GROUPS, $objVariants->groups)
                 ) {
                     continue;
-                }
-
-                if ($isMember
-                    && $blnHasGuests
-                    && $objVariants->guests
-                    && (!$blnHasProtected || !$objVariants->protected)
-                ) {
-                    continue;
-                }
-
-                if ($isMember && $blnHasProtected && $objVariants->protected) {
-                    $groups = StringUtil::deserialize($objVariants->groups);
-
-                    if (empty($groups) || !\is_array($groups) || !\count(array_intersect($groups, FrontendUser::getInstance()->groups))) {
-                        continue;
-                    }
                 }
 
                 $this->arrVariantIds[] = $objVariants->id;

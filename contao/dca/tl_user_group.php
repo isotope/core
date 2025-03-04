@@ -173,7 +173,8 @@ $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_groupp'] = [
 $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_member_groups'] = [
     'exclude' => true,
     'inputType' => 'checkbox',
-    'options_callback' => [Callback::class, 'getMemberGroups'],
+    'foreignKey' => 'tl_member_group.name',
     'eval' => ['multiple' => true, 'isAssociative' => true, 'tl_class' => 'clr'],
     'sql' => 'blob NULL',
+    'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
 ];

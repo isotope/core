@@ -123,19 +123,13 @@
         <source>Protect product</source>
       </trans-unit>
       <trans-unit id="tl_iso_product.protected.1">
-        <source>Restrict product access to certain member groups.</source>
+        <source>Show the product to certain member groups only.</source>
       </trans-unit>
       <trans-unit id="tl_iso_product.groups.0">
         <source>Allowed member groups</source>
       </trans-unit>
       <trans-unit id="tl_iso_product.groups.1">
-        <source>These groups will be able to access the product.</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_product.guests.0">
-        <source>Show to guests only</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_product.guests.1">
-        <source>Hide the product if there is an authenticated user.</source>
+        <source>These groups will be able to see the product.</source>
       </trans-unit>
       <trans-unit id="tl_iso_product.cssID.0">
         <source>CSS ID/class</source>

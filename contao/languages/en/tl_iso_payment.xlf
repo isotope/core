@@ -608,23 +608,17 @@
       <trans-unit id="tl_iso_payment.swissbilling_b2b.1">
         <source>Enable B2B support for SwissBilling payments. Please check with SwissBilling before activating this option.</source>
       </trans-unit>
-      <trans-unit id="tl_iso_payment.groups.0">
-        <source>Member groups</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.groups.1">
-        <source>Restrict this payment method to certain member groups.</source>
-      </trans-unit>
       <trans-unit id="tl_iso_payment.protected.0">
         <source>Protect payment method</source>
       </trans-unit>
       <trans-unit id="tl_iso_payment.protected.1">
         <source>Show the payment method to certain member groups only.</source>
       </trans-unit>
-      <trans-unit id="tl_iso_payment.guests.0">
-        <source>Show to guests only</source>
+      <trans-unit id="tl_iso_payment.groups.0">
+        <source>Allowed member groups</source>
       </trans-unit>
-      <trans-unit id="tl_iso_payment.guests.1">
-        <source>Hide the payment method if a member is logged in.</source>
+      <trans-unit id="tl_iso_payment.groups.1">
+        <source>These groups will be able to see the payment method.</source>
       </trans-unit>
       <trans-unit id="tl_iso_payment.debug.0">
         <source>Debug mode</source>

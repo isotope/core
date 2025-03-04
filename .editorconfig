@@ -16,6 +16,6 @@ indent_size = 4
 [*.{svg,min.css,min.js}]
 insert_final_newline = false
 
-[*.html5]
+[*.{html5,xlf}]
 indent_style = space
 indent_size = 2

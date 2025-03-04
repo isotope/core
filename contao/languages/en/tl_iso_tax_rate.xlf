@@ -68,23 +68,17 @@
       <trans-unit id="tl_iso_tax_rate.stop.1">
         <source>Stop other calculations if this tax rate is triggered.</source>
       </trans-unit>
-      <trans-unit id="tl_iso_tax_rate.groups.0">
-        <source>Member groups</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_tax_rate.groups.1">
-        <source>Restrict this tax rate to certain member groups.</source>
-      </trans-unit>
       <trans-unit id="tl_iso_tax_rate.protected.0">
         <source>Protect tax rate</source>
       </trans-unit>
       <trans-unit id="tl_iso_tax_rate.protected.1">
         <source>Apply the tax rate to certain member groups only.</source>
       </trans-unit>
-      <trans-unit id="tl_iso_tax_rate.guests.0">
-        <source>Apply to guests only</source>
+      <trans-unit id="tl_iso_tax_rate.groups.0">
+        <source>Applicable member groups</source>
       </trans-unit>
-      <trans-unit id="tl_iso_tax_rate.guests.1">
-        <source>Do not apply tax rate if a member is logged in.</source>
+      <trans-unit id="tl_iso_tax_rate.groups.1">
+        <source>This tax rate will be applied to these groups.</source>
       </trans-unit>
       <trans-unit id="tl_iso_tax_rate.new.0">
         <source>New tax rate</source>
