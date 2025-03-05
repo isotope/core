@@ -27,7 +27,7 @@ use Isotope\CompatibilityHelper;
 use Isotope\Model\Config;
 use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 
-class Callback extends Permission
+class Callback extends Backend
 {
     /**
      * Check permissions to edit table tl_iso_config
@@ -61,61 +61,6 @@ class Callback extends Permission
         }
 
         $GLOBALS['TL_DCA']['tl_iso_config']['list']['sorting']['root'] = $root;
-
-        // Check permissions to add configs
-        if (!$user->hasAccess('create', 'iso_configp')) {
-            $GLOBALS['TL_DCA']['tl_iso_config']['config']['closed'] = true;
-            unset($GLOBALS['TL_DCA']['tl_iso_config']['list']['global_operations']['new']);
-        }
-
-        // Check current action
-        switch (Input::get('act')) {
-            case 'create':
-            case 'select':
-                // Allow
-                break;
-
-            /** @noinspection PhpMissingBreakStatementInspection */
-            case 'edit':
-
-                // Dynamically add the record to the user profile
-                if (!\in_array(Input::get('id'), $root)
-                    && $this->addNewRecordPermissions(Input::get('id'), 'tl_iso_config', 'iso_configs', 'iso_configp')
-                ) {
-                    $root[] = Input::get('id');
-                    $user->iso_configs = $root;
-                }
-                // No break;
-
-            case 'copy':
-            case 'delete':
-            case 'show':
-                if (!\in_array(Input::get('id'), $root) || ('delete' === Input::get('act') && !$user->hasAccess('delete', 'iso_configp'))) {
-                    throw new AccessDeniedException('Not enough permissions to ' . Input::get('act') . ' store configuration ID "' . Input::get('id') . '"');
-                }
-                break;
-
-            case 'editAll':
-            case 'deleteAll':
-            case 'overrideAll':
-                /** @var AttributeBagInterface $sessionBag */
-                $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
-
-                $session = $sessionBag->all();
-                if ('deleteAll' === Input::get('act') && !$user->hasAccess('delete', 'iso_configp')) {
-                    $session['CURRENT']['IDS'] = array();
-                } else {
-                    $session['CURRENT']['IDS'] = array_intersect($session['CURRENT']['IDS'], $root);
-                }
-                $sessionBag->replace($session);
-                break;
-
-            default:
-                if (\strlen(Input::get('act'))) {
-                    throw new AccessDeniedException('Not enough permissions to ' . Input::get('act') . ' store configurations');
-                }
-                break;
-        }
     }
 
     /**
@@ -198,40 +143,6 @@ class Callback extends Permission
         $style = 'background-image:url(\''.CompatibilityHelper::asset('images/' . $image . '.png').'\');line-height:16px';
 
         return sprintf('<div class="list_icon" style="%s" title="%s">%s</div>', $style, $GLOBALS['TL_LANG']['CUR'][$row['currency']], $label);
-    }
-
-    /**
-     * Return the copy config button
-     *
-     * @param array  $row
-     * @param string $href
-     * @param string $label
-     * @param string $title
-     * @param string $icon
-     * @param string $attributes
-     *
-     * @return string
-     */
-    public function copyConfig($row, $href, $label, $title, $icon, $attributes)
-    {
-        return (BackendUser::getInstance()->isAdmin || BackendUser::getInstance()->hasAccess('create', 'iso_configp')) ? '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ' : Image::getHtml(preg_replace('/\.svg$/i', '_.svg', $icon)) . ' ';
-    }
-
-    /**
-     * Return the delete config button
-     *
-     * @param array  $row
-     * @param string $href
-     * @param string $label
-     * @param string $title
-     * @param string $icon
-     * @param string $attributes
-     *
-     * @return string
-     */
-    public function deleteConfig($row, $href, $label, $title, $icon, $attributes)
-    {
-        return (BackendUser::getInstance()->isAdmin || BackendUser::getInstance()->hasAccess('delete', 'iso_configp')) ? '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ' : Image::getHtml(preg_replace('/\.svg$/i', '_.svg', $icon)) . ' ';
     }
 
     /**

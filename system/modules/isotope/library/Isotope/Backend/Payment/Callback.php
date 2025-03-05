@@ -29,7 +29,7 @@ use Isotope\Model\Shipping;
 use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 
 
-class Callback extends Permission
+class Callback extends Backend
 {
 
     /**
@@ -58,61 +58,6 @@ class Callback extends Permission
         }
 
         $GLOBALS['TL_DCA']['tl_iso_payment']['list']['sorting']['root'] = $root;
-
-        // Check permissions to add payment modules
-        if (!$user->hasAccess('create', 'iso_payment_modulep')) {
-            $GLOBALS['TL_DCA']['tl_iso_payment']['config']['closed'] = true;
-            unset($GLOBALS['TL_DCA']['tl_iso_payment']['list']['global_operations']['new']);
-        }
-
-        // Check current action
-        switch (Input::get('act')) {
-            case 'create':
-            case 'select':
-                // Allow
-                break;
-
-            /** @noinspection PhpMissingBreakStatementInspection */
-            case 'edit':
-                // Dynamically add the record to the user profile
-                if (!\in_array(Input::get('id'), $root)
-                    && $this->addNewRecordPermissions(Input::get('id'), 'tl_iso_payment', 'iso_payment_modules', 'iso_payment_modulep')
-                ) {
-                    $root[]                          = Input::get('id');
-                    $user->iso_payment_modules = $root;
-                }
-            // No break;
-
-            case 'toggle':
-            case 'copy':
-            case 'delete':
-            case 'show':
-                if (!\in_array(Input::get('id'), $root) || ('delete' === Input::get('act') && !$user->hasAccess('delete', 'iso_payment_modulep'))) {
-                    throw new AccessDeniedException('Not enough permissions to ' . Input::get('act') . ' payment module ID "' . Input::get('id') . '"');
-                }
-                break;
-
-            case 'editAll':
-            case 'deleteAll':
-            case 'overrideAll':
-                /** @var AttributeBagInterface $sessionBag */
-                $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
-
-                $session = $sessionBag->all();
-                if ('deleteAll' === Input::get('act') && !$user->hasAccess('delete', 'iso_payment_modulep')) {
-                    $session['CURRENT']['IDS'] = array();
-                } else {
-                    $session['CURRENT']['IDS'] = array_intersect($session['CURRENT']['IDS'], $root);
-                }
-                $sessionBag->replace($session);
-                break;
-
-            default:
-                if (\strlen(Input::get('act'))) {
-                    throw new AccessDeniedException('Not enough permissions to ' . Input::get('act') . ' payment modules');
-                }
-                break;
-        }
     }
 
 
@@ -162,41 +107,5 @@ class Callback extends Permission
 
         $GLOBALS['TL_DCA'][$dc->table]['fields']['shipping_modules']['options']   = array_keys($arrModules);
         $GLOBALS['TL_DCA'][$dc->table]['fields']['shipping_modules']['reference'] = $arrModules;
-    }
-
-
-    /**
-     * Return the copy payment module button
-     *
-     * @param array  $row
-     * @param string $href
-     * @param string $label
-     * @param string $title
-     * @param string $icon
-     * @param string $attributes
-     *
-     * @return string
-     */
-    public function copyPaymentModule($row, $href, $label, $title, $icon, $attributes)
-    {
-        return (BackendUser::getInstance()->isAdmin || BackendUser::getInstance()->hasAccess('create', 'iso_payment_modulep')) ? '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ' : Image::getHtml(preg_replace('/\.svg$/i', '_.svg', $icon)) . ' ';
-    }
-
-
-    /**
-     * Return the delete payment module button
-     *
-     * @param array  $row
-     * @param string $href
-     * @param string $label
-     * @param string $title
-     * @param string $icon
-     * @param string $attributes
-     *
-     * @return string
-     */
-    public function deletePaymentModule($row, $href, $label, $title, $icon, $attributes)
-    {
-        return (BackendUser::getInstance()->isAdmin || BackendUser::getInstance()->hasAccess('delete', 'iso_payment_modulep')) ? '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ' : Image::getHtml(preg_replace('/\.svg$/i', '_.svg', $icon)) . ' ';
     }
 }

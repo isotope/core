@@ -31,19 +31,6 @@ $GLOBALS['TL_DCA']['tl_iso_download'] = [
             'fields' => ['title', 'singleSRC'],
             'format' => '%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>',
         ],
-        'operations' => [
-            'edit',
-            'copy',
-            'cut',
-            'delete' => [
-                'href' => 'act=delete',
-                'icon' => 'delete.svg',
-                'attributes' => 'onclick="if (!confirm(\''.($GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? '').'\')) return false; Backend.getScrollOffset();"',
-                'button_callback' => [Callback::class, 'deleteButton'],
-            ],
-            'toggle',
-            'show',
-        ],
     ],
     'palettes' => [
         'default' => '{file_legend},singleSRC;{limit_legend},downloads_allowed,expires;{publish_legend},published',

@@ -26,7 +26,7 @@ use Isotope\Model\Group;
 use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 
 
-class Callback extends Permission
+class Callback extends Backend
 {
     /**
      * Make the constructor public
@@ -82,74 +82,6 @@ class Callback extends Permission
         if (\in_array('rootPaste', $user->iso_groupp, true)) {
             $GLOBALS['TL_DCA']['tl_iso_group']['list']['sorting']['rootPaste'] = true;
         }
-
-        if (!\in_array('create', $user->iso_groupp, true)) {
-            $GLOBALS['TL_DCA']['tl_iso_group']['config']['closed'] = true;
-            $GLOBALS['TL_DCA']['tl_iso_group']['config']['notCopyable'] = true;
-        }
-
-        if (!\in_array('delete', $user->iso_groupp, true)) {
-            $GLOBALS['TL_DCA']['tl_iso_group']['config']['notDeletable'] = true;
-        }
-
-        if (!$user->canEditFieldsOf('tl_iso_group')) {
-            $GLOBALS['TL_DCA']['tl_iso_group']['config']['notEditable'] = true;
-        }
-
-        $root = array_merge($root, Database::getInstance()->getChildRecords($root, 'tl_iso_group'));
-
-        // Check current action
-        switch (Input::get('act')) {
-            case 'create':
-            case 'copy':
-            case 'select':
-            case 'paste':
-                // Allow
-                break;
-
-            /** @noinspection PhpMissingBreakStatementInspection */
-            case 'edit':
-
-                // Dynamically add the record to the user profile
-                if (!\in_array(Input::get('id'), $root)
-                    && $this->addNewRecordPermissions(Input::get('id'), 'tl_iso_group', 'iso_groups', 'iso_groupp')
-                ) {
-                    $root[] = Input::get('id');
-                    $user->iso_groups = $root;
-                }
-            // No break;
-
-            case 'delete':
-            case 'show':
-            case 'cut':
-                if (!\in_array(Input::get('id'), $root)
-                    || (
-                        'delete' === Input::get('act')
-                        && !$user->hasAccess('delete', 'iso_groupp')
-                    )
-                ) {
-                    throw new AccessDeniedException('Not enough permissions to ' . Input::get('act') . ' group ID "' . Input::get('id') . '"');
-                }
-                break;
-
-            case 'editAll':
-            case 'deleteAll':
-            case 'overrideAll':
-                $sessionData = $sessionBag->all();
-                if ('deleteAll' === Input::get('act') && !$user->hasAccess('delete', 'iso_groupp')) {
-                    $sessionData['CURRENT']['IDS'] = array();
-                } else {
-                    $sessionData['CURRENT']['IDS'] = array_intersect($sessionData['CURRENT']['IDS'], $root);
-                }
-                $sessionBag->replace($sessionData);
-                break;
-
-            default:
-                if (\strlen(Input::get('act'))) {
-                    throw new AccessDeniedException('Not enough permissions to ' . Input::get('act') . ' groups');
-                }
-                break;
-        }
     }
 
     /**
@@ -190,80 +122,5 @@ class Callback extends Permission
         Database::getInstance()->query(
             'UPDATE tl_iso_product SET gid=0 WHERE gid IN (' . implode(',', $arrGroups) . ')'
         );
-    }
-
-    /**
-     * Disable edit button if user has no permission to edit any fields
-     *
-     * @param array  $row
-     * @param string $href
-     * @param string $label
-     * @param string $title
-     * @param string $icon
-     * @param string $attributes
-     *
-     * @return string
-     */
-    public function editButton($row, $href, $label, $title, $icon, $attributes)
-    {
-        if (!BackendUser::getInstance()->isAdmin
-            && !BackendUser::getInstance()->canEditFieldsOf('tl_iso_group')
-        ) {
-            return Image::getHtml(preg_replace('/\.svg$/i', '_.svg', $icon)) . ' ';
-        }
-
-        return '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ';
-    }
-
-    /**
-     * Disable copy button if user has no permission to create groups
-     *
-     * @param array  $row
-     * @param string $href
-     * @param string $label
-     * @param string $title
-     * @param string $icon
-     * @param string $attributes
-     *
-     * @return string
-     */
-    public function copyButton($row, $href, $label, $title, $icon, $attributes)
-    {
-        if (!BackendUser::getInstance()->isAdmin
-            && (
-                !\is_array(BackendUser::getInstance()->iso_groupp)
-                || !\in_array('create', BackendUser::getInstance()->iso_groupp, true)
-            )
-        ) {
-            return Image::getHtml(preg_replace('/\.svg$/i', '_.svg', $icon)) . ' ';
-        }
-
-        return '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ';
-    }
-
-    /**
-     * Disable delete button if user has no permission to delete groups
-     *
-     * @param array  $row
-     * @param string $href
-     * @param string $label
-     * @param string $title
-     * @param string $icon
-     * @param string $attributes
-     *
-     * @return string
-     */
-    public function deleteButton($row, $href, $label, $title, $icon, $attributes)
-    {
-        if (!BackendUser::getInstance()->isAdmin
-            && (
-                !\is_array(BackendUser::getInstance()->iso_groupp)
-                || !\in_array('delete', BackendUser::getInstance()->iso_groupp, true)
-            )
-        ) {
-            return Image::getHtml(preg_replace('/\.svg$/i', '_.svg', $icon)) . ' ';
-        }
-
-        return '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ';
     }
 }

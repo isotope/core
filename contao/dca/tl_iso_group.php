@@ -38,33 +38,6 @@ $GLOBALS['TL_DCA']['tl_iso_group'] = [
             'format' => '%s',
             'label_callback' => [Callback::class, 'addIcon'],
         ],
-        'operations' => [
-            'edit' => [
-                'href' => 'table=tl_iso_group&amp;act=edit',
-                'icon' => 'edit.svg',
-                'button_callback' => [Callback::class, 'editButton'],
-            ],
-            'copy' => [
-                'href' => 'table=tl_iso_group&amp;act=paste&amp;mode=copy',
-                'icon' => 'copy.svg',
-                'attributes' => 'onclick="Backend.getScrollOffset()"',
-                'button_callback' => [Callback::class, 'copyButton'],
-            ],
-            'copyChilds' => [
-                'href' => 'table=tl_iso_group&amp;act=paste&amp;mode=copy&amp;childs=1',
-                'icon' => 'copychilds.svg',
-                'attributes' => 'onclick="Backend.getScrollOffset()"',
-                'button_callback' => [Callback::class, 'copyButton'],
-            ],
-            'cut',
-            'delete' => [
-                'href' => 'table=tl_iso_group&amp;act=delete',
-                'icon' => 'delete.svg',
-                'attributes' => 'onclick="if (!confirm(\''.($GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? '').'\')) return false; Backend.getScrollOffset();"',
-                'button_callback' => [Callback::class, 'deleteButton'],
-            ],
-            'show',
-        ],
     ],
     'palettes' => [
         'default' => '{group_legend},name,product_type;',

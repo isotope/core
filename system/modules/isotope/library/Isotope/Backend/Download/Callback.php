@@ -121,24 +121,4 @@ class Callback extends Backend
         // Add fields that have potentially been added through the DCA, but do not allow to override the core fields
         return array_merge($arrNew, array_diff_key($arrFields, $arrNew));
     }
-
-    /**
-     * Prevent delete on a download which has been sold
-     * @param   array
-     * @param   string
-     * @param   string
-     * @param   string
-     * @param   string
-     * @param   array
-     * @return  string
-     * @see     https://contao.org/de/manual/3.1/data-container-arrays.html#button_callback
-     */
-    public function deleteButton($row, $href, $label, $title, $icon, $attributes)
-    {
-        if (ProductCollectionDownload::countBy('download_id', $row['id']) > 0) {
-            return Image::getHtml(preg_replace('/\.svg$/i', '_.svg', $icon)) . ' ';
-        }
-
-        return '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ';
-    }
 }

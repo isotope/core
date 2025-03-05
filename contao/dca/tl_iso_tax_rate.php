@@ -35,21 +35,6 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = [
             'format' => '%s',
             'label_callback' => [Callback::class, 'listRow'],
         ],
-        'operations' => [
-            'edit',
-            'copy' => [
-                'href' => 'act=copy',
-                'icon' => 'copy.svg',
-                'button_callback' => [Callback::class, 'copyTaxRate'],
-            ],
-            'delete' => [
-                'href' => 'act=delete',
-                'icon' => 'delete.svg',
-                'attributes' => 'onclick="if (!confirm(\''.($GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? '').'\')) return false; Backend.getScrollOffset();"',
-                'button_callback' => [Callback::class, 'deleteTaxRate'],
-            ],
-            'show',
-        ],
     ],
     'palettes' => [
         '__selector__' => ['protected'],

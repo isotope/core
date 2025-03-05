@@ -24,7 +24,7 @@ use Isotope\Model\TaxRate;
 use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 
 
-class Callback extends Permission
+class Callback extends Backend
 {
 
     /**
@@ -51,62 +51,6 @@ class Callback extends Permission
         }
 
         $GLOBALS['TL_DCA']['tl_iso_tax_rate']['list']['sorting']['root'] = $root;
-
-        // Check permissions to add tax rates
-        if (!\Contao\BackendUser::getInstance()->hasAccess('create', 'iso_tax_ratep')) {
-            $GLOBALS['TL_DCA']['tl_iso_tax_rate']['config']['closed'] = true;
-            unset($GLOBALS['TL_DCA']['tl_iso_tax_rate']['list']['global_operations']['new']);
-        }
-
-        // Check current action
-        switch (Input::get('act')) {
-            case 'create':
-            case 'select':
-                // Allow
-                break;
-
-            /** @noinspection PhpMissingBreakStatementInspection */
-            case 'edit':
-                // Dynamically add the record to the user profile
-                if (!\in_array(Input::get('id'), $root)
-                    && $this->addNewRecordPermissions(Input::get('id'), 'tl_iso_tax_rate', 'iso_tax_rates', 'iso_tax_ratep')
-                ) {
-                    $root[] = Input::get('id');
-                    \Contao\BackendUser::getInstance()->iso_tax_rates = $root;
-                }
-            // No break;
-
-            case 'copy':
-            case 'delete':
-            case 'show':
-                if (!\in_array(Input::get('id'), $root)
-                    || ('delete' === Input::get('act') && !\Contao\BackendUser::getInstance()->hasAccess('delete', 'iso_tax_ratep'))
-                ) {
-                    throw new AccessDeniedException('Not enough permissions to ' . Input::get('act') . ' tax rate ID "' . Input::get('id') . '"');
-                }
-                break;
-
-            case 'editAll':
-            case 'deleteAll':
-            case 'overrideAll':
-                /** @var AttributeBagInterface $sessionBag */
-                $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
-
-                $session = $sessionBag->all();
-                if ('deleteAll' === Input::get('act') && !\Contao\BackendUser::getInstance()->hasAccess('delete', 'iso_tax_ratep')) {
-                    $session['CURRENT']['IDS'] = array();
-                } else {
-                    $session['CURRENT']['IDS'] = array_intersect($session['CURRENT']['IDS'], $root);
-                }
-                $sessionBag->replace($session);
-                break;
-
-            default:
-                if (\strlen(Input::get('act'))) {
-                    throw new AccessDeniedException('Not enough permissions to ' . Input::get('act') . ' tax rates');
-                }
-                break;
-        }
     }
 
 
@@ -142,37 +86,5 @@ class Callback extends Permission
         if (null !== $objTaxRate && $objTaxRate->config > 0 && null !== $objTaxRate->getRelated('config')) {
             $GLOBALS['TL_DCA']['tl_iso_tax_rate']['fields']['rate']['options'][''] = $objTaxRate->getRelated('config')->currency;
         }
-    }
-
-
-    /**
-     * Return the copy tax rate button
-     * @param array
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @return string
-     */
-    public function copyTaxRate($row, $href, $label, $title, $icon, $attributes)
-    {
-        return (\Contao\BackendUser::getInstance()->isAdmin || \Contao\BackendUser::getInstance()->hasAccess('create', 'iso_tax_ratep')) ? '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ' : Image::getHtml(preg_replace('/\.svg$/i', '_.svg', $icon)) . ' ';
-    }
-
-
-    /**
-     * Return the delete tax rate button
-     * @param array
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @return string
-     */
-    public function deleteTaxRate($row, $href, $label, $title, $icon, $attributes)
-    {
-        return (\Contao\BackendUser::getInstance()->isAdmin || \Contao\BackendUser::getInstance()->hasAccess('delete', 'iso_tax_ratep')) ? '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ' : Image::getHtml(preg_replace('/\.svg$/i', '_.svg', $icon)) . ' ';
     }
 }

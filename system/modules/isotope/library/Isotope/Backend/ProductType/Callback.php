@@ -28,7 +28,7 @@ use Isotope\Model\Attribute;
 use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 
 
-class Callback extends Permission
+class Callback extends Backend
 {
 
     /**
@@ -56,111 +56,6 @@ class Callback extends Permission
         }
 
         $GLOBALS['TL_DCA']['tl_iso_producttype']['list']['sorting']['root'] = $root;
-
-        // Check permissions to add product types
-        if (!$objBackendUser->hasAccess('create', 'iso_product_typep')) {
-            $GLOBALS['TL_DCA']['tl_iso_producttype']['config']['closed'] = true;
-            unset($GLOBALS['TL_DCA']['tl_iso_producttype']['list']['global_operations']['new']);
-        }
-
-        // Check current action
-        switch (Input::get('act')) {
-            case 'create':
-            case 'select':
-                // Allow
-                break;
-
-            /** @noinspection PhpMissingBreakStatementInspection */
-            case 'edit':
-                // Dynamically add the record to the user profile
-                if (!\in_array(Input::get('id'), $root)
-                    && $this->addNewRecordPermissions(Input::get('id'), 'tl_iso_producttype', 'iso_product_types', 'iso_product_typep')
-                ) {
-                    $root[] = Input::get('id');
-                    $objBackendUser->iso_product_types = $root;
-                }
-                // No break;
-
-            case 'copy':
-            case 'delete':
-            case 'show':
-                if (!\in_array(Input::get('id'), $root) || ('delete' === Input::get('act') && !$objBackendUser->hasAccess('delete', 'iso_product_typep'))) {
-                    throw new AccessDeniedException('Not enough permissions to ' . Input::get('act') . ' product type ID "' . Input::get('id') . '"');
-                }
-                break;
-
-            case 'editAll':
-            case 'deleteAll':
-            case 'overrideAll':
-                /** @var AttributeBagInterface $sessionBag */
-                $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
-
-                $session = $sessionBag->all();
-                if ('deleteAll' === Input::get('act') && !\Contao\BackendUser::getInstance()->hasAccess('delete', 'iso_product_typep')) {
-                    $session['CURRENT']['IDS'] = array();
-                } else {
-                    $session['CURRENT']['IDS'] = array_intersect($session['CURRENT']['IDS'], $root);
-                }
-                $sessionBag->replace($session);
-                break;
-
-            default:
-                if (\strlen(Input::get('act'))) {
-                    throw new AccessDeniedException('Not enough permissions to ' . Input::get('act') . ' product types');
-                }
-                break;
-        }
-    }
-
-
-    /**
-     * Return the copy product type button
-     *
-     * @param array  $row
-     * @param string $href
-     * @param string $label
-     * @param string $title
-     * @param string $icon
-     * @param string $attributes
-     *
-     * @return string
-     */
-    public function copyProductType($row, $href, $label, $title, $icon, $attributes)
-    {
-        $objUser = BackendUser::getInstance();
-
-        return ($objUser->isAdmin || $objUser->hasAccess('create', 'iso_product_typep')) ? '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ' : Image::getHtml(preg_replace('/\.svg$/i', '_.svg', $icon)) . ' ';
-    }
-
-
-    /**
-     * Return the delete product type button
-     *
-     * @param array  $row
-     * @param string $href
-     * @param string $label
-     * @param string $title
-     * @param string $icon
-     * @param string $attributes
-     *
-     * @return string
-     */
-    public function deleteProductType($row, $href, $label, $title, $icon, $attributes)
-    {
-        // Do not use Product::countBy() as it uses a way too complex query with joined subtables for no reason
-        $count = Database::getInstance()
-            ->prepare("SELECT COUNT(*) AS count FROM tl_iso_product WHERE pid=0 AND language='' AND type=?")
-            ->execute($row['id'])
-            ->count
-        ;
-
-        if ($count > 0) {
-            return Image::getHtml(preg_replace('/\.svg$/i', '_.svg', $icon)) . ' ';
-        }
-
-        $objUser = BackendUser::getInstance();
-
-        return ($objUser->isAdmin || $objUser->hasAccess('delete', 'iso_product_typep')) ? '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ' : Image::getHtml(preg_replace('/\.svg$/i', '_.svg', $icon)) . ' ';
     }
 
     /**
