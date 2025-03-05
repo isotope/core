@@ -14,6 +14,7 @@ use Contao\ArrayUtil;
 use Contao\System;
 use Isotope\Automator;
 use Isotope\Backend;
+use Isotope\Backend\Member\Callback as MemberCallback;
 use Isotope\Backend\Product\AssetImport;
 use Isotope\Backend\Product\DcaManager;
 use Isotope\Backend\Product\Fallback;
@@ -54,6 +55,7 @@ use Isotope\Model\Attribute\Downloads;
 use Isotope\Model\Attribute\FileTree;
 use Isotope\Model\Attribute\FineUploader;
 use Isotope\Model\Attribute\Media;
+use Isotope\Model\Attribute\MediaManager as MediaManagerAttribute;
 use Isotope\Model\Attribute\PageTree;
 use Isotope\Model\Attribute\QuantitySurcharge;
 use Isotope\Model\Attribute\RadioButton;
@@ -69,6 +71,7 @@ use Isotope\Model\Document\Standard;
 use Isotope\Model\Download;
 use Isotope\Model\Gallery;
 use Isotope\Model\Gallery\Inline;
+use Isotope\Model\Gallery\Standard as StandardGallery;
 use Isotope\Model\Group;
 use Isotope\Model\Label;
 use Isotope\Model\OrderStatus;
@@ -96,15 +99,20 @@ use Isotope\Model\Payment\Swissbilling;
 use Isotope\Model\Payment\Viveum;
 use Isotope\Model\Payment\Worldpay;
 use Isotope\Model\Product;
+use Isotope\Model\Product\Standard as StandardProduct;
 use Isotope\Model\ProductCache;
 use Isotope\Model\ProductCategory;
 use Isotope\Model\ProductCollection;
+use Isotope\Model\ProductCollection\Cart as CartCollection;
+use Isotope\Model\ProductCollection\Favorites as FavoritesCollection;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Model\ProductCollection\Wishlist;
 use Isotope\Model\ProductCollectionDownload;
 use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\ProductCollectionLog;
 use Isotope\Model\ProductCollectionSurcharge;
+use Isotope\Model\ProductCollectionSurcharge\Payment as PaymentSurcharge;
+use Isotope\Model\ProductCollectionSurcharge\Shipping as ShippingSurcharge;
 use Isotope\Model\ProductCollectionSurcharge\Tax;
 use Isotope\Model\ProductPrice;
 use Isotope\Model\ProductType;
@@ -113,6 +121,8 @@ use Isotope\Model\RelatedProduct;
 use Isotope\Model\RequestCache;
 use Isotope\Model\Shipping;
 use Isotope\Model\Shipping\Flat;
+use Isotope\Model\Shipping\Group as GroupShipping;
+use Isotope\Model\Shipping\ProductPrice as ProductPriceShipping;
 use Isotope\Model\TaxClass;
 use Isotope\Model\TaxRate;
 use Isotope\Module\AddressBook;
@@ -321,8 +331,8 @@ if (class_exists('Terminal42\SwissbillingApi\Client')) {
  * Shipping methods
  */
 Shipping::registerModelType('flat', Flat::class);
-Shipping::registerModelType('group', Shipping\Group::class);
-Shipping::registerModelType('product_price', Shipping\ProductPrice::class);
+Shipping::registerModelType('group', GroupShipping::class);
+Shipping::registerModelType('product_price', ProductPriceShipping::class);
 
 /*
  * Documents
@@ -332,27 +342,27 @@ Document::registerModelType('standard', Standard::class);
 /*
  * Galleries
  */
-Gallery::registerModelType('standard', Gallery\Standard::class);
+Gallery::registerModelType('standard', StandardGallery::class);
 Gallery::registerModelType('inline', Inline::class);
 
 /*
  * Products
  */
-Product::registerModelType('standard', Product\Standard::class);
+Product::registerModelType('standard', StandardProduct::class);
 
 /*
  * Product collections
  */
-ProductCollection::registerModelType('cart', ProductCollection\Cart::class);
+ProductCollection::registerModelType('cart', CartCollection::class);
 ProductCollection::registerModelType('order', Order::class);
-ProductCollection::registerModelType('favorites', ProductCollection\Favorites::class);
+ProductCollection::registerModelType('favorites', FavoritesCollection::class);
 ProductCollection::registerModelType('wishlist', Wishlist::class);
 
 /*
  * Product collection surcharge
  */
-ProductCollectionSurcharge::registerModelType('payment', ProductCollectionSurcharge\Payment::class);
-ProductCollectionSurcharge::registerModelType('shipping', ProductCollectionSurcharge\Shipping::class);
+ProductCollectionSurcharge::registerModelType('payment', PaymentSurcharge::class);
+ProductCollectionSurcharge::registerModelType('shipping', ShippingSurcharge::class);
 ProductCollectionSurcharge::registerModelType('tax', Tax::class);
 
 /*
@@ -363,7 +373,7 @@ Attribute::registerModelType('textarea', TextArea::class);
 Attribute::registerModelType('select', SelectMenu::class);
 Attribute::registerModelType('radio', RadioButton::class);
 Attribute::registerModelType('checkbox', CheckboxMenu::class);
-Attribute::registerModelType('mediaManager', Attribute\MediaManager::class);
+Attribute::registerModelType('mediaManager', MediaManagerAttribute::class);
 Attribute::registerModelType('fileTree', FileTree::class);
 Attribute::registerModelType('pageTree', PageTree::class);
 Attribute::registerModelType('downloads', Downloads::class);
@@ -581,7 +591,7 @@ if (Contao\Config::getInstance()->isComplete()) {
     // Set module and module id for payment and/or shipping modules
     if (System::getContainer()->get('contao.routing.scope_matcher')->isFrontendRequest(System::getContainer()->get('request_stack')->getCurrentRequest() ?? Request::create(''))) {
         // Only limit countries in FE
-        $GLOBALS['TL_HOOKS']['loadDataContainer'][] = [Backend\Member\Callback::class, 'limitCountries'];
+        $GLOBALS['TL_HOOKS']['loadDataContainer'][] = [MemberCallback::class, 'limitCountries'];
     }
 
     if (System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest(System::getContainer()->get('request_stack')->getCurrentRequest() ?? Request::create(''))) {

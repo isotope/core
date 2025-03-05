@@ -3,6 +3,7 @@
 use Contao\Controller;
 use Contao\System;
 use Isotope\Backend;
+use Isotope\Backend\Config\Callback as ConfigCallback;
 use Isotope\Backend\Module\Callback;
 use Isotope\Backend\Module\CumulativeFields;
 use Isotope\Backend\Module\OrderConditionFields;
@@ -14,9 +15,6 @@ use Isotope\Model\Payment;
 use Isotope\Model\RelatedCategory;
 use Isotope\Model\Shipping;
 
-/*
- * Add palettes to tl_module
- */
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'iso_checkout_method';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'iso_enableLimit';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'iso_emptyMessage';
@@ -49,9 +47,6 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_shipping_calculator'] = '{title
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_cart_address'] = '{title_legend},name,headline,type;{config_legend},iso_address,iso_addressFields;{redirect_legend:hide},jumpTo;{template_legend:hide},memberTpl;{protected_legend:hide},protected;{expert_legend:hide},cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_trustedshops'] = '{title_legend},name,headline,type;{config_legend},iso_tsid,iso_tsreviews,iso_tsdisplay,iso_tscheckout;{protected_legend:hide},protected;{expert_legend:hide},cssID,space';
 
-/*
- * Add subpalettes to tl_module
- */
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['iso_enableLimit'] = 'iso_perPage';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['iso_emptyMessage'] = 'iso_noProducts';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['iso_emptyFilter'] = 'iso_noFilter';
@@ -61,11 +56,7 @@ $GLOBALS['TL_DCA']['tl_module']['subpalettes']['iso_tscheckout'] = 'iso_tsproduc
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['navigationTpl']['eval']['includeBlankOption'] = true;
 
-/*
- * Add fields to tl_module
- */
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_list_layout'] = [
-    'exclude' => true,
     'inputType' => 'select',
     'options_callback' => static fn () => Backend::getTemplates('iso_list_'),
     'eval' => ['includeBlankOption' => true, 'tl_class' => 'w50', 'chosen' => true],
@@ -73,7 +64,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_list_layout'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_reader_layout'] = [
-    'exclude' => true,
     'inputType' => 'select',
     'options_callback' => static fn () => Backend::getTemplates('iso_reader_'),
     'eval' => ['includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'],
@@ -81,7 +71,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_reader_layout'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_gallery'] = [
-    'exclude' => true,
     'inputType' => 'select',
     'foreignKey' => Gallery::getTable().'.name',
     'eval' => ['includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'],
@@ -89,7 +78,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_gallery'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_collectionTpl'] = [
-    'exclude' => true,
     'default' => 'iso_collection_default',
     'inputType' => 'select',
     'options_callback' => static fn () => Backend::getTemplates('iso_collection_'),
@@ -98,7 +86,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_collectionTpl'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_filterTpl'] = [
-    'exclude' => true,
     'default' => 'iso_filter_default',
     'inputType' => 'select',
     'options_callback' => [Callback::class, 'getFilterTemplates'],
@@ -107,49 +94,42 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_filterTpl'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_jump_first'] = [
-    'exclude' => true,
     'inputType' => 'checkbox',
     'eval' => ['tl_class' => 'w50'],
     'sql' => "char(1) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_link_primary'] = [
-    'exclude' => true,
     'inputType' => 'checkbox',
     'eval' => ['tl_class' => 'w50'],
     'sql' => "char(1) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_hide_list'] = [
-    'exclude' => true,
     'inputType' => 'checkbox',
     'eval' => ['tl_class' => 'w50'],
     'sql' => "char(1) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_disable_options'] = [
-    'exclude' => true,
     'inputType' => 'checkbox',
     'eval' => ['tl_class' => 'w50'],
     'sql' => "char(1) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_use_quantity'] = [
-    'exclude' => true,
     'inputType' => 'checkbox',
     'eval' => ['tl_class' => 'w50'],
     'sql' => "char(1) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_display404Page'] = [
-    'exclude' => true,
     'inputType' => 'checkbox',
     'eval' => ['tl_class' => 'w50'],
     'sql' => "char(1) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_checkout_method'] = [
-    'exclude' => true,
     'inputType' => 'radio',
     'default' => 'member',
     'options' => ['member', 'guest', 'both'],
@@ -159,7 +139,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_checkout_method'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_login_jumpTo'] = [
-    'exclude' => true,
     'inputType' => 'pageTree',
     'foreignKey' => 'tl_page.title',
     'eval' => ['fieldType' => 'radio', 'mandatory' => true, 'tl_class' => 'clr'],
@@ -169,14 +148,12 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_login_jumpTo'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_loginRequired'] = [
-    'exclude' => true,
     'inputType' => 'checkbox',
     'eval' => ['tl_class' => 'w50'],
     'sql' => "char(1) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_addProductJumpTo'] = [
-    'exclude' => true,
     'inputType' => 'pageTree',
     'foreignKey' => 'tl_page.title',
     'eval' => ['fieldType' => 'radio', 'tl_class' => 'clr'],
@@ -186,7 +163,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_addProductJumpTo'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_wishlistJumpTo'] = [
-    'exclude' => true,
     'inputType' => 'pageTree',
     'foreignKey' => 'tl_page.title',
     'eval' => ['fieldType' => 'radio', 'tl_class' => 'clr'],
@@ -196,7 +172,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_wishlistJumpTo'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_config_id'] = [
-    'exclude' => true,
     'inputType' => 'select',
     'foreignKey' => Config::getTable().'.name',
     'eval' => ['includeBlankOption' => true, 'mandatory' => true, 'tl_class' => 'w50'],
@@ -205,7 +180,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_config_id'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_config_ids'] = [
-    'exclude' => true,
     'inputType' => 'checkboxWizard',
     'foreignKey' => Config::getTable().'.name',
     'eval' => ['multiple' => true, 'mandatory' => true, 'tl_class' => 'clr'],
@@ -214,7 +188,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_config_ids'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_payment_modules'] = [
-    'exclude' => true,
     'inputType' => 'checkboxWizard',
     'foreignKey' => Payment::getTable().'.name',
     'options_callback' => [Callback::class, 'getPaymentModules'],
@@ -224,7 +197,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_payment_modules'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_shipping_modules'] = [
-    'exclude' => true,
     'inputType' => 'checkboxWizard',
     'foreignKey' => Shipping::getTable().'.name',
     'options_callback' => [Callback::class, 'getShippingModules'],
@@ -234,7 +206,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_shipping_modules'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['orderCompleteJumpTo'] = [
-    'exclude' => true,
     'inputType' => 'pageTree',
     'foreignKey' => 'tl_page.title',
     'eval' => ['mandatory' => true, 'fieldType' => 'radio', 'tl_class' => 'clr'],
@@ -244,21 +215,18 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['orderCompleteJumpTo'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_forward_review'] = [
-    'exclude' => true,
     'inputType' => 'checkbox',
     'eval' => ['tl_class' => 'w50'],
     'sql' => "char(1) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_show_skipped'] = [
-    'exclude' => true,
     'inputType' => 'checkbox',
     'eval' => ['tl_class' => 'w50'],
     'sql' => "char(1) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_checkout_skippable'] = [
-    'exclude' => true,
     'inputType' => 'checkbox',
     'options' => ['billing_address', 'shipping_address', 'payment_method', 'shipping_method'],
     'reference' => &$GLOBALS['TL_LANG']['tl_module']['iso_checkout_skippable'],
@@ -267,7 +235,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_checkout_skippable'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_order_conditions'] = [
-    'exclude' => true,
     'inputType' => 'multiColumnWizard',
     'eval' => [
         'decodeEntities' => true,
@@ -279,14 +246,12 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_order_conditions'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_addToAddressbook'] = [
-    'exclude' => true,
     'inputType' => 'checkbox',
     'sql' => "char(1) NOT NULL default ''",
     'eval' => ['tl_class' => 'w50 m12'],
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_orderCollectionBy'] = [
-    'exclude' => true,
     'default' => 'asc_id',
     'inputType' => 'select',
     'options' => &$GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy'],
@@ -295,35 +260,30 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_orderCollectionBy'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_emptyMessage'] = [
-    'exclude' => true,
     'inputType' => 'checkbox',
     'eval' => ['submitOnChange' => true, 'tl_class' => 'clr w50'],
     'sql' => "char(1) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_noProducts'] = [
-    'exclude' => true,
     'inputType' => 'text',
     'eval' => ['maxlength' => 255, 'tl_class' => 'clr long'],
     'sql' => "varchar(255) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_emptyFilter'] = [
-    'exclude' => true,
     'inputType' => 'checkbox',
     'eval' => ['submitOnChange' => true, 'tl_class' => 'clr'],
     'sql' => "char(1) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_noFilter'] = [
-    'exclude' => true,
     'inputType' => 'text',
     'eval' => ['maxlength' => 255, 'tl_class' => 'clr long'],
     'sql' => "varchar(255) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_category_scope'] = [
-    'exclude' => true,
     'inputType' => 'radio',
     'default' => 'current_category',
     'options' => ['current_category', 'current_and_first_child', 'current_and_all_children', 'parent', 'product', 'article', 'global'],
@@ -334,14 +294,12 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_category_scope'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_list_where'] = [
-    'exclude' => true,
     'inputType' => 'text',
     'eval' => ['preserveTags' => true, 'maxlength' => 255, 'tl_class' => 'w50'],
     'sql' => "varchar(255) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_filterModules'] = [
-    'exclude' => true,
     'inputType' => 'checkboxWizard',
     'foreignKey' => 'tl_module.name',
     'options_callback' => [Callback::class, 'getFilterModules'],
@@ -351,7 +309,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_filterModules'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_filterFields'] = [
-    'exclude' => true,
     'inputType' => 'checkboxWizard',
     'options_callback' => [Callback::class, 'getFilterFields'],
     'eval' => ['multiple' => true, 'tl_class' => 'clr w50 w50h'],
@@ -359,7 +316,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_filterFields'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_cumulativeFields'] = [
-    'exclude' => true,
     'inputType' => 'multiColumnWizard',
     'eval' => [
         'mandatory' => true,
@@ -374,7 +330,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_cumulativeFields'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_rangeFields'] = [
-    'exclude' => true,
     'inputType' => 'multiColumnWizard',
     'eval' => [
         'mandatory' => true,
@@ -389,7 +344,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_rangeFields'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_newFilter'] = [
-    'exclude' => true,
     'inputType' => 'select',
     'default' => 'show_all',
     'options' => ['show_all', 'show_new', 'show_old'],
@@ -399,14 +353,12 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_newFilter'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_filterHideSingle'] = [
-    'exclude' => true,
     'inputType' => 'checkbox',
     'eval' => ['tl_class' => 'w50'],
     'sql' => "char(1) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_searchFields'] = [
-    'exclude' => true,
     'inputType' => 'checkboxWizard',
     'options_callback' => [Callback::class, 'getSearchFields'],
     'eval' => ['multiple' => true, 'tl_class' => 'clr w50 w50h'],
@@ -414,7 +366,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_searchFields'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_searchExact'] = [
-    'exclude' => true,
     'inputType' => 'select',
     'options_callback' => [Callback::class, 'getSearchFields'],
     'eval' => ['multiple' => true, 'chosen' => true, 'tl_class' => 'w50'],
@@ -422,7 +373,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_searchExact'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_searchAutocomplete'] = [
-    'exclude' => true,
     'inputType' => 'select',
     'options_callback' => [Callback::class, 'getAutocompleteFields'],
     'eval' => ['tl_class' => 'w50', 'includeBlankOption' => true],
@@ -430,7 +380,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_searchAutocomplete'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_sortingFields'] = [
-    'exclude' => true,
     'inputType' => 'checkboxWizard',
     'options_callback' => [Callback::class, 'getSortingFields'],
     'eval' => ['multiple' => true, 'tl_class' => 'clr w50 w50h'],
@@ -438,14 +387,12 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_sortingFields'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_enableLimit'] = [
-    'exclude' => true,
     'inputType' => 'checkbox',
     'eval' => ['submitOnChange' => true, 'tl_class' => 'clr w50 m12'],
     'sql' => "char(1) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_perPage'] = [
-    'exclude' => true,
     'default' => '8,12,32,64',
     'inputType' => 'text',
     'eval' => ['mandatory' => true, 'maxlength' => 64, 'rgxp' => 'extnd', 'tl_class' => 'w50'],
@@ -453,7 +400,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_perPage'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_cart_jumpTo'] = [
-    'exclude' => true,
     'inputType' => 'pageTree',
     'foreignKey' => 'tl_page.title',
     'eval' => ['fieldType' => 'radio', 'tl_class' => 'clr'],
@@ -463,7 +409,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_cart_jumpTo'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_checkout_jumpTo'] = [
-    'exclude' => true,
     'inputType' => 'pageTree',
     'foreignKey' => 'tl_page.title',
     'eval' => ['fieldType' => 'radio', 'tl_class' => 'clr'],
@@ -473,7 +418,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_checkout_jumpTo'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_listingSortField'] = [
-    'exclude' => true,
     'inputType' => 'select',
     'options_callback' => [Callback::class, 'getSortingFields'],
     'eval' => ['includeBlankOption' => true, 'tl_class' => 'clr w50'],
@@ -484,7 +428,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_listingSortField'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_listingSortDirection'] = [
-    'exclude' => true,
     'default' => 'DESC',
     'inputType' => 'select',
     'options' => ['DESC', 'ASC'],
@@ -494,7 +437,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_listingSortDirection'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_buttons'] = [
-    'exclude' => true,
     'inputType' => 'checkboxWizard',
     'default' => ['add_to_cart'],
     'options_callback' => [Callback::class, 'getButtons'],
@@ -503,7 +445,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_buttons'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_related_categories'] = [
-    'exclude' => true,
     'inputType' => 'checkboxWizard',
     'foreignKey' => RelatedCategory::getTable().'.name',
     'eval' => ['mandatory' => true, 'multiple' => true, 'tl_class' => 'clr'],
@@ -512,28 +453,24 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_related_categories'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_includeMessages'] = [
-    'exclude' => true,
     'inputType' => 'checkbox',
     'eval' => ['doNotCopy' => true, 'tl_class' => 'w50'],
     'sql' => "char(1) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_continueShopping'] = [
-    'exclude' => true,
     'inputType' => 'checkbox',
     'eval' => ['tl_class' => 'w50'],
     'sql' => "char(1) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_moveFavorites'] = [
-    'exclude' => true,
     'inputType' => 'checkbox',
     'eval' => ['tl_class' => 'w50'],
     'sql' => "char(1) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_address'] = [
-    'exclude' => true,
     'inputType' => 'checkbox',
     'options' => ['billing', 'shipping'],
     'reference' => &$GLOBALS['TL_LANG']['tl_module']['iso_address'],
@@ -542,7 +479,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_address'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_addressFields'] = [
-    'exclude' => true,
     'inputType' => 'checkboxWizard',
     'options_callback' => static function () {
         Controller::loadDataContainer(Address::getTable());
@@ -571,32 +507,28 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_productcache'] = [
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_notifications'] = [
     'label' => &$GLOBALS['TL_LANG']['tl_module']['nc_notification'],
-    'exclude' => true,
     'inputType' => 'select',
-    'options_callback' => ['NotificationCenter\tl_module', 'getNotificationChoices'],
+    //'options_callback' => ['NotificationCenter\tl_module', 'getNotificationChoices'],
     'eval' => ['multiple' => true, 'csv' => ',', 'includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'],
     'sql' => "varchar(255) NOT NULL default ''",
     'relation' => ['type' => 'hasOne', 'load' => 'lazy', 'table' => 'tl_nc_notification'],
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_orderdetails_module'] = [
-    'exclude' => true,
     'inputType' => 'select',
-    'options_callback' => [Backend\Config\Callback::class, 'getOrderDetailsModules'],
+    'options_callback' => [ConfigCallback::class, 'getOrderDetailsModules'],
     'eval' => ['includeBlankOption' => true, 'tl_class' => 'w50'],
     'sql' => "int(10) unsigned NOT NULL default '0'",
     'relation' => ['type' => 'hasOne', 'table' => 'tl_module'],
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_tsid'] = [
-    'exclude' => true,
     'inputType' => 'text',
     'eval' => ['mandatory' => true, 'maxlength' => 64, 'tl_class' => 'w50'],
     'sql' => "varchar(64) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_tsreviews'] = [
-    'exclude' => true,
     'default' => '1',
     'inputType' => 'checkbox',
     'eval' => ['tl_class' => 'w50 m12'],
@@ -604,7 +536,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_tsreviews'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_tsdisplay'] = [
-    'exclude' => true,
     'default' => 'standard',
     'inputType' => 'select',
     'options' => ['standard', 'custom'],
@@ -614,7 +545,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_tsdisplay'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_tsdirection'] = [
-    'exclude' => true,
     'inputType' => 'select',
     'options' => ['topLeft', 'topRight', 'bottomLeft', 'bottomRight'],
     'reference' => &$GLOBALS['TL_LANG']['tl_module']['iso_tsdirection'],
@@ -623,21 +553,18 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_tsdirection'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_tsyoffset'] = [
-    'exclude' => true,
     'inputType' => 'text',
     'eval' => ['mandatory' => true, 'rgxp' => 'digit', 'tl_class' => 'w50'],
     'sql' => "int(10) NOT NULL default '0'",
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_tscheckout'] = [
-    'exclude' => true,
     'inputType' => 'checkbox',
     'eval' => ['submitOnChange' => true, 'tl_class' => 'clr w50'],
     'sql' => "char(1) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_tsproducts'] = [
-    'exclude' => true,
     'inputType' => 'checkbox',
     'eval' => ['tl_class' => 'w50'],
     'sql' => "char(1) NOT NULL default ''",

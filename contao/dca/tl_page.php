@@ -53,7 +53,6 @@ $GLOBALS['TL_DCA']['tl_page']['subpalettes']['iso_readerMode_page'] = 'iso_reade
  * Add fields to tl_page
  */
 $GLOBALS['TL_DCA']['tl_page']['fields']['iso_config'] = [
-    'exclude' => true,
     'inputType' => 'select',
     'foreignKey' => Config::getTable().'.name',
     'eval' => ['includeBlankOption' => true, 'tl_class' => 'w50'],
@@ -62,14 +61,12 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['iso_config'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['iso_store_id'] = [
-    'exclude' => true,
     'inputType' => 'text',
     'eval' => ['mandatory' => true, 'rgxp' => 'digit', 'nospace' => true, 'maxlength' => 2, 'tl_class' => 'w50'],
     'sql' => "int(2) unsigned NOT NULL default '0'",
 ];
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['iso_readerMode'] = [
-    'exclude' => true,
     'inputType' => 'select',
     'options' => ['current', 'page', 'none'],
     'reference' => &$GLOBALS['TL_LANG']['tl_page']['iso_readerModes'],
@@ -79,7 +76,6 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['iso_readerMode'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['iso_readerJumpTo'] = [
-    'exclude' => true,
     'inputType' => 'pageTree',
     'foreignKey' => 'tl_page.title',
     'eval' => ['fieldType' => 'radio', 'mandatory' => true, 'tl_class' => 'clr w50'],
@@ -88,7 +84,6 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['iso_readerJumpTo'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['iso_sitemapVariants'] = [
-    'exclude' => true,
     'inputType' => 'checkbox',
     'eval' => ['tl_class' => 'w50'],
     'sql' => "char(1) NOT NULL default '1'",

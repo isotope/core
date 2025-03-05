@@ -1,13 +1,6 @@
 <?php
 
-/*
- * Isotope eCommerce for Contao Open Source CMS
- *
- * Copyright (C) 2009 - 2020 terminal42 gmbh & Isotope eCommerce Workgroup
- *
- * @link       https://isotopeecommerce.org
- * @license    https://opensource.org/licenses/lgpl-3.0.html
- */
+use Contao\DataContainer;
 use Contao\DC_Table;
 use Contao\Input;
 use Contao\System;
@@ -30,11 +23,7 @@ use Isotope\Model\Shipping;
 $this->loadDataContainer('tl_iso_product');
 System::loadLanguageFile('tl_iso_product');
 
-/*
- * Table tl_iso_product_collection
- */
 $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
-    // Config
     'config' => [
         'dataContainer' => DC_Table::class,
         'enableVersioning' => false,
@@ -42,7 +31,6 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
         'closed' => true,
         'notCreatable' => true,
         'notCopyable' => true,
-        'notSortable' => true,
         'notDeletable' => ('select' === Input::get('act')),
         'onload_callback' => [
             [Callback::class, 'checkPermission'],
@@ -59,11 +47,9 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
             ],
         ],
     ],
-
-    // List
     'list' => [
         'sorting' => [
-            'mode' => 2,
+            'mode' => DataContainer::MODE_SORTABLE,
             'fields' => ['locked DESC'],
             'panelLayout' => 'iso_filters,filter;sort,search,limit',
             'filter' => [['type=?', 'order'], ['order_status>?', '0'], ['locked!=?', '']],
@@ -76,23 +62,9 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
             'showColumns' => true,
             'label_callback' => [Callback::class, 'getOrderLabel'],
         ],
-        'global_operations' => [
-            'all' => [
-                'href' => 'act=select',
-                'class' => 'header_edit_all',
-                'attributes' => 'onclick="Backend.getScrollOffset();" accesskey="e"',
-            ],
-        ],
         'operations' => [
-            'edit' => [
-                'href' => 'act=edit',
-                'icon' => 'edit.svg',
-            ],
-            'delete' => [
-                'href' => 'act=delete',
-                'icon' => 'delete.svg',
-                'attributes' => 'onclick="if (!confirm(\''.($GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? '').'\')) return false; Backend.getScrollOffset();"',
-            ],
+            'edit',
+            'delete',
             'payment' => [
                 'href' => 'key=payment',
                 'icon' => CompatibilityHelper::asset('images/money-coin.png'),
@@ -110,19 +82,13 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
             ],
         ],
     ],
-
-    // Palettes
     'palettes' => [
         '__selector__' => ['sendNotification'],
         'default' => '{status_legend},order_status,date_paid,date_shipped,notes,sendNotification,submit_buttons;{log_legend},order_log;{details_legend},details;{show_legend:hide},show;{email_legend:hide},email_data;{billing_address_legend:hide},billing_address_data;{shipping_address_legend:hide},shipping_address_data',
     ],
-
-    // Subpalettes
     'subpalettes' => [
         'sendNotification' => 'notification,notification_shipping_tracking,notification_customer_notes',
     ],
-
-    // Fields
     'fields' => [
         'id' => [
             'search' => true,
@@ -142,7 +108,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
         ],
         'locked' => [
-            'flag' => 8,
+            'flag' => DataContainer::SORT_MONTH_DESC,
             'filter' => true,
             'sorting' => true,
             'eval' => ['rgxp' => 'datim', 'doNotShow' => true],
@@ -184,7 +150,6 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
             'sql' => 'varchar(64) NULL',
         ],
         'order_status' => [
-            'exclude' => true,
             'filter' => true,
             'sorting' => true,
             'inputType' => 'select',
@@ -195,37 +160,31 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
         ],
         'date_paid' => [
-            'exclude' => true,
             'inputType' => 'text',
             'eval' => ['rgxp' => 'datim', 'datepicker' => true, 'tl_class' => 'clr w50 wizard'],
             'sql' => 'int(10) NULL',
         ],
         'date_shipped' => [
-            'exclude' => true,
             'inputType' => 'text',
             'eval' => ['rgxp' => 'datim', 'datepicker' => true, 'tl_class' => 'w50 wizard'],
             'sql' => 'int(10) NULL',
         ],
         'sendNotification' => [
-            'exclude' => true,
             'inputType' => 'checkbox',
             'eval' => ['submitOnChange' => true, 'logAlwaysVisible' => true, 'tl_class' => 'clr', 'doNotShow' => true],
             'sql' => "char(1) NOT NULL default ''",
         ],
         'notification' => [
-            'exclude' => true,
             'inputType' => 'select',
             'foreignKey' => 'tl_nc_notification.title',
             'options_callback' => [Callback::class, 'onNotificationOptionsCallback'],
             'eval' => ['mandatory' => true, 'includeBlankOption' => true, 'chosen' => true, 'logAlwaysVisible' => true, 'tl_class' => 'clr', 'doNotShow' => true],
         ],
         'notification_shipping_tracking' => [
-            'exclude' => true,
             'inputType' => 'textarea',
             'eval' => ['logAlwaysVisible' => true, 'tl_class' => 'clr', 'doNotShow' => true],
         ],
         'notification_customer_notes' => [
-            'exclude' => true,
             'inputType' => 'textarea',
             'eval' => ['logAlwaysVisible' => true, 'tl_class' => 'clr', 'doNotShow' => true],
         ],
@@ -290,7 +249,6 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
             'sql' => "varchar(5) NOT NULL default ''",
         ],
         'notes' => [
-            'exclude' => true,
             'inputType' => 'textarea',
             'eval' => ['style' => 'height:80px;', 'tl_class' => 'clr'],
             'sql' => 'text NULL',

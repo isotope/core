@@ -3,16 +3,9 @@
 use Isotope\Backend;
 use Isotope\Model\Gallery;
 
-/*
- * Palettes
- */
 $GLOBALS['TL_DCA']['tl_nc_notification']['palettes']['iso_order_status_change'] = '{title_legend},title,type;{config_legend},iso_collectionTpl,iso_orderCollectionBy,iso_gallery,iso_document;{templates_legend:hide},templates';
 
-/*
- * Fields
- */
 $GLOBALS['TL_DCA']['tl_nc_notification']['fields']['iso_collectionTpl'] = [
-    'exclude' => true,
     'inputType' => 'select',
     'options_callback' => static fn () => Backend::getTemplates('iso_collection_'),
     'eval' => ['mandatory' => true, 'chosen' => true, 'tl_class' => 'w50'],
@@ -20,7 +13,6 @@ $GLOBALS['TL_DCA']['tl_nc_notification']['fields']['iso_collectionTpl'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_nc_notification']['fields']['iso_orderCollectionBy'] = [
-    'exclude' => true,
     'default' => 'asc_id',
     'inputType' => 'select',
     'options' => &$GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy'],
@@ -29,7 +21,6 @@ $GLOBALS['TL_DCA']['tl_nc_notification']['fields']['iso_orderCollectionBy'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_nc_notification']['fields']['iso_gallery'] = [
-    'exclude' => true,
     'inputType' => 'select',
     'foreignKey' => Gallery::getTable().'.name',
     'eval' => ['includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'],
@@ -37,7 +28,6 @@ $GLOBALS['TL_DCA']['tl_nc_notification']['fields']['iso_gallery'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_nc_notification']['fields']['iso_document'] = [
-    'exclude' => true,
     'inputType' => 'select',
     'foreignKey' => 'tl_iso_document.name',
     'eval' => ['includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'],

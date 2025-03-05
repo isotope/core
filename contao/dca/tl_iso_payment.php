@@ -1,5 +1,6 @@
 <?php
 
+use Contao\DataContainer;
 use Contao\DC_Table;
 use Contao\StringUtil;
 use Isotope\Backend;
@@ -13,11 +14,7 @@ use Isotope\Model\Payment\PSP;
 use Isotope\Model\ProductType;
 use Isotope\Model\TaxClass;
 
-/*
- * Table tl_iso_payment
- */
 $GLOBALS['TL_DCA']['tl_iso_payment'] = [
-    // Config
     'config' => [
         'dataContainer' => DC_Table::class,
         'enableVersioning' => true,
@@ -32,31 +29,19 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = [
             ],
         ],
     ],
-
-    // List
     'list' => [
         'sorting' => [
-            'mode' => 1,
+            'mode' => DataContainer::MODE_SORTED,
             'fields' => ['name'],
-            'flag' => 1,
+            'flag' => DataContainer::SORT_INITIAL_LETTER_ASC,
             'panelLayout' => 'sort,filter;search,limit',
         ],
         'label' => [
             'fields' => ['name', 'type'],
             'format' => '%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>',
         ],
-        'global_operations' => [
-            'all' => [
-                'href' => 'act=select',
-                'class' => 'header_edit_all',
-                'attributes' => 'onclick="Backend.getScrollOffset();"',
-            ],
-        ],
         'operations' => [
-            'edit' => [
-                'href' => 'act=edit',
-                'icon' => 'edit.svg',
-            ],
+            'edit',
             'copy' => [
                 'href' => 'act=copy',
                 'icon' => 'copy.svg',
@@ -68,19 +53,10 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = [
                 'attributes' => 'onclick="if (!confirm(\''.($GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? '').'\')) return false; Backend.getScrollOffset();"',
                 'button_callback' => [Callback::class, 'deletePaymentModule'],
             ],
-            'toggle' => [
-                'icon' => 'visible.svg',
-                'attributes' => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s)"',
-                'button_callback' => [Callback::class, 'toggleIcon'],
-            ],
-            'show' => [
-                'href' => 'act=show',
-                'icon' => 'show.svg',
-            ],
+            'toggle',
+            'show',
         ],
     ],
-
-    // Palettes
     'palettes' => [
         '__selector__' => ['type', 'opp_auth', 'protected'],
         'default' => '{type_legend},name,label,type',
@@ -108,13 +84,9 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = [
         'mpay24' => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,trans_type,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},mpay24_merchant,mpay24_password;{price_legend:hide},price,tax_class;{expert_legend:hide},protected;{enabled_legend},enabled,debug,logging',
         'swissbilling' => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,trans_type,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},swissbilling_id,swissbilling_pwd,swissbilling_prescreening,swissbilling_b2b;{price_legend:hide},price,tax_class;{expert_legend:hide},protected;{enabled_legend},enabled,debug,logging',
     ],
-
-    // Subpalettes
     'subpalettes' => [
         'protected' => 'groups',
     ],
-
-    // Fields
     'fields' => [
         'id' => [
             'sql' => 'int(10) unsigned NOT NULL auto_increment',
@@ -123,20 +95,17 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = [
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
         'name' => [
-            'exclude' => true,
             'search' => true,
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'maxlength' => 255, 'tl_class' => 'w50'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'label' => [
-            'exclude' => true,
             'inputType' => 'text',
             'eval' => ['maxlength' => 255, 'tl_class' => 'w50'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'type' => [
-            'exclude' => true,
             'filter' => true,
             'inputType' => 'select',
             'default' => 'cash',
@@ -146,13 +115,11 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = [
             'sql' => "varchar(64) NOT NULL default ''",
         ],
         'note' => [
-            'exclude' => true,
             'inputType' => 'textarea',
             'eval' => ['rte' => 'tinyMCE'],
             'sql' => 'text NULL',
         ],
         'new_order_status' => [
-            'exclude' => true,
             'inputType' => 'select',
             'foreignKey' => OrderStatus::getTable().'.name',
             'options_callback' => [Backend::class, 'getOrderStatus'],
@@ -161,13 +128,11 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = [
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
         ],
         'price' => [
-            'exclude' => true,
             'inputType' => 'text',
             'eval' => ['maxlength' => 16, 'rgxp' => 'surcharge', 'nullIfEmpty' => true, 'tl_class' => 'w50'],
             'sql' => 'varchar(16) NULL',
         ],
         'tax_class' => [
-            'exclude' => true,
             'filter' => true,
             'inputType' => 'select',
             'foreignKey' => TaxClass::getTable().'.name',
@@ -195,21 +160,18 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = [
             'sql' => "varchar(8) NOT NULL default ''",
         ],
         'minimum_total' => [
-            'exclude' => true,
             'inputType' => 'text',
             'default' => 0,
             'eval' => ['maxlength' => 255, 'rgxp' => 'digit', 'tl_class' => 'clr w50'],
             'sql' => "decimal(12,2) NOT NULL default '0.00'",
         ],
         'maximum_total' => [
-            'exclude' => true,
             'inputType' => 'text',
             'default' => 0,
             'eval' => ['maxlength' => 255, 'rgxp' => 'digit', 'tl_class' => 'w50'],
             'sql' => "decimal(12,2) NOT NULL default '0.00'",
         ],
         'quantity_mode' => [
-            'exclude' => true,
             'inputType' => 'select',
             'options' => [
                 Payment::QUANTITY_MODE_ITEMS,
@@ -220,32 +182,27 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = [
             'sql' => "varchar(32) NOT NULL default ''",
         ],
         'minimum_quantity' => [
-            'exclude' => true,
             'inputType' => 'text',
             'eval' => ['maxlength' => 10, 'rgxp' => 'digit', 'tl_class' => 'clr w50'],
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
         'maximum_quantity' => [
-            'exclude' => true,
             'inputType' => 'text',
             'eval' => ['maxlength' => 10, 'rgxp' => 'digit', 'tl_class' => 'w50'],
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
         'countries' => [
-            'exclude' => true,
             'inputType' => 'select',
             'options_callback' => static fn () => CompatibilityHelper::getCountries(),
             'eval' => ['multiple' => true, 'size' => 8, 'tl_class' => 'w50 w50h', 'chosen' => true],
             'sql' => 'blob NULL',
         ],
         'shipping_modules' => [
-            'exclude' => true,
             'inputType' => 'select',
             'eval' => ['multiple' => true, 'size' => 8, 'tl_class' => 'w50 w50h', 'chosen' => true],
             'sql' => 'blob NULL',
         ],
         'product_types' => [
-            'exclude' => true,
             'inputType' => 'select',
             'foreignKey' => ProductType::getTable().'.name',
             'eval' => ['multiple' => true, 'size' => 8, 'tl_class' => 'clr w50 w50h', 'chosen' => true],
@@ -253,7 +210,6 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = [
             'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
         ],
         'product_types_condition' => [
-            'exclude' => true,
             'inputType' => 'select',
             'options' => ['onlyAvailable', 'notAvailable', 'allAvailable', 'oneAvailable'],
             'reference' => &$GLOBALS['TL_LANG']['tl_iso_payment'],
@@ -261,7 +217,6 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = [
             'sql' => "varchar(16) NOT NULL default ''",
         ],
         'config_ids' => [
-            'exclude' => true,
             'inputType' => 'select',
             'foreignKey' => Config::getTable().'.name',
             'eval' => ['multiple' => true, 'size' => 8, 'tl_class' => 'clr w50 w50h', 'chosen' => true],
@@ -760,13 +715,11 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = [
             'sql' => "char(1) NOT NULL default ''",
         ],
         'protected' => [
-            'exclude' => true,
             'inputType' => 'checkbox',
             'eval' => ['submitOnChange' => true],
             'sql' => "char(1) NOT NULL default ''",
         ],
         'groups' => [
-            'exclude' => true,
             'inputType' => 'checkbox',
             'foreignKey' => 'tl_member_group.name',
             'eval' => ['multiple' => true],
@@ -774,19 +727,17 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = [
             'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
         ],
         'debug' => [
-            'exclude' => true,
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'clr w50'],
             'sql' => "char(1) NOT NULL default ''",
         ],
         'logging' => [
-            'exclude' => true,
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
             'sql' => "char(1) NOT NULL default ''",
         ],
         'enabled' => [
-            'exclude' => true,
+            'toggle' => true,
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
             'sql' => "char(1) NOT NULL default ''",

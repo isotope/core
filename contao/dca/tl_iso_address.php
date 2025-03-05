@@ -1,19 +1,17 @@
 <?php
 
+use Contao\DataContainer;
 use Contao\DC_Table;
 use Contao\Input;
 use Isotope\Backend;
 use Isotope\Backend\Address\Callback;
 use Isotope\CompatibilityHelper;
 
-/*
- * Table tl_iso_address
- */
 $GLOBALS['TL_DCA']['tl_iso_address'] = [
-    // Config
     'config' => [
         'dataContainer' => DC_Table::class,
         'enableVersioning' => false,
+        'notSortable' => true,
         'ptable' => '',
         'dynamicPtable' => true,
         'onload_callback' => [],
@@ -24,51 +22,19 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = [
             ],
         ],
     ],
-
-    // List
     'list' => [
         'sorting' => [
-            'mode' => 4,
+            'mode' => DataContainer::MODE_PARENT,
             'headerFields' => ['firstname', 'lastname', 'username'],
             'disableGrouping' => true,
-            'flag' => 1,
+            'flag' => DataContainer::SORT_INITIAL_LETTER_ASC,
             'panelLayout' => 'filter;sort,search,limit',
             'child_record_callback' => [Callback::class, 'renderLabel'],
         ],
-        'global_operations' => [
-            'all' => [
-                'href' => 'act=select',
-                'class' => 'header_edit_all',
-                'attributes' => 'onclick="Backend.getScrollOffset();"',
-            ],
-        ],
-        'operations' => [
-            'edit' => [
-                'href' => 'act=edit',
-                'icon' => 'edit.svg',
-            ],
-            'copy' => [
-                'href' => 'act=copy',
-                'icon' => 'copy.svg',
-            ],
-            'delete' => [
-                'href' => 'act=delete',
-                'icon' => 'delete.svg',
-                'attributes' => 'onclick="if (!confirm(\''.($GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? '').'\')) return false; Backend.getScrollOffset();"',
-            ],
-            'show' => [
-                'href' => 'act=show',
-                'icon' => 'show.svg',
-            ],
-        ],
     ],
-
-    // Palettes
     'palettes' => [
         'default' => '{store_legend},label,store_id;{personal_legend},gender,salutation,firstname,lastname,dateOfBirth,company,vat_no;{address_legend},street_1,street_2,street_3,street_number_1,street_number_2,street_number_3,postal,city,subdivision,country;{contact_legend},email,phone;{default_legend:hide},isDefaultBilling,isDefaultShipping',
     ],
-
-    // Fields
     'fields' => [
         'id' => [
             'sql' => 'int(10) unsigned NOT NULL auto_increment',
@@ -83,14 +49,12 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = [
             'sql' => "varchar(64) NOT NULL default ''",
         ],
         'label' => [
-            'exclude' => true,
             'search' => true,
             'inputType' => 'text',
             'eval' => ['maxlength' => 255, 'feEditable' => true, 'feGroup' => 'address', 'tl_class' => 'w50'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'store_id' => [
-            'exclude' => true,
             'filter' => true,
             'sorting' => true,
             'inputType' => 'text',
@@ -98,7 +62,6 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = [
             'sql' => "int(2) unsigned NOT NULL default '0'",
         ],
         'gender' => [
-            'exclude' => true,
             'inputType' => 'select',
             'options' => ['male', 'female', 'other'],
             'reference' => &$GLOBALS['TL_LANG']['MSC'],
@@ -106,79 +69,68 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = [
             'sql' => "varchar(32) NOT NULL default ''",
         ],
         'salutation' => [
-            'exclude' => true,
             'inputType' => 'text',
             'eval' => ['maxlength' => 255, 'feEditable' => true, 'feGroup' => 'personal', 'tl_class' => 'w50'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'firstname' => [
-            'exclude' => true,
             'search' => true,
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'maxlength' => 255, 'feEditable' => true, 'feGroup' => 'personal', 'tl_class' => 'w50'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'lastname' => [
-            'exclude' => true,
             'search' => true,
             'sorting' => true,
-            'flag' => 1,
+            'flag' => DataContainer::SORT_INITIAL_LETTER_ASC,
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'maxlength' => 255, 'feEditable' => true, 'feGroup' => 'personal', 'tl_class' => 'w50'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'dateOfBirth' => [
-            'exclude' => true,
             'inputType' => 'text',
             'eval' => ['rgxp' => 'date', 'datepicker' => true, 'feEditable' => true, 'feViewable' => true, 'feGroup' => 'personal', 'tl_class' => 'w50 wizard'],
             'sql' => "varchar(11) NOT NULL default ''",
         ],
         'company' => [
-            'exclude' => true,
             'search' => true,
             'sorting' => true,
-            'flag' => 1,
+            'flag' => DataContainer::SORT_INITIAL_LETTER_ASC,
             'inputType' => 'text',
             'eval' => ['mandatory' => false, 'maxlength' => 255, 'feEditable' => true, 'feGroup' => 'address', 'tl_class' => 'w50'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'vat_no' => [
-            'exclude' => true,
             'search' => true,
             'inputType' => 'text',
             'eval' => ['maxlength' => 255, 'feEditable' => true, 'feGroup' => 'address', 'tl_class' => 'w50'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'street_1' => [
-            'exclude' => true,
             'search' => true,
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'maxlength' => 255, 'feEditable' => true, 'feGroup' => 'address', 'tl_class' => 'w50'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'street_2' => [
-            'exclude' => true,
             'search' => true,
             'inputType' => 'text',
             'eval' => ['maxlength' => 255, 'feEditable' => true, 'feGroup' => 'address', 'tl_class' => 'w50'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'street_3' => [
-            'exclude' => true,
             'search' => true,
             'inputType' => 'text',
             'eval' => ['maxlength' => 255, 'feEditable' => true, 'feGroup' => 'address', 'tl_class' => 'w50'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'postal' => [
-            'exclude' => true,
             'search' => true,
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'maxlength' => 32, 'feEditable' => true, 'feGroup' => 'address', 'tl_class' => 'clr w50'],
             'sql' => "varchar(32) NOT NULL default ''",
         ],
         'city' => [
-            'exclude' => true,
             'filter' => true,
             'search' => true,
             'sorting' => true,
@@ -187,7 +139,6 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = [
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'subdivision' => [
-            'exclude' => true,
             'sorting' => true,
             'inputType' => 'conditionalselect',
             'options_callback' => [Backend::class, 'getSubdivisions'],
@@ -195,7 +146,6 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = [
             'sql' => "varchar(10) NOT NULL default ''",
         ],
         'country' => [
-            'exclude' => true,
             'filter' => true,
             'sorting' => true,
             'inputType' => 'select',
@@ -205,21 +155,18 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = [
             'sql' => "varchar(32) NOT NULL default ''",
         ],
         'phone' => [
-            'exclude' => true,
             'search' => true,
             'inputType' => 'text',
             'eval' => ['mandatory' => false, 'maxlength' => 64, 'rgxp' => 'phone', 'feEditable' => true, 'feGroup' => 'contact', 'tl_class' => 'w50'],
             'sql' => "varchar(64) NOT NULL default ''",
         ],
         'email' => [
-            'exclude' => true,
             'search' => true,
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'maxlength' => 64, 'rgxp' => 'email', 'feEditable' => true, 'feGroup' => 'contact', 'tl_class' => 'w50'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'isDefaultBilling' => [
-            'exclude' => true,
             'filter' => true,
             'inputType' => 'checkbox',
             'eval' => ['feEditable' => true, 'feGroup' => 'login', 'membersOnly' => true, 'tl_class' => 'w50'],
@@ -229,7 +176,6 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = [
             ],
         ],
         'isDefaultShipping' => [
-            'exclude' => true,
             'filter' => true,
             'inputType' => 'checkbox',
             'eval' => ['feEditable' => true, 'feGroup' => 'login', 'membersOnly' => true, 'tl_class' => 'w50'],

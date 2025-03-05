@@ -24,7 +24,6 @@ $GLOBALS['TL_DCA']['tl_user_group']['palettes']['default'] = str_replace(',iso_m
 $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_reports'] = array
 (
     'label'                   => &$GLOBALS['TL_LANG']['tl_user']['iso_reports'],
-    'exclude'                 => true,
     'inputType'               => 'checkbox',
     'options_callback'        => array('tl_iso_reports', 'getReports'),
     'eval'                    => array('multiple'=>true, 'tl_class'=>'w50 w50h'),

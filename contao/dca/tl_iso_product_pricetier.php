@@ -1,10 +1,6 @@
 <?php
 
-/*
- * Table tl_iso_product_pricetier
- */
 $GLOBALS['TL_DCA']['tl_iso_product_pricetier'] = [
-    // Config
     'config' => [
         'sql' => [
             'keys' => [
@@ -13,8 +9,6 @@ $GLOBALS['TL_DCA']['tl_iso_product_pricetier'] = [
             ],
         ],
     ],
-
-    // Fields
     'fields' => [
         'id' => [
             'sql' => 'int(10) unsigned NOT NULL auto_increment',

@@ -43,7 +43,6 @@ PaletteManipulator::create()
  * Add fields to tl_user
  */
 $GLOBALS['TL_DCA']['tl_user']['fields']['iso_modules'] = [
-    'exclude' => true,
     'filter' => true,
     'inputType' => 'checkbox',
     'options_callback' => [Backend::class, 'getIsotopeModules'],
@@ -53,7 +52,6 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['iso_modules'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_user']['fields']['iso_product_types'] = [
-    'exclude' => true,
     'inputType' => 'checkbox',
     'foreignKey' => ProductType::getTable().'.name',
     'eval' => ['multiple' => true, 'tl_class' => 'clr w50 w50h'],
@@ -61,7 +59,6 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['iso_product_types'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_user']['fields']['iso_product_typep'] = [
-    'exclude' => true,
     'inputType' => 'checkbox',
     'options' => ['create', 'delete'],
     'reference' => &$GLOBALS['TL_LANG']['MSC'],
@@ -70,7 +67,6 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['iso_product_typep'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_user']['fields']['iso_payment_modules'] = [
-    'exclude' => true,
     'inputType' => 'checkbox',
     'foreignKey' => Payment::getTable().'.name',
     'eval' => ['multiple' => true, 'tl_class' => 'clr w50 w50h'],
@@ -78,7 +74,6 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['iso_payment_modules'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_user']['fields']['iso_payment_modulep'] = [
-    'exclude' => true,
     'inputType' => 'checkbox',
     'options' => ['create', 'delete'],
     'reference' => &$GLOBALS['TL_LANG']['MSC'],
@@ -87,7 +82,6 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['iso_payment_modulep'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_user']['fields']['iso_shipping_modules'] = [
-    'exclude' => true,
     'inputType' => 'checkbox',
     'foreignKey' => Shipping::getTable().'.name',
     'eval' => ['multiple' => true, 'tl_class' => 'clr w50 w50h'],
@@ -95,7 +89,6 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['iso_shipping_modules'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_user']['fields']['iso_shipping_modulep'] = [
-    'exclude' => true,
     'inputType' => 'checkbox',
     'options' => ['create', 'delete'],
     'reference' => &$GLOBALS['TL_LANG']['MSC'],
@@ -104,7 +97,6 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['iso_shipping_modulep'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_user']['fields']['iso_tax_classes'] = [
-    'exclude' => true,
     'inputType' => 'checkbox',
     'foreignKey' => TaxClass::getTable().'.name',
     'eval' => ['multiple' => true, 'tl_class' => 'clr w50 w50h'],
@@ -112,7 +104,6 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['iso_tax_classes'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_user']['fields']['iso_tax_classp'] = [
-    'exclude' => true,
     'inputType' => 'checkbox',
     'options' => ['create', 'delete'],
     'reference' => &$GLOBALS['TL_LANG']['MSC'],
@@ -121,7 +112,6 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['iso_tax_classp'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_user']['fields']['iso_tax_rates'] = [
-    'exclude' => true,
     'inputType' => 'checkbox',
     'foreignKey' => TaxRate::getTable().'.name',
     'eval' => ['multiple' => true, 'tl_class' => 'clr w50 w50h'],
@@ -129,7 +119,6 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['iso_tax_rates'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_user']['fields']['iso_tax_ratep'] = [
-    'exclude' => true,
     'inputType' => 'checkbox',
     'options' => ['create', 'delete'],
     'reference' => &$GLOBALS['TL_LANG']['MSC'],
@@ -138,7 +127,6 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['iso_tax_ratep'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_user']['fields']['iso_configs'] = [
-    'exclude' => true,
     'inputType' => 'checkbox',
     'foreignKey' => Config::getTable().'.name',
     'eval' => ['multiple' => true, 'tl_class' => 'clr w50 w50h'],
@@ -146,7 +134,6 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['iso_configs'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_user']['fields']['iso_configp'] = [
-    'exclude' => true,
     'inputType' => 'checkbox',
     'options' => ['create', 'delete'],
     'reference' => &$GLOBALS['TL_LANG']['MSC'],
@@ -155,7 +142,6 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['iso_configp'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_user']['fields']['iso_groups'] = [
-    'exclude' => true,
     'inputType' => 'checkbox',
     'options_callback' => [Callback::class, 'getGroups'],
     'eval' => ['multiple' => true, 'tl_class' => 'clr w50 w50h'],
@@ -163,7 +149,6 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['iso_groups'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_user']['fields']['iso_groupp'] = [
-    'exclude' => true,
     'inputType' => 'checkbox',
     'options' => ['create', 'delete', 'rootPaste'],
     'reference' => &$GLOBALS['TL_LANG']['MSC'],
@@ -172,7 +157,6 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['iso_groupp'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_user']['fields']['iso_member_groups'] = [
-    'exclude' => true,
     'inputType' => 'checkbox',
     'foreignKey' => 'tl_member_group.name',
     'eval' => ['multiple' => true, 'isAssociative' => true, 'tl_class' => 'clr'],

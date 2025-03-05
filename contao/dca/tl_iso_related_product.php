@@ -1,19 +1,17 @@
 <?php
 
+use Contao\DataContainer;
 use Contao\DC_Table;
 use Isotope\Backend;
 use Isotope\Backend\RelatedProduct\Callback;
 use Isotope\Model\Product;
 use Isotope\Model\RelatedCategory;
 
-/*
- * Table tl_iso_related_product
- */
 $GLOBALS['TL_DCA']['tl_iso_related_product'] = [
-    // Config
     'config' => [
         'dataContainer' => DC_Table::class,
         'enableVersioning' => true,
+        'notSortable' => true,
         'ptable' => 'tl_iso_product',
         'onload_callback' => [
             [Callback::class, 'initDCA'],
@@ -28,52 +26,20 @@ $GLOBALS['TL_DCA']['tl_iso_related_product'] = [
             ],
         ],
     ],
-
-    // List
     'list' => [
         'sorting' => [
-            'mode' => 4,
+            'mode' => DataContainer::MODE_PARENT,
             'fields' => ['category'],
-            'flag' => 1,
+            'flag' => DataContainer::SORT_INITIAL_LETTER_ASC,
             'panelLayout' => 'filter,limit',
             'headerFields' => ['type', 'name', 'alias', 'sku'],
             'disableGrouping' => true,
             'child_record_callback' => [Callback::class, 'listRows'],
         ],
-        'global_operations' => [
-            'all' => [
-                'href' => 'act=select',
-                'class' => 'header_edit_all',
-                'attributes' => 'onclick="Backend.getScrollOffset();"',
-            ],
-        ],
-        'operations' => [
-            'edit' => [
-                'href' => 'act=edit',
-                'icon' => 'edit.svg',
-            ],
-            'copy' => [
-                'href' => 'act=copy',
-                'icon' => 'copy.svg',
-            ],
-            'delete' => [
-                'href' => 'act=delete',
-                'icon' => 'delete.svg',
-                'attributes' => 'onclick="if (!confirm(\''.($GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? '').'\')) return false; Backend.getScrollOffset();"',
-            ],
-            'show' => [
-                'href' => 'act=show',
-                'icon' => 'show.svg',
-            ],
-        ],
     ],
-
-    // Palettes
     'palettes' => [
         'default' => '{category_legend},category;{products_legend},products',
     ],
-
-    // Fields
     'fields' => [
         'id' => [
             'sql' => 'int(10) unsigned NOT NULL auto_increment',
@@ -90,7 +56,6 @@ $GLOBALS['TL_DCA']['tl_iso_related_product'] = [
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
         'category' => [
-            'exclude' => true,
             'filter' => true,
             'inputType' => 'select',
             'foreignKey' => RelatedCategory::getTable().'.name',
@@ -99,7 +64,6 @@ $GLOBALS['TL_DCA']['tl_iso_related_product'] = [
             'relation' => ['table' => RelatedCategory::getTable(), 'type' => 'hasOne', 'load' => 'lazy'],
         ],
         'products' => [
-            'exclude' => true,
             'inputType' => 'picker',
             'eval' => ['mandatory' => true, 'multiple' => true, 'csv' => ',', 'tl_class' => 'clr', 'orderField' => 'productsOrder'],
             'sql' => 'blob NULL',

@@ -301,7 +301,7 @@ class DcaManager extends Backend
 
             // Enable advanced prices
             if ($blnSingleRecord && $objType->hasAdvancedPrices()) {
-                $arrFields['prices']['exclude']    = $arrFields['price']['exclude'];
+                $arrFields['prices']['exclude']    = $arrFields['price']['exclude'] ?? null;
                 $arrFields['prices']['attributes'] = $arrFields['price']['attributes'];
                 $arrFields['price']                = $arrFields['prices'];
             }

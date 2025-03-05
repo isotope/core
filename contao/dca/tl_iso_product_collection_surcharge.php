@@ -1,8 +1,5 @@
 <?php
 
-/*
- * Table tl_iso_product_collection_surcharge
- */
 $GLOBALS['TL_DCA']['tl_iso_product_collection_surcharge'] = [
     'config' => [
         'sql' => [
@@ -12,8 +9,6 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_surcharge'] = [
             ],
         ],
     ],
-
-    // Fields
     'fields' => [
         'id' => [
             'sql' => 'int(10) unsigned NOT NULL auto_increment',

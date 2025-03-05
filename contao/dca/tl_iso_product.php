@@ -1,5 +1,6 @@
 <?php
 
+use Contao\DataContainer;
 use Contao\Input;
 use Contao\System;
 use Isotope\Backend;
@@ -32,11 +33,7 @@ use Isotope\Model\TaxClass;
 
 System::loadLanguageFile(ProductType::getTable());
 
-/*
- * Table tl_iso_product
- */
 $GLOBALS['TL_DCA']['tl_iso_product'] = [
-    // Config
     'config' => [
         'label' => &$GLOBALS['TL_LANG']['MOD']['iso_products'][0],
         'dataContainer' => ProductData::class,
@@ -82,21 +79,17 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             ],
         ],
     ],
-
-    // Select
     'select' => [
         'buttons_callback' => [
             [Button::class, 'forSelect'],
         ],
     ],
-
-    // List
     'list' => [
         'sorting' => [
-            'mode' => 2,
+            'mode' => DataContainer::MODE_SORTABLE,
             'fields' => ['name'],
             'headerFields' => ['name', 'sku', 'price', 'published'],
-            'flag' => 1,
+            'flag' => DataContainer::SORT_INITIAL_LETTER_ASC,
             'panelLayout' => 'iso_buttons,iso_filter;filter;sort,iso_sorting,search,limit',
             'panel_callback' => [
                 'iso_buttons' => [Panel::class, 'generateFilterButtons'],
@@ -128,17 +121,10 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
                 'icon' => CompatibilityHelper::asset('images/image--plus.png'),
                 'attributes' => 'onclick="Backend.getScrollOffset();"',
             ],
-            'all' => [
-                'href' => 'act=select',
-                'class' => 'header_edit_all',
-                'attributes' => 'onclick="Backend.getScrollOffset();"',
-            ],
+            'all',
         ],
         'operations' => [
-            'edit' => [
-                'href' => 'act=edit',
-                'icon' => 'edit.svg',
-            ],
+            'edit',
             'copy' => [
                 'href' => 'act=copy&amp;childs=1',
                 'icon' => 'copy.svg',
@@ -160,10 +146,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
                 'attributes' => 'onclick="Backend.getScrollOffset(); return AjaxRequest.toggleVisibility(this, %s);"',
                 'button_callback' => [Button::class, 'forVisibilityToggle'],
             ],
-            'show' => [
-                'href' => 'act=show',
-                'icon' => 'show.svg',
-            ],
+            'show',
             'break' => [
                 'button_callback' => static fn () => '<br>',
             ],
@@ -194,19 +177,13 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             ],
         ],
     ],
-
-    // Palettes
     'palettes' => [
         '__selector__' => ['type', 'protected'],
         'default' => '{general_legend},type',
     ],
-
-    // Subpalettes
     'subpalettes' => [
         'protected' => 'groups',
     ],
-
-    // Fields
     'fields' => [
         'id' => [
             'attributes' => ['systemColumn' => true],
@@ -243,12 +220,11 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
         ],
         'hitCount' => [
             'sorting' => true,
-            'flag' => 12,
+            'flag' => DataContainer::SORT_DESC,
             'attributes' => ['fe_sorting' => true, 'systemColumn' => true],
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
         'type' => [
-            'exclude' => true,
             'filter' => true,
             'inputType' => 'select',
             'options_callback' => [Callback::class, 'getOptions'],
@@ -261,7 +237,6 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'wizard' => [[Wizard::class, 'onProductTypeWizard']],
         ],
         'pages' => [
-            'exclude' => true,
             'inputType' => 'pageTree',
             'foreignKey' => 'tl_page.title',
             'eval' => ['doNotSaveEmpty' => true, 'multiple' => true, 'fieldType' => 'checkbox', 'orderField' => 'orderPages', 'tl_class' => 'clr hide_sort_hint'],
@@ -280,14 +255,12 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'sql' => 'text NULL',
         ],
         'inherit' => [
-            'exclude' => true,
             'inputType' => 'inheritCheckbox',
             'eval' => ['multiple' => true],
             'attributes' => ['systemColumn' => true],
             'sql' => 'blob NULL',
         ],
         'fallback' => [
-            'exclude' => true,
             'inputType' => 'checkbox',
             'eval' => ['doNotCopy' => true, 'tl_class' => 'clr'],
             'attributes' => ['legend' => 'general_legend', 'variant_fixed' => true, 'excluded' => true, 'systemColumn' => true],
@@ -297,7 +270,6 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             ],
         ],
         'alias' => [
-            'exclude' => true,
             'search' => true,
             'sorting' => true,
             'inputType' => 'text',
@@ -309,7 +281,6 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             ],
         ],
         'gtin' => [
-            'exclude' => true,
             'search' => true,
             'sorting' => true,
             'inputType' => 'text',
@@ -318,7 +289,6 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'sql' => "varchar(14) NOT NULL default ''",
         ],
         'sku' => [
-            'exclude' => true,
             'search' => true,
             'sorting' => true,
             'inputType' => 'text',
@@ -327,7 +297,6 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'sql' => "varchar(128) NOT NULL default ''",
         ],
         'name' => [
-            'exclude' => true,
             'search' => true,
             'sorting' => true,
             'inputType' => 'text',
@@ -336,7 +305,6 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'teaser' => [
-            'exclude' => true,
             'search' => true,
             'inputType' => 'textarea',
             'eval' => ['style' => 'height:80px', 'tl_class' => 'clr'],
@@ -344,7 +312,6 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'sql' => 'text NULL',
         ],
         'description' => [
-            'exclude' => true,
             'search' => true,
             'inputType' => 'textarea',
             'eval' => ['mandatory' => true, 'rte' => 'tinyMCE', 'tl_class' => 'clr'],
@@ -352,7 +319,6 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'sql' => 'text NULL',
         ],
         'meta_title' => [
-            'exclude' => true,
             'search' => true,
             'inputType' => 'text',
             'eval' => ['maxlength' => 255, 'tl_class' => 'clr long'],
@@ -360,7 +326,6 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'meta_description' => [
-            'exclude' => true,
             'search' => true,
             'inputType' => 'textarea',
             'eval' => ['style' => 'height:60px', 'tl_class' => 'clr'],
@@ -368,7 +333,6 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'sql' => 'text NULL',
         ],
         'meta_keywords' => [
-            'exclude' => true,
             'search' => true,
             'inputType' => 'textarea',
             'eval' => ['style' => 'height:40px', 'tl_class' => 'clr'],
@@ -376,7 +340,6 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'sql' => 'text NULL',
         ],
         'price' => [
-            'exclude' => true,
             'inputType' => 'timePeriod',
             'foreignKey' => TaxClass::getTable().'.name',
             'eval' => ['mandatory' => true, 'maxlength' => 13, 'rgxp' => 'digit', 'includeBlankOption' => true, 'blankOptionLabel' => &$GLOBALS['TL_LANG']['MSC']['taxFree'], 'doNotSaveEmpty' => true, 'tl_class' => 'w50'],
@@ -419,7 +382,6 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             ],
         ],
         'baseprice' => [
-            'exclude' => true,
             'inputType' => 'timePeriod',
             'foreignKey' => 'tl_iso_baseprice.name',
             'eval' => ['includeBlankOption' => true, 'rgxp' => 'digit', 'tl_class' => 'w50'],
@@ -427,7 +389,6 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'shipping_weight' => [
-            'exclude' => true,
             'inputType' => 'timePeriod',
             'default' => ['unit' => 'kg'],
             'options' => ['mg', 'g', 'kg', 't', 'ct', 'oz', 'lb', 'st', 'grain'],
@@ -437,28 +398,24 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'shipping_exempt' => [
-            'exclude' => true,
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
             'attributes' => ['legend' => 'shipping_legend', 'systemColumn' => true],
             'sql' => "char(1) NOT NULL default ''",
         ],
         'shipping_pickup' => [
-            'exclude' => true,
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
             'attributes' => ['legend' => 'shipping_legend', 'systemColumn' => true],
             'sql' => "char(1) NOT NULL default ''",
         ],
         'shipping_price' => [
-            'exclude' => true,
             'inputType' => 'text',
             'eval' => ['rgxp' => 'digit', 'tl_class' => 'w50'],
             'attributes' => ['legend' => 'shipping_legend', 'systemColumn' => true, 'type' => ShippingPrice::class],
             'sql' => "decimal(9,2) unsigned NOT NULL default '0.00'",
         ],
         'images' => [
-            'exclude' => true,
             'inputType' => 'mediaManager',
             'explanation' => 'mediaManager',
             'eval' => ['extensions' => '%contao.image.valid_extensions%', 'helpwizard' => true, 'tl_class' => 'clr'],
@@ -466,7 +423,6 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'sql' => 'blob NULL',
         ],
         'protected' => [
-            'exclude' => true,
             'filter' => true,
             'inputType' => 'checkbox',
             'eval' => ['submitOnChange' => true, 'tl_class' => 'clr'],
@@ -474,7 +430,6 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'sql' => "char(1) NOT NULL default ''",
         ],
         'groups' => [
-            'exclude' => true,
             'filter' => true,
             'inputType' => 'checkbox',
             'foreignKey' => 'tl_member_group.name',
@@ -483,14 +438,12 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
         ],
         'cssID' => [
-            'exclude' => true,
             'inputType' => 'text',
             'eval' => ['multiple' => true, 'size' => 2, 'tl_class' => 'w50'],
             'attributes' => ['legend' => 'expert_legend'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'published' => [
-            'exclude' => true,
             'filter' => true,
             'inputType' => 'checkbox',
             'eval' => ['doNotCopy' => true, 'tl_class' => 'clr'],
@@ -501,14 +454,12 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             ],
         ],
         'start' => [
-            'exclude' => true,
             'inputType' => 'text',
             'eval' => ['rgxp' => 'datim', 'datepicker' => true, 'tl_class' => 'w50 wizard'],
             'attributes' => ['legend' => 'publish_legend', 'fixed' => true, 'variant_fixed' => true, 'systemColumn' => true],
             'sql' => "varchar(10) NOT NULL default ''",
         ],
         'stop' => [
-            'exclude' => true,
             'inputType' => 'text',
             'eval' => ['rgxp' => 'datim', 'datepicker' => true, 'tl_class' => 'w50 wizard'],
             'attributes' => ['legend' => 'publish_legend', 'fixed' => true, 'variant_fixed' => true, 'systemColumn' => true],

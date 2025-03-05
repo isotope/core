@@ -1,16 +1,13 @@
 <?php
 
+use Contao\DataContainer;
 use Contao\DC_Table;
 use Contao\Input;
 use Isotope\Backend\Group\Callback;
 use Isotope\CompatibilityHelper;
 use Isotope\Model\ProductType;
 
-/*
- * Table tl_iso_group
- */
 $GLOBALS['TL_DCA']['tl_iso_group'] = [
-    // Config
     'config' => [
         'dataContainer' => DC_Table::class,
         'label' => &$GLOBALS['TL_LANG']['tl_iso_group']['label'],
@@ -29,26 +26,17 @@ $GLOBALS['TL_DCA']['tl_iso_group'] = [
             ],
         ],
     ],
-
-    // List
     'list' => [
         'sorting' => [
-            'mode' => 5,
+            'mode' => DataContainer::MODE_TREE,
             'fields' => ['sorting'],
-            'flag' => 1,
+            'flag' => DataContainer::SORT_INITIAL_LETTER_ASC,
             'icon' => CompatibilityHelper::asset('images/folders.png'),
         ],
         'label' => [
             'fields' => ['name'],
             'format' => '%s',
             'label_callback' => [Callback::class, 'addIcon'],
-        ],
-        'global_operations' => [
-            'all' => [
-                'href' => 'act=select',
-                'class' => 'header_edit_all',
-                'attributes' => 'onclick="Backend.getScrollOffset();"',
-            ],
         ],
         'operations' => [
             'edit' => [
@@ -68,30 +56,19 @@ $GLOBALS['TL_DCA']['tl_iso_group'] = [
                 'attributes' => 'onclick="Backend.getScrollOffset()"',
                 'button_callback' => [Callback::class, 'copyButton'],
             ],
-            'cut' => [
-                'href' => 'table=tl_iso_group&amp;act=paste&amp;mode=cut',
-                'icon' => 'cut.svg',
-                'attributes' => 'onclick="Backend.getScrollOffset();"',
-            ],
+            'cut',
             'delete' => [
                 'href' => 'table=tl_iso_group&amp;act=delete',
                 'icon' => 'delete.svg',
                 'attributes' => 'onclick="if (!confirm(\''.($GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? '').'\')) return false; Backend.getScrollOffset();"',
                 'button_callback' => [Callback::class, 'deleteButton'],
             ],
-            'show' => [
-                'href' => 'act=show',
-                'icon' => 'show.svg',
-            ],
+            'show',
         ],
     ],
-
-    // Palettes
     'palettes' => [
         'default' => '{group_legend},name,product_type;',
     ],
-
-    // Fields
     'fields' => [
         'id' => [
             'sql' => 'int(10) unsigned NOT NULL auto_increment',
@@ -108,13 +85,11 @@ $GLOBALS['TL_DCA']['tl_iso_group'] = [
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
         'name' => [
-            'exclude' => true,
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'maxlength' => 255, 'tl_class' => 'w50'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'product_type' => [
-            'exclude' => true,
             'inputType' => 'select',
             'foreignKey' => ProductType::getTable().'.name',
             'options_callback' => [Isotope\Backend\ProductType\Callback::class, 'getOptions'],

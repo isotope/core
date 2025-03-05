@@ -1,16 +1,7 @@
 <?php
 
-use Contao\DC_Table;
-
-/*
- * Table tl_iso_product_collection_item
- */
 $GLOBALS['TL_DCA']['tl_iso_product_collection_item'] = [
-    // Config
     'config' => [
-        'dataContainer' => DC_Table::class,
-        'closed' => true,
-        'notEditable' => true,
         'ptable' => 'tl_iso_product_collection',
         'ctable' => ['tl_iso_product_collection_download'],
         'sql' => [
@@ -21,8 +12,6 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_item'] = [
             ],
         ],
     ],
-
-    // Fields
     'fields' => [
         'id' => [
             'sql' => 'int(10) unsigned NOT NULL auto_increment',

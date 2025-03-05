@@ -1,21 +1,7 @@
 <?php
 
-/*
- * Isotope eCommerce for Contao Open Source CMS
- *
- * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
- *
- * @link       https://isotopeecommerce.org
- * @license    https://opensource.org/licenses/lgpl-3.0.html
- */
-
-/**
- * Table tl_iso_rule_usage
- */
 $GLOBALS['TL_DCA']['tl_iso_rule_usage'] = array
 (
-
-    // Config
     'config' => array
     (
         'sql' => array
@@ -27,7 +13,6 @@ $GLOBALS['TL_DCA']['tl_iso_rule_usage'] = array
             )
         ),
     ),
-
     'fields'                        => array
     (
         'id' => array

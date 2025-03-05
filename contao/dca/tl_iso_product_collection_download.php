@@ -1,17 +1,9 @@
 <?php
 
-use Contao\DC_Table;
 use Isotope\Model\Download;
 
-/*
- * Table tl_iso_product_collection_download
- */
 $GLOBALS['TL_DCA']['tl_iso_product_collection_download'] = [
-    // Config
     'config' => [
-        'dataContainer' => DC_Table::class,
-        'closed' => true,
-        'notEditable' => true,
         'ptable' => 'tl_iso_product_collection_item',
         'sql' => [
             'keys' => [
@@ -20,8 +12,6 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_download'] = [
             ],
         ],
     ],
-
-    // Fields
     'fields' => [
         'id' => [
             'sql' => 'int(10) unsigned NOT NULL auto_increment',

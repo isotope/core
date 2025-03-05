@@ -26,7 +26,6 @@ use Contao\Versions;
 use Isotope\Backend\Permission;
 use Isotope\Model\Payment;
 use Isotope\Model\Shipping;
-use Psr\Log\LogLevel;
 use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 
 
@@ -199,75 +198,5 @@ class Callback extends Permission
     public function deletePaymentModule($row, $href, $label, $title, $icon, $attributes)
     {
         return (BackendUser::getInstance()->isAdmin || BackendUser::getInstance()->hasAccess('delete', 'iso_payment_modulep')) ? '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ' : Image::getHtml(preg_replace('/\.svg$/i', '_.svg', $icon)) . ' ';
-    }
-
-
-    /**
-     * Return the "toggle visibility" button
-     *
-     * @param array  $row
-     * @param string $href
-     * @param string $label
-     * @param string $title
-     * @param string $icon
-     * @param string $attributes
-     *
-     * @return string
-     */
-    public function toggleIcon($row, $href, $label, $title, $icon, $attributes)
-    {
-        if (\strlen(Input::get('tid'))) {
-            $this->toggleVisibility(Input::get('tid'), Input::get('state') == 1);
-            Controller::redirect(System::getReferer());
-        }
-
-        if (!$row['enabled']) {
-            $icon = 'invisible.svg';
-        }
-
-        if (!BackendUser::getInstance()->isAdmin && !BackendUser::getInstance()->hasAccess('tl_iso_payment::enabled', 'alexf')) {
-            return Image::getHtml($icon) . ' ';
-        }
-
-        $href .= '&amp;tid=' . $row['id'] . '&amp;state=' . ($row['enabled'] ? '' : 1);
-
-        return '<a href="' . Backend::addToUrl($href) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ';
-    }
-
-
-    /**
-     * Disable/enable a user group
-     *
-     * @param int $intId
-     * @param bool $blnVisible
-     */
-    public function toggleVisibility($intId, $blnVisible)
-    {
-        // Check permissions to edit
-        Input::setGet('id', $intId);
-        Input::setGet('act', 'toggle');
-        $this->checkPermission();
-
-        // Check permissions to publish
-        if (!BackendUser::getInstance()->isAdmin && !BackendUser::getInstance()->hasAccess('tl_iso_payment::enabled', 'alexf')) {
-            throw new AccessDeniedException('Not enough permissions to enable/disable payment method ID "' . $intId . '"');
-        }
-
-        $objVersions = new Versions('tl_iso_payment', $intId);
-        $objVersions->initialize();
-
-        // Trigger the save_callback
-        if (\is_array($GLOBALS['TL_DCA']['tl_iso_payment']['fields']['enabled']['save_callback'] ?? null)) {
-            foreach ($GLOBALS['TL_DCA']['tl_iso_payment']['fields']['enabled']['save_callback'] as $callback) {
-                $blnVisible = System::importStatic($callback[0])->{$callback[1]}($blnVisible, $this);
-            }
-        }
-
-        // Update the database
-        Database::getInstance()->prepare("UPDATE tl_iso_payment SET tstamp=". time() .", enabled='" . ($blnVisible ? 1 : '') . "' WHERE id=?")
-                                ->execute($intId);
-
-        $objVersions->create();
-        System::getContainer()->get('monolog.logger.contao')->info('A new version of record "tl_iso_payment.id=' . $intId . '" has been created' . $this->getParentEntries('tl_iso_payment', $intId), ['contao' => new ContaoContext(__METHOD__, ContaoContext::GENERAL)]);
     }
 }

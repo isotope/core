@@ -1,17 +1,14 @@
 <?php
 
 use Contao\BackendUser;
+use Contao\DataContainer;
 use Contao\Input;
 use Contao\Message;
 use Isotope\Backend;
 use Isotope\Backend\ProductCategory\Callback;
 use Isotope\CoreBundle\DataContainer\TablePageId;
 
-/*
- * Table tl_iso_product_category
- */
 $GLOBALS['TL_DCA']['tl_iso_product_category'] = [
-    // Config
     'config' => [
         'dataContainer' => TablePageId::class,
         'ptable' => 'tl_page',
@@ -37,25 +34,15 @@ $GLOBALS['TL_DCA']['tl_iso_product_category'] = [
             ],
         ],
     ],
-
-    // List
     'list' => [
         'sorting' => [
-            'mode' => 4,
+            'mode' => DataContainer::MODE_PARENT,
             'fields' => ['sorting'],
             'panelLayout' => 'limit',
             'headerFields' => ['title', 'type'],
             'child_record_callback' => [Callback::class, 'listRows'],
         ],
-        'global_operations' => [
-            'all' => [
-                'href' => 'act=select',
-                'class' => 'header_edit_all',
-                'attributes' => 'onclick="Backend.getScrollOffset();"',
-            ],
-        ],
     ],
-
     'fields' => [
         'id' => [
             'sql' => 'int(10) unsigned NOT NULL auto_increment',

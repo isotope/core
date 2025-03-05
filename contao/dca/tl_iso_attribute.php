@@ -1,6 +1,7 @@
 <?php
 
 use Composer\InstalledVersions;
+use Contao\DataContainer;
 use Contao\DC_Table;
 use Contao\System;
 use Isotope\Backend\Attribute\Callback;
@@ -15,11 +16,7 @@ use Isotope\Model\AttributeOption;
  */
 System::loadLanguageFile('tl_iso_product');
 
-/*
- * Table tl_iso_attribute
- */
 $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
-    // Config
     'config' => [
         'dataContainer' => DC_Table::class,
         'enableVersioning' => true,
@@ -41,44 +38,23 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
             ],
         ],
     ],
-
-    // List
     'list' => [
         'sorting' => [
-            'mode' => 2,
+            'mode' => DataContainer::MODE_SORTABLE,
             'fields' => ['legend', 'name'],
-            'flag' => 1,
+            'flag' => DataContainer::SORT_INITIAL_LETTER_ASC,
             'panelLayout' => 'filter;sort,search,limit',
         ],
         'label' => [
             'fields' => ['name', 'field_name', 'type'],
             'format' => '<div style="float:left; width:200px">%s</div><div style="float:left; width:200px; color:#b3b3b3;">%s</div><div style="color:#b3b3b3">%s</div>',
         ],
-        'global_operations' => [
-            'all' => [
-                'href' => 'act=select',
-                'class' => 'header_edit_all',
-                'attributes' => 'onclick="Backend.getScrollOffset();"',
-            ],
-        ],
         'operations' => [
-            'edit' => [
-                'href' => 'act=edit',
-                'icon' => 'edit.svg',
-            ],
-            'copy' => [
-                'href' => 'act=copy',
-                'icon' => 'copy.svg',
-            ],
-            'delete' => [
-                'href' => 'act=delete',
-                'icon' => 'delete.svg',
-                'attributes' => 'onclick="if (!confirm(\''.($GLOBALS['TL_LANG']['tl_iso_attribute']['deleteConfirm'] ?? '').'\')) return false; Backend.getScrollOffset();"',
-            ],
-            'show' => [
-                'href' => 'act=show',
-                'icon' => 'show.svg',
-            ],
+            'edit',
+            // TODO: would render editChilds operation because of ctable=tl_iso_attribute_option
+            'copy',
+            'delete',
+            'show',
         ],
     ],
 
@@ -129,19 +105,17 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
         'name' => [
-            'exclude' => true,
             'search' => true,
             'sorting' => true,
-            'flag' => 1,
+            'flag' => DataContainer::SORT_INITIAL_LETTER_ASC,
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'maxlength' => 255, 'decodeEntities' => true, 'tl_class' => 'w50'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'field_name' => [
-            'exclude' => true,
             'search' => true,
             'sorting' => true,
-            'flag' => 1,
+            'flag' => DataContainer::SORT_INITIAL_LETTER_ASC,
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'maxlength' => 30, 'unique' => true, 'doNotCopy' => true, 'doNotSaveEmpty' => true, 'tl_class' => 'w50'],
             'sql' => "varchar(30) NOT NULL default ''",
@@ -150,10 +124,9 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
             ],
         ],
         'type' => [
-            'exclude' => true,
             'filter' => true,
             'sorting' => true,
-            'flag' => 11,
+            'flag' => DataContainer::SORT_ASC,
             'inputType' => 'select',
             'options_callback' => static fn () => Attribute::getModelTypeOptions(),
             'reference' => &$GLOBALS['TL_LANG']['ATTR'],
@@ -161,10 +134,9 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
             'sql' => "varchar(64) NOT NULL default ''",
         ],
         'legend' => [
-            'exclude' => true,
             'search' => true,
             'sorting' => true,
-            'flag' => 11,
+            'flag' => DataContainer::SORT_ASC,
             'default' => 'options_legend',
             'inputType' => 'select',
             'options' => ['general_legend', 'meta_legend', 'pricing_legend', 'inventory_legend', 'shipping_legend', 'options_legend', 'media_legend', 'expert_legend', 'publish_legend'],
@@ -173,14 +145,12 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'description' => [
-            'exclude' => true,
             'search' => true,
             'inputType' => 'text',
             'eval' => ['maxlength' => 255, 'tl_class' => 'clr long'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'optionsSource' => [
-            'exclude' => true,
             'filter' => true,
             'inputType' => 'radio',
             'options_callback' => static function ($dc) {
@@ -210,7 +180,6 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
             'sql' => "varchar(16) NOT NULL default ''",
         ],
         'options' => [
-            'exclude' => true,
             'inputType' => 'multiColumnWizard',
             'eval' => [
                 'mandatory' => true,
@@ -221,7 +190,6 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
             'sql' => 'blob NULL',
         ],
         'optionsTable' => [
-            'exclude' => true,
             'inputType' => 'dcaWizardMultilingual',
             'foreignTableCallback' => [Callback::class, 'initializeTableOptions'],
             'foreignTable_callback' => [Callback::class, 'initializeTableOptions'],
@@ -235,7 +203,6 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
             ],
         ],
         'foreignKey' => [
-            'exclude' => true,
             'inputType' => 'textarea',
             'eval' => ['mandatory' => true, 'style' => 'height:80px', 'decodeEntities' => true],
             'sql' => 'text NULL',
@@ -244,103 +211,86 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
             ],
         ],
         'includeBlankOption' => [
-            'exclude' => true,
             'inputType' => 'checkbox',
             'eval' => ['submitOnChange' => true, 'tl_class' => 'w50 m12'],
             'sql' => "char(1) NOT NULL default ''",
         ],
         'blankOptionLabel' => [
-            'exclude' => true,
             'inputType' => 'text',
             'eval' => ['maxlength' => 255, 'tl_class' => 'w50'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'variant_option' => [
-            'exclude' => true,
             'filter' => true,
             'inputType' => 'checkbox',
             'eval' => ['submitOnChange' => true, 'tl_class' => 'w50'],
             'sql' => "char(1) NOT NULL default ''",
         ],
         'be_search' => [
-            'exclude' => true,
             'inputType' => 'checkbox',
             'sql' => "char(1) NOT NULL default ''",
         ],
         'be_filter' => [
-            'exclude' => true,
             'inputType' => 'checkbox',
             'sql' => "char(1) NOT NULL default ''",
         ],
         'customer_defined' => [
-            'exclude' => true,
             'filter' => true,
             'inputType' => 'checkbox',
             'eval' => ['submitOnChange' => true, 'tl_class' => 'w50'],
             'sql' => "char(1) NOT NULL default ''",
         ],
         'mandatory' => [
-            'exclude' => true,
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
             'sql' => "char(1) NOT NULL default ''",
         ],
         'fe_filter' => [
-            'exclude' => true,
             'inputType' => 'checkbox',
             'sql' => "char(1) NOT NULL default ''",
         ],
         'fe_search' => [
-            'exclude' => true,
             'inputType' => 'checkbox',
             'sql' => "char(1) NOT NULL default ''",
         ],
         'fe_sorting' => [
-            'exclude' => true,
             'inputType' => 'checkbox',
             'sql' => "char(1) NOT NULL default ''",
         ],
         'multiple' => [
-            'exclude' => true,
             'inputType' => 'checkbox',
             'eval' => ['submitOnChange' => true, 'tl_class' => 'clr w50'],
             'sql' => "char(1) NOT NULL default ''",
         ],
         'size' => [
-            'exclude' => true,
             'inputType' => 'text',
             'default' => 5,
             'eval' => ['rgxp' => 'digit', 'tl_class' => 'w50'],
             'sql' => "smallint(5) unsigned NOT NULL default '0'",
         ],
         'chosen' => [
-            'exclude' => true,
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
             'sql' => "char(1) NOT NULL default ''",
         ],
         'extensions' => [
-            'exclude' => true,
             'default' => '',
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'rgxp' => 'extnd', 'maxlength' => 255, 'tl_class' => 'w50'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'rte' => [
-            'exclude' => true,
             'inputType' => 'select',
             'options_callback' => [Callback::class, 'getRTE'],
             'eval' => ['includeBlankOption' => true, 'tl_class' => 'w50', 'chosen' => true],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'multilingual' => [
-            'exclude' => true,
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
             'sql' => "char(1) NOT NULL default ''",
         ],
         'rgxp' => [
-            'exclude' => true,
             'inputType' => 'select',
             'options' => ['digit', 'alpha', 'alnum', 'extnd', 'date', 'time', 'datim', 'phone', 'email', 'url', 'price', 'discount', 'surcharge'],
             'reference' => &$GLOBALS['TL_LANG']['tl_iso_attribute'],
@@ -348,51 +298,43 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'placeholder' => [
-            'exclude' => true,
             'search' => true,
             'inputType' => 'text',
             'eval' => ['decodeEntities' => true, 'maxlength' => 255, 'tl_class' => 'w50'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'minlength' => [
-            'exclude' => true,
             'inputType' => 'text',
             'eval' => ['rgxp' => 'digit', 'tl_class' => 'w50'],
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
         'maxlength' => [
-            'exclude' => true,
             'inputType' => 'text',
             'eval' => ['rgxp' => 'digit', 'tl_class' => 'w50'],
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
         'minval' => [
-            'exclude' => true,
             'inputType' => 'text',
             'eval' => ['rgxp' => 'digit', 'tl_class' => 'w50'],
             'sql' => "varchar(10) NOT NULL default ''",
         ],
         'maxval' => [
-            'exclude' => true,
             'inputType' => 'text',
             'eval' => ['rgxp' => 'digit', 'tl_class' => 'w50'],
             'sql' => "varchar(10) NOT NULL default ''",
         ],
         'step' => [
-            'exclude' => true,
             'inputType' => 'text',
             'eval' => ['rgxp' => 'digit', 'tl_class' => 'w50'],
             'sql' => "varchar(10) NOT NULL default ''",
         ],
         'conditionField' => [
-            'exclude' => true,
             'inputType' => 'select',
             'options_callback' => [Callback::class, 'getConditionFields'],
             'eval' => ['includeBlankOption' => true, 'mandatory' => true, 'tl_class' => 'w50', 'chosen' => true],
             'sql' => "varchar(30) NOT NULL default ''",
         ],
         'fieldType' => [
-            'exclude' => true,
             'inputType' => 'radio',
             'options' => ['checkbox', 'radio'],
             'reference' => &$GLOBALS['TL_LANG']['tl_iso_attribute'],
@@ -400,32 +342,27 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
             'sql' => "varchar(8) NOT NULL default ''",
         ],
         'files' => [
-            'exclude' => true,
             'inputType' => 'checkbox',
             'eval' => ['submitOnChange' => true, 'tl_class' => 'w50'],
             'sql' => "char(1) NOT NULL default ''",
         ],
         'filesOnly' => [
-            'exclude' => true,
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
             'sql' => "char(1) NOT NULL default ''",
         ],
         'inline' => [
-            'exclude' => true,
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
             'sql' => "char(1) NOT NULL default ''",
         ],
         'isGallery' => [
-            'exclude' => true,
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
             'sql' => "char(1) NOT NULL default ''",
         ],
         'sortBy' => [
             'default' => 'name_asc',
-            'exclude' => true,
             'inputType' => 'select',
             'options' => ['name_asc', 'name_desc', 'date_asc', 'date_desc', 'random', 'custom'],
             'reference' => &$GLOBALS['TL_LANG']['tl_iso_attribute'],
@@ -433,25 +370,21 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
             'sql' => "varchar(32) NOT NULL default ''",
         ],
         'path' => [
-            'exclude' => true,
             'inputType' => 'fileTree',
             'eval' => ['fieldType' => 'radio', 'tl_class' => 'clr'],
             'sql' => 'binary(16) NULL',
         ],
         'rootNodes' => [
-            'exclude' => true,
             'inputType' => 'pageTree',
             'eval' => ['multiple' => true, 'fieldType' => 'checkbox', 'tl_class' => 'clr'],
             'sql' => 'blob NULL',
         ],
         'checkoutRelocate' => [
-            'exclude' => true,
             'inputType' => 'checkbox',
             'eval' => ['submitOnChange' => true, 'tl_class' => 'w50'],
             'sql' => "char(1) NOT NULL default ''",
         ],
         'checkoutTargetFolder' => [
-            'exclude' => true,
             'default' => 'files/orders/##document_number##/##product_position##__{{flag::##product_name##|standardize}}/##attribute_field##',
             'inputType' => 'text',
             'explanation' => 'checkoutTargetFolder',
@@ -460,7 +393,6 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'checkoutTargetFile' => [
-            'exclude' => true,
             'default' => '##file_target##',
             'inputType' => 'text',
             'explanation' => 'checkoutTargetFile',
@@ -469,7 +401,6 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'datepicker' => [
-            'exclude' => true,
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
             'sql' => "char(1) NOT NULL default ''",
@@ -482,31 +413,26 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
          * @deprecated Deprecated since Isotope 2.4, to be removed in Isotope 3.0
          */
         'storeFile' => [
-            'exclude' => true,
             'inputType' => 'checkbox',
             'eval' => ['submitOnChange' => true],
             'sql' => "char(1) NOT NULL default ''",
         ],
         'uploadFolder' => [
-            'exclude' => true,
             'inputType' => 'fileTree',
             'eval' => ['fieldType' => 'radio', 'tl_class' => 'clr'],
             'sql' => 'binary(16) NULL',
         ],
         'useHomeDir' => [
-            'exclude' => true,
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
             'sql' => "char(1) NOT NULL default ''",
         ],
         'doNotOverwrite' => [
-            'exclude' => true,
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
             'sql' => "char(1) NOT NULL default ''",
         ],
         'customTpl' => [
-            'exclude' => true,
             'inputType' => 'select',
             'options_callback' => [Callback::class, 'getAttributeTemplates'],
             'eval' => ['chosen' => true, 'tl_class' => 'w50'],
@@ -520,7 +446,6 @@ if (InstalledVersions::isInstalled('terminal42/contao-fineuploader')) {
 
     $GLOBALS['TL_DCA']['tl_iso_attribute']['fields']['chunking'] =
     [
-        'exclude' => true,
         'inputType' => 'checkbox',
         'eval' => ['submitOnChange' => true, 'tl_class' => 'clr w50 m12'],
         'sql' => "char(1) NOT NULL default ''",
@@ -529,7 +454,6 @@ if (InstalledVersions::isInstalled('terminal42/contao-fineuploader')) {
     $GLOBALS['TL_DCA']['tl_iso_attribute']['fields']['chunkSize'] =
     [
         'default' => 2_000_000,
-        'exclude' => true,
         'inputType' => 'text',
         'eval' => ['rgxp' => 'digit', 'tl_class' => 'w50'],
         'sql' => "varchar(16) NOT NULL default ''",

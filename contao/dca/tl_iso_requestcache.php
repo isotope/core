@@ -1,8 +1,5 @@
 <?php
 
-/*
- * Table tl_iso_requestcache
- */
 $GLOBALS['TL_DCA']['tl_iso_requestcache'] = [
     'config' => [
         'sql' => [
@@ -13,8 +10,6 @@ $GLOBALS['TL_DCA']['tl_iso_requestcache'] = [
             ],
         ],
     ],
-
-    // Fields
     'fields' => [
         'id' => [
             'sql' => 'int(10) unsigned NOT NULL auto_increment',
