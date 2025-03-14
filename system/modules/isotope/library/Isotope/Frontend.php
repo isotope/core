@@ -678,21 +678,6 @@ class Frontend extends \Contao\Frontend
     }
 
     /**
-     * Adjust module and module id for certain payment and/or shipping modules
-     */
-    public function setPostsaleModuleSettings(PostSale $objPostsale)
-    {
-        // Payment method "Payone"
-        $strParam = Input::post('param');
-
-        if (strpos($strParam, 'paymentMethodPayone') !== false) {
-            $intId = (int) str_replace('paymentMethodPayone', '', $strParam);
-            $objPostsale->setModule('pay');
-            $objPostsale->setModuleId($intId);
-        }
-    }
-
-    /**
      * Calculate price surcharge for attribute options
      *
      * @param float  $fltPrice

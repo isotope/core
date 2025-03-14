@@ -520,7 +520,6 @@ if (Contao\Config::getInstance()->isComplete()) {
     $GLOBALS['ISO_HOOKS']['calculatePrice'][] = [QuantitySurchagePriceListener::class, '__invoke'];
     $GLOBALS['ISO_HOOKS']['orderConditions'][] = [BillpayWithSaferpay::class, 'addOrderCondition'];
     $GLOBALS['ISO_HOOKS']['generateDocumentTemplate'][] = [BillpayWithSaferpay::class, 'addToDocumentTemplate'];
-    $GLOBALS['ISO_HOOKS']['initializePostsale'][] = [Frontend::class, 'setPostsaleModuleSettings'];
 
     // changelanguage
     $GLOBALS['TL_HOOKS']['changelanguageNavigation'][] = [ChangeLanguageListener::class, '__invoke'];
