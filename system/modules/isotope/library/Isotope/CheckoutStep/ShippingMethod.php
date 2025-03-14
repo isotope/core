@@ -17,9 +17,12 @@ use Contao\Input;
 use Contao\StringUtil;
 use Contao\System;
 use Contao\Widget;
+use Isotope\CoreBundle\Checkout\Shipping\ShippingInterface;
+use Isotope\CoreBundle\Model\Shipping;
+use Isotope\CoreBundle\ModelType\PaymentRegistry;
+use Isotope\CoreBundle\ModelType\ShippingRegistry;
 use Isotope\Interfaces\IsotopeCheckoutStep;
 use Isotope\Isotope;
-use Isotope\Model\Shipping;
 use Isotope\Module\Checkout;
 use Isotope\Template;
 
@@ -150,11 +153,13 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
      */
     public function review()
     {
+        $draftOrder = Isotope::getCart()->getDraftOrder();
+
         return array(
             'shipping_method' => array(
                 'headline' => $GLOBALS['TL_LANG']['MSC']['shipping_method'],
-                'info'     => Isotope::getCart()->getDraftOrder()->getShippingMethod()->checkoutReview(),
-                'note'     => Isotope::getCart()->getDraftOrder()->getShippingMethod()->getNote(),
+                'info'     => $draftOrder->getShippingMethod()->checkoutReview($draftOrder),
+                'note'     => $draftOrder->getShippingMethod()->getNote($draftOrder),
                 'edit'     => $this->isSkippable() ? '' : Checkout::generateUrlForStep(Checkout::STEP_SHIPPING),
             ),
         );
@@ -186,35 +191,37 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
                 $arrColumns, null, array('order' => Database::getInstance()->findInSet('id', $arrIds))
             );
 
-            if (null !== $objModules) {
-                foreach ($objModules as $objModule) {
+            /** @var ShippingRegistry $registry */
+            $registry = System::getContainer()->get(ShippingRegistry::class);
+            $shippingMethods = $registry->get($objModules);
+            $collection = Isotope::getCart();
 
-                    if (!$objModule->isAvailable()) {
-                        continue;
-                    }
-
-                    $strLabel = $objModule->getLabel();
-                    $fltPrice = $objModule->getPrice();
-
-                    if ($fltPrice != 0) {
-                        if ($objModule->isPercentage()) {
-                            $strLabel .= ' (' . $objModule->getPercentageLabel() . ')';
-                        }
-
-                        $strLabel .= ': ' . Isotope::formatPriceWithCurrency($fltPrice);
-                    }
-
-                    if ($note = $objModule->getNote()) {
-                        $strLabel .= '<span class="note">' . $note . '</span>';
-                    }
-
-                    $this->options[] = array(
-                        'value' => $objModule->id,
-                        'label' => $strLabel,
-                    );
-
-                    $this->modules[$objModule->id] = $objModule;
+            foreach ($shippingMethods as $objModule) {
+                if (!$objModule->isAvailable($collection)) {
+                    continue;
                 }
+
+                $strLabel = $objModule->getLabel($collection);
+                $fltPrice = $objModule->getPrice($collection);
+
+                if ($fltPrice != 0) {
+                    if ($objModule->isPercentage()) {
+                        $strLabel .= ' (' . $objModule->getPercentageLabel() . ')';
+                    }
+
+                    $strLabel .= ': ' . Isotope::formatPriceWithCurrency($fltPrice);
+                }
+
+                if ($note = $objModule->getNote($collection)) {
+                    $strLabel .= '<span class="note">' . $note . '</span>';
+                }
+
+                $this->options[] = array(
+                    'value' => $objModule->getId(),
+                    'label' => $strLabel,
+                );
+
+                $this->modules[$objModule->getId()] = $objModule;
             }
         }
     }

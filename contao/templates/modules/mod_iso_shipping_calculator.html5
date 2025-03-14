@@ -20,7 +20,7 @@
     <table>
         <tbody>
         <?php foreach ($this->shippingMethods as $method): $i=0; ?>
-        <tr class="<?= $method['rowClass'] ?>">
+        <tr class="<?= $method['rowClass'] ?? null ?>">
             <td class="col_<?= $i++ ?> col_first label"><?= $method['label'] ?></td>
             <td class="col_<?= $i++ ?> col_last price"><?= $method['formatted_price'] ?></td>
         </tr>

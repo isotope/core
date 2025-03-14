@@ -11,8 +11,8 @@
 
 namespace Isotope\Model\ProductCollectionSurcharge;
 
+use Isotope\CoreBundle\Model\Payment as PaymentModel;
 use Isotope\Interfaces\IsotopeProductCollectionSurcharge;
-use Isotope\Model\Payment as PaymentModel;
 use Isotope\Model\ProductCollectionSurcharge;
 
 /**

@@ -17,9 +17,10 @@ use Contao\Input;
 use Contao\StringUtil;
 use Contao\System;
 use Contao\Widget;
+use Isotope\CoreBundle\Model\Payment;
+use Isotope\CoreBundle\ModelType\PaymentRegistry;
 use Isotope\Interfaces\IsotopeCheckoutStep;
 use Isotope\Isotope;
-use Isotope\Model\Payment;
 use Isotope\Module\Checkout;
 use Isotope\Template;
 
@@ -108,7 +109,7 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
         // If there is only one payment method, mark it as selected by default
         if (\count($this->modules) == 1) {
             $objModule        = reset($this->modules);
-            $objWidget->value = $objModule->id;
+            $objWidget->value = $objModule->getId();
             Isotope::getCart()->setPaymentMethod($objModule);
         }
 
@@ -150,11 +151,13 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
      */
     public function review()
     {
+        $draftOrder = Isotope::getCart()->getDraftOrder();
+
         return array(
             'payment_method' => array(
                 'headline' => $GLOBALS['TL_LANG']['MSC']['payment_method'],
-                'info'     => Isotope::getCart()->getDraftOrder()->getPaymentMethod()->checkoutReview(),
-                'note'     => Isotope::getCart()->getDraftOrder()->getPaymentMethod()->getNote(),
+                'info'     => $draftOrder->getPaymentMethod()->checkoutReview($draftOrder),
+                'note'     => $draftOrder->getPaymentMethod()->getNote($draftOrder),
                 'edit'     => $this->isSkippable() ? '' : Checkout::generateUrlForStep(Checkout::STEP_PAYMENT),
             ),
         );
@@ -181,38 +184,39 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
                 $arrColumns[] = "enabled='1'";
             }
 
-            /** @var Payment[] $objModules */
             $objModules = Payment::findBy($arrColumns, null, array('order' => Database::getInstance()->findInSet('id', $arrIds)));
 
-            if (null !== $objModules) {
-                foreach ($objModules as $objModule) {
+            /** @var PaymentRegistry $registry */
+            $registry = System::getContainer()->get(PaymentRegistry::class);
+            $paymentMethods = $registry->get($objModules);
+            $collection = Isotope::getCart();
 
-                    if (!$objModule->isAvailable()) {
-                        continue;
-                    }
-
-                    $strLabel = $objModule->getLabel();
-                    $fltPrice = $objModule->getPrice();
-
-                    if ($fltPrice != 0) {
-                        if ($objModule->isPercentage()) {
-                            $strLabel .= ' (' . $objModule->getPercentageLabel() . ')';
-                        }
-
-                        $strLabel .= ': ' . Isotope::formatPriceWithCurrency($fltPrice);
-                    }
-
-                    if ($note = $objModule->getNote()) {
-                        $strLabel .= '<span class="note">' . $note . '</span>';
-                    }
-
-                    $this->options[] = array(
-                        'value'     => $objModule->id,
-                        'label'     => $strLabel,
-                    );
-
-                    $this->modules[$objModule->id] = $objModule;
+            foreach ($paymentMethods as $objModule) {
+                if (!$objModule->isAvailable($collection)) {
+                    continue;
                 }
+
+                $strLabel = $objModule->getLabel($collection);
+                $fltPrice = $objModule->getPrice($collection);
+
+                if ($fltPrice != 0) {
+                    if ($objModule->isPercentage()) {
+                        $strLabel .= ' (' . $objModule->getPercentageLabel() . ')';
+                    }
+
+                    $strLabel .= ': ' . Isotope::formatPriceWithCurrency($fltPrice);
+                }
+
+                if ($note = $objModule->getNote($collection)) {
+                    $strLabel .= '<span class="note">' . $note . '</span>';
+                }
+
+                $this->options[] = array(
+                    'value'     => $objModule->getId(),
+                    'label'     => $strLabel,
+                );
+
+                $this->modules[$objModule->getId()] = $objModule;
             }
         }
     }

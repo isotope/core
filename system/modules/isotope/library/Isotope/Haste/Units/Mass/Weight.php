@@ -57,8 +57,8 @@ class Weight implements Weighable
 
         if (empty($arrData)
             || !is_array($arrData)
-            || $arrData['value'] === ''
-            || $arrData['unit'] === ''
+            || empty($arrData['value'])
+            || empty($arrData['unit'])
             || !in_array($arrData['unit'], Unit::getAll())) {
             return null;
         }

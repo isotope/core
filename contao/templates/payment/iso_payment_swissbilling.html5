@@ -1,4 +1,0 @@
-<h2><?= $this->headline ?></h2>
-<p class="message"><?= $this->message ?></p>
-<p><a href="<?= $this->url ?>"><?= $this->link ?></a>
-<script>window.location.href = '<?= $this->url ?>';</script>

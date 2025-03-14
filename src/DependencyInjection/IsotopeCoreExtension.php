@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\DependencyInjection;
 
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsIsotopeHook;
+use Isotope\CoreBundle\DependencyInjection\Attribute\AsPayment;
+use Isotope\CoreBundle\DependencyInjection\Attribute\AsShipping;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -30,6 +32,8 @@ class IsotopeCoreExtension extends Extension
 
         $attributesForAutoconfiguration = [
             AsIsotopeHook::class => 'isotope.hook',
+            AsPayment::class => 'isotope.payment',
+            AsShipping::class => 'isotope.shipping',
         ];
 
         foreach ($attributesForAutoconfiguration as $attributeClass => $tag) {

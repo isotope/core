@@ -102,7 +102,7 @@ HTML;
                 'tsCheckoutBuyerEmail' => $order->getBillingAddress()->email,
                 'tsCheckoutOrderAmount' => $order->getTotal(),
                 'tsCheckoutOrderCurrency' => $order->getCurrency(),
-                'tsCheckoutOrderPaymentType' => $order->getPaymentMethod()->getLabel(),
+                'tsCheckoutOrderPaymentType' => $order->getPaymentMethod()->getLabel($order),
                 'tsCheckoutOrderEstDeliveryDate' => '',
             ],
             'items' => [],

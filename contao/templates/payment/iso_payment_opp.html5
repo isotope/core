@@ -1,7 +1,0 @@
-<script>
-    var wpwlOptions = {
-        locale: "<?= $GLOBALS['TL_LANGUAGE'] ?>"
-    }
-</script>
-<script async src="<?= $this->base ?>/v1/paymentWidgets.js?checkoutId=<?= $this->checkoutId ?>"></script>
-<form action="<?= $this->action ?>" class="paymentWidgets"<?php if ($this->brands): ?> data-brands="<?= $this->brands ?>"<?php endif; ?>></form>

@@ -6,11 +6,15 @@ use Contao\System;
 use Isotope\Backend;
 use Isotope\Backend\Shipping\Callback;
 use Isotope\CompatibilityHelper;
+use Isotope\CoreBundle\Checkout\ProductTypeCondition;
+use Isotope\CoreBundle\Checkout\QuantityMode;
+use Isotope\CoreBundle\Checkout\Shipping\AddressType;
+use Isotope\CoreBundle\Checkout\Shipping\FlatCalculation;
+use Isotope\CoreBundle\Checkout\Shipping\GroupCalculation;
+use Isotope\CoreBundle\Checkout\Shipping\ProductCalculation;
+use Isotope\CoreBundle\Model\Shipping;
 use Isotope\Model\Config;
 use Isotope\Model\ProductType;
-use Isotope\Model\Shipping;
-use Isotope\Model\Shipping\Group;
-use Isotope\Model\Shipping\ProductPrice;
 use Isotope\Model\TaxClass;
 
 /*
@@ -49,12 +53,14 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
     'palettes' => [
         '__selector__' => ['type', 'flatCalculation', 'protected'],
         'default' => '{title_legend},name,label,type',
-        'flat' => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},price,tax_class,flatCalculation;{config_legend},countries,subdivisions,postalCodes,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,minimum_weight,maximum_weight,product_types,product_types_condition,config_ids,address_type;{expert_legend:hide},protected;{enabled_legend},enabled',
-        'flatperWeight' => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},price,tax_class,flatCalculation,flatWeight;{config_legend},countries,subdivisions,postalCodes,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,minimum_weight,maximum_weight,product_types,product_types_condition,config_ids,address_type;{expert_legend:hide},protected;{enabled_legend},enabled',
-        'product_price' => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},tax_class,productCalculation;{config_legend},countries,subdivisions,postalCodes,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,minimum_weight,maximum_weight,product_types,product_types_condition,config_ids,address_type;{expert_legend:hide},protected;{enabled_legend},enabled',
+        'flat' => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},price,tax_class,shipping_weight,flatCalculation;{config_legend},countries,subdivisions,postalCodes,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,minimum_weight,maximum_weight,product_types,product_types_condition,config_ids,address_type;{expert_legend:hide},protected;{enabled_legend},enabled',
+        'product_price' => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},tax_class,shipping_weight,productCalculation;{config_legend},countries,subdivisions,postalCodes,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,minimum_weight,maximum_weight,product_types,product_types_condition,config_ids,address_type;{expert_legend:hide},protected;{enabled_legend},enabled',
         'group' => '{title_legend},name,label,type,inherit;{note_legend:hide},note;{config_legend},group_methods;{price_legend},group_calculation,tax_class;{expert_legend:hide},protected;{enabled_legend},enabled',
     ],
     'subpalettes' => [
+        'flatCalculation_perProduct' => 'flatProductTypes',
+        'flatCalculation_perItem' => 'flatProductTypes',
+        'flatCalculation_perWeight' => 'flatWeight',
         'protected' => 'groups',
     ],
     'fields' => [
@@ -79,7 +85,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
             'filter' => true,
             'inputType' => 'select',
             'default' => 'flat',
-            'options_callback' => static fn () => Shipping::getModelTypeOptions(),
             'reference' => &$GLOBALS['TL_LANG']['MODEL']['tl_iso_shipping'],
             'eval' => ['helpwizard' => true, 'submitOnChange' => true, 'chosen' => true, 'tl_class' => 'w50'],
             'sql' => "varchar(64) NOT NULL default ''",
@@ -140,13 +145,9 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
         ],
         'quantity_mode' => [
             'inputType' => 'select',
-            'options' => [
-                Shipping::QUANTITY_MODE_ITEMS,
-                Shipping::QUANTITY_MODE_PRODUCTS,
-            ],
-            'reference' => &$GLOBALS['TL_LANG']['tl_iso_shipping']['quantity_mode'],
+            'enum' => QuantityMode::class,
             'eval' => ['mandatory' => true, 'tl_class' => 'w50'],
-            'sql' => "varchar(32) NOT NULL default ''",
+            'sql' => "varchar(16) NOT NULL default ''",
         ],
         'minimum_quantity' => [
             'inputType' => 'text',
@@ -167,8 +168,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
         ],
         'product_types_condition' => [
             'inputType' => 'select',
-            'options' => ['onlyAvailable', 'allAvailable', 'oneAvailable', 'calculation'],
-            'reference' => &$GLOBALS['TL_LANG']['tl_iso_shipping'],
+            'enum' => ProductTypeCondition::class,
             'eval' => ['tl_class' => 'w50'],
             'sql' => "varchar(16) NOT NULL default ''",
         ],
@@ -181,8 +181,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
         ],
         'address_type' => [
             'inputType' => 'select',
-            'options' => ['custom', 'billing'],
-            'reference' => &$GLOBALS['TL_LANG']['tl_iso_shipping']['address_type'],
+            'enum' => AddressType::class,
             'eval' => ['includeBlankOption' => true, 'tl_class' => 'w50'],
             'sql' => "varchar(8) NOT NULL default ''",
         ],
@@ -202,8 +201,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
         ],
         'flatCalculation' => [
             'inputType' => 'select',
-            'options' => ['perProduct', 'perItem', 'perWeight'],
-            'reference' => &$GLOBALS['TL_LANG']['tl_iso_shipping'],
+            'enum' => FlatCalculation::class,
             'eval' => ['submitOnChange' => true, 'includeBlankOption' => true, 'blankOptionLabel' => &$GLOBALS['TL_LANG']['tl_iso_shipping']['flat'], 'tl_class' => 'w50'],
             'sql' => "varchar(10) NOT NULL default ''",
         ],
@@ -215,6 +213,13 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
             'eval' => ['rgxp' => 'digit', 'tl_class' => 'w50', 'helpwizard' => true],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
+        'flatProductTypes' => [
+            'inputType' => 'select',
+            'foreignKey' => ProductType::getTable().'.name',
+            'eval' => ['multiple' => true, 'size' => 8, 'chosen' => true, 'tl_class' => 'w50 w50h'],
+            'sql' => 'blob NULL',
+            'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
+        ],
         'shipping_weight' => [
             'inputType' => 'timePeriod',
             'default' => ['unit' => 'kg'],
@@ -225,14 +230,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
         ],
         'productCalculation' => [
             'inputType' => 'select',
-            'options' => [
-                ProductPrice::PRICE_HIGHEST_ITEM,
-                ProductPrice::PRICE_LOWEST_ITEM,
-                ProductPrice::PRICE_SUM_ITEMS,
-                ProductPrice::PRICE_HIGHEST_PRODUCT,
-                ProductPrice::PRICE_LOWEST_PRODUCT,
-                ProductPrice::PRICE_SUM_PRODUCTS,
-            ],
+            'enum' => ProductCalculation::class,
             'reference' => &$GLOBALS['TL_LANG']['tl_iso_shipping']['productCalculationOptions'],
             'eval' => ['helpwizard' => true, 'tl_class' => 'w50'],
             'sql' => "varchar(16) NOT NULL default ''",
@@ -249,13 +247,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
         ],
         'group_calculation' => [
             'inputType' => 'select',
-            'options' => [
-                Group::CALCULATE_FIRST,
-                Group::CALCULATE_LOWEST,
-                Group::CALCULATE_HIGHEST,
-                Group::CALCULATE_SUM,
-            ],
-            'reference' => &$GLOBALS['TL_LANG']['tl_iso_shipping'],
+            'enum' => GroupCalculation::class,
             'eval' => ['tl_class' => 'w50'],
             'sql' => "varchar(10) NOT NULL default ''",
         ],

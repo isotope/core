@@ -14,17 +14,8 @@ namespace Isotope\Backend\Shipping;
 
 use Contao\Backend;
 use Contao\BackendUser;
-use Contao\Controller;
-use Contao\CoreBundle\Exception\AccessDeniedException;
-use Contao\Database;
-use Contao\Image;
 use Contao\Input;
-use Contao\StringUtil;
-use Contao\System;
-use Contao\Versions;
-use Isotope\Backend\Permission;
-use Isotope\Model\Shipping;
-use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
+use Isotope\CoreBundle\Model\Shipping;
 
 class Callback extends Backend
 {

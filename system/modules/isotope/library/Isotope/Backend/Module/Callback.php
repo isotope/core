@@ -16,10 +16,10 @@ use Contao\Controller;
 use Contao\Database;
 use Contao\DataContainer;
 use Contao\System;
+use Isotope\CoreBundle\Model\Payment;
+use Isotope\CoreBundle\Model\Shipping;
 use Isotope\Frontend\ProductAction\Registry;
 use Isotope\Interfaces\IsotopeFilterModule;
-use Isotope\Model\Payment;
-use Isotope\Model\Shipping;
 
 
 class Callback extends Backend

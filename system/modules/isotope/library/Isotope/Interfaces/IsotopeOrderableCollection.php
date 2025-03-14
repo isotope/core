@@ -11,10 +11,12 @@
 
 namespace Isotope\Interfaces;
 
+use Isotope\CoreBundle\Checkout\Payment\PaymentInterface;
+use Isotope\CoreBundle\Checkout\Shipping\ShippingInterface;
+use Isotope\CoreBundle\Model\Payment;
+use Isotope\CoreBundle\Model\Shipping;
 use Isotope\Model\Address;
-use Isotope\Model\Payment;
 use Isotope\Model\ProductCollectionSurcharge;
-use Isotope\Model\Shipping;
 
 /**
  * IsotopeOrderableCollection describes a product collection that can have order information.
@@ -38,14 +40,14 @@ interface IsotopeOrderableCollection extends IsotopeProductCollection
     /**
      * Return payment method for this collection
      *
-     * @return IsotopePayment|Payment|null
+     * @return PaymentInterface|Payment|null
      */
     public function getPaymentMethod();
 
     /**
      * Set payment method for this collection
      */
-    public function setPaymentMethod(IsotopePayment $objPayment = null);
+    public function setPaymentMethod(PaymentInterface $objPayment = null);
 
     /**
      * Return surcharge for current payment method
@@ -83,14 +85,14 @@ interface IsotopeOrderableCollection extends IsotopeProductCollection
     /**
      * Return shipping method for this collection
      *
-     * @return IsotopeShipping|Shipping|null
+     * @return ShippingInterface|Shipping|null
      */
     public function getShippingMethod();
 
     /**
      * Set shipping method for this collection
      */
-    public function setShippingMethod(IsotopeShipping $objShipping = null);
+    public function setShippingMethod(ShippingInterface $objShipping = null);
 
     /**
      * Return surcharge for current shipping method

@@ -14,12 +14,14 @@ namespace Isotope\Model;
 use Contao\Model;
 use Contao\StringUtil;
 use Contao\System;
+use Isotope\CoreBundle\Checkout\Payment\PaymentInterface;
+use Isotope\CoreBundle\Checkout\Shipping\ShippingInterface;
 use Isotope\Interfaces\IsotopeOrderableCollection;
-use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopeProductCollectionSurcharge;
-use Isotope\Interfaces\IsotopeShipping;
 use Isotope\Isotope;
+use Isotope\Model\ProductCollectionSurcharge\Payment as PaymentSurcharge;
+use Isotope\Model\ProductCollectionSurcharge\Shipping as ShippingSurcharge;
 use Isotope\Model\ProductCollectionSurcharge\Tax;
 
 /**
@@ -141,8 +143,6 @@ abstract class ProductCollectionSurcharge extends TypeAgent
 
     /**
      * Split tax amount amongst collection products
-     *
-     * @param Model                    $objSource
      */
     public function applySplittedTax(IsotopeProductCollection $objCollection, $objSource)
     {
@@ -244,11 +244,9 @@ abstract class ProductCollectionSurcharge extends TypeAgent
      * 3. Run through all product collection items and calculate their tax amount
      * 4. Run through all surcharges with tax and calculate their tax amount
      *
-     * @param IsotopeProductCollection|\Isotope\Model\ProductCollection\Order $objCollection
-     *
      * @return array
      */
-    public static function findForCollection(IsotopeProductCollection $objCollection)
+    public static function findForCollection(IsotopeOrderableCollection $objCollection)
     {
         $arrPreTax  = [];
         $arrPostTax = [];
@@ -291,10 +289,9 @@ abstract class ProductCollectionSurcharge extends TypeAgent
     /**
      * Create a payment surcharge
      *
-     *
-     * @return Payment
+     * @return PaymentSurcharge
      */
-    public static function createForPaymentInCollection(IsotopePayment $objPayment, IsotopeProductCollection $objCollection)
+    public static function createForPaymentInCollection(PaymentInterface $objPayment, IsotopeOrderableCollection $objCollection)
     {
         return static::buildSurcharge('Isotope\Model\ProductCollectionSurcharge\Payment', $GLOBALS['TL_LANG']['MSC']['paymentLabel'], $objPayment, $objCollection);
     }
@@ -302,10 +299,9 @@ abstract class ProductCollectionSurcharge extends TypeAgent
     /**
      * Create a shipping surcharge
      *
-     *
-     * @return Shipping
+     * @return ShippingSurcharge
      */
-    public static function createForShippingInCollection(IsotopeShipping $objShipping, IsotopeProductCollection $objCollection)
+    public static function createForShippingInCollection(ShippingInterface $objShipping, IsotopeOrderableCollection $objCollection)
     {
         return static::buildSurcharge('Isotope\Model\ProductCollectionSurcharge\Shipping', $GLOBALS['TL_LANG']['MSC']['shippingLabel'], $objShipping, $objCollection);
     }
@@ -316,20 +312,20 @@ abstract class ProductCollectionSurcharge extends TypeAgent
      *
      * @param string                         $strClass
      * @param string                         $strLabel
-     * @param IsotopePayment|IsotopeShipping $objSource
+     * @param PaymentInterface|ShippingInterface $objSource
      *
      * @return ProductCollectionSurcharge
      */
-    protected static function buildSurcharge($strClass, $strLabel, $objSource, IsotopeProductCollection $objCollection)
+    protected static function buildSurcharge($strClass, $strLabel, $objSource, IsotopeOrderableCollection $objCollection)
     {
-        $intTaxClass = $objSource->tax_class;
+        $intTaxClass = $objSource->getTaxClass($objCollection);
 
         /** @var ProductCollectionSurcharge $objSurcharge */
         $objSurcharge = new $strClass();
-        $objSurcharge->source_id = $objSource->id;
-        $objSurcharge->label = sprintf($strLabel, $objSource->getLabel());
-        $objSurcharge->price = ($objSource->isPercentage() ? $objSource->getPercentage() . '%' : '&nbsp;');
-        $objSurcharge->total_price = $objSource->getPrice();
+        $objSurcharge->source_id = $objSource->getId();
+        $objSurcharge->label = sprintf($strLabel, $objSource->getLabel($objCollection));
+        $objSurcharge->price = ($objSource->isPercentage() ? $objSource->getPercentageLabel() : '&nbsp;');
+        $objSurcharge->total_price = $objSource->getPrice($objCollection);
         $objSurcharge->tax_free_total_price = $objSurcharge->total_price;
         $objSurcharge->tax_class = $intTaxClass;
         $objSurcharge->before_tax = ($intTaxClass ? true : false);

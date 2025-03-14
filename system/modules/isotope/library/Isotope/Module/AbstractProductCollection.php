@@ -138,11 +138,11 @@ abstract class AbstractProductCollection extends Module
         if ($blnReload) {
             if ($collection instanceof ProductCollection\Cart) {
                 // Unset payment and shipping method because they could get invalid due to the change
-                if (($objShipping = $collection->getShippingMethod()) !== null && !$objShipping->isAvailable()) {
+                if (($objShipping = $collection->getShippingMethod()) !== null && !$objShipping->isAvailable($collection)) {
                     $collection->setShippingMethod(null);
                 }
 
-                if (($objPayment = $collection->getPaymentMethod()) !== null && !$objPayment->isAvailable()) {
+                if (($objPayment = $collection->getPaymentMethod()) !== null && !$objPayment->isAvailable($collection)) {
                     $collection->setPaymentMethod(null);
                 }
             }

@@ -160,7 +160,6 @@ class Checkout extends Module
             // Complete order after successful payment
             // At this stage, we do no longer use the client's cart but the order through UID in URL
             case self::STEP_COMPLETE:
-                /** @var Order $objOrder */
                 if (($objOrder = Order::findOneBy('uniqid', (string) Input::get('uid'))) === null) {
                     if (Isotope::getCart()->isEmpty()) {
                         throw new PageNotFoundException();
@@ -248,13 +247,13 @@ class Checkout extends Module
 
                 $objOrder->lock();
 
-                $strBuffer = $objOrder->hasPayment() ? $objOrder->getPaymentMethod()->checkoutForm($objOrder, $this) : false;
+                $strBuffer = $objOrder->getPaymentMethod()?->checkoutForm($objOrder, $this);
 
                 if ($strBuffer instanceof Response) {
                     throw new ResponseException($strBuffer);
                 }
 
-                if (false === $strBuffer) {
+                if (null === $strBuffer) {
                     static::redirectToStep(self::STEP_COMPLETE, $objOrder);
                 }
 

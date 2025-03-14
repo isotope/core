@@ -483,8 +483,8 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
         // Add payment method info
         if ($this->hasPayment() && ($objPayment = $this->getPaymentMethod()) !== null) {
             $arrTokens['payment_id']        = $objPayment->getId();
-            $arrTokens['payment_label']     = \Contao\System::getContainer()->get('contao.insert_tag.parser')->replace($objPayment->getLabel());
-            $arrTokens['payment_note']      = \Contao\System::getContainer()->get('contao.insert_tag.parser')->replace($objPayment->getNote());
+            $arrTokens['payment_label']     = \Contao\System::getContainer()->get('contao.insert_tag.parser')->replace($objPayment->getLabel($this));
+            $arrTokens['payment_note']      = \Contao\System::getContainer()->get('contao.insert_tag.parser')->replace($objPayment->getNote($this));
 
             if ($objPayment instanceof IsotopeNotificationTokens) {
                 $arrTokens = array_merge($arrTokens, $objPayment->getNotificationTokens($this));
@@ -494,8 +494,8 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
         // Add shipping method info
         if ($this->hasShipping() && ($objShipping = $this->getShippingMethod()) !== null) {
             $arrTokens['shipping_id']        = $objShipping->getId();
-            $arrTokens['shipping_label']     = \Contao\System::getContainer()->get('contao.insert_tag.parser')->replace($objShipping->getLabel());
-            $arrTokens['shipping_note']      = \Contao\System::getContainer()->get('contao.insert_tag.parser')->replace($objShipping->getNote());
+            $arrTokens['shipping_label']     = \Contao\System::getContainer()->get('contao.insert_tag.parser')->replace($objShipping->getLabel($this));
+            $arrTokens['shipping_note']      = \Contao\System::getContainer()->get('contao.insert_tag.parser')->replace($objShipping->getNote($this));
 
             if ($objShipping instanceof IsotopeNotificationTokens) {
                 $arrTokens = array_merge($arrTokens, $objShipping->getNotificationTokens($this));

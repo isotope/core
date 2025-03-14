@@ -11,9 +11,9 @@
 
 namespace Isotope\Model\ProductCollectionSurcharge;
 
+use Isotope\CoreBundle\Model\Shipping as ShippingModel;
 use Isotope\Interfaces\IsotopeProductCollectionSurcharge;
 use Isotope\Model\ProductCollectionSurcharge;
-use Isotope\Model\Shipping as ShippingModel;
 
 /**
  * Implements shipping surcharge in product collection

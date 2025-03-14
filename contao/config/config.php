@@ -32,6 +32,8 @@ use Isotope\CheckoutStep\PaymentMethod;
 use Isotope\CheckoutStep\ShippingAddress;
 use Isotope\CheckoutStep\ShippingMethod;
 use Isotope\CompatibilityHelper;
+use Isotope\CoreBundle\Model\Payment;
+use Isotope\CoreBundle\Model\Shipping;
 use Isotope\EventListener\CalculatePrice\QuantitySurchagePriceListener;
 use Isotope\EventListener\ChangeLanguageListener;
 use Isotope\EventListener\PostCheckoutUploads;
@@ -75,29 +77,7 @@ use Isotope\Model\Gallery\Standard as StandardGallery;
 use Isotope\Model\Group;
 use Isotope\Model\Label;
 use Isotope\Model\OrderStatus;
-use Isotope\Model\Payment;
 use Isotope\Model\Payment\BillpayWithSaferpay;
-use Isotope\Model\Payment\Cash;
-use Isotope\Model\Payment\Concardis;
-use Isotope\Model\Payment\Datatrans;
-use Isotope\Model\Payment\EPay;
-use Isotope\Model\Payment\Expercash;
-use Isotope\Model\Payment\Innopay;
-use Isotope\Model\Payment\Mpay24;
-use Isotope\Model\Payment\OpenPaymentPlatform;
-use Isotope\Model\Payment\Paybyway;
-use Isotope\Model\Payment\Payone;
-use Isotope\Model\Payment\Paypal;
-use Isotope\Model\Payment\PaypalCheckout;
-use Isotope\Model\Payment\PaypalPlus;
-use Isotope\Model\Payment\Postfinance;
-use Isotope\Model\Payment\QuickPay;
-use Isotope\Model\Payment\Saferpay;
-use Isotope\Model\Payment\Sofortueberweisung;
-use Isotope\Model\Payment\Sparkasse;
-use Isotope\Model\Payment\Swissbilling;
-use Isotope\Model\Payment\Viveum;
-use Isotope\Model\Payment\Worldpay;
 use Isotope\Model\Product;
 use Isotope\Model\Product\Standard as StandardProduct;
 use Isotope\Model\ProductCache;
@@ -119,10 +99,6 @@ use Isotope\Model\ProductType;
 use Isotope\Model\RelatedCategory;
 use Isotope\Model\RelatedProduct;
 use Isotope\Model\RequestCache;
-use Isotope\Model\Shipping;
-use Isotope\Model\Shipping\Flat;
-use Isotope\Model\Shipping\Group as GroupShipping;
-use Isotope\Model\Shipping\ProductPrice as ProductPriceShipping;
 use Isotope\Model\TaxClass;
 use Isotope\Model\TaxRate;
 use Isotope\Module\AddressBook;
@@ -294,45 +270,6 @@ $GLOBALS['FE_MOD']['isotope'] = [
  */
 $GLOBALS['BE_FFL']['mediaManager'] = MediaManager::class;
 $GLOBALS['BE_FFL']['inheritCheckbox'] = InheritCheckBox::class;
-
-/*
- * Payment methods
- */
-Payment::registerModelType('cash', Cash::class);
-Payment::registerModelType('concardis', Concardis::class);
-Payment::registerModelType('datatrans', Datatrans::class);
-Payment::registerModelType('epay', EPay::class);
-Payment::registerModelType('expercash', Expercash::class);
-Payment::registerModelType('innopay', Innopay::class);
-Payment::registerModelType('paybyway', Paybyway::class);
-Payment::registerModelType('payone', Payone::class);
-Payment::registerModelType('paypal', Paypal::class);
-Payment::registerModelType('paypal_plus', PaypalPlus::class);
-Payment::registerModelType('paypal_checkout', PaypalCheckout::class);
-Payment::registerModelType('postfinance', Postfinance::class);
-Payment::registerModelType('quickpay', QuickPay::class);
-Payment::registerModelType('saferpay', Saferpay::class);
-Payment::registerModelType('billpay_saferpay', BillpayWithSaferpay::class);
-Payment::registerModelType('sparkasse', Sparkasse::class);
-Payment::registerModelType('sofortueberweisung', Sofortueberweisung::class);
-Payment::registerModelType('viveum', Viveum::class);
-Payment::registerModelType('worldpay', Worldpay::class);
-Payment::registerModelType('opp', OpenPaymentPlatform::class);
-
-if (class_exists('Mpay24\Mpay24')) {
-    Payment::registerModelType('mpay24', Mpay24::class);
-}
-
-if (class_exists('Terminal42\SwissbillingApi\Client')) {
-    Payment::registerModelType('swissbilling', Swissbilling::class);
-}
-
-/*
- * Shipping methods
- */
-Shipping::registerModelType('flat', Flat::class);
-Shipping::registerModelType('group', GroupShipping::class);
-Shipping::registerModelType('product_price', ProductPriceShipping::class);
 
 /*
  * Documents

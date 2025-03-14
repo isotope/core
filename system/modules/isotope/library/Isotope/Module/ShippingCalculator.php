@@ -11,9 +11,11 @@
 
 namespace Isotope\Module;
 
+use Contao\System;
 use Isotope\CompatibilityHelper;
+use Isotope\CoreBundle\Model\Shipping;
+use Isotope\CoreBundle\ModelType\ShippingRegistry;
 use Isotope\Isotope;
-use Isotope\Model\Shipping;
 use Isotope\Template;
 
 /**
@@ -90,24 +92,25 @@ class ShippingCalculator extends Module
             return;
         }
 
-        /* @var Shipping[] $objShippingMethods */
-        $objShippingMethods = Shipping::findMultipleByIds($this->iso_shipping_modules);
+        /** @var ShippingRegistry $registry */
+        $registry = System::getContainer()->get(ShippingRegistry::class);
+        $shippingMethods = $registry->get(Shipping::findMultipleByIds($this->iso_shipping_modules));
 
-        if (null === $objShippingMethods) {
+        if (null === $shippingMethods) {
             return;
         }
 
         $arrMethods = [];
 
-        foreach ($objShippingMethods as $objShipping) {
-            if (!$objShipping->isAvailable()) {
+        foreach ($shippingMethods as $objShipping) {
+            if (!$objShipping->isAvailable($objCart)) {
                 continue;
             }
 
-            $fltPrice = $objShipping->getPrice();
+            $fltPrice = $objShipping->getPrice($objCart);
 
             $arrMethods[] = [
-                'label'           => $objShipping->getLabel(),
+                'label'           => $objShipping->getLabel($objCart),
                 'price'           => $fltPrice,
                 'formatted_price' => Isotope::formatPriceWithCurrency($fltPrice),
                 'shipping'        => $objShipping

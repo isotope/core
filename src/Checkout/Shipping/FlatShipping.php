@@ -1,0 +1,106 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Isotope\CoreBundle\Checkout\Shipping;
+
+use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
+use Isotope\CoreBundle\DependencyInjection\Attribute\AsShipping;
+use Isotope\Haste\Units\Mass\Weighable;
+use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Isotope;
+use Isotope\Model\ProductCollectionItem;
+use Symfony\Bundle\SecurityBundle\Security;
+
+#[AsShipping]
+class FlatShipping extends AbstractShipping
+{
+    /**
+     * @var array<int>|null
+     */
+    private array|null $flatProductTypes;
+
+    private Weighable|null $flatWeight;
+
+    public function __construct(
+        int $id,
+        private FlatCalculation|null $flatCalculation,
+        Security $security,
+        TokenChecker $tokenChecker
+    ) {
+        parent::__construct($id, $security, $tokenChecker);
+    }
+
+    public function setFlatProductTypes(?array $flatProductTypes): static
+    {
+        $this->flatProductTypes = $flatProductTypes;
+
+        return $this;
+    }
+
+    public function setFlatWeight(?Weighable $flatWeight): static
+    {
+        $this->flatWeight = $flatWeight;
+
+        return $this;
+    }
+
+    public function getPrice(IsotopeProductCollection $collection): float|null
+    {
+        $price = $this->calculatePrice($collection);
+
+        if (null === $price) {
+            return null;
+        }
+
+        $multiply = match($this->flatCalculation) {
+            FlatCalculation::perProduct,
+            FlatCalculation::perItem => $this->productMultiplier($collection->getItems()),
+            FlatCalculation::perWeight => $this->weightMultiplier($collection),
+            default => 1,
+        };
+
+        $price *= $multiply;
+
+        return Isotope::calculatePrice($price, $this, 'price', $this->taxClass);
+    }
+
+    /**
+     * @param array<ProductCollectionItem> $items
+     */
+    private function productMultiplier(array $items): int
+    {
+        $multiply = 0;
+
+        foreach ($items as $objItem) {
+            if (!($product = $objItem->getProduct()) || $product->isExemptFromShipping()) {
+                continue;
+            }
+
+            if (null !== $this->flatProductTypes) {
+                $productType = $product->getType();
+
+                if (!$productType || !\in_array((int) $productType->id, $this->flatProductTypes, true)) {
+                    continue;
+                }
+            }
+
+            $multiply += (FlatCalculation::perProduct === $this->flatCalculation) ? 1 : $objItem->quantity;
+        }
+
+        return $multiply;
+    }
+
+    private function weightMultiplier(IsotopeProductCollection $collection): float
+    {
+        $multiply = floor($this->flatWeight->getWeightValue());
+
+        if ($multiply <= 1) {
+            return 1;
+        }
+
+        $cartWeight = floor($collection->addToScale()->amountIn($this->flatWeight->getWeightUnit()));
+
+        return ($cartWeight / $multiply);
+    }
+}

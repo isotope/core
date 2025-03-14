@@ -11,7 +11,6 @@
 
 namespace Isotope\Model;
 
-use Contao\Controller;
 use Contao\Database;
 use Contao\Database\Result;
 use Contao\MemberModel;
@@ -20,6 +19,10 @@ use Contao\StringUtil;
 use Contao\System;
 use Contao\Template;
 use Isotope\CompatibilityHelper;
+use Isotope\CoreBundle\Checkout\Payment\PaymentInterface;
+use Isotope\CoreBundle\Checkout\Shipping\ShippingInterface;
+use Isotope\CoreBundle\ModelType\PaymentRegistry;
+use Isotope\CoreBundle\ModelType\ShippingRegistry;
 use Isotope\Frontend;
 use Isotope\Haste\Units\Mass\Scale;
 use Isotope\Haste\Units\Mass\Weighable;
@@ -27,10 +30,8 @@ use Isotope\Haste\Units\Mass\WeightAggregate;
 use Isotope\Haste\Util\Format;
 use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeOrderableCollection;
-use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
-use Isotope\Interfaces\IsotopeShipping;
 use Isotope\Isotope;
 use Isotope\Message;
 use Isotope\Model\Gallery\Standard as StandardGallery;
@@ -113,13 +114,13 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
 
     /**
      * Shipping method for this collection, if shipping is required
-     * @var IsotopeShipping
+     * @var ShippingInterface
      */
     protected $objShipping = false;
 
     /**
      * Payment method for this collection, if payment is required
-     * @var IsotopePayment
+     * @var PaymentInterface
      */
     protected $objPayment = false;
 
@@ -287,13 +288,13 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
     /**
      * Return payment method for this collection
      *
-     * @return IsotopePayment|null
+     * @return PaymentInterface|null
      */
     public function getPaymentMethod()
     {
         if (false === $this->objPayment) {
             try {
-                $this->objPayment = $this->getRelated('payment_id');
+                $this->objPayment = System::getContainer()->get(PaymentRegistry::class)->get($this->getRelated('payment_id'));
             } catch (\Exception $e) {
                 $this->objPayment = null;
             }
@@ -305,7 +306,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
     /**
      * Set payment method for this collection
      */
-    public function setPaymentMethod(IsotopePayment $objPayment = null)
+    public function setPaymentMethod(PaymentInterface $objPayment = null)
     {
         $this->payment_id = (null === $objPayment ? 0 : $objPayment->getId());
         $this->objPayment = $objPayment;
@@ -344,13 +345,13 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
     /**
      * Return shipping method for this collection
      *
-     * @return IsotopeShipping|null
+     * @return ShippingInterface|null
      */
     public function getShippingMethod()
     {
         if (false === $this->objShipping) {
             try {
-                $this->objShipping = $this->getRelated('shipping_id');
+                $this->objShipping = System::getContainer()->get(ShippingRegistry::class)->get($this->getRelated('shipping_id'));
             } catch (\Exception $e) {
                 $this->objShipping = null;
             }
@@ -362,7 +363,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
     /**
      * Set shipping method for this collection
      */
-    public function setShippingMethod(IsotopeShipping $objShipping = null)
+    public function setShippingMethod(ShippingInterface $objShipping = null)
     {
         $this->shipping_id = (null === $objShipping ? 0 : $objShipping->getId());
         $this->objShipping = $objShipping;

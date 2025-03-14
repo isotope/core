@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle;
 
 use Isotope\CoreBundle\DependencyInjection\Compiler\RegisterHookListenersPass;
+use Isotope\CoreBundle\DependencyInjection\Compiler\RegisterModelTypePass;
 use Isotope\CoreBundle\DependencyInjection\IsotopeCoreExtension;
+use Isotope\CoreBundle\ModelType\PaymentRegistry;
+use Isotope\CoreBundle\ModelType\ShippingRegistry;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -21,6 +24,8 @@ class IsotopeCoreBundle extends Bundle
         parent::build($container);
 
         $container->addCompilerPass(new RegisterHookListenersPass());
+        $container->addCompilerPass(new RegisterModelTypePass(PaymentRegistry::TAG_NAME, PaymentRegistry::class, ['tl_iso_payment.type']), priority: 10);
+        $container->addCompilerPass(new RegisterModelTypePass(ShippingRegistry::TAG_NAME, ShippingRegistry::class, ['tl_iso_shipping.type']), priority: 10);
     }
 
     public function getPath(): string

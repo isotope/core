@@ -4,11 +4,11 @@ use Contao\CoreBundle\DataContainer\PaletteManipulator;
 use Contao\System;
 use Isotope\Backend;
 use Isotope\Backend\User\Callback;
+use Isotope\CoreBundle\Model\Payment;
+use Isotope\CoreBundle\Model\Shipping;
 use Isotope\Model\Config;
 use Isotope\Model\Group;
-use Isotope\Model\Payment;
 use Isotope\Model\ProductType;
-use Isotope\Model\Shipping;
 use Isotope\Model\TaxClass;
 use Isotope\Model\TaxRate;
 

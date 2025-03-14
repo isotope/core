@@ -20,6 +20,7 @@ use Contao\System;
 use Isotope\CompatibilityHelper;
 use Isotope\Frontend\ProductCollectionAction\ReorderAction;
 use Isotope\Haste\Util\Format;
+use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Template;
 
@@ -78,10 +79,7 @@ class OrderDetails extends AbstractProductCollection
         $this->Template->orderStatusKey       = $order->getStatusAlias();
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function getCollection()
+    protected function getCollection(): IsotopePurchasableCollection|null
     {
         $order = Order::findOneBy('uniqid', (string) Input::get('uid'));
         $isMember = System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER');

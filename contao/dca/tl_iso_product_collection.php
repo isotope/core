@@ -8,14 +8,14 @@ use Isotope\Backend;
 use Isotope\Backend\ProductCollection\Callback;
 use Isotope\Backend\ProductCollection\Panel;
 use Isotope\CompatibilityHelper;
+use Isotope\CoreBundle\Model\Payment;
+use Isotope\CoreBundle\Model\Shipping;
 use Isotope\Model\Address;
 use Isotope\Model\Config;
 use Isotope\Model\OrderStatus;
-use Isotope\Model\Payment;
 use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\ProductCollectionLog;
 use Isotope\Model\ProductCollectionSurcharge;
-use Isotope\Model\Shipping;
 
 /*
  * Load tl_iso_product data container and language files

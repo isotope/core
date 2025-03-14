@@ -30,19 +30,19 @@ use Contao\SelectMenu;
 use Contao\StringUtil;
 use Contao\System;
 use Isotope\CompatibilityHelper;
+use Isotope\CoreBundle\Checkout\Payment\PaymentInterface;
+use Isotope\CoreBundle\Checkout\Shipping\ShippingInterface;
+use Isotope\CoreBundle\Model\Payment;
+use Isotope\CoreBundle\Model\Shipping;
 use Isotope\Frontend;
 use Isotope\Haste\Util\Format;
 use Isotope\Interfaces\IsotopeBackendInterface;
-use Isotope\Interfaces\IsotopePayment;
-use Isotope\Interfaces\IsotopeShipping;
 use Isotope\Isotope;
 use Isotope\Model\Address;
 use Isotope\Model\Document;
 use Isotope\Model\OrderStatus;
-use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Model\ProductCollectionLog;
-use Isotope\Model\Shipping;
 use Isotope\Module\OrderDetails;
 use NotificationCenter\Model\Notification;
 
@@ -435,7 +435,7 @@ class Callback extends Backend
 
         $paymentMethod = Payment::findByPk($row['payment_id']);
 
-        if (!$paymentMethod instanceof IsotopePayment
+        if (!$paymentMethod instanceof PaymentInterface
             || ($paymentMethod instanceof IsotopeBackendInterface && !$paymentMethod->hasBackendInterface((int) $row['id']))
             || (!$paymentMethod instanceof IsotopeBackendInterface && !\is_callable([$paymentMethod, 'backendInterface']))
         ) {
@@ -458,7 +458,7 @@ class Callback extends Backend
 
         if (null !== $objOrder) {
 
-            /** @var \Isotope\Interfaces\IsotopePayment $objPayment */
+            /** @var \Isotope\CoreBundle\Checkout\Payment\PaymentInterface $objPayment */
             $objPayment = $objOrder->getRelated('payment_id');
 
             if (null !== $objPayment) {
@@ -495,7 +495,7 @@ class Callback extends Backend
 
         $shippingMethod = Shipping::findByPk($row['shipping_id']);
 
-        if (!$shippingMethod instanceof IsotopeShipping
+        if (!$shippingMethod instanceof ShippingInterface
             || ($shippingMethod instanceof IsotopeBackendInterface && !$shippingMethod->hasBackendInterface((int) $row['id']))
             || (!$shippingMethod instanceof IsotopeBackendInterface && !\is_callable([$shippingMethod, 'backendInterface']))
         ) {
@@ -518,7 +518,7 @@ class Callback extends Backend
 
         if (null !== $objOrder) {
 
-            /** @var \Isotope\Interfaces\IsotopeShipping $objShipping */
+            /** @var \Isotope\CoreBundle\Checkout\Shipping\ShippingInterface $objShipping */
             $objShipping = $objOrder->getRelated('shipping_id');
 
             if (null !== $objShipping) {
