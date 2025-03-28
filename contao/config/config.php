@@ -119,7 +119,6 @@ use Isotope\Module\ProductVariantList;
 use Isotope\Module\RangeFilter;
 use Isotope\Module\RelatedProducts;
 use Isotope\Module\ShippingCalculator;
-use Isotope\Module\Trustedshops;
 use Isotope\Module\WishlistDetails;
 use Isotope\Module\WishlistManager;
 use Isotope\Module\WishlistViewer;
@@ -262,7 +261,6 @@ $GLOBALS['FE_MOD']['isotope'] = [
     'iso_messages' => Messages::class,
     'iso_shipping_calculator' => ShippingCalculator::class,
     'iso_cart_address' => CartAddress::class,
-    'iso_trustedshops' => Trustedshops::class,
 ];
 
 /*
