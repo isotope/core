@@ -39,10 +39,8 @@ use Isotope\EventListener\ChangeLanguageListener;
 use Isotope\EventListener\PostCheckoutUploads;
 use Isotope\Frontend;
 use Isotope\Frontend\ProductAction\CartAction;
-use Isotope\Frontend\ProductAction\FavoriteAction;
 use Isotope\Frontend\ProductAction\Registry;
 use Isotope\Frontend\ProductAction\UpdateAction;
-use Isotope\Frontend\ProductAction\WishlistAction;
 use Isotope\IntegrityCheck\AttributeOptionOrphans;
 use Isotope\IntegrityCheck\MultilingualAttributes;
 use Isotope\IntegrityCheck\PriceTable;
@@ -84,9 +82,7 @@ use Isotope\Model\ProductCache;
 use Isotope\Model\ProductCategory;
 use Isotope\Model\ProductCollection;
 use Isotope\Model\ProductCollection\Cart as CartCollection;
-use Isotope\Model\ProductCollection\Favorites as FavoritesCollection;
 use Isotope\Model\ProductCollection\Order;
-use Isotope\Model\ProductCollection\Wishlist;
 use Isotope\Model\ProductCollectionDownload;
 use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\ProductCollectionLog;
@@ -108,7 +104,6 @@ use Isotope\Module\CategoryFilter;
 use Isotope\Module\Checkout;
 use Isotope\Module\ConfigSwitcher;
 use Isotope\Module\CumulativeFilter;
-use Isotope\Module\Favorites;
 use Isotope\Module\Messages;
 use Isotope\Module\OrderDetails;
 use Isotope\Module\OrderHistory;
@@ -119,9 +114,6 @@ use Isotope\Module\ProductVariantList;
 use Isotope\Module\RangeFilter;
 use Isotope\Module\RelatedProducts;
 use Isotope\Module\ShippingCalculator;
-use Isotope\Module\WishlistDetails;
-use Isotope\Module\WishlistManager;
-use Isotope\Module\WishlistViewer;
 use Isotope\VatNoValidator\EuViesValidator;
 use Isotope\Widget\InheritCheckBox;
 use Isotope\Widget\MediaManager;
@@ -243,7 +235,6 @@ $GLOBALS['FE_MOD']['isotope'] = [
     'iso_productlist' => ProductList::class,
     'iso_productvariantlist' => ProductVariantList::class,
     'iso_productreader' => ProductReader::class,
-    'iso_favorites' => Favorites::class,
     'iso_cart' => Cart::class,
     'iso_checkout' => Checkout::class,
     'iso_productfilter' => ProductFilter::class,
@@ -252,9 +243,6 @@ $GLOBALS['FE_MOD']['isotope'] = [
     'iso_rangefilter' => RangeFilter::class,
     'iso_orderhistory' => OrderHistory::class,
     'iso_orderdetails' => OrderDetails::class,
-    'iso_wishlistmanager' => WishlistManager::class,
-    'iso_wishlistviewer' => WishlistViewer::class,
-    'iso_wishlistdetails' => WishlistDetails::class,
     'iso_configswitcher' => ConfigSwitcher::class,
     'iso_addressbook' => AddressBook::class,
     'iso_relatedproducts' => RelatedProducts::class,
@@ -290,8 +278,6 @@ Product::registerModelType('standard', StandardProduct::class);
  */
 ProductCollection::registerModelType('cart', CartCollection::class);
 ProductCollection::registerModelType('order', Order::class);
-ProductCollection::registerModelType('favorites', FavoritesCollection::class);
-ProductCollection::registerModelType('wishlist', Wishlist::class);
 
 /*
  * Product collection surcharge
@@ -325,8 +311,6 @@ if (InstalledVersions::isInstalled('terminal42/contao-fineuploader')) {
  */
 Registry::add(new UpdateAction());
 Registry::add(new CartAction());
-Registry::add(new FavoriteAction());
-Registry::add(new WishlistAction());
 
 /*
  * Notification Center notification types

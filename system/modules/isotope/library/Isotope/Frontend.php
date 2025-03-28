@@ -27,7 +27,6 @@ use Contao\Widget;
 use Isotope\Haste\Input\Input;
 use Isotope\EventListener\ChangeLanguageListener;
 use Isotope\Frontend\ProductAction\CartAction;
-use Isotope\Frontend\ProductAction\FavoriteAction;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Interfaces\IsotopePrice;
@@ -763,18 +762,6 @@ class Frontend extends \Contao\Frontend
     public function updateCart(IsotopeProduct $objProduct, array $arrConfig = array())
     {
         $action = new CartAction();
-        $action->handleSubmit($objProduct, $arrConfig);
-    }
-
-    /**
-     * Callback for toggle_favorites button
-     *
-     *
-     * @deprecated Deprecated since Isotope 2.5
-     */
-    public function toggleFavorites(IsotopeProduct $objProduct, array $arrConfig = array())
-    {
-        $action = new FavoriteAction();
         $action->handleSubmit($objProduct, $arrConfig);
     }
 

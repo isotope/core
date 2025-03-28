@@ -18,7 +18,6 @@ use Contao\System;
 use Contao\Widget;
 use Isotope\Haste\Data\Plain;
 use Isotope\Frontend\ProductAction\CartAction;
-use Isotope\Frontend\ProductAction\FavoriteAction;
 use Isotope\Frontend\ProductAction\ProductActionInterface;
 use Isotope\Frontend\ProductAction\UpdateAction;
 use Isotope\Haste\Util\Format;
@@ -27,7 +26,6 @@ use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Config;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCollection\Cart;
-use Isotope\Model\ProductCollection\Favorites;
 use Isotope\Model\ProductPrice;
 use Isotope\Model\RequestCache;
 use Isotope\Model\TaxClass;
@@ -61,12 +59,6 @@ class Isotope extends Controller
      * @var Config
      */
     protected static $objConfig;
-
-    /**
-     * Current favorites instance
-     * @var Favorites
-     */
-    protected static $objFavorites;
 
     /**
      * Current request cache instance
@@ -127,23 +119,6 @@ class Isotope extends Controller
         }
 
         return static::$objCart;
-    }
-
-    /**
-     * Gets the favorites collection for the currently logged in user
-     *
-     * @return Favorites|null
-     */
-    public static function getFavorites()
-    {
-        if (null === static::$objFavorites && CompatibilityHelper::isFrontend()) {
-            static::initialize();
-            if (null !== (static::$objFavorites = Favorites::findForCurrentStore())) {
-                static::$objFavorites->mergeGuestCollection();
-            }
-        }
-
-        return static::$objFavorites;
     }
 
     /**
@@ -410,10 +385,6 @@ class Isotope extends Controller
             new UpdateAction(),
             new CartAction(),
         ];
-
-        if (\Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER')) {
-            $actions[] = new FavoriteAction();
-        }
 
         /** @var ProductActionInterface $action */
         foreach ($actions as $action) {
