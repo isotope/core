@@ -72,69 +72,72 @@ class Rules extends Controller
      */
     public function calculatePrice($fltPrice, $objSource, $strField, $intTaxClass)
     {
-        if ($objSource instanceof IsotopePrice && ('price' === $strField || 'low_price' === $strField || 'net_price' === $strField || 'gross_price' === $strField)) {
+        if (!$objSource instanceof IsotopePrice || ('price' !== $strField && 'low_price' !== $strField && 'net_price' !== $strField && 'gross_price' !== $strField)) {
+            return $fltPrice;
+        }
 
         // @todo try not to use getRelated() because it loads variants
         $objRules = Rule::findByProduct($objSource->getRelated('pid'), $strField, $fltPrice);
 
-        if (null !== $objRules) {
-                while ($objRules->next()) {
-                    // Check cart quantity
-                    if ($objRules->minItemQuantity > 0 || $objRules->maxItemQuantity > 0) {
-                        if ('cart_products' === $objRules->quantityMode) {
-                            $intTotal = Isotope::getCart()->countItems();
-                        } elseif ('cart_items' === $objRules->quantityMode) {
-                            $intTotal = Isotope::getCart()->sumItemsQuantity();
-                        } else {
-                            $objItem = Isotope::getCart()->getItemForProduct($objSource->getRelated('pid'));
-                            $intTotal = (null === $objItem) ? 0 : $objItem->quantity;
-                        }
+        if (null === $objRules) {
+            return $fltPrice;
+        }
 
-                        if (($objRules->minItemQuantity > 0 && $objRules->minItemQuantity > $intTotal) || ($objRules->maxItemQuantity > 0 && $objRules->maxItemQuantity < $intTotal)) {
-                            continue;
-                        }
-                    }
-
-                    // We're unable to apply variant price rules to low_price (see #3189)
-                    if ('low_price' === $strField && 'variants' === $objRules->productRestrictions) {
-                        continue;
-                    }
-
-                    if ($objRules->current()->isPercentage()) {
-                        $fltDiscount = 100 + $objRules->current()->getPercentage();
-                        $fltDiscount = round($fltPrice - ($fltPrice / 100 * $fltDiscount), 10);
-
-                        $precision = Isotope::getConfig()->priceRoundPrecision;
-                        $factor    = 10 ** 2;
-                        $up        = $fltDiscount > 0 ? 'ceil' : 'floor';
-                        $down      = $fltDiscount > 0 ? 'floor' : 'ceil';
-
-                        switch ($objRules->rounding) {
-                            case Rule::ROUND_NORMAL:
-                                $fltDiscount = round($fltDiscount, $precision);
-                                break;
-
-                            case Rule::ROUND_UP:
-                                $fltDiscount = $up($fltDiscount * $factor) / $factor;
-                                break;
-
-                            case Rule::ROUND_DOWN:
-                            default:
-                                $fltDiscount = $down($fltDiscount * $factor) / $factor;
-                                break;
-                        }
-
-                        $fltPrice = $fltPrice - $fltDiscount;
-                    } else {
-                        $fltPrice = $fltPrice + $objRules->discount;
-                    }
+        /** @var Rule $objRule */
+        foreach ($objRules as $objRule) {
+            // Check cart quantity
+            if ($objRule->minItemQuantity > 0 || $objRule->maxItemQuantity > 0) {
+                if ('cart_products' === $objRule->quantityMode) {
+                    $intTotal = Isotope::getCart()->countItems();
+                } elseif ('cart_items' === $objRule->quantityMode) {
+                    $intTotal = Isotope::getCart()->sumItemsQuantity();
+                } else {
+                    $objItem = Isotope::getCart()->getItemForProduct($objSource->getRelated('pid'));
+                    $intTotal = (null === $objItem) ? 0 : $objItem->quantity;
                 }
+
+                if (($objRule->minItemQuantity > 0 && $objRule->minItemQuantity > $intTotal) || ($objRule->maxItemQuantity > 0 && $objRules->maxItemQuantity < $intTotal)) {
+                    continue;
+                }
+            }
+
+            // We're unable to apply variant price rules to low_price (see #3189)
+            if ('low_price' === $strField && 'variants' === $objRule->productRestrictions) {
+                continue;
+            }
+
+            if ($objRule->isPercentage()) {
+                $fltDiscount = 100 + $objRule->getPercentage();
+                $fltDiscount = round($fltPrice - ($fltPrice / 100 * $fltDiscount), 10);
+
+                $precision = Isotope::getConfig()->priceRoundPrecision;
+                $factor    = 10 ** 2;
+                $up        = $fltDiscount > 0 ? 'ceil' : 'floor';
+                $down      = $fltDiscount > 0 ? 'floor' : 'ceil';
+
+                switch ($objRule->rounding) {
+                    case Rule::ROUND_NORMAL:
+                        $fltDiscount = round($fltDiscount, $precision);
+                        break;
+
+                    case Rule::ROUND_UP:
+                        $fltDiscount = $up($fltDiscount * $factor) / $factor;
+                        break;
+
+                    case Rule::ROUND_DOWN:
+                    default:
+                        $fltDiscount = $down($fltDiscount * $factor) / $factor;
+                        break;
+                }
+
+                $fltPrice = $fltPrice - $fltDiscount;
+            } else {
+                $fltPrice = $fltPrice + $objRule->discount;
             }
         }
 
         return $fltPrice;
     }
-
 
     /**
      * Add cart rules to surcharges
