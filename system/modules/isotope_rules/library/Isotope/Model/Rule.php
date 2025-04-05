@@ -116,6 +116,44 @@ class Rule extends Model
         return $this->isPercentage() ? $this->discount : '';
     }
 
+    /**
+     * Calculate discount of a rule. The price argument is (only) necessary to calculate percentage
+     * amounts. Fixed discounts will not be affected by the price given.
+     * Be aware that a discount is usually negative, but also a positive value for a surcharge.
+     *
+     * @param int $quantity Multiply the discount by this value before rounding.
+     */
+    public function calculateDiscount(float $fltPrice, int $quantity = 1): float
+    {
+        if (!$this->isPercentage()) {
+            return $this->discount * $quantity;
+        }
+
+        $fltDiscount = 100 + $this->getPercentage();
+        $fltDiscount = round($fltPrice - ($fltPrice / 100 * $fltDiscount), 10);
+        $fltDiscount = $fltDiscount * $quantity;
+        $precision = Isotope::getConfig()->priceRoundPrecision;
+        $factor = 10 ** 2;
+        $up = $fltDiscount > 0 ? 'ceil' : 'floor';
+        $down = $fltDiscount > 0 ? 'floor' : 'ceil';
+
+        switch ($this->rounding) {
+            case Rule::ROUND_NORMAL:
+                $fltDiscount = round($fltDiscount, $precision);
+                break;
+
+            case Rule::ROUND_UP:
+                $fltDiscount = $up(round($fltDiscount * $factor, 4)) / $factor;
+                break;
+
+            case Rule::ROUND_DOWN:
+            default:
+                $fltDiscount = $down(round($fltDiscount * $factor, 4)) / $factor;
+                break;
+        }
+
+        return $fltDiscount * -1;
+    }
 
     public static function findByProduct(IsotopeProduct $objProduct, $strField, $fltPrice)
     {
