@@ -25,13 +25,11 @@ class ProductPriceShippingFactory extends AbstractShippingFactory
      */
     public function doCreate(Model $model): AbstractShipping
     {
-        $instance = new ProductPriceShipping(
+        return new ProductPriceShipping(
             $model->id,
             ProductCalculation::from($model->productCalculation),
             $this->security,
-            $this->tokenChecker
+            $this->tokenChecker,
         );
-
-        return $instance;
     }
 }

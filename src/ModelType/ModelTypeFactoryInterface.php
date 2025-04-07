@@ -14,6 +14,7 @@ interface ModelTypeFactoryInterface
 {
     /**
      * @param TModel $model
+     *
      * @return TType
      */
     public function create(Model $model): object;

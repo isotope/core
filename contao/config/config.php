@@ -74,7 +74,6 @@ use Isotope\Model\Gallery\Standard as StandardGallery;
 use Isotope\Model\Group;
 use Isotope\Model\Label;
 use Isotope\Model\OrderStatus;
-use Isotope\Model\Payment\BillpayWithSaferpay;
 use Isotope\Model\Product;
 use Isotope\Model\Product\Standard as StandardProduct;
 use Isotope\Model\ProductCache;
@@ -494,8 +493,6 @@ if (Contao\Config::getInstance()->isComplete()) {
     $GLOBALS['ISO_HOOKS']['postCheckout'][] = [PostCheckoutUploads::class, 'onPostCheckout'];
     $GLOBALS['ISO_HOOKS']['calculatePrice'][] = [Frontend::class, 'addOptionsPrice'];
     $GLOBALS['ISO_HOOKS']['calculatePrice'][] = [QuantitySurchagePriceListener::class, '__invoke'];
-    $GLOBALS['ISO_HOOKS']['orderConditions'][] = [BillpayWithSaferpay::class, 'addOrderCondition'];
-    $GLOBALS['ISO_HOOKS']['generateDocumentTemplate'][] = [BillpayWithSaferpay::class, 'addToDocumentTemplate'];
 
     // changelanguage
     $GLOBALS['TL_HOOKS']['changelanguageNavigation'][] = [ChangeLanguageListener::class, '__invoke'];

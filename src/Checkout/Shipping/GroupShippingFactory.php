@@ -31,19 +31,17 @@ class GroupShippingFactory extends AbstractShippingFactory
         $ids = StringUtil::deserialize($model->group_methods, true);
 
         // Prevent recursion if we should load ourselves
-        if (($key = array_search($model->id, $ids)) !== false) {
+        if (($key = array_search($model->id, $ids, true)) !== false) {
             unset($ids[$key]);
         }
 
-        $instance = new GroupShipping(
+        return new GroupShipping(
             $model->id,
             $this->shippingRegistry->get(Shipping::findMultipleByIds($ids)) ?? [],
             GroupCalculation::from($model->group_calculation),
             (bool) $model->inherit,
             $this->security,
-            $this->tokenChecker
+            $this->tokenChecker,
         );
-
-        return $instance;
     }
 }

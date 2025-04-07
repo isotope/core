@@ -30,7 +30,7 @@ class FlatShippingFactory extends AbstractShippingFactory
             $model->id,
             FlatCalculation::tryFrom($model->flatCalculation),
             $this->security,
-            $this->tokenChecker
+            $this->tokenChecker,
         );
 
         $instance

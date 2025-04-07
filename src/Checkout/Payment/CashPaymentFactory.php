@@ -6,7 +6,6 @@ namespace Isotope\CoreBundle\Checkout\Payment;
 
 use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use Contao\Model;
-use Isotope\CoreBundle\DependencyInjection\Attribute\AsPayment;
 use Isotope\CoreBundle\Model\Payment;
 use Symfony\Bundle\SecurityBundle\Security;
 

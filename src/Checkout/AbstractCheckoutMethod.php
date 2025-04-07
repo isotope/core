@@ -14,16 +14,27 @@ use Symfony\Bundle\SecurityBundle\Security;
 abstract class AbstractCheckoutMethod
 {
     protected string $label;
+
     protected string $note = '';
+
     protected float|null $price = null;
+
     protected int $taxClass = 0;
+
     protected bool $percentage = false;
+
     protected bool $protected = false;
+
     protected array $groups = [];
+
     protected int $minQuantity = 0;
+
     protected int $maxQuantity = 0;
+
     protected QuantityMode $quantityMode = QuantityMode::cartItems;
+
     protected float $minTotal = 0;
+
     protected float $maxTotal = 0;
 
     /**
@@ -35,9 +46,13 @@ abstract class AbstractCheckoutMethod
      * @var array<int>|null
      */
     protected array|null $allowedProductTypes = null;
+
     protected ProductTypeCondition $productTypesCondition = ProductTypeCondition::onlyAvailable;
+
     protected bool $debug = false;
+
     protected bool $logging = false;
+
     protected bool $enabled = true;
 
     public function __construct(
@@ -102,7 +117,7 @@ abstract class AbstractCheckoutMethod
         return $this;
     }
 
-    public function setAllowedConfigs(?array $ids): static
+    public function setAllowedConfigs(array|null $ids): static
     {
         $this->allowedConfigs = $ids;
 
@@ -221,7 +236,7 @@ abstract class AbstractCheckoutMethod
         }
 
         if ($this->minQuantity > 0 || $this->maxQuantity > 0) {
-            $quantity = match($this->quantityMode) {
+            $quantity = match ($this->quantityMode) {
                 QuantityMode::cartItems => $collection->sumItemsQuantity(),
                 QuantityMode::cartProducts => $collection->countItems(),
             };
@@ -243,7 +258,7 @@ abstract class AbstractCheckoutMethod
 
         if (null !== $this->allowedProductTypes) {
             $items = $collection->getItems();
-            $types = array();
+            $types = [];
 
             foreach ($items as $item) {
                 if ($item->hasProduct()) {

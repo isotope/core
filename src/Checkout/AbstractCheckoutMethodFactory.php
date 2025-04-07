@@ -26,7 +26,7 @@ abstract class AbstractCheckoutMethodFactory implements ModelTypeFactoryInterfac
     public function create(Model $model): AbstractCheckoutMethod
     {
         if (!$model instanceof Payment && !$model instanceof Shipping) {
-            throw new \RuntimeException(sprintf('%s should be an instance of %s or %s', $model::class, Payment::class, Shipping::class));
+            throw new \RuntimeException(\sprintf('%s should be an instance of %s or %s', $model::class, Payment::class, Shipping::class));
         }
 
         $instance = $this->doCreate($model)
@@ -43,7 +43,6 @@ abstract class AbstractCheckoutMethodFactory implements ModelTypeFactoryInterfac
             ->setEnabled((bool) $model->enabled)
         ;
 
-
         if (null !== ($quantityMode = QuantityMode::tryFrom($model->quantity_mode))) {
             $instance->setMinMaxQuantity((int) $model->minimum_quantity, (int) $model->maximum_quantity, $quantityMode);
         }
@@ -55,6 +54,17 @@ abstract class AbstractCheckoutMethodFactory implements ModelTypeFactoryInterfac
      * @return TType
      */
     abstract protected function doCreate(Model $model): AbstractCheckoutMethod;
+
+    protected function unserialize(string|null $value, callable $callable): array|null
+    {
+        $values = StringUtil::deserialize($value);
+
+        if (!\is_array($values) || [] === $values) {
+            return null;
+        }
+
+        return array_map($callable, $values);
+    }
 
     /**
      * @return array{0: float|null, 1: bool}
@@ -69,16 +79,5 @@ abstract class AbstractCheckoutMethodFactory implements ModelTypeFactoryInterfac
         $price = $isPercentage ? substr($price, -1) : $price;
 
         return [(float) $price, $isPercentage];
-    }
-
-    protected function unserialize(string|null $value, callable $callable): array|null
-    {
-        $values = StringUtil::deserialize($value);
-
-        if (!\is_array($values) || [] === $values) {
-            return null;
-        }
-
-        return array_map($callable, $values);
     }
 }

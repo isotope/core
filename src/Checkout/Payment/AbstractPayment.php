@@ -7,7 +7,6 @@ namespace Isotope\CoreBundle\Checkout\Payment;
 use Contao\System;
 use Isotope\CoreBundle\Checkout\AbstractCheckoutMethod;
 use Isotope\Interfaces\IsotopeOrderableCollection;
-use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\ProductCollectionSurcharge;
 use Isotope\Model\ProductCollectionSurcharge\Payment;
@@ -24,14 +23,14 @@ abstract class AbstractPayment extends AbstractCheckoutMethod implements Payment
      */
     protected array|null $allowedShippings = null;
 
-    public function setAllowedCountries(?array $countryCodes): static
+    public function setAllowedCountries(array|null $countryCodes): static
     {
         $this->allowedCountries = $countryCodes;
 
         return $this;
     }
 
-    public function setAllowedShippings(?array $ids): static
+    public function setAllowedShippings(array|null $ids): static
     {
         $this->allowedShippings = $ids;
 
@@ -56,8 +55,8 @@ abstract class AbstractPayment extends AbstractCheckoutMethod implements Payment
             && (
                 (!$collection->hasShipping() && !\in_array(-1, $this->allowedShippings, true))
                 || (
-                    $collection->hasShipping() &&
-                    !\in_array($collection->getShippingMethod()?->getId(), $this->allowedShippings, true)
+                    $collection->hasShipping()
+                    && !\in_array($collection->getShippingMethod()?->getId(), $this->allowedShippings, true)
                 )
             )
         ) {

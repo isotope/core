@@ -25,7 +25,7 @@ class RegisterModelTypePass implements CompilerPassInterface
     public function __construct(
         private readonly string $tagName,
         private readonly string $registryId,
-        private readonly array $dcaOptions
+        private readonly array $dcaOptions,
     ) {
     }
 
@@ -59,7 +59,7 @@ class RegisterModelTypePass implements CompilerPassInterface
         $listener = new Definition(ModelTypeOptionsListener::class, [$types]);
 
         foreach ($this->dcaOptions as $key) {
-            [$table, $field] = explode('.', $key, 2);
+            [$table, $field] = explode('.', (string) $key, 2);
             $listener->addTag('contao.callback', ['table' => $table, 'target' => "fields.$field.options"]);
         }
 
@@ -75,11 +75,11 @@ class RegisterModelTypePass implements CompilerPassInterface
         }
 
         $className = $definition->getClass();
-        $className = ltrim(strrchr($className, '\\'), '\\');
+        $className = ltrim(strrchr((string) $className, '\\'), '\\');
         [,$suffix] = explode('.', $this->tagName);
 
         if (str_ends_with($className, ucfirst($suffix))) {
-            $className = substr($className, 0, strlen($suffix) * -1);
+            $className = substr($className, 0, \strlen($suffix) * -1);
         }
 
         return Container::underscore($className);

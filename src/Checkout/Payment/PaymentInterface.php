@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Isotope\CoreBundle\Checkout\Payment;
 
 use Contao\Module;
 use Isotope\Interfaces\IsotopeOrderableCollection;
-use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\ProductCollectionSurcharge\Payment;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -73,7 +74,7 @@ interface PaymentInterface
     /**
      * Process payment on checkout confirmation page.
      */
-    public function processPayment(IsotopeOrderableCollection $order, Module $objModule): string|bool;
+    public function processPayment(IsotopeOrderableCollection $order, Module $objModule): bool|string;
 
     /**
      * Return a html form for checkout or false.

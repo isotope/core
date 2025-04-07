@@ -18,27 +18,39 @@ class FlatShipping extends AbstractShipping
     /**
      * @var array<int>|null
      */
-    private array|null $flatProductTypes;
+    private array|null $flatProductTypes = null;
 
-    private Weighable|null $flatWeight;
+    private Weighable|null $flatWeight = null;
 
     public function __construct(
         int $id,
         private FlatCalculation|null $flatCalculation,
         Security $security,
-        TokenChecker $tokenChecker
+        TokenChecker $tokenChecker,
     ) {
         parent::__construct($id, $security, $tokenChecker);
     }
 
-    public function setFlatProductTypes(?array $flatProductTypes): static
+    public function getFlatCalculation(): FlatCalculation|null
+    {
+        return $this->flatCalculation;
+    }
+
+    public function setFlatCalculation(FlatCalculation|null $flatCalculation): self
+    {
+        $this->flatCalculation = $flatCalculation;
+
+        return $this;
+    }
+
+    public function setFlatProductTypes(array|null $flatProductTypes): static
     {
         $this->flatProductTypes = $flatProductTypes;
 
         return $this;
     }
 
-    public function setFlatWeight(?Weighable $flatWeight): static
+    public function setFlatWeight(Weighable|null $flatWeight): static
     {
         $this->flatWeight = $flatWeight;
 
@@ -53,7 +65,7 @@ class FlatShipping extends AbstractShipping
             return null;
         }
 
-        $multiply = match($this->flatCalculation) {
+        $multiply = match ($this->flatCalculation) {
             FlatCalculation::perProduct,
             FlatCalculation::perItem => $this->productMultiplier($collection->getItems()),
             FlatCalculation::perWeight => $this->weightMultiplier($collection),
@@ -85,7 +97,7 @@ class FlatShipping extends AbstractShipping
                 }
             }
 
-            $multiply += (FlatCalculation::perProduct === $this->flatCalculation) ? 1 : $objItem->quantity;
+            $multiply += FlatCalculation::perProduct === $this->flatCalculation ? 1 : $objItem->quantity;
         }
 
         return $multiply;
@@ -101,6 +113,6 @@ class FlatShipping extends AbstractShipping
 
         $cartWeight = floor($collection->addToScale()->amountIn($this->flatWeight->getWeightUnit()));
 
-        return ($cartWeight / $multiply);
+        return $cartWeight / $multiply;
     }
 }

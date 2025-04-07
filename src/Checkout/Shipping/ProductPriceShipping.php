@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Isotope\CoreBundle\Checkout\Shipping;
 
 use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
@@ -19,7 +21,7 @@ class ProductPriceShipping extends AbstractShipping
         int $id,
         private readonly ProductCalculation $calculation,
         Security $security,
-        TokenChecker $tokenChecker
+        TokenChecker $tokenChecker,
     ) {
         parent::__construct($id, $security, $tokenChecker);
     }
@@ -43,7 +45,6 @@ class ProductPriceShipping extends AbstractShipping
     {
         $isFirst = true;
         $price = 0;
-        $product = null;
 
         foreach ($collection->getItems() as $item) {
             $cartProduct = $item->getProduct();
@@ -72,7 +73,7 @@ class ProductPriceShipping extends AbstractShipping
                     break;
 
                 case ProductCalculation::sumItems:
-                    $price += ($item->quantity * $shippingPrice);
+                    $price += $item->quantity * $shippingPrice;
                     break;
 
                 case ProductCalculation::lowestItem:

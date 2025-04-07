@@ -7,7 +7,6 @@ namespace Isotope\CoreBundle\Checkout\Shipping;
 use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsShipping;
 use Isotope\Interfaces\IsotopeOrderableCollection;
-use Isotope\Interfaces\IsotopeProductCollection;
 use Symfony\Bundle\SecurityBundle\Security;
 
 #[AsShipping]
@@ -32,14 +31,15 @@ class GroupShipping extends AbstractShipping
         private readonly GroupCalculation $groupCalculation,
         private readonly bool $inherit,
         Security $security,
-        TokenChecker $tokenChecker
+        TokenChecker $tokenChecker,
     ) {
         parent::__construct($id, $security, $tokenChecker);
 
         $inner = [];
+
         foreach ($methods as $shipping) {
             if (!$shipping instanceof ShippingInterface) {
-                throw new \UnexpectedValueException(sprintf('%s is not an instance of %s', $shipping::class, ShippingInterface::class));
+                throw new \UnexpectedValueException(\sprintf('%s is not an instance of %s', $shipping::class, ShippingInterface::class));
             }
 
             $inner[$shipping->getId()] = $shipping;
@@ -101,6 +101,7 @@ class GroupShipping extends AbstractShipping
 
             case GroupCalculation::lowest:
                 $return = null;
+
                 foreach ($this->getAvailable($collection) as $method) {
                     $price = $method->getPrice($collection);
                     if (null !== $price && (null === $return || $price < $return)) {
@@ -112,6 +113,7 @@ class GroupShipping extends AbstractShipping
 
             case GroupCalculation::highest:
                 $return = null;
+
                 foreach ($this->getAvailable($collection) as $method) {
                     $price = $method->getPrice($collection);
                     if (null !== $price && (null === $return || $price > $return)) {
@@ -123,6 +125,7 @@ class GroupShipping extends AbstractShipping
 
             case GroupCalculation::sum:
                 $total = null;
+
                 foreach ($this->getAvailable($collection) as $method) {
                     if (null !== ($price = $method->getPrice($collection))) {
                         if (null === $total) {
@@ -148,7 +151,7 @@ class GroupShipping extends AbstractShipping
 
         $methods = array_filter(
             $this->inner,
-            static fn (ShippingInterface $shipping) => $shipping->isAvailable($collection)
+            static fn (ShippingInterface $shipping) => $shipping->isAvailable($collection),
         );
 
         $this->cache[$collection->getId()] = $methods;

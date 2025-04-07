@@ -12,8 +12,10 @@ use Isotope\Backend\Product\Fallback;
 use Isotope\Backend\Product\Label;
 use Isotope\Backend\Product\Panel;
 use Isotope\Backend\Product\Permission;
+use Isotope\Backend\Product\Price as BackendPrice;
 use Isotope\Backend\Product\Wizard;
 use Isotope\Backend\Product\XmlSitemap;
+use Isotope\Backend\ProductPrice\Callback as ProductPriceCallback;
 use Isotope\Backend\ProductType\Callback;
 use Isotope\CompatibilityHelper;
 use Isotope\CoreBundle\DataContainer\ProductData;
@@ -345,10 +347,10 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'eval' => ['mandatory' => true, 'maxlength' => 13, 'rgxp' => 'digit', 'includeBlankOption' => true, 'blankOptionLabel' => &$GLOBALS['TL_LANG']['MSC']['taxFree'], 'doNotSaveEmpty' => true, 'tl_class' => 'w50'],
             'attributes' => ['legend' => 'pricing_legend', 'fe_sorting' => true, 'dynamic' => true, 'singular' => true, 'systemColumn' => true, 'type' => Price::class],
             'load_callback' => [
-                [Backend\Product\Price::class, 'load'],
+                [BackendPrice::class, 'load'],
             ],
             'save_callback' => [
-                [Backend\Product\Price::class, 'save'],
+                [BackendPrice::class, 'save'],
             ],
         ],
         'prices' => [
@@ -356,8 +358,8 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'foreignTable' => ProductPrice::getTable(),
             'attributes' => ['systemColumn' => true],
             'eval' => [
-                'listCallback' => [Backend\ProductPrice\Callback::class, 'generateWizardList'],
-                'list_callback' => [Backend\ProductPrice\Callback::class, 'generateWizardList'],
+                'listCallback' => [ProductPriceCallback::class, 'generateWizardList'],
+                'list_callback' => [ProductPriceCallback::class, 'generateWizardList'],
                 'applyButtonLabel' => &$GLOBALS['TL_LANG']['tl_iso_product']['prices']['apply_and_close'],
                 'global_operations' => ['new'],
                 'operations' => ['edit', 'copy', 'delete', 'show'],

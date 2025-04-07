@@ -9,8 +9,6 @@ use Isotope\CoreBundle\Checkout\AbstractCheckoutMethod;
 use Isotope\Haste\Units\Mass\Weighable;
 use Isotope\Haste\Units\Mass\WeightAggregate;
 use Isotope\Interfaces\IsotopeOrderableCollection;
-use Isotope\Interfaces\IsotopeProductCollection;
-use Isotope\Isotope;
 use Isotope\Model\ProductCollectionSurcharge;
 use Isotope\Model\ProductCollectionSurcharge\Shipping;
 
@@ -32,11 +30,14 @@ abstract class AbstractShipping extends AbstractCheckoutMethod implements Shippi
     protected array|null $allowedPostalCodes = null;
 
     protected float $minWeight = 0;
+
     protected float $maxWeight = 0;
+
     protected Weighable|null $shippingWeight = null;
+
     protected AddressType|null $addressType = null;
 
-    public function setAllowedAddress(?array $countryCodes, array|null $subdivisions, array|null $postalCodes): static
+    public function setAllowedAddress(array|null $countryCodes, array|null $subdivisions, array|null $postalCodes): static
     {
         $this->allowedCountries = $countryCodes;
         $this->allowedSubdivisions = $subdivisions;
@@ -60,7 +61,7 @@ abstract class AbstractShipping extends AbstractCheckoutMethod implements Shippi
         return $this;
     }
 
-    public function setAddressType(?AddressType $addressType): static
+    public function setAddressType(AddressType|null $addressType): static
     {
         $this->addressType = $addressType;
 

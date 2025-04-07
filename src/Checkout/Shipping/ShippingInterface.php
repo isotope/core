@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Isotope\CoreBundle\Checkout\Shipping;
 
 use Isotope\Interfaces\IsotopeOrderableCollection;
-use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\ProductCollectionSurcharge\Shipping;
 
 /**

@@ -29,9 +29,9 @@ class AbstractModelTypeRegistry
      *
      * @return ($modelOrCollection is array|Collection<TModel> ? array<TType> : ($modelOrCollection is null ? null : TType) )
      */
-    public function get(Model|Collection|array|null $modelOrCollection): object|array|null
+    public function get(Collection|Model|array|null $modelOrCollection): array|object|null
     {
-        return match(true) {
+        return match (true) {
             null === $modelOrCollection => null,
             $modelOrCollection instanceof Collection => array_map(fn ($m) => $this->create($m), $modelOrCollection->getModels()),
             \is_array($modelOrCollection) => array_map(fn ($m) => $this->create($m), $modelOrCollection),
@@ -49,7 +49,7 @@ class AbstractModelTypeRegistry
         try {
             $factory = $this->factories->get($model->type);
         } catch (ServiceNotFoundException $e) {
-            throw new \RuntimeException(sprintf('Missing factory for %s of type "%s"', $model::class, $model->type), previous: $e);
+            throw new \RuntimeException(\sprintf('Missing factory for %s of type "%s"', $model::class, $model->type), previous: $e);
         }
 
         $instance = $factory->create($model);
