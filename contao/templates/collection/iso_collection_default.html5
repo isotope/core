@@ -18,7 +18,7 @@
 <form id="<?= $this->formId ?>" method="post">
 <div class="formbody">
 <input type="hidden" name="FORM_SUBMIT" value="<?= $this->formSubmit ?>">
-<input type="hidden" name="REQUEST_TOKEN" value="<?= \Contao\System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue() ?>">
+<input type="hidden" name="REQUEST_TOKEN" value="<?= $this->requestToken ?>">
 <?php endif; ?>
 
 <?php if ($this->collection->hasErrors()): ?>
