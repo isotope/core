@@ -1,6 +1,18 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.9.7 (2025-04-07)
+--------------------------
+
+- Fixed floating point error for rule discount (#2562)
+- Fixed inheriting attributes that are in base product when generating variants
+- Fixed warnings if callbacks are not set (#2561)
+- Removed incorrect duplicate foreignKey resolving (#2564)
+- Fixed error when group breadcrumb tries to show a deleted group (#2558)
+- Fixed CSV check on possibly undefined property (#2566)
+- Do not hard code tl_panel width (#2565)
+
+
 Version 2.9.6 (2024-12-18)
 --------------------------
 
