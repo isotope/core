@@ -201,26 +201,24 @@ class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectio
             // Apply To
             switch ($objRule->applyTo) {
                 case 'products':
-                    $fltPrice = (float) ($blnPercentage ? ($objItem->getTotalPrice() / 100 * $fltDiscount) : $objRule->discount);
-                    $fltPrice = $fltPrice > 0 ? (floor($fltPrice * 100) / 100) : (ceil($fltPrice * 100) / 100);
+                    $fltPrice = $objRule->calculateDiscount($objItem->getTotalPrice());
                     $objSurcharge->total_price += $fltPrice;
                     $objSurcharge->setAmountForCollectionItem($fltPrice, $objItem);
                     break;
 
                 case 'items':
-                    $fltPrice = ((float) ($blnPercentage ? ($objItem->getPrice() / 100 * $fltDiscount) : $objRule->discount)) * $objItem->quantity;
-                    $fltPrice = $fltPrice > 0 ? (floor($fltPrice * 100) / 100) : (ceil($fltPrice * 100) / 100);
+                    $fltPrice = $objRule->calculateDiscount($objItem->getPrice(), (int) $objItem->quantity);
                     $objSurcharge->total_price += $fltPrice;
                     $objSurcharge->setAmountForCollectionItem($fltPrice, $objItem);
                     break;
 
                 case 'subtotal':
-                    $blnMatch = true;
+                    $blnMatch = true; // At least one item in the collection matched the rule conditions
                     $objSurcharge->total_price += $objItem->getTotalPrice();
 
                     if ($objRule->tax_class == -1) {
                         if ($blnPercentage) {
-                            $fltPrice = $objItem->getTotalPrice() / 100 * $fltDiscount;
+                            $fltPrice = $objRule->calculateDiscount($objItem->getTotalPrice());
                             $objSurcharge->setAmountForCollectionItem($fltPrice, $objItem);
                         } else {
                             $arrSubtract[] = $objItem;
@@ -231,10 +229,9 @@ class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectio
             }
         }
 
-        if ($objRule->applyTo == 'subtotal' && $blnMatch) {
+        if ('subtotal' === $objRule->applyTo && $blnMatch) {
             // discount total! not related to tax subtraction
-            $fltPrice = (float) ($blnPercentage ? ($objSurcharge->total_price / 100 * $fltDiscount) : $objRule->discount);
-            $objSurcharge->total_price = $fltPrice > 0 ? (floor(round($fltPrice * 100, 4)) / 100) : (ceil(round($fltPrice * 100, 4)) / 100);
+            $objSurcharge->total_price = $objRule->calculateDiscount($objSurcharge->total_price);
             $objSurcharge->before_tax = ($objRule->tax_class != 0 ? true : false);
             $objSurcharge->tax_class = ($objRule->tax_class > 0 ? $objRule->tax_class : 0);
 
