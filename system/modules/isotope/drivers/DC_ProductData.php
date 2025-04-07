@@ -203,6 +203,10 @@ class DC_ProductData extends DC_Table
         // Save the group ID when moving products to new group
         $this->set['gid'] = $this->intGroupId;
 
+        // Necessary for parent method to check recursion.
+        // PID is always 0 for products (but not for variants), but only products can be cut/paste to another group.
+        $this->set['pid'] = 0;
+
         parent::cut($blnDoNotRedirect);
     }
 
