@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\DependencyInjection;
 
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsDocument;
+use Isotope\CoreBundle\DependencyInjection\Attribute\AsGallery;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsIsotopeHook;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsPayment;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsShipping;
@@ -36,6 +37,7 @@ class IsotopeCoreExtension extends Extension
             AsPayment::class => 'isotope.payment',
             AsShipping::class => 'isotope.shipping',
             AsDocument::class => 'isotope.document',
+            AsGallery::class => 'isotope.gallery',
         ];
 
         foreach ($attributesForAutoconfiguration as $attributeClass => $tag) {

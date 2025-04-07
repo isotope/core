@@ -1,6 +1,6 @@
 const Encore = require('@terminal42/contao-build-tools');
 
-module.exports = Encore('assets')
+module.exports = Encore('assets', false)
     .setOutputPath('public/')
     .setPublicPath('/bundles/isotopecore')
 

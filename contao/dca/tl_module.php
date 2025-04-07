@@ -8,11 +8,11 @@ use Isotope\Backend\Module\Callback;
 use Isotope\Backend\Module\CumulativeFields;
 use Isotope\Backend\Module\OrderConditionFields;
 use Isotope\Backend\Module\RangeFields;
+use Isotope\CoreBundle\Model\Gallery;
 use Isotope\CoreBundle\Model\Payment;
 use Isotope\CoreBundle\Model\Shipping;
 use Isotope\Model\Address;
 use Isotope\Model\Config;
-use Isotope\Model\Gallery;
 use Isotope\Model\RelatedCategory;
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'iso_checkout_method';

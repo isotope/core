@@ -97,9 +97,9 @@ import '../styles/isotope.scss';
             var siblings = parent.parentNode.children;
 
             for (i = 0; i < siblings.length; i++) {
-                if (siblings[i].getAttribute('data-type') == 'gallery'
-                    && siblings[i].getAttribute('data-uid') == elementId
-                    && siblings[i].getAttribute('class').search(/(^| )active($| )/) != -1
+                if (siblings[i].getAttribute('data-type') === 'gallery'
+                    && siblings[i].getAttribute('data-uid') === elementId
+                    && siblings[i].classList.contains('active')
                 ) {
                     siblings[i].setAttribute('class', siblings[i].getAttribute('class').replace(/ ?active/, ''));
                 }

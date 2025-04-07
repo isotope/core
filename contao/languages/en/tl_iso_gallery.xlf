@@ -50,42 +50,6 @@
       <trans-unit id="tl_iso_gallery.lightbox_size.1">
         <source>Please enter a width and height for lightbox images.</source>
       </trans-unit>
-      <trans-unit id="tl_iso_gallery.main_watermark_image.0">
-        <source>Main watermark image</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_gallery.main_watermark_image.1">
-        <source>Select an image if you want to add a watermark to the main product image.</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_gallery.main_watermark_position.0">
-        <source>Main watermark position</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_gallery.main_watermark_position.1">
-        <source>Select the position where to apply the watermark to.</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_gallery.gallery_watermark_image.0">
-        <source>Gallery watermark image</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_gallery.gallery_watermark_image.1">
-        <source>Select an image if you want to add a watermark to the gallery images.</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_gallery.gallery_watermark_position.0">
-        <source>Gallery watermark position</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_gallery.gallery_watermark_position.1">
-        <source>Select the position where to apply the watermark to.</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_gallery.lightbox_watermark_image.0">
-        <source>Lightbox watermark image</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_gallery.lightbox_watermark_image.1">
-        <source>Select an image if you want to add a watermark to the lightbox images.</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_gallery.lightbox_watermark_position.0">
-        <source>Lightbox watermark position</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_gallery.lightbox_watermark_position.1">
-        <source>Select the position where to apply the watermark to.</source>
-      </trans-unit>
       <trans-unit id="tl_iso_gallery.customTpl.0">
         <source>Custom gallery template</source>
       </trans-unit>
@@ -127,9 +91,6 @@
       </trans-unit>
       <trans-unit id="tl_iso_gallery.size_legend">
         <source>Image sizes</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_gallery.watermark_legend">
-        <source>Watermark</source>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.lightbox_legend">
         <source>Lightbox/Mediabox</source>

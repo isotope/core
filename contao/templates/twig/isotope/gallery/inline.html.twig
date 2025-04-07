@@ -1,0 +1,28 @@
+{% use "@Contao/component/_figure.html.twig" %}
+
+{% if type == 'gallery' %}
+    {% set figure_attributes = attrs()
+        .set('data-type', 'gallery')
+        .set('data-uid', 'g'~name)
+        .mergeWith(figure_attributes|default)
+    %}
+
+    {% if index == 0 %}
+        {% set figure_attributes = attrs()
+            .addClass('active')
+            .mergeWith(figure_attributes|default)
+        %}
+    {% endif %}
+
+    {% set link_attributes = attrs()
+        .set('onclick', "return Isotope.inlineGallery(this, 'g"~name~"');")
+        .mergeWith(link_attributes|default)
+    %}
+{% elseif type == 'main' %}
+    {% set img_attributes = attrs()
+        .set('id', 'g'~name)
+        .mergeWith(img_attributes|default)
+    %}
+{% endif %}
+
+{% with {figure: image} %}{{ block('figure_component') }}{% endwith %}

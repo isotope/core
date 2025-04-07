@@ -2,7 +2,7 @@
   "backend.css": "/bundles/isotopecore/backend.82ff66da.css",
   "backend.js": "/bundles/isotopecore/backend.5e07a45f.js",
   "isotope.css": "/bundles/isotopecore/isotope.15a609b9.css",
-  "isotope.js": "/bundles/isotopecore/isotope.eccf2553.js",
+  "isotope.js": "/bundles/isotopecore/isotope.65c784ba.js",
   "plugins/fineuploader/fineuploader-4.0.3.js": "/bundles/isotopecore/plugins/fineuploader/fineuploader-4.0.3.js",
   "plugins/fineuploader/fineuploader-4.0.3.min.js": "/bundles/isotopecore/plugins/fineuploader/fineuploader-4.0.3.min.js",
   "plugins/fineuploader/LICENSE": "/bundles/isotopecore/plugins/fineuploader/LICENSE.bin",
@@ -77,5 +77,5 @@
   "backend.82ff66da.css.map": "/bundles/isotopecore/backend.82ff66da.css.map",
   "backend.5e07a45f.js.map": "/bundles/isotopecore/backend.5e07a45f.js.map",
   "isotope.15a609b9.css.map": "/bundles/isotopecore/isotope.15a609b9.css.map",
-  "isotope.eccf2553.js.map": "/bundles/isotopecore/isotope.eccf2553.js.map"
+  "isotope.65c784ba.js.map": "/bundles/isotopecore/isotope.65c784ba.js.map"
 }

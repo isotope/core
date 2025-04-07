@@ -15,7 +15,6 @@ use Contao\ContentElement;
 use Contao\CoreBundle\Security\ContaoCorePermissions;
 use Contao\Database;
 use Contao\Date;
-use Contao\FrontendUser;
 use Contao\Input;
 use Contao\PageModel;
 use Contao\StringUtil;
@@ -23,6 +22,10 @@ use Contao\System;
 use Contao\Widget;
 use Hashids\Hashids;
 use Isotope\Collection\ProductPrice as ProductPriceCollection;
+use Isotope\CoreBundle\Gallery\GalleryInterface;
+use Isotope\CoreBundle\Gallery\StandardGallery as StandardGallery;
+use Isotope\CoreBundle\Model\Gallery;
+use Isotope\CoreBundle\ModelType\GalleryRegistry;
 use Isotope\Frontend\ProductAction\ProductActionInterface;
 use Isotope\Frontend\ProductAction\Registry;
 use Isotope\Haste\Units\Mass\Weight;
@@ -37,8 +40,6 @@ use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopeProductWithOptions;
 use Isotope\Isotope;
 use Isotope\Model\Attribute;
-use Isotope\Model\Gallery;
-use Isotope\Model\Gallery\Standard as StandardGallery;
 use Isotope\Model\ProductPrice;
 use Isotope\Model\ProductType;
 use Isotope\Template;
@@ -481,13 +482,13 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             return $objPrice->generate($objType->showPriceTiers(), 1, $objProduct->getOptions());
         };
 
-        /** @var StandardGallery|null $currentGallery */
+        /** @var GalleryInterface|null $currentGallery */
         $currentGallery = null;
         $objTemplate->getGallery = static function (string $strAttribute, int $galleryId = null) use ($objProduct, $arrConfig, &$currentGallery) {
             if ($galleryId) {
                 $arrConfig['gallery'] = $galleryId;
 
-                if ($currentGallery && $currentGallery->id != $galleryId) {
+                if ($currentGallery && $currentGallery->getId() != $galleryId) {
                     $currentGallery = null;
                 }
             }
@@ -495,7 +496,10 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             if (null === $currentGallery
                 || $currentGallery->getName() !== $objProduct->getFormId() . '_' . $strAttribute
             ) {
-                $currentGallery = Gallery::createForProductAttribute(
+                /** @var GalleryRegistry $registry */
+                $registry = System::getContainer()->get(GalleryRegistry::class);
+
+                $currentGallery = $registry->getForProductAttribute(
                     $objProduct,
                     $strAttribute,
                     $arrConfig

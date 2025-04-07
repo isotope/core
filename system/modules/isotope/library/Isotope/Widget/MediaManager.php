@@ -28,7 +28,7 @@ use Contao\System;
 use Contao\UploadableWidgetInterface;
 use Contao\Widget;
 use Isotope\CompatibilityHelper;
-use Isotope\Model\Gallery;
+use Isotope\CoreBundle\Model\Gallery;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 
@@ -285,10 +285,14 @@ class MediaManager extends Widget implements UploadableWidgetInterface
             unset($this->varValue['files']);
         }
 
+        if (!\is_array($this->varValue)) {
+            $this->varValue = [];
+        }
+
         // Merge parent record data
-        if ($arrFallback !== false) {
-            $blnLanguage    = true;
-            $this->varValue = Gallery::mergeMediaData($this->varValue, $arrFallback);
+        if (null !== $arrFallback) {
+            $blnLanguage = true;
+            $this->varValue = static::mergeMediaData($this->varValue, $arrFallback);
         }
 
         $arrButtons = array('up', 'down', 'delete', 'drag');
@@ -442,6 +446,45 @@ class MediaManager extends Widget implements UploadableWidgetInterface
   </div>' . $upload . (!$blnIsAjax ? '</div>' : '');
     }
 
+    public static function mergeMediaData(array $arrCurrent, array $arrParent): array
+    {
+        $arrTranslate = array();
+
+        // Create an array of images where key = image name
+        foreach ($arrParent as $image) {
+            if ('all' !== ($image['translate'] ?? null)) {
+                $arrTranslate[$image['src']] = $image;
+            }
+        }
+
+        if ([] === \count($arrCurrent)) {
+            return array_values($arrTranslate);
+        }
+
+        foreach ($arrCurrent as $i => $image) {
+            if (isset($arrTranslate[$image['src']])) {
+                if ('none' === ($arrTranslate[$image['src']]['translate'] ?? null)) {
+                    $arrCurrent[$i] = $arrTranslate[$image['src']];
+                } else {
+                    $arrCurrent[$i]['link']      = $arrTranslate[$image['src']]['link'] ?? '';
+                    $arrCurrent[$i]['translate'] = $arrTranslate[$image['src']]['translate'] ?? '';
+                }
+
+                unset($arrTranslate[$image['src']]);
+
+            } elseif ('all' !== $arrCurrent[$i]['translate']) {
+                unset($arrCurrent[$i]);
+            }
+        }
+
+        // Add remaining parent image to the list
+        if (!empty($arrTranslate)) {
+            $arrCurrent = array_merge($arrCurrent, array_values($arrTranslate));
+        }
+
+        return array_values($arrCurrent);
+    }
+
     /**
      * Get the file path or folder only
      *
@@ -461,16 +504,18 @@ class MediaManager extends Widget implements UploadableWidgetInterface
 
     /**
      * Retrieve image data from fallback language
-     *
-     * @return array|false
      */
-    protected function getFallbackData()
+    protected function getFallbackData(): array|null
     {
         // Fetch fallback language record
         if (($_SESSION['BE_DATA']['language'][$this->strTable][$this->currentRecord] ?? '') != '') {
-            return StringUtil::deserialize(Database::getInstance()->execute("SELECT {$this->strField} FROM {$this->strTable} WHERE id={$this->currentRecord}")->{$this->strField});
+            $data = StringUtil::deserialize(Database::getInstance()->execute("SELECT {$this->strField} FROM {$this->strTable} WHERE id={$this->currentRecord}")->{$this->strField});
+
+            if (\is_array($data)) {
+                return $data;
+            }
         }
 
-        return false;
+        return null;
     }
 }

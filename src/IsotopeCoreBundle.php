@@ -8,6 +8,7 @@ use Isotope\CoreBundle\DependencyInjection\Compiler\RegisterHookListenersPass;
 use Isotope\CoreBundle\DependencyInjection\Compiler\RegisterModelTypePass;
 use Isotope\CoreBundle\DependencyInjection\IsotopeCoreExtension;
 use Isotope\CoreBundle\ModelType\DocumentRegistry;
+use Isotope\CoreBundle\ModelType\GalleryRegistry;
 use Isotope\CoreBundle\ModelType\PaymentRegistry;
 use Isotope\CoreBundle\ModelType\ShippingRegistry;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -28,6 +29,7 @@ class IsotopeCoreBundle extends Bundle
         $container->addCompilerPass(new RegisterModelTypePass(PaymentRegistry::TAG_NAME, PaymentRegistry::class, ['tl_iso_payment.type']), priority: 10);
         $container->addCompilerPass(new RegisterModelTypePass(ShippingRegistry::TAG_NAME, ShippingRegistry::class, ['tl_iso_shipping.type']), priority: 10);
         $container->addCompilerPass(new RegisterModelTypePass(DocumentRegistry::TAG_NAME, DocumentRegistry::class, ['tl_iso_document.type']), priority: 10);
+        $container->addCompilerPass(new RegisterModelTypePass(GalleryRegistry::TAG_NAME, GalleryRegistry::class, ['tl_iso_gallery.type']), priority: 10);
     }
 
     public function getPath(): string

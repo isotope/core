@@ -1,0 +1,5 @@
+{% use "@Contao/component/_figure.html.twig" %}
+
+{% with {figure: image} %}{{ block('figure_component') }}{% endwith %}
+
+{{ javascript|default|raw }}

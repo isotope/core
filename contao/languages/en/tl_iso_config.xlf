@@ -347,12 +347,6 @@
       <trans-unit id="tl_iso_config.iwMode.0">
         <source>Mode</source>
       </trans-unit>
-      <trans-unit id="tl_iso_config.iwWatermark.0">
-        <source>Watermark image</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_config.iwPosition.0">
-        <source>Position</source>
-      </trans-unit>
       <trans-unit id="tl_iso_config.ecb_int">
         <source>European Central Bank</source>
       </trans-unit>

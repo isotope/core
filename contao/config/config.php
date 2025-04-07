@@ -1,14 +1,5 @@
 <?php
 
-/*
- * Isotope eCommerce for Contao Open Source CMS
- *
- * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
- *
- * @link       https://isotopeecommerce.org
- * @license    https://opensource.org/licenses/lgpl-3.0.html
- */
-
 use Composer\InstalledVersions;
 use Contao\ArrayUtil;
 use Contao\System;
@@ -33,6 +24,7 @@ use Isotope\CheckoutStep\ShippingAddress;
 use Isotope\CheckoutStep\ShippingMethod;
 use Isotope\CompatibilityHelper;
 use Isotope\CoreBundle\Model\Document;
+use Isotope\CoreBundle\Model\Gallery;
 use Isotope\CoreBundle\Model\Payment;
 use Isotope\CoreBundle\Model\Shipping;
 use Isotope\EventListener\CalculatePrice\QuantitySurchagePriceListener;
@@ -68,9 +60,6 @@ use Isotope\Model\AttributeOption;
 use Isotope\Model\BasePrice;
 use Isotope\Model\Config;
 use Isotope\Model\Download;
-use Isotope\Model\Gallery;
-use Isotope\Model\Gallery\Inline;
-use Isotope\Model\Gallery\Standard as StandardGallery;
 use Isotope\Model\Group;
 use Isotope\Model\Label;
 use Isotope\Model\OrderStatus;
@@ -254,12 +243,6 @@ $GLOBALS['FE_MOD']['isotope'] = [
  */
 $GLOBALS['BE_FFL']['mediaManager'] = MediaManager::class;
 $GLOBALS['BE_FFL']['inheritCheckbox'] = InheritCheckBox::class;
-
-/*
- * Galleries
- */
-Gallery::registerModelType('standard', StandardGallery::class);
-Gallery::registerModelType('inline', Inline::class);
 
 /*
  * Products

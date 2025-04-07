@@ -3,7 +3,7 @@
 use Contao\DataContainer;
 use Contao\DC_Table;
 use Isotope\Backend;
-use Isotope\Model\Gallery;
+use Isotope\CoreBundle\Model\Gallery;
 
 $GLOBALS['TL_DCA']['tl_iso_document'] = [
     'config' => [

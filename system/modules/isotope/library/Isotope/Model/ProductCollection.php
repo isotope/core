@@ -21,6 +21,9 @@ use Contao\Template;
 use Isotope\CompatibilityHelper;
 use Isotope\CoreBundle\Checkout\Payment\PaymentInterface;
 use Isotope\CoreBundle\Checkout\Shipping\ShippingInterface;
+use Isotope\CoreBundle\Gallery\StandardGallery as StandardGallery;
+use Isotope\CoreBundle\Model\Gallery;
+use Isotope\CoreBundle\ModelType\GalleryRegistry;
 use Isotope\CoreBundle\ModelType\PaymentRegistry;
 use Isotope\CoreBundle\ModelType\ShippingRegistry;
 use Isotope\Frontend;
@@ -34,7 +37,6 @@ use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Message;
-use Isotope\Model\Gallery\Standard as StandardGallery;
 use Isotope\Model\ProductCollectionSurcharge\Tax;
 
 /**
@@ -1523,7 +1525,10 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
             $arrConfig['jumpTo'] = $objItem->getRelated('jumpTo');
 
             if (!isset($arrGalleries[$strCacheKey])) {
-                $arrGalleries[$strCacheKey] = Gallery::createForProductAttribute(
+                /** @var GalleryRegistry $registry */
+                $registry = System::getContainer()->get(GalleryRegistry::class);
+
+                $arrGalleries[$strCacheKey] = $registry->getForProductAttribute(
                     $objItem->getProduct(),
                     $strAttribute,
                     $arrConfig

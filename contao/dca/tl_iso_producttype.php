@@ -7,8 +7,7 @@ use Isotope\Backend\ProductType\AttributeWizard;
 use Isotope\Backend\ProductType\Callback;
 use Isotope\Backend\ProductType\Label;
 use Isotope\Backend\ProductType\Permission;
-use Isotope\Model\Gallery;
-use Isotope\Model\Product;
+use Isotope\CoreBundle\Model\Gallery;
 
 $GLOBALS['TL_DCA']['tl_iso_producttype'] = [
     'config' => [
