@@ -86,7 +86,7 @@ class Breadcrumb extends Backend
                     $intPid = $objGroup->pid;
                 }
             }
-        } while ($objGroup->pid);
+        } while ($objGroup && $objGroup->pid);
 
         $arrLinks = array();
         $strUrl   = Environment::get('request');

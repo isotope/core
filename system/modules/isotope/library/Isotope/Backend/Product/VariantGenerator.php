@@ -131,19 +131,22 @@ class VariantGenerator extends Backend
             }
         }
 
+        $arrInherit = array_intersect(
+            $objProduct->getType()->getAttributes(),
+            array_diff(
+                $objProduct->getType()->getVariantAttributes(),
+                Attribute::getVariantOptionFields(),
+                Attribute::getCustomerDefinedFields(),
+                Attribute::getSystemColumnsFields()
+            ),
+        );
+
         foreach ($arrCombinations as $combination) {
             $objVariant = Database::getInstance()->prepare('
                     SELECT * FROM tl_iso_product WHERE pid=? AND ' . implode('=? AND ', array_keys($combination)) . '=?'
             )->execute(array_merge([$objProduct->id], $combination));
 
             if (!$objVariant->numRows) {
-                $arrInherit = array_diff(
-                    $objProduct->getType()->getVariantAttributes(),
-                    Attribute::getVariantOptionFields(),
-                    Attribute::getCustomerDefinedFields(),
-                    Attribute::getSystemColumnsFields()
-                );
-
                 $arrSet = array_merge(
                     $combination,
                     [
