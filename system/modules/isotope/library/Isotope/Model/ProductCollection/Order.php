@@ -11,20 +11,21 @@
 
 namespace Isotope\Model\ProductCollection;
 
-use Contao\Controller;
 use Contao\CoreBundle\Monolog\ContaoContext;
 use Contao\Message;
 use Contao\StringUtil;
 use Contao\System;
 use Contao\Template;
 use Isotope\CompatibilityHelper;
+use Isotope\CoreBundle\Document\DocumentInterface;
+use Isotope\CoreBundle\Model\Document;
+use Isotope\CoreBundle\ModelType\DocumentRegistry;
 use Isotope\Haste\Util\Format;
 use Isotope\Interfaces\IsotopeNotificationTokens;
 use Isotope\Interfaces\IsotopeOrderStatusAware;
 use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Isotope;
 use Isotope\Model\Address;
-use Isotope\Model\Document;
 use Isotope\Model\OrderStatus;
 use Isotope\Model\ProductCollection;
 use Isotope\Model\ProductCollectionLog;
@@ -535,11 +536,13 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
             $arrTokens['cart_text'] = strip_tags(\Contao\System::getContainer()->get('contao.insert_tag.parser')->replaceInline($objTemplate->parse()));
 
             // Generate and "attach" document
-            /** @var \Isotope\Interfaces\IsotopeDocument $objDocument */
             if ($objNotification->iso_document > 0
-                && (($objDocument = Document::findByPk($objNotification->iso_document)) !== null)
+                && (null !== ($documentModel = Document::findByPk($objNotification->iso_document)))
             ) {
-                $strFilePath           = $objDocument->outputToFile($this, System::getContainer()->getParameter('kernel.project_dir') . '/system/tmp');
+                /** @var DocumentInterface $document */
+                $document = System::getContainer()->get(DocumentRegistry::class)->get($documentModel);
+
+                $strFilePath           = $document->outputToFile($this, System::getContainer()->getParameter('kernel.project_dir') . '/system/tmp');
                 $arrTokens['document'] = str_replace(System::getContainer()->getParameter('kernel.project_dir') . '/', '', $strFilePath);
             }
         }

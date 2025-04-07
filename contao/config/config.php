@@ -32,6 +32,7 @@ use Isotope\CheckoutStep\PaymentMethod;
 use Isotope\CheckoutStep\ShippingAddress;
 use Isotope\CheckoutStep\ShippingMethod;
 use Isotope\CompatibilityHelper;
+use Isotope\CoreBundle\Model\Document;
 use Isotope\CoreBundle\Model\Payment;
 use Isotope\CoreBundle\Model\Shipping;
 use Isotope\EventListener\CalculatePrice\QuantitySurchagePriceListener;
@@ -66,8 +67,6 @@ use Isotope\Model\Attribute\Upload;
 use Isotope\Model\AttributeOption;
 use Isotope\Model\BasePrice;
 use Isotope\Model\Config;
-use Isotope\Model\Document;
-use Isotope\Model\Document\Standard;
 use Isotope\Model\Download;
 use Isotope\Model\Gallery;
 use Isotope\Model\Gallery\Inline;
@@ -256,11 +255,6 @@ $GLOBALS['FE_MOD']['isotope'] = [
  */
 $GLOBALS['BE_FFL']['mediaManager'] = MediaManager::class;
 $GLOBALS['BE_FFL']['inheritCheckbox'] = InheritCheckBox::class;
-
-/*
- * Documents
- */
-Document::registerModelType('standard', Standard::class);
 
 /*
  * Galleries

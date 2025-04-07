@@ -3,7 +3,6 @@
 use Contao\DataContainer;
 use Contao\DC_Table;
 use Isotope\Backend;
-use Isotope\Model\Document;
 use Isotope\Model\Gallery;
 
 $GLOBALS['TL_DCA']['tl_iso_document'] = [
@@ -50,8 +49,8 @@ $GLOBALS['TL_DCA']['tl_iso_document'] = [
             'filter' => true,
             'inputType' => 'select',
             'default' => 'standard',
-            'options_callback' => static fn () => Document::getModelTypeOptions(),
-            'eval' => ['submitOnChange' => true, 'tl_class' => 'w50', 'includeBlankOption' => true],
+            'reference' => &$GLOBALS['TL_LANG']['MODEL']['tl_iso_document'],
+            'eval' => ['helpwizard' => true, 'submitOnChange' => true, 'tl_class' => 'w50', 'includeBlankOption' => true],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'documentTitle' => [

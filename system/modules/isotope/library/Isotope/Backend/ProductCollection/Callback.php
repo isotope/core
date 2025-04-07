@@ -32,14 +32,16 @@ use Contao\System;
 use Isotope\CompatibilityHelper;
 use Isotope\CoreBundle\Checkout\Payment\PaymentInterface;
 use Isotope\CoreBundle\Checkout\Shipping\ShippingInterface;
+use Isotope\CoreBundle\Document\DocumentInterface;
+use Isotope\CoreBundle\Model\Document;
 use Isotope\CoreBundle\Model\Payment;
 use Isotope\CoreBundle\Model\Shipping;
+use Isotope\CoreBundle\ModelType\DocumentRegistry;
 use Isotope\Frontend;
 use Isotope\Haste\Util\Format;
 use Isotope\Interfaces\IsotopeBackendInterface;
 use Isotope\Isotope;
 use Isotope\Model\Address;
-use Isotope\Model\Document;
 use Isotope\Model\OrderStatus;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Model\ProductCollectionLog;
@@ -576,13 +578,14 @@ class Callback extends Backend
 
             Frontend::loadOrderEnvironment($objOrder);
 
-            /** @var \Isotope\Interfaces\IsotopeDocument $objDocument */
-            if (($objDocument = Document::findByPk(Input::post('document'))) === null) {
+            if (($documentModel = Document::findByPk(Input::post('document'))) === null) {
                 Message::addError('Could not find document id.');
                 Controller::redirect($strRedirectUrl);
             }
 
-            $objDocument->outputToBrowser($objOrder);
+            /** @var DocumentInterface $document */
+            $document = System::getContainer()->get(DocumentRegistry::class)->get($documentModel);
+            $document->outputToBrowser($objOrder);
         }
 
         $arrSelect = array

@@ -11,9 +11,6 @@
 
 namespace Isotope\Interfaces;
 
-/**
- * Documents print a collection
- */
 interface IsotopeIntegrityCheck
 {
 
