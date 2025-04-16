@@ -63,6 +63,8 @@ class ProductCategory extends Model
      */
     public static function findByPidForPublishedPages($intProduct, array $arrOptions = array())
     {
+        // Register the model to prevent a runtime error
+        Product::findByPk($intProduct);
         $arrOptions = static::getFindByPidForPublishedPagesOptions($intProduct, $arrOptions);
 
         return parent::find($arrOptions);
