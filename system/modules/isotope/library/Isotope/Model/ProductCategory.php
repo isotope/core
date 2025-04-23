@@ -63,6 +63,9 @@ class ProductCategory extends Model
      */
     public static function findByPidForPublishedPages($intProduct, array $arrOptions = array())
     {
+        // Register model to prevent eager loading of product data (see isotope/core#2570)
+        Product::findByPk($intProduct);
+
         $arrOptions = static::getFindByPidForPublishedPagesOptions($intProduct, $arrOptions);
 
         return parent::find($arrOptions);
