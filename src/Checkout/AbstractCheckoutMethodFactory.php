@@ -9,6 +9,7 @@ use Contao\StringUtil;
 use Isotope\CoreBundle\Model\Payment;
 use Isotope\CoreBundle\Model\Shipping;
 use Isotope\CoreBundle\ModelType\ModelTypeFactoryInterface;
+use Isotope\CoreBundle\ModelType\SerializedPropertyTrait;
 
 /**
  * @template TType of AbstractCheckoutMethod
@@ -18,6 +19,8 @@ use Isotope\CoreBundle\ModelType\ModelTypeFactoryInterface;
  */
 abstract class AbstractCheckoutMethodFactory implements ModelTypeFactoryInterface
 {
+    use SerializedPropertyTrait;
+
     /**
      * @param TModel $model
      *
@@ -54,17 +57,6 @@ abstract class AbstractCheckoutMethodFactory implements ModelTypeFactoryInterfac
      * @return TType
      */
     abstract protected function doCreate(Model $model): AbstractCheckoutMethod;
-
-    protected function unserialize(string|null $value, callable $callable): array|null
-    {
-        $values = StringUtil::deserialize($value);
-
-        if (!\is_array($values) || [] === $values) {
-            return null;
-        }
-
-        return array_map($callable, $values);
-    }
 
     /**
      * @return array{0: float|null, 1: bool}

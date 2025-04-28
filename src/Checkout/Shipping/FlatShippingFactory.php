@@ -7,6 +7,7 @@ namespace Isotope\CoreBundle\Checkout\Shipping;
 use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use Contao\Model;
 use Isotope\CoreBundle\Model\Shipping;
+use Isotope\CoreBundle\ModelType\SerializedPropertyTrait;
 use Isotope\Haste\Units\Mass\Weight;
 use Symfony\Bundle\SecurityBundle\Security;
 
@@ -15,6 +16,8 @@ use Symfony\Bundle\SecurityBundle\Security;
  */
 class FlatShippingFactory extends AbstractShippingFactory
 {
+    use SerializedPropertyTrait;
+
     public function __construct(
         private readonly Security $security,
         private readonly TokenChecker $tokenChecker,

@@ -7,6 +7,7 @@ namespace Isotope\CoreBundle\Checkout\Shipping;
 use Contao\Model;
 use Isotope\CoreBundle\Checkout\AbstractCheckoutMethodFactory;
 use Isotope\CoreBundle\Model\Shipping;
+use Isotope\CoreBundle\ModelType\SerializedPropertyTrait;
 use Isotope\Frontend;
 use Isotope\Haste\Units\Mass\Weight;
 
@@ -17,6 +18,8 @@ use Isotope\Haste\Units\Mass\Weight;
  */
 abstract class AbstractShippingFactory extends AbstractCheckoutMethodFactory
 {
+    use SerializedPropertyTrait;
+
     /**
      * @param Shipping $model
      *
@@ -28,7 +31,10 @@ abstract class AbstractShippingFactory extends AbstractCheckoutMethodFactory
             throw new \RuntimeException(\sprintf('%s should be an instance of %s', $model::class, Shipping::class));
         }
 
-        return parent::create($model)
+        /** @var AbstractShipping $shipping */
+        $shipping = parent::create($model);
+
+        $shipping
             ->setMinMaxWeight((float) $model->minimum_weight, (float) $model->maximum_weight)
             ->setShippingWeight(Weight::createFromTimePeriod($model->shipping_weight))
             ->setAddressType(AddressType::tryFrom($model->address_type))
@@ -38,5 +44,7 @@ abstract class AbstractShippingFactory extends AbstractCheckoutMethodFactory
                 Frontend::parsePostalCodes($model->postalCodes) ?: null,
             )
         ;
+
+        return $shipping;
     }
 }
