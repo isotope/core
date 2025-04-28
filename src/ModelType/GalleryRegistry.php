@@ -35,7 +35,7 @@ class GalleryRegistry extends AbstractModelTypeRegistry
     }
 
     /**
-     * Create a gallery for product, falls back to standard gallery if none is defined
+     * Create a gallery for product, falls back to standard gallery if none is defined.
      *
      * @param array{gallery: int} $config
      */
@@ -47,10 +47,10 @@ class GalleryRegistry extends AbstractModelTypeRegistry
         $href = null;
         $files = MediaManager::mergeMediaData(
             StringUtil::deserialize($objProduct->$attribute, true),
-            StringUtil::deserialize($objProduct->{$attribute . '_fallback'}, true)
+            StringUtil::deserialize($objProduct->{$attribute.'_fallback'}, true),
         );
 
-        if (!$config['jumpTo'] instanceof PageModel || $config['jumpTo']->iso_readerMode !== 'none') {
+        if (!$config['jumpTo'] instanceof PageModel || 'none' !== $config['jumpTo']->iso_readerMode) {
             $href = $objProduct->generateUrl($config['jumpTo']);
         }
 

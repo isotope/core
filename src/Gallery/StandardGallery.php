@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Isotope\CoreBundle\Gallery;
 
 use Contao\CoreBundle\Image\Studio\FigureBuilder;
@@ -10,13 +12,10 @@ use Twig\Environment;
 #[AsGallery]
 class StandardGallery extends AbstractGallery
 {
-    private int|array|string|null $lightboxSize = null;
+    private array|int|string|null $lightboxSize = null;
 
-    public function __construct(
-        int $id,
-        Studio $imageStudio,
-        Environment $twig,
-    ) {
+    public function __construct(int $id, Studio $imageStudio, Environment $twig)
+    {
         parent::__construct($id, '@Contao/isotope/gallery/standard.html.twig', $imageStudio, $twig);
     }
 
@@ -32,11 +31,11 @@ class StandardGallery extends AbstractGallery
         return $this;
     }
 
-    protected function prepareFigureBuilder(string $type, int $index, array $file, int|array|string|null $size): FigureBuilder
+    protected function prepareFigureBuilder(string $type, int $index, array $file, array|int|string|null $size): FigureBuilder
     {
         $figureBuilder = parent::prepareFigureBuilder($type, $index, $file, $size);
 
-        if ($this->getAnchor() !== AnchorTarget::lightbox) {
+        if (AnchorTarget::lightbox !== $this->getAnchor()) {
             return $figureBuilder;
         }
 

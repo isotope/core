@@ -55,7 +55,7 @@ class ProductTypeAccessVoter extends AbstractDataContainerVoter implements Reset
     private function canDelete(TokenInterface $token, int $currentId): bool
     {
         if (null === $this->used) {
-            $this->used = array_map('intval', $this->connection->fetchFirstColumn('SELECT DISTINCT type FROM tl_iso_product'));
+            $this->used = array_map(intval(...), $this->connection->fetchFirstColumn('SELECT DISTINCT type FROM tl_iso_product'));
         }
 
         return !\in_array($currentId, $this->used, true)

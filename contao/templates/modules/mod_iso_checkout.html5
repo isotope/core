@@ -7,7 +7,7 @@
 <ol class="level_1 steps<?= count($this->steps) ?>">
 <?php foreach( $this->steps as $step ): ?>
 <li class="<?= $step['class'] ?>">
-<?php if (strlen($step['href'])): ?>
+<?php if (strlen((string) $step['href'])): ?>
 <a class="<?= $step['class'] ?>" href="<?= $step['href'] ?>" title="<?= $step['title'] ?>"><?= $step['link'] ?></a>
 <?php else: ?>
 <span class="<?= $step['class'] ?>"><?php if($step['isActive']): ?><span class="invisible"><?= $this->activeStep ?></span><?php endif; ?><?= $step['link'] ?></span>
@@ -18,7 +18,7 @@
 </div>
 <?php endif; ?>
 
-<?php if (strlen($this->message)): ?>
+<?php if (strlen((string) $this->message)): ?>
 <p class="<?= $this->mtype ?> message"><?= $this->message ?></p>
 <?php endif; ?>
 

@@ -4,7 +4,6 @@ use Contao\Controller;
 use Contao\DataContainer;
 use Contao\DC_Table;
 use Contao\System;
-use Isotope\Backend;
 use Isotope\CoreBundle\Gallery\AnchorTarget;
 
 $GLOBALS['TL_DCA']['tl_iso_gallery'] = [

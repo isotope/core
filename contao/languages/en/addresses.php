@@ -1,20 +1,5 @@
 <?php
 
-/*
- * Isotope eCommerce for Contao Open Source CMS
- *
- * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
- *
- * @link       https://isotopeecommerce.org
- * @license    https://opensource.org/licenses/lgpl-3.0.html
- */
-
-/*
- * Address formatting for different countries
- *
- * ATTENTION: This file is not supposed to be translated.
- * Address formatting is the same for all languages, but we only want this data to be loaded when needed.
- */
 $GLOBALS['ISO_ADR']['generic'] =
 '<div class="vcard">{if hcard_org!=""}##hcard_org##
 {endif}{if hcard_n=="1"}<div class="n">{if hcard_honorific_prefix!=""}##hcard_honorific_prefix## {endif}##hcard_given_name## ##hcard_family_name##</div>

@@ -1,20 +1,5 @@
 <?php
 
-/*
- * Isotope eCommerce for Contao Open Source CMS
- *
- * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
- *
- * @link       https://isotopeecommerce.org
- * @license    https://opensource.org/licenses/lgpl-3.0.html
- */
-
-/**
- * Subdivisions (regions) by country code.
- *
- * @see http://en.wikipedia.org/wiki/ISO_3166-2
- * @see http://docs.equest.com/eQuestCountryAndStateCodes.xls
- */
 $GLOBALS['TL_LANG']['DIV']['af']['AF-BDS'] = 'Badakhshān';
 $GLOBALS['TL_LANG']['DIV']['af']['AF-BDG'] = 'Bādghīs';
 $GLOBALS['TL_LANG']['DIV']['af']['AF-BGL'] = 'Baghlān';

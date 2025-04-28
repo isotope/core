@@ -12,6 +12,9 @@ use Isotope\CoreBundle\Model\Document;
 use Isotope\CoreBundle\ModelType\ModelTypeFactoryInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
+/**
+ * @implements ModelTypeFactoryInterface<DocumentInterface, Document>
+ */
 class StandardDocumentFactory implements ModelTypeFactoryInterface
 {
     public function __construct(

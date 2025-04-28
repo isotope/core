@@ -48,7 +48,7 @@ class DownloadAccessVoter extends AbstractDataContainerVoter implements ResetInt
     private function canDelete(int $currentId): bool
     {
         if (null === $this->used) {
-            $this->used = array_map('intval', $this->connection->fetchFirstColumn('SELECT DISTINCT download_id FROM tl_iso_product_collection_download'));
+            $this->used = array_map(intval(...), $this->connection->fetchFirstColumn('SELECT DISTINCT download_id FROM tl_iso_product_collection_download'));
         }
 
         return !\in_array($currentId, $this->used, true);

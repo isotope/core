@@ -47,7 +47,7 @@ abstract class AbstractDocument implements DocumentInterface
         return $this->documentTitle;
     }
 
-    public function setDocumentTitle(string $documentTitle): self
+    public function setDocumentTitle(string $documentTitle): static
     {
         $this->documentTitle = $documentTitle;
 
@@ -59,7 +59,7 @@ abstract class AbstractDocument implements DocumentInterface
         return $this->documentTemplate;
     }
 
-    public function setDocumentTemplate(string $documentTemplate): self
+    public function setDocumentTemplate(string $documentTemplate): static
     {
         $this->documentTemplate = $documentTemplate;
 
@@ -71,7 +71,7 @@ abstract class AbstractDocument implements DocumentInterface
         return $this->collectionTemplate;
     }
 
-    public function setCollectionTemplate(string $collectionTemplate): self
+    public function setCollectionTemplate(string $collectionTemplate): static
     {
         $this->collectionTemplate = $collectionTemplate;
 
@@ -83,7 +83,7 @@ abstract class AbstractDocument implements DocumentInterface
         return $this->orderCollectionBy;
     }
 
-    public function setOrderCollectionBy(string $orderCollectionBy): self
+    public function setOrderCollectionBy(string $orderCollectionBy): static
     {
         $this->orderCollectionBy = $orderCollectionBy;
 
@@ -95,7 +95,7 @@ abstract class AbstractDocument implements DocumentInterface
         return $this->galleryId;
     }
 
-    public function setGalleryId(int|null $galleryId): self
+    public function setGalleryId(int|null $galleryId): static
     {
         $this->galleryId = $galleryId;
 

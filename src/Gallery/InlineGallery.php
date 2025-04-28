@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Isotope\CoreBundle\Gallery;
 
 use Contao\CoreBundle\Image\Studio\FigureBuilder;
@@ -22,12 +24,12 @@ class InlineGallery extends StandardGallery
         return parent::generateGallery($skip);
     }
 
-    protected function prepareFigureBuilder(string $type, int $index, array $file, int|array|string|null $size): FigureBuilder
+    protected function prepareFigureBuilder(string $type, int $index, array $file, array|int|string|null $size): FigureBuilder
     {
         $figureBuilder = parent::prepareFigureBuilder($type, $index, $file, $size);
 
         if ('gallery' === $type) {
-            if ($this->getAnchor() === AnchorTarget::lightbox) {
+            if (AnchorTarget::lightbox === $this->getAnchor()) {
                 $figureBuilder->setLinkAttribute('data-lightbox-url', $figureBuilder->buildIfResourceExists()?->getLinkHref());
             }
 

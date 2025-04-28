@@ -14,13 +14,19 @@ use Twig\Environment;
 abstract class AbstractGallery implements GalleryInterface
 {
     private AnchorTarget $anchor = AnchorTarget::none;
+
     private string|null $placeholder = null;
-    private int|array|null $mainSize = null;
-    private int|array|null $gallerySize = null;
+
+    private array|int|null $mainSize = null;
+
+    private array|int|null $gallerySize = null;
 
     private string $name = '';
+
     private int $productId = 0;
+
     private array $files = [];
+
     private string|null $href = null;
 
     public function __construct(
@@ -44,17 +50,19 @@ abstract class AbstractGallery implements GalleryInterface
     public function setAnchor(AnchorTarget $anchor): static
     {
         $this->anchor = $anchor;
+
         return $this;
     }
 
-    public function getPlaceholder(): ?string
+    public function getPlaceholder(): string|null
     {
         return $this->placeholder;
     }
 
-    public function setPlaceholder(?string $placeholder): static
+    public function setPlaceholder(string|null $placeholder): static
     {
         $this->placeholder = $placeholder;
+
         return $this;
     }
 
@@ -66,6 +74,7 @@ abstract class AbstractGallery implements GalleryInterface
     public function setMainSize(array|int|null $mainSize): static
     {
         $this->mainSize = $mainSize;
+
         return $this;
     }
 
@@ -77,6 +86,7 @@ abstract class AbstractGallery implements GalleryInterface
     public function setGallerySize(array|int|null $gallerySize): static
     {
         $this->gallerySize = $gallerySize;
+
         return $this;
     }
 
@@ -88,6 +98,7 @@ abstract class AbstractGallery implements GalleryInterface
     public function setTemplate(string $template): static
     {
         $this->template = $template;
+
         return $this;
     }
 
@@ -108,7 +119,7 @@ abstract class AbstractGallery implements GalleryInterface
         return $this->name;
     }
 
-    public function getHref(): ?string
+    public function getHref(): string|null
     {
         return $this->href;
     }
@@ -132,7 +143,7 @@ abstract class AbstractGallery implements GalleryInterface
         }
 
         // TODO: implement ajax reload of gallery lightbox
-        //if (Environment::get('isAjaxRequest')) {
+        // if (Environment::get('isAjaxRequest')) {
         //    $strScripts = '';
         //    $arrTemplates = StringUtil::deserialize($this->lightbox_template, true);
         //
@@ -144,7 +155,7 @@ abstract class AbstractGallery implements GalleryInterface
         //    }
         //
         //    $template->javascript = $strScripts;
-        //}
+        // }
 
         $figure = $this->prepareFigureBuilder('main', 0, $file, $this->getMainSize())->buildIfResourceExists();
 
@@ -194,27 +205,27 @@ abstract class AbstractGallery implements GalleryInterface
     protected function resolvePath(array|null $file, bool $placeholder = false): array|null
     {
         if (empty($file['src'])) {
-            return $placeholder && $this->placeholder ? FilesModel::findByPk($this->placeholder)?->path : null;
+            return $placeholder && $this->placeholder ? FilesModel::findById($this->placeholder)?->path : null;
         }
 
         $path = $file['src'];
 
         // File without path must be located in the isotope root folder
         if (!str_contains($path, '/')) {
-            $file['src'] = 'isotope/' . strtolower($path[0]) . '/' . $path;
+            $file['src'] = 'isotope/'.strtolower($path[0]).'/'.$path;
         }
 
         return $file;
     }
 
-    protected function prepareFigureBuilder(string $type, int $index, array $file, int|array|string|null $size): FigureBuilder
+    protected function prepareFigureBuilder(string $type, int $index, array $file, array|int|string|null $size): FigureBuilder
     {
         return $this->imageStudio
             ->createFigureBuilder()
             ->setSize($size)
             ->fromPath($file['src'])
             ->setMetadata($this->getMetadata($file))
-            ->setLinkHref($this->getAnchor() === AnchorTarget::reader ? $this->getHref() : null)
+            ->setLinkHref(AnchorTarget::reader === $this->getAnchor() ? $this->getHref() : null)
         ;
     }
 
