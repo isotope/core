@@ -1,41 +1,32 @@
 <?php
 
-/*
- * Isotope eCommerce for Contao Open Source CMS
- *
- * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
- *
- * @link       https://isotopeecommerce.org
- * @license    https://opensource.org/licenses/lgpl-3.0.html
- */
+declare(strict_types=1);
 
-namespace Isotope\Backend\Product;
+namespace Isotope\CoreBundle\EventListener\DataContainer\Product;
 
+use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
+use Contao\CoreBundle\Image\Studio\Studio;
 use Contao\Database;
 use Contao\DataContainer;
 use Contao\Environment;
-use Contao\Image;
 use Contao\StringUtil;
-use Contao\System;
 use Isotope\Haste\Util\Format;
 use Isotope\Model\Product;
 use Isotope\Model\ProductPrice;
 use Isotope\Model\ProductType;
+use Isotope\Model\TaxClass;
 
-class Label
+#[AsCallback('tl_iso_product', 'list.label.label')]
+class LabelListener
 {
+    public function __construct(
+        private readonly Studio $imageStudio,
+    ) {
+    }
 
-    /**
-     * Generate a product label and return it as HTML string
-     *
-     * @param array          $row
-     * @param string         $label
-     * @param array          $args
-     * @return array
-     */
-    public function generate($row, $label, DataContainer $dc, $args)
+    public function __invoke(array $row, string $label, DataContainer $dc, array $args): array
     {
-        $objProduct = Product::findByPk($row['id']);
+        $objProduct = Product::findById($row['id']);
 
         if (!$objProduct) {
             return $args;
@@ -44,7 +35,7 @@ class Label
         foreach ($GLOBALS['TL_DCA'][$dc->table]['list']['label']['fields'] as $i => $field) {
             switch ($field) {
                 case 'images':
-                    $args[$i] = static::generateImage($objProduct);
+                    $args[$i] = $this->generateImage($objProduct);
                     break;
 
                 case 'name':
@@ -60,8 +51,9 @@ class Label
                     break;
 
                 default:
-                    $objProductType = ProductType::findByPk($row['type']);
-                    if ($objProductType
+                    $objProductType = ProductType::findById($row['type']);
+                    if (
+                        $objProductType
                         && $objProductType->hasVariants()
                         && !\in_array($field, $objProductType->getAttributes(), true)
                         && \in_array($field, $objProductType->getVariantAttributes(), true)
@@ -82,38 +74,31 @@ class Label
         return $args;
     }
 
-    /**
-     * Generate image label for product.
-     *
-     * @return string
-     */
-    public static function generateImage(Product $objProduct)
+    public function generateImage(Product $objProduct): string
     {
         $arrImages = StringUtil::deserialize($objProduct->images);
-        $projectDir = System::getContainer()->getParameter('kernel.project_dir');
 
         if (!empty($arrImages) && \is_array($arrImages)) {
+            $figureBuilder = $this->imageStudio->createFigureBuilder()->setSize([50, 50, 'proportional']);
+
             foreach ($arrImages as $image) {
-                $strImage = 'isotope/' . strtolower(substr($image['src'], 0, 1)) . '/' . $image['src'];
+                $path = 'isotope/'.strtolower(substr((string) $image['src'], 0, 1)).'/'.$image['src'];
+                $figure = $figureBuilder->fromPath($path)->buildIfResourceExists();
 
-                if (is_file($projectDir . '/' . $strImage)) {
-                    $size = @getimagesize($projectDir . '/' . $strImage);
-
-                    $script = sprintf(
+                if ($figure) {
+                    $script = \sprintf(
                         "Backend.openModalImage({'width':%s,'title':'%s','url':'%s'});return false",
-                        $size[0] ?? 0,
+                        $figure->getImage()->getOriginalDimensions()->getSize()->getWidth(),
                         str_replace("'", "\\'", $objProduct->name),
-                        $strImage
+                        $path,
                     );
 
-                    /** @noinspection BadExpressionStatementJS */
-                    /** @noinspection HtmlUnknownTarget */
-                    return sprintf(
+                    return \sprintf(
                         '<a href="%s" onclick="%s"><img src="%s" alt="%s"></a>',
-                        $strImage,
+                        $path,
                         $script,
-                        Image::get($strImage, 50, 50, 'proportional'),
-                        $image['alt'] ?? ''
+                        $figure->getImage()->getImageSrc(),
+                        $image['alt'] ?? '',
                     );
                 }
             }
@@ -124,48 +109,39 @@ class Label
 
     /**
      * Generate name label for product with link to variants if enabled.
-     *
-     * @param array $row
-     * @param Product $objProduct
-     * @param DataContainer $dc
-     *
-     * @return string
      */
-    private function generateName($row, $objProduct, $dc)
+    private function generateName(array $row, Product $product, DataContainer $dc): string
     {
         // Add a variants link
-        if ($row['pid'] == 0
-            && ($objProductType = ProductType::findByPk($row['type'])) !== null
-            && $objProductType->hasVariants()
+        if (
+            0 === $row['pid']
+            && null !== ($productType = ProductType::findById($row['type']))
+            && $productType->hasVariants()
         ) {
-            /** @noinspection HtmlUnknownTarget */
-            return sprintf(
+            return \sprintf(
                 '<a href="%s" title="%s">%s</a>',
-                \Contao\StringUtil::ampersand(Environment::get('request')) . '&amp;id=' . $row['id'],
+                StringUtil::ampersand(Environment::get('request')).'&amp;id='.$row['id'],
                 StringUtil::specialchars($GLOBALS['TL_LANG'][$dc->table]['showVariants']),
-                $objProduct->name
+                $product->name,
             );
         }
 
-        return $objProduct->name;
+        return $product->name;
     }
 
     /**
      * Generate price label for product.
-     *
-     * @param array $row
-     *
-     * @return string
      */
-    private function generatePrice($row)
+    private function generatePrice(array $row): string
     {
         $objPrice = null;
         $fromPrice = false;
 
-        if ($row['pid'] == 0
-            && null !== ($objProductType = ProductType::findByPk($row['type']))
+        if (
+            0 === $row['pid']
+            && null !== ($objProductType = ProductType::findById($row['type']))
             && $objProductType->hasVariants()
-            && \in_array('price', $objProductType->getVariantAttributes())
+            && \in_array('price', $objProductType->getVariantAttributes(), true)
         ) {
             $variantIds = Database::getInstance()->prepare("SELECT id FROM tl_iso_product WHERE pid=? AND language=''")->execute($row['id'])->fetchEach('id');
 
@@ -202,16 +178,16 @@ class Label
 
         if (null !== $objPrice) {
             try {
-                /** @var \Isotope\Model\TaxClass $objTax */
+                /** @var TaxClass $objTax */
                 $objTax = $objPrice->getRelated('tax_class');
-                $strTax = (null === $objTax ? '' : ' (' . $objTax->getName() . ')');
+                $strTax = (null === $objTax ? '' : ' ('.$objTax->getName().')');
 
                 if ($fromPrice) {
-                    return sprintf($GLOBALS['TL_LANG']['MSC']['priceRangeLabel'], $objPrice->getValueForTier(1)) . $strTax;
+                    return \sprintf($GLOBALS['TL_LANG']['MSC']['priceRangeLabel'], $objPrice->getValueForTier(1)).$strTax;
                 }
 
-                return $objPrice->getValueForTier(1) . $strTax;
-            } catch (\Exception $e) {
+                return $objPrice->getValueForTier(1).$strTax;
+            } catch (\Exception) {
                 return '';
             }
         }
@@ -221,25 +197,19 @@ class Label
 
     /**
      * Generate variant fields for product.
-     *
-     * @param string $label
-     * @param Product $objProduct
-     * @param DataContainer $dc
-     *
-     * @return string
      */
-    private function generateVariantFields($label, $objProduct, $dc)
+    private function generateVariantFields(string $label, Product $objProduct, DataContainer $dc): string
     {
         $attributes = [];
 
         foreach ($GLOBALS['TL_DCA'][$dc->table]['list']['label']['variantFields'] as $variantField) {
-            $attributes[] = sprintf(
+            $attributes[] = \sprintf(
                 '<strong>%s:</strong>&nbsp;%s',
                 Format::dcaLabel($dc->table, $variantField),
-                Format::dcaValue($dc->table, $variantField, $objProduct->$variantField)
+                Format::dcaValue($dc->table, $variantField, $objProduct->$variantField),
             );
         }
 
-        return ($label ? $label . '<br>' : '') . implode(', ', $attributes);
+        return ($label ? $label.'<br>' : '').implode(', ', $attributes);
     }
 }

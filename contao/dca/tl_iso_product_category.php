@@ -5,7 +5,6 @@ use Contao\DataContainer;
 use Contao\Input;
 use Contao\Message;
 use Isotope\Backend;
-use Isotope\Backend\ProductCategory\Callback;
 use Isotope\CoreBundle\DataContainer\TablePageId;
 
 $GLOBALS['TL_DCA']['tl_iso_product_category'] = [
@@ -40,7 +39,6 @@ $GLOBALS['TL_DCA']['tl_iso_product_category'] = [
             'fields' => ['sorting'],
             'panelLayout' => 'limit',
             'headerFields' => ['title', 'type'],
-            'child_record_callback' => [Callback::class, 'listRows'],
         ],
     ],
     'fields' => [

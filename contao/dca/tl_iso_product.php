@@ -9,7 +9,6 @@ use Isotope\Backend\Product\Button;
 use Isotope\Backend\Product\Category;
 use Isotope\Backend\Product\DcaManager;
 use Isotope\Backend\Product\Fallback;
-use Isotope\Backend\Product\Label;
 use Isotope\Backend\Product\Panel;
 use Isotope\Backend\Product\Permission;
 use Isotope\Backend\Product\Price as BackendPrice;
@@ -102,7 +101,6 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
         'label' => [
             'fields' => ['images', 'name', 'sku', 'price'],
             'showColumns' => true,
-            'label_callback' => [Label::class, 'generate'],
         ],
         'global_operations' => [
             'generate' => [
