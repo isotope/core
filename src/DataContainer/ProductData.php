@@ -123,7 +123,17 @@ class ProductData extends DC_Table
 		}
 	}
 
-	/**
+    public function __get($strKey)
+    {
+        switch ($strKey) {
+            case 'editLanguage':
+                return $this->blnEditLanguage;
+        }
+
+        return parent::__get($strKey);
+    }
+
+    /**
 	 * List all records of a particular table
 	 *
 	 * @return string

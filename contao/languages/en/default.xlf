@@ -119,9 +119,6 @@
       <trans-unit id="MSC.mmUpload">
         <source>Upload files</source>
       </trans-unit>
-      <trans-unit id="MSC.mmProcessing">
-        <source>Processing dropped files...</source>
-      </trans-unit>
       <trans-unit id="MSC.undeletableRecords">
         <source>Some records could not be deleted.</source>
       </trans-unit>

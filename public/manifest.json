@@ -1,11 +1,8 @@
 {
-  "backend.css": "/bundles/isotopecore/backend.82ff66da.css",
-  "backend.js": "/bundles/isotopecore/backend.5e07a45f.js",
+  "backend.css": "/bundles/isotopecore/backend.613e85c2.css",
+  "backend.js": "/bundles/isotopecore/backend.22ffeae7.js",
   "isotope.css": "/bundles/isotopecore/isotope.15a609b9.css",
   "isotope.js": "/bundles/isotopecore/isotope.65c784ba.js",
-  "plugins/fineuploader/fineuploader-4.0.3.js": "/bundles/isotopecore/plugins/fineuploader/fineuploader-4.0.3.js",
-  "plugins/fineuploader/fineuploader-4.0.3.min.js": "/bundles/isotopecore/plugins/fineuploader/fineuploader-4.0.3.min.js",
-  "plugins/fineuploader/LICENSE": "/bundles/isotopecore/plugins/fineuploader/LICENSE.bin",
   "plugins/noUiSlider/nouislider.min.js": "/bundles/isotopecore/plugins/noUiSlider/nouislider.min.js",
   "plugins/noUiSlider/nouislider.js": "/bundles/isotopecore/plugins/noUiSlider/nouislider.js",
   "plugins/awesomplete/awesomplete.js": "/bundles/isotopecore/plugins/awesomplete/awesomplete.js",
@@ -73,9 +70,8 @@
   "plugins/noUiSlider/nouislider.tooltips.css": "/bundles/isotopecore/plugins/noUiSlider/nouislider.tooltips.css",
   "images/sitemap.png": "/bundles/isotopecore/images/sitemap.png",
   "images/module.svg": "/bundles/isotopecore/images/module.svg",
-  "plugins/fineuploader/iframe.xss.response-4.0.3.js": "/bundles/isotopecore/plugins/fineuploader/iframe.xss.response-4.0.3.js",
-  "backend.82ff66da.css.map": "/bundles/isotopecore/backend.82ff66da.css.map",
-  "backend.5e07a45f.js.map": "/bundles/isotopecore/backend.5e07a45f.js.map",
+  "backend.613e85c2.css.map": "/bundles/isotopecore/backend.613e85c2.css.map",
+  "backend.22ffeae7.js.map": "/bundles/isotopecore/backend.22ffeae7.js.map",
   "isotope.15a609b9.css.map": "/bundles/isotopecore/isotope.15a609b9.css.map",
   "isotope.65c784ba.js.map": "/bundles/isotopecore/isotope.65c784ba.js.map"
 }

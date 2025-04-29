@@ -1,0 +1,129 @@
+{% trans_default_domain 'contao_tl_iso_product' %}
+{% use "@Contao/component/_figure.html.twig" %}
+
+<div
+    class="tl_mediamanager"
+    data-controller="isotope--mediamanager"
+    data-isotope--mediamanager-url-value="{{ path('iso_mediamanager_upload') }}"
+    data-isotope--mediamanager-accept-value="{{ accept|json_encode }}"
+    data-action="dragover->isotope--mediamanager#dragover dragover@window->isotope--mediamanager#activate dragleave@window->isotope--mediamanager#deactivate drop@window->isotope--mediamanager#drop"
+>
+    <input type="hidden" name="{{ name }}" value="">
+
+    <div
+        class="tl_mediamanager__dropzone"
+        data-isotope--mediamanager-target="dropzone"
+        style="display:none"
+    >
+        {{ 'MSC.mmDrop'|trans([], 'contao_default') }}
+        <input
+            type="file"
+            {% if accept is not empty %} accept="{{ accept|join(',') }}"{% endif %}
+            multiple
+            data-isotope--mediamanager-target="file"
+            data-action="change->isotope--mediamanager#change"
+        >
+    </div>
+
+    <div class="tl_mediamanager__files">
+        <table>
+            <thead>
+            <tr aria-hidden="true">
+                <td class="col_0 col_first">{{ 'tl_iso_product.mmSrc'|trans }}</td>
+                <td class="col_1">{{ 'tl_iso_product.mmAlt'|trans }} / {{ 'tl_iso_product.mmLink'|trans }}</td>
+                <td class="col_2">{{ 'tl_iso_product.mmDesc'|trans }}</td>
+                <td class="col_3">{{ 'tl_iso_product.mmTranslate'|trans }}</td>
+                <td class="col_4 col_last">&nbsp;</td>
+            </tr>
+            </thead>
+            <tbody
+                class="sortable"
+                data-controller="isotope--sortable"
+                data-isotope--sortable-handle-value=".drag-handle"
+                data-isotope--mediamanager-target="body"
+                data-action="isotope--sortable:update->isotope--mediamanager#updateSorting"
+            >
+                {% for file in files %}
+                    {{ _self.row(name, file, loop.index0, isLanguage, dragIcon, deleteIcon) }}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <template data-isotope--mediamanager-target="rowTemplate">
+        {{ _self.row(name, { src: '', path: '' }, 9999, isLanguage, dragIcon, deleteIcon) }}
+    </template>
+
+    <div class="tl_mediamanager__button">
+        <button type="button" class="tl_submit" data-action="isotope--mediamanager#open">{{ 'MSC.mmUpload'|trans([], 'contao_default') }}</button>
+    </div>
+</div>
+
+{% macro row(name, file, key, isLanguage, dragIcon, deleteIcon) %}
+    {% set translate = file.translate|default('none') %}
+    <tr>
+        <td class="col_0 col_first">
+            <input type="hidden" name="{{ name }}[{{ key }}][src]" value="{{ file.src }}">
+            {% if file.icon is defined %}
+                {% if file.isImage %}
+                    {% set figure = figure(
+                        file.path,
+                        [50, 50, 'box'],
+                        { linkAttributes: {
+                            href: file.path,
+                            onclick: "Backend.openModalImage({ width:#{ file.width|default }, title:'#{ 'tl_iso_product.mmSrc'|trans|escape('js') }', url:this.href });return false"
+                        } }
+                    ) %}
+                {% else %}
+                    {% set figure = figure(
+                        file.icon,
+                        '',
+                        { linkAttributes: {
+                            href: file.path,
+                            target: "_blank"
+                        } }
+                    ) %}
+                {% endif %}
+                {{ block('figure_component') }}
+            {% else %}
+                <a href="#" onclick="Backend.openModalImage({ title:'{{ 'tl_iso_product.mmSrc'|trans|escape('js') }}', url:this.href });return false">
+                    <img src="/system/themes/flexible/icons/loading--dark.svg" alt="" width="50">
+                </a>
+            {% endif %}
+        </td>
+        <td class="col_1">
+            <label for="{{ name }}_{{ key }}_alt" class="invisible">{{ 'tl_iso_product.mmAlt'|trans }}</label>
+            <input type="text" class="tl_text_2" id="{{ name }}_{{ key }}_alt" name="{{ name }}[{{ key }}][alt]" value="{{ file.alt|default }}"{% if isLanguage and translate == 'none' %} disabled{% endif %}>
+            <br>
+            <label for="{{ name }}_{{ key }}_link" class="invisible">{{ 'tl_iso_product.mmLink'|trans }}</label>
+            <input type="text" class="tl_text_2" id="{{ name }}_{{ key }}_link" name="{{ name }}[{{ key }}][link]" value="{{ file.link|default }}"{% if isLanguage and translate != 'all' %} disabled{% endif %}>
+        </td>
+        <td class="col_2">
+            <label for="{{ name }}_{{ key }}_desc" class="invisible">{{ 'tl_iso_product.mmDesc'|trans }}</label>
+            <textarea id="{{ name }}_{{ key }}_desc" name="{{ name }}[{{ key }}][desc]" cols="40" rows="3" class="tl_textarea"{% if isLanguage and translate != 'all' %} disabled{% endif %}>{{ file.desc|default }}</textarea>
+        </td>
+        <td class="col_3">
+            {% if isLanguage %}<input type="hidden" name="{{ name }}[{{ key }}][translate]" value="{{ translate }}">{% endif %}
+            <fieldset class="radio_container"{% if isLanguage %} disabled{% endif %}>
+                <span>
+                    <input id="{{ name }}_{{ key }}_translate_none" name="{{ name }}[{{ key }}][translate]" type="radio" class="tl_radio" value="none"{% if translate == 'none' %} checked{% endif %}>
+                    <label for="{{ name }}_{{ key }}_translate_none" title="'.$GLOBALS['TL_LANG'][$this->strTable]['mmTranslateNone'][1].'">{{ 'tl_iso_product.mmTranslateNone.0'|trans }}</label>
+                </span>
+                <span>
+                    <input id="{{ name }}_{{ key }}_translate_text" name="{{ name }}[{{ key }}][translate]" type="radio" class="tl_radio" value="text"{% if translate == 'text' %} checked{% endif %}>
+                    <label for="{{ name }}_{{ key }}_translate_text" title="'.$GLOBALS['TL_LANG'][$this->strTable]['mmTranslateText'][1].'">{{ 'tl_iso_product.mmTranslateText.0'|trans }}</label>
+                </span>
+                <span>
+                    <input id="{{ name }}_{{ key }}_translate_all" name="{{ name }}[{{ key }}][translate]" type="radio" class="tl_radio" value="all"{% if translate == 'all' %} checked{% endif %}>
+                    <label for="{{ name }}_{{ key }}_translate_all" title="'.$GLOBALS['TL_LANG'][$this->strTable]['mmTranslateAll'][1].'">{{ 'tl_iso_product.mmTranslateAll.0'|trans }}</label>
+                </span>
+            </fieldset>
+        </td>
+        <td class="col_4 col_last tl_right">
+            <button type="button" class="drag-handle">{{ dragIcon|raw }}</button>
+            {% if not isLanguage or translate == 'all' %}
+                <button type="button" data-action="isotope--mediamanager#delete">{{ deleteIcon|raw }}</button>
+            {% endif %}
+        </td>
+    </tr>
+{% endmacro %}

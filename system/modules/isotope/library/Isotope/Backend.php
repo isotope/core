@@ -19,7 +19,6 @@ use Contao\CoreBundle\Exception\ResponseException;
 use Contao\Database;
 use Contao\DataContainer;
 use Contao\Input;
-use Contao\Model;
 use Contao\System;
 use Contao\Widget;
 use Isotope\Backend\Product\Permission;
@@ -28,7 +27,6 @@ use Isotope\Model\Group;
 use Isotope\Model\OrderStatus;
 use Isotope\Model\ProductCache;
 use Isotope\Model\RequestCache;
-use Isotope\Model\TypeAgent;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 
@@ -313,82 +311,6 @@ class Backend extends ContaoBackend
                 $sessionBag->set('filter', $filter);
                 Controller::reload();
                 break;
-        }
-    }
-
-
-    /**
-     * Check the Ajax post actions
-     *
-     * @param string         $action
-     * @param DataContainer $dc
-     */
-    public function executePostActions($action, $dc)
-    {
-        switch ($action) {
-            case 'uploadMediaManager':
-                $arrData = array(
-                    'strTable' => $dc->table,
-                    'id'       => $this->strAjaxName ?: $dc->id,
-                    'name'     => Input::post('name'),
-                );
-
-                /** @var \Isotope\Widget\MediaManager $objWidget */
-                $objWidget = new $GLOBALS['BE_FFL']['mediaManager']($arrData, $dc);
-                $objWidget->ajaxUpload();
-                break; // $objWidget->ajaxUpload() will throw a ResponseException
-
-            case 'reloadMediaManager':
-                $intId    = Input::get('id');
-                $strField = $dc->field = Input::post('name');
-                $this->import('Database');
-
-                // Handle the keys in "edit multiple" mode
-                if ('editAll' === Input::get('act')) {
-                    $intId    = preg_replace('/.*_([0-9a-zA-Z]+)$/', '$1', $strField);
-                    $strField = preg_replace('/(.*)_[0-9a-zA-Z]+$/', '$1', $strField);
-                }
-
-                // The field does not exist
-                if (!isset($GLOBALS['TL_DCA'][$dc->table]['fields'][$strField])) {
-                    \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Field "' . $strField . '" does not exist in DCA "' . $dc->table . '"', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
-                    header('HTTP/1.1 400 Bad Request');
-                    die('Bad Request');
-                }
-
-                // Load the value
-                if ($intId > 0 && $this->Database->tableExists($dc->table)) {
-                    $objRow = $this->Database->prepare("SELECT * FROM {$dc->table} WHERE id=?")
-                                             ->execute($intId);
-
-                    // The record does not exist
-                    if ($objRow->numRows < 1) {
-                        \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'A record with the ID "' . $intId . '" does not exist in table "' . $dc->table . '"', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
-                        header('HTTP/1.1 400 Bad Request');
-                        die('Bad Request');
-                    }
-                }
-
-                $varValue = Input::post('value', true);
-
-                // Include the uploaded files in the value
-                if (Input::post('files', true)) {
-                    $varValue['files'] = Input::post('files', true);
-                }
-
-                // Build the attributes based on the "eval" array
-                $arrAttribs = $GLOBALS['TL_DCA'][$dc->table]['fields'][$strField]['eval'];
-
-                $arrAttribs['id']           = $dc->field;
-                $arrAttribs['name']         = $dc->field;
-                $arrAttribs['value']        = $varValue;
-                $arrAttribs['strTable']     = $dc->table;
-                $arrAttribs['strField']     = $strField;
-                $arrAttribs['activeRecord'] = $dc->activeRecord;
-
-                /** @var \Isotope\Widget\MediaManager $objWidget */
-                $objWidget = new $GLOBALS['BE_FFL']['mediaManager']($arrAttribs);
-                throw new ResponseException(new Response($objWidget->generate()));
         }
     }
 

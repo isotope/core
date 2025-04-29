@@ -1,10 +1,9 @@
 const Encore = require('@terminal42/contao-build-tools');
 
-module.exports = Encore('assets', false)
+module.exports = Encore('assets')
     .setOutputPath('public/')
     .setPublicPath('/bundles/isotopecore')
 
-    .addEntry('backend', './assets/scripts/backend.js')
     .addEntry('isotope', './assets/scripts/isotope.js')
 
     .copyFiles({

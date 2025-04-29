@@ -1,6 +1,7 @@
 {
     "name": "@isotope/core",
     "description": "Isotope eCommerce extension for Contao Open Source CMS",
+    "author": "terminal42 gmbh <info@terminal42.ch>",
     "license": "LGPL-3.0-or-later",
     "private": true,
     "homepage": "https://www.isotopeecommerce.org",
@@ -10,7 +11,12 @@
         "watch": "encore dev --watch",
         "build": "encore production --progress"
     },
+    "dependencies": {
+        "@hotwired/stimulus": "^3.2.1",
+        "sortablejs": "^1.15.6"
+    },
     "devDependencies": {
+        "@hotwired/stimulus-webpack-helpers": "^1.0.1",
         "@terminal42/contao-build-tools": "./vendor/terminal42/contao-build-tools/webpack"
     },
     "browserslist": [

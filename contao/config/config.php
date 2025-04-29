@@ -27,6 +27,7 @@ use Isotope\CoreBundle\Model\Document;
 use Isotope\CoreBundle\Model\Gallery;
 use Isotope\CoreBundle\Model\Payment;
 use Isotope\CoreBundle\Model\Shipping;
+use Isotope\CoreBundle\Widget\MediaManager;
 use Isotope\EventListener\CalculatePrice\QuantitySurchagePriceListener;
 use Isotope\EventListener\ChangeLanguageListener;
 use Isotope\EventListener\PostCheckoutUploads;
@@ -103,7 +104,6 @@ use Isotope\Module\RelatedProducts;
 use Isotope\Module\ShippingCalculator;
 use Isotope\VatNoValidator\EuViesValidator;
 use Isotope\Widget\InheritCheckBox;
-use Isotope\Widget\MediaManager;
 use Symfony\Component\HttpFoundation\Request;
 
 /*
