@@ -734,12 +734,6 @@
       <trans-unit id="ATTR.quantitySurcharge.1">
         <source>Adds an amount to the product price multiplied by quantity entered by the customer.</source>
       </trans-unit>
-      <trans-unit id="ATTR.fineUploader.0">
-        <source>Fine Uploader</source>
-      </trans-unit>
-      <trans-unit id="ATTR.fineUploader.1">
-        <source>A javascript file uploader to upload a local file to the server.</source>
-      </trans-unit>
       <trans-unit id="CUR.AED">
         <source>AED - United Arab Emirates Dirham</source>
       </trans-unit>

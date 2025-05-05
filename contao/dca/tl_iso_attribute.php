@@ -440,22 +440,3 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
         ],
     ],
 ];
-
-if (InstalledVersions::isInstalled('terminal42/contao-fineuploader')) {
-    $GLOBALS['TL_DCA']['tl_iso_attribute']['palettes']['fineUploader'] = '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},mandatory,extensions,minlength,maxlength,chunking,multiple;{store_legend:hide},checkoutRelocate';
-
-    $GLOBALS['TL_DCA']['tl_iso_attribute']['fields']['chunking'] =
-    [
-        'inputType' => 'checkbox',
-        'eval' => ['submitOnChange' => true, 'tl_class' => 'clr w50 m12'],
-        'sql' => "char(1) NOT NULL default ''",
-    ];
-
-    $GLOBALS['TL_DCA']['tl_iso_attribute']['fields']['chunkSize'] =
-    [
-        'default' => 2_000_000,
-        'inputType' => 'text',
-        'eval' => ['rgxp' => 'digit', 'tl_class' => 'w50'],
-        'sql' => "varchar(16) NOT NULL default ''",
-    ];
-}

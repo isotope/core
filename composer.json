@@ -51,15 +51,10 @@
     "require-dev": {
         "contao/core-bundle": "5.3.*",
         "contao/manager-plugin": "^2.0",
-        "terminal42/contao-fineuploader": "^3.4",
         "terminal42/contao-changelanguage": "^3.4",
         "terminal42/contao-build-tools": "dev-main"
     },
-    "suggest": {
-        "terminal42/contao-fineuploader": "For file uploads in frontend using FineUploader"
-    },
     "conflict": {
-        "terminal42/contao-fineuploader": "< 3.4 || >= 4.0",
         "terminal42/contao-changelanguage": "< 3.4 || >= 4.0",
         "contao/manager-plugin": "<2.0 || >= 3.0"
     },

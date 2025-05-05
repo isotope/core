@@ -1,6 +1,5 @@
 <?php
 
-use Composer\InstalledVersions;
 use Contao\ArrayUtil;
 use Contao\System;
 use Isotope\Automator;
@@ -47,7 +46,6 @@ use Isotope\Model\Attribute;
 use Isotope\Model\Attribute\CheckboxMenu;
 use Isotope\Model\Attribute\Downloads;
 use Isotope\Model\Attribute\FileTree;
-use Isotope\Model\Attribute\FineUploader;
 use Isotope\Model\Attribute\Media;
 use Isotope\Model\Attribute\MediaManager as MediaManagerAttribute;
 use Isotope\Model\Attribute\PageTree;
@@ -277,10 +275,6 @@ Attribute::registerModelType('downloads', Downloads::class);
 Attribute::registerModelType('upload', Upload::class);
 Attribute::registerModelType('media', Media::class);
 Attribute::registerModelType('quantitySurcharge', QuantitySurcharge::class);
-
-if (InstalledVersions::isInstalled('terminal42/contao-fineuploader')) {
-    Attribute::registerModelType('fineUploader', FineUploader::class);
-}
 
 /*
  * Product actions

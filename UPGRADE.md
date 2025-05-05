@@ -11,6 +11,7 @@
 - The TrustedShop badge front end module has been removed.
 - The favorites feature has been removed.
 - The wishlist feature has been removed.
+- The FineUploader attribute has been removed.
 - The PostSale entry point has been removed. Use your own controller or preferably the symfony/webhook component.
 - The `@IsotopeHook` annotation has been replaced by `#[AsIsotopeHook]` attribute.
 - The abstract ContentElement class loading Isotope JavaScript & CSS has been removed.
