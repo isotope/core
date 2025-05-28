@@ -80,7 +80,6 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
         'downloads' => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},fieldType,sortBy,path,mandatory,multilingual,files,isGallery',
         'upload' => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},extensions,maxlength,mandatory;{store_legend:hide},checkoutRelocate',
         'media' => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},path,mandatory,multilingual',
-        'quantitySurcharge' => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},minval,maxval,step,placeholder,mandatory',
     ],
 
     // Subpalettes

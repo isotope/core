@@ -27,7 +27,6 @@ use Isotope\CoreBundle\Model\Gallery;
 use Isotope\CoreBundle\Model\Payment;
 use Isotope\CoreBundle\Model\Shipping;
 use Isotope\CoreBundle\Widget\MediaManager;
-use Isotope\EventListener\CalculatePrice\QuantitySurchagePriceListener;
 use Isotope\EventListener\ChangeLanguageListener;
 use Isotope\EventListener\PostCheckoutUploads;
 use Isotope\Frontend;
@@ -49,7 +48,6 @@ use Isotope\Model\Attribute\FileTree;
 use Isotope\Model\Attribute\Media;
 use Isotope\Model\Attribute\MediaManager as MediaManagerAttribute;
 use Isotope\Model\Attribute\PageTree;
-use Isotope\Model\Attribute\QuantitySurcharge;
 use Isotope\Model\Attribute\RadioButton;
 use Isotope\Model\Attribute\SelectMenu;
 use Isotope\Model\Attribute\TextArea;
@@ -274,7 +272,6 @@ Attribute::registerModelType('pageTree', PageTree::class);
 Attribute::registerModelType('downloads', Downloads::class);
 Attribute::registerModelType('upload', Upload::class);
 Attribute::registerModelType('media', Media::class);
-Attribute::registerModelType('quantitySurcharge', QuantitySurcharge::class);
 
 /*
  * Product actions
@@ -469,7 +466,6 @@ if (Contao\Config::getInstance()->isComplete()) {
     $GLOBALS['ISO_HOOKS']['postCheckout'][] = ['Isotope\Analytics', 'trackOrder'];
     $GLOBALS['ISO_HOOKS']['postCheckout'][] = [PostCheckoutUploads::class, 'onPostCheckout'];
     $GLOBALS['ISO_HOOKS']['calculatePrice'][] = [Frontend::class, 'addOptionsPrice'];
-    $GLOBALS['ISO_HOOKS']['calculatePrice'][] = [QuantitySurchagePriceListener::class, '__invoke'];
 
     // changelanguage
     $GLOBALS['TL_HOOKS']['changelanguageNavigation'][] = [ChangeLanguageListener::class, '__invoke'];
