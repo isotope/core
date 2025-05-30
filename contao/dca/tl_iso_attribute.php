@@ -4,7 +4,6 @@ use Composer\InstalledVersions;
 use Contao\DataContainer;
 use Contao\DC_Table;
 use Contao\System;
-use Isotope\Backend\Attribute\Callback;
 use Isotope\Backend\Attribute\OptionsWizard;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Model\Attribute;
@@ -21,9 +20,6 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
         'enableVersioning' => true,
         'backlink' => 'do=iso_setup',
         'ctable' => [AttributeOption::getTable()],
-        'onload_callback' => [
-            [Callback::class, 'onLoad'],
-        ],
         'sql' => [
             'keys' => [
                 'id' => 'primary',
@@ -55,8 +51,11 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
     'palettes' => [
         '__selector__' => ['type', 'optionsSource', 'includeBlankOption', 'variant_option', 'multiple', 'rgxp'],
         'default' => '{attribute_legend},name,field_name,type,legend',
-        'text' => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{config_legend},minlength,maxlength,rgxp,placeholder,mandatory,multilingual,datepicker;{search_filters_legend},fe_search,fe_filter,fe_sorting,be_search,be_filter',
-        'textdigit' => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{config_legend},minval,maxval,step,rgxp,placeholder,mandatory,multilingual,datepicker;{search_filters_legend},fe_search,fe_filter,fe_sorting,be_search,be_filter',
+        'text' => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{config_legend},minlength,maxlength,rgxp,placeholder,mandatory,multilingual;{search_filters_legend},fe_search,fe_filter,fe_sorting,be_search,be_filter',
+        'textdigit' => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{config_legend},minval,maxval,step,rgxp,placeholder,mandatory,multilingual;{search_filters_legend},fe_search,fe_filter,fe_sorting,be_search,be_filter',
+        'textdate' => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{config_legend},minlength,maxlength,rgxp,placeholder,mandatory,multilingual,datepicker;{search_filters_legend},fe_search,fe_filter,fe_sorting,be_search,be_filter',
+        'texttime' => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{config_legend},minlength,maxlength,rgxp,placeholder,mandatory,multilingual,datepicker;{search_filters_legend},fe_search,fe_filter,fe_sorting,be_search,be_filter',
+        'textdatim' => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{config_legend},minlength,maxlength,rgxp,placeholder,mandatory,multilingual,datepicker;{search_filters_legend},fe_search,fe_filter,fe_sorting,be_search,be_filter',
         'textarea' => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{config_legend},minlength,maxlength,rgxp,placeholder,rte,mandatory,multilingual;{search_filters_legend},fe_search,fe_sorting,be_search',
         'select' => '{attribute_legend},name,field_name,type,legend,variant_option,customer_defined;{description_legend:hide},description;{options_legend},optionsSource,includeBlankOption;{config_legend},mandatory,chosen,multiple;{search_filters_legend},fe_filter,fe_sorting,be_filter',
         'selectproduct' => '{attribute_legend},name,field_name,type,legend,variant_option,customer_defined;{description_legend:hide},description;{options_legend},optionsSource,includeBlankOption;{config_legend},mandatory,chosen,multiple;{search_filters_legend},fe_sorting',
@@ -170,8 +169,6 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
         ],
         'optionsTable' => [
             'inputType' => 'dcaWizardMultilingual',
-            'foreignTableCallback' => [Callback::class, 'initializeTableOptions'],
-            'foreignTable_callback' => [Callback::class, 'initializeTableOptions'],
             'eval' => [
                 'fields' => ['type', 'label', 'isDefault', 'published'],
                 'tl_class' => 'clr',
@@ -185,9 +182,6 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
             'inputType' => 'textarea',
             'eval' => ['mandatory' => true, 'style' => 'height:80px', 'decodeEntities' => true],
             'sql' => 'text NULL',
-            'save_callback' => [
-                [Callback::class, 'validateForeignKey'],
-            ],
         ],
         'includeBlankOption' => [
             'inputType' => 'checkbox',
@@ -260,7 +254,6 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
         ],
         'rte' => [
             'inputType' => 'select',
-            'options_callback' => [Callback::class, 'getRTE'],
             'eval' => ['includeBlankOption' => true, 'tl_class' => 'w50', 'chosen' => true],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
@@ -311,13 +304,9 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
             'sql' => "char(1) NOT NULL default ''",
-            'save_callback' => [
-                [Callback::class, 'validateDatepicker'],
-            ],
         ],
         'customTpl' => [
             'inputType' => 'select',
-            'options_callback' => [Callback::class, 'getAttributeTemplates'],
             'eval' => ['chosen' => true, 'tl_class' => 'w50'],
             'sql' => "varchar(64) NOT NULL default ''",
         ],
