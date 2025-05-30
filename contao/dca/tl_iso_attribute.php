@@ -5,7 +5,6 @@ use Contao\DataContainer;
 use Contao\DC_Table;
 use Contao\System;
 use Isotope\Backend\Attribute\Callback;
-use Isotope\Backend\Attribute\DatabaseUpdate;
 use Isotope\Backend\Attribute\OptionsWizard;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Model\Attribute;
@@ -24,12 +23,6 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
         'ctable' => [AttributeOption::getTable()],
         'onload_callback' => [
             [Callback::class, 'onLoad'],
-        ],
-        'onsubmit_callback' => [
-            [DatabaseUpdate::class, 'onSubmit'],
-        ],
-        'ondelete_callback' => [
-            [DatabaseUpdate::class, 'onDelete'],
         ],
         'sql' => [
             'keys' => [
@@ -108,9 +101,6 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'maxlength' => 30, 'unique' => true, 'doNotCopy' => true, 'doNotSaveEmpty' => true, 'tl_class' => 'w50'],
             'sql' => "varchar(30) NOT NULL default ''",
-            'save_callback' => [
-                [Callback::class, 'validateFieldName'],
-            ],
         ],
         'type' => [
             'filter' => true,

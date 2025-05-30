@@ -80,52 +80,6 @@ class Callback extends Backend
     }
 
     /**
-     * Make sure the system columns are not added as attribute
-     *
-     * @param mixed $varValue
-     *
-     * @return mixed
-     * @throws \Exception
-     */
-    public function validateFieldName($varValue)
-    {
-        Controller::loadDataContainer('tl_iso_product');
-
-        $varValue = System::getContainer()->get('contao.slug')->generate(
-            StringUtil::prepareSlug($varValue),
-            (new SlugOptions())->setValidChars('A-Za-z0-9_')->setLocale($GLOBALS['TL_LANGUAGE']),
-        );
-
-        if (isset($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$varValue])
-            && $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$varValue]['attributes']['systemColumn']
-        ) {
-            throw new \InvalidArgumentException(sprintf($GLOBALS['TL_LANG']['ERR']['systemColumn'], $varValue));
-        }
-
-        $platform = System::getContainer()->get('database_connection')->getDatabasePlatform();
-        $keywords = $platform->getReservedKeywordsList();
-
-        if ($keywords->isKeyword($varValue)) {
-            throw new \InvalidArgumentException(sprintf($GLOBALS['TL_LANG']['ERR']['systemColumn'], $varValue));
-        }
-
-        return $varValue;
-    }
-
-    /**
-     * Alter attribute columns in tl_iso_product table
-     *
-     * @param DataContainer $dc
-     *
-     * @deprecated Deprecated since Isotope 2.4.4, use DatabaseUpdate::updateDatabase().
-     */
-    public function updateDatabase($dc)
-    {
-        $callback = new DatabaseUpdate();
-        $callback->updateDatabase($dc);
-    }
-
-    /**
      * Return an array of select-attributes
      * @param object
      * @return array

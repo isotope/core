@@ -5,6 +5,9 @@
       <trans-unit id="ERR.systemColumn">
         <source>Name "%s" is reserved for system use. Please choose a different name.</source>
       </trans-unit>
+      <trans-unit id="ERR.invalidColumn">
+        <source>"%s" cannot be used as a database column. Suggestion: "%s"</source>
+      </trans-unit>
       <trans-unit id="ERR.noStoreConfigurationSet">
         <source>No store configuration available</source>
       </trans-unit>
