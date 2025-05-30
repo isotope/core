@@ -205,7 +205,7 @@ abstract class AbstractGallery implements GalleryInterface
     protected function resolvePath(array|null $file, bool $placeholder = false): array|null
     {
         if (empty($file['src'])) {
-            return $placeholder && $this->placeholder ? FilesModel::findById($this->placeholder)?->path : null;
+            return $placeholder && $this->placeholder ? ['src' => FilesModel::findById($this->placeholder)?->path] : null;
         }
 
         $path = $file['src'];
