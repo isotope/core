@@ -60,7 +60,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
 
     // Palettes
     'palettes' => [
-        '__selector__' => ['type', 'optionsSource', 'includeBlankOption', 'variant_option', 'multiple', 'storeFile', 'files', 'rgxp', 'checkoutRelocate', 'chunking'],
+        '__selector__' => ['type', 'optionsSource', 'includeBlankOption', 'variant_option', 'multiple', 'rgxp'],
         'default' => '{attribute_legend},name,field_name,type,legend',
         'text' => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{config_legend},minlength,maxlength,rgxp,placeholder,mandatory,multilingual,datepicker;{search_filters_legend},fe_search,fe_filter,fe_sorting,be_search,be_filter',
         'textdigit' => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{config_legend},minval,maxval,step,rgxp,placeholder,mandatory,multilingual,datepicker;{search_filters_legend},fe_search,fe_filter,fe_sorting,be_search,be_filter',
@@ -73,26 +73,16 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
         'radiovariant_option' => '{attribute_legend},name,field_name,type,legend,variant_option;{description_legend:hide},description;{options_legend},optionsSource,includeBlankOption;{search_filters_legend},fe_filter,fe_sorting,be_filter',
         'checkbox' => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{options_legend},optionsSource;{config_legend},mandatory;{search_filters_legend},fe_filter,fe_sorting,be_filter',
         'checkboxproduct' => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{options_legend},optionsSource;{config_legend},mandatory;{search_filters_legend},fe_sorting',
-        'conditionalselect' => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{options_legend},optionsSource,includeBlankOption;{config_legend},mandatory,chosen,multiple,conditionField;{search_filters_legend},fe_filter,fe_sorting',
         'mediaManager' => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},extensions,mandatory',
-        'fileTree' => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},fieldType,sortBy,path,mandatory,multilingual,files,isGallery',
-        'pageTree' => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},fieldType,mandatory,multilingual,rootNodes',
-        'downloads' => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},fieldType,sortBy,path,mandatory,multilingual,files,isGallery',
-        'upload' => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},extensions,maxlength,mandatory;{store_legend:hide},checkoutRelocate',
-        'media' => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},path,mandatory,multilingual',
     ],
 
     // Subpalettes
     'subpalettes' => [
-        'storeFile' => 'uploadFolder,useHomeDir,doNotOverwrite',
-        'files' => 'extensions,filesOnly,inline',
         'optionsSource_attribute' => 'options',
         'optionsSource_table' => 'optionsTable',
         'optionsSource_foreignKey' => 'foreignKey',
         'multiple' => 'size',
         'includeBlankOption' => 'blankOptionLabel',
-        'checkoutRelocate' => 'checkoutTargetFolder,checkoutTargetFile',
-        'chunking' => 'chunkSize',
     ],
 
     // Fields
@@ -327,78 +317,6 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
             'eval' => ['rgxp' => 'digit', 'tl_class' => 'w50'],
             'sql' => "varchar(10) NOT NULL default ''",
         ],
-        'conditionField' => [
-            'inputType' => 'select',
-            'options_callback' => [Callback::class, 'getConditionFields'],
-            'eval' => ['includeBlankOption' => true, 'mandatory' => true, 'tl_class' => 'w50', 'chosen' => true],
-            'sql' => "varchar(30) NOT NULL default ''",
-        ],
-        'fieldType' => [
-            'inputType' => 'radio',
-            'options' => ['checkbox', 'radio'],
-            'reference' => &$GLOBALS['TL_LANG']['tl_iso_attribute'],
-            'eval' => ['mandatory' => true, 'tl_class' => 'w50'],
-            'sql' => "varchar(8) NOT NULL default ''",
-        ],
-        'files' => [
-            'inputType' => 'checkbox',
-            'eval' => ['submitOnChange' => true, 'tl_class' => 'w50'],
-            'sql' => "char(1) NOT NULL default ''",
-        ],
-        'filesOnly' => [
-            'inputType' => 'checkbox',
-            'eval' => ['tl_class' => 'w50'],
-            'sql' => "char(1) NOT NULL default ''",
-        ],
-        'inline' => [
-            'inputType' => 'checkbox',
-            'eval' => ['tl_class' => 'w50'],
-            'sql' => "char(1) NOT NULL default ''",
-        ],
-        'isGallery' => [
-            'inputType' => 'checkbox',
-            'eval' => ['tl_class' => 'w50'],
-            'sql' => "char(1) NOT NULL default ''",
-        ],
-        'sortBy' => [
-            'default' => 'name_asc',
-            'inputType' => 'select',
-            'options' => ['name_asc', 'name_desc', 'date_asc', 'date_desc', 'random', 'custom'],
-            'reference' => &$GLOBALS['TL_LANG']['tl_iso_attribute'],
-            'eval' => ['tl_class' => 'w50'],
-            'sql' => "varchar(32) NOT NULL default ''",
-        ],
-        'path' => [
-            'inputType' => 'fileTree',
-            'eval' => ['fieldType' => 'radio', 'tl_class' => 'clr'],
-            'sql' => 'binary(16) NULL',
-        ],
-        'rootNodes' => [
-            'inputType' => 'pageTree',
-            'eval' => ['multiple' => true, 'fieldType' => 'checkbox', 'tl_class' => 'clr'],
-            'sql' => 'blob NULL',
-        ],
-        'checkoutRelocate' => [
-            'inputType' => 'checkbox',
-            'eval' => ['submitOnChange' => true, 'tl_class' => 'w50'],
-            'sql' => "char(1) NOT NULL default ''",
-        ],
-        'checkoutTargetFolder' => [
-            'default' => 'files/orders/##document_number##/##product_position##__{{flag::##product_name##|standardize}}/##attribute_field##',
-            'inputType' => 'text',
-            'explanation' => 'checkoutTargetFolder',
-            'reference' => &$GLOBALS['TL_LANG']['tl_iso_attribute']['checkout_tokens'],
-            'eval' => ['maxlength' => 255, 'tl_class' => 'clr w50', 'helpwizard' => true],
-            'sql' => "varchar(255) NOT NULL default ''",
-        ],
-        'checkoutTargetFile' => [
-            'default' => '##file_target##',
-            'inputType' => 'text',
-            'explanation' => 'checkoutTargetFile',
-            'reference' => &$GLOBALS['TL_LANG']['tl_iso_attribute']['checkout_tokens'],
-            'eval' => ['maxlength' => 255, 'tl_class' => 'w50', 'helpwizard' => true],
-            'sql' => "varchar(255) NOT NULL default ''",
-        ],
         'datepicker' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
@@ -406,30 +324,6 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
             'save_callback' => [
                 [Callback::class, 'validateDatepicker'],
             ],
-        ],
-
-        /*
-         * @deprecated Deprecated since Isotope 2.4, to be removed in Isotope 3.0
-         */
-        'storeFile' => [
-            'inputType' => 'checkbox',
-            'eval' => ['submitOnChange' => true],
-            'sql' => "char(1) NOT NULL default ''",
-        ],
-        'uploadFolder' => [
-            'inputType' => 'fileTree',
-            'eval' => ['fieldType' => 'radio', 'tl_class' => 'clr'],
-            'sql' => 'binary(16) NULL',
-        ],
-        'useHomeDir' => [
-            'inputType' => 'checkbox',
-            'eval' => ['tl_class' => 'w50'],
-            'sql' => "char(1) NOT NULL default ''",
-        ],
-        'doNotOverwrite' => [
-            'inputType' => 'checkbox',
-            'eval' => ['tl_class' => 'w50'],
-            'sql' => "char(1) NOT NULL default ''",
         ],
         'customTpl' => [
             'inputType' => 'select',

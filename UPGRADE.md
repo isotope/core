@@ -15,4 +15,4 @@
 - The PostSale entry point has been removed. Use your own controller or preferably the symfony/webhook component.
 - The `@IsotopeHook` annotation has been replaced by `#[AsIsotopeHook]` attribute.
 - The abstract ContentElement class loading Isotope JavaScript & CSS has been removed.
-- The QuantitySurcharge attribute has been removed.
+- Removed the QuantitySurcharge, BasePrice, Downloads, FileTree, Media, PageTree, Price, PriceTiers, ShippingPrice, Upload and Weigth attributes.

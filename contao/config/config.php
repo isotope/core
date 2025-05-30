@@ -43,16 +43,11 @@ use Isotope\Isotope;
 use Isotope\Model\Address;
 use Isotope\Model\Attribute;
 use Isotope\Model\Attribute\CheckboxMenu;
-use Isotope\Model\Attribute\Downloads;
-use Isotope\Model\Attribute\FileTree;
-use Isotope\Model\Attribute\Media;
 use Isotope\Model\Attribute\MediaManager as MediaManagerAttribute;
-use Isotope\Model\Attribute\PageTree;
 use Isotope\Model\Attribute\RadioButton;
 use Isotope\Model\Attribute\SelectMenu;
 use Isotope\Model\Attribute\TextArea;
 use Isotope\Model\Attribute\TextField;
-use Isotope\Model\Attribute\Upload;
 use Isotope\Model\AttributeOption;
 use Isotope\Model\BasePrice;
 use Isotope\Model\Config;
@@ -267,11 +262,6 @@ Attribute::registerModelType('select', SelectMenu::class);
 Attribute::registerModelType('radio', RadioButton::class);
 Attribute::registerModelType('checkbox', CheckboxMenu::class);
 Attribute::registerModelType('mediaManager', MediaManagerAttribute::class);
-Attribute::registerModelType('fileTree', FileTree::class);
-Attribute::registerModelType('pageTree', PageTree::class);
-Attribute::registerModelType('downloads', Downloads::class);
-Attribute::registerModelType('upload', Upload::class);
-Attribute::registerModelType('media', Media::class);
 
 /*
  * Product actions
