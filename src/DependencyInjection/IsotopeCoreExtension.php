@@ -9,6 +9,10 @@ use Isotope\CoreBundle\DependencyInjection\Attribute\AsGallery;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsIsotopeHook;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsPayment;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsShipping;
+use Isotope\CoreBundle\ModelType\DocumentRegistry;
+use Isotope\CoreBundle\ModelType\GalleryRegistry;
+use Isotope\CoreBundle\ModelType\PaymentRegistry;
+use Isotope\CoreBundle\ModelType\ShippingRegistry;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -34,10 +38,10 @@ class IsotopeCoreExtension extends Extension
 
         $attributesForAutoconfiguration = [
             AsIsotopeHook::class => 'isotope.hook',
-            AsPayment::class => 'isotope.payment',
-            AsShipping::class => 'isotope.shipping',
-            AsDocument::class => 'isotope.document',
-            AsGallery::class => 'isotope.gallery',
+            AsDocument::class => DocumentRegistry::TAG_NAME,
+            AsGallery::class => GalleryRegistry::TAG_NAME,
+            AsPayment::class => PaymentRegistry::TAG_NAME,
+            AsShipping::class => ShippingRegistry::TAG_NAME,
         ];
 
         foreach ($attributesForAutoconfiguration as $attributeClass => $tag) {

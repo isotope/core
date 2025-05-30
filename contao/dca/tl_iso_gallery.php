@@ -105,7 +105,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = [
         'customTpl' => [
             'inputType' => 'select',
             'eval' => ['includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'],
-            'sql' => "varchar(64) COLLATE ascii_bin NOT NULL default ''"
+            'sql' => "varchar(64) COLLATE ascii_bin NOT NULL default ''",
         ],
     ],
 ];

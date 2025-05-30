@@ -39,24 +39,24 @@ class GalleryRegistry extends AbstractModelTypeRegistry
      *
      * @param array{gallery: int} $config
      */
-    public function getForProductAttribute(IsotopeProduct $objProduct, string $attribute, array $config = []): GalleryInterface
+    public function getForProductAttribute(IsotopeProduct $product, string $attribute, array $config = []): GalleryInterface
     {
         $galleryModel = ($config['gallery'] ?? null) > 0 ? $this->framework->getAdapter(Gallery::class)->findById((int) $config['gallery']) : null;
         $gallery = $galleryModel ? $this->get($galleryModel) : new StandardGallery(0, $this->imageStudio, $this->twig);
 
         $href = null;
         $files = MediaManager::mergeMediaData(
-            StringUtil::deserialize($objProduct->$attribute, true),
-            StringUtil::deserialize($objProduct->{$attribute.'_fallback'}, true),
+            StringUtil::deserialize($product->$attribute, true),
+            StringUtil::deserialize($product->{$attribute.'_fallback'}, true),
         );
 
         if (!$config['jumpTo'] instanceof PageModel || 'none' !== $config['jumpTo']->iso_readerMode) {
-            $href = $objProduct->generateUrl($config['jumpTo']);
+            $href = $product->generateUrl($config['jumpTo']);
         }
 
         return $gallery->withProductData(
-            $objProduct->getFormId().'_'.$attribute,
-            $objProduct->getProductId(),
+            $product->getFormId().'_'.$attribute,
+            $product->getProductId(),
             $files,
             $href,
         );

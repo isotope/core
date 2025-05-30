@@ -1,6 +1,5 @@
 <?php
 
-use Composer\InstalledVersions;
 use Contao\DataContainer;
 use Contao\DC_Table;
 use Contao\System;
