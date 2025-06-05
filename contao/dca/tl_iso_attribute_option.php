@@ -2,7 +2,6 @@
 
 use Contao\DataContainer;
 use Contao\Input;
-use Isotope\Backend\AttributeOption\Callback;
 use Terminal42\DcMultilingualBundle\Driver;
 
 $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = [
@@ -11,13 +10,6 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = [
         'enableVersioning' => true,
         'ptable' => 'tl_iso_attribute',
         'dynamicPtable' => true,
-        'onload_callback' => [
-            [Callback::class, 'initWrappers'],
-            [Callback::class, 'checkPermission'],
-        ],
-        'onsubmit_callback' => [
-            [Callback::class, 'storeFieldName'],
-        ],
         'sql' => [
             'keys' => [
                 'id' => 'primary',
@@ -32,7 +24,6 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = [
             'flag' => DataContainer::SORT_INITIAL_LETTER_ASC,
             'panelLayout' => 'filter,search,limit',
             'headerFields' => ['name', 'field_name', 'type', 'variant_option', 'customer_defined'],
-            'child_record_callback' => [Callback::class, 'listRecords'],
         ],
     ],
     'palettes' => [
@@ -76,9 +67,6 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = [
             'reference' => &$GLOBALS['TL_LANG']['tl_iso_attribute_option']['type'],
             'eval' => ['tl_class' => 'w50', 'doNotCopy' => true, 'submitOnChange' => true],
             'sql' => "varchar(8) NOT NULL default ''",
-            'save_callback' => [
-                [Callback::class, 'saveType'],
-            ],
         ],
         'isDefault' => [
             'inputType' => 'checkbox',

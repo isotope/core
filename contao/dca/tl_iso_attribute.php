@@ -3,7 +3,6 @@
 use Contao\DataContainer;
 use Contao\DC_Table;
 use Contao\System;
-use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
 use Isotope\CoreBundle\Attribute\OptionsSource;
 use Isotope\Model\AttributeOption;
 
@@ -158,9 +157,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
             'inputType' => 'multiColumnWizard',
             'eval' => [
                 'mandatory' => true,
-                'dragAndDrop' => true,
                 'tl_class' => 'clr',
-                'columnsCallback' => [OptionsWizard::class, 'getColumns'],
             ],
             'sql' => 'blob NULL',
         ],

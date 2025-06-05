@@ -1,0 +1,47 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Isotope\CoreBundle\EventListener\DataContainer\AttributeOption;
+
+use Contao\CoreBundle\DataContainer\PaletteManipulator;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
+use Contao\DataContainer;
+use Contao\Input;
+use Isotope\CoreBundle\Attribute\AttributeRegistry;
+use Isotope\CoreBundle\Attribute\VariantAttributeInterface;
+use Isotope\CoreBundle\Model\Attribute;
+use Isotope\Model\AttributeOption;
+
+/**
+ * Price is not available for an attribute option if the attribute is a variant option attribute.
+ */
+#[AsCallback('tl_iso_attribute_option', 'config.onload')]
+class PriceFieldListener
+{
+    public function __construct(
+        private readonly AttributeRegistry $attributeRegistry,
+    ) {
+    }
+
+    public function __invoke(DataContainer $dc): void
+    {
+        if ('iso_products' === Input::get('do')) {
+            return;
+        }
+
+        $attribute = $this->attributeRegistry->get(Attribute::findById($dc->currentPid));
+
+        if (
+            null === $attribute
+            || ($attribute instanceof VariantAttributeInterface && $attribute->isVariantOption())
+        ) {
+            unset($GLOBALS['TL_DCA'][AttributeOption::getTable()]['fields']['price']);
+
+            PaletteManipulator::create()
+                ->removeField('price')
+                ->applyToPalette('option', AttributeOption::getTable())
+            ;
+        }
+    }
+}
