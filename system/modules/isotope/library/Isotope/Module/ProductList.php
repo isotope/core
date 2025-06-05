@@ -11,7 +11,6 @@
 
 namespace Isotope\Module;
 
-use Contao\Controller;
 use Contao\CoreBundle\Exception\PageNotFoundException;
 use Contao\CoreBundle\Exception\RedirectResponseException;
 use Contao\CoreBundle\Exception\ResponseException;
@@ -20,12 +19,13 @@ use Contao\Date;
 use Contao\Environment;
 use Contao\Pagination;
 use Contao\System;
-use Isotope\Haste\Input\Input;
 use Isotope\Collection\ProductPrice as ProductPriceCollection;
 use Isotope\CompatibilityHelper;
+use Isotope\CoreBundle\Attribute\AttributeRegistry;
+use Isotope\CoreBundle\Model\Attribute;
+use Isotope\Haste\Input\Input;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
-use Isotope\Model\Attribute;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCache;
 use Isotope\Model\ProductPrice;
@@ -484,7 +484,10 @@ class ProductList extends Module
      */
     protected function getDefaultProductOptions()
     {
-        $arrFields  = array_merge(Attribute::getVariantOptionFields(), Attribute::getCustomerDefinedFields());
+        /** @var AttributeRegistry $attributeRegistry */
+        $attributeRegistry = System::getContainer()->get(AttributeRegistry::class);
+
+        $arrFields = array_merge($attributeRegistry->getVariantOptionFields(), $attributeRegistry->getCustomerDefinedFields());
 
         if (empty($arrFields)) {
             return array();

@@ -11,7 +11,6 @@
 
 namespace Isotope\Module;
 
-use Contao\Controller;
 use Contao\CoreBundle\Exception\PageNotFoundException;
 use Contao\CoreBundle\Exception\ResponseException;
 use Contao\CoreBundle\Routing\ResponseContext\HtmlHeadBag\HtmlHeadBag;
@@ -20,10 +19,11 @@ use Contao\Environment;
 use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
-use Isotope\Haste\Input\Input;
 use Isotope\CompatibilityHelper;
+use Isotope\CoreBundle\Attribute\AttributeRegistry;
+use Isotope\CoreBundle\Model\Attribute;
+use Isotope\Haste\Input\Input;
 use Isotope\Interfaces\IsotopeProduct;
-use Isotope\Model\Attribute;
 use Isotope\Model\Product;
 use Isotope\Model\Product\AbstractProduct;
 use Symfony\Component\HttpFoundation\Response;
@@ -198,7 +198,7 @@ class ProductReader extends Module
                     if ($responseContext && $responseContext->has(HtmlHeadBag::class)) {
                         /** @var HtmlHeadBag $htmlHeadBag */
                         $htmlHeadBag = $responseContext->get(HtmlHeadBag::class);
-                        $htmlHeadBag->setKeepParamsForCanonical(array_intersect($objProduct->getType()->getVariantAttributes(), Attribute::getVariantOptionFields()));
+                        $htmlHeadBag->setKeepParamsForCanonical(array_intersect($objProduct->getType()->getVariantAttributes(), System::getContainer()->get(AttributeRegistry::class)->getVariantOptionFields()));
                         break;
                     }
                 }

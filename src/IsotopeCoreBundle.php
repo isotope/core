@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle;
 
+use Isotope\CoreBundle\DependencyInjection\Compiler\RegisterAttributePass;
 use Isotope\CoreBundle\DependencyInjection\Compiler\RegisterHookListenersPass;
 use Isotope\CoreBundle\DependencyInjection\Compiler\RegisterModelTypePass;
 use Isotope\CoreBundle\DependencyInjection\IsotopeCoreExtension;
@@ -26,6 +27,7 @@ class IsotopeCoreBundle extends Bundle
         parent::build($container);
 
         $container->addCompilerPass(new RegisterHookListenersPass());
+        $container->addCompilerPass(new RegisterAttributePass(), priority: 10);
         $container->addCompilerPass(new RegisterModelTypePass(PaymentRegistry::TAG_NAME, PaymentRegistry::class, ['tl_iso_payment.type']), priority: 10);
         $container->addCompilerPass(new RegisterModelTypePass(ShippingRegistry::TAG_NAME, ShippingRegistry::class, ['tl_iso_shipping.type']), priority: 10);
         $container->addCompilerPass(new RegisterModelTypePass(DocumentRegistry::TAG_NAME, DocumentRegistry::class, ['tl_iso_document.type']), priority: 10);

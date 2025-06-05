@@ -19,11 +19,11 @@ use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
 use Contao\Widget;
-use Isotope\Haste\Input\Input;
 use Isotope\CompatibilityHelper;
+use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
+use Isotope\Haste\Input\Input;
 use Isotope\Haste\Util\Format;
 use Isotope\Haste\Util\Url;
-use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeFilterModule;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
@@ -322,7 +322,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
                 $objFilter = Isotope::getRequestCache()->getFilterForModule($strField, $this->id);
 
                 if (($objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$strField]) !== null
-                    && $objAttribute instanceof IsotopeAttributeWithOptions
+                    && $objAttribute instanceof OptionsAttributeInterface
                 ) {
                     $arrWidget['options'] = $objAttribute->getOptionsForProductFilter($arrValues);
                 }

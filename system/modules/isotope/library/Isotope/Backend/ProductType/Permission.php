@@ -17,6 +17,8 @@ use Contao\CoreBundle\Exception\InternalServerErrorException;
 use Contao\Database;
 use Contao\Input;
 use Contao\System;
+use Isotope\CoreBundle\Attribute\AttributeRegistry;
+use Isotope\CoreBundle\Attribute\VariantAttributeInterface;
 use Isotope\Message;
 use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 
@@ -51,9 +53,9 @@ class Permission extends Backend
         Controller::loadDataContainer('tl_iso_product');
         $blnVariants = false;
         foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $strName => $arrConfig) {
-            $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$strName] ?? null;
+            $objAttribute = System::getContainer()->get(AttributeRegistry::class)->get($strName);
 
-            if (null !== $objAttribute && /* @todo in 3.0: $objAttribute instanceof IsotopeAttributeForVariants && */$objAttribute->isVariantOption()) {
+            if (null !== $objAttribute && $objAttribute instanceof VariantAttributeInterface && $objAttribute->isVariantOption()) {
                 $blnVariants = true;
                 break;
             }

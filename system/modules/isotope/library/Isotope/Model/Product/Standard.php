@@ -12,6 +12,7 @@
 namespace Isotope\Model\Product;
 
 use Contao\ContentElement;
+use Contao\Controller;
 use Contao\CoreBundle\Security\ContaoCorePermissions;
 use Contao\Database;
 use Contao\Date;
@@ -22,24 +23,23 @@ use Contao\System;
 use Contao\Widget;
 use Hashids\Hashids;
 use Isotope\Collection\ProductPrice as ProductPriceCollection;
+use Isotope\CoreBundle\Attribute\AttributeInterface;
+use Isotope\CoreBundle\Attribute\AttributeRegistry;
+use Isotope\CoreBundle\Attribute\VariantAttributeInterface;
+use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
 use Isotope\CoreBundle\Gallery\GalleryInterface;
-use Isotope\CoreBundle\Gallery\StandardGallery as StandardGallery;
-use Isotope\CoreBundle\Model\Gallery;
+use Isotope\CoreBundle\Model\Attribute;
 use Isotope\CoreBundle\ModelType\GalleryRegistry;
 use Isotope\Frontend\ProductAction\ProductActionInterface;
 use Isotope\Frontend\ProductAction\Registry;
 use Isotope\Haste\Units\Mass\Weight;
 use Isotope\Haste\Units\Mass\WeightAggregate;
 use Isotope\Haste\Util\Url;
-use Isotope\Interfaces\IsotopeAttribute;
-use Isotope\Interfaces\IsotopeAttributeForVariants;
-use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopePrice;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopeProductWithOptions;
 use Isotope\Isotope;
-use Isotope\Model\Attribute;
 use Isotope\Model\ProductPrice;
 use Isotope\Model\ProductType;
 use Isotope\Template;
@@ -344,7 +344,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             return;
         }
 
-        $attributes = array_intersect($this->getType()->getVariantAttributes(), Attribute::getVariantOptionFields());
+        $attributes = array_intersect($this->getType()->getVariantAttributes(), System::getContainer()->get(AttributeRegistry::class)->getVariantOptionFields());
         $this->arrCustomerConfig = [];
 
         foreach ($options as $k => $v) {
@@ -398,7 +398,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         }
 
         $arrVariantConfig = array();
-        $arrAttributes = array_intersect($this->getType()->getVariantAttributes(), Attribute::getVariantOptionFields());
+        $arrAttributes = array_intersect($this->getType()->getVariantAttributes(), System::getContainer()->get(AttributeRegistry::class)->getVariantOptionFields());
 
         foreach (array_unique($arrAttributes) as $attribute) {
             $arrVariantConfig[$attribute] = $this->arrData[$attribute];
@@ -459,10 +459,9 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         };
 
         $objTemplate->generateAttribute = function ($strAttribute, array $arrOptions = array()) use ($objProduct) {
+            $objAttribute = System::getContainer()->get(AttributeRegistry::class)->get($strAttribute);
 
-            $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$strAttribute];
-
-            if (!($objAttribute instanceof IsotopeAttribute)) {
+            if (!$objAttribute instanceof AttributeInterface) {
                 throw new \InvalidArgumentException($strAttribute . ' is not a valid attribute');
             }
 
@@ -650,7 +649,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
     {
         $arrDefaults = $this->getOptionsDefaults();
 
-        /** @var IsotopeAttribute|IsotopeAttributeWithOptions|IsotopeAttributeForVariants|Attribute $objAttribute */
+        /** @var AttributeInterface|OptionsAttributeInterface|VariantAttributeInterface|Attribute $objAttribute */
         $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$strField];
         $arrData = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strField];
 
@@ -705,12 +704,12 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
 
             $arrField['value'] = $this->$strField;
 
-        } elseif ($objAttribute instanceof IsotopeAttributeWithOptions && empty($arrField['options'])) {
+        } elseif ($objAttribute instanceof OptionsAttributeInterface && empty($arrField['options'])) {
             return '';
         }
 
         if ($objAttribute->isVariantOption()
-            || ($objAttribute instanceof IsotopeAttributeWithOptions && $objAttribute->canHavePrices())
+            || ($objAttribute instanceof OptionsAttributeInterface && $objAttribute->canHavePrices())
             || ($arrData['attributes']['ajax_option'] ?? null)
             || ($arrField['attributes']['ajax_option'] ?? null) // see https://github.com/isotope/core/issues/2096
         ) {
@@ -883,11 +882,17 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         $arrOptions = array();
         $arrDefaults = $this->getOptionsDefaults();
 
-        // We don't need to validate IsotopeAttributeForVariants interface here, because Attribute::getVariantOptionFields will check it
-        foreach (array_intersect($this->getType()->getVariantAttributes(), Attribute::getVariantOptionFields()) as $attribute) {
+        /** @var AttributeRegistry $attributeRegistry */
+        $attributeRegistry = System::getContainer()->get(AttributeRegistry::class);
 
-            /** @var IsotopeAttribute|Attribute $objAttribute */
-            $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$attribute];
+        // We don't need to validate VariantAttributeInterface here, because AttributeRegistry::getVariantOptionFields will check it
+        foreach (array_intersect($this->getType()->getVariantAttributes(), $attributeRegistry->getVariantOptionFields()) as $attribute) {
+            $objAttribute = $attributeRegistry->get($attribute);
+
+            if (!$objAttribute instanceof VariantAttributeInterface) {
+                continue;
+            }
+
             $arrValues    = $objAttribute->getOptionsForVariants($this->getVariantIds(), $arrOptions);
 
             if (Input::post('FORM_SUBMIT') == $this->getFormId() && \in_array(Input::post($attribute), $arrValues)) {
@@ -947,7 +952,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             $this->arrData['inherit'] = $arrData['inherit'];
 
             // Set all variant attributes, except if they are inherited
-            $arrFallbackFields = Attribute::getFetchFallbackFields();
+            $arrFallbackFields = System::getContainer()->get(AttributeRegistry::class)->getFetchTranslationFallbackFields();
             $arrVariantFields = array_diff($this->getType()->getVariantAttributes(), $this->getInheritedFields());
             foreach ($arrData as $attribute => $value) {
                 if (
@@ -993,7 +998,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
                     && isset($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['attributes']['legend'])
                     && $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['attributes']['legend'] != ''
                 )
-                || \in_array($attribute, Attribute::getVariantOptionFields(), true)
+                || \in_array($attribute, System::getContainer()->get(AttributeRegistry::class)->getVariantOptionFields(), true)
             ) {
                 unset($arrData[$attribute]);
             }
@@ -1026,14 +1031,17 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
      */
     public function markModified($strKey)
     {
+        /** @var AttributeRegistry $attributeRegistry */
+        $attributeRegistry = System::getContainer()->get(AttributeRegistry::class);
+
         if ($this->isVariant()) {
             $arrAttributes = array_diff(
                 $this->getType()->getVariantAttributes(),
                 $this->getInheritedFields(),
-                Attribute::getCustomerDefinedFields()
+                $attributeRegistry->getCustomerDefinedFields()
             );
         } else {
-            $arrAttributes = array_diff($this->getType()->getAttributes(), Attribute::getCustomerDefinedFields());
+            $arrAttributes = array_diff($this->getType()->getAttributes(), $attributeRegistry->getCustomerDefinedFields());
         }
 
         if (!\in_array($strKey, $arrAttributes, true)
@@ -1094,7 +1102,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             return array();
         }
 
-        return array_merge(StringUtil::deserialize($this->arrData['inherit'], true), Attribute::getInheritFields());
+        return array_merge(StringUtil::deserialize($this->arrData['inherit'], true), $this->getInheritFields());
     }
 
     private function getCollectionItem()
@@ -1133,5 +1141,30 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         }
 
         return $this->arrDefaults;
+    }
+
+    /**
+     * Return list of fields that must be inherited by variants.
+     *
+     * @return array
+     */
+    private function getInheritFields(): array
+    {
+        static $arrFields;
+
+        if (null === $arrFields) {
+            Controller::loadDataContainer('tl_iso_product');
+
+            $arrFields = array();
+            $arrDCA    = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
+
+            foreach ($arrDCA as $field => $config) {
+                if ($config['attributes']['inherit'] ?? false) {
+                    $arrFields[] = $field;
+                }
+            }
+        }
+
+        return $arrFields;
     }
 }

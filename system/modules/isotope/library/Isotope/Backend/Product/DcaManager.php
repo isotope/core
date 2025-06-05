@@ -21,11 +21,12 @@ use Contao\Input;
 use Contao\StringUtil;
 use Contao\System;
 use Isotope\Backend\Group\Breadcrumb;
+use Isotope\CoreBundle\Attribute\AttributeInterface;
+use Isotope\CoreBundle\Attribute\AttributeRegistry;
+use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
+use Isotope\CoreBundle\Model\Attribute;
 use Isotope\Haste\Util\Format;
-use Isotope\Interfaces\IsotopeAttribute;
-use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeProduct;
-use Isotope\Model\Attribute;
 use Isotope\Model\Group;
 use Isotope\Model\Product;
 use Isotope\Model\ProductType;
@@ -35,21 +36,6 @@ use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 
 class DcaManager extends Backend
 {
-
-    /**
-     * Initialize the tl_iso_product DCA
-     *
-     * @param string $strTable
-     */
-    public function initialize($strTable)
-    {
-        if ($strTable != Product::getTable() || !Database::getInstance()->tableExists(Attribute::getTable())) {
-            return;
-        }
-
-        $this->addAttributes();
-    }
-
     /**
      * Load DCA configuration (onload_callback)
      */
@@ -115,46 +101,6 @@ class DcaManager extends Backend
             ->prepare("UPDATE tl_iso_product SET dateAdded=? WHERE id=?")
             ->execute(time(), $insertId)
         ;
-    }
-
-    /**
-     * Add custom attributes to tl_iso_product DCA
-     */
-    protected function addAttributes()
-    {
-        $arrData               = &$GLOBALS['TL_DCA'][Product::getTable()];
-        $arrData['attributes'] = array();
-
-        // Write attributes from database to DCA
-        /** @var Attribute[] $objAttributes */
-        if (($objAttributes = Attribute::findValid()) !== null) {
-            foreach ($objAttributes as $objAttribute) {
-
-                if (null !== $objAttribute) {
-                    $objAttribute->saveToDCA($arrData);
-                    $arrData['attributes'][$objAttribute->field_name] = $objAttribute;
-                }
-            }
-        }
-
-        // Create temporary models for non-database attributes
-        foreach (array_diff_key($arrData['fields'], $arrData['attributes']) as $strName => $arrConfig) {
-            if (\is_array($arrConfig['attributes'] ?? null)) {
-                if (!empty($arrConfig['attributes']['type'])) {
-                    $strClass = $arrConfig['attributes']['type'];
-                } else {
-                    $strClass = Attribute::getClassForModelType($arrConfig['inputType'] ?? '');
-                }
-
-                if ($strClass != '') {
-
-                    /** @var Attribute $objAttribute */
-                    $objAttribute = new $strClass();
-                    $objAttribute->loadFromDCA($arrData, $strName);
-                    $arrData['attributes'][$strName] = $objAttribute;
-                }
-            }
-        }
     }
 
     /**
@@ -272,7 +218,7 @@ class DcaManager extends Backend
 
         $arrTypes      = array();
         $arrFields     = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
-        /** @var IsotopeAttribute[] $arrAttributes */
+        /** @var AttributeInterface[] $arrAttributes */
         $arrAttributes = &$GLOBALS['TL_DCA']['tl_iso_product']['attributes'];
 
         $blnVariants     = false;
@@ -430,7 +376,7 @@ class DcaManager extends Backend
         $objType = $objProduct->getType();
 
         $arrVariantFields = $objType->getVariantAttributes();
-        $arrVariantOptions = array_intersect($arrVariantFields, Attribute::getVariantOptionFields());
+        $arrVariantOptions = array_intersect($arrVariantFields, System::getContainer()->get(AttributeRegistry::class)->getVariantOptionFields());
 
         if (\in_array('images', $arrVariantFields, true)) {
             $arrFields[] = 'images';
@@ -457,11 +403,11 @@ class DcaManager extends Backend
         } else {
             foreach (array_merge($arrVariantOptions) as $name) {
 
-                /** @var Attribute $objAttribute */
-                $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$name];
+                /** @var AttributeInterface $objAttribute */
+                $objAttribute = System::getContainer()->get(AttributeRegistry::class)->get($name);
 
-                if ($objAttribute instanceof IsotopeAttributeWithOptions
-                    && 'table' === $objAttribute->optionsSource
+                if ($objAttribute instanceof OptionsAttributeInterface
+                    && OptionsSource::Table === $objAttribute->getOptionsSource()
                 ) {
                     $name .= ':tl_iso_attribute_option.label';
                 }
@@ -498,10 +444,10 @@ class DcaManager extends Backend
             && 'foreignKey' !== $arrData['optionsSource']
         ) {
 
-            /** @var IsotopeAttributeWithOptions|Attribute $objAttribute */
+            /** @var OptionsAttributeInterface|Attribute $objAttribute */
             $objAttribute = Attribute::findByFieldName($arrData['strField']);
 
-            if (null !== $objAttribute && $objAttribute instanceof IsotopeAttributeWithOptions) {
+            if (null !== $objAttribute && $objAttribute instanceof OptionsAttributeInterface) {
                 $arrData['options'] = ($objDca instanceof IsotopeProduct) ? $objAttribute->getOptionsForWidget($objDca) : $objAttribute->getOptionsForWidget();
 
                 if (!empty($arrData['options'])) {

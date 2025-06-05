@@ -12,10 +12,10 @@
 namespace Isotope\RequestCache;
 
 use Contao\StringUtil;
-use Isotope\Interfaces\IsotopeAttribute;
-use Isotope\Interfaces\IsotopeAttributeWithRange;
+use Isotope\CoreBundle\Attribute\AttributeInterface;
+use Isotope\CoreBundle\Attribute\RangeAttributeInterface;
+use Isotope\CoreBundle\Model\Attribute;
 use Isotope\Interfaces\IsotopeProduct;
-use Isotope\Model\Attribute;
 use Isotope\Model\Product;
 
 /**
@@ -215,9 +215,9 @@ class Filter implements \ArrayAccess
 
         $attribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$this->arrConfig['attribute']];
 
-        if ($attribute instanceof IsotopeAttributeWithRange && $attribute->allowRangeFilter()) {
+        if ($attribute instanceof RangeAttributeInterface && $attribute->supportsRangeFilter()) {
             $varValues = $attribute->getValueRange($objProduct);
-        } elseif ($attribute instanceof IsotopeAttribute) {
+        } elseif ($attribute instanceof AttributeInterface) {
             $varValues = $attribute->getValue($objProduct);
         } else {
             $varValues = $objProduct->{$this->arrConfig['attribute']};

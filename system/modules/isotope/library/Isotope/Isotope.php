@@ -16,12 +16,13 @@ use Contao\Environment;
 use Contao\Input;
 use Contao\System;
 use Contao\Widget;
-use Isotope\Haste\Data\Plain;
+use Isotope\CoreBundle\Attribute\AttributeRegistry;
+use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
 use Isotope\Frontend\ProductAction\CartAction;
 use Isotope\Frontend\ProductAction\ProductActionInterface;
 use Isotope\Frontend\ProductAction\UpdateAction;
+use Isotope\Haste\Data\Plain;
 use Isotope\Haste\Util\Format;
-use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Config;
 use Isotope\Model\Product;
@@ -476,13 +477,13 @@ class Isotope extends Controller
 
         $strTable = Product::getTable();
 
+        /** @var AttributeRegistry $attributeRegistry */
+        $attributeRegistry = System::getContainer()->get(AttributeRegistry::class);
+
         foreach ($arrConfig as $k => $v) {
-
-            /** @var \Isotope\Model\Attribute $objAttribute */
-            if (($objAttribute = $GLOBALS['TL_DCA'][$strTable]['attributes'][$k]) !== null
-                && $objAttribute instanceof IsotopeAttributeWithOptions
+            if (($objAttribute = $attributeRegistry->get($k)) !== null
+                && $objAttribute instanceof OptionsAttributeInterface
             ) {
-
                 /** @var Widget $strClass */
                 $strClass = $objAttribute->getFrontendWidget();
                 $arrField = $strClass::getAttributesFromDca(

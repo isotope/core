@@ -15,7 +15,7 @@ use Contao\Backend;
 use Contao\Controller;
 use Contao\StringUtil;
 use Contao\System;
-use Isotope\Interfaces\IsotopeAttributeWithRange;
+use Isotope\CoreBundle\Attribute\RangeAttributeInterface;
 
 class RangeFields extends Backend
 {
@@ -90,7 +90,7 @@ class RangeFields extends Backend
 
         foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $field => $arrData) {
             $attribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$field];
-            if ($attribute instanceof IsotopeAttributeWithRange && $attribute->allowRangeFilter()) {
+            if ($attribute instanceof RangeAttributeInterface && $attribute->supportsRangeFilter()) {
                 $arrAttributes[$field] = (\strlen($arrData['label'][0]) ? $arrData['label'][0] : $field);
             }
         }

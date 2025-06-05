@@ -14,10 +14,10 @@ namespace Isotope\EventListener;
 use Contao\File;
 use Contao\FilesModel;
 use Contao\FrontendUser;
+use Isotope\CoreBundle\Model\Attribute;
 use Isotope\Haste\Util\FileUpload;
 use Isotope\Haste\Util\StringUtil;
 use Isotope\Interfaces\IsotopeOrderableCollection;
-use Isotope\Model\Attribute;
 use Isotope\Model\ProductCollectionItem;
 
 class PostCheckoutUploads

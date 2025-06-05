@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\DependencyInjection;
 
+use Isotope\CoreBundle\Attribute\AttributeFactoryInterface;
+use Isotope\CoreBundle\Attribute\AttributeRegistry;
+use Isotope\CoreBundle\DependencyInjection\Attribute\AsAttribute;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsDocument;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsGallery;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsIsotopeHook;
@@ -36,8 +39,14 @@ class IsotopeCoreExtension extends Extension
 
         $loader->load('services.yaml');
 
+        $container
+            ->registerForAutoconfiguration(AttributeFactoryInterface::class)
+            ->addTag('isotope.attribute_factory')
+        ;
+
         $attributesForAutoconfiguration = [
             AsIsotopeHook::class => 'isotope.hook',
+            AsAttribute::class => AttributeRegistry::TAG_NAME,
             AsDocument::class => DocumentRegistry::TAG_NAME,
             AsGallery::class => GalleryRegistry::TAG_NAME,
             AsPayment::class => PaymentRegistry::TAG_NAME,

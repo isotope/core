@@ -589,7 +589,7 @@ class ProductData extends DC_Table
 					{
 						unset($boxes[$k][$kk]);
 					}
-					elseif ($this->blnEditLanguage && !($GLOBALS['TL_DCA'][$this->strTable]['fields'][$vv]['attributes']['multilingual'] ?? null))
+					elseif ($this->blnEditLanguage && !($GLOBALS['TL_DCA'][$this->strTable]['fields'][$vv]['eval']['multilingual'] ?? null))
 					{
 						unset($boxes[$k][$kk]);
 					}
@@ -3255,7 +3255,7 @@ class ProductData extends DC_Table
 
 		foreach (StringUtil::trimsplit('[;,]', $this->getPalette()) as $field)
 		{
-			if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field] ?? null) && ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['attributes']['multilingual'] ?? null)) {
+			if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field] ?? null) && ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['eval']['multilingual'] ?? null)) {
 				$arrDuplicate[] = $field;
 			}
 		}

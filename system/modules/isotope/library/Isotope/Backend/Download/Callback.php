@@ -12,22 +12,14 @@
 namespace Isotope\Backend\Download;
 
 use Contao\Backend;
-use Contao\BackendUser;
-use Contao\Controller;
-use Contao\CoreBundle\Exception\AccessDeniedException;
-use Contao\Database;
 use Contao\File;
 use Contao\Folder;
-use Contao\Image;
-use Contao\Input;
-use Contao\StringUtil;
 use Contao\System;
-use Contao\Versions;
+use Isotope\CoreBundle\Attribute\AttributeRegistry;
+use Isotope\CoreBundle\Model\Attribute;
 use Isotope\Haste\Util\Format;
-use Isotope\Model\Attribute;
 use Isotope\Model\Download;
 use Isotope\Model\Product;
-use Isotope\Model\ProductCollectionDownload;
 
 
 class Callback extends Backend
@@ -105,7 +97,7 @@ class Callback extends Backend
                 $arrAttributes,
                 array_intersect(
                     array_merge($objProduct->getType()->getAttributes(), $objProduct->getType()->getVariantAttributes()),
-                    Attribute::getVariantOptionFields()
+                    System::getContainer()->get(AttributeRegistry::class)->getVariantOptionFields()
                 )
             );
         }

@@ -22,6 +22,7 @@ use Isotope\CheckoutStep\PaymentMethod;
 use Isotope\CheckoutStep\ShippingAddress;
 use Isotope\CheckoutStep\ShippingMethod;
 use Isotope\CompatibilityHelper;
+use Isotope\CoreBundle\Model\Attribute;
 use Isotope\CoreBundle\Model\Document;
 use Isotope\CoreBundle\Model\Gallery;
 use Isotope\CoreBundle\Model\Payment;
@@ -41,13 +42,6 @@ use Isotope\IntegrityCheck\VariantOrphans;
 use Isotope\IntegrityCheck\VariantPrices;
 use Isotope\Isotope;
 use Isotope\Model\Address;
-use Isotope\Model\Attribute;
-use Isotope\Model\Attribute\CheckboxMenu;
-use Isotope\Model\Attribute\MediaManager as MediaManagerAttribute;
-use Isotope\Model\Attribute\RadioButton;
-use Isotope\Model\Attribute\SelectMenu;
-use Isotope\Model\Attribute\TextArea;
-use Isotope\Model\Attribute\TextField;
 use Isotope\Model\AttributeOption;
 use Isotope\Model\BasePrice;
 use Isotope\Model\Config;
@@ -254,16 +248,6 @@ ProductCollectionSurcharge::registerModelType('shipping', ShippingSurcharge::cla
 ProductCollectionSurcharge::registerModelType('tax', Tax::class);
 
 /*
- * Attributes
- */
-Attribute::registerModelType('text', TextField::class);
-Attribute::registerModelType('textarea', TextArea::class);
-Attribute::registerModelType('select', SelectMenu::class);
-Attribute::registerModelType('radio', RadioButton::class);
-Attribute::registerModelType('checkbox', CheckboxMenu::class);
-Attribute::registerModelType('mediaManager', MediaManagerAttribute::class);
-
-/*
  * Product actions
  */
 Registry::add(new UpdateAction());
@@ -436,7 +420,6 @@ $GLOBALS['ISO_NUM']["10'000.00"] = [2, '.', "'"];
  * Hooks
  */
 if (Contao\Config::getInstance()->isComplete()) {
-    $GLOBALS['TL_HOOKS']['loadDataContainer'][] = [DcaManager::class, 'initialize'];
     $GLOBALS['TL_HOOKS']['getAttributesFromDca'][] = [DcaManager::class, 'addOptionsFromAttribute'];
     $GLOBALS['TL_HOOKS']['addCustomRegexp'][] = [Isotope::class, 'validateRegexp'];
     $GLOBALS['TL_HOOKS']['getPageIdFromUrl'][] = [Frontend::class, 'loadReaderPageFromUrl'];

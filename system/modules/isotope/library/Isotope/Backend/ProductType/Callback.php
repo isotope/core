@@ -14,18 +14,14 @@ namespace Isotope\Backend\ProductType;
 use Contao\Backend;
 use Contao\BackendUser;
 use Contao\Controller;
-use Contao\CoreBundle\Exception\AccessDeniedException;
 use Contao\Database;
 use Contao\DataContainer;
-use Contao\Image;
 use Contao\Input;
 use Contao\StringUtil;
 use Contao\System;
-use Isotope\Backend\Permission;
+use Isotope\CoreBundle\Attribute\VariantAttributeInterface;
+use Isotope\CoreBundle\Model\Attribute;
 use Isotope\Haste\Util\Format;
-use Isotope\Interfaces\IsotopeAttributeForVariants;
-use Isotope\Model\Attribute;
-use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 
 
 class Callback extends Backend
@@ -108,7 +104,7 @@ class Callback extends Backend
         if (!empty($arrAttributes) && \is_array($arrAttributes)) {
             foreach ($arrAttributes as $arrAttribute) {
 
-                /** @var IsotopeAttributeForVariants|Attribute $objAttribute */
+                /** @var VariantAttributeInterface|Attribute $objAttribute */
                 $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$arrAttribute['name']] ?? null;
 
                 if (null !== $objAttribute && /* @todo in 3.0: $objAttribute instanceof IsotopeAttributeForVariants && */$objAttribute->isVariantOption()) {

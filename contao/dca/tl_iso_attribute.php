@@ -3,9 +3,8 @@
 use Contao\DataContainer;
 use Contao\DC_Table;
 use Contao\System;
-use Isotope\Backend\Attribute\OptionsWizard;
-use Isotope\Interfaces\IsotopeAttributeWithOptions;
-use Isotope\Model\Attribute;
+use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
+use Isotope\CoreBundle\Attribute\OptionsSource;
 use Isotope\Model\AttributeOption;
 
 /*
@@ -105,7 +104,6 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
             'sorting' => true,
             'flag' => DataContainer::SORT_ASC,
             'inputType' => 'select',
-            'options_callback' => static fn () => Attribute::getModelTypeOptions(),
             'reference' => &$GLOBALS['TL_LANG']['ATTR'],
             'eval' => ['mandatory' => true, 'includeBlankOption' => true, 'submitOnChange' => true, 'helpwizard' => true, 'tl_class' => 'w50', 'chosen' => true],
             'sql' => "varchar(64) NOT NULL default ''",
@@ -130,29 +128,29 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
         'optionsSource' => [
             'filter' => true,
             'inputType' => 'radio',
+            'enum' => OptionsSource::class,
             'options_callback' => static function ($dc) {
                 $arrOptions = [
-                    IsotopeAttributeWithOptions::SOURCE_TABLE,
-                    IsotopeAttributeWithOptions::SOURCE_FOREIGNKEY,
-                    IsotopeAttributeWithOptions::SOURCE_ATTRIBUTE,
+                    OptionsSource::Table->value,
+                    OptionsSource::ForeignKey->value,
+                    OptionsSource::Attribute->value,
                 ];
 
                 if (!$dc->activeRecord->variant_option && $dc->activeRecord->customer_defined) {
                     $arrOptions = [
-                        IsotopeAttributeWithOptions::SOURCE_TABLE,
-                        IsotopeAttributeWithOptions::SOURCE_PRODUCT,
-                        IsotopeAttributeWithOptions::SOURCE_FOREIGNKEY,
-                        IsotopeAttributeWithOptions::SOURCE_ATTRIBUTE,
+                        OptionsSource::Table->value,
+                        OptionsSource::Product->value,
+                        OptionsSource::ForeignKey->value,
+                        OptionsSource::Attribute->value,
                     ];
                 }
 
                 if ('checkbox' === $dc->activeRecord->type && !$dc->activeRecord->customer_defined) {
-                    array_unshift($arrOptions, IsotopeAttributeWithOptions::SOURCE_NAME);
+                    array_unshift($arrOptions, OptionsSource::Name->value);
                 }
 
                 return $arrOptions;
             },
-            'reference' => &$GLOBALS['TL_LANG']['tl_iso_attribute']['optionsSource'],
             'eval' => ['mandatory' => true, 'submitOnChange' => true, 'tl_class' => 'clr'],
             'sql' => "varchar(16) NOT NULL default ''",
         ],

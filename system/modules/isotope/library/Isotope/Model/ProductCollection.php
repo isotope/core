@@ -19,10 +19,11 @@ use Contao\StringUtil;
 use Contao\System;
 use Contao\Template;
 use Isotope\CompatibilityHelper;
+use Isotope\CoreBundle\Attribute\AttributeInterface;
 use Isotope\CoreBundle\Checkout\Payment\PaymentInterface;
 use Isotope\CoreBundle\Checkout\Shipping\ShippingInterface;
-use Isotope\CoreBundle\Gallery\StandardGallery as StandardGallery;
-use Isotope\CoreBundle\Model\Gallery;
+use Isotope\CoreBundle\Gallery\StandardGallery;
+use Isotope\CoreBundle\Model\Attribute;
 use Isotope\CoreBundle\ModelType\GalleryRegistry;
 use Isotope\CoreBundle\ModelType\PaymentRegistry;
 use Isotope\CoreBundle\ModelType\ShippingRegistry;
@@ -31,7 +32,6 @@ use Isotope\Haste\Units\Mass\Scale;
 use Isotope\Haste\Units\Mass\Weighable;
 use Isotope\Haste\Units\Mass\WeightAggregate;
 use Isotope\Haste\Util\Format;
-use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
@@ -1503,7 +1503,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
 
             $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$strAttribute];
 
-            if (!($objAttribute instanceof IsotopeAttribute)) {
+            if (!($objAttribute instanceof AttributeInterface)) {
                 throw new \InvalidArgumentException($strAttribute . ' is not a valid attribute');
             }
 
@@ -1542,7 +1542,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
             /** @var Attribute $attribute */
             $attribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$name] ?? null;
 
-            if (!$attribute instanceof IsotopeAttribute) {
+            if (!$attribute instanceof AttributeInterface) {
                 return Format::dcaLabel('tl_iso_product', $name);
             }
 
@@ -1553,7 +1553,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
             /** @var Attribute $attribute */
             $attribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$name] ?? null;
 
-            if (!$attribute instanceof IsotopeAttribute) {
+            if (!$attribute instanceof AttributeInterface) {
                 return Format::dcaValue('tl_iso_product', $name, $value);
             }
 

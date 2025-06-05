@@ -15,9 +15,12 @@ use Contao\Database;
 use Contao\Date;
 use Contao\DcaExtractor;
 use Contao\Model;
+use Contao\Model\Collection;
+use Contao\System;
+use Isotope\CoreBundle\Attribute\AttributeRegistry;
+use Isotope\CoreBundle\Model\Attribute;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\RequestCache\Filter;
-use Contao\Model\Collection;
 
 /**
  * The basic Isotope product model
@@ -595,13 +598,16 @@ abstract class Product extends TypeAgent implements IsotopeProduct
             );
         }
 
+        /** @var AttributeRegistry $attributeRegistry */
+        $attributeRegistry = System::getContainer()->get(AttributeRegistry::class);
+
         if ($hasTranslations) {
-            foreach (Attribute::getMultilingualFields() as $attribute) {
+            foreach ($attributeRegistry->getTranslatableFields() as $attribute) {
                 $arrFields[] = "IFNULL(translation.$attribute, " . $arrOptions['table'] . ".$attribute) AS $attribute";
             }
         }
 
-        foreach (Attribute::getFetchFallbackFields() as $attribute) {
+        foreach ($attributeRegistry->getFetchTranslationFallbackFields() as $attribute) {
             $arrFields[] = "{$arrOptions['table']}.$attribute AS {$attribute}_fallback";
         }
 

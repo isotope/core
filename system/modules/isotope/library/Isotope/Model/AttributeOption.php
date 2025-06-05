@@ -4,7 +4,9 @@ namespace Isotope\Model;
 
 use Contao\Database\Result;
 use Isotope\Collection\ProductPrice as ProductPriceCollection;
-use Isotope\Interfaces\IsotopeAttributeWithOptions;
+use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
+use Isotope\CoreBundle\Attribute\OptionsSource;
+use Isotope\CoreBundle\Model\Attribute;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
 use Terminal42\DcMultilingualBundle\Model\Multilingual;
@@ -228,15 +230,15 @@ class AttributeOption extends Multilingual
     /**
      * Find all options by attribute
      *
-     * @param IsotopeAttributeWithOptions|Attribute $objAttribute
+     * @param OptionsAttributeInterface|Attribute $objAttribute
      *
      * @return \Isotope\Collection\AttributeOption|null
      *
      * @throws \LogicException if attribute option source is not the database table
      */
-    public static function findByAttribute(IsotopeAttributeWithOptions $objAttribute, array $arrOptions = [])
+    public static function findByAttribute(OptionsAttributeInterface $objAttribute, array $arrOptions = [])
     {
-        if (IsotopeAttributeWithOptions::SOURCE_TABLE !== $objAttribute->getOptionsSource()) {
+        if (OptionsSource::Table !== $objAttribute->getOptionsSource()) {
             throw new \LogicException('Options source for attribute "' . $objAttribute->field_name . '" is not the database table');
         }
 
@@ -244,11 +246,11 @@ class AttributeOption extends Multilingual
 
         return static::findBy(
             [
-                "$t.pid=?",
+                "$t.pid=(SELECT id FROM tl_iso_attribute WHERE field_name=?)",
                 "$t.ptable='tl_iso_attribute'",
                 "$t.published='1'"
             ],
-            [$objAttribute->id],
+            [$objAttribute->getFieldName()],
             array_merge(['order' => "$t.sorting"], $arrOptions)
         );
     }
@@ -256,15 +258,15 @@ class AttributeOption extends Multilingual
     /**
      * Find all options by field name
      *
-     * @param IsotopeAttributeWithOptions|Attribute $objAttribute
+     * @param OptionsAttributeInterface|Attribute $objAttribute
      *
      * @return \Isotope\Collection\AttributeOption|null
      *
      * @throws \LogicException if attribute option source is not the database table
      */
-    public static function findByProducts(IsotopeAttributeWithOptions $objAttribute, array $arrOptions = [])
+    public static function findByProducts(OptionsAttributeInterface $objAttribute, array $arrOptions = [])
     {
-        if (IsotopeAttributeWithOptions::SOURCE_PRODUCT !== $objAttribute->getOptionsSource()) {
+        if (OptionsSource::Product !== $objAttribute->getOptionsSource()) {
             throw new \LogicException('Options source for attribute "' . $objAttribute->field_name . '" is not products');
         }
 
@@ -289,16 +291,16 @@ class AttributeOption extends Multilingual
      *
      * @throws \LogicException if attribute options source is not the product
      */
-    public static function findByProductAndAttribute(IsotopeProduct $objProduct, IsotopeAttributeWithOptions $objAttribute, array $arrOptions = [])
+    public static function findByProductAndAttribute(IsotopeProduct $objProduct, OptionsAttributeInterface $objAttribute, array $arrOptions = [])
     {
-        if (IsotopeAttributeWithOptions::SOURCE_PRODUCT !== $objAttribute->getOptionsSource()) {
+        if (OptionsSource::Product !== $objAttribute->getOptionsSource()) {
             throw new \LogicException('Options source for attribute "' . $objAttribute->getFieldName() . '" is not the product');
         }
 
         $t = static::getTable();
         $productId = $objProduct->id;
 
-        if ($objProduct->isVariant() && !\in_array($objAttribute->field_name, $objProduct->getType()->getVariantAttributes())) {
+        if ($objProduct->isVariant() && !\in_array($objAttribute->getFieldName(), $objProduct->getType()->getVariantAttributes())) {
             $productId = $objProduct->getProductId();
         }
 

@@ -24,15 +24,16 @@ use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
 use Contao\Widget;
-use Isotope\Haste\Input\Input;
+use Isotope\CoreBundle\Attribute\AttributeRegistry;
+use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
+use Isotope\CoreBundle\Model\Attribute;
 use Isotope\EventListener\ChangeLanguageListener;
 use Isotope\Frontend\ProductAction\CartAction;
-use Isotope\Interfaces\IsotopeAttributeWithOptions;
+use Isotope\Haste\Input\Input;
 use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Interfaces\IsotopePrice;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
-use Isotope\Model\Attribute;
 use Isotope\Model\AttributeOption;
 use Isotope\Model\Product;
 use Isotope\Model\Product\Standard;
@@ -696,8 +697,11 @@ class Frontend extends \Contao\Frontend
             && $objProduct->getType() !== null) {
             /** @var IsotopeProduct|Standard $objProduct */
 
+            /** @var AttributeRegistry $attributeRegistry */
+            $attributeRegistry = System::getContainer()->get(AttributeRegistry::class);
+
             $arrAttributes = array_intersect(
-                Attribute::getPricedFields(),
+                $attributeRegistry->getPricedFields(),
                 array_merge(
                     $objProduct->getType()->getAttributes(),
                     $objProduct->getType()->getVariantAttributes()
@@ -705,8 +709,8 @@ class Frontend extends \Contao\Frontend
             );
 
             foreach ($arrAttributes as $field) {
-                if (($objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$field]) !== null
-                    && $objAttribute instanceof IsotopeAttributeWithOptions
+                if (($objAttribute = $attributeRegistry->get($field)) !== null
+                    && $objAttribute instanceof OptionsAttributeInterface
                     && $objAttribute->canHavePrices()
                     && ($objOptions = $objAttribute->getOptionsFromManager($objProduct)) !== null
                 ) {

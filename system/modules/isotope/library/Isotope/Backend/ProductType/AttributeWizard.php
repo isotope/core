@@ -18,9 +18,10 @@ use Contao\Image;
 use Contao\StringUtil;
 use Contao\System;
 use Contao\Widget;
-use Isotope\Interfaces\IsotopeAttribute;
-use Isotope\Interfaces\IsotopeAttributeForVariants;
-use Isotope\Model\Attribute;
+use Isotope\CoreBundle\Attribute\AttributeInterface;
+use Isotope\CoreBundle\Attribute\AttributeRegistry;
+use Isotope\CoreBundle\Attribute\VariantAttributeInterface;
+use Isotope\CoreBundle\Model\Attribute;
 use Isotope\Model\Product;
 
 
@@ -43,9 +44,9 @@ class AttributeWizard extends Backend
 
         if (!empty($arrValues) && \is_array($arrValues)) {
             if ($blnVariants) {
-                $arrFixed = Attribute::getVariantFixedFields($objWidget->dataContainer->activeRecord->class);
+                $arrFixed = $this->getVariantFixedFields($objWidget->dataContainer->activeRecord->class);
             } else {
-                $arrFixed = Attribute::getFixedFields($objWidget->dataContainer->activeRecord->class);
+                $arrFixed = $this->getFixedFields($objWidget->dataContainer->activeRecord->class);
             }
 
             foreach ($arrValues as $i => $attribute) {
@@ -53,9 +54,9 @@ class AttributeWizard extends Backend
                     $objWidget->addDataToFieldAtIndex($i, 'enabled', array('eval' => array('disabled' => true)));
                 }
 
-                /** @var IsotopeAttribute|IsotopeAttributeForVariants $objAttribute */
-                $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$attribute['name']] ?? null;
-                if (null !== $objAttribute && /* @todo in 3.0: $objAttribute instanceof IsotopeAttributeForVariants && */$objAttribute->isVariantOption()) {
+                $objAttribute = System::getContainer()->get(AttributeRegistry::class)->get($attribute['name']);
+
+                if ($objAttribute instanceof VariantAttributeInterface && $objAttribute->isVariantOption()) {
                     $objWidget->addDataToFieldAtIndex($i, 'mandatory', array('eval' => array('hideBody' => true)));
                 }
             }
@@ -129,10 +130,9 @@ class AttributeWizard extends Backend
         $strName  = $arrField['name'];
         $style = '';
 
-        /** @var IsotopeAttribute|IsotopeAttributeForVariants $objAttribute */
-        $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$strName] ?? null;
+        $objAttribute = System::getContainer()->get(AttributeRegistry::class)->get($strName);
 
-        if (null !== $objAttribute && $objAttribute->isVariantOption()) {
+        if (null !== $objAttribute && $objAttribute instanceof VariantAttributeInterface && $objAttribute->isVariantOption()) {
             $style = ';font-style:italic';
         }
 
@@ -166,7 +166,7 @@ class AttributeWizard extends Backend
             return '';
         }
 
-        /** @var IsotopeAttribute|IsotopeAttributeForVariants $objAttribute */
+        /** @var AttributeInterface|VariantAttributeInterface $objAttribute */
         $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$arrField['name']] ?? null;
 
         if (!$objAttribute || !$objAttribute->id) {
@@ -225,9 +225,9 @@ class AttributeWizard extends Backend
         $blnVariants = $this->isVariants($dc->field);
 
         if ($blnVariants) {
-            $arrFixed = Attribute::getVariantFixedFields($dc->activeRecord->class);
+            $arrFixed = $this->getVariantFixedFields($dc->activeRecord->class);
         } else {
-            $arrFixed = Attribute::getFixedFields($dc->activeRecord->class);
+            $arrFixed = $this->getFixedFields($dc->activeRecord->class);
         }
 
         if (!\is_array($arrValues)) {
@@ -240,7 +240,7 @@ class AttributeWizard extends Backend
 
             if ($strName == ''
                 || !isset($arrDCA[$strName])
-                || $arrDCA[$strName]['attributes']['legend'] == ''
+                || empty($arrDCA[$strName]['attributes']['legend'])
                 || $this->isExcluded($strName, $blnVariants)
                 || ($blnVariants && ($arrDCA[$strName]['attributes']['inherit'] ?? false))
                 || (!$blnVariants && ($arrDCA[$strName]['attributes']['variant_option'] ?? false))
@@ -258,7 +258,7 @@ class AttributeWizard extends Backend
         foreach (array_diff_key($arrDCA, $arrFields) as $strName => $arrField) {
 
             if (!\is_array($arrField['attributes'] ?? null)
-                || ($arrField['attributes']['legend'] ?? '') == ''
+                || empty($arrField['attributes']['legend'])
                 || $this->isExcluded($strName, $blnVariants)
                 || ($blnVariants && ($arrField['attributes']['inherit'] ?? false))
                 || (!$blnVariants && ($arrField['attributes']['variant_option'] ?? false))
@@ -295,9 +295,9 @@ class AttributeWizard extends Backend
         }
 
         if ($blnVariants) {
-            $arrFixed = Attribute::getVariantFixedFields($dc->activeRecord->class);
+            $arrFixed = $this->getVariantFixedFields($dc->activeRecord->class);
         } else {
-            $arrFixed = Attribute::getFixedFields($dc->activeRecord->class);
+            $arrFixed = $this->getFixedFields($dc->activeRecord->class);
         }
 
         foreach ($arrFields as $k => $arrField) {
@@ -360,8 +360,114 @@ class AttributeWizard extends Backend
      */
     private function isExcluded($attributeName, $forVariants)
     {
-        $excludedFields = $forVariants ? Attribute::getVariantExcludedFields() : Attribute::getExcludedFields();
+        $excludedFields = $forVariants ? $this->getVariantExcludedFields() : $this->getExcludedFields();
 
         return \in_array($attributeName, $excludedFields, true);
+    }
+
+    /**
+     * Return list of fixed fields
+     * Fixed fields cannot be disabled in product type config
+     *
+     * @param string|null $class A product type class to make a field fixed for certain product types only.
+     *
+     * @return list<string>
+     */
+    private function getFixedFields(string|null $class = null): array
+    {
+        Controller::loadDataContainer('tl_iso_product');
+
+        $arrFields = array();
+        $arrDCA    = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
+
+        foreach ($arrDCA as $field => $config) {
+            $fixed = ($config['attributes']['fixed'] ?? null);
+            $isArray = \is_array($fixed);
+
+            if ((!$isArray && $fixed) || (null !== $class && $isArray && \in_array($class, $fixed, true))) {
+                $arrFields[] = $field;
+            }
+        }
+
+        return $arrFields;
+    }
+
+    /**
+     * Return list of variant fixed fields
+     * Fixed fields cannot be disabled in product type config
+     *
+     * @param string|null $class A product type class to make a field fixed for certain product types only.
+     *
+     * @return list<string>
+     */
+    private function getVariantFixedFields(string|null $class = null): array
+    {
+        Controller::loadDataContainer('tl_iso_product');
+
+        $arrFields = array();
+        $arrDCA = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
+
+        foreach ($arrDCA as $field => $config) {
+            $fixed   = $config['attributes']['variant_fixed'] ?? null;
+            $isArray = \is_array($fixed);
+
+            if ((!$isArray && $fixed) || (null !== $class && $isArray && \in_array($class, $fixed, true))) {
+                $arrFields[] = $field;
+            }
+        }
+
+        return $arrFields;
+    }
+
+    /**
+     * Return list of excluded fields.
+     * Excluded fields cannot be enabled in product type config.
+     *
+     * @return list<string>
+     */
+    private function getExcludedFields(): array
+    {
+        static $arrFields;
+
+        if (null === $arrFields) {
+            Controller::loadDataContainer('tl_iso_product');
+
+            $arrFields = array();
+            $arrDCA    = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
+
+            foreach ($arrDCA as $field => $config) {
+                if (($config['attributes']['excluded'] ?? false)) {
+                    $arrFields[] = $field;
+                }
+            }
+        }
+
+        return $arrFields;
+    }
+
+    /**
+     * Return list of variant excluded fields.
+     * Excluded fields cannot be disabled in product type config.
+     *
+     * @return list<string>
+     */
+    private function getVariantExcludedFields(): array
+    {
+        static $arrFields;
+
+        if (null === $arrFields) {
+            Controller::loadDataContainer('tl_iso_product');
+
+            $arrFields = array();
+            $arrDCA    = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
+
+            foreach ($arrDCA as $field => $config) {
+                if ($config['attributes']['variant_excluded'] ?? false) {
+                    $arrFields[] = $field;
+                }
+            }
+        }
+
+        return $arrFields;
     }
 }

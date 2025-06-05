@@ -20,7 +20,9 @@ use Contao\Environment;
 use Contao\Input;
 use Contao\Message;
 use Contao\StringUtil;
-use Isotope\Model\Attribute;
+use Contao\System;
+use Isotope\CoreBundle\Attribute\AttributeRegistry;
+use Isotope\CoreBundle\Model\Attribute;
 use Isotope\Model\Product;
 
 class VariantGenerator extends Backend
@@ -131,13 +133,16 @@ class VariantGenerator extends Backend
             }
         }
 
+        /** @var AttributeRegistry $attributeRegistry */
+        $attributeRegistry = System::getContainer()->get(AttributeRegistry::class);
+
         $arrInherit = array_intersect(
             $objProduct->getType()->getAttributes(),
             array_diff(
                 $objProduct->getType()->getVariantAttributes(),
-                Attribute::getVariantOptionFields(),
-                Attribute::getCustomerDefinedFields(),
-                Attribute::getSystemColumnsFields()
+                $attributeRegistry->getVariantOptionFields(),
+                $attributeRegistry->getCustomerDefinedFields(),
+                $this->getSystemColumnsFields()
             ),
         );
 
@@ -161,5 +166,28 @@ class VariantGenerator extends Backend
         }
 
         Controller::redirect(str_replace('&key=generate', '', Environment::get('request')));
+    }
+
+    /**
+     * @return list<string>
+     */
+    private function getSystemColumnsFields(): array
+    {
+        static $arrFields;
+
+        if (null === $arrFields) {
+            Controller::loadDataContainer('tl_iso_product');
+
+            $arrFields = array();
+            $arrDCA    = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
+
+            foreach ($arrDCA as $field => $config) {
+                if ($config['attributes']['systemColumn'] ?? false) {
+                    $arrFields[] = $field;
+                }
+            }
+        }
+
+        return $arrFields;
     }
 }

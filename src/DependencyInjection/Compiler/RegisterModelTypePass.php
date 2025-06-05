@@ -68,7 +68,7 @@ class RegisterModelTypePass implements CompilerPassInterface
         $container->setDefinition('isotope.listener.'.$name.'_type_options', $listener);
     }
 
-    protected function getType(Definition $definition, array $attributes): string
+    private function getType(Definition $definition, array $attributes): string
     {
         if (isset($attributes['type'])) {
             return (string) $attributes['type'];

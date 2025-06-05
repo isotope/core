@@ -15,13 +15,13 @@ use Contao\Controller;
 use Contao\Environment;
 use Contao\StringUtil;
 use Contao\Widget;
-use Isotope\Haste\Input\Input;
 use Isotope\CompatibilityHelper;
+use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
+use Isotope\CoreBundle\Model\Attribute;
+use Isotope\Haste\Input\Input;
 use Isotope\Haste\Util\Url;
-use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeFilterModule;
 use Isotope\Isotope;
-use Isotope\Model\Attribute;
 use Isotope\Model\Product;
 use Isotope\RequestCache\CsvFilter;
 use Isotope\RequestCache\Filter;
@@ -343,7 +343,7 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
         $label = $arrWidget['label'] ?? $attribute;
 
         if (($objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$attribute]) !== null
-            && $objAttribute instanceof IsotopeAttributeWithOptions
+            && $objAttribute instanceof OptionsAttributeInterface
         ) {
             return $objAttribute->getOptionsForProductFilter($usedValues);
         }
