@@ -1955,7 +1955,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
      */
     public static function createFromCollection(IsotopeProductCollection $objSource)
     {
-        $objCollection = new static();
+        $objCollection = new (static::$arrModelTypes[static::$modelType])();
         $objConfig = $objSource->getConfig();
 
         if (null === $objConfig) {
