@@ -54,6 +54,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
     public const STATUS_UPDATE_SKIP_NOTIFICATION = 1;
     public const STATUS_UPDATE_SKIP_LOG = 2;
 
+    protected static $modelType = 'order';
 
     /**
      * @inheritdoc

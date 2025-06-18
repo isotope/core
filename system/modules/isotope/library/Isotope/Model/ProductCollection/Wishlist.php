@@ -18,6 +18,8 @@ use Isotope\Model\ProductCollection;
 
 class Wishlist extends ProductCollection
 {
+    protected static $modelType = 'wishlist';
+
     public function getName()
     {
         return $this->name;
@@ -38,7 +40,7 @@ class Wishlist extends ProductCollection
 
     public static function createForCurrentUser()
     {
-        $wishlist = new static();
+        $wishlist = new (static::$arrModelTypes[static::$modelType])();
         $wishlist->setName($GLOBALS['TL_LANG']['MSC']['defaultWishlistName'] ?: 'Wishlist 1');
         $wishlist->member = FrontendUser::getInstance()->id;
         $wishlist->store_id = (int) static::getCurrentStoreId();

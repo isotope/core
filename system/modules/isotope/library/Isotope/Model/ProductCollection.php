@@ -69,7 +69,8 @@ use Contao\Model\Registry;
  */
 abstract class ProductCollection extends TypeAgent implements IsotopeProductCollection
 {
-
+    protected static $modelType = '';
+ 
     /**
      * Name of the current table
      * @var string

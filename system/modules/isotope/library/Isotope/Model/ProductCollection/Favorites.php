@@ -22,6 +22,8 @@ use Isotope\Model\ProductCollection;
 
 class Favorites extends ProductCollection
 {
+    protected static $modelType = 'favorites';
+
     /**
      * Name of the temporary collection cookie
      */
@@ -78,7 +80,7 @@ class Favorites extends ProductCollection
         // Create new collection
         if (null === $collection) {
             $config = Config::findByRootPageOrFallback($objPage->rootId);
-            $collection = new static();
+            $collection = new (static::$arrModelTypes[static::$modelType])();
 
             // Can't call the individual rows here, it would trigger markModified and a save()
             $collection->setRow(array_merge($collection->row(), array(

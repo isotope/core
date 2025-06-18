@@ -29,6 +29,8 @@ use Isotope\Model\ProductCollection;
  */
 class Cart extends ProductCollection implements IsotopeOrderableCollection
 {
+    protected static $modelType = 'cart';
+
     /**
      * Cookie hash value
      * @var string
@@ -345,7 +347,7 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
         // Create new cart
         if ($objCart === null) {
             $objConfig = Config::findByRootPageOrFallback($objPage->rootId);
-            $objCart   = new static();
+            $objCart   = new (static::$arrModelTypes[static::$modelType])();
 
             // Can't call the individual rows here, it would trigger markModified and a save()
             $objCart->setRow(array_merge($objCart->row(), array(
