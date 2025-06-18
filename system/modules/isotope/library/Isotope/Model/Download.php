@@ -42,7 +42,7 @@ class Download extends Model
 
         if ('folder' === $objFile->type) {
             $arrFiles = array();
-            $objFiles = FilesModel::findBy(array("pid=?", "type='file'"), array($objFile->id));
+            $objFiles = FilesModel::findBy(array("pid=?", "type='file'"), array($objFile->uuid));
 
             if (null !== $objFiles) {
                 while ($objFiles->next()) {
