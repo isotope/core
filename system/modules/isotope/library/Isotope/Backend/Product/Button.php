@@ -97,27 +97,6 @@ class Button extends Backend
     }
 
     /**
-     * Disable "delete" button if product has been sold
-     *
-     * @param array  $row
-     * @param string $href
-     * @param string $label
-     * @param string $title
-     * @param string $icon
-     * @param string $attributes
-     *
-     * @return string
-     */
-    public function forDelete($row, $href, $label, $title, $icon, $attributes)
-    {
-        if (\in_array($row['id'], Permission::getUndeletableIds())) {
-            return Image::getHtml(preg_replace('/\.svg$/i', '_.svg', $icon)) . ' ';
-        }
-
-        return '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ';
-    }
-
-    /**
      * Return the "toggle visibility" button
      *
      * @param array  $row
