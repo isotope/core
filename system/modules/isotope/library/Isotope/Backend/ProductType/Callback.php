@@ -55,35 +55,6 @@ class Callback extends Backend
     }
 
     /**
-     * Returns all allowed product types as array
-     *
-     * @return array
-     */
-    public function getOptions()
-    {
-        $objUser = BackendUser::getInstance();
-
-        $arrTypes = $objUser->iso_product_types;
-
-        if (!$objUser->isAdmin && (!\is_array($arrTypes) || empty($arrTypes))) {
-            $arrTypes = array(0);
-        }
-
-        $arrProductTypes = array();
-        $objProductTypes = Database::getInstance()->execute('
-            SELECT id,name FROM tl_iso_producttype
-            WHERE tstamp>0' . ($objUser->isAdmin ? '' : (' AND id IN (' . implode(',', $arrTypes) . ')')) . '
-            ORDER BY name
-        ');
-
-        while ($objProductTypes->next()) {
-            $arrProductTypes[$objProductTypes->id] = $objProductTypes->name;
-        }
-
-        return $arrProductTypes;
-    }
-
-    /**
      * Make sure at least one variant attribute is enabled
      *
      * @param mixed          $varValue

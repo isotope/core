@@ -15,7 +15,6 @@ use Isotope\Backend\Product\Price as BackendPrice;
 use Isotope\Backend\Product\Wizard;
 use Isotope\Backend\Product\XmlSitemap;
 use Isotope\Backend\ProductPrice\Callback as ProductPriceCallback;
-use Isotope\Backend\ProductType\Callback;
 use Isotope\CompatibilityHelper;
 use Isotope\CoreBundle\DataContainer\ProductData;
 use Isotope\Model\Attribute\BasePrice;
@@ -222,7 +221,6 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
         'type' => [
             'filter' => true,
             'inputType' => 'select',
-            'options_callback' => [Callback::class, 'getOptions'],
             'foreignKey' => ProductType::getTable().'.name',
             'eval' => ['mandatory' => true, 'submitOnChange' => true, 'includeBlankOption' => true, 'tl_class' => 'w50 wizard', 'helpwizard' => true],
             'attributes' => ['legend' => 'general_legend', 'fixed' => true, 'inherit' => true, 'systemColumn' => true],
