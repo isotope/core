@@ -40,7 +40,6 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
         'ptable' => 'tl_iso_product',
         'ctable' => [Download::getTable(), ProductCategory::getTable(), ProductPrice::getTable(), AttributeOption::getTable()],
         'onload_callback' => [
-            [DcaManager::class, 'load'],
             [Permission::class, 'check'],
         ],
         'oncopy_callback' => [
