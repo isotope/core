@@ -270,35 +270,6 @@ class Backend extends ContaoBackend
     }
 
     /**
-     * Check the Ajax pre actions
-     *
-     * @param string $action
-     */
-    public function executePreActions($action)
-    {
-        /** @var AttributeBagInterface $sessionBag */
-        $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
-
-        switch ($action) {
-            // Filter the pages
-            case 'filterPages':
-                $filter = $sessionBag->get('filter');
-                $filter['tl_iso_product']['iso_page'] = (int) Input::post('value');
-                $sessionBag->set('filter', $filter);
-                Controller::reload();
-                break;
-
-            // Filter product collection by product
-            case 'filterProducts':
-                $filter = $sessionBag->get('filter');
-                $filter['tl_iso_product_collection']['iso_product'] = (int) Input::post('value');
-                $sessionBag->set('filter', $filter);
-                Controller::reload();
-                break;
-        }
-    }
-
-    /**
      * Load type agent model help
      *
      * @param string $strTable

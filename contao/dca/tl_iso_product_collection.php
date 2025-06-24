@@ -6,7 +6,6 @@ use Contao\Input;
 use Contao\System;
 use Isotope\Backend;
 use Isotope\Backend\ProductCollection\Callback;
-use Isotope\Backend\ProductCollection\Panel;
 use Isotope\CompatibilityHelper;
 use Isotope\CoreBundle\Model\Payment;
 use Isotope\CoreBundle\Model\Shipping;
@@ -35,7 +34,6 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
         'onload_callback' => [
             [Callback::class, 'checkPermission'],
             [Callback::class, 'prepareOrderLog'],
-            [Panel::class, 'applyAdvancedFilters'],
         ],
         'sql' => [
             'keys' => [
@@ -51,11 +49,8 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
         'sorting' => [
             'mode' => DataContainer::MODE_SORTABLE,
             'fields' => ['locked DESC'],
-            'panelLayout' => 'iso_filters,filter;sort,search,limit',
+            'panelLayout' => 'filter;sort,search,limit',
             'filter' => [['type=?', 'order'], ['order_status>?', '0'], ['locked!=?', '']],
-            'panel_callback' => [
-                'iso_filters' => [Panel::class, 'generateFilterButtons'],
-            ],
         ],
         'label' => [
             'fields' => ['id', 'document_number', 'locked', 'billing_address_id', 'total', 'order_status'],
