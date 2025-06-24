@@ -296,12 +296,6 @@
       <trans-unit id="tl_iso_product.variants.1">
         <source>Show variants for product ID %s</source>
       </trans-unit>
-      <trans-unit id="tl_iso_product.generate.0">
-        <source>Generate variants</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_product.generate.1">
-        <source>Generate variants for product ID %s</source>
-      </trans-unit>
       <trans-unit id="tl_iso_product.related.0">
         <source>Related products</source>
       </trans-unit>
