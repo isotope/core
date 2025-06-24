@@ -24,7 +24,6 @@ use Isotope\Model\Attribute\ShippingPrice;
 use Isotope\Model\Attribute\Weight;
 use Isotope\Model\AttributeOption;
 use Isotope\Model\Download;
-use Isotope\Model\Group;
 use Isotope\Model\ProductCategory;
 use Isotope\Model\ProductPrice;
 use Isotope\Model\ProductType;
@@ -47,9 +46,6 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             [Panel::class, 'applyAdvancedFilters'],
             [XmlSitemap::class, 'generate'],
         ],
-        'oncreate_callback' => [
-            [DcaManager::class, 'updateNewRecord'],
-        ],
         'oncopy_callback' => [
             [Category::class, 'updateSorting'],
             [DcaManager::class, 'updateDateAdded'],
@@ -69,7 +65,6 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
         'sql' => [
             'keys' => [
                 'id' => 'primary',
-                'gid' => 'index',
                 'pid,language' => 'index',
                 'language,fallback' => 'index',
                 'language,published,start,stop,pid' => 'index',
@@ -106,13 +101,6 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
                 'label' => &$GLOBALS['TL_LANG']['tl_iso_product']['generate'],
                 'href' => 'key=generate',
                 'icon' => 'new.svg',
-            ],
-            'groups' => [
-                'label' => &$GLOBALS['TL_LANG']['tl_iso_product']['product_groups'],
-                'href' => 'table='.Group::getTable(),
-                'icon' => CompatibilityHelper::asset('images/folders.png'),
-                'attributes' => 'onclick="Backend.getScrollOffset();"',
-                'button_callback' => [Button::class, 'forGroups'],
             ],
             'import' => [
                 'label' => &$GLOBALS['TL_LANG']['tl_iso_product']['import'],
@@ -164,11 +152,6 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
                 'icon' => CompatibilityHelper::asset('images/paper-clip.png'),
                 'button_callback' => [Button::class, 'forDownloads'],
             ],
-            'group' => [
-                'href' => 'act=cut',
-                'icon' => CompatibilityHelper::asset('images/folder-network.png'),
-                'button_callback' => [Button::class, 'forGroup'],
-            ],
         ],
     ],
     'palettes' => [
@@ -188,13 +171,6 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'eval' => ['submitOnChange' => true],
             'attributes' => ['systemColumn' => true],
             'sql' => "int(10) unsigned NOT NULL default '0'",
-        ],
-        'gid' => [
-            'foreignKey' => Group::getTable().'.name',
-            'eval' => ['doNotShow' => true],
-            'attributes' => ['systemColumn' => true, 'inherit' => true],
-            'sql' => "int(10) unsigned NOT NULL default '0'",
-            'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
         ],
         'tstamp' => [
             'sorting' => true,
@@ -475,7 +451,6 @@ if (Input::get('id')) {
     $GLOBALS['TL_DCA']['tl_iso_product']['config']['switchToEdit'] = false;
     unset(
         $GLOBALS['TL_DCA']['tl_iso_product']['list']['global_operations']['import'],
-        $GLOBALS['TL_DCA']['tl_iso_product']['list']['global_operations']['groups'],
     );
 } else {
     unset($GLOBALS['TL_DCA']['tl_iso_product']['list']['global_operations']['generate']);

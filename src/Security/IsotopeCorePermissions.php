@@ -80,11 +80,5 @@ final class IsotopeCorePermissions
 
     public const USER_CAN_DELETE_CONFIGS = 'contao_user.iso_configp.delete';
 
-    public const USER_CAN_EDIT_GROUP = 'contao_user.iso_groups';
-
-    public const USER_CAN_CREATE_GROUPS = 'contao_user.iso_groupp.create';
-
-    public const USER_CAN_DELETE_GROUPS = 'contao_user.iso_groupp.delete';
-
     public const USER_CAN_ACCESS_ORDERS_OF_MEMBER_GROUP = 'contao_user.iso_member_groups';
 }

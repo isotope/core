@@ -46,7 +46,6 @@ use Isotope\Model\AttributeOption;
 use Isotope\Model\BasePrice;
 use Isotope\Model\Config;
 use Isotope\Model\Download;
-use Isotope\Model\Group;
 use Isotope\Model\Label;
 use Isotope\Model\OrderStatus;
 use Isotope\Model\Product;
@@ -100,7 +99,7 @@ if (!is_array($GLOBALS['BE_MOD']['isotope'] ?? null)) {
 
 ArrayUtil::arrayInsert($GLOBALS['BE_MOD']['isotope'], 0, [
     'iso_products' => [
-        'tables' => [Product::getTable(), Group::getTable(), ProductCategory::getTable(), Download::getTable(), RelatedProduct::getTable(), ProductPrice::getTable(), 'tl_iso_product_pricetier', AttributeOption::getTable()],
+        'tables' => [Product::getTable(), ProductCategory::getTable(), Download::getTable(), RelatedProduct::getTable(), ProductPrice::getTable(), 'tl_iso_product_pricetier', AttributeOption::getTable()],
         'javascript' => CompatibilityHelper::asset('backend.js'),
         'generate' => [VariantGenerator::class, 'generate'],
         'import' => [AssetImport::class, 'generate'],
@@ -327,7 +326,6 @@ $GLOBALS['TL_MODELS'][Config::getTable()] = Config::class;
 $GLOBALS['TL_MODELS'][Document::getTable()] = Document::class;
 $GLOBALS['TL_MODELS'][Download::getTable()] = Download::class;
 $GLOBALS['TL_MODELS'][Gallery::getTable()] = Gallery::class;
-$GLOBALS['TL_MODELS'][Group::getTable()] = Group::class;
 $GLOBALS['TL_MODELS'][Label::getTable()] = Label::class;
 $GLOBALS['TL_MODELS'][OrderStatus::getTable()] = OrderStatus::class;
 $GLOBALS['TL_MODELS'][Payment::getTable()] = Payment::class;
@@ -391,8 +389,6 @@ $GLOBALS['TL_PERMISSIONS'][] = 'iso_tax_classes';
 $GLOBALS['TL_PERMISSIONS'][] = 'iso_tax_classp';
 $GLOBALS['TL_PERMISSIONS'][] = 'iso_configs';
 $GLOBALS['TL_PERMISSIONS'][] = 'iso_configp';
-$GLOBALS['TL_PERMISSIONS'][] = 'iso_groups';
-$GLOBALS['TL_PERMISSIONS'][] = 'iso_groupp';
 $GLOBALS['TL_PERMISSIONS'][] = 'iso_member_groups';
 
 /*
@@ -454,8 +450,6 @@ if (Contao\Config::getInstance()->isComplete()) {
         $GLOBALS['TL_HOOKS']['loadDataContainer'][] = [Backend::class, 'loadTypeAgentHelp'];
         $GLOBALS['TL_HOOKS']['loadLanguageFile'][] = [Help::class, 'initializeWizard'];
 
-        // Adjust the product groups manager
-        $GLOBALS['TL_HOOKS']['parseTemplate'][] = [Backend::class, 'adjustGroupsManager'];
         $GLOBALS['TL_HOOKS']['parseTemplate'][] = [SubtableVersion::class, 'removeFromWelcomeScreen'];
 
         // Enable the module tables in setup

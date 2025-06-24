@@ -27,7 +27,6 @@ use Isotope\RequestCache\Filter;
  *
  * @property int    $id
  * @property int    $pid
- * @property int    $gid
  * @property int    $tstamp
  * @property string $language
  * @property int    $dateAdded

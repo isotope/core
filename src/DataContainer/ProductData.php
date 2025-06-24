@@ -54,53 +54,11 @@ class ProductData extends DC_Table
 	protected $arrLanguageLabels;
 
 	/**
-	 * ID of an active group
-	 * @integer
-	 */
-	protected $intGroupId;
-
-	/**
 	 * Initialize the object
 	 * @param string
 	 */
 	public function __construct($strTable)
 	{
-        $objSession = System::getContainer()->get('request_stack')->getSession();
-
-		/** @var AttributeBagInterface $sessionBag */
-		$sessionBag = $objSession->getBag('contao_backend');
-
-		$this->intGroupId = (int) $sessionBag->get('iso_products_gid');
-
-		// Check if the group exists
-		if ($this->intGroupId > 0) {
-			$objGroup = Group::findByPk($this->intGroupId);
-
-			if (null === $objGroup) {
-				if (BackendUser::getInstance()->isAdmin || !\is_array(BackendUser::getInstance()->iso_groups)) {
-					$this->intGroupId = 0;
-				}
-				elseif (!BackendUser::getInstance()->isAdmin) {
-					$this->intGroupId = (int) Database::getInstance()->prepare(
-						"SELECT id FROM tl_iso_group WHERE id IN ('" . implode("','", BackendUser::getInstance()->iso_groups) . "') ORDER BY " . Database::getInstance()->findInSet('id', BackendUser::getInstance()->iso_groups)
-					)->limit(1)->execute()->id;
-				}
-			}
-		}
-
-		// Move multiple products to group
-		$arrClipboard = $objSession->get('CLIPBOARD');
-		if (($arrClipboard[$strTable]['mode'] ?? null) === 'cutAll' && Input::get('act') !== 'cutAll') {
-			$firstPid = (int) Database::getInstance()
-				->prepare("SELECT pid FROM tl_iso_product WHERE id=?")
-				->execute($arrClipboard[$strTable]['id'][0])
-				->fetchRow()[0]
-			;
-			if (0 === $firstPid) {
-				Controller::redirect(Backend::addToUrl('&act=cutAll&pid=0'));
-			}
-		}
-
 		parent::__construct($strTable);
 
 		// Allow to customize languages via the onload_callback
@@ -186,15 +144,6 @@ class ProductData extends DC_Table
 		// Do not show the language records
 		$this->procedure[] = "language=''";
 
-		// Display products filtered by group
-		if (!$this->intId) {
-			if ($this->intGroupId > 0) {
-				$this->procedure[] = "gid IN(".implode(',', array_map('intval', Database::getInstance()->getChildRecords([$this->intGroupId], Group::getTable(), false, [$this->intGroupId]))).")";
-			} elseif (!BackendUser::getInstance()->isAdmin && !empty(BackendUser::getInstance()->iso_groups)) {
-				$this->procedure[] = 'gid IN('.implode(',', array_map('intval', Database::getInstance()->getChildRecords(BackendUser::getInstance()->iso_groups, Group::getTable(), false, BackendUser::getInstance()->iso_groups))).')';
-			}
-		}
-
 		// Custom filter
 		if (!empty($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter']) && \is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter']))
 		{
@@ -216,14 +165,6 @@ class ProductData extends DC_Table
 		$return .= ($this->intId && (Input::get('pid') === null || (Input::get('pid') != '' && (int) Input::get('pid') != 0))) ? $this->parentView() : $this->listView();
 
 		return $return;
-	}
-
-	public function cut($blnDoNotRedirect = false)
-	{
-		// Save the group ID when moving products to new group
-		$this->set['gid'] = $this->intGroupId;
-
-		parent::cut($blnDoNotRedirect);
 	}
 
 	/**
@@ -378,56 +319,6 @@ class ProductData extends DC_Table
 				}
 			}
 		}
-	}
-
-	/**
-	 * Move all selected records
-	 *
-	 * @throws InternalServerErrorException
-	 */
-	public function copyAll()
-	{
-		if ($GLOBALS['TL_DCA'][$this->strTable]['config']['notCopyable'] ?? null)
-		{
-			throw new AccessDeniedException('Table "' . $this->strTable . '" is not copyable.');
-		}
-
-		$objSession = System::getContainer()->get('request_stack')->getSession();
-
-		$arrClipboard = $objSession->get('CLIPBOARD');
-
-		if (isset($arrClipboard[$this->strTable]) && \is_array($arrClipboard[$this->strTable]['id']))
-		{
-            $arrIds = array();
-
-			foreach ($arrClipboard[$this->strTable]['id'] as $id)
-			{
-				$this->intId = $id;
-
-				try
-				{
-					$id = $this->copy(true);
-				}
-				catch (AccessDeniedException)
-				{
-					continue;
-				}
-
-				if ($id)
-				{
-					Input::setGet('pid', $id);
-					Input::setGet('mode', 1);
-                    $arrIds[] = $id;
-				}
-			}
-
-            if (!empty($arrIds))
-            {
-                $this->Database->query("UPDATE {$this->strTable} SET gid=".$this->intGroupId." WHERE id IN (".implode(',', $arrIds).")");
-            }
-		}
-
-		$this->redirect($this->getReferer());
 	}
 
 	/**

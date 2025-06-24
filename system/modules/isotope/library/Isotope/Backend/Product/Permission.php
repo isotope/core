@@ -19,7 +19,6 @@ use Contao\Database;
 use Contao\Input;
 use Contao\Message;
 use Contao\System;
-use Isotope\Model\Group;
 use Isotope\Model\Product;
 use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 
@@ -153,27 +152,16 @@ class Permission extends Backend
         } else {
             $arrNewRecords   = $_SESSION['BE_DATA']['new_records']['tl_iso_product'] ?? null;
             $arrProductTypes = $objUser->iso_product_types;
-            $arrGroups       = array();
 
             // Return false if there are no product types
             if (!\is_array($arrProductTypes) || empty($arrProductTypes)) {
                 return false;
             }
 
-            // Find the user groups
-            if (\is_array($objUser->iso_groups) && \count($objUser->iso_groups) > 0) {
-                $arrGroups = array_merge($arrGroups, $objUser->iso_groups, Database::getInstance()->getChildRecords($objUser->iso_groups, Group::getTable()));
-
-                if (\is_array($objUser->iso_groupp) && \in_array('rootPaste', $objUser->iso_groupp)) {
-                    $arrGroups[] = 0;
-                }
-            }
-
             $objProducts = Database::getInstance()->execute("
                 SELECT id FROM tl_iso_product
                 WHERE pid=0
                     AND language=''
-                    " . (empty($arrGroups) ? '' : 'AND gid IN (' . implode(',', $arrGroups) . ')') . "
                     AND (
                         type IN (" . implode(',', $arrProductTypes) . ')' .
                         ((\is_array($arrNewRecords) && !empty($arrNewRecords)) ? " OR id IN (".implode(',', $arrNewRecords).")" : '') .

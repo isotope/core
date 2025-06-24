@@ -80,24 +80,6 @@
       <trans-unit id="ERR.oppTooMany">
         <source>The payment API currently does not support this many brands at a time.</source>
       </trans-unit>
-      <trans-unit id="MSC.selectGroup">
-        <source>Only show this group</source>
-      </trans-unit>
-      <trans-unit id="MSC.filterByGroups">
-        <source>Groups</source>
-      </trans-unit>
-      <trans-unit id="MSC.filterByPages">
-        <source>Pages</source>
-      </trans-unit>
-      <trans-unit id="MSC.filterByProducts">
-        <source>Products</source>
-      </trans-unit>
-      <trans-unit id="MSC.groupPickerHome">
-        <source>Back to the group picker</source>
-      </trans-unit>
-      <trans-unit id="MSC.allGroups">
-        <source>Show all groups</source>
-      </trans-unit>
       <trans-unit id="MSC.noVariants">
         <source>There are no variants for this product.</source>
       </trans-unit>

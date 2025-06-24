@@ -30,30 +30,6 @@ use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 
 class Button extends Backend
 {
-
-    /**
-     * Hide "product groups" button for non-admins
-     *
-     * @param string $href
-     * @param string $label
-     * @param string $title
-     * @param string $class
-     * @param string $attributes
-     *
-     * @return string
-     */
-    public function forGroups($href, $label, $title, $class, $attributes)
-    {
-        $user = BackendUser::getInstance();
-        if (!$user->isAdmin
-            && (empty($user->iso_groupp) || (empty($user->iso_groups) && (!\in_array('rootPaste', $user->iso_groupp) || !\in_array('create', $user->iso_groupp))))
-        ) {
-            return '';
-        }
-
-        return '<a href="' . Backend::addToUrl('&amp;' . $href) . '" class="header_icon" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . StringUtil::specialchars($label) . '</a>';
-    }
-
     /**
      * Return the "copy" button
      *
@@ -229,57 +205,6 @@ class Button extends Backend
     }
 
     /**
-     * Return the "cut" button
-     *
-     * @param array $row
-     * @param string $href
-     * @param string $label
-     * @param string $title
-     * @param string $icon
-     * @param string $attributes
-
-     *
-*@return string
-     */
-    public function forGroup($row, $href, $label, $title, $icon, $attributes)
-    {
-        if ($row['pid'] > 0) {
-            return '';
-        }
-
-        // Check permission
-        if (!BackendUser::getInstance()->isAdmin) {
-            $groups = StringUtil::deserialize(BackendUser::getInstance()->iso_groups);
-
-            if (!\is_array($groups) || \count($groups) < 2) {
-                return '';
-            }
-        }
-
-        return '
-    <a href="' . \Contao\StringUtil::ampersand(System::getContainer()->get('contao.picker.builder')->getUrl('dc.tl_iso_group', ['fieldType' => 'radio'])) . '" id="groupOperation'.$row['id'].'" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a>
-    <script>
-      document.getElementById("groupOperation'.$row['id'].'").addEventListener("click", function(e) {
-        e.preventDefault();
-        Backend.openModalSelector({
-          id: "tl_listing",
-          title: ' . json_encode($title) . ',
-          url: this.href+'.json_encode($row['gid']).',
-          callback: function(table, value) {
-            new Request.Contao({
-              evalScripts: false,
-              onRequest: AjaxRequest.displayBox(Contao.lang.loading + \' …\'),
-              onSuccess: function () {
-                window.location.href = '.json_encode(StringUtil::decodeEntities(Backend::addToUrl($href . '&pid=' . (int) Input::get('pid') . '&id=' . $row['id']))).'
-              }
-            }).post({action:"moveProduct", value:value[0], REQUEST_TOKEN:"' . \Contao\System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue() . '"});
-          }
-        })
-      });
-    </script>';
-    }
-
-    /**
      * Manage act=select buttons
      *
      * @param array $arrButtons
@@ -291,33 +216,6 @@ class Button extends Backend
         if ('select' === Input::get('act') && !Input::get('id')) {
             unset($arrButtons['copy']);
             unset($arrButtons['cut']);
-
-            /** @var AttributeBagInterface $sessionBag */
-            $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
-
-            $arrButtons['group'] = '
-    <button type="submit" name="group" id="group" class="tl_submit">' . $GLOBALS['TL_LANG']['tl_iso_product']['groupSelected'] . '</a>
-    <script>
-      document.getElementById("group").addEventListener("click", function(e) {
-        e.preventDefault();
-        Backend.openModalSelector({
-          id: "tl_listing",
-          title: ' . json_encode($GLOBALS['TL_LANG']['tl_iso_product']['product_groups'][0]) . ',
-          url: '.json_encode(\Contao\StringUtil::ampersand(System::getContainer()->get('contao.picker.builder')->getUrl('dc.tl_iso_group', ['fieldType' => 'radio'])). $sessionBag->get('iso_products_gid')).',
-          callback: function(table, value) {
-              new Request.Contao({
-              evalScripts: false,
-              onRequest: AjaxRequest.displayBox(Contao.lang.loading + \' …\'),
-              onSuccess: function() {
-                var form = $("tl_select");
-                var hidden = new Element("input", { type:"hidden", name:"cut" }).inject(form, "top");
-                form.submit();
-              }
-            }).post({action:"moveProducts", value:value[0], REQUEST_TOKEN:"' . \Contao\System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue() . '"});
-          }
-        })
-      });
-    </script>';
         }
 
         return $arrButtons;

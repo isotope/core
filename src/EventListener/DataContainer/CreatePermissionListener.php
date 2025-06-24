@@ -18,7 +18,6 @@ class CreatePermissionListener
 {
     private const PERMISSIONS = [
         'tl_iso_config' => ['iso_configs', 'iso_configp'],
-        'tl_iso_group' => ['iso_groups', 'iso_groupp'],
         'tl_iso_payment' => ['iso_payments', 'iso_paymentp'],
         'tl_iso_producttype' => ['iso_producttypes', 'iso_producttypep'],
         'tl_iso_shipping' => ['iso_shippings', 'iso_shippingp'],
@@ -34,7 +33,6 @@ class CreatePermissionListener
     }
 
     #[AsCallback('tl_iso_config', 'config.oncreate')]
-    #[AsCallback('tl_iso_group', 'config.oncreate')]
     #[AsCallback('tl_iso_payment', 'config.oncreate')]
     #[AsCallback('tl_iso_producttype', 'config.oncreate')]
     #[AsCallback('tl_iso_shipping', 'config.oncreate')]
@@ -46,7 +44,6 @@ class CreatePermissionListener
     }
 
     #[AsCallback('tl_iso_config', 'config.oncopy')]
-    #[AsCallback('tl_iso_group', 'config.oncopy')]
     #[AsCallback('tl_iso_payment', 'config.oncopy')]
     #[AsCallback('tl_iso_producttype', 'config.oncopy')]
     #[AsCallback('tl_iso_shipping', 'config.oncopy')]

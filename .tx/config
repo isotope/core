@@ -92,13 +92,6 @@ source_lang = en
 type = XLIFF
 resource_name = v2_9-isotope-tl_iso_gallery
 
-[o:terminal42:p:isotope:r:v2_9-isotope-tl_iso_group]
-file_filter = contao/languages/<lang>/tl_iso_group.xlf
-source_file = contao/languages/en/tl_iso_group.xlf
-source_lang = en
-type = XLIFF
-resource_name = v2_9-isotope-tl_iso_group
-
 [o:terminal42:p:isotope:r:v2_9-isotope-tl_iso_integrity]
 file_filter = contao/languages/<lang>/tl_iso_integrity.xlf
 source_file = contao/languages/en/tl_iso_integrity.xlf

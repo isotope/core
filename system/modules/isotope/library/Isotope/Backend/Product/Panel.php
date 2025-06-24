@@ -42,28 +42,6 @@ class Panel extends Backend
         $intPage   = $session['filter']['tl_iso_product']['iso_page'] ?? 0;
         $buttons   = [];
 
-        // Check if user can manage groups
-        if ($user->isAdmin || (\is_array($user->iso_groups) && 0 !== \count($user->iso_groups))) {
-            $buttons[] = '
-    <a href="' . \Contao\StringUtil::ampersand(System::getContainer()->get('contao.picker.builder')->getUrl('dc.tl_iso_group', ['fieldType' => 'radio'])) . '" class="tl_submit'.(!empty($session['iso_products_gid']) ? ' active' : '').'" id="groupFilter">' . $GLOBALS['TL_LANG']['MSC']['filterByGroups'] . '</a>
-    <script>
-      document.getElementById("groupFilter").addEventListener("click", function(e) {
-        e.preventDefault();
-        Backend.openModalSelector({
-          id: "tl_listing",
-          title: ' . json_encode($GLOBALS['TL_LANG']['tl_iso_product']['product_groups'][0]) . ',
-          url: this.href+'.json_encode($session['iso_products_gid'] ?? '').',
-          callback: function(table, value) {
-            new Request.Contao({
-              evalScripts: false,
-              onRequest: AjaxRequest.displayBox(Contao.lang.loading + \' …\')
-            }).post({action:"filterGroups", value:value[0], REQUEST_TOKEN:"' . \Contao\System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue() . '"});
-          }
-        })
-      });
-    </script>';
-        }
-
         $buttons[] = '
     <a href="' . \Contao\StringUtil::ampersand(System::getContainer()->get('contao.picker.builder')->getUrl('dc.tl_page', ['fieldType' => 'radio'])) . '" class="tl_submit'.($intPage > 0 ? ' active' : '').'" id="pageFilter">' . $GLOBALS['TL_LANG']['MSC']['filterByPages'] . '</a>
     <script>

@@ -281,12 +281,6 @@
       <trans-unit id="tl_iso_product.sorting">
         <source>Manually sort products in a page</source>
       </trans-unit>
-      <trans-unit id="tl_iso_product.product_groups.0">
-        <source>Product groups</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_product.product_groups.1">
-        <source>Manage product groups</source>
-      </trans-unit>
       <trans-unit id="tl_iso_product.import.0">
         <source>Import assets</source>
       </trans-unit>
@@ -328,15 +322,6 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.downloads.2">
         <source>Currently: %s downloads.</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_product.group.0">
-        <source>Move to group</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_product.group.1">
-        <source>Move product ID %s to a group</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_product.groupSelected">
-        <source>Group</source>
       </trans-unit>
       <trans-unit id="tl_iso_product.general_legend">
         <source>General Settings</source>

@@ -3,16 +3,12 @@
 use Contao\CoreBundle\DataContainer\PaletteManipulator;
 use Contao\System;
 use Isotope\Backend;
-use Isotope\Backend\User\Callback;
 use Isotope\CoreBundle\Model\Payment;
 use Isotope\CoreBundle\Model\Shipping;
 use Isotope\Model\Config;
-use Isotope\Model\Group;
 use Isotope\Model\ProductType;
 use Isotope\Model\TaxClass;
 use Isotope\Model\TaxRate;
-
-System::loadLanguageFile(Group::getTable());
 
 /*
  * Extend tl_user palettes
@@ -32,8 +28,6 @@ PaletteManipulator::create()
     ->addField('iso_tax_ratep', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
     ->addField('iso_configs', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
     ->addField('iso_configp', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
-    ->addField('iso_groups', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
-    ->addField('iso_groupp', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
     ->addField('iso_member_groups', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
     ->applyToPalette('extend', 'tl_user')
     ->applyToPalette('custom', 'tl_user')
@@ -136,21 +130,6 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['iso_configs'] = [
 $GLOBALS['TL_DCA']['tl_user']['fields']['iso_configp'] = [
     'inputType' => 'checkbox',
     'options' => ['create', 'delete'],
-    'reference' => &$GLOBALS['TL_LANG']['MSC'],
-    'eval' => ['multiple' => true, 'tl_class' => 'w50 w50h'],
-    'sql' => 'blob NULL',
-];
-
-$GLOBALS['TL_DCA']['tl_user']['fields']['iso_groups'] = [
-    'inputType' => 'checkbox',
-    'options_callback' => [Callback::class, 'getGroups'],
-    'eval' => ['multiple' => true, 'tl_class' => 'clr w50 w50h'],
-    'sql' => 'blob NULL',
-];
-
-$GLOBALS['TL_DCA']['tl_user']['fields']['iso_groupp'] = [
-    'inputType' => 'checkbox',
-    'options' => ['create', 'delete', 'rootPaste'],
     'reference' => &$GLOBALS['TL_LANG']['MSC'],
     'eval' => ['multiple' => true, 'tl_class' => 'w50 w50h'],
     'sql' => 'blob NULL',

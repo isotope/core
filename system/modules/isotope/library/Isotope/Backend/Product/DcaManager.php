@@ -48,47 +48,6 @@ class DcaManager extends Backend
     }
 
     /**
-     * Store initial values when creating a product
-     *
-     * @param   string $strTable
-     * @param   int    $insertID
-     * @param   array  $arrSet
-     */
-    public function updateNewRecord($strTable, $insertID, $arrSet)
-    {
-        if (($arrSet['pid'] ?? 0) > 0) {
-            Database::getInstance()->prepare("UPDATE $strTable SET dateAdded=? WHERE id=?")->execute(time(), $insertID);
-
-            return;
-        }
-
-        /** @var AttributeBagInterface $sessionBag */
-        $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
-
-        $intType  = 0;
-        $intGroup = (int) $sessionBag->get('iso_products_gid');
-
-        if (!$intGroup) {
-            $objUser = BackendUser::getInstance();
-            $intGroup = ($objUser->isAdmin || empty($objUser->iso_groups)) ? 0 : (int) $objUser->iso_groups[0];
-        }
-
-        $objGroup = Group::findByPk($intGroup);
-
-        if (null === $objGroup || null === $objGroup->getRelated('product_type')) {
-            $objType = ProductType::findFallback();
-        } else {
-            $objType = $objGroup->getRelated('product_type');
-        }
-
-        if (null !== $objType) {
-            $intType = $objType->id;
-        }
-
-        Database::getInstance()->prepare("UPDATE $strTable SET gid=?, type=?, dateAdded=? WHERE id=?")->execute($intGroup, $intType, time(), $insertID);
-    }
-
-    /**
      * Update dateAdded on copy
      *
      * @param int $insertId
@@ -168,11 +127,6 @@ class DcaManager extends Backend
         // Hide price column if not enabled in any product type
         if (!$blnShowPrice && false !== ($pos = array_search('price', $GLOBALS['TL_DCA'][Product::getTable()]['list']['label']['fields']))) {
             unset($GLOBALS['TL_DCA'][Product::getTable()]['list']['label']['fields'][$pos]);
-        }
-
-        // Disable sort-into-group if no groups are defined
-        if (Group::countAll() == 0) {
-            unset($GLOBALS['TL_DCA'][Product::getTable()]['list']['operations']['group']);
         }
 
         // Disable related categories if none are defined

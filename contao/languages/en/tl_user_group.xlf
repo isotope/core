@@ -83,18 +83,6 @@
       <trans-unit id="tl_user_group.iso_configp.1">
         <source>Here you can define the store configuration permissions.</source>
       </trans-unit>
-      <trans-unit id="tl_user_group.iso_groups.0">
-        <source>Allowed product groups</source>
-      </trans-unit>
-      <trans-unit id="tl_user_group.iso_groups.1">
-        <source>Limit access to product groups for this user group. Gets inherited.</source>
-      </trans-unit>
-      <trans-unit id="tl_user_group.iso_groupp.0">
-        <source>Product group permissions</source>
-      </trans-unit>
-      <trans-unit id="tl_user_group.iso_groupp.1">
-        <source>Here you can define the product group permissions.</source>
-      </trans-unit>
       <trans-unit id="tl_user_group.iso_member_groups.0">
         <source>Allowed member groups</source>
       </trans-unit>

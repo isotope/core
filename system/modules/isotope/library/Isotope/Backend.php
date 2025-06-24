@@ -280,22 +280,6 @@ class Backend extends ContaoBackend
         $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
 
         switch ($action) {
-            // Move the product
-            case 'moveProduct':
-                $sessionBag->set('iso_products_gid', (int) Input::post('value'));
-                throw new NoContentResponseException();
-
-            // Move multiple products
-            case 'moveProducts':
-                $sessionBag->set('iso_products_gid', (int) Input::post('value'));
-                throw new NoContentResponseException();
-
-            // Filter the groups
-            case 'filterGroups':
-                $sessionBag->set('iso_products_gid', (int) Input::post('value'));
-                Controller::reload();
-                break;
-
             // Filter the pages
             case 'filterPages':
                 $filter = $sessionBag->get('filter');
@@ -371,27 +355,6 @@ class Backend extends ContaoBackend
             if ($arrLabel) {
                 $GLOBALS['TL_LANG']['XPL']['type'][] = $arrLabel;
             }
-        }
-    }
-
-
-    /**
-     * Adjust the product groups manager view
-     *
-     * @param Template|\stdClass $objTemplate
-     */
-    public function adjustGroupsManager($objTemplate)
-    {
-        if (Input::get('popup')
-            && 'iso_products' === Input::get('do')
-            && Group::getTable() === Input::get('table')
-            && 'be_main' === $objTemplate->getName()
-        ) {
-            /** @var AttributeBagInterface $sessionBag */
-            $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
-
-            $objTemplate->managerHref = \Contao\StringUtil::ampersand($sessionBag->get('groupPickerRef'));
-            $objTemplate->manager     = $GLOBALS['TL_LANG']['MSC']['groupPickerHome'];
         }
     }
 }
