@@ -13,7 +13,6 @@ use Isotope\Backend\Product\Panel;
 use Isotope\Backend\Product\Permission;
 use Isotope\Backend\Product\Price as BackendPrice;
 use Isotope\Backend\Product\Wizard;
-use Isotope\Backend\Product\XmlSitemap;
 use Isotope\Backend\ProductPrice\Callback as ProductPriceCallback;
 use Isotope\CompatibilityHelper;
 use Isotope\CoreBundle\DataContainer\ProductData;
@@ -43,14 +42,12 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
         'onload_callback' => [
             [DcaManager::class, 'load'],
             [Permission::class, 'check'],
-            [XmlSitemap::class, 'generate'],
         ],
         'oncopy_callback' => [
             [Category::class, 'updateSorting'],
         ],
         'onsubmit_callback' => [
             [Backend::class, 'truncateProductCache'],
-            [XmlSitemap::class, 'scheduleUpdate'],
         ],
         'onversion_callback' => [
             [Category::class, 'createVersion'],
