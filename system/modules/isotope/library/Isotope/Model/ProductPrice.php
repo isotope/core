@@ -231,6 +231,11 @@ class ProductPrice extends Model implements IsotopePrice
         return $strPrice;
     }
 
+    public function getTaxClass(): TaxClass|null
+    {
+        return $this->getRelated('tax_class');
+    }
+
     public function setProduct(IsotopeProduct $product)
     {
         $this->arrRelated['pid'] = $product;
@@ -444,13 +449,17 @@ class ProductPrice extends Model implements IsotopePrice
         $from  = substr($query, strpos($query, '*')+1);
         $query = "SELECT tl_iso_product_price.*, GROUP_CONCAT(tl_iso_product_pricetier.min) AS tier_keys, GROUP_CONCAT(tl_iso_product_pricetier.price) AS tier_values" . $from;
 
-        $query = str_replace(
+        if (str_contains($query, 'ORDER BY')) {
+            $query = str_replace('ORDER BY', ' GROUP BY tl_iso_product_price.id ORDER BY', $query);
+        } else {
+            $query .= ' GROUP BY tl_iso_product_price.id';
+        }
+
+        return str_replace(
             'FROM tl_iso_product_price',
             'FROM tl_iso_product_price LEFT JOIN tl_iso_product_pricetier ON tl_iso_product_pricetier.pid = tl_iso_product_price.id',
             $query
         );
-
-        return $query.' GROUP BY tl_iso_product_price.id';
     }
 
     /**
