@@ -30,7 +30,6 @@ use Contao\System;
 use Contao\Versions;
 use Contao\Widget;
 use Doctrine\DBAL\Exception\DriverException;
-use Isotope\Model\Group;
 use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 use Symfony\Component\String\UnicodeString;
 
