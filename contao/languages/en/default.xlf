@@ -71,15 +71,6 @@
       <trans-unit id="ERR.rangeAttributeMax">
         <source>Please select an "Attribute to" on row %s.</source>
       </trans-unit>
-      <trans-unit id="ERR.uploadNotFound">
-        <source>The uploaded file is no longer available.</source>
-      </trans-unit>
-      <trans-unit id="ERR.oppIncompatible">
-        <source>Some of the selected payment brands are not compatible to each other.</source>
-      </trans-unit>
-      <trans-unit id="ERR.oppTooMany">
-        <source>The payment API currently does not support this many brands at a time.</source>
-      </trans-unit>
       <trans-unit id="MSC.noVariants">
         <source>There are no variants for this product.</source>
       </trans-unit>

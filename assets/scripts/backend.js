@@ -1,51 +1,7 @@
-import '../styles/backend.scss';
-
 var Isotope = {};
 
 (function() {
 	"use strict";
-
-    /**
-     * Toggle checkbox group
-     * @param object
-     * @param string
-     */
-    Isotope.toggleCheckboxGroup = function(el, id)
-    {
-        var cls = document.id(el).className;
-        var status = document.id(el).checked ? 'checked' : '';
-
-        if (cls == 'tl_checkbox')
-        {
-            $$('#' + id + ' .tl_checkbox').each(function(checkbox)
-            {
-                if (!checkbox.disabled)
-                    checkbox.checked = status;
-            });
-        }
-        else if (cls == 'tl_tree_checkbox')
-        {
-            $$('#' + id + ' .parent .tl_tree_checkbox').each(function(checkbox)
-            {
-                if (!checkbox.disabled)
-                    checkbox.checked = status;
-            });
-        }
-
-        Backend.getScrollOffset();
-    };
-
-    /**
-     * Add the interactive help
-     */
-    Isotope.addInteractiveHelp = function() {
-        new Tips.Contao('a.tl_tip', {
-            offset: {x:9, y:21},
-            text: function(e) {
-                return e.get('longdesc');
-            }
-        });
-    };
 
 	/**
 	 * Inherit the fields
@@ -243,16 +199,5 @@ var Isotope = {};
 // Initialize the back end script
 window.addEvent('domready', function()
 {
-    // Isotope.addInteractiveHelp();
     Isotope.makeSelectExtendable();
-    // Isotope.MediaManager.makeSortable();
-}).addEvent('structure', function()
-{
-    Isotope.addInteractiveHelp();
-});
-
-// Re-apply certain changes upon ajax_change
-window.addEvent('ajax_change', function() {
-    // Isotope.addInteractiveHelp();
-    // Isotope.MediaManager.makeSortable();
 });

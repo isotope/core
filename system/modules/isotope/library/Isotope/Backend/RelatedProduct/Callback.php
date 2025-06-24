@@ -65,7 +65,7 @@ class Callback extends Backend
                     WHERE pid=' . (\strlen(Input::get('act')) ? "(SELECT pid FROM tl_iso_related_product WHERE id=?) AND id!=?" : '?') . '
                 )
             ')
-            ->execute($dc->id, $dc->id)
+            ->execute(...(\strlen(Input::get('act')) ? [$dc->id, $dc->id] : [$dc->id]))
         ;
 
         while ($objCategories->next()) {

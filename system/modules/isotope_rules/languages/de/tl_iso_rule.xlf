@@ -473,7 +473,7 @@
         <source>Basic rule setup</source>
         <target>Basis-Regeleinstellungen</target>
       </trans-unit>
-      <trans-unit id="tl_iso_group.group_legend">
+      <trans-unit id="tl_iso_rule.group_legend">
         <source>Group configuration</source>
         <target>Gruppierungs-Einstellungen</target>
       </trans-unit>

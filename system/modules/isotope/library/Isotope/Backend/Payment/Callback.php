@@ -52,34 +52,6 @@ class Callback extends Backend
 
 
     /**
-     * Get allowed CC types and return them as array
-     *
-     * @return array
-     * @deprecated Deprecated since 2.2, to be removed in 3.0. Create your own DCA field instead.
-     */
-    public function getAllowedCCTypes(DataContainer $dc)
-    {
-        $arrCCTypes = array();
-
-        /** @var Payment $objPayment */
-        if (($objPayment = Payment::findByPk($dc->id)) !== null) {
-
-            try {
-                foreach ($objPayment->getAllowedCCTypes() as $type) {
-                    $arrCCTypes[$type] = $GLOBALS['TL_LANG']['CCT'][$type];
-                }
-
-                return $arrCCTypes;
-
-            } catch (\Exception $e) {
-            }
-        }
-
-        return $arrCCTypes;
-    }
-
-
-    /**
      * Load shipping modules into the DCA (options_callback would not work due to numeric array keys)
      *
      * @param object $dc
