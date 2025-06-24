@@ -455,15 +455,6 @@
       <trans-unit id="MSC.productcacheNoscript">
         <source>Your browser does not support JavaScript. Please &lt;a href="%s"&gt;click here&lt;/a&gt; to load the product list.</source>
       </trans-unit>
-      <trans-unit id="MSC.noFilesInFolder">
-        <source>No files in this folder</source>
-      </trans-unit>
-      <trans-unit id="MSC.assetImportConfirmation">
-        <source>Imported file %s for product "%s"</source>
-      </trans-unit>
-      <trans-unit id="MSC.assetImportNoFilesFound">
-        <source>The folder did not contain any files to be imported.</source>
-      </trans-unit>
       <trans-unit id="MSC.loadingProductData">
         <source>Loading product data …</source>
       </trans-unit>

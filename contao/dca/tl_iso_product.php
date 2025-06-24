@@ -102,12 +102,6 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
                 'href' => 'key=generate',
                 'icon' => 'new.svg',
             ],
-            'import' => [
-                'label' => &$GLOBALS['TL_LANG']['tl_iso_product']['import'],
-                'href' => 'key=import',
-                'icon' => CompatibilityHelper::asset('images/image--plus.png'),
-                'attributes' => 'onclick="Backend.getScrollOffset();"',
-            ],
             'all',
         ],
         'operations' => [
@@ -449,9 +443,6 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
 if (Input::get('id')) {
     $GLOBALS['TL_LANG']['tl_iso_product']['new'] = &$GLOBALS['TL_LANG']['tl_iso_product']['new_variant'];
     $GLOBALS['TL_DCA']['tl_iso_product']['config']['switchToEdit'] = false;
-    unset(
-        $GLOBALS['TL_DCA']['tl_iso_product']['list']['global_operations']['import'],
-    );
 } else {
     unset($GLOBALS['TL_DCA']['tl_iso_product']['list']['global_operations']['generate']);
 }

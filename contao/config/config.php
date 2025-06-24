@@ -5,7 +5,6 @@ use Contao\System;
 use Isotope\Automator;
 use Isotope\Backend;
 use Isotope\Backend\Member\Callback as MemberCallback;
-use Isotope\Backend\Product\AssetImport;
 use Isotope\Backend\Product\DcaManager;
 use Isotope\Backend\Product\Fallback;
 use Isotope\Backend\Product\VariantGenerator;
@@ -102,7 +101,6 @@ ArrayUtil::arrayInsert($GLOBALS['BE_MOD']['isotope'], 0, [
         'tables' => [Product::getTable(), ProductCategory::getTable(), Download::getTable(), RelatedProduct::getTable(), ProductPrice::getTable(), 'tl_iso_product_pricetier', AttributeOption::getTable()],
         'javascript' => CompatibilityHelper::asset('backend.js'),
         'generate' => [VariantGenerator::class, 'generate'],
-        'import' => [AssetImport::class, 'generate'],
         'fallback' => [Fallback::class, 'setFromUrl'],
     ],
     'iso_orders' => [
