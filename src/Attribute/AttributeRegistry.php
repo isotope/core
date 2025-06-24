@@ -8,7 +8,9 @@ use Contao\Controller;
 use Contao\Model;
 use Contao\Model\Collection;
 use Doctrine\DBAL\Connection;
+use Isotope\CoreBundle\Exception\MissingAttributeClassException;
 use Isotope\Model\Attribute;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 use Symfony\Contracts\Service\ResetInterface;
@@ -21,6 +23,11 @@ class AttributeRegistry implements ResetInterface
 {
     public const TAG_NAME = 'isotope.attribute';
 
+    /**
+     * @var array<class-string<AttributeInterface>, ContainerInterface|null>
+     */
+    private array $subscribedServices = [];
+
     private array|null $attributes = null;
 
     /**
@@ -30,6 +37,11 @@ class AttributeRegistry implements ResetInterface
         private readonly Connection $connection,
         #[AutowireIterator('isotope.attribute_factory')] private readonly iterable $factories,
     ) {
+    }
+
+    public function setContainer(string $attributeClass, ContainerInterface $container): void
+    {
+        $this->subscribedServices[$attributeClass] = $container;
     }
 
     public function load(bool $reload = false): void
@@ -78,6 +90,16 @@ class AttributeRegistry implements ResetInterface
             if (null !== $attribute) {
                 $attribute->updateDcaField($dca['fields'][$name], $dca['config']['sql']['keys']);
                 $this->attributes[$name] = $attribute;
+            }
+        }
+
+        foreach ($this->attributes as $attribute) {
+            if ($attribute instanceof ContainerAwareAttributeInterface) {
+                if (!isset($this->subscribedServices[$attribute::class])) {
+                    throw new \RuntimeException($attribute::class.' requires a service container but the attribute registry does not have one');
+                }
+
+                $attribute->setContainer($this->subscribedServices[$attribute::class]);
             }
         }
     }

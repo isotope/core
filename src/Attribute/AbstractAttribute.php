@@ -4,10 +4,16 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Attribute;
 
+use Codefog\HasteBundle\Formatter;
+use Isotope\CoreBundle\Model\Attribute;
 use Isotope\Interfaces\IsotopeProduct;
+use Psr\Container\ContainerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface as SymfonyContainerInterface;
 
-abstract class AbstractAttribute implements AttributeInterface
+abstract class AbstractAttribute implements AttributeInterface, ContainerAwareAttributeInterface
 {
+    protected ContainerInterface $container;
+
     private string|null $name = null;
 
     private string|null $description = null;
@@ -30,9 +36,8 @@ abstract class AbstractAttribute implements AttributeInterface
 
     private string|null $customTemplate = null;
 
-    public function __construct(
-        protected readonly string $fieldName,
-    ) {
+    public function __construct(protected readonly string $fieldName)
+    {
     }
 
     public function getFieldName(): string
@@ -204,6 +209,14 @@ abstract class AbstractAttribute implements AttributeInterface
         return $product->{$this->fieldName};
     }
 
+    public function generate(IsotopeProduct $product, array $options = []): string
+    {
+        return (string) $this->container
+            ->get(Formatter::class)
+            ->dcaValue(Attribute::getTable(), $this->getFieldName(), $this->getValue($product))
+        ;
+    }
+
     public function updateDcaField(array &$field, array &$keys): void
     {
         if (null !== $this->name && null !== $this->description) {
@@ -224,6 +237,28 @@ abstract class AbstractAttribute implements AttributeInterface
         if (!isset($field['sql']) && !$this->isCustomerDefined()) {
             $field['sql'] = $this->getSqlDefinition();
         }
+    }
+
+    public function setContainer(ContainerInterface $container): void
+    {
+        $this->container = $container;
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return [
+            Formatter::class,
+        ];
+    }
+
+    /**
+     * @template T
+     * @param class-string<T> $id
+     * @return T|null
+     */
+    protected function get(string $id, int $invalidBehavior = SymfonyContainerInterface::EXCEPTION_ON_INVALID_REFERENCE): ?object
+    {
+        return $this->container->get($id, $invalidBehavior);
     }
 
     abstract protected function getSqlDefinition(): array|string;

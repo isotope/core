@@ -4,15 +4,10 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Attribute;
 
-use Doctrine\DBAL\Connection;
 use Isotope\Interfaces\IsotopeAttribute;
 
 class CoreAttributeFactory implements AttributeFactoryInterface
 {
-    public function __construct(private readonly Connection $connection)
-    {
-    }
-
     public function create(string $fieldName, array $config, array $dca): AttributeInterface|null
     {
         /** @var class-string<IsotopeAttribute> $class */
@@ -99,7 +94,7 @@ class CoreAttributeFactory implements AttributeFactoryInterface
         return match ($class) {
             RadioAttribute::class,
             SelectAttribute::class,
-            CheckboxAttribute::class => new $class($fieldName, $optionsSource, $this->connection),
+            CheckboxAttribute::class => new $class($fieldName, $optionsSource),
             default => new $class($fieldName),
         };
     }

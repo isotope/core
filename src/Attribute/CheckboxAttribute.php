@@ -36,11 +36,6 @@ class CheckboxAttribute extends AbstractOptionsAttribute
         }
     }
 
-    public function generate(IsotopeProduct $product, array $options = []): string
-    {
-        return '';
-    }
-
     protected function getSqlDefinition(): array|string
     {
         if (OptionsSource::Name === $this->optionsSource) {

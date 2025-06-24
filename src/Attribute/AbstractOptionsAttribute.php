@@ -24,9 +24,15 @@ abstract class AbstractOptionsAttribute extends AbstractAttribute implements Opt
     public function __construct(
         string $fieldName,
         protected OptionsSource|null $optionsSource,
-        private readonly Connection $connection,
     ) {
         parent::__construct($fieldName);
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return array_merge(parent::getSubscribedServices(), [
+            Connection::class,
+        ]);
     }
 
     public function getOptionsForVariants(array $variantIds, array $variantOptions = []): array
@@ -44,7 +50,7 @@ abstract class AbstractOptionsAttribute extends AbstractAttribute implements Opt
         $strKey = md5(implode('-', $variantIds).'_'.json_encode($variantOptions));
 
         if (!isset($this->variantOptionsCache[$strKey])) {
-            $qb = $this->connection->createQueryBuilder();
+            $qb = $this->get(Connection::class)->createQueryBuilder();
             $qb
                 ->select('DISTINCT '.$this->fieldName)
                 ->from('tl_iso_product')
@@ -249,7 +255,7 @@ abstract class AbstractOptionsAttribute extends AbstractAttribute implements Opt
                 $foreignKey = $this->parseForeignKey($this->foreignKey, $GLOBALS['TL_LANGUAGE']);
                 [$table, $field] = explode('.', $foreignKey, 2);
 
-                return $this->connection->fetchAllAssociative(
+                return $this->get(Connection::class)->fetchAllAssociative(
                     "SELECT id AS value, $field AS label FROM $table WHERE id IN (".implode(',', $values).') ORDER BY label',
                 );
 

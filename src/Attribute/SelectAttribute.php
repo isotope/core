@@ -99,11 +99,6 @@ class SelectAttribute extends AbstractOptionsAttribute implements VariantAttribu
         }
     }
 
-    public function generate(IsotopeProduct $product, array $options = []): string
-    {
-        return '';
-    }
-
     protected function getSqlDefinition(): array|string
     {
         if ($this->hasMultiple()) {
