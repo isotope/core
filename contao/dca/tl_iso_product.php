@@ -47,7 +47,6 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
         ],
         'oncopy_callback' => [
             [Category::class, 'updateSorting'],
-            [DcaManager::class, 'updateDateAdded'],
         ],
         'onsubmit_callback' => [
             [Backend::class, 'truncateProductCache'],
@@ -166,6 +165,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'sql' => "varchar(5) NOT NULL default ''",
         ],
         'dateAdded' => [
+            'default' => static fn () => time(),
             'sorting' => true,
             'eval' => ['rgxp' => 'datim', 'doNotCopy' => true],
             'attributes' => ['fe_sorting' => true, 'systemColumn' => true],
