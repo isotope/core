@@ -18,7 +18,7 @@ use Symfony\Contracts\Service\ResetInterface;
 /**
  * @internal
  */
-class ProductTypeAccessVoter extends AbstractDataContainerVoter implements ResetInterface
+class ProducttypeAccessVoter extends AbstractDataContainerVoter implements ResetInterface
 {
     private array|null $used = null;
 

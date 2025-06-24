@@ -14,12 +14,9 @@ namespace Isotope\Backend\Product;
 use Contao\Backend;
 use Contao\BackendUser;
 use Contao\CoreBundle\Exception\AccessDeniedException;
-use Contao\CoreBundle\Exception\InternalServerErrorException;
 use Contao\Database;
 use Contao\Input;
-use Contao\Message;
 use Contao\System;
-use Isotope\Model\Product;
 use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 
 class Permission extends Backend
@@ -35,30 +32,6 @@ class Permission extends Backend
         $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
 
         $session = $sessionBag->all();
-
-        if ('delete' === Input::get('act') && \in_array(Input::get('id'), static::getUndeletableIds())) {
-            throw new InternalServerErrorException('Product ID '.Input::get('id').' is used in an order and can\'t be deleted');
-        }
-
-        if ('deleteAll' === Input::get('act') && \is_array($session['CURRENT']['IDS'] ?? null)) {
-            $arrDeletable = array_diff($session['CURRENT']['IDS'], static::getUndeletableIds());
-
-            if (\count($arrDeletable) != \count($session['CURRENT']['IDS'])) {
-
-                // Unpublish all undeletable records
-                Database::getInstance()->query("
-                    UPDATE " . Product::getTable() . "
-                    SET published=''
-                    WHERE id IN (" . implode(',', array_intersect($session['CURRENT']['IDS'], static::getUndeletableIds())) . ")
-                ");
-
-                // Remove undeletable products from selection
-                $session['CURRENT']['IDS'] = array_values($arrDeletable);
-                $sessionBag->replace($session);
-
-                Message::addInfo($GLOBALS['TL_LANG']['MSC']['undeletableUnpublished']);
-            }
-        }
 
         $arrProducts = static::getAllowedIds();
 
@@ -111,32 +84,6 @@ class Permission extends Backend
                 throw new AccessDeniedException('Cannot access product ID ' . Input::get('id'));
             }
         }
-    }
-
-    /**
-     * Check if a product can be deleted by the current backend user
-     * Deleting is prohibited if a product has been ordered
-     *
-     * @return array
-     */
-    public static function getUndeletableIds()
-    {
-        static $arrProducts;
-
-        if (null === $arrProducts) {
-            $arrProducts = Database::getInstance()->query("
-                    SELECT i.product_id AS id FROM tl_iso_product_collection_item i
-                    INNER JOIN tl_iso_product_collection c ON i.pid=c.id
-                    WHERE c.type='order'
-                UNION
-                    SELECT p.pid AS id FROM tl_iso_product p
-                    INNER JOIN tl_iso_product_collection_item i ON i.product_id=p.id
-                    INNER JOIN tl_iso_product_collection c ON i.pid=c.id
-                    WHERE p.pid>0 AND c.type='order'
-            ")->fetchEach('id');
-        }
-
-        return $arrProducts;
     }
 
     /**

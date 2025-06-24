@@ -69,11 +69,6 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             ],
         ],
     ],
-    'select' => [
-        'buttons_callback' => [
-            [Button::class, 'forSelect'],
-        ],
-    ],
     'list' => [
         'sorting' => [
             'mode' => DataContainer::MODE_SORTABLE,
@@ -96,11 +91,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
                 'icon' => 'copy.svg',
                 'button_callback' => [Button::class, 'forCopy'],
             ],
-            'cut' => [
-                'href' => 'act=cut',
-                'icon' => 'cut.svg',
-                'button_callback' => [Button::class, 'forCut'],
-            ],
+            'cut',
             'delete',
             'toggle' => [
                 'icon' => 'visible.svg',
@@ -429,4 +420,6 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
 if (Input::get('id')) {
     $GLOBALS['TL_LANG']['tl_iso_product']['new'] = &$GLOBALS['TL_LANG']['tl_iso_product']['new_variant'];
     $GLOBALS['TL_DCA']['tl_iso_product']['config']['switchToEdit'] = false;
+} else {
+    $GLOBALS['TL_DCA']['tl_iso_product']['config']['notSortable'] = true;
 }

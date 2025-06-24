@@ -52,27 +52,6 @@ class Button extends Backend
     }
 
     /**
-     * Return the "cut" button
-     *
-     * @param array  $row
-     * @param string $href
-     * @param string $label
-     * @param string $title
-     * @param string $icon
-     * @param string $attributes
-     *
-     * @return string
-     */
-    public function forCut($row, $href, $label, $title, $icon, $attributes)
-    {
-        if ($row['pid'] == 0) {
-            return '';
-        }
-
-        return '<a href="' . preg_replace('/&(amp;)?id=[^& ]*/i', '', \Contao\StringUtil::ampersand(Environment::get('request'))) . '&amp;act=paste&amp;mode=cut&amp;table=tl_iso_product&amp;id=' . $row['id'] . '&amp;pid=' . Input::get('id') . '&rt=' . Input::get('rt') . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . ' onclick="Backend.getScrollOffset();">' . Image::getHtml($icon, $label) . '</a> ';
-    }
-
-    /**
      * Return the "toggle visibility" button
      *
      * @param array  $row
@@ -202,23 +181,6 @@ class Button extends Backend
         }
 
         return '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title . '<br>'.sprintf($GLOBALS['TL_DCA']['tl_iso_product']['list']['operations']['downloads']['label'][2], $this->getNumberOfDownloadsForProduct($row['id']))) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ';
-    }
-
-    /**
-     * Manage act=select buttons
-     *
-     * @param array $arrButtons
-     *
-     * @return array
-     */
-    public function forSelect($arrButtons)
-    {
-        if ('select' === Input::get('act') && !Input::get('id')) {
-            unset($arrButtons['copy']);
-            unset($arrButtons['cut']);
-        }
-
-        return $arrButtons;
     }
 
     /**

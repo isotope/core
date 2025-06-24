@@ -10,9 +10,7 @@ use Contao\CoreBundle\Security\DataContainer\ReadAction;
 use Contao\CoreBundle\Security\DataContainer\UpdateAction;
 use Contao\CoreBundle\Security\Voter\DataContainer\AbstractDataContainerVoter;
 use Doctrine\DBAL\Connection;
-use Isotope\CoreBundle\Security\IsotopeCorePermissions;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Contracts\Service\ResetInterface;
 
 /**
@@ -27,7 +25,7 @@ class ProductSoldVoter extends AbstractDataContainerVoter implements ResetInterf
     ) {
     }
 
-    public function reset()
+    public function reset(): void
     {
         $this->used = null;
     }
@@ -54,8 +52,9 @@ class ProductSoldVoter extends AbstractDataContainerVoter implements ResetInterf
                     INNER JOIN tl_iso_product_collection c ON i.pid=c.id
                     WHERE p.pid>0 AND c.type='order'
             ");
+            $this->used = array_map(intval(...), $this->used);
         }
 
-        return !\in_array($action->getCurrentId(), $this->used, false);
+        return !\in_array((int) $action->getCurrentId(), $this->used, true);
     }
 }
