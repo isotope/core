@@ -43,7 +43,6 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
         'onload_callback' => [
             [DcaManager::class, 'load'],
             [Permission::class, 'check'],
-            [Panel::class, 'applyAdvancedFilters'],
             [XmlSitemap::class, 'generate'],
         ],
         'oncopy_callback' => [
@@ -85,10 +84,8 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'fields' => ['name'],
             'headerFields' => ['name', 'sku', 'price', 'published'],
             'flag' => DataContainer::SORT_INITIAL_LETTER_ASC,
-            'panelLayout' => 'iso_buttons,iso_filter;filter;sort,iso_sorting,search,limit',
+            'panelLayout' => 'filter;sort,iso_sorting,search,limit',
             'panel_callback' => [
-                'iso_buttons' => [Panel::class, 'generateFilterButtons'],
-                'iso_filter' => [Panel::class, 'generateAdvancedFilters'],
                 'iso_sorting' => [Panel::class, 'generateSortingIcon'],
             ],
         ],

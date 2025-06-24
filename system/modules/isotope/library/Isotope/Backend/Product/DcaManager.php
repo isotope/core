@@ -24,6 +24,7 @@ use Isotope\Backend\Group\Breadcrumb;
 use Isotope\CoreBundle\Attribute\AttributeInterface;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
 use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
+use Isotope\CoreBundle\Attribute\OptionsSource;
 use Isotope\CoreBundle\Model\Attribute;
 use Isotope\Haste\Util\Format;
 use Isotope\Interfaces\IsotopeProduct;
@@ -42,7 +43,6 @@ class DcaManager extends Backend
     public function load()
     {
         $this->checkFeatures();
-        $this->addBreadcrumb();
         $this->buildPaletteString();
         $this->changeVariantColumns();
     }
@@ -143,20 +143,6 @@ class DcaManager extends Backend
             $GLOBALS['TL_DCA'][Product::getTable()]['fields'][$field]['sorting'] = false;
             $GLOBALS['TL_DCA'][Product::getTable()]['fields'][$field]['search'] = false;
         }
-    }
-
-    /**
-     * Add the breadcrumb menu
-     */
-    public function addBreadcrumb()
-    {
-        /** @var AttributeBagInterface $sessionBag */
-        $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
-
-        $strBreadcrumb = Breadcrumb::generate((int) $sessionBag->get('iso_products_gid'));
-        $strBreadcrumb .= static::getPagesBreadcrumb();
-
-        $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['breadcrumb'] = $strBreadcrumb;
     }
 
     /**
@@ -433,95 +419,5 @@ class DcaManager extends Backend
         }
 
         return $arrData;
-    }
-
-
-    /**
-     * Add a breadcrumb menu to the page tree
-     *
-     * @return string
-     */
-    protected static function getPagesBreadcrumb()
-    {
-        /** @var AttributeBagInterface $sessionBag */
-        $sessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
-        $session = $sessionBag->all();
-
-        // Set a new gid
-        if (isset($_GET['page'])) {
-            $session['filter']['tl_iso_product']['iso_page'] = (int) Input::get('page');
-            $sessionBag->replace($session);
-            Controller::redirect(preg_replace('/&page=[^&]*/', '', Environment::get('request')));
-        }
-
-        $intNode = $session['filter']['tl_iso_product']['iso_page'] ?? 0;
-
-        if ($intNode < 1) {
-            return '';
-        }
-
-        $arrIds   = array();
-        $arrLinks = array();
-
-        $objUser = BackendUser::getInstance();
-
-        // Generate breadcrumb trail
-        if ($intNode) {
-            $intId       = $intNode;
-            $objDatabase = Database::getInstance();
-
-            do {
-                $objPage = $objDatabase->prepare("SELECT * FROM tl_page WHERE id=?")
-                    ->limit(1)
-                    ->execute($intId);
-
-                if ($objPage->numRows < 1) {
-                    // Currently selected page does not exits
-                    if ($intId == $intNode) {
-                        $session['filter']['tl_iso_product']['iso_page'] = 0;
-                        $sessionBag->replace($session);
-
-                        return '';
-                    }
-
-                    break;
-                }
-
-                $arrIds[] = $intId;
-
-                // No link for the active page
-                if ($objPage->id == $intNode) {
-                    $arrLinks[] = Backend::addPageIcon($objPage->row(), '', null, '', true) . ' ' . $objPage->title;
-                } else {
-                    $arrLinks[] = Backend::addPageIcon($objPage->row(), '', null, '', true) . ' <a href="' . Controller::addToUrl('page=' . $objPage->id) . '" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['selectNode']) . '">' . $objPage->title . '</a>';
-                }
-
-                // Do not show the mounted pages
-                if (!$objUser->isAdmin && $objUser->hasAccess($objPage->id, 'pagemounts')) {
-                    break;
-                }
-
-                $intId = $objPage->pid;
-            } while ($intId > 0 && 'root' !== $objPage->type);
-        }
-
-        // Check whether the node is mounted
-        if (!$objUser->isAdmin && !$objUser->hasAccess($arrIds, 'pagemounts')) {
-            $session['filter']['tl_iso_product']['iso_page'] = 0;
-            $sessionBag->replace($session);
-
-            throw new AccessDeniedException('Page ID ' . $intNode . ' was not mounted');
-        }
-
-        // Add root link
-        $arrLinks[] = '<img src="system/themes/' . Backend::getTheme() . '/images/pagemounts.svg" width="18" height="18" alt=""> <a href="' . Controller::addToUrl('page=0') . '" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['selectAllNodes']) . '">' . $GLOBALS['TL_LANG']['MSC']['filterAll'] . '</a>';
-        $arrLinks   = array_reverse($arrLinks);
-
-        // Insert breadcrumb menu
-        return '
-
-<ul id="tl_breadcrumb">
-  <li>' . implode(' &gt; </li><li>', $arrLinks) . '</li>
-</ul>';
     }
 }
