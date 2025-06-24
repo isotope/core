@@ -30,8 +30,6 @@ use Contao\SelectMenu;
 use Contao\StringUtil;
 use Contao\System;
 use Isotope\CompatibilityHelper;
-use Isotope\CoreBundle\Checkout\Payment\PaymentInterface;
-use Isotope\CoreBundle\Checkout\Shipping\ShippingInterface;
 use Isotope\CoreBundle\Document\DocumentInterface;
 use Isotope\CoreBundle\Model\Document;
 use Isotope\CoreBundle\Model\Payment;
@@ -39,7 +37,6 @@ use Isotope\CoreBundle\Model\Shipping;
 use Isotope\CoreBundle\ModelType\DocumentRegistry;
 use Isotope\Frontend;
 use Isotope\Haste\Util\Format;
-use Isotope\Interfaces\IsotopeBackendInterface;
 use Isotope\Isotope;
 use Isotope\Model\Address;
 use Isotope\Model\OrderStatus;
@@ -415,126 +412,6 @@ class Callback extends Backend
         if (Input::get('id') != '' && !\in_array(Input::get('id'), $arrIds)) {
             throw new AccessDeniedException('Trying to access disallowed order ID ' . Input::get('id'));
         }
-    }
-
-    /**
-     * Return the payment button if a payment method is available
-     *
-     * @param array  $row
-     * @param string $href
-     * @param string $label
-     * @param string $title
-     * @param string $icon
-     * @param string $attributes
-     *
-     * @return string
-     */
-    public function paymentButton($row, $href, $label, $title, $icon, $attributes)
-    {
-        if (!$row['payment_id']) {
-            return '';
-        }
-
-        $paymentMethod = Payment::findByPk($row['payment_id']);
-
-        if (!$paymentMethod instanceof PaymentInterface
-            || ($paymentMethod instanceof IsotopeBackendInterface && !$paymentMethod->hasBackendInterface((int) $row['id']))
-            || (!$paymentMethod instanceof IsotopeBackendInterface && !\is_callable([$paymentMethod, 'backendInterface']))
-        ) {
-            return '';
-        }
-
-        return '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ';
-    }
-
-    /**
-     * Generate a payment interface and return it as HTML string
-     *
-     * @param object $dc
-     *
-     * @return string
-     */
-    public function paymentInterface($dc)
-    {
-        $objOrder = Order::findByPk($dc->id);
-
-        if (null !== $objOrder) {
-
-            /** @var \Isotope\CoreBundle\Checkout\Payment\PaymentInterface $objPayment */
-            $objPayment = $objOrder->getRelated('payment_id');
-
-            if (null !== $objPayment) {
-                if ($objPayment instanceof IsotopeBackendInterface && $objPayment->hasBackendInterface((int) $dc->id)) {
-                    return $objPayment->renderBackendInterface((int) $dc->id);
-                }
-
-                if (\is_callable([$objPayment, 'backendInterface'])) {
-                    return $objPayment->backendInterface($dc->id);
-                }
-            }
-        }
-
-        return '<p class="tl_gerror">' . $GLOBALS['TL_LANG']['MSC']['backendPaymentNotFound'] . '</p>';
-    }
-
-    /**
-     * Return the shipping button if a shipping method is available
-     *
-     * @param array  $row
-     * @param string $href
-     * @param string $label
-     * @param string $title
-     * @param string $icon
-     * @param string $attributes
-     *
-     * @return string
-     */
-    public function shippingButton($row, $href, $label, $title, $icon, $attributes)
-    {
-        if (!$row['shipping_id']) {
-            return '';
-        }
-
-        $shippingMethod = Shipping::findByPk($row['shipping_id']);
-
-        if (!$shippingMethod instanceof ShippingInterface
-            || ($shippingMethod instanceof IsotopeBackendInterface && !$shippingMethod->hasBackendInterface((int) $row['id']))
-            || (!$shippingMethod instanceof IsotopeBackendInterface && !\is_callable([$shippingMethod, 'backendInterface']))
-        ) {
-            return '';
-        }
-
-        return '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ';
-    }
-
-    /**
-     * Generate a shipping interface and return it as HTML string
-     *
-     * @param object $dc
-     *
-     * @return  string
-     */
-    public function shippingInterface($dc)
-    {
-        $objOrder = Order::findByPk($dc->id);
-
-        if (null !== $objOrder) {
-
-            /** @var \Isotope\CoreBundle\Checkout\Shipping\ShippingInterface $objShipping */
-            $objShipping = $objOrder->getRelated('shipping_id');
-
-            if (null !== $objShipping) {
-                if ($objShipping instanceof IsotopeBackendInterface && $objShipping->hasBackendInterface((int) $dc->id)) {
-                    return $objShipping->renderBackendInterface((int) $dc->id);
-                }
-
-                if (\is_callable([$objShipping, 'backendInterface'])) {
-                    return $objShipping->backendInterface($dc->id);
-                }
-            }
-        }
-
-        return '<p class="tl_gerror">' . $GLOBALS['TL_LANG']['MSC']['backendShippingNotFound'] . '</p>';
     }
 
     /**

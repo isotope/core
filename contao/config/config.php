@@ -98,8 +98,6 @@ ArrayUtil::arrayInsert($GLOBALS['BE_MOD']['isotope'], 0, [
         'tables' => [ProductCollection::getTable(), ProductCollectionItem::getTable(), ProductCollectionSurcharge::getTable(), ProductCollectionDownload::getTable(), Address::getTable()],
         'javascript' => CompatibilityHelper::asset('backend.js'),
         'print_document' => [Callback::class, 'printDocument'],
-        'payment' => [Callback::class, 'paymentInterface'],
-        'shipping' => [Callback::class, 'shippingInterface'],
     ],
     'iso_setup' => [
         'callback' => Setup::class,
