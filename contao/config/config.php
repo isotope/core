@@ -11,7 +11,6 @@ use Isotope\Backend\ProductCollection\Callback;
 use Isotope\Backend\ProductType\Help;
 use Isotope\Backend\SubtableVersion;
 use Isotope\BackendModule\InitializeListener;
-use Isotope\BackendModule\Integrity;
 use Isotope\BackendModule\Setup;
 use Isotope\CheckoutStep\BillingAddress;
 use Isotope\CheckoutStep\OrderInfo;
@@ -32,12 +31,6 @@ use Isotope\Frontend;
 use Isotope\Frontend\ProductAction\CartAction;
 use Isotope\Frontend\ProductAction\Registry;
 use Isotope\Frontend\ProductAction\UpdateAction;
-use Isotope\IntegrityCheck\AttributeOptionOrphans;
-use Isotope\IntegrityCheck\MultilingualAttributes;
-use Isotope\IntegrityCheck\PriceTable;
-use Isotope\IntegrityCheck\UnusedRules;
-use Isotope\IntegrityCheck\VariantOrphans;
-use Isotope\IntegrityCheck\VariantPrices;
 use Isotope\Isotope;
 use Isotope\Model\Address;
 use Isotope\Model\AttributeOption;
@@ -187,10 +180,6 @@ $GLOBALS['ISO_MOD'] = [
         'labels' => [
             'tables' => [Label::getTable()],
             'icon' => CompatibilityHelper::asset('images/setup-labels.png'),
-        ],
-        'integrity' => [
-            'callback' => Integrity::class,
-            'icon' => CompatibilityHelper::asset('images/setup-integrity.png'),
         ],
     ],
 ];
@@ -350,18 +339,6 @@ $GLOBALS['ISO_CHECKOUTSTEP'] = [
     'shipping' => [ShippingMethod::class],
     'payment' => [PaymentMethod::class],
     'review' => [OrderInfo::class, OrderProducts::class],
-];
-
-/*
- * Integrity checks
- */
-$GLOBALS['ISO_INTEGRITY'] = [
-    PriceTable::class,
-    VariantPrices::class,
-    VariantOrphans::class,
-    AttributeOptionOrphans::class,
-    MultilingualAttributes::class,
-    UnusedRules::class,
 ];
 
 /*

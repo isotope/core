@@ -224,12 +224,6 @@
       <trans-unit id="IMD.labels.1">
         <source>Replace given labels for certain languages.</source>
       </trans-unit>
-      <trans-unit id="IMD.integrity.0">
-        <source>Integrity Check</source>
-      </trans-unit>
-      <trans-unit id="IMD.integrity.1">
-        <source>Validate your shop configuration against common errors.</source>
-      </trans-unit>
     </body>
   </file>
 </xliff>
