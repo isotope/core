@@ -58,7 +58,26 @@ class ProductData extends DC_Table
 	 */
 	public function __construct($strTable)
 	{
+		$GLOBALS['TL_DCA'][$strTable]['config']['ptable'] = $strTable;
+
 		parent::__construct($strTable);
+
+		unset($GLOBALS['TL_DCA'][$strTable]['config']['ptable']);
+
+		if (null !== $this->currentPid)
+		{
+			$GLOBALS['TL_DCA'][$strTable]['config']['ptable'] = $strTable;
+            $GLOBALS['TL_DCA'][$strTable]['list']['sorting']['mode'] = DataContainer::MODE_PARENT;
+		}
+		else
+		{
+			$GLOBALS['TL_DCA'][$strTable]['config']['notSortable'] = true;
+
+            if (\in_array(Input::get('act'), ['copy', 'copyAll']))
+            {
+                Input::setGet('children', '1');
+            }
+		}
 
 		// Allow to customize languages via the onload_callback
 		if (isset($GLOBALS['TL_DCA'][$this->strTable]['config']['languages'])) {
@@ -80,17 +99,17 @@ class ProductData extends DC_Table
 		}
 	}
 
-    public function __get($strKey)
-    {
-        switch ($strKey) {
-            case 'editLanguage':
-                return $this->blnEditLanguage;
-        }
+	public function __get($strKey)
+	{
+		switch ($strKey) {
+			case 'editLanguage':
+				return $this->blnEditLanguage;
+		}
 
-        return parent::__get($strKey);
-    }
+		return parent::__get($strKey);
+	}
 
-    /**
+	/**
 	 * List all records of a particular table
 	 *
 	 * @return string
@@ -492,7 +511,7 @@ class ProductData extends DC_Table
 				}
 			}
 
-            /** @var AttributeBagInterface $objSessionBag */
+			/** @var AttributeBagInterface $objSessionBag */
 			$objSessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
 
 			$class = 'tl_tbox';
@@ -925,8 +944,8 @@ class ProductData extends DC_Table
 			$return .= '
 <script>
   window.addEvent(\'domready\', function() {
-    var error = $(\'' . $this->strTable . '\').getElement(\'label.error\');
-    if (error) Backend.vScrollTo((error.getPosition().y - 20));
+	var error = $(\'' . $this->strTable . '\').getElement(\'label.error\');
+	if (error) Backend.vScrollTo((error.getPosition().y - 20));
   });
 </script>';
 		}
@@ -1166,8 +1185,8 @@ class ProductData extends DC_Table
 				$return .= '
 <script>
   window.addEvent(\'domready\', function() {
-    var error = $(\'' . $this->strTable . '\').getElement(\'label.error\');
-    if (error) Backend.vScrollTo((error.getPosition().y - 20));
+	var error = $(\'' . $this->strTable . '\').getElement(\'label.error\');
+	if (error) Backend.vScrollTo((error.getPosition().y - 20));
   });
 </script>';
 			}
@@ -1260,7 +1279,7 @@ class ProductData extends DC_Table
 			$firstOrderBy = $this->firstOrderBy;
 		}
 
-        // Check the default labels (see #509)
+		// Check the default labels (see #509)
 		$labelNew = $GLOBALS['TL_LANG'][$this->strTable]['new'] ?? $GLOBALS['TL_LANG']['DCA']['new'];
 		$limitHeight = BackendUser::getInstance()->doNotCollapse ? false : (int) ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['limitHeight'] ?? 0);
 
@@ -1343,7 +1362,7 @@ class ProductData extends DC_Table
 
 					$orderBy[$k] = $db->findInSet($v, $keys);
 				}
-            }
+			}
 
 			if (($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] ?? null) == self::MODE_SORTED_PARENT)
 			{
@@ -1455,7 +1474,7 @@ class ProductData extends DC_Table
 				}
 
 				$return .= '
-    <th class="tl_folder_tlist tl_right_nowrap"></th>
+	<th class="tl_folder_tlist tl_right_nowrap"></th>
   </tr>
 </thead>
 <tbody>';
@@ -1491,7 +1510,7 @@ class ProductData extends DC_Table
 
 						$return .= '
   <tr>
-    <th colspan="2" class="' . $groupclass . '">' . $group . '</th>
+	<th colspan="2" class="' . $groupclass . '">' . $group . '</th>
   </tr>';
 						$groupclass = 'tl_folder_list';
 					}
@@ -1690,7 +1709,7 @@ class ProductData extends DC_Table
 		$limitHeight = BackendUser::getInstance()->doNotCollapse ? false : (int) ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['limitHeight'] ?? 0);
 		$strBackUrl = Input::get('id') ? System::getContainer()->get('router')->generate('contao_backend').'?do=iso_products' : System::getReferer(true, $this->ptable);
 
-        $db = Database::getInstance();
+		$db = Database::getInstance();
 		$security = System::getContainer()->get('security.helper');
 
 		// TODO: fix back button in variants
@@ -1864,8 +1883,8 @@ class ProductData extends DC_Table
 
 				$return .= '
   <tr>
-    <td><span class="tl_label">' . $k . ':</span> </td>
-    <td>' . $v . '</td>
+	<td><span class="tl_label">' . $k . ':</span> </td>
+	<td>' . $v . '</td>
   </tr>';
 			}
 
@@ -1996,7 +2015,7 @@ class ProductData extends DC_Table
 				}
 
 				$return .= '
-    <th class="tl_folder_tlist tl_right_nowrap iso_operations"></th>
+	<th class="tl_folder_tlist tl_right_nowrap iso_operations"></th>
   </tr>
 </thead>
 <tbody>';
@@ -2032,7 +2051,7 @@ class ProductData extends DC_Table
 
 						$return .= '
   <tr>
-    <th colspan="2" class="' . $groupclass . '">' . $group . '</th>
+	<th colspan="2" class="' . $groupclass . '">' . $group . '</th>
   </tr>';
 						$groupclass = 'tl_folder_list';
 					}
@@ -2263,7 +2282,7 @@ class ProductData extends DC_Table
 			return '';
 		}
 
-        /** @var AttributeBagInterface $objSessionBag */
+		/** @var AttributeBagInterface $objSessionBag */
 		$objSessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
 		$session = $objSessionBag->all();
 		$sessionKey = Input::get('id') ? $this->strTable . '_' . $this->intCurrentPid : $this->strTable;
@@ -2369,7 +2388,7 @@ class ProductData extends DC_Table
 	{
 		$searchFields = array('id');
 
-        /** @var AttributeBagInterface $objSessionBag */
+		/** @var AttributeBagInterface $objSessionBag */
 		$objSessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
 		$session = $objSessionBag->all();
 		$sessionKey = Input::get('id') ? $this->strTable . '_' . $this->intCurrentPid : $this->strTable;
@@ -2519,7 +2538,7 @@ class ProductData extends DC_Table
 	 */
 	protected function limitMenu($blnOptional=false)
 	{
-        /** @var AttributeBagInterface $objSessionBag */
+		/** @var AttributeBagInterface $objSessionBag */
 		$objSessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
 		$session = $objSessionBag->all();
 

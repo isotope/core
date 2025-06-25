@@ -9,12 +9,14 @@ use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 use Contao\DataContainer;
 use Contao\Input;
+use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
 use Isotope\CoreBundle\Attribute\VariantAttributeInterface;
 use Isotope\CoreBundle\DataContainer\ProductData;
 use Isotope\Model\ProductType;
 use Isotope\Model\RelatedCategory;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Loads attributes and configuration from product type into the tl_iso_product table.
@@ -23,6 +25,8 @@ class AttributeListener
 {
     public function __construct(
         private readonly AttributeRegistry $attributeRegistry,
+        private readonly RequestStack $requestStack,
+        private readonly Connection $connection,
         private readonly Formatter $formatter,
     ) {
     }
@@ -42,8 +46,10 @@ class AttributeListener
      * Also removes search and filter fields and viewable columns if they do not exist in any product type.
      */
     #[AsCallback('tl_iso_product', 'config.onload')]
-    public function optimizeDca(DataContainer $dc): void
+    public function optimizeGlobalView(DataContainer $dc): void
     {
+        $GLOBALS['TL_DCA']['tl_iso_product']['fields']['prices']['exclude'] = &$GLOBALS['TL_DCA']['tl_iso_product']['fields']['price']['exclude'];
+
         if (null === $dc->currentPid) {
             unset($GLOBALS['TL_DCA']['tl_iso_product']['list']['operations']['fallback']);
 
@@ -61,8 +67,37 @@ class AttributeListener
             );
         }
 
+        // Remove non-active fields from multi-selection
+        if (\in_array(Input::get('act'), array('editAll', 'overrideAll'), true)) {
+            $ids = $this->requestStack->getSession()->get('CURRENT')['IDS'] ?? null;
+
+            if (!empty($ids)) {
+                $attributes = [];
+                $types = $this->connection->fetchFirstColumn(
+                    <<<'SQL'
+                        SELECT DISTINCT type FROM tl_iso_product WHERE id IN (?) AND pid=0
+                        UNION
+                        SELECT DISTINCT type FROM tl_iso_product WHERE id IN (SELECT pid FROM tl_iso_product WHERE id IN (?))
+                    SQL,
+                    [$ids, $ids],
+                    [ArrayParameterType::INTEGER, ArrayParameterType::INTEGER]
+                );
+
+                foreach (ProductType::findMultipleByIds($types) as $type) {
+                    $attributes[] = $this->getAvailableFieldsForType($type, null !== $dc->currentPid);
+                }
+                $attributes = array_merge(...$attributes);
+            }
+
+            foreach (array_diff(array_keys($GLOBALS['TL_DCA']['tl_iso_product']['fields']), array_unique($attributes)) as $field) {
+                $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$field]['eval']['doNotShow'] = true;
+            }
+
+            return;
+        }
+
         $hasDownloads = false;
-        $hasVariants = (bool) Input::get('id'); // Only check for variants if we are in product view
+        $hasVariants = null !== $dc->currentPid; // Only check for variants if we are in product view
         $attributes = [];
 
         if (null !== ($objProductTypes = ProductType::findAllUsed())) {
@@ -112,42 +147,62 @@ class AttributeListener
     }
 
     #[AsCallback('tl_iso_product', 'config.onload')]
-    public function registerAttributesCallback(ProductData $dc): void
+    public function optimizeCurrentRecordView(ProductData $dc): void
     {
-        $GLOBALS['TL_DCA']['tl_iso_product']['fields']['prices']['exclude'] = &$GLOBALS['TL_DCA']['tl_iso_product']['fields']['price']['exclude'];
+        [$type, $isVariant] = $this->getCurrent($dc);
 
-        foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $name => $config) {
-            $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$name]['attributes_callback'][] = $this->getAttributesCallback(...);
+        if (!$type) {
+            return;
+        }
+
+        if (!$isVariant && $type->hasVariants()) {
+            $GLOBALS['TL_DCA']['tl_iso_product']['config']['switchToEdit'] = true;
         }
 
         if ('show' === Input::get('act')) {
-            [,$enabled] = $this->getCurrent($dc);
-
-            foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $k => $field) {
-                if (!($field['attributes']['systemColumn'] ?? false) && !\in_array($k, $enabled, true)) {
-                    unset($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$k]);
+            foreach (array_diff(array_keys($GLOBALS['TL_DCA']['tl_iso_product']['fields']), $this->getAvailableFieldsForType($type, $isVariant)) as $field) {
+                if (
+                    ($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$field]['attributes']['systemColumn'] ?? false)
+                    && (!$isVariant || !($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$field]['attributes']['fixed'] ?? false))
+                    && ($isVariant || !($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$field]['attributes']['variant_fixed'] ?? false))
+                    && !($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$field]['attributes']['singular'] ?? false)
+                ) {
+                    continue;
                 }
+
+                $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$field]['eval']['doNotShow'] = true;
             }
+
+            return;
         }
 
-        // TODO: Remove non-active fields from multi-selection
-        if (\in_array(Input::get('act'), array('editAll', 'overrideAll'), true)) {
-            //if ($blnVariants && !$blnSingleRecord) {
-            //    $arrInclude = empty($palettes) ? array() : array_merge(...array_values($palettes));
-            //
-            //    foreach ($dcaFields as $name => $config) {
-            //        if (($dcaFields[$name]['attributes']['legend'] ?? '') != '' && !\in_array($name, $arrInclude)) {
-            //            $dcaFields[$name]['exclude'] = true;
-            //        }
-            //    }
-            //}
+        $config = $isVariant ? $type->variant_attributes : $type->attributes;
+
+        foreach (array_intersect(array_keys($GLOBALS['TL_DCA']['tl_iso_product']['fields']), array_keys($config)) as $field) {
+            $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$field]['attributes_callback'][] = static function (array $attributes) use ($field) {
+
+                // Apply product type attribute config
+                if (!empty($config[$field]['tl_class'])) {
+                    $attributes['tl_class'] = $config[$field]['tl_class'];
+                }
+
+                $mandatory = $config[$field]['mandatory'] ?? null;
+
+                if ('yes' === $mandatory) {
+                    $attributes['mandatory'] = true;
+                } elseif ('no' === $mandatory) {
+                    $attributes['mandatory'] = false;
+                }
+
+                return $attributes;
+            };
         }
     }
 
     #[AsCallback('tl_iso_product', 'config.onpalette')]
     public function buildPaletteForProductType(string $palette, ProductData $dc): string
     {
-        [$type, $enabled, $isVariant] = $this->getCurrent($dc);
+        [$type, $isVariant] = $this->getCurrent($dc);
 
         if (!$type) {
             return $palette;
@@ -164,6 +219,8 @@ class AttributeListener
         } else {
             $attributeConfig = $type->attributes;
         }
+
+        $enabled = $this->getAvailableFieldsForType($type, $isVariant);
 
         // Go through each enabled field and build palette
         foreach ($dcaFields as $name => $field) {
@@ -189,7 +246,7 @@ class AttributeListener
     #[AsCallback('tl_iso_product', 'fields.inherit.options')]
     public function getInheritOptions(ProductData $dc): array
     {
-        [$type, $enabled, $isVariant] = $this->getCurrent($dc);
+        [$type, $isVariant] = $this->getCurrent($dc);
 
         if (!$type || !$isVariant) {
             return [];
@@ -197,14 +254,16 @@ class AttributeListener
 
         $inherit = [];
         $canInherit = $type->getAttributes();
+        $enabled = $this->getAvailableFieldsForType($type, $isVariant);
 
         foreach ($enabled as $name) {
             $attribute = $this->attributeRegistry->get($name);
 
-            if ($attribute instanceof VariantAttributeInterface
-                && !$attribute->isVariantOption()
+            if (
+                $attribute instanceof VariantAttributeInterface
                 && \in_array($name, $canInherit, true)
                 && !\in_array($name, ['price', 'published', 'start', 'stop'], true)
+                && !$attribute->isVariantOption()
             ) {
                 $inherit[$name] = $this->formatter->dcaLabel('tl_iso_product', $name);
             }
@@ -213,40 +272,9 @@ class AttributeListener
         return $inherit;
     }
 
-    private function getAttributesCallback(array $attributes, ProductData $dc): array
-    {
-        [$type,, $isVariant] = $this->getCurrent($dc);
-
-        if (!$type) {
-            return $attributes;
-        }
-
-        if ($isVariant) {
-            $attributeConfig = $type->variant_attributes;
-        } else {
-            $attributeConfig = $type->attributes;
-        }
-
-        // Apply product type attribute config
-        if (!empty($attributeConfig[$dc->field]['tl_class'])) {
-            $attributes['tl_class'] = $attributeConfig[$dc->field]['tl_class'];
-        }
-
-        $mandatory = $attributeConfig[$dc->field]['mandatory'] ?? null;
-
-        if ('yes' === $mandatory) {
-            $attributes['mandatory'] = true;
-        } elseif ('no' === $mandatory) {
-            $attributes['mandatory'] = false;
-        }
-
-        return $attributes;
-    }
-
     /**
      * @return array{
      *     0: ProductType|null,
-     *     1: array<string>,
      *     2: bool
      * }
      */
@@ -254,6 +282,10 @@ class AttributeListener
     {
         $variant = null;
         $product = $dc->getCurrentRecord();
+
+        if (!$product) {
+            return [null, false];
+        }
 
         if ($product['pid'] > 0) {
             $variant = $product;
@@ -263,17 +295,20 @@ class AttributeListener
         $type = ProductType::findById($product['type']);
 
         if (!$type) {
-            return [null, [], false];
+            return [null, false];
         }
 
+        return [$type, null !== $variant];
+    }
+
+    private function getAvailableFieldsForType(ProductType $type, bool $forVariant): array
+    {
         $dcaFields = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
-        $selected = null !== $variant ? $type->getVariantAttributes() : $type->getAttributes();
+        $selected = $forVariant ? $type->getVariantAttributes() : $type->getAttributes();
         $available = [];
 
-        foreach ($dcaFields as $name => $field) {
-            if (!\in_array($name, $selected, true)) {
-                continue;
-            }
+        foreach ($selected as $name) {
+            $field = $dcaFields[$name];
 
             if (empty($field['inputType']) && empty($field['input_field_callback'])) {
                 continue;
@@ -282,7 +317,7 @@ class AttributeListener
             $objAttribute = $this->attributeRegistry->get($name);
 
             // Variant fields can only be edited in variant mode
-            if (null === $variant
+            if (!$forVariant
                 && $objAttribute instanceof VariantAttributeInterface
                 && $objAttribute->isVariantOption()
             ) {
@@ -290,13 +325,13 @@ class AttributeListener
             }
 
             // Field cannot be edited in variant
-            if (null !== $variant && ($field['attributes']['inherit'] ?? false)) {
+            if ($forVariant && ($field['attributes']['inherit'] ?? false)) {
                 continue;
             }
 
             $available[] = $name;
         }
 
-        return [$type, $available, null !== $variant];
+        return $available;
     }
 }

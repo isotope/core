@@ -287,9 +287,6 @@
       <trans-unit id="tl_iso_product.downloads.1">
         <source>Edit downloads for product ID %s</source>
       </trans-unit>
-      <trans-unit id="tl_iso_product.downloads.2">
-        <source>Currently: %s downloads.</source>
-      </trans-unit>
       <trans-unit id="tl_iso_product.general_legend">
         <source>General Settings</source>
       </trans-unit>

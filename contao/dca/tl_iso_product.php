@@ -36,9 +36,6 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
         'label' => &$GLOBALS['TL_LANG']['MOD']['iso_products'][0],
         'dataContainer' => ProductData::class,
         'enableVersioning' => true,
-        //'doNotDeleteRecords' => true,
-        'switchToEdit' => true,
-        'ptable' => 'tl_iso_product',
         'ctable' => [Download::getTable(), ProductCategory::getTable(), ProductPrice::getTable(), AttributeOption::getTable()],
         'onload_callback' => [
             [Permission::class, 'check'],
@@ -86,11 +83,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
         ],
         'operations' => [
             'edit',
-            'copy' => [
-                'href' => 'act=copy&amp;childs=1',
-                'icon' => 'copy.svg',
-                'button_callback' => [Button::class, 'forCopy'],
-            ],
+            'copy',
             'cut',
             'delete',
             'toggle' => [
@@ -109,17 +102,14 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'variants' => [
                 'href' => '',
                 'icon' => CompatibilityHelper::asset('images/table--pencil.png'),
-                'button_callback' => [Button::class, 'forVariants'],
             ],
             'related' => [
                 'href' => 'table='.RelatedProduct::getTable(),
                 'icon' => CompatibilityHelper::asset('images/sitemap.png'),
-                'button_callback' => [Button::class, 'forRelated'],
             ],
             'downloads' => [
                 'href' => 'table='.Download::getTable(),
                 'icon' => CompatibilityHelper::asset('images/paper-clip.png'),
-                'button_callback' => [Button::class, 'forDownloads'],
             ],
         ],
     ],
@@ -277,7 +267,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'inputType' => 'timePeriod',
             'foreignKey' => TaxClass::getTable().'.name',
             'eval' => ['mandatory' => true, 'maxlength' => 13, 'rgxp' => 'digit', 'includeBlankOption' => true, 'blankOptionLabel' => &$GLOBALS['TL_LANG']['MSC']['taxFree'], 'doNotSaveEmpty' => true, 'tl_class' => 'w50'],
-            'attributes' => ['legend' => 'pricing_legend', 'fe_sorting' => true, 'dynamic' => true, 'singular' => true, 'systemColumn' => true, 'type' => Price::class],
+            'attributes' => ['legend' => 'pricing_legend', 'fe_sorting' => true, 'dynamic' => true, 'singular' => true, 'systemColumn' => true],
             'load_callback' => [
                 [BackendPrice::class, 'load'],
             ],
@@ -319,7 +309,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'inputType' => 'timePeriod',
             'foreignKey' => 'tl_iso_baseprice.name',
             'eval' => ['includeBlankOption' => true, 'rgxp' => 'digit', 'tl_class' => 'w50'],
-            'attributes' => ['type' => BasePrice::class, 'legend' => 'pricing_legend'],
+            'attributes' => ['legend' => 'pricing_legend'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'shipping_weight' => [
@@ -328,25 +318,25 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'options' => ['mg', 'g', 'kg', 't', 'ct', 'oz', 'lb', 'st', 'grain'],
             'reference' => &$GLOBALS['TL_LANG']['WGT'],
             'eval' => ['rgxp' => 'digit', 'tl_class' => 'w50', 'helpwizard' => true],
-            'attributes' => ['legend' => 'shipping_legend', 'type' => Weight::class],
+            'attributes' => ['legend' => 'shipping_legend'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'shipping_exempt' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
-            'attributes' => ['legend' => 'shipping_legend', 'systemColumn' => true],
+            'attributes' => ['legend' => 'shipping_legend'],
             'sql' => "char(1) NOT NULL default ''",
         ],
         'shipping_pickup' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
-            'attributes' => ['legend' => 'shipping_legend', 'systemColumn' => true],
+            'attributes' => ['legend' => 'shipping_legend'],
             'sql' => "char(1) NOT NULL default ''",
         ],
         'shipping_price' => [
             'inputType' => 'text',
             'eval' => ['rgxp' => 'digit', 'tl_class' => 'w50'],
-            'attributes' => ['legend' => 'shipping_legend', 'systemColumn' => true, 'type' => ShippingPrice::class],
+            'attributes' => ['legend' => 'shipping_legend'],
             'sql' => "decimal(9,2) unsigned NOT NULL default '0.00'",
         ],
         'images' => [
@@ -413,9 +403,5 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
  * Adjust the data configuration array in variants view
  */
 if (Input::get('id')) {
-    $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['mode'] = DataContainer::MODE_PARENT;
     $GLOBALS['TL_LANG']['tl_iso_product']['new'] = &$GLOBALS['TL_LANG']['tl_iso_product']['new_variant'];
-    $GLOBALS['TL_DCA']['tl_iso_product']['config']['switchToEdit'] = false;
-} else {
-    $GLOBALS['TL_DCA']['tl_iso_product']['config']['notSortable'] = true;
 }
