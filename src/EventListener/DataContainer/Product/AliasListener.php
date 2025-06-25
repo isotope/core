@@ -26,13 +26,11 @@ class AliasListener
             return $value;
         }
 
-        if (preg_match('/^[1-9]\d*$/', $value))
-        {
+        if (preg_match('/^[1-9]\d*$/', $value)) {
             throw new \RuntimeException($this->translator->trans('ERR.aliasNumeric', [$value], 'contao_default'));
         }
 
-        if ($this->aliasExists($value, (int) $dc->id))
-        {
+        if ($this->aliasExists($value, (int) $dc->id)) {
             throw new \RuntimeException($this->translator->trans('ERR.aliasExists', [$value], 'contao_default'));
         }
 
@@ -63,9 +61,9 @@ class AliasListener
         }
 
         $values['alias'] = $this->slug->generate(
-            $currentRecord['name'] ?: $currentRecord['sku'] ?: $currentRecord['id'],
+            ($currentRecord['name'] ?: $currentRecord['sku']) ?: $currentRecord['id'],
             $slugOptions,
-            fn ($v) => $this->aliasExists($v, (int) $currentRecord['id'])
+            fn ($v) => $this->aliasExists($v, (int) $currentRecord['id']),
         );
 
         return $values;

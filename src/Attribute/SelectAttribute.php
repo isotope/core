@@ -7,7 +7,6 @@ namespace Isotope\CoreBundle\Attribute;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Types\Types;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsAttribute;
-use Isotope\Interfaces\IsotopeProduct;
 
 #[AsAttribute]
 class SelectAttribute extends AbstractOptionsAttribute implements VariantAttributeInterface

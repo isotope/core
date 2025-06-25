@@ -72,7 +72,7 @@ class RegisterAttributePass implements CompilerPassInterface
         $map = [];
 
         foreach ($class::getSubscribedServices() as $k => $v) {
-            $map[\is_numeric($k) ? $v : $k] = new Reference($v);
+            $map[is_numeric($k) ? $v : $k] = new Reference($v);
         }
 
         $attributeRegistry->addMethodCall('setContainer', [$class, ServiceLocatorTagPass::register($container, $map, (string) $reference)]);

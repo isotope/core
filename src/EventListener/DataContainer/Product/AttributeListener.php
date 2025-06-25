@@ -68,7 +68,7 @@ class AttributeListener
         }
 
         // Remove non-active fields from multi-selection
-        if (\in_array(Input::get('act'), array('editAll', 'overrideAll'), true)) {
+        if (\in_array(Input::get('act'), ['editAll', 'overrideAll'], true)) {
             $ids = $this->requestStack->getSession()->get('CURRENT')['IDS'] ?? null;
 
             if (!empty($ids)) {
@@ -80,7 +80,7 @@ class AttributeListener
                         SELECT DISTINCT type FROM tl_iso_product WHERE id IN (SELECT pid FROM tl_iso_product WHERE id IN (?))
                     SQL,
                     [$ids, $ids],
-                    [ArrayParameterType::INTEGER, ArrayParameterType::INTEGER]
+                    [ArrayParameterType::INTEGER, ArrayParameterType::INTEGER],
                 );
 
                 foreach (ProductType::findMultipleByIds($types) as $type) {
@@ -180,7 +180,6 @@ class AttributeListener
 
         foreach (array_intersect(array_keys($GLOBALS['TL_DCA']['tl_iso_product']['fields']), array_keys($config)) as $field) {
             $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$field]['attributes_callback'][] = static function (array $attributes) use ($field) {
-
                 // Apply product type attribute config
                 if (!empty($config[$field]['tl_class'])) {
                     $attributes['tl_class'] = $config[$field]['tl_class'];
@@ -224,7 +223,7 @@ class AttributeListener
 
         // Go through each enabled field and build palette
         foreach ($dcaFields as $name => $field) {
-            if (\in_array($name, $enabled)) {
+            if (\in_array($name, $enabled, true)) {
                 $legendOrder[$attributeConfig[$name]['position']] = $attributeConfig[$name]['legend'];
                 $palettes[$attributeConfig[$name]['legend']][$attributeConfig[$name]['position']] = $name;
             }
@@ -237,10 +236,10 @@ class AttributeListener
         foreach ($legendOrder as $legend) {
             $fields = $palettes[$legend];
             ksort($fields);
-            $legends[] = '{' . $legend . '},' . implode(',', $fields);
+            $legends[] = '{'.$legend.'},'.implode(',', $fields);
         }
 
-        return ($isVariant ? 'inherit,' : '') . implode(';', $legends);
+        return ($isVariant ? 'inherit,' : '').implode(';', $legends);
     }
 
     #[AsCallback('tl_iso_product', 'fields.inherit.options')]
@@ -317,7 +316,8 @@ class AttributeListener
             $objAttribute = $this->attributeRegistry->get($name);
 
             // Variant fields can only be edited in variant mode
-            if (!$forVariant
+            if (
+                !$forVariant
                 && $objAttribute instanceof VariantAttributeInterface
                 && $objAttribute->isVariantOption()
             ) {

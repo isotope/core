@@ -12,27 +12,10 @@
 namespace Isotope\Backend\Product;
 
 use Contao\Backend;
-use Contao\BackendUser;
-use Contao\Controller;
-use Contao\CoreBundle\Exception\AccessDeniedException;
-use Contao\Database;
-use Contao\Environment;
-use Contao\Input;
-use Contao\StringUtil;
-use Contao\System;
-use Isotope\Backend\Group\Breadcrumb;
-use Isotope\CoreBundle\Attribute\AttributeInterface;
-use Isotope\CoreBundle\Attribute\AttributeRegistry;
 use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
-use Isotope\CoreBundle\Attribute\OptionsSource;
 use Isotope\CoreBundle\Model\Attribute;
-use Isotope\Haste\Util\Format;
 use Isotope\Interfaces\IsotopeProduct;
-use Isotope\Model\Group;
 use Isotope\Model\Product;
-use Isotope\Model\ProductType;
-use Isotope\Model\RelatedCategory;
-use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 
 
 class DcaManager extends Backend

@@ -259,7 +259,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
         ],
         'vatNoValidators' => [
             'inputType' => 'checkboxWizard',
-            'options' => array_keys($GLOBALS['ISO_VAT'] ?? []),
+            'options' => \array_keys($GLOBALS['ISO_VAT'] ?? []),
             'reference' => $GLOBALS['TL_LANG']['ISO_VAT'] ?? [],
             'eval' => ['multiple' => true, 'tl_class' => 'clr'],
             'sql' => 'blob NULL',
@@ -274,7 +274,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
         ],
         'currencyFormat' => [
             'inputType' => 'select',
-            'options' => array_keys($GLOBALS['ISO_NUM']),
+            'options' => \array_keys($GLOBALS['ISO_NUM']),
             'eval' => ['includeBlankOption' => true, 'decodeEntities' => true, 'mandatory' => true, 'tl_class' => 'w50'],
             'sql' => "varchar(20) NOT NULL default ''",
         ],
@@ -369,7 +369,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
         'orderDigits' => [
             'default' => 4,
             'inputType' => 'select',
-            'options' => range(1, 9),
+            'options' => \range(1, 9),
             'eval' => ['tl_class' => 'w50'],
             'sql' => "int(1) unsigned NOT NULL default '4'",
         ],

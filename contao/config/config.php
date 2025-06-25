@@ -6,7 +6,6 @@ use Isotope\Automator;
 use Isotope\Backend;
 use Isotope\Backend\Member\Callback as MemberCallback;
 use Isotope\Backend\Product\DcaManager;
-use Isotope\Backend\Product\Fallback;
 use Isotope\Backend\ProductCollection\Callback;
 use Isotope\Backend\ProductType\Help;
 use Isotope\Backend\SubtableVersion;

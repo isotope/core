@@ -4,13 +4,10 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\EventListener\DataContainer\Product;
 
-use Contao\Backend;
 use Contao\CoreBundle\DataContainer\DataContainerOperation;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
-use Contao\Input;
 use Doctrine\DBAL\Connection;
 use Isotope\Model\ProductType;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ButtonListener
 {

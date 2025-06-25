@@ -8,7 +8,6 @@ use Contao\Widget;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Types\Types;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsAttribute;
-use Isotope\Interfaces\IsotopeProduct;
 
 #[AsAttribute]
 class CheckboxAttribute extends AbstractOptionsAttribute

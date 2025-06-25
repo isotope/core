@@ -2,6 +2,7 @@
 
 use Contao\DataContainer;
 use Contao\DC_Table;
+use Contao\System;
 use Isotope\Backend;
 use Isotope\Backend\ProductType\AttributeWizard;
 use Isotope\Backend\ProductType\Callback;
@@ -183,9 +184,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = [
         ],
         'validAliasCharacters' => [
             'inputType' => 'select',
-            'options_callback' => static function () {
-                return \Contao\System::getContainer()->get('contao.slug.valid_characters')->getOptions();
-            },
+            'options_callback' => static fn () => System::getContainer()->get('contao.slug.valid_characters')->getOptions(),
             'eval' => ['includeBlankOption' => true, 'decodeEntities' => true, 'tl_class' => 'w50'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],

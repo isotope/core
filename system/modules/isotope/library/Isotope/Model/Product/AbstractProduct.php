@@ -11,7 +11,6 @@
 
 namespace Isotope\Model\Product;
 
-use Contao\CoreBundle\Security\ContaoCorePermissions;
 use Contao\Database;
 use Contao\Date;
 use Contao\StringUtil;

@@ -253,10 +253,12 @@ abstract class AbstractAttribute implements AttributeInterface, ContainerAwareAt
 
     /**
      * @template T
+     *
      * @param class-string<T> $id
+     *
      * @return T|null
      */
-    protected function get(string $id, int $invalidBehavior = SymfonyContainerInterface::EXCEPTION_ON_INVALID_REFERENCE): ?object
+    protected function get(string $id, int $invalidBehavior = SymfonyContainerInterface::EXCEPTION_ON_INVALID_REFERENCE): object|null
     {
         return $this->container->get($id, $invalidBehavior);
     }

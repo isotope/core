@@ -186,7 +186,7 @@ class AttributeRegistry implements ResetInterface
         return array_keys(array_filter(
             $this->attributes,
             static fn (AttributeInterface $attribute) => $attribute instanceof OptionsAttributeInterface
-                && ($attribute->getOptionsSource() === OptionsSource::Table || $attribute->getOptionsSource() === OptionsSource::Product)
+                && (OptionsSource::Table === $attribute->getOptionsSource() || OptionsSource::Product === $attribute->getOptionsSource())
                 && $attribute->canHavePrices(),
         ));
 

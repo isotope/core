@@ -14,21 +14,15 @@ namespace Isotope;
 use Contao\Backend as ContaoBackend;
 use Contao\BackendUser;
 use Contao\Controller;
-use Contao\CoreBundle\Exception\NoContentResponseException;
-use Contao\CoreBundle\Exception\ResponseException;
 use Contao\Database;
-use Contao\DataContainer;
 use Contao\Input;
 use Contao\System;
 use Contao\Widget;
 use Isotope\Backend\Product\Permission;
 use Isotope\Model\Config;
-use Isotope\Model\Group;
 use Isotope\Model\OrderStatus;
 use Isotope\Model\ProductCache;
 use Isotope\Model\RequestCache;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 
 /**
  * Provide methods to handle Isotope back end components.

@@ -7,7 +7,6 @@ namespace Isotope\CoreBundle\Attribute;
 use Contao\Widget;
 use Doctrine\DBAL\Types\Types;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsAttribute;
-use Isotope\Interfaces\IsotopeProduct;
 
 #[AsAttribute]
 class RadioAttribute extends AbstractOptionsAttribute implements VariantAttributeInterface

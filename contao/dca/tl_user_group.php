@@ -1,7 +1,6 @@
 <?php
 
 use Contao\CoreBundle\DataContainer\PaletteManipulator;
-use Contao\System;
 use Isotope\Backend;
 use Isotope\CoreBundle\Model\Payment;
 use Isotope\CoreBundle\Model\Shipping;
