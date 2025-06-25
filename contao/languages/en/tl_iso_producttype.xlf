@@ -113,6 +113,12 @@
       <trans-unit id="tl_iso_producttype.force_variant_options.1">
         <source>Show a variant attribute (select, radio) even if there is only one choice.</source>
       </trans-unit>
+      <trans-unit id="tl_iso_producttype.validAliasCharacters.0">
+      <source>Valid alias characters</source>
+    </trans-unit>
+      <trans-unit id="tl_iso_producttype.validAliasCharacters.1">
+        <source>Here you can select a custom character set for auto-generated product aliases.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_producttype.shipping_exempt.0">
         <source>Shipping handling</source>
       </trans-unit>

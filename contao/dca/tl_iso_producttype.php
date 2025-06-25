@@ -181,6 +181,14 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = [
             'eval' => ['tl_class' => 'clr'],
             'sql' => "char(1) NOT NULL default ''",
         ],
+        'validAliasCharacters' => [
+            'inputType' => 'select',
+            'options_callback' => static function () {
+                return \Contao\System::getContainer()->get('contao.slug.valid_characters')->getOptions();
+            },
+            'eval' => ['includeBlankOption' => true, 'decodeEntities' => true, 'tl_class' => 'w50'],
+            'sql' => "varchar(255) NOT NULL default ''",
+        ],
         'shipping_exempt' => [
             'filter' => true,
             'inputType' => 'select',
