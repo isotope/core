@@ -62,7 +62,7 @@ class AttributeListener
             }
         } else {
             unset(
-                $GLOBALS['TL_DCA']['tl_iso_product']['list']['operations']['variants'],
+                $GLOBALS['TL_DCA']['tl_iso_product']['list']['operations']['children'],
                 $GLOBALS['TL_DCA']['tl_iso_product']['list']['operations']['related'],
             );
         }
@@ -124,7 +124,7 @@ class AttributeListener
 
         // Disable variant button if there are no variants at all
         if (!$hasVariants) {
-            unset($GLOBALS['TL_DCA']['tl_iso_product']['list']['operations']['variants']);
+            unset($GLOBALS['TL_DCA']['tl_iso_product']['list']['operations']['children']);
         }
 
         // Remove label fields that are not enabled in any product type

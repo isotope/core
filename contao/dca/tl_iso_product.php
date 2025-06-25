@@ -75,6 +75,11 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
         ],
         'operations' => [
             'edit',
+            'children' => [
+                'href' => '',
+                'icon' => 'children.svg',
+                'primary' => true,
+            ],
             'copy',
             'cut',
             'delete',
@@ -82,19 +87,15 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
                 'href' => 'act=toggle&amp;field=published',
                 'icon' => 'visible.svg',
                 'showInHeader' => true,
+                'primary' => true,
             ],
             'fallback' => [
                 'href' => 'act=toggle&amp;field=fallback',
                 'icon' => 'featured.svg',
+                'primary' => true,
             ],
             'show',
-            'break' => [
-                'button_callback' => static fn () => Input::get('id') ? '' : '<br>',
-            ],
-            'variants' => [
-                'href' => '',
-                'icon' => CompatibilityHelper::asset('images/table--pencil.png'),
-            ],
+            '-',
             'related' => [
                 'href' => 'table='.RelatedProduct::getTable(),
                 'icon' => CompatibilityHelper::asset('images/sitemap.png'),

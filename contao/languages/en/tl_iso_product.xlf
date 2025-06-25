@@ -227,6 +227,12 @@
       <trans-unit id="tl_iso_product.edit.1">
         <source>Edit product ID %s</source>
       </trans-unit>
+      <trans-unit id="tl_iso_product.children.0">
+        <source>Edit product variants</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.children.1">
+        <source>Edit variants of product ID %s</source>
+      </trans-unit>
       <trans-unit id="tl_iso_product.copy.0">
         <source>Copy product</source>
       </trans-unit>
@@ -268,12 +274,6 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.prices.apply_and_close">
         <source>Apply and close</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_product.variants.0">
-        <source>Product variants</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_product.variants.1">
-        <source>Show variants for product ID %s</source>
       </trans-unit>
       <trans-unit id="tl_iso_product.related.0">
         <source>Related products</source>

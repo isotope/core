@@ -16,8 +16,8 @@ class ButtonListener
     ) {
     }
 
-    #[AsCallback('tl_iso_product', 'list.operations.variants.button')]
-    public function variantsButton(DataContainerOperation $operation): void
+    #[AsCallback('tl_iso_product', 'list.operations.children.button')]
+    public function childrenButton(DataContainerOperation $operation): void
     {
         if (!$this->getProductType($operation->getRecord())?->hasVariants()) {
             $operation->setHtml('');

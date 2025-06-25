@@ -35,16 +35,6 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = [
             'format' => '%s',
             'label_callback' => [Callback::class, 'getColoredLabel'],
         ],
-        'global_operations' => [
-            'all',
-        ],
-        'operations' => [
-            'edit',
-            'copy',
-            'cut',
-            'delete',
-            'show',
-        ],
     ],
     'palettes' => [
         'default' => '{name_legend},name,color,paid,welcomescreen;{email_legend},notification;{payment_legend:hide},saferpay_status',

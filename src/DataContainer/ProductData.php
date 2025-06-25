@@ -1470,11 +1470,11 @@ class ProductData extends DC_Table
 					}
 
 					$return .= '
-	<th class="tl_folder_tlist col_' . $f . (($f == $firstOrderBy) ? ' ordered_by' : '') . '">' . (\is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$f]['label'] ?? null) ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$f]['label'][0] : ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$f]['label'] ?? $f)) . '</th>';
+    <th class="tl_folder_tlist col_' . $f . (($f == $firstOrderBy) ? ' ordered_by' : '') . '">' . (\is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$f]['label'] ?? null) ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$f]['label'][0] : ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$f]['label'] ?? $f)) . '</th>';
 				}
 
 				$return .= '
-	<th class="tl_folder_tlist tl_right_nowrap"></th>
+    <th class="tl_folder_tlist tl_right_nowrap"></th>
   </tr>
 </thead>
 <tbody>';
@@ -1510,15 +1510,15 @@ class ProductData extends DC_Table
 
 						$return .= '
   <tr>
-	<th colspan="2" class="' . $groupclass . '">' . $group . '</th>
+    <th colspan="2" class="' . $groupclass . '">' . $group . '</th>
   </tr>';
 						$groupclass = 'tl_folder_list';
 					}
 				}
 
 				$return .= '
-  <tr class="' . ((string) ($row['tstamp'] ?? null) === '0' ? 'draft ' : '') . 'click2edit toggle_select hover-row">
-	';
+  <tr class="' . ((string) ($row['tstamp'] ?? null) === '0' ? 'draft ' : '') . 'click2edit toggle_select hover-row" data-controller="contao--deeplink contao--operations-menu" data-action="contextmenu->contao--operations-menu#open">
+    ';
 
 				$colspan = 1;
 
@@ -1539,7 +1539,7 @@ class ProductData extends DC_Table
 					foreach ($label as $j=>$arg)
 					{
 						$field = $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['fields'][$j] ?? null;
-							$value = (string) $arg !== '' ? $arg : '-';
+						$value = (string) $arg !== '' ? $arg : '-';
 
 						$return .= '<td colspan="' . $colspan . '" class="tl_file_list col_' . explode(':', $field, 2)[0] . ($field == $firstOrderBy ? ' ordered_by' : '') . '">' . $value . '</td>';
 					}
@@ -1741,7 +1741,7 @@ class ProductData extends DC_Table
   <p>' . $GLOBALS['TL_LANG']['MSC']['selectNewPosition'] . '</p>
 </div>' : '') . '
 <div class="tl_listing_container iso_listing_container parent_view' . (($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['renderAsGrid'] ?? false) ? ' as-grid' : '') . ($this->strPickerFieldType ? ' picker unselectable' : '') . '" id="tl_listing"' . $this->getPickerValueAttribute() . '>
-<div class="tl_header click2edit toggle_select hover-div">';
+<div class="tl_header click2edit toggle_select hover-div" data-controller="contao--deeplink contao--operations-menu" data-action="contextmenu->contao--operations-menu#open">';
 
 		// List all records of the child table
 		if (\in_array(Input::get('act'), array('select', null)))
@@ -1803,7 +1803,7 @@ class ProductData extends DC_Table
 				elseif ($v == 'tstamp')
 				{
 					$_v = Date::parse(Config::get('datimFormat'), $objParent->tstamp);
-					}
+				}
 				elseif (isset($GLOBALS['TL_DCA'][$this->ptable]['fields'][$v]['foreignKey']))
 				{
 					$arrForeignKey = explode('.', $GLOBALS['TL_DCA'][$this->ptable]['fields'][$v]['foreignKey'], 2);
@@ -1883,8 +1883,8 @@ class ProductData extends DC_Table
 
 				$return .= '
   <tr>
-	<td><span class="tl_label">' . $k . ':</span> </td>
-	<td>' . $v . '</td>
+    <td><span class="tl_label">' . $k . ':</span> </td>
+    <td>' . $v . '</td>
   </tr>';
 			}
 
@@ -2058,7 +2058,7 @@ class ProductData extends DC_Table
 				}
 
 				$return .= '
-  <tr class="' . ((string) ($row['tstamp'] ?? null) === '0' ? 'draft ' : '') . 'click2edit toggle_select hover-row">
+  <tr class="' . ((string) ($row['tstamp'] ?? null) === '0' ? 'draft ' : '') . 'click2edit toggle_select hover-row" data-controller="contao--deeplink contao--operations-menu" data-action="contextmenu->contao--operations-menu#open">
 	';
 
 				$colspan = 1;
