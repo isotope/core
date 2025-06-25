@@ -92,7 +92,6 @@ ArrayUtil::arrayInsert($GLOBALS['BE_MOD']['isotope'], 0, [
     'iso_products' => [
         'tables' => [Product::getTable(), ProductCategory::getTable(), Download::getTable(), RelatedProduct::getTable(), ProductPrice::getTable(), 'tl_iso_product_pricetier', AttributeOption::getTable()],
         'javascript' => CompatibilityHelper::asset('backend.js'),
-        'fallback' => [Fallback::class, 'setFromUrl'],
     ],
     'iso_orders' => [
         'tables' => [ProductCollection::getTable(), ProductCollectionItem::getTable(), ProductCollectionSurcharge::getTable(), ProductCollectionDownload::getTable(), Address::getTable()],

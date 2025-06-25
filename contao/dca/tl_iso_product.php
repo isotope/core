@@ -36,6 +36,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
         'label' => &$GLOBALS['TL_LANG']['MOD']['iso_products'][0],
         'dataContainer' => ProductData::class,
         'enableVersioning' => true,
+        //'doNotDeleteRecords' => true,
         'switchToEdit' => true,
         'ptable' => 'tl_iso_product',
         'ctable' => [Download::getTable(), ProductCategory::getTable(), ProductPrice::getTable(), AttributeOption::getTable()],
@@ -93,18 +94,17 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'cut',
             'delete',
             'toggle' => [
+                'href' => 'act=toggle&amp;field=published',
                 'icon' => 'visible.svg',
-                'attributes' => 'onclick="Backend.getScrollOffset(); return AjaxRequest.toggleVisibility(this, %s);"',
-                'button_callback' => [Button::class, 'forVisibilityToggle'],
+                'showInHeader' => true,
+            ],
+            'fallback' => [
+                'href' => 'act=toggle&amp;field=fallback',
+                'icon' => 'featured.svg',
             ],
             'show',
             'break' => [
-                'button_callback' => static fn () => '<br>',
-            ],
-            'fallback' => [
-                'href' => 'key=fallback',
-                'icon' => 'featured.svg',
-                'button_callback' => [Button::class, 'forFallbackToggle'],
+                'button_callback' => static fn () => Input::get('id') ? '' : '<br>',
             ],
             'variants' => [
                 'href' => '',
@@ -200,13 +200,11 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'sql' => 'blob NULL',
         ],
         'fallback' => [
+            'toggle' => true,
             'inputType' => 'checkbox',
-            'eval' => ['doNotCopy' => true, 'tl_class' => 'clr'],
+            'eval' => ['doNotCopy' => true, 'fallback' => true, 'tl_class' => 'clr'],
             'attributes' => ['legend' => 'general_legend', 'variant_fixed' => true, 'excluded' => true, 'systemColumn' => true],
             'sql' => "char(1) NOT NULL default ''",
-            'save_callback' => [
-                [Fallback::class, 'reset'],
-            ],
         ],
         'alias' => [
             'search' => true,
@@ -383,6 +381,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'published' => [
+            'toggle' => true,
             'filter' => true,
             'inputType' => 'checkbox',
             'eval' => ['doNotCopy' => true, 'tl_class' => 'clr'],
@@ -417,6 +416,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
  * Adjust the data configuration array in variants view
  */
 if (Input::get('id')) {
+    $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['mode'] = DataContainer::MODE_PARENT;
     $GLOBALS['TL_LANG']['tl_iso_product']['new'] = &$GLOBALS['TL_LANG']['tl_iso_product']['new_variant'];
     $GLOBALS['TL_DCA']['tl_iso_product']['config']['switchToEdit'] = false;
 } else {

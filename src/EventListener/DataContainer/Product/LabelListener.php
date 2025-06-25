@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\EventListener\DataContainer\Product;
 
+use Codefog\HasteBundle\Formatter;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\CoreBundle\Image\Studio\Studio;
 use Contao\Database;
@@ -21,16 +22,19 @@ class LabelListener
 {
     public function __construct(
         private readonly Studio $imageStudio,
+        private readonly Formatter $formatter,
     ) {
     }
 
-    public function __invoke(array $row, string $label, DataContainer $dc, array $args): array
+    public function __invoke(array $row, string $label, DataContainer $dc): array
     {
         $objProduct = Product::findById($row['id']);
 
         if (!$objProduct) {
-            return $args;
+            return [];
         }
+
+        $args = [];
 
         foreach ($GLOBALS['TL_DCA'][$dc->table]['list']['label']['fields'] as $i => $field) {
             switch ($field) {
@@ -67,6 +71,8 @@ class LabelListener
                         if ($removed) {
                             $args[$i] .= '<br><span title="'.StringUtil::specialchars(implode(', ', $removed)).'">…</span><span class="invisible">'.StringUtil::specialchars(implode(', ', $removed)).'</span>';
                         }
+                    } else {
+                        $args[$i] = $this->formatter->dcaValue('tl_iso_product', $field, $row[$field]);
                     }
             }
         }
