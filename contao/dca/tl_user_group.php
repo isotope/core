@@ -1,7 +1,6 @@
 <?php
 
 use Contao\CoreBundle\DataContainer\PaletteManipulator;
-use Isotope\Backend;
 use Isotope\CoreBundle\Model\Payment;
 use Isotope\CoreBundle\Model\Shipping;
 use Isotope\Model\Config;
@@ -37,7 +36,6 @@ PaletteManipulator::create()
 $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_modules'] = [
     'filter' => true,
     'inputType' => 'checkbox',
-    'options_callback' => [Backend::class, 'getIsotopeModules'],
     'reference' => &$GLOBALS['TL_LANG']['IMD'],
     'eval' => ['multiple' => true, 'helpwizard' => true, 'tl_class' => 'clr w50 w50h'],
     'sql' => 'blob NULL',

@@ -10,7 +10,6 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = [
         'dataContainer' => DC_Table::class,
         'label' => &$GLOBALS['TL_LANG']['IMD']['orderstatus'][0],
         'enableVersioning' => true,
-        'backlink' => 'do=iso_setup',
         'onload_callback' => [
             [Callback::class, 'addDefault'],
         ],

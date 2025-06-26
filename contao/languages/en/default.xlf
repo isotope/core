@@ -479,9 +479,6 @@
       <trans-unit id="MSC.timePeriod.years">
         <source>Years</source>
       </trans-unit>
-      <trans-unit id="MSC.isotopeIntroductionLegend">
-        <source>Introduction</source>
-      </trans-unit>
       <trans-unit id="MSC.isotopeIntroduction.0">
         <source>Welcome to Isotope eCommerce (Version: %s)</source>
       </trans-unit>
@@ -489,16 +486,19 @@
         <source>Isotope is the premier open source eCommerce solution for Contao.</source>
       </trans-unit>
       <trans-unit id="MSC.isotopeIntroduction.2">
-        <source>This is the page where most of the configuration will take place. &lt;strong&gt;You should start from the bottom of this page and work your way upward from right to left.&lt;/strong&gt;</source>
+        <source>This is the page where most of the configuration will take place.</source>
       </trans-unit>
       <trans-unit id="MSC.isotopeIntroduction.3">
-        <source>Visit the official &lt;a href="http://isotopeecommerce.org" target="_blank"&gt;Isotope eCommerce website&lt;/a&gt; for the latest news, configuration manuals and professional support. Thank you so much for considering giving something back!</source>
+        <source>You should start from the bottom of this page and work your way upward from right to left.</source>
       </trans-unit>
       <trans-unit id="MSC.isotopeIntroduction.4">
-        <source>The Isotope eCommerce Team</source>
+        <source>Visit the official Isotope eCommerce website for the latest news, configuration manuals and professional support. Thank you so much for considering giving something back!</source>
       </trans-unit>
       <trans-unit id="MSC.isotopeIntroduction.5">
-        <source>Isotope is a product of %s in association with &lt;a href="http://isotopeecommerce.org/de/team.html" target="_blank"&gt;the Isotope eCommerce Team&lt;/a&gt;.</source>
+        <source>The Isotope eCommerce Team</source>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroduction.6">
+        <source>Isotope is a product of terminal42 gmbh in association with the Isotope eCommerce Team.</source>
       </trans-unit>
       <trans-unit id="MSC.iso_orderCollectionBy.asc_id">
         <source>by date added (ascending)</source>

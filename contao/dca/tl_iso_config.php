@@ -15,7 +15,6 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
     'config' => [
         'dataContainer' => DC_Table::class,
         'enableVersioning' => true,
-        'backlink' => 'do=iso_setup',
         'onload_callback' => [
             [Callback::class, 'checkPermission'],
             [OrderStatusCallback::class, 'addDefault'],

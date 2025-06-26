@@ -14,7 +14,6 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = [
     'config' => [
         'dataContainer' => DC_Table::class,
         'enableVersioning' => true,
-        'backlink' => 'do=iso_setup',
         'onload_callback' => [
             [Callback::class, 'checkPermission'],
             [Permission::class, 'check'],

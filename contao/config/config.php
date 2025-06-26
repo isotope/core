@@ -9,8 +9,6 @@ use Isotope\Backend\Product\DcaManager;
 use Isotope\Backend\ProductCollection\Callback;
 use Isotope\Backend\ProductType\Help;
 use Isotope\Backend\SubtableVersion;
-use Isotope\BackendModule\InitializeListener;
-use Isotope\BackendModule\Setup;
 use Isotope\CheckoutStep\BillingAddress;
 use Isotope\CheckoutStep\OrderInfo;
 use Isotope\CheckoutStep\OrderProducts;
@@ -97,11 +95,7 @@ ArrayUtil::arrayInsert($GLOBALS['BE_MOD']['isotope'], 0, [
         'javascript' => CompatibilityHelper::asset('backend.js'),
         'print_document' => [Callback::class, 'printDocument'],
     ],
-    'iso_setup' => [
-        'callback' => Setup::class,
-        'tables' => [Payment::getTable(), Shipping::getTable(), OrderStatus::getTable()],
-        'javascript' => CompatibilityHelper::asset('backend.js'),
-    ],
+    'iso_setup' => [],
 ]);
 
 $GLOBALS['BE_MOD']['accounts']['member']['tables'][] = Address::getTable();
@@ -109,76 +103,6 @@ $GLOBALS['BE_MOD']['accounts']['member']['tables'][] = Address::getTable();
 if (System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest(System::getContainer()->get('request_stack')->getCurrentRequest() ?? Request::create(''))) {
     $GLOBALS['TL_CSS'][] = CompatibilityHelper::asset('backend.css');
 }
-
-/*
- * Isotope Modules
- */
-$GLOBALS['ISO_MOD'] = [
-    'product' => [
-        'producttypes' => [
-            'tables' => [ProductType::getTable()],
-            'icon' => CompatibilityHelper::asset('images/setup-producttypes.png'),
-        ],
-        'attributes' => [
-            'tables' => [Attribute::getTable(), AttributeOption::getTable()],
-            'icon' => CompatibilityHelper::asset('images/setup-attributes.png'),
-        ],
-        'related_categories' => [
-            'tables' => [RelatedCategory::getTable()],
-            'icon' => CompatibilityHelper::asset('images/setup-related_categories.png'),
-        ],
-        'baseprice' => [
-            'tables' => [BasePrice::getTable()],
-            'icon' => CompatibilityHelper::asset('images/setup-baseprice.png'),
-        ],
-    ],
-    'checkout' => [
-        'payment' => [
-            'tables' => [Payment::getTable()],
-            'icon' => CompatibilityHelper::asset('images/setup-payment.png'),
-        ],
-        'shipping' => [
-            'tables' => [Shipping::getTable()],
-            'icon' => CompatibilityHelper::asset('images/setup-shipping.png'),
-        ],
-        'tax_class' => [
-            'tables' => [TaxClass::getTable()],
-            'icon' => CompatibilityHelper::asset('images/setup-tax_class.png'),
-        ],
-        'tax_rate' => [
-            'tables' => [TaxRate::getTable()],
-            'icon' => CompatibilityHelper::asset('images/setup-tax_rate.png'),
-        ],
-    ],
-    'config' => [
-        'configs' => [
-            'tables' => [Config::getTable()],
-            'icon' => CompatibilityHelper::asset('images/setup-config.png'),
-        ],
-        'orderstatus' => [
-            'tables' => [OrderStatus::getTable()],
-            'icon' => CompatibilityHelper::asset('images/setup-orderstatus.png'),
-        ],
-        'notifications' => [
-            'icon' => CompatibilityHelper::asset('images/setup-notifications.png'),
-            'redirect' => 'contao/main.php?do=nc_notifications',
-        ],
-        'documents' => [
-            'tables' => [Document::getTable()],
-            'icon' => CompatibilityHelper::asset('images/setup-documents.png'),
-        ],
-        'gallery' => [
-            'tables' => [Gallery::getTable()],
-            'icon' => CompatibilityHelper::asset('images/setup-gallery.png'),
-        ],
-    ],
-    'miscellaneous:hide' => [
-        'labels' => [
-            'tables' => [Label::getTable()],
-            'icon' => CompatibilityHelper::asset('images/setup-labels.png'),
-        ],
-    ],
-];
 
 /*
  * Frontend modules
@@ -419,9 +343,6 @@ if (Contao\Config::getInstance()->isComplete()) {
         $GLOBALS['TL_HOOKS']['loadLanguageFile'][] = [Help::class, 'initializeWizard'];
 
         $GLOBALS['TL_HOOKS']['parseTemplate'][] = [SubtableVersion::class, 'removeFromWelcomeScreen'];
-
-        // Enable the module tables in setup
-        $GLOBALS['TL_HOOKS']['initializeSystem'][] = [InitializeListener::class, 'enableModuleTablesInSetup'];
     }
 }
 

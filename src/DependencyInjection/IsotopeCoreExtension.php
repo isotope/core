@@ -6,6 +6,7 @@ namespace Isotope\CoreBundle\DependencyInjection;
 
 use Isotope\CoreBundle\Attribute\AttributeFactoryInterface;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
+use Isotope\CoreBundle\Backend\ShopConfig\ShopConfigInterface;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsAttribute;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsDocument;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsGallery;
@@ -38,6 +39,11 @@ class IsotopeCoreExtension extends Extension
         );
 
         $loader->load('services.yaml');
+
+        $container
+            ->registerForAutoconfiguration(ShopConfigInterface::class)
+            ->addTag('isotope.shop_config')
+        ;
 
         $container
             ->registerForAutoconfiguration(AttributeFactoryInterface::class)

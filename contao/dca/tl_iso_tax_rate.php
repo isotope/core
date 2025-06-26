@@ -12,7 +12,6 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = [
     'config' => [
         'dataContainer' => DC_Table::class,
         'enableVersioning' => true,
-        'backlink' => 'do=iso_setup',
         'onload_callback' => [
             [Callback::class, 'checkPermission'],
             [Callback::class, 'addCurrencyRate'],

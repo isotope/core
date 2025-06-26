@@ -118,34 +118,6 @@ class Backend extends ContaoBackend
     }
 
     /**
-     * DCA for setup module tables is "closed" to hide the "new" button. Re-enable it when clicking on a button
-     *
-     * @param DataContainer $dc
-     */
-    public function initializeSetupModule($dc)
-    {
-        if (Input::get('act') != '') {
-            $GLOBALS['TL_DCA'][$dc->table]['config']['closed'] = false;
-        }
-    }
-
-    /**
-     * Return all Isotope modules
-     *
-     * @return array
-     */
-    public function getIsotopeModules()
-    {
-        $arrModules = array();
-
-        foreach ($GLOBALS['ISO_MOD'] as $k => $v) {
-            $arrModules[str_replace(':hide', '', $k)] = array_keys($v);
-        }
-
-        return $arrModules;
-    }
-
-    /**
      * List template from all themes, show theme name
      *
      * @param string $strPrefix

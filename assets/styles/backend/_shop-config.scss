@@ -1,0 +1,63 @@
+.isotope-shop-config {
+    .intro {
+        margin: 18px 15px;
+        display: grid;
+        grid-template: 1fr / 1fr 300px;
+        column-gap: 18px;
+
+        h2 {
+            margin: 1em 0;
+        }
+
+        .text {
+            padding: 0 15px;
+            background: #eff5fa;
+            overflow: hidden;
+
+            strong {
+                color: #1899ad;
+            }
+
+            html[data-color-scheme="dark"] & {
+                background: var(--body-bg);
+            }
+        }
+
+        a {
+            text-decoration: underline;
+        }
+
+        img {
+            display: block;
+            width: 100%;
+            height: auto;
+            margin-bottom: 18px;
+        }
+
+        @media(max-width:991px) {
+            display: none;
+        }
+    }
+
+    .tl_file_list {
+        &:first-child {
+            width: 50px;
+            padding-top: 11px;
+            padding-bottom: 11px;
+
+            img {
+                width: 100%;
+                height: auto;
+            }
+        }
+
+        p {
+            margin: 5px 0;
+        }
+    }
+
+    .tl_right_nowrap {
+        padding-top: 11px;
+        padding-bottom: 11px;
+    }
+}
