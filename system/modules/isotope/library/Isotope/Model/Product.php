@@ -19,6 +19,7 @@ use Contao\Model\Collection;
 use Contao\System;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
 use Isotope\CoreBundle\Model\Attribute;
+use Isotope\CoreBundle\Model\ProductType;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\RequestCache\Filter;
 

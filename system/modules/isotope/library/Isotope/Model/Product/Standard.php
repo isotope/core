@@ -25,10 +25,11 @@ use Hashids\Hashids;
 use Isotope\Collection\ProductPrice as ProductPriceCollection;
 use Isotope\CoreBundle\Attribute\AttributeInterface;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
-use Isotope\CoreBundle\Attribute\VariantAttributeInterface;
 use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
+use Isotope\CoreBundle\Attribute\VariantAttributeInterface;
 use Isotope\CoreBundle\Gallery\GalleryInterface;
 use Isotope\CoreBundle\Model\Attribute;
+use Isotope\CoreBundle\Model\ProductType;
 use Isotope\CoreBundle\ModelType\GalleryRegistry;
 use Isotope\Frontend\ProductAction\ProductActionInterface;
 use Isotope\Frontend\ProductAction\Registry;
@@ -41,7 +42,6 @@ use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopeProductWithOptions;
 use Isotope\Isotope;
 use Isotope\Model\ProductPrice;
-use Isotope\Model\ProductType;
 use Isotope\Template;
 
 /**

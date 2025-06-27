@@ -12,7 +12,7 @@
 namespace Isotope\Backend\ProductType;
 
 use Contao\Backend;
-use Isotope\Model\ProductType;
+use Isotope\CoreBundle\Model\ProductType;
 
 class Help extends Backend
 {

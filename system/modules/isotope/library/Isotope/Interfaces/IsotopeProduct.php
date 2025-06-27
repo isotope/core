@@ -12,7 +12,7 @@
 namespace Isotope\Interfaces;
 
 use Contao\PageModel;
-use Isotope\Model\ProductType;
+use Isotope\CoreBundle\Model\ProductType;
 
 
 /**

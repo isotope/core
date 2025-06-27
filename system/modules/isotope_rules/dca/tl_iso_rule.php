@@ -400,7 +400,7 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = array
         (
             'label'                         => &$GLOBALS['TL_LANG']['tl_iso_rule']['producttypes'],
             'inputType'                     => 'checkbox',
-            'foreignKey'                    => \Isotope\Model\ProductType::getTable().'.name',
+            'foreignKey'                    => \Isotope\CoreBundle\Model\ProductType::getTable().'.name',
             'eval'                          => array('mandatory'=>true, 'multiple'=>true, 'doNotSaveEmpty'=>true, 'tl_class'=>'clr'),
             'load_callback' => array
             (
@@ -437,10 +437,10 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = array
                 'tl_class'                  => 'clr',
                 'foreignTable'              => 'tl_iso_product',
                 'fieldType'                 => 'checkbox',
-                'listFields'                => array(\Isotope\Model\ProductType::getTable().'.name', 'name', 'sku'),
+                'listFields'                => array(\Isotope\CoreBundle\Model\ProductType::getTable().'.name', 'name', 'sku'),
                 'joins'                     => array
                 (
-                    \Isotope\Model\ProductType::getTable() => array
+                    \Isotope\CoreBundle\Model\ProductType::getTable() => array
                     (
                         'type' => 'LEFT JOIN',
                         'jkey' => 'id',

@@ -7,7 +7,7 @@ namespace Isotope\CoreBundle\EventListener\DataContainer\Product;
 use Contao\CoreBundle\DataContainer\DataContainerOperation;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Doctrine\DBAL\Connection;
-use Isotope\Model\ProductType;
+use Isotope\CoreBundle\Model\ProductType;
 
 class ButtonListener
 {

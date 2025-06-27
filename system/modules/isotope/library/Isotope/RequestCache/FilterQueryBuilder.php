@@ -12,8 +12,8 @@
 namespace Isotope\RequestCache;
 
 use Contao\Date;
+use Isotope\CoreBundle\Model\ProductType;
 use Isotope\Model\Product;
-use Isotope\Model\ProductType;
 
 class FilterQueryBuilder
 {

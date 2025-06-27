@@ -16,11 +16,11 @@ use Contao\Date;
 use Contao\StringUtil;
 use Contao\System;
 use Isotope\CompatibilityHelper;
+use Isotope\CoreBundle\Model\ProductType;
 use Isotope\Haste\Input\Input;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\Product;
-use Isotope\Model\ProductType;
 
 /**
  * AbstractProduct implements basic methods of product interface based on Model data.

@@ -7,8 +7,8 @@ use Isotope\CompatibilityHelper;
 use Isotope\CoreBundle\Checkout\ProductTypeCondition;
 use Isotope\CoreBundle\Checkout\QuantityMode;
 use Isotope\CoreBundle\Model\OrderStatus;
+use Isotope\CoreBundle\Model\ProductType;
 use Isotope\Model\Config;
-use Isotope\Model\ProductType;
 use Isotope\Model\TaxClass;
 
 $GLOBALS['TL_DCA']['tl_iso_payment'] = [

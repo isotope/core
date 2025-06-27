@@ -12,9 +12,9 @@ use Isotope\CoreBundle\Checkout\Shipping\AddressType;
 use Isotope\CoreBundle\Checkout\Shipping\FlatCalculation;
 use Isotope\CoreBundle\Checkout\Shipping\GroupCalculation;
 use Isotope\CoreBundle\Checkout\Shipping\ProductCalculation;
+use Isotope\CoreBundle\Model\ProductType;
 use Isotope\CoreBundle\Model\Shipping;
 use Isotope\Model\Config;
-use Isotope\Model\ProductType;
 use Isotope\Model\TaxClass;
 
 /*

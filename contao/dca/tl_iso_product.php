@@ -12,12 +12,12 @@ use Isotope\Backend\Product\Wizard;
 use Isotope\Backend\ProductPrice\Callback as ProductPriceCallback;
 use Isotope\CompatibilityHelper;
 use Isotope\CoreBundle\DataContainer\ProductData;
+use Isotope\CoreBundle\Model\ProductType;
 use Isotope\Model\Attribute\PriceTiers;
 use Isotope\Model\AttributeOption;
 use Isotope\Model\Download;
 use Isotope\Model\ProductCategory;
 use Isotope\Model\ProductPrice;
-use Isotope\Model\ProductType;
 use Isotope\Model\RelatedProduct;
 use Isotope\Model\TaxClass;
 

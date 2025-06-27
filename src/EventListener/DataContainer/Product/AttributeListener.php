@@ -14,7 +14,7 @@ use Doctrine\DBAL\Connection;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
 use Isotope\CoreBundle\Attribute\VariantAttributeInterface;
 use Isotope\CoreBundle\DataContainer\ProductData;
-use Isotope\Model\ProductType;
+use Isotope\CoreBundle\Model\ProductType;
 use Isotope\Model\RelatedCategory;
 use Symfony\Component\HttpFoundation\RequestStack;
 

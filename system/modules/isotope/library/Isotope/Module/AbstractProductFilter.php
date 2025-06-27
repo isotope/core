@@ -17,8 +17,8 @@ use Contao\Date;
 use Contao\ModuleModel;
 use Contao\StringUtil;
 use Contao\System;
+use Isotope\CoreBundle\Model\ProductType;
 use Isotope\Isotope;
-use Isotope\Model\ProductType;
 
 /**
  * AbstractProductFilter provides basic methods to handle product filtering

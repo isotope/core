@@ -2,9 +2,9 @@
 
 use Contao\CoreBundle\DataContainer\PaletteManipulator;
 use Isotope\CoreBundle\Model\Payment;
+use Isotope\CoreBundle\Model\ProductType;
 use Isotope\CoreBundle\Model\Shipping;
 use Isotope\Model\Config;
-use Isotope\Model\ProductType;
 use Isotope\Model\TaxClass;
 use Isotope\Model\TaxRate;
 
