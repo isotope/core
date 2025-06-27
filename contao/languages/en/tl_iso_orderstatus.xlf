@@ -32,18 +32,6 @@
       <trans-unit id="tl_iso_orderstatus.notification.1">
         <source>Please select a notification.</source>
       </trans-unit>
-      <trans-unit id="tl_iso_orderstatus.saferpay_status.0">
-        <source>Saferpay transaction</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_orderstatus.saferpay_status.1">
-        <source>Please select an option if you want to automatically update the payment gateway. This only applies if the client has used "Saferpay" or "Billpay for Saferpay" payment method.</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_orderstatus.saferpay_status.capture">
-        <source>Capture payment</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_orderstatus.saferpay_status.cancel">
-        <source>Suggest manual payment cancellation</source>
-      </trans-unit>
       <trans-unit id="tl_iso_orderstatus.new.0">
         <source>New order status</source>
       </trans-unit>

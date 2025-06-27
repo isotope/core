@@ -34,12 +34,13 @@ use Isotope\CoreBundle\Document\DocumentInterface;
 use Isotope\CoreBundle\Model\Document;
 use Isotope\CoreBundle\Model\Payment;
 use Isotope\CoreBundle\Model\Shipping;
+use Isotope\CoreBundle\Model\OrderStatus;
 use Isotope\CoreBundle\ModelType\DocumentRegistry;
+use Isotope\CoreBundle\Util\ColorUtil;
 use Isotope\Frontend;
 use Isotope\Haste\Util\Format;
 use Isotope\Isotope;
 use Isotope\Model\Address;
-use Isotope\Model\OrderStatus;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Model\ProductCollectionLog;
 use Isotope\Module\OrderDetails;
@@ -85,7 +86,7 @@ class Callback extends Backend
                 case 'order_status':
                     /** @var OrderStatus $objStatus */
                     if (null !== ($objStatus = $objOrder->getRelated('order_status'))) {
-                        $args[$i] = '<span style="' . $objStatus->getColorStyles() . '">' . $objOrder->getStatusLabel() . '</span>';
+                        $args[$i] = '<span style="' . ColorUtil::getCssBackgroundStyles($objStatus->color) . '">' . $objOrder->getStatusLabel() . '</span>';
                     }
                     break;
             }

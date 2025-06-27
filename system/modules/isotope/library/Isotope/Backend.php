@@ -19,8 +19,8 @@ use Contao\Input;
 use Contao\System;
 use Contao\Widget;
 use Isotope\Backend\Product\Permission;
+use Isotope\CoreBundle\Model\OrderStatus;
 use Isotope\Model\Config;
-use Isotope\Model\OrderStatus;
 use Isotope\Model\ProductCache;
 use Isotope\Model\RequestCache;
 
@@ -158,69 +158,6 @@ class Backend extends ContaoBackend
         }
 
         return $arrTemplates;
-    }
-
-    /**
-     * Get order status and return it as array
-     *
-     * @return array
-     */
-    public static function getOrderStatus()
-    {
-        $arrStatus = array();
-
-        if (($objStatus = OrderStatus::findAll(array('order' => 'sorting'))) !== null) {
-
-            /** @var OrderStatus $status */
-            foreach ($objStatus as $status) {
-                $arrStatus[$status->id] = $status->getName();
-            }
-        }
-
-        return $arrStatus;
-    }
-
-    /**
-     * Show messages for new order status
-     *
-     * @return string
-     */
-    public function getOrderMessages()
-    {
-        $objUser = BackendUser::getInstance();
-
-        if (!Database::getInstance()->tableExists(OrderStatus::getTable())
-            || !$objUser->hasAccess('iso_orders', 'modules')
-        ) {
-            return '';
-        }
-
-        // Can't see any orders if user does not have access to any shop config
-        $strConfig = '';
-        if (!BackendUser::getInstance()->isAdmin) {
-            $arrConfigs = BackendUser::getInstance()->iso_configs;
-
-            if (empty($arrConfigs) || !\is_array($arrConfigs)) {
-                return '';
-            }
-
-            $strConfig = "AND c.config_id IN (" . implode(',', $arrConfigs) . ")";
-        }
-
-        $arrMessages = array();
-        $objOrders   = Database::getInstance()->query("
-            SELECT COUNT(*) AS total, s.name
-            FROM tl_iso_product_collection c
-            LEFT JOIN tl_iso_orderstatus s ON c.order_status=s.id
-            WHERE c.type='order' AND s.welcomescreen='1' $strConfig
-            GROUP BY s.id"
-        );
-
-        while ($objOrders->next()) {
-            $arrMessages[] = '<p class="tl_new">' . sprintf($GLOBALS['TL_LANG']['MSC']['newOrders'], $objOrders->total, $objOrders->name) . '</p>';
-        }
-
-        return implode("\n", $arrMessages);
     }
 
     /**

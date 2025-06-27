@@ -2,13 +2,12 @@
 
 use Contao\DataContainer;
 use Contao\DC_Table;
-use Isotope\Backend;
 use Isotope\Backend\Payment\Callback;
 use Isotope\CompatibilityHelper;
 use Isotope\CoreBundle\Checkout\ProductTypeCondition;
 use Isotope\CoreBundle\Checkout\QuantityMode;
+use Isotope\CoreBundle\Model\OrderStatus;
 use Isotope\Model\Config;
-use Isotope\Model\OrderStatus;
 use Isotope\Model\ProductType;
 use Isotope\Model\TaxClass;
 
@@ -80,7 +79,6 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = [
         'new_order_status' => [
             'inputType' => 'select',
             'foreignKey' => OrderStatus::getTable().'.name',
-            'options_callback' => [Backend::class, 'getOrderStatus'],
             'eval' => ['mandatory' => true, 'includeBlankOption' => true, 'tl_class' => 'w50'],
             'sql' => "int(10) NOT NULL default '0'",
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],

@@ -20,6 +20,7 @@ use Isotope\CoreBundle\Model\Attribute;
 use Isotope\CoreBundle\Model\BasePrice;
 use Isotope\CoreBundle\Model\Document;
 use Isotope\CoreBundle\Model\Gallery;
+use Isotope\CoreBundle\Model\OrderStatus;
 use Isotope\CoreBundle\Model\Payment;
 use Isotope\CoreBundle\Model\Shipping;
 use Isotope\CoreBundle\Widget\MediaManager;
@@ -35,7 +36,6 @@ use Isotope\Model\AttributeOption;
 use Isotope\Model\Config;
 use Isotope\Model\Download;
 use Isotope\Model\Label;
-use Isotope\Model\OrderStatus;
 use Isotope\Model\Product;
 use Isotope\Model\Product\Standard as StandardProduct;
 use Isotope\Model\ProductCache;
@@ -318,7 +318,6 @@ if (Contao\Config::getInstance()->isComplete()) {
     $GLOBALS['TL_HOOKS']['replaceInsertTags'][] = [Frontend::class, 'replaceIsotopeTags'];
     $GLOBALS['TL_HOOKS']['modifyFrontendPage'][] = [Frontend::class, 'injectScripts'];
     $GLOBALS['TL_HOOKS']['executePostActions'][] = [Backend::class, 'executePostActions'];
-    $GLOBALS['TL_HOOKS']['getSystemMessages'][] = [Backend::class, 'getOrderMessages'];
     $GLOBALS['TL_HOOKS']['getArticle'][] = [Frontend::class, 'storeCurrentArticle'];
     $GLOBALS['TL_HOOKS']['generateBreadcrumb'][] = [Frontend::class, 'addProductToBreadcrumb'];
 

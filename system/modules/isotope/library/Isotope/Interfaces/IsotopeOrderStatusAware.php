@@ -11,7 +11,7 @@
 
 namespace Isotope\Interfaces;
 
-use Isotope\Model\OrderStatus;
+use Isotope\CoreBundle\Model\OrderStatus;
 use Isotope\Model\ProductCollection\Order;
 
 interface IsotopeOrderStatusAware

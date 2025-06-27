@@ -14,7 +14,7 @@ namespace Isotope\Report;
 use Contao\Date;
 use Contao\Message;
 use Contao\System;
-use Isotope\Model\OrderStatus;
+use Isotope\CoreBundle\Model\OrderStatus;
 use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 
 abstract class Sales extends Report

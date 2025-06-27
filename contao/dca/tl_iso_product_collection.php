@@ -4,14 +4,13 @@ use Contao\DataContainer;
 use Contao\DC_Table;
 use Contao\Input;
 use Contao\System;
-use Isotope\Backend;
 use Isotope\Backend\ProductCollection\Callback;
 use Isotope\CompatibilityHelper;
+use Isotope\CoreBundle\Model\OrderStatus;
 use Isotope\CoreBundle\Model\Payment;
 use Isotope\CoreBundle\Model\Shipping;
 use Isotope\Model\Address;
 use Isotope\Model\Config;
-use Isotope\Model\OrderStatus;
 use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\ProductCollectionLog;
 use Isotope\Model\ProductCollectionSurcharge;
@@ -139,7 +138,6 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
             'sorting' => true,
             'inputType' => 'select',
             'foreignKey' => OrderStatus::getTable().'.name',
-            'options_callback' => [Backend::class, 'getOrderStatus'],
             'eval' => ['tl_class' => 'w50'],
             'sql' => "int(10) unsigned NOT NULL default '0'",
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
