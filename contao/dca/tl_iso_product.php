@@ -7,7 +7,6 @@ use Isotope\Backend;
 use Isotope\Backend\Product\Category;
 use Isotope\Backend\Product\Panel;
 use Isotope\Backend\Product\Permission;
-use Isotope\Backend\Product\Price as BackendPrice;
 use Isotope\Backend\Product\Wizard;
 use Isotope\Backend\ProductPrice\Callback as ProductPriceCallback;
 use Isotope\CompatibilityHelper;
@@ -261,12 +260,6 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'foreignKey' => TaxClass::getTable().'.name',
             'eval' => ['mandatory' => true, 'maxlength' => 13, 'rgxp' => 'digit', 'includeBlankOption' => true, 'blankOptionLabel' => &$GLOBALS['TL_LANG']['MSC']['taxFree'], 'doNotSaveEmpty' => true, 'tl_class' => 'w50'],
             'attributes' => ['legend' => 'pricing_legend', 'fe_sorting' => true, 'dynamic' => true, 'singular' => true, 'systemColumn' => true],
-            'load_callback' => [
-                [BackendPrice::class, 'load'],
-            ],
-            'save_callback' => [
-                [BackendPrice::class, 'save'],
-            ],
         ],
         'prices' => [
             'inputType' => 'dcaWizard',

@@ -9,6 +9,7 @@ use Isotope\Backend\ProductType\Callback;
 use Isotope\Backend\ProductType\Label;
 use Isotope\Backend\ProductType\Permission;
 use Isotope\CoreBundle\Model\Gallery;
+use Isotope\Model\Product;
 
 $GLOBALS['TL_DCA']['tl_iso_producttype'] = [
     'config' => [
@@ -33,7 +34,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = [
             'panelLayout' => 'filter;search,limit',
         ],
         'label' => [
-            'fields' => ['name', 'variants', 'downloads', 'shipping_exempt'],
+            'fields' => ['name', 'variants', 'downloads', 'prices', 'shipping_exempt'],
             'showColumns' => true,
             'label_callback' => [Label::class, 'generate'],
         ],
