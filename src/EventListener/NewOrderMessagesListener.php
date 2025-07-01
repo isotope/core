@@ -48,7 +48,7 @@ class NewOrderMessagesListener
             }
 
             $qb
-                ->andWhere('c.config IN (:configs)')
+                ->andWhere('c.config_id IN (:configs)')
                 ->setParameter('configs', $user->iso_configs, ArrayParameterType::INTEGER)
             ;
         }
