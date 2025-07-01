@@ -2233,7 +2233,16 @@ class ProductData extends DC_Table
 		return $return;
 	}
 
-	/**
+    public function delete($blnDoNotRedirect = false)
+    {
+        // Configure DC to backup variants and languages
+        $this->ptable = null;
+        $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] = DataContainer::MODE_TREE;
+
+        parent::delete($blnDoNotRedirect);
+    }
+
+    /**
 	 * Set ptable to current table so reviseTable works like in tree mode (delete variants and translations).
 	 */
 	protected function reviseTable()

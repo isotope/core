@@ -1,0 +1,26 @@
+{% trans_default_domain 'contao_tl_iso_product' %}
+
+<div class="tl_subpanel tl_iso_category_sorting">
+    <a href="{{ pickerUrl }}" id="tl_iso_category_sorting" title="{{ 'tl_iso_product.sorting'|trans }}">
+        {{ icon|raw }}
+    </a>
+    <script>
+        $("tl_iso_category_sorting").addEvent("click", function(e) {
+            e.preventDefault();
+            Backend.openModalSelector({
+                id: 'tl_listing',
+                title: "{{ 'tl_iso_product.sorting'|trans }}",
+                url: this.href,
+                callback: function (table, value) {
+                    {% set target = path('contao_backend', {
+                        do: 'iso_products',
+                        table: 'tl_iso_product_category',
+                        id: '_value_',
+                        rt: contao.request_token
+                    }) %}
+                    window.location.href = "{{ target|raw }}".replace('_value_', value[0]);
+                }
+            });
+        });
+    </script>
+</div>

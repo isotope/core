@@ -13,10 +13,10 @@ class FrontendPreviewListener
 {
     public function __invoke(PreviewUrlCreateEvent $event): void
     {
-        if ('iso_products' !== $event->getKey() || 'tl_iso_product_category' !== Input::get('table') || !Input::get('page_id')) {
+        if ('iso_products' !== $event->getKey() || 'tl_iso_product_category' !== Input::get('table')) {
             return;
         }
 
-        $event->setQuery('page='.Input::get('page_id'));
+        $event->setQuery('page='.Input::get('id'));
     }
 }

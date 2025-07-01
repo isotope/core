@@ -1,27 +1,17 @@
 <?php
 
-use Contao\BackendUser;
 use Contao\DataContainer;
-use Contao\Input;
-use Contao\Message;
+use Contao\DC_Table;
 use Isotope\Backend;
-use Isotope\CoreBundle\DataContainer\TablePageId;
 
 $GLOBALS['TL_DCA']['tl_iso_product_category'] = [
     'config' => [
-        'dataContainer' => TablePageId::class,
+        'dataContainer' => DC_Table::class,
         'ptable' => 'tl_page',
         'closed' => true,
         'notEditable' => true,
         'notCopyable' => true,
         'notDeletable' => true,
-        'onload_callback' => [
-            static function (): void {
-                if ('' === Input::get('act') && BackendUser::getInstance()->hasAccess('modules', 'themes')) {
-                    Message::addInfo($GLOBALS['TL_LANG']['tl_iso_product_category']['hint'] ?? '');
-                }
-            },
-        ],
         'oncut_callback' => [
             [Backend::class, 'truncateProductCache'],
         ],
@@ -29,7 +19,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_category'] = [
             'keys' => [
                 'id' => 'primary',
                 'pid' => 'index',
-                'page_id' => 'index',
+                'product_id' => 'index',
             ],
         ],
     ],
@@ -46,7 +36,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_category'] = [
             'sql' => 'int(10) unsigned NOT NULL auto_increment',
         ],
         'pid' => [
-            'foreignKey' => 'tl_iso_product.name',
+            'foreignKey' => 'tl_page.title',
             'sql' => "int(10) unsigned NOT NULL default '0'",
             'relation' => ['type' => 'belongsTo', 'load' => 'lazy'],
         ],
@@ -56,10 +46,13 @@ $GLOBALS['TL_DCA']['tl_iso_product_category'] = [
         'tstamp' => [
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
-        'page_id' => [
-            'foreignKey' => 'tl_page.title',
+        'product_id' => [
+            'foreignKey' => 'tl_iso_product.name',
             'sql' => "int(10) unsigned NOT NULL default '0'",
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
+        ],
+        'product_sorting' => [
+            'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
     ],
 ];

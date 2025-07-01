@@ -239,19 +239,21 @@ abstract class AbstractProduct extends Product
 
         if (null === $this->arrCategories || !isset($this->arrCategories[$key])) {
             if ($blnPublished) {
-                $query = "SELECT page_id FROM tl_iso_product_category c JOIN tl_page p ON c.page_id=p.id WHERE c.pid=? AND p.type!='error_403' AND p.type!='error_404'";
+                $query = "SELECT pid FROM tl_iso_product_category c JOIN tl_page p ON c.pid=p.id WHERE c.product_id=? AND p.type!='error_403' AND p.type!='error_404'";
 
                 if (!\Contao\System::getContainer()->get('contao.security.token_checker')->isPreviewMode()) {
                     $time = Date::floorToMinute();
                     $query .= " AND p.published='1' AND (p.start='' OR p.start<'$time') AND (p.stop='' OR p.stop>'" . ($time + 60) . "')";
                 }
             } else {
-                $query  = 'SELECT page_id FROM tl_iso_product_category WHERE pid=?';
+                $query = 'SELECT pid FROM tl_iso_product_category WHERE product_id=?';
             }
+
+            $query .= ' ORDER BY product_sorting, id';
 
             $objCategories = Database::getInstance()->prepare($query)->execute($this->getProductId());
 
-            $this->setCategories($objCategories->fetchEach('page_id'), $blnPublished);
+            $this->setCategories($objCategories->fetchEach('pid'), $blnPublished);
         }
 
         return $this->arrCategories[$key];
@@ -260,20 +262,6 @@ abstract class AbstractProduct extends Product
     public function setCategories(array $categories, $blnPublished = false)
     {
         $key = ($blnPublished ? 'published' : 'all');
-
-        // Sort categories by the backend drag&drop
-        $arrOrder = StringUtil::deserialize($this->orderPages);
-        if (!empty($arrOrder) && \is_array($arrOrder)) {
-            $categories = array_unique(
-                array_merge(
-                    array_intersect(
-                        $arrOrder,
-                        $categories
-                    ),
-                    $categories
-                )
-            );
-        }
 
         $this->arrCategories[$key] = $categories;
     }

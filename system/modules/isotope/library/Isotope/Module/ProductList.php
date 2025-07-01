@@ -90,7 +90,7 @@ class ProductList extends Module
         }
 
         // Disable the cache in frontend preview or debug mode
-        if (\Contao\System::getContainer()->get('contao.security.token_checker')->isPreviewMode() || System::getContainer()->getParameter('kernel.debug')) {
+        if (System::getContainer()->get('contao.security.token_checker')->isPreviewMode() || System::getContainer()->getParameter('kernel.debug')) {
             $this->blnCacheProducts = false;
         }
 
@@ -113,7 +113,7 @@ class ProductList extends Module
     {
         // return message if no filter is set
         if ($this->iso_emptyFilter && !Input::get('isorc') && !Input::get('keywords')) {
-            $this->Template->message  = \Contao\System::getContainer()->get('contao.insert_tag.parser')->replace($this->iso_noFilter);
+            $this->Template->message  = System::getContainer()->get('contao.insert_tag.parser')->replace($this->iso_noFilter);
             $this->Template->type     = 'noFilter';
             $this->Template->products = array();
 
@@ -262,7 +262,7 @@ class ProductList extends Module
                 && !$this->iso_disable_options
             ) {
                 $content = $objProduct->generate($arrConfig);
-                $content = \Contao\System::getContainer()->get('contao.insert_tag.parser')->replaceInline($content);
+                $content = System::getContainer()->get('contao.insert_tag.parser')->replaceInline($content);
 
                 throw new ResponseException(new Response($content));
             }
@@ -311,9 +311,9 @@ class ProductList extends Module
         $arrColumns[] = Product::getTable().'.pid=0';
 
         if (1 === \count($arrCategories)) {
-            $arrColumns[] = "c.page_id=".reset($arrCategories);
+            $arrColumns[] = "c.pid=".reset($arrCategories);
         } else {
-            $arrColumns[] = "c.page_id IN (".implode(',', $arrCategories).")";
+            $arrColumns[] = "c.pid IN (".implode(',', $arrCategories).")";
         }
 
         if (!empty($arrCacheIds) && \is_array($arrCacheIds)) {
@@ -578,20 +578,21 @@ class ProductList extends Module
 
     private function batchPreloadProducts()
     {
-        $query = "SELECT c.pid, GROUP_CONCAT(c.page_id) AS page_ids FROM tl_iso_product_category c JOIN tl_page p ON c.page_id=p.id WHERE p.type!='error_403' AND p.type!='error_404'";
+        $query = "SELECT c.product_id, c.pid FROM tl_iso_product_category c JOIN tl_page p ON c.pid=p.id WHERE p.type!='error_403' AND p.type!='error_404'";
 
-        if (!\Contao\System::getContainer()->get('contao.security.token_checker')->isPreviewMode()) {
+        if (!System::getContainer()->get('contao.security.token_checker')->isPreviewMode()) {
             $time = Date::floorToMinute();
             $query .= " AND p.published='1' AND (p.start='' OR p.start<'$time') AND (p.stop='' OR p.stop>'" . ($time + 60) . "')";
         }
 
-        $query .= " GROUP BY c.pid";
+        $query .= 'ORDER BY c.product_sorting, c.id';
+        $query = 'SELECT product_id, GROUP_CONCAT(pid) AS page_ids FROM ('.$query.') p GROUP BY product_id';
 
         $data = ['categories' => [], 'prices' => []];
         $result = Database::getInstance()->execute($query);
 
         while ($row = $result->fetchAssoc()) {
-            $data['categories'][$row['pid']] = explode(',', $row['page_ids']);
+            $data['categories'][$row['product_id']] = explode(',', $row['page_ids']);
         }
 
         $t = ProductPrice::getTable();

@@ -122,9 +122,9 @@ abstract class AbstractProductFilter extends Module
             $typeConditions[] = 'translation.type IN (' . implode(',', $variantTypes) . ')';
             $join             = 'LEFT OUTER JOIN tl_iso_product translation ON tl_iso_product.pid=translation.id';
             $categoryWhere    = 'OR tl_iso_product.pid IN (
-                                    SELECT pid
+                                    SELECT product_id
                                     FROM tl_iso_product_category
-                                    WHERE page_id IN (' . implode(',', $categories) . ')
+                                    WHERE pid IN (' . implode(',', $categories) . ')
                                 )';
 
             if (!$isPreviewModel) {
@@ -148,9 +148,9 @@ abstract class AbstractProductFilter extends Module
                 " . $published . '
                 AND (
                     tl_iso_product.id IN (
-                        SELECT pid
+                        SELECT product_id
                         FROM tl_iso_product_category
-                        WHERE page_id IN (' . implode(',', $categories) . ")
+                        WHERE pid IN (' . implode(',', $categories) . ")
                     )
                     $categoryWhere
                 )

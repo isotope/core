@@ -16,7 +16,7 @@ class CategoryFilter extends Filter
 {
     public function __construct(array $ids)
     {
-        parent::__construct('c.page_id');
+        parent::__construct('c.pid');
         $this->inArray($ids);
     }
 }

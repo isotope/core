@@ -414,7 +414,7 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
         $arrCategories = $this->findCategories();
         $queryBuilder  = new FilterQueryBuilder($filters);
 
-        $arrColumns[]  = "c.page_id IN (" . implode(',', $arrCategories) . ")";
+        $arrColumns[]  = "c.pid IN (" . implode(',', $arrCategories) . ")";
 
         // Apply new/old product filter
         if ($this->iso_newFilter == self::FILTER_NEW) {

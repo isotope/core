@@ -9,7 +9,6 @@ use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\CoreBundle\Image\Studio\Studio;
 use Contao\Database;
 use Contao\DataContainer;
-use Contao\Environment;
 use Contao\StringUtil;
 use Isotope\CoreBundle\Model\ProductType;
 use Isotope\Haste\Util\Format;
@@ -28,22 +27,16 @@ class LabelListener
 
     public function __invoke(array $row, string $label, DataContainer $dc): array
     {
-        $objProduct = Product::findById($row['id']);
-
-        if (!$objProduct) {
-            return [];
-        }
-
         $args = [];
 
         foreach ($GLOBALS['TL_DCA'][$dc->table]['list']['label']['fields'] as $i => $field) {
             switch ($field) {
                 case 'images':
-                    $args[$i] = $this->generateImage($objProduct);
+                    $args[$i] = $this->generateImage($row);
                     break;
 
                 case 'name':
-                    $args[$i] = $this->generateName($row, $objProduct, $dc);
+                    $args[$i] = $this->generateName($row, $dc);
                     break;
 
                 case 'price':
@@ -51,7 +44,7 @@ class LabelListener
                     break;
 
                 case 'variantFields':
-                    $args[$i] = $this->generateVariantFields($args[$i], $objProduct, $dc);
+                    $args[$i] = $this->generateVariantFields($row, $args[$i], $dc);
                     break;
 
                 default:
@@ -80,9 +73,9 @@ class LabelListener
         return $args;
     }
 
-    public function generateImage(Product $objProduct): string
+    public function generateImage(array $row): string
     {
-        $arrImages = StringUtil::deserialize($objProduct->images);
+        $arrImages = StringUtil::deserialize($row['images']);
 
         if (!empty($arrImages) && \is_array($arrImages)) {
             $figureBuilder = $this->imageStudio->createFigureBuilder()->setSize([50, 50, 'proportional']);
@@ -95,7 +88,7 @@ class LabelListener
                     $script = \sprintf(
                         "Backend.openModalImage({'width':%s,'title':'%s','url':'%s'});return false",
                         $figure->getImage()->getOriginalDimensions()->getSize()->getWidth(),
-                        str_replace("'", "\\'", $objProduct->name),
+                        str_replace("'", "\\'", $row['name']),
                         $path,
                     );
 
@@ -116,7 +109,7 @@ class LabelListener
     /**
      * Generate name label for product with link to variants if enabled.
      */
-    private function generateName(array $row, Product $product, DataContainer $dc): string
+    private function generateName(array $row, DataContainer $dc): string
     {
         // Add a variants link
         if (
@@ -128,11 +121,11 @@ class LabelListener
                 '<a href="%s" title="%s">%s</a>',
                 StringUtil::ampersand(Environment::get('request')).'&amp;id='.$row['id'],
                 StringUtil::specialchars($GLOBALS['TL_LANG'][$dc->table]['showVariants']),
-                $product->name,
+                $row['name'],
             );
         }
 
-        return $product->name;
+        return $row['name'];
     }
 
     /**
@@ -204,8 +197,14 @@ class LabelListener
     /**
      * Generate variant fields for product.
      */
-    private function generateVariantFields(string $label, Product $objProduct, DataContainer $dc): string
+    private function generateVariantFields(array $row, string $label, DataContainer $dc): string
     {
+        $objProduct = Product::findById($row['id']);
+
+        if (!$objProduct) {
+            return $label;
+        }
+
         $attributes = [];
 
         foreach ($GLOBALS['TL_DCA'][$dc->table]['list']['label']['variantFields'] as $variantField) {

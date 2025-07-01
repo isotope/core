@@ -7,19 +7,14 @@ namespace Isotope\CoreBundle\EventListener\DataContainer\Product;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\DC_Table;
 use Contao\StringUtil;
-use Doctrine\DBAL\Connection;
 use Isotope\CoreBundle\Model\ProductType;
 use Isotope\Model\TaxClass;
 
 /**
  * Stores prices from and to the subtables also used for advanced pricing and ensures versioning.
  */
-class PriceListener
+class PriceListener extends AbstractSubtableListener
 {
-    public function __construct(private readonly Connection $connection)
-    {
-    }
-
     #[AsCallback('tl_iso_product', 'config.oncreate_version')]
     public function createNewVersion(string $table, int $id, int|string $version, array &$data): void
     {
@@ -28,18 +23,7 @@ class PriceListener
             return;
         }
 
-        $current = $this->getPrice($id);
-
-        if (null === $current) {
-            return;
-        }
-
-        $data['price'] = serialize(['value' => $current['price'], 'unit' => $current['tax_class']]);
-
-        $this->connection->executeStatement(
-            'UPDATE tl_version SET data=? WHERE fromTable=? AND pid=? AND version=?',
-            [serialize($data), $table, $id, $version],
-        );
+        parent::createNewVersion($table, $id, $version, $data);
     }
 
     #[AsCallback('tl_iso_product', 'config.onrestore_version')]
@@ -50,17 +34,7 @@ class PriceListener
             return;
         }
 
-        $vData = $this->connection->fetchOne(
-            'SELECT data FROM tl_version WHERE fromTable=? AND pid=? AND version=?',
-            [$table, $pid, $version],
-        );
-        $vData = StringUtil::deserialize($vData);
-
-        if (!\is_array($vData) || !isset($vData['price'])) {
-            return;
-        }
-
-        $this->savePrice(StringUtil::deserialize($vData['price'], true), $pid);
+        parent::restoreVersion($table, $pid, $version, $data);
     }
 
     #[AsCallback('tl_iso_product', 'fields.price.load')]
@@ -81,7 +55,7 @@ class PriceListener
     #[AsCallback('tl_iso_product', 'fields.price.save')]
     public function save(mixed $value, DC_Table $dc): void
     {
-        if ($this->savePrice(StringUtil::deserialize($value, true), (int) $dc->id)) {
+        if ($this->saveValueForProduct(StringUtil::deserialize($value, true), (int) $dc->id)) {
             $dc->createNewVersion = true;
         }
     }
@@ -115,7 +89,23 @@ class PriceListener
         ];
     }
 
-    private function savePrice(array $value, int $productId): bool
+    protected function getField(): string
+    {
+        return 'price';
+    }
+
+    protected function getValueForProduct(int $productId): array|null
+    {
+        $current = $this->getPrice($productId);
+
+        if (null === $current) {
+            return null;
+        }
+
+        return ['value' => $current['price'], 'unit' => $current['tax_class']];
+    }
+
+    protected function saveValueForProduct(array $value, int $productId): bool
     {
         $price = $value['value'] ? number_format((float) $value['value'], 2, '.', '') : '';
         $taxId = (int) $value['unit'];

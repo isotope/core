@@ -4,8 +4,10 @@ use Contao\CoreBundle\DataContainer\PaletteManipulator;
 use Contao\DataContainer;
 use Contao\Input;
 use Contao\PageModel;
+use Isotope\CoreBundle\Model\ProductCategory;
 use Isotope\Model\Config;
-use Isotope\Model\ProductCategory;
+
+$GLOBALS['TL_DCA']['tl_page']['config']['ctable'][] = ProductCategory::getTable();
 
 /*
  * Callbacks

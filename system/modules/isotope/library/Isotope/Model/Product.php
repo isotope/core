@@ -19,6 +19,7 @@ use Contao\Model\Collection;
 use Contao\System;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
 use Isotope\CoreBundle\Model\Attribute;
+use Isotope\CoreBundle\Model\ProductCategory;
 use Isotope\CoreBundle\Model\ProductType;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\RequestCache\Filter;
@@ -32,8 +33,6 @@ use Isotope\RequestCache\Filter;
  * @property string $language
  * @property int    $dateAdded
  * @property int    $type
- * @property array  $pages
- * @property array  $orderPages
  * @property array  $inherit
  * @property bool   $fallback
  * @property string $alias
@@ -241,7 +240,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
     public static function findPublishedByCategories(array $arrCategories, array $arrOptions = array())
     {
         return static::findPublishedBy(
-            array('c.page_id IN (' . implode(',', array_map('intval', $arrCategories)) . ')'),
+            array('c.pid IN (' . implode(',', array_map('intval', $arrCategories)) . ')'),
             null,
             $arrOptions
         );
@@ -630,9 +629,9 @@ abstract class Product extends TypeAgent implements IsotopeProduct
             );
         }
 
-        $arrFields[] = 'GROUP_CONCAT(c.page_id) AS product_categories';
+        $arrFields[] = 'GROUP_CONCAT(c.pid) AS product_categories';
         $arrJoins[] = sprintf(
-            ' LEFT OUTER JOIN %s c ON %s=c.pid',
+            ' LEFT OUTER JOIN %s c ON %s=c.product_id',
             ProductCategory::getTable(),
             ($hasVariants ? "IFNULL(parent.id, {$arrOptions['table']}.id)" : "{$arrOptions['table']}.id")
         );
@@ -705,7 +704,9 @@ abstract class Product extends TypeAgent implements IsotopeProduct
 
         // Order by
         if (($arrOptions['order'] ?? null) !== null) {
-            $strQuery .= ' ORDER BY ' . $arrOptions['order'];
+            $strQuery .= ' ORDER BY ' . $arrOptions['order'] . ', c.product_sorting, c.id';
+        } else {
+            $strQuery .= ' ORDER BY c.product_sorting, c.id';
         }
 
         return $strQuery;
@@ -763,7 +764,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
         }
 
         $arrJoins[] = sprintf(
-            ' LEFT OUTER JOIN %s c ON %s=c.pid',
+            ' LEFT OUTER JOIN %s c ON %s=c.product_id',
             ProductCategory::getTable(),
             ($hasVariants ? "IFNULL(parent.id, {$arrOptions['table']}.id)" : "{$arrOptions['table']}.id")
         );

@@ -13,11 +13,11 @@ namespace Isotope\Model\ProductCollectionSurcharge;
 
 use Contao\Database;
 use Contao\System;
+use Isotope\CoreBundle\Model\ProductCategory;
 use Isotope\Haste\Units\Mass\Weight;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopeProductCollectionSurcharge;
 use Isotope\Isotope;
-use Isotope\Model\ProductCategory;
 use Isotope\Model\ProductCollectionSurcharge;
 use Isotope\Model\Rule as RuleModel;
 
@@ -80,7 +80,7 @@ class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectio
             $arrLimit = Database::getInstance()->execute("SELECT object_id FROM tl_iso_rule_restriction WHERE pid={$objRule->id} AND type='{$objRule->productRestrictions}'")->fetchEach('object_id');
 
             if ($objRule->productRestrictions == 'pages' && !empty($arrLimit)) {
-                $arrLimit = Database::getInstance()->execute("SELECT pid FROM " . ProductCategory::getTable() . " WHERE page_id IN (" . implode(',', $arrLimit) . ")")->fetchEach('pid');
+                $arrLimit = Database::getInstance()->execute("SELECT product_id FROM " . ProductCategory::getTable() . " WHERE pid IN (" . implode(',', $arrLimit) . ")")->fetchEach('product_id');
             }
 
             if ($objRule->quantityMode == 'cart_products' || $objRule->quantityMode == 'cart_items') {

@@ -509,9 +509,9 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
         $arrValues = $filters->getSqlValues();
 
         if (1 === \count($arrCategories)) {
-            $arrColumns[] = "c.page_id=".$arrCategories[0];
+            $arrColumns[] = "c.pid=".$arrCategories[0];
         } else {
-            $arrColumns[] = "c.page_id IN (".implode(',', $arrCategories).")";
+            $arrColumns[] = "c.pid IN (".implode(',', $arrCategories).")";
         }
 
         // Apply new/old product filter

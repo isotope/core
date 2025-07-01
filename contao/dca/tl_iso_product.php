@@ -11,11 +11,11 @@ use Isotope\Backend\Product\Wizard;
 use Isotope\Backend\ProductPrice\Callback as ProductPriceCallback;
 use Isotope\CompatibilityHelper;
 use Isotope\CoreBundle\DataContainer\ProductData;
+use Isotope\CoreBundle\Model\ProductCategory;
 use Isotope\CoreBundle\Model\ProductType;
 use Isotope\Model\Attribute\PriceTiers;
 use Isotope\Model\AttributeOption;
 use Isotope\Model\Download;
-use Isotope\Model\ProductCategory;
 use Isotope\Model\ProductPrice;
 use Isotope\Model\RelatedProduct;
 use Isotope\Model\TaxClass;
@@ -27,23 +27,12 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
         'label' => &$GLOBALS['TL_LANG']['MOD']['iso_products'][0],
         'dataContainer' => ProductData::class,
         'enableVersioning' => true,
-        'ctable' => [Download::getTable(), ProductCategory::getTable(), ProductPrice::getTable(), AttributeOption::getTable()],
+        'ctable' => [Download::getTable(), ProductPrice::getTable(), AttributeOption::getTable()],
         'onload_callback' => [
             [Permission::class, 'check'],
         ],
-        'oncopy_callback' => [
-            [Category::class, 'updateSorting'],
-        ],
         'onsubmit_callback' => [
             [Backend::class, 'truncateProductCache'],
-        ],
-        'onversion_callback' => [
-            [Category::class, 'createVersion'],
-            // price version callbacks are added in the onload_callback (buildPaletteString)
-        ],
-        'onrestore_callback' => [
-            [Category::class, 'restoreVersion'],
-            // price version callbacks are added in the onload_callback (buildPaletteString)
         ],
         'sql' => [
             'keys' => [
@@ -64,9 +53,6 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'headerFields' => ['name', 'sku', 'price', 'published'],
             'flag' => DataContainer::SORT_INITIAL_LETTER_ASC,
             'panelLayout' => 'filter;sort,iso_sorting,search,limit',
-            'panel_callback' => [
-                'iso_sorting' => [Panel::class, 'generateSortingIcon'],
-            ],
         ],
         'label' => [
             'fields' => ['images', 'name', 'sku', 'price'],
@@ -160,20 +146,9 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
         'pages' => [
             'inputType' => 'pageTree',
             'foreignKey' => 'tl_page.title',
-            'eval' => ['doNotSaveEmpty' => true, 'multiple' => true, 'fieldType' => 'checkbox', 'orderField' => 'orderPages', 'tl_class' => 'clr hide_sort_hint'],
+            'eval' => ['doNotSaveEmpty' => true, 'multiple' => true, 'fieldType' => 'checkbox', 'isSortable' => true, 'tl_class' => 'clr hide_sort_hint'],
             'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
             'attributes' => ['legend' => 'general_legend', 'fixed' => true, 'inherit' => true, 'systemColumn' => true],
-            'load_callback' => [
-                [Category::class, 'load'],
-            ],
-            'save_callback' => [
-                [Category::class, 'save'],
-            ],
-        ],
-        'orderPages' => [
-            'eval' => ['doNotShow' => true],
-            'attributes' => ['systemColumn' => true, 'inherit' => true],
-            'sql' => 'text NULL',
         ],
         'inherit' => [
             'inputType' => 'inheritCheckbox',
