@@ -10,11 +10,14 @@ use Contao\CoreBundle\Image\Studio\Studio;
 use Contao\Database;
 use Contao\DataContainer;
 use Contao\StringUtil;
+use Doctrine\DBAL\Connection;
 use Isotope\CoreBundle\Model\ProductType;
 use Isotope\Haste\Util\Format;
 use Isotope\Model\Product;
 use Isotope\Model\ProductPrice;
 use Isotope\Model\TaxClass;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[AsCallback('tl_iso_product', 'list.label.label')]
 class LabelListener
@@ -22,6 +25,8 @@ class LabelListener
     public function __construct(
         private readonly Studio $imageStudio,
         private readonly Formatter $formatter,
+        private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly TranslatorInterface $translator,
     ) {
     }
 
@@ -111,21 +116,16 @@ class LabelListener
      */
     private function generateName(array $row, DataContainer $dc): string
     {
-        // Add a variants link
-        if (
-            0 === $row['pid']
-            && null !== ($productType = ProductType::findById($row['type']))
-            && $productType->hasVariants()
-        ) {
-            return \sprintf(
-                '<a href="%s" title="%s">%s</a>',
-                StringUtil::ampersand(Environment::get('request')).'&amp;id='.$row['id'],
-                StringUtil::specialchars($GLOBALS['TL_LANG'][$dc->table]['showVariants']),
-                $row['name'],
-            );
+        if ($dc->currentPid) {
+            return $row['name'];
         }
 
-        return $row['name'];
+        return \sprintf(
+            '<a href="%s" target="_blank" title="%s">%s</a>',
+            $this->urlGenerator->generate('contao_backend_preview', ['product' => $row['id']]),
+            StringUtil::specialchars($this->translator->trans('MSC.view', [], 'contao_default')),
+            $row['name'],
+        );
     }
 
     /**

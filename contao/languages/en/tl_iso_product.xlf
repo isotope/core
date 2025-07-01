@@ -206,9 +206,6 @@
       <trans-unit id="tl_iso_product.variantValuesLabel">
         <source>Variant</source>
       </trans-unit>
-      <trans-unit id="tl_iso_product.showVariants">
-        <source>Show product variants</source>
-      </trans-unit>
       <trans-unit id="tl_iso_product.new.0">
         <source>New product</source>
       </trans-unit>
