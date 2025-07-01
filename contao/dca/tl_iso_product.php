@@ -141,7 +141,6 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'sql' => "int(10) unsigned NOT NULL default '0'",
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
             'explanation' => 'tl_iso_product.type',
-            'wizard' => [[Wizard::class, 'onProductTypeWizard']],
         ],
         'pages' => [
             'inputType' => 'pageTree',
