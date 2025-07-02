@@ -7,13 +7,10 @@ namespace Isotope\CoreBundle\EventListener\DataContainer\Product;
 use Codefog\HasteBundle\Formatter;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\CoreBundle\Image\Studio\Studio;
-use Contao\Database;
 use Contao\DataContainer;
 use Contao\StringUtil;
 use Doctrine\DBAL\Connection;
 use Isotope\CoreBundle\Model\ProductType;
-use Isotope\Haste\Util\Format;
-use Isotope\Model\Product;
 use Isotope\Model\ProductPrice;
 use Isotope\Model\TaxClass;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -23,6 +20,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class LabelListener
 {
     public function __construct(
+        private readonly Connection $connection,
         private readonly Studio $imageStudio,
         private readonly Formatter $formatter,
         private readonly UrlGeneratorInterface $urlGenerator,
@@ -49,7 +47,7 @@ class LabelListener
                     break;
 
                 case 'variantFields':
-                    $args[$i] = $this->generateVariantFields($row, $args[$i], $dc);
+                    $args[$i] = $this->generateVariantFields($row, $dc);
                     break;
 
                 default:
@@ -60,7 +58,7 @@ class LabelListener
                         && !\in_array($field, $objProductType->getAttributes(), true)
                         && \in_array($field, $objProductType->getVariantAttributes(), true)
                     ) {
-                        $values = Database::getInstance()->prepare("SELECT $field FROM tl_iso_product WHERE pid=?")->execute($row['id'])->fetchEach($field);
+                        $values = $this->connection->fetchFirstColumn("SELECT $field FROM tl_iso_product WHERE pid=? AND language=''", [$row['id']]);
                         $values = array_unique(array_filter($values));
                         $removed = array_splice($values, 3);
 
@@ -70,7 +68,7 @@ class LabelListener
                             $args[$i] .= '<br><span title="'.StringUtil::specialchars(implode(', ', $removed)).'">…</span><span class="invisible">'.StringUtil::specialchars(implode(', ', $removed)).'</span>';
                         }
                     } else {
-                        $args[$i] = $this->formatter->dcaValue('tl_iso_product', $field, $row[$field]);
+                        $args[$i] = $this->formatter->dcaValue('tl_iso_product', $field, $row[$field] ?? null);
                     }
             }
         }
@@ -142,7 +140,10 @@ class LabelListener
             && $objProductType->hasVariants()
             && \in_array('price', $objProductType->getVariantAttributes(), true)
         ) {
-            $variantIds = Database::getInstance()->prepare("SELECT id FROM tl_iso_product WHERE pid=? AND language=''")->execute($row['id'])->fetchEach('id');
+            $variantIds = $this->connection->fetchFirstColumn(
+                "SELECT id FROM tl_iso_product WHERE pid=? AND language=''",
+                [$row['id']],
+            );
 
             if (empty($variantIds)) {
                 return '';
@@ -182,7 +183,7 @@ class LabelListener
                 $strTax = (null === $objTax ? '' : ' ('.$objTax->getName().')');
 
                 if ($fromPrice) {
-                    return \sprintf($GLOBALS['TL_LANG']['MSC']['priceRangeLabel'], $objPrice->getValueForTier(1)).$strTax;
+                    return $this->translator->trans('MSC.priceRangeLabel', [$objPrice->getValueForTier(1)], 'contao_default').$strTax;
                 }
 
                 return $objPrice->getValueForTier(1).$strTax;
@@ -197,24 +198,18 @@ class LabelListener
     /**
      * Generate variant fields for product.
      */
-    private function generateVariantFields(array $row, string $label, DataContainer $dc): string
+    private function generateVariantFields(array $row, DataContainer $dc): string
     {
-        $objProduct = Product::findById($row['id']);
-
-        if (!$objProduct) {
-            return $label;
-        }
-
         $attributes = [];
 
         foreach ($GLOBALS['TL_DCA'][$dc->table]['list']['label']['variantFields'] as $variantField) {
             $attributes[] = \sprintf(
                 '<strong>%s:</strong>&nbsp;%s',
-                Format::dcaLabel($dc->table, $variantField),
-                Format::dcaValue($dc->table, $variantField, $objProduct->$variantField),
+                $this->formatter->dcaLabel($dc->table, $variantField),
+                $this->formatter->dcaValue($dc->table, $variantField, $row[$variantField] ?? null),
             );
         }
 
-        return ($label ? $label.'<br>' : '').implode(', ', $attributes);
+        return \sprintf('<div style="line-height: 1.3">%s</div>', implode('<br>', $attributes));
     }
 }

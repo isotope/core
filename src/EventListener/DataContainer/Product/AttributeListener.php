@@ -12,6 +12,8 @@ use Contao\Input;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
+use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
+use Isotope\CoreBundle\Attribute\OptionsSource;
 use Isotope\CoreBundle\Attribute\VariantAttributeInterface;
 use Isotope\CoreBundle\DataContainer\ProductData;
 use Isotope\CoreBundle\Model\ProductType;
@@ -77,10 +79,10 @@ class AttributeListener
             if (!empty($ids)) {
                 $types = $this->connection->fetchFirstColumn(
                     <<<'SQL'
-                        SELECT DISTINCT type FROM tl_iso_product WHERE id IN (?) AND pid=0
-                        UNION
-                        SELECT DISTINCT type FROM tl_iso_product WHERE id IN (SELECT pid FROM tl_iso_product WHERE id IN (?))
-                    SQL,
+                            SELECT DISTINCT type FROM tl_iso_product WHERE id IN (?) AND pid=0
+                            UNION
+                            SELECT DISTINCT type FROM tl_iso_product WHERE id IN (SELECT pid FROM tl_iso_product WHERE id IN (?))
+                        SQL,
                     [$ids, $ids],
                     [ArrayParameterType::INTEGER, ArrayParameterType::INTEGER],
                 );
@@ -188,6 +190,74 @@ class AttributeListener
                 }
 
                 $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$field]['eval']['doNotShow'] = true;
+            }
+
+            return;
+        }
+
+        // Adjust columns in backend view to show variant attributes
+        if ($dc->currentPid && (!Input::get('act') || 'select' === Input::get('act'))) {
+            $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['fields'] = ['id'];
+            $GLOBALS['TL_DCA']['tl_iso_product']['fields']['alias']['sorting'] = false;
+
+            $columnFields = [];
+            $variantAttributes = $type->getVariantAttributes();
+            $variantOptionFields = array_intersect($variantAttributes, $this->attributeRegistry->getVariantOptionFields());
+
+            $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['headerFields'] = array_intersect(
+                $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['headerFields'],
+                $type->getAttributes(),
+            );
+
+            if (\in_array('images', $variantAttributes, true)) {
+                $columnFields[] = 'images';
+            }
+
+            if (\in_array('name', $variantAttributes, true)) {
+                $columnFields[] = 'name';
+                $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['fields'] = ['name'];
+            }
+
+            if (\in_array('sku', $variantAttributes, true)) {
+                $columnFields[] = 'sku';
+                $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['fields'] = ['sku'];
+            }
+
+            if (\in_array('price', $variantAttributes, true)) {
+                $columnFields[] = 'price';
+            }
+
+            // Limit the number of columns if there are more than 2
+            if (\count($variantOptionFields) > 4) {
+                $columnFields[] = 'variantFields';
+                $GLOBALS['TL_DCA']['tl_iso_product']['list']['label']['variantFields'] = $variantOptionFields;
+            } else {
+                foreach (array_merge($variantOptionFields) as $name) {
+                    $attribute = $this->attributeRegistry->get($name);
+
+                    if (
+                        $attribute instanceof OptionsAttributeInterface
+                        && OptionsSource::Table === $attribute->getOptionsSource()
+                    ) {
+                        $name .= ':tl_iso_attribute_option.label';
+                    }
+
+                    $columnFields[] = $name;
+                }
+            }
+
+            $GLOBALS['TL_DCA']['tl_iso_product']['list']['label']['fields'] = $columnFields;
+
+            // Make all column fields sortable
+            foreach (array_keys($GLOBALS['TL_DCA']['tl_iso_product']['fields']) as $name) {
+                $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$name]['sorting'] = \in_array($name, array_diff($columnFields, ['price', 'variantFields', 'images']), true);
+
+                if (!\in_array($name, $variantAttributes, true)) {
+                    unset(
+                        $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$name]['filter'],
+                        $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$name]['search'],
+                    );
+                }
             }
 
             return;
