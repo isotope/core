@@ -14,6 +14,7 @@ use Contao\Input;
 use Contao\System;
 use Isotope\CoreBundle\Backend\ShopConfig\ShopConfigInterface;
 use Isotope\CoreBundle\Security\IsotopeCorePermissions;
+use Symfony\Component\Asset\Packages;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,6 +28,7 @@ class ShopConfigController extends AbstractBackendController
      * @param iterable<ShopConfigInterface> $shopConfigs
      */
     public function __construct(
+        private readonly Packages $assets,
         #[AutowireIterator('isotope.shop_config')] private readonly iterable $shopConfigs,
     ) {
     }
@@ -37,6 +39,9 @@ class ShopConfigController extends AbstractBackendController
         $this->initializeContaoFramework();
         System::loadLanguageFile('default');
         $this->registerTables();
+
+        $GLOBALS['TL_CSS'][] = $this->assets->getUrl('backend.css', 'isotope_core');
+        $GLOBALS['TL_JAVASCRIPT'][] = $this->assets->getUrl('backend.js', 'isotope_core');
 
         if ($request->query->has('table')) {
             return $this->renderTable($request->query->get('table'));

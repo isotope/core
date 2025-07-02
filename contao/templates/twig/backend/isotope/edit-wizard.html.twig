@@ -1,0 +1,7 @@
+{% if href %}
+    <a href="{{ href }}" onclick="Backend.openModalIframe({title:'{{ title }}',url:`${this.href}&popup=1&nb=1`});return false">
+        {{ backend_icon('edit.svg', title) }}
+    </a>
+{% else %}
+    {{ backend_icon('edit--disabled.svg') }}
+{% endif %}

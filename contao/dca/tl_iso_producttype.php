@@ -17,7 +17,6 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = [
         'enableVersioning' => true,
         'onload_callback' => [
             [Callback::class, 'checkPermission'],
-            [Permission::class, 'check'],
         ],
         'sql' => [
             'keys' => [
@@ -107,13 +106,13 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = [
         ],
         'list_gallery' => [
             'inputType' => 'select',
-            'foreignKey' => Gallery::getTable().'.name',
+            'foreignKey' => 'tl_iso_gallery.name',
             'eval' => ['mandatory' => true, 'includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'],
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
         'reader_gallery' => [
             'inputType' => 'select',
-            'foreignKey' => Gallery::getTable().'.name',
+            'foreignKey' => 'tl_iso_gallery.name',
             'eval' => ['mandatory' => true, 'includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'],
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
@@ -141,17 +140,9 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = [
             'inputType' => 'multiColumnWizard',
             'eval' => [
                 'tl_class' => 'clr',
-                'columnsCallback' => [AttributeWizard::class, 'getColumns'],
-                'buttons' => ['copy' => false, 'delete' => false],
-                'dragAndDrop' => true,
+                'buttons' => ['new' => false, 'delete' => false],
             ],
             'sql' => 'blob NULL',
-            'load_callback' => [
-                [AttributeWizard::class, 'load'],
-            ],
-            'save_callback' => [
-                [AttributeWizard::class, 'save'],
-            ],
         ],
         'variants' => [
             'filter' => true,
@@ -163,19 +154,9 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = [
             'inputType' => 'multiColumnWizard',
             'eval' => [
                 'tl_class' => 'clr',
-                'columnsCallback' => [AttributeWizard::class, 'getColumns'],
-                'buttons' => ['copy' => false, 'delete' => false],
-                'dragAndDrop' => true,
+                'buttons' => ['new' => false, 'delete' => false],
             ],
             'sql' => 'blob NULL',
-            'load_callback' => [
-                [AttributeWizard::class, 'load'],
-            ],
-            'save_callback' => [
-                [Callback::class, 'validateVariantAttributes'],
-                [Callback::class, 'validateSingularAttributes'],
-                [AttributeWizard::class, 'save'],
-            ],
         ],
         'force_variant_options' => [
             'inputType' => 'checkbox',

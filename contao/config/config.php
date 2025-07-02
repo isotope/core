@@ -89,20 +89,18 @@ ArrayUtil::arrayInsert($GLOBALS['BE_MOD']['isotope'], 0, [
     'iso_products' => [
         'tables' => [Product::getTable(), ProductCategory::getTable(), Download::getTable(), RelatedProduct::getTable(), ProductPrice::getTable(), 'tl_iso_product_pricetier', AttributeOption::getTable()],
         'javascript' => CompatibilityHelper::asset('backend.js'),
+        'stylesheet' => CompatibilityHelper::asset('backend.css'),
     ],
     'iso_orders' => [
         'tables' => [ProductCollection::getTable(), ProductCollectionItem::getTable(), ProductCollectionSurcharge::getTable(), ProductCollectionDownload::getTable(), Address::getTable()],
         'javascript' => CompatibilityHelper::asset('backend.js'),
+        'stylesheet' => CompatibilityHelper::asset('backend.css'),
         'print_document' => [Callback::class, 'printDocument'],
     ],
     'iso_setup' => [],
 ]);
 
 $GLOBALS['BE_MOD']['accounts']['member']['tables'][] = Address::getTable();
-
-if (System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest(System::getContainer()->get('request_stack')->getCurrentRequest() ?? Request::create(''))) {
-    $GLOBALS['TL_CSS'][] = CompatibilityHelper::asset('backend.css');
-}
 
 /*
  * Frontend modules

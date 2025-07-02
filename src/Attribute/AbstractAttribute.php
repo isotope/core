@@ -201,7 +201,7 @@ abstract class AbstractAttribute implements AttributeInterface, ContainerAwareAt
 
     public function getLabel(): string
     {
-        return $this->name;
+        return $this->getName();
     }
 
     public function getValue(IsotopeProduct $product)
