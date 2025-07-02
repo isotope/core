@@ -38,9 +38,9 @@
                             </td>
                             <td class="tl_file_list tl_right_nowrap">
                                 {% if link.url %}
-                                    <a href="{{ link.url }}" title="{{ ('IMD.'~link.name~'.1')|trans([], 'contao_modules') }}" class="edit"><img src="/system/themes/flexible/icons/edit.svg" width="16" height="16" alt=""></a>
+                                    <a href="{{ link.url }}" class="edit">{{ backend_icon('edit.svg', ('IMD.'~link.name~'.1')|trans([], 'contao_modules')) }}</a>
                                 {% else %}
-                                    <img src="/system/themes/flexible/icons/edit--disabled.svg" width="16" height="16" alt="">
+                                    {{ backend_icon('edit--disabled.svg') }}
                                 {% endif %}
                             </td>
                         </tr>
