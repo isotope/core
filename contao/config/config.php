@@ -317,7 +317,6 @@ if (Contao\Config::getInstance()->isComplete()) {
     $GLOBALS['TL_HOOKS']['getSearchablePages'][] = [Frontend::class, 'addProductsToSearchIndex'];
     $GLOBALS['TL_HOOKS']['replaceInsertTags'][] = [Frontend::class, 'replaceIsotopeTags'];
     $GLOBALS['TL_HOOKS']['modifyFrontendPage'][] = [Frontend::class, 'injectScripts'];
-    $GLOBALS['TL_HOOKS']['executePostActions'][] = [Backend::class, 'executePostActions'];
     $GLOBALS['TL_HOOKS']['getArticle'][] = [Frontend::class, 'storeCurrentArticle'];
     $GLOBALS['TL_HOOKS']['generateBreadcrumb'][] = [Frontend::class, 'addProductToBreadcrumb'];
 

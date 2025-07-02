@@ -13,6 +13,7 @@ use Symfony\Contracts\Service\ResetInterface;
 class LabelListener implements ResetInterface
 {
     private int|null $pageId = null;
+
     private array|null $cache = null;
 
     public function __construct(

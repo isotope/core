@@ -12,14 +12,11 @@
 namespace Isotope;
 
 use Contao\Backend as ContaoBackend;
-use Contao\BackendUser;
 use Contao\Controller;
-use Contao\Database;
 use Contao\Input;
 use Contao\System;
 use Contao\Widget;
 use Isotope\Backend\Product\Permission;
-use Isotope\CoreBundle\Model\OrderStatus;
 use Isotope\Model\Config;
 use Isotope\Model\ProductCache;
 use Isotope\Model\RequestCache;
