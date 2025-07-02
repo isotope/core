@@ -264,7 +264,7 @@
         <source>Manually sort products in a page</source>
       </trans-unit>
       <trans-unit id="tl_iso_product.prices.0">
-        <source>Manage prices</source>
+        <source>Advanced prices</source>
       </trans-unit>
       <trans-unit id="tl_iso_product.prices.1">
         <source>Click the button to manage advanced prices for this product.</source>
@@ -310,15 +310,6 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.publish_legend">
         <source>Publishing</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_product.price_tiers.min">
-        <source>Quantity</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_product.price_tiers.min_format">
-        <source>from %s pcs.</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_product.price_tiers.price">
-        <source>Price</source>
       </trans-unit>
     </body>
   </file>

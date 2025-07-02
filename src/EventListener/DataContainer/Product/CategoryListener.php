@@ -15,6 +15,8 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
 use Twig\Environment;
 
+#[AsCallback('tl_iso_product', 'config.oncreate_version', 'createVersion')]
+#[AsCallback('tl_iso_product', 'config.onrestore_version', 'restoreVersion')]
 class CategoryListener extends AbstractSubtableListener
 {
     public function __construct(
@@ -69,7 +71,7 @@ class CategoryListener extends AbstractSubtableListener
     #[AsCallback('tl_iso_product', 'fields.pages.load')]
     public function load(mixed $value, DC_Table $dc): array
     {
-        return $this->getValueForProduct((int) $dc->id);
+        return $this->getValue((int) $dc->id);
     }
 
     #[AsCallback('tl_iso_product', 'fields.pages.save')]
@@ -77,7 +79,7 @@ class CategoryListener extends AbstractSubtableListener
     {
         $pageIds = StringUtil::deserialize($value);
 
-        if (\is_array($pageIds) && $this->saveValueForProduct($pageIds, (int) $dc->id)) {
+        if (\is_array($pageIds) && $this->saveValue($pageIds, (int) $dc->id)) {
             $dc->createNewVersion = true;
         }
     }
@@ -91,7 +93,6 @@ class CategoryListener extends AbstractSubtableListener
 
         return $this->twig->render('@Contao/backend/isotope/product-category-sorting-panel.html.twig', [
             'pickerUrl' => $this->pickerBuilder->getUrl('dc.tl_page'),
-            // TODO: replace with Twig {{ backend_icon }} in Contao 5.5+
             'icon' => Image::getHtml('pagemounts.svg', $GLOBALS['TL_LANG']['tl_iso_product']['sorting']),
         ]);
     }
@@ -101,20 +102,20 @@ class CategoryListener extends AbstractSubtableListener
         return 'pages';
     }
 
-    protected function getValueForProduct(int $productId): array
+    protected function getValue(int $pid): array
     {
         return $this->connection->fetchFirstColumn(
             'SELECT pid FROM tl_iso_product_category WHERE product_id=? ORDER BY product_sorting, id',
-            [$productId],
+            [$pid],
         );
     }
 
-    protected function saveValueForProduct(array $value, int $productId): bool
+    protected function saveValue(array $value, int $pid): bool
     {
         if (empty($value)) {
             $affected = $this->connection->executeStatement(
                 'DELETE FROM tl_iso_product_category WHERE product_id=?',
-                [$productId],
+                [$pid],
             );
 
             return $affected > 0;
@@ -124,7 +125,7 @@ class CategoryListener extends AbstractSubtableListener
 
         $affected = $this->connection->executeStatement(
             'DELETE FROM tl_iso_product_category WHERE product_id=? AND pid NOT IN (?)',
-            [$productId, $value],
+            [$pid, $value],
             [Types::INTEGER, ArrayParameterType::INTEGER],
         );
 
@@ -134,7 +135,7 @@ class CategoryListener extends AbstractSubtableListener
 
         $current = $this->connection->fetchAllKeyValue(
             'SELECT pid, product_sorting FROM tl_iso_product_category WHERE product_id=? ORDER BY sorting, id',
-            [$productId],
+            [$pid],
         );
 
         foreach (array_diff($value, array_keys($current)) as $sorting => $pageId) {
@@ -144,7 +145,7 @@ class CategoryListener extends AbstractSubtableListener
                         (pid,tstamp,sorting,product_id,product_sorting)
                     VALUES (?, ?, (SELECT IFNULL(MAX(sorting), 0)+128 FROM (SELECT * FROM tl_iso_product_category WHERE pid=?) c), ?, ?)
                 SQL,
-                [$pageId, time(), $pageId, $productId, $sorting],
+                [$pageId, time(), $pageId, $pid, $sorting],
             );
 
             $createNewVersion = true;
@@ -154,7 +155,7 @@ class CategoryListener extends AbstractSubtableListener
             if (isset($current[$pid]) && $current[$pid] !== $sorting) {
                 $this->connection->executeStatement(
                     'UPDATE tl_iso_product_category SET product_sorting=? WHERE pid=? AND product_id=?',
-                    [$sorting, $pid, $productId],
+                    [$sorting, $pid, $pid],
                 );
             }
         }

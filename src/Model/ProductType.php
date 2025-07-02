@@ -85,7 +85,7 @@ class ProductType extends Model
      */
     public function showPriceTiers(): bool
     {
-        return (bool) $this->show_price_tiers;
+        return $this->prices && $this->show_price_tiers;
     }
 
     /**

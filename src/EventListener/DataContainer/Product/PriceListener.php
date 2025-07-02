@@ -13,20 +13,20 @@ use Isotope\Model\TaxClass;
 /**
  * Stores prices from and to the subtables also used for advanced pricing and ensures versioning.
  */
+#[AsCallback('tl_iso_product', 'config.oncreate_version', 'createVersion')]
+#[AsCallback('tl_iso_product', 'config.onrestore_version', 'restoreVersion')]
 class PriceListener extends AbstractSubtableListener
 {
-    #[AsCallback('tl_iso_product', 'config.oncreate_version')]
-    public function createNewVersion(string $table, int $id, int|string $version, array &$data): void
+    public function createVersion(string $table, int $id, int|string $version, array &$data): void
     {
         // Ignore version and restore for advanced prices
         if (ProductType::findById($data['type'])?->hasAdvancedPrices()) {
             return;
         }
 
-        parent::createNewVersion($table, $id, $version, $data);
+        parent::createVersion($table, $id, $version, $data);
     }
 
-    #[AsCallback('tl_iso_product', 'config.onrestore_version')]
     public function restoreVersion(string $table, int $pid, int|string $version, array $data): void
     {
         // Ignore version and restore for advanced prices
@@ -45,11 +45,11 @@ class PriceListener extends AbstractSubtableListener
         if (null === $price) {
             return [
                 'value' => '0.00',
-                'unit'  => TaxClass::findFallback()?->id ?? 0,
+                'unit' => TaxClass::findFallback()?->id ?? 0,
             ];
         }
 
-        return array('value' => $price['price'], 'unit' => $price['tax_class']);
+        return ['value' => $price['price'], 'unit' => $price['tax_class']];
     }
 
     #[AsCallback('tl_iso_product', 'fields.price.save')]
@@ -58,6 +58,66 @@ class PriceListener extends AbstractSubtableListener
         if ($this->saveValueForProduct(StringUtil::deserialize($value, true), (int) $dc->id)) {
             $dc->createNewVersion = true;
         }
+    }
+
+    protected function getField(): string
+    {
+        return 'price';
+    }
+
+    protected function getValue(int $pid): array|null
+    {
+        $current = $this->getPrice($pid);
+
+        if (null === $current) {
+            return null;
+        }
+
+        return ['value' => $current['price'], 'unit' => $current['tax_class']];
+    }
+
+    protected function saveValue(array $value, int $pid): bool
+    {
+        $price = $value['value'] ? number_format((float) $value['value'], 2, '.', '') : '';
+        $taxId = (int) $value['unit'];
+
+        $current = $this->getPrice($pid);
+
+        if (null === $current) {
+            $priceId = $this->insertPrice($pid, $taxId);
+            $this->insertPriceTier($priceId, $price);
+
+            return true;
+        }
+
+        $createNewVersion = false;
+
+        if (0 === $current['tierId']) {
+            $current['tierId'] = $this->insertPriceTier($current['priceId'], $price);
+            $current['price'] = $price;
+
+            $createNewVersion = true;
+        }
+
+        if ($current['price'] !== $price) {
+            $this->connection->executeStatement(
+                'UPDATE tl_iso_product_pricetier SET tstamp=?, price=? WHERE id=?',
+                [time(), $price, $current['tierId']],
+            );
+
+            $createNewVersion = true;
+        }
+
+        if ($current['tax_class'] !== $taxId) {
+            $this->connection->executeStatement(
+                'UPDATE tl_iso_product_price SET tstamp=?, tax_class=? WHERE id=?',
+                [time(), $taxId, $current['priceId']],
+            );
+
+            $createNewVersion = true;
+        }
+
+        return $createNewVersion;
     }
 
     /**
@@ -89,66 +149,6 @@ class PriceListener extends AbstractSubtableListener
         ];
     }
 
-    protected function getField(): string
-    {
-        return 'price';
-    }
-
-    protected function getValueForProduct(int $productId): array|null
-    {
-        $current = $this->getPrice($productId);
-
-        if (null === $current) {
-            return null;
-        }
-
-        return ['value' => $current['price'], 'unit' => $current['tax_class']];
-    }
-
-    protected function saveValueForProduct(array $value, int $productId): bool
-    {
-        $price = $value['value'] ? number_format((float) $value['value'], 2, '.', '') : '';
-        $taxId = (int) $value['unit'];
-
-        $current = $this->getPrice($productId);
-
-        if (null === $current) {
-            $priceId = $this->insertPrice($productId, $taxId);
-            $this->insertPriceTier($priceId, $price);
-
-            return true;
-        }
-
-        $createNewVersion = false;
-
-        if (0 === $current['tierId']) {
-            $current['tierId'] = $this->insertPriceTier($current['priceId'], $price);
-            $current['price'] = $price;
-
-            $createNewVersion = true;
-        }
-
-        if ($current['price'] !== $price) {
-            $this->connection->executeStatement(
-                'UPDATE tl_iso_product_pricetier SET tstamp=?, price=? WHERE id=?',
-                [time(), $price, $current['tierId']]
-            );
-
-            $createNewVersion = true;
-        }
-
-        if ($current['tax_class'] !== $taxId) {
-            $this->connection->executeStatement(
-                'UPDATE tl_iso_product_price SET tstamp=?, tax_class=? WHERE id=?',
-                [time(), $taxId, $current['priceId']]
-            );
-
-            $createNewVersion = true;
-        }
-
-        return $createNewVersion;
-    }
-
     private function insertPrice(int $productId, int $taxId): int
     {
         $this->connection->executeStatement(
@@ -163,7 +163,7 @@ class PriceListener extends AbstractSubtableListener
     {
         $this->connection->executeStatement(
             'INSERT INTO tl_iso_product_pricetier (pid,tstamp,min,price) VALUES (?,?,1,?)',
-            [$priceId, time(), $price]
+            [$priceId, time(), $price],
         );
 
         return $this->connection->lastInsertId();

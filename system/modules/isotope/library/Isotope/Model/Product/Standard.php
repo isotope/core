@@ -142,7 +142,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
      */
     public function canSeePriceTiers()
     {
-        return $this->hasAdvancedPrices() && $this->getType()->show_price_tiers;
+        return $this->getType()->showPriceTiers();
     }
 
     /**

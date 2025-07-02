@@ -3,7 +3,6 @@
 use Contao\DataContainer;
 use Contao\DC_Table;
 use Contao\MemberGroupModel;
-use Isotope\Backend\ProductPrice\Callback;
 use Isotope\Model\Config;
 use Isotope\Model\TaxClass;
 
@@ -13,9 +12,6 @@ $GLOBALS['TL_DCA']['tl_iso_product_price'] = [
         'enableVersioning' => true,
         'ptable' => 'tl_iso_product',
         'ctable' => ['tl_iso_product_pricetier'],
-        'onload_callback' => [
-            [Callback::class, 'initializeDCA'],
-        ],
         'sql' => [
             'keys' => [
                 'id' => 'primary',
@@ -32,7 +28,13 @@ $GLOBALS['TL_DCA']['tl_iso_product_price'] = [
             'panelLayout' => 'filter;search,limit',
             'headerFields' => ['id', 'name', 'alias', 'sku'],
             'disableGrouping' => true,
-            'child_record_callback' => [Callback::class, 'listRows'],
+        ],
+        'operations' => [
+            'edit',
+            'copy',
+            'cut',
+            'delete',
+            'show',
         ],
     ],
     'palettes' => [
@@ -69,14 +71,9 @@ $GLOBALS['TL_DCA']['tl_iso_product_price'] = [
                     ],
                 ],
             ],
-            'load_callback' => [
-                [Callback::class, 'loadTiers'],
-            ],
-            'save_callback' => [
-                [Callback::class, 'saveTiers'],
-            ],
         ],
         'tax_class' => [
+            'default' => static fn () => TaxClass::findFallback()?->id,
             'inputType' => 'select',
             'foreignKey' => TaxClass::getTable().'.name',
             'eval' => ['includeBlankOption' => true, 'blankOptionLabel' => &$GLOBALS['TL_LANG']['MSC']['taxFree'], 'tl_class' => 'clr'],

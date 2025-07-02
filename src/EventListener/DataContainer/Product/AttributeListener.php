@@ -70,9 +70,11 @@ class AttributeListener
         // Remove non-active fields from multi-selection
         if (\in_array(Input::get('act'), ['editAll', 'overrideAll'], true)) {
             $ids = $this->requestStack->getSession()->get('CURRENT')['IDS'] ?? null;
+            $attributes = [];
+            $hasRegularPrices = false;
+            $hasAdvancedPrices = false;
 
             if (!empty($ids)) {
-                $attributes = [];
                 $types = $this->connection->fetchFirstColumn(
                     <<<'SQL'
                         SELECT DISTINCT type FROM tl_iso_product WHERE id IN (?) AND pid=0
@@ -84,12 +86,27 @@ class AttributeListener
                 );
 
                 foreach (ProductType::findMultipleByIds($types) as $type) {
-                    $attributes[] = $this->getAvailableFieldsForType($type, null !== $dc->currentPid);
+                    $typeAttributes = $this->getAvailableFieldsForType($type, null !== $dc->currentPid);
+                    $typeHasPrice = \in_array('price', $typeAttributes, true);
+                    $hasAdvancedPrices = $hasAdvancedPrices || ($typeHasPrice && $type->hasAdvancedPrices());
+                    $hasRegularPrices = $hasRegularPrices || ($typeHasPrice && !$type->hasAdvancedPrices());
+                    $attributes[] = $typeAttributes;
                 }
-                $attributes = array_merge(...$attributes);
+
+                $attributes = array_unique(array_merge(...$attributes));
             }
 
-            foreach (array_diff(array_keys($GLOBALS['TL_DCA']['tl_iso_product']['fields']), array_unique($attributes)) as $field) {
+            if (false !== ($pos = array_search('price', $attributes, true))) {
+                if ($hasAdvancedPrices) {
+                    $attributes[] = 'prices';
+                }
+
+                if (!$hasRegularPrices) {
+                    unset($attributes[$pos]);
+                }
+            }
+
+            foreach (array_diff(array_keys($GLOBALS['TL_DCA']['tl_iso_product']['fields']), $attributes) as $field) {
                 $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$field]['eval']['doNotShow'] = true;
             }
 
@@ -225,7 +242,12 @@ class AttributeListener
         foreach ($dcaFields as $name => $field) {
             if (\in_array($name, $enabled, true)) {
                 $legendOrder[$attributeConfig[$name]['position']] = $attributeConfig[$name]['legend'];
-                $palettes[$attributeConfig[$name]['legend']][$attributeConfig[$name]['position']] = $name;
+
+                if ('price' === $name && $type->hasAdvancedPrices()) {
+                    $palettes[$attributeConfig[$name]['legend']][$attributeConfig[$name]['position']] = 'prices';
+                } else {
+                    $palettes[$attributeConfig[$name]['legend']][$attributeConfig[$name]['position']] = $name;
+                }
             }
         }
 

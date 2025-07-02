@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\EventListener\DataContainer\Product;
 
-use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\StringUtil;
 use Doctrine\DBAL\Connection;
 
@@ -14,10 +13,9 @@ abstract class AbstractSubtableListener
     {
     }
 
-    #[AsCallback('tl_iso_product', 'config.oncreate_version')]
-    public function createNewVersion(string $table, int $id, int|string $version, array &$data): void
+    public function createVersion(string $table, int $id, int|string $version, array &$data): void
     {
-        $value = $this->getValueForProduct($id);
+        $value = $this->getValue($id);
 
         if (null === $value) {
             return;
@@ -31,7 +29,6 @@ abstract class AbstractSubtableListener
         );
     }
 
-    #[AsCallback('tl_iso_product', 'config.onrestore_version')]
     public function restoreVersion(string $table, int $pid, int|string $version, array $data): void
     {
         $field = $this->getField();
@@ -46,12 +43,12 @@ abstract class AbstractSubtableListener
             return;
         }
 
-        $this->saveValueForProduct(StringUtil::deserialize($vData[$field], true), $pid);
+        $this->saveValue(StringUtil::deserialize($vData[$field], true), $pid);
     }
 
     abstract protected function getField(): string;
 
-    abstract protected function getValueForProduct(int $productId): array|null;
+    abstract protected function getValue(int $pid): array|null;
 
-    abstract protected function saveValueForProduct(array $value, int $productId): bool;
+    abstract protected function saveValue(array $value, int $pid): bool;
 }

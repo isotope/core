@@ -240,29 +240,10 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'foreignTable' => ProductPrice::getTable(),
             'attributes' => ['systemColumn' => true],
             'eval' => [
-                'listCallback' => [ProductPriceCallback::class, 'generateWizardList'],
-                'list_callback' => [ProductPriceCallback::class, 'generateWizardList'],
                 'applyButtonLabel' => &$GLOBALS['TL_LANG']['tl_iso_product']['prices']['apply_and_close'],
                 'global_operations' => ['new'],
                 'operations' => ['edit', 'copy', 'delete', 'show'],
                 'tl_class' => 'clr',
-            ],
-        ],
-        'price_tiers' => [
-            // This is only for automated table generation in the frontend
-            'attributes' => ['type' => PriceTiers::class],
-            'tableformat' => [
-                'min' => [
-                    'label' => &$GLOBALS['TL_LANG']['tl_iso_product']['price_tiers']['min'],
-                    'format' => &$GLOBALS['TL_LANG']['tl_iso_product']['price_tiers']['min_format'],
-                ],
-                'price' => [
-                    'label' => &$GLOBALS['TL_LANG']['tl_iso_product']['price_tiers']['price'],
-                    'rgxp' => 'digit',
-                ],
-                'tax_class' => [
-                    'doNotShow' => true,
-                ],
             ],
         ],
         'baseprice' => [
