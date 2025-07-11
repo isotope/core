@@ -17,6 +17,7 @@ use Contao\StringUtil;
 use Contao\System;
 use Isotope\CompatibilityHelper;
 use Isotope\CoreBundle\Model\ProductType;
+use Isotope\CoreBundle\Util\ProductCategoryUtil;
 use Isotope\Haste\Input\Input;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
@@ -232,38 +233,14 @@ abstract class AbstractProduct extends Product
 
     /**
      * @inheritdoc
+     * @deprecated
      */
     public function getCategories($blnPublished = false)
     {
-        $key = ($blnPublished ? 'published' : 'all');
+        /** @var ProductCategoryUtil $categories */
+        $categories = System::getContainer()->get(ProductCategoryUtil::class);
 
-        if (null === $this->arrCategories || !isset($this->arrCategories[$key])) {
-            if ($blnPublished) {
-                $query = "SELECT pid FROM tl_iso_product_category c JOIN tl_page p ON c.pid=p.id WHERE c.product_id=? AND p.type!='error_403' AND p.type!='error_404'";
-
-                if (!\Contao\System::getContainer()->get('contao.security.token_checker')->isPreviewMode()) {
-                    $time = Date::floorToMinute();
-                    $query .= " AND p.published='1' AND (p.start='' OR p.start<'$time') AND (p.stop='' OR p.stop>'" . ($time + 60) . "')";
-                }
-            } else {
-                $query = 'SELECT pid FROM tl_iso_product_category WHERE product_id=?';
-            }
-
-            $query .= ' ORDER BY product_sorting, id';
-
-            $objCategories = Database::getInstance()->prepare($query)->execute($this->getProductId());
-
-            $this->setCategories($objCategories->fetchEach('pid'), $blnPublished);
-        }
-
-        return $this->arrCategories[$key];
-    }
-
-    public function setCategories(array $categories, $blnPublished = false)
-    {
-        $key = ($blnPublished ? 'published' : 'all');
-
-        $this->arrCategories[$key] = $categories;
+        return $blnPublished ? $categories->getPublishedForProduct($this) : $categories->getForProduct($this);
     }
 
     /**
@@ -305,23 +282,5 @@ abstract class AbstractProduct extends Product
         }
 
         return implode(' ', $classes);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function setRow(array $arrData)
-    {
-        $this->arrCategories = null;
-
-        if (isset($arrData['product_categories'])) {
-            $categories = explode(',', $arrData['product_categories']);
-            $result = parent::setRow($arrData);
-            $this->setCategories($categories);
-
-            return $result;
-        }
-
-        return parent::setRow($arrData);
     }
 }

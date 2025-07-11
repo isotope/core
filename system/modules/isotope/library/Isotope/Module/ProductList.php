@@ -236,9 +236,6 @@ class ProductList extends Module
         /** @var \Isotope\Model\Product\Standard $objProduct */
         foreach ($arrProducts as $objProduct) {
             if ($objProduct instanceof Product\Standard) {
-                if (isset($preloadData['categories'][$objProduct->id])) {
-                    $objProduct->setCategories($preloadData['categories'][$objProduct->id], true);
-                }
                 if (!$objProduct->hasAdvancedPrices()) {
                     if ($objProduct->hasVariantPrices() && !$objProduct->isVariant()) {
                         $ids = $objProduct->getVariantIds();
@@ -578,22 +575,7 @@ class ProductList extends Module
 
     private function batchPreloadProducts()
     {
-        $query = "SELECT c.product_id, c.pid FROM tl_iso_product_category c JOIN tl_page p ON c.pid=p.id WHERE p.type!='error_403' AND p.type!='error_404'";
-
-        if (!System::getContainer()->get('contao.security.token_checker')->isPreviewMode()) {
-            $time = Date::floorToMinute();
-            $query .= " AND p.published='1' AND (p.start='' OR p.start<'$time') AND (p.stop='' OR p.stop>'" . ($time + 60) . "')";
-        }
-
-        $query .= 'ORDER BY c.product_sorting, c.id';
-        $query = 'SELECT product_id, GROUP_CONCAT(pid) AS page_ids FROM ('.$query.') p GROUP BY product_id';
-
         $data = ['categories' => [], 'prices' => []];
-        $result = Database::getInstance()->execute($query);
-
-        while ($row = $result->fetchAssoc()) {
-            $data['categories'][$row['product_id']] = explode(',', $row['page_ids']);
-        }
 
         $t = ProductPrice::getTable();
         $arrOptions = [
