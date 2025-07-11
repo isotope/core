@@ -42,7 +42,6 @@ use Isotope\RequestCache\Filter;
  * @property string $description
  * @property string $meta_title
  * @property string $meta_description
- * @property string $meta_keywords
  * @property bool   $shipping_exempt
  * @property array  $images
  * @property bool   $protected

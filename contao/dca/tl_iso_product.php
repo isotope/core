@@ -216,13 +216,6 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'attributes' => ['legend' => 'meta_legend', 'multilingual' => true, 'variant_excluded' => true],
             'sql' => 'text NULL',
         ],
-        'meta_keywords' => [
-            'search' => true,
-            'inputType' => 'textarea',
-            'eval' => ['style' => 'height:40px', 'tl_class' => 'clr'],
-            'attributes' => ['legend' => 'meta_legend', 'multilingual' => true, 'variant_excluded' => true],
-            'sql' => 'text NULL',
-        ],
         'price' => [
             'inputType' => 'timePeriod',
             'foreignKey' => TaxClass::getTable().'.name',

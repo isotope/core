@@ -138,10 +138,6 @@ class ProductReader extends Module
         /** @noinspection NestedTernaryOperatorInspection */
         $description = $objProduct->meta_description ?: ($objProduct->teaser ?: $objProduct->description);
 
-        if ($objProduct->meta_keywords) {
-            $GLOBALS['TL_KEYWORDS'] .= ($GLOBALS['TL_KEYWORDS'] != '' ? ', ' : '') . $objProduct->meta_keywords;
-        }
-
         // Support response context in Contao 4.13
         if (System::getContainer()->has('contao.routing.response_context_accessor')) {
             $responseContext = System::getContainer()->get('contao.routing.response_context_accessor')->getResponseContext();
