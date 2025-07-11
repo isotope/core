@@ -1,0 +1,16 @@
+{% trans_default_domain 'contao_default' %}
+{% extends '@Contao/frontend_module/_base.html.twig' %}
+
+{% block content %}
+
+    <div{{ attributes }}>
+        {{ product|raw }}
+    </div>
+
+    {% if referer %}
+        <!-- indexer::stop -->
+        <p class="back"><a href="{{ referer }}">{{ 'MSC.goBack'|trans }}</a></p>
+        <!-- indexer::continue -->
+    {% endif %}
+
+{% endblock %}

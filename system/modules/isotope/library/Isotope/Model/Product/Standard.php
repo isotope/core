@@ -31,6 +31,8 @@ use Isotope\CoreBundle\Gallery\GalleryInterface;
 use Isotope\CoreBundle\Model\Attribute;
 use Isotope\CoreBundle\Model\ProductType;
 use Isotope\CoreBundle\ModelType\GalleryRegistry;
+use Isotope\CoreBundle\Routing\ProductReference;
+use Isotope\CoreBundle\Routing\ProductResolver;
 use Isotope\Frontend\ProductAction\ProductActionInterface;
 use Isotope\Frontend\ProductAction\Registry;
 use Isotope\Haste\Units\Mass\Weight;
@@ -43,6 +45,7 @@ use Isotope\Interfaces\IsotopeProductWithOptions;
 use Isotope\Isotope;
 use Isotope\Model\ProductPrice;
 use Isotope\Template;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Standard implementation of an Isotope product.
@@ -617,8 +620,8 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         $objTemplate->module_id = $arrConfig['module']->id ?? null;
         $objTemplate->requestToken = System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue();
 
-        if (!($arrConfig['jumpTo'] ?? null) instanceof PageModel || $arrConfig['jumpTo']->iso_readerMode !== 'none') {
-            $objTemplate->href = $this->generateUrl($arrConfig['jumpTo']);
+        if (!isset($arrConfig['jumpTo']) || ProductResolver::canLinkToPage($arrConfig['jumpTo'])) {
+            $objTemplate->href = $this->generateUrl($arrConfig['jumpTo'] ?? null);
         }
 
         if (!($arrConfig['disableOptions'] ?? false)) {
@@ -1059,6 +1062,8 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
      * @return string
      *
      * @throws \InvalidArgumentException
+     *
+     * @deprecated
      */
     public function generateUrl(PageModel $objJumpTo = null/*, bool $absolute = false*/)
     {
@@ -1068,26 +1073,16 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             $absolute = (bool) func_get_arg(1);
         }
 
-        if (null === $objJumpTo) {
-            global $objPage;
-            global $objIsotopeListPage;
+        $productReference = new ProductReference($this);
 
-            $objJumpTo = $objIsotopeListPage ?: $objPage;
+        if ($objJumpTo) {
+            $productReference->referencePage = $objJumpTo;
         }
 
-        if (!$objJumpTo instanceof PageModel) {
-            return '';
-        }
-
-        $strParams = '';
-
-        if ($objJumpTo->iso_readerMode !== 'none') {
-            $strParams = '/'.($this->arrData['alias'] ?: $this->getProductId());
-        }
-
-        $url = $absolute ? $objJumpTo->getAbsoluteUrl($strParams) : $objJumpTo->getFrontendUrl($strParams);
-
-        return Url::addQueryString(http_build_query($this->getOptions()), $url);
+        return System::getContainer()
+            ->get('contao.routing.content_url_generator')
+            ->generate($productReference, $this->getOptions(), $absolute ? UrlGeneratorInterface::ABSOLUTE_URL : UrlGeneratorInterface::ABSOLUTE_PATH)
+        ;
     }
 
     /**

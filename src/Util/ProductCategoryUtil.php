@@ -2,10 +2,14 @@
 
 namespace Isotope\CoreBundle\Util;
 
+use Contao\CoreBundle\Routing\PageFinder;
 use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
+use Contao\Database;
+use Contao\PageModel;
 use Doctrine\DBAL\Connection;
 use Isotope\Model\Product;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Service\ResetInterface;
 
 #[Autoconfigure(public: true)]
@@ -21,9 +25,16 @@ class ProductCategoryUtil implements ResetInterface
      */
     private array|null $unpublished = null;
 
+    /**
+     * @var array<int, array<int>>
+     */
+    private array $root = [];
+
     public function __construct(
         private readonly Connection $connection,
         private readonly TokenChecker $tokenChecker,
+        private readonly RequestStack $requestStack,
+        private readonly PageFinder $pageFinder,
     ) {
     }
 
@@ -49,6 +60,38 @@ class ProductCategoryUtil implements ResetInterface
         }
 
         return $this->published[$product->getProductId()] ?? [];
+    }
+
+    /**
+     * @return array<int>
+     */
+    public function getPublishedForProductInRoot(int $rootId, Product $product): array
+    {
+        if (!isset($this->root[$rootId])) {
+            $this->root[$rootId] = Database::getInstance()->getChildRecords($rootId, 'tl_page', false, [$rootId]);
+        }
+
+        return array_intersect($this->getPublishedForProduct($product), $this->root[$rootId]);
+    }
+
+    /**
+     * @return array<int>
+     */
+    public function getPublishedForProductInCurrentRoot(Product $product): array
+    {
+        $request = $this->requestStack->getCurrentRequest();
+
+        if (!$request) {
+            return [];
+        }
+
+        $rootPage = $this->pageFinder->findRootPageForRequest($request);
+
+        if (!$rootPage) {
+            return [];
+        }
+
+        return $this->getPublishedForProductInRoot((int) $rootPage->id, $product);
     }
 
     public function preload(bool $published): array

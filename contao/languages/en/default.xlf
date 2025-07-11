@@ -71,6 +71,12 @@
       <trans-unit id="ERR.rangeAttributeMax">
         <source>Please select an "Attribute to" on row %s.</source>
       </trans-unit>
+      <trans-unit id="PTY.iso_products.0">
+        <source>Isotope Products</source>
+      </trans-unit>
+      <trans-unit id="PTY.iso_products.1">
+        <source>Select this page type if your want to display a product list and product reader.</source>
+      </trans-unit>
       <trans-unit id="MSC.noVariants">
         <source>There are no variants for this product.</source>
       </trans-unit>

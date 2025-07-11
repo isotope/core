@@ -69,7 +69,6 @@ use Isotope\Module\OrderDetails;
 use Isotope\Module\OrderHistory;
 use Isotope\Module\ProductFilter;
 use Isotope\Module\ProductList;
-use Isotope\Module\ProductReader;
 use Isotope\Module\ProductVariantList;
 use Isotope\Module\RangeFilter;
 use Isotope\Module\RelatedProducts;
@@ -108,7 +107,6 @@ $GLOBALS['BE_MOD']['accounts']['member']['tables'][] = Address::getTable();
 $GLOBALS['FE_MOD']['isotope'] = [
     'iso_productlist' => ProductList::class,
     'iso_productvariantlist' => ProductVariantList::class,
-    'iso_productreader' => ProductReader::class,
     'iso_cart' => Cart::class,
     'iso_checkout' => Checkout::class,
     'iso_productfilter' => ProductFilter::class,
@@ -309,10 +307,6 @@ $GLOBALS['ISO_NUM']["10'000.00"] = [2, '.', "'"];
 if (Contao\Config::getInstance()->isComplete()) {
     $GLOBALS['TL_HOOKS']['getAttributesFromDca'][] = [DcaManager::class, 'addOptionsFromAttribute'];
     $GLOBALS['TL_HOOKS']['addCustomRegexp'][] = [Isotope::class, 'validateRegexp'];
-    $GLOBALS['TL_HOOKS']['getPageIdFromUrl'][] = [Frontend::class, 'loadReaderPageFromUrl'];
-    $GLOBALS['TL_HOOKS']['getPageLayout'][] = [Frontend::class, 'overrideReaderPage'];
-    $GLOBALS['TL_HOOKS']['getArticles'][] = [Frontend::class, 'overrideArticles'];
-    $GLOBALS['TL_HOOKS']['getSearchablePages'][] = [Frontend::class, 'addProductsToSearchIndex'];
     $GLOBALS['TL_HOOKS']['replaceInsertTags'][] = [Frontend::class, 'replaceIsotopeTags'];
     $GLOBALS['TL_HOOKS']['modifyFrontendPage'][] = [Frontend::class, 'injectScripts'];
     $GLOBALS['TL_HOOKS']['getArticle'][] = [Frontend::class, 'storeCurrentArticle'];

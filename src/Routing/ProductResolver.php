@@ -6,56 +6,96 @@ namespace Isotope\CoreBundle\Routing;
 
 use Contao\CoreBundle\Routing\Content\ContentUrlResolverInterface;
 use Contao\CoreBundle\Routing\Content\ContentUrlResult;
-use Contao\CoreBundle\Routing\PageFinder;
-use Contao\Database;
 use Contao\PageModel;
+use Isotope\CoreBundle\Util\ProductCategoryUtil;
 use Isotope\Model\Product;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class ProductResolver implements ContentUrlResolverInterface
 {
     public function __construct(
-        private readonly PageFinder $pageFinder,
+        private readonly ProductCategoryUtil $productCategoryUtil,
         private readonly RequestStack $requestStack,
     ) {
     }
 
+    public static function canLinkToPage(PageModel|null $pageModel): bool
+    {
+        return 'iso_products' === $pageModel?->type && 'none' !== $pageModel?->iso_readerMode;
+    }
+
     public function resolve(object $content): ContentUrlResult|null
     {
-        if (!$content instanceof Product) {
+        if (!($product = $this->getProduct($content))) {
             return null;
         }
 
-        $rootPage = $this->pageFinder->findRootPageForRequest($this->requestStack->getCurrentRequest());
+        if ($content instanceof ProductReference && $content->referencePage) {
+            $referencePage = $content->referencePage instanceof PageModel ? $content->referencePage : PageModel::findById($content->referencePage);
 
-        if (!$rootPage) {
+            if (self::canLinkToPage($referencePage)) {
+                return ContentUrlResult::resolve($referencePage);
+            }
+        }
+
+        $request = $this->requestStack->getCurrentRequest();
+
+        if (!$request) {
             return null;
         }
 
-        $categories = array_intersect(
-            $content->getCategories(),
-            Database::getInstance()->getChildRecords([$rootPage->id], 'tl_page'),
-        );
+        if (
+            (!$content instanceof ProductReference || !$content->linkToPrimary)
+            && ($currentPage = $request->attributes->get('pageModel')) instanceof PageModel
+            && self::canLinkToPage($currentPage)
+        ) {
+            return ContentUrlResult::resolve($currentPage);
+        }
+
+        $categories = $this->productCategoryUtil->getPublishedForProductInCurrentRoot($product);
 
         if ([] === $categories) {
             return null;
         }
 
-        return ContentUrlResult::resolve(PageModel::findById(reset($categories)));
+        foreach ($categories as $category) {
+            $pageModel = PageModel::findById($category);
+
+            if (self::canLinkToPage($pageModel)) {
+                return ContentUrlResult::resolve($pageModel);
+            }
+        }
+
+        return null;
     }
 
     public function getParametersForContent(object $content, PageModel $pageModel): array
     {
-        if (!$content instanceof Product) {
+        $product = $this->getProduct($content);
+
+        if (!$product) {
             return [];
         }
 
-        if ($content->isVariant()) {
-            $content = Product::findById($content->getProductId());
+        if ($product->isVariant()) {
+            $product = Product::findById($product->getProductId());
         }
 
         return [
-            'parameters' => '/'.($content->alias ?: $content->getProductId()),
+            'parameters' => '/'.($product->alias ?: $product->getProductId()),
         ];
+    }
+
+    private function getProduct(object $content): Product|null
+    {
+        if ($content instanceof ProductReference) {
+            return $content->product;
+        }
+
+        if ($content instanceof Product) {
+            return $content;
+        }
+
+        return null;
     }
 }

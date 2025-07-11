@@ -6,11 +6,13 @@ namespace Isotope\CoreBundle\ModelType;
 
 use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\CoreBundle\Image\Studio\Studio;
-use Contao\PageModel;
+use Contao\CoreBundle\Routing\ContentUrlGenerator;
 use Contao\StringUtil;
 use Isotope\CoreBundle\Gallery\GalleryInterface;
 use Isotope\CoreBundle\Gallery\StandardGallery;
 use Isotope\CoreBundle\Model\Gallery;
+use Isotope\CoreBundle\Routing\ProductReference;
+use Isotope\CoreBundle\Routing\ProductResolver;
 use Isotope\CoreBundle\Widget\MediaManager;
 use Isotope\Interfaces\IsotopeProduct;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
@@ -30,6 +32,7 @@ class GalleryRegistry extends AbstractModelTypeRegistry
         private readonly ContaoFramework $framework,
         private readonly Studio $imageStudio,
         private readonly Environment $twig,
+        private readonly ContentUrlGenerator $urlGenerator,
     ) {
         parent::__construct($factories, GalleryInterface::class);
     }
@@ -50,8 +53,8 @@ class GalleryRegistry extends AbstractModelTypeRegistry
             StringUtil::deserialize($product->{$attribute.'_fallback'}, true),
         );
 
-        if (!$config['jumpTo'] instanceof PageModel || 'none' !== $config['jumpTo']->iso_readerMode) {
-            $href = $product->generateUrl($config['jumpTo']);
+        if (!isset($config['jumpTo']) || ProductResolver::canLinkToPage($config['jumpTo'])) {
+            $href = $this->urlGenerator->generate(new ProductReference($product, $config['jumpTo'] ?? null));
         }
 
         return $gallery->withProductData(

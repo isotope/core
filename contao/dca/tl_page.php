@@ -23,21 +23,20 @@ $GLOBALS['TL_DCA']['tl_page']['config']['onload_callback'][] = static function (
 /*
  * Extend tl_page palettes
  */
-try {
-    PaletteManipulator::create()
-        ->addLegend('isotope_legend', 'publish_legend', PaletteManipulator::POSITION_BEFORE)
-        ->addField('iso_config', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
-        ->addField('iso_store_id', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
-        ->applyToPalette('root', 'tl_page')
-        ->applyToPalette('rootfallback', 'tl_page')
-    ;
-} catch (InvalidArgumentException) {
-}
+$GLOBALS['TL_DCA']['tl_page']['palettes']['iso_products'] = $GLOBALS['TL_DCA']['tl_page']['palettes']['regular'];
 
 PaletteManipulator::create()
     ->addLegend('isotope_legend', 'publish_legend', PaletteManipulator::POSITION_BEFORE)
+    ->addField('iso_config', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_store_id', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
+    ->applyToPalette('root', 'tl_page')
+    ->applyToPalette('rootfallback', 'tl_page')
+;
+
+PaletteManipulator::create()
+    ->addLegend('isotope_legend', 'meta_legend')
     ->addField('iso_readerMode', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
-    ->applyToPalette('regular', 'tl_page')
+    ->applyToPalette('iso_products', 'tl_page')
 ;
 
 /*
