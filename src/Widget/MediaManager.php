@@ -102,7 +102,7 @@ class MediaManager extends Widget implements UploadableWidgetInterface
             }
         }
 
-        if ([] === \count($arrCurrent)) {
+        if ([] === $arrCurrent) {
             return array_values($arrTranslate);
         }
 

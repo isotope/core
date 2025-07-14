@@ -17,7 +17,7 @@ class CoreAttributeFactory implements AttributeFactoryInterface
             'select' => SelectAttribute::class,
             'radio' => RadioAttribute::class,
             'checkbox' => CheckboxAttribute::class,
-            'media_manager' => MediaManagerAttribute::class,
+            'mediaManager' => MediaManagerAttribute::class,
             default => $class,
         };
 
