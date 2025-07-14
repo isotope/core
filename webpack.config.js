@@ -4,8 +4,6 @@ module.exports = Encore('assets')
     .setOutputPath('public/')
     .setPublicPath('/bundles/isotopecore')
 
-    .addEntry('isotope', './assets/scripts/isotope.js')
-
     .copyFiles({
         from: './assets/images',
         to: 'images/[path][name].[ext]',

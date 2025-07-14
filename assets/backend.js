@@ -9,7 +9,7 @@ const application = Application.start();
 application.debug = process.env.NODE_ENV === 'development';
 
 // Register all controllers with `isotope--` prefix
-const context = require.context('./controllers', true, /\.js$/);
+const context = require.context('./backend-controllers', true, /\.js$/);
 
 application.load(context.keys()
     .map((key) => {
