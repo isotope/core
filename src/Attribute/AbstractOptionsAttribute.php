@@ -13,6 +13,7 @@ use Isotope\CompatibilityHelper;
 use Isotope\CoreBundle\Model\Attribute;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\AttributeOption;
+use Isotope\Model\Product;
 use Isotope\Translation;
 
 abstract class AbstractOptionsAttribute extends AbstractAttribute implements OptionsAttributeInterface
@@ -20,6 +21,12 @@ abstract class AbstractOptionsAttribute extends AbstractAttribute implements Opt
     private array $variantOptionsCache = [];
 
     private bool $variantOption = false;
+
+    private array|null $options = null;
+
+    private string|null $foreignKey = null;
+
+    private bool $multiple = false;
 
     public function __construct(
         string $fieldName,
@@ -84,6 +91,42 @@ abstract class AbstractOptionsAttribute extends AbstractAttribute implements Opt
         return $this->optionsSource;
     }
 
+    public function setOptions(array|null $options): self
+    {
+        $this->options = $options;
+
+        return $this;
+    }
+
+    public function getOptions(): array|null
+    {
+        return $this->options;
+    }
+
+    public function getForeignKey(): string|null
+    {
+        return $this->foreignKey;
+    }
+
+    public function setForeignKey(string|null $foreignKey): self
+    {
+        $this->foreignKey = $foreignKey;
+
+        return $this;
+    }
+
+    public function hasMultiple(): bool
+    {
+        return $this->multiple;
+    }
+
+    public function setMultiple(bool $multiple): self
+    {
+        $this->multiple = $multiple;
+
+        return $this;
+    }
+
     public function prepareOptionsWizard(Widget $widget, array $columns): array
     {
         if ($this->isVariantOption()) {
@@ -102,37 +145,36 @@ abstract class AbstractOptionsAttribute extends AbstractAttribute implements Opt
             case OptionsSource::Name:
                 return [['value' => 1, 'label' => $this->getName()]];
 
-            // @deprecated remove in Isotope 3.0
             case OptionsSource::Attribute:
-                $options = StringUtil::deserialize($this->options);
+                if (empty($this->options)) {
+                    return [];
+                }
 
-                if (!empty($options) && \is_array($options)) {
-                    if ($this->isCustomerDefined()) {
-                        // Build for a frontend widget
+                if ($this->isCustomerDefined()) {
+                    // Build for a frontend widget
 
-                        foreach ($options as $option) {
-                            $option['label'] = Translation::get($option['label']);
+                    foreach ($this->options as $option) {
+                        $option['label'] = Translation::get($option['label']);
 
-                            $arrOptions[] = $option;
+                        $arrOptions[] = $option;
+                    }
+                } else {
+                    // Build for a backend widget
+
+                    $group = '';
+
+                    foreach ($this->options as $option) {
+                        $option['label'] = Translation::get($option['label']);
+
+                        if ($option['group'] ?? false) {
+                            $group = $option['label'];
+                            continue;
                         }
-                    } else {
-                        // Build for a backend widget
 
-                        $group = '';
-
-                        foreach ($options as $option) {
-                            $option['label'] = Translation::get($option['label']);
-
-                            if ($option['group'] ?? false) {
-                                $group = $option['label'];
-                                continue;
-                            }
-
-                            if ('' !== $group) {
-                                $arrOptions[$group][] = $option;
-                            } else {
-                                $arrOptions[] = $option;
-                            }
+                        if ('' !== $group) {
+                            $arrOptions[$group][] = $option;
+                        } else {
+                            $arrOptions[] = $option;
                         }
                     }
                 }
@@ -152,7 +194,7 @@ abstract class AbstractOptionsAttribute extends AbstractAttribute implements Opt
 
             case OptionsSource::Product:
                 if (CompatibilityHelper::isFrontend() && !($product instanceof IsotopeProduct)) {
-                    throw new \InvalidArgumentException('Must pass IsotopeProduct to Attribute::getOptions if optionsSource is "product"');
+                    throw new \InvalidArgumentException('Must pass product to Attribute::getOptions if optionsSource is "product"');
                 }
 
                 $objOptions = $this->getOptionsFromManager($product);
@@ -194,26 +236,10 @@ abstract class AbstractOptionsAttribute extends AbstractAttribute implements Opt
                     throw new \InvalidArgumentException('Must pass IsotopeProduct to Attribute::getOptionsFromManager if optionsSource is "product"');
                 }
 
-                $productId = $product->getId();
-
-                if (
-                    $product->isVariant()
-                    && !\in_array($this->getFieldName(), $product->getType()->getVariantAttributes(), true)
-                ) {
-                    $productId = $product->getProductId();
-                }
-
-                if (
-                    !\is_array($this->varOptionsCache)
-                    || !\array_key_exists($productId, $this->varOptionsCache)
-                ) {
-                    $this->varOptionsCache[$productId] = AttributeOption::findByProductAndAttribute(
-                        $product,
-                        $this,
-                    );
-                }
-
-                return $this->varOptionsCache[$productId];
+                return AttributeOption::findByProductAndAttribute(
+                    $product,
+                    $this,
+                );
 
             default:
                 throw new \UnexpectedValueException(Attribute::getTable().'.'.$this->getFieldName().' does not use options manager');
@@ -285,5 +311,42 @@ abstract class AbstractOptionsAttribute extends AbstractAttribute implements Opt
         return true;
         // TODO: previously checked the database!
         // return \in_array($this->field_name, Attribute::getPricedFields(), true);
+    }
+
+    protected function parseForeignKey($strSettings, $strLanguage = false)
+    {
+        $strFallback = null;
+        $arrLines    = StringUtil::trimsplit('@\r\n|\n|\r@', $strSettings);
+
+        // Return false if there are no lines
+        if ($strSettings == '' || !\is_array($arrLines) || empty($arrLines)) {
+            return null;
+        }
+
+        // Loop over the lines
+        foreach ($arrLines as $strLine) {
+            // Ignore empty lines and comments
+            if ($strLine == '' || strpos($strLine, '#') === 0) {
+                continue;
+            }
+
+            // Check for a language1
+            if (preg_match('/^([a-z]{2}(-[A-Z]{2})?)=(.+)$/', $strLine, $matches)) {
+                $foreignKey = $matches[3];
+
+                if ($matches[1] === $strLanguage) {
+                    return $foreignKey;
+                }
+
+                if (null === $strFallback) {
+                    $strFallback = $foreignKey;
+                }
+            } elseif (null === $strFallback) {
+                // The row without language is the fallback
+                $strFallback = $strLine;
+            }
+        }
+
+        return $strFallback;
     }
 }

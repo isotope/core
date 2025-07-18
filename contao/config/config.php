@@ -5,7 +5,6 @@ use Contao\System;
 use Isotope\Automator;
 use Isotope\Backend;
 use Isotope\Backend\Member\Callback as MemberCallback;
-use Isotope\Backend\Product\DcaManager;
 use Isotope\Backend\ProductCollection\Callback;
 use Isotope\Backend\ProductType\Help;
 use Isotope\Backend\SubtableVersion;
@@ -305,7 +304,6 @@ $GLOBALS['ISO_NUM']["10'000.00"] = [2, '.', "'"];
  * Hooks
  */
 if (Contao\Config::getInstance()->isComplete()) {
-    $GLOBALS['TL_HOOKS']['getAttributesFromDca'][] = [DcaManager::class, 'addOptionsFromAttribute'];
     $GLOBALS['TL_HOOKS']['addCustomRegexp'][] = [Isotope::class, 'validateRegexp'];
     $GLOBALS['TL_HOOKS']['replaceInsertTags'][] = [Frontend::class, 'replaceIsotopeTags'];
     $GLOBALS['TL_HOOKS']['modifyFrontendPage'][] = [Frontend::class, 'injectScripts'];

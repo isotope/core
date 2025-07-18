@@ -7,6 +7,7 @@ namespace Isotope\CoreBundle\Attribute;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Types\Types;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsAttribute;
+use Isotope\Translation;
 
 #[AsAttribute]
 class SelectAttribute extends AbstractOptionsAttribute implements VariantAttributeInterface
@@ -88,6 +89,8 @@ class SelectAttribute extends AbstractOptionsAttribute implements VariantAttribu
         $field['eval']['multiple'] = $this->hasMultiple();
         $field['eval']['size'] = $this->getSize();
         $field['eval']['chosen'] = $this->hasChosen();
+        $field['eval']['includeBlankOption'] = $this->isIncludeBlankOption();
+        $field['eval']['blankOptionLabel'] = Translation::get($this->getBlankOptionLabel());
 
         if ($this->isVariantOption()) {
             $field['eval']['includeBlankOption'] = true;

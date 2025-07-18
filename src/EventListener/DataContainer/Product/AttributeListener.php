@@ -16,7 +16,10 @@ use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
 use Isotope\CoreBundle\Attribute\OptionsSource;
 use Isotope\CoreBundle\Attribute\VariantAttributeInterface;
 use Isotope\CoreBundle\DataContainer\ProductData;
+use Isotope\CoreBundle\Model\Attribute;
 use Isotope\CoreBundle\Model\ProductType;
+use Isotope\Interfaces\IsotopeProduct;
+use Isotope\Model\Product;
 use Isotope\Model\RelatedCategory;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -41,6 +44,40 @@ class AttributeListener
         }
 
         $this->attributeRegistry->load();
+    }
+
+    #[AsHook('getAttributesFromDca')]
+    public function addOptionsFromAttribute(array $config, mixed $dc): array
+    {
+        if ('tl_iso_product' !== ($config['strTable'] ?? null) || !isset($config['strField'])) {
+            return $config;
+        }
+
+        $attribute = $this->attributeRegistry->get($config['strField']);
+
+        if (
+            !$attribute instanceof OptionsAttributeInterface
+            || OptionsSource::ForeignKey === $attribute->getOptionsSource()
+        ) {
+            return $config;
+        }
+
+        $config['options'] = ($dc instanceof IsotopeProduct) ? $attribute->getOptionsForWidget($dc) : $attribute->getOptionsForWidget();
+
+        if ($config['includeBlankOption'] ?? null) {
+            array_unshift($config['options'], ['value' => '', 'label' => ($config['blankOptionLabel'] ?? '-')]);
+        }
+
+        if (null !== ($config['default'] ?? null)) {
+            $defaults = array_filter($config['options'], static fn ($option) => (bool) $option['default']);
+
+            if ([] !== $defaults) {
+                $defaults = array_map(static fn ($option) => $option['value'], $defaults);
+                $config['value'] = $attribute->hasMultiple() ? $defaults : reset($defaults);
+            }
+        }
+
+        return $config;
     }
 
     /**

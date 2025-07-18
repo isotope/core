@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Attribute;
 
+use Contao\StringUtil;
 use Isotope\Interfaces\IsotopeAttribute;
 
 class CoreAttributeFactory implements AttributeFactoryInterface
@@ -91,11 +92,31 @@ class CoreAttributeFactory implements AttributeFactoryInterface
             default => OptionsSource::Attribute,
         };
 
-        return match ($class) {
-            RadioAttribute::class,
-            SelectAttribute::class,
-            CheckboxAttribute::class => new $class($fieldName, $optionsSource),
-            default => new $class($fieldName),
-        };
+        if (\is_a($class, AbstractOptionsAttribute::class, true)) {
+            return (new $class($fieldName, $optionsSource))
+                ->setOptions($this->getOptions($config, $dca))
+                ->setForeignKey($config['foreignKey'] ?? $dca['foreignKey'] ?? null)
+                ->setMultiple((bool) ($config['multiple'] ?? $dca['eval']['multiple'] ?? false))
+            ;
+        }
+
+        return new $class($fieldName);
+    }
+
+    private function getOptions(array $config, array $dca): array|null
+    {
+        $options = null;
+
+        if (isset($config['options'])) {
+            $options = StringUtil::deserialize($config['options']);
+        } elseif (\is_array($dca['options'] ?? null)) {
+            $options = [];
+
+            foreach ($dca['options'] as $k => $v) {
+                $options[] = ['value' => $k, 'label' => $v];
+            }
+        }
+
+        return \is_array($options) ? $options : null;
     }
 }

@@ -36,6 +36,11 @@ interface OptionsAttributeInterface extends AttributeInterface
     public function getOptionsForProductFilter(array $values): array;
 
     /**
+     * Return true if attribute has multiple options (e.g. a select or multiple checkboxes).
+     */
+    public function hasMultiple(): bool;
+
+    /**
      * Return true if attribute can have prices.
      */
     public function canHavePrices(): bool;

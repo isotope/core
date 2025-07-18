@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Attribute;
 
+use Contao\Widget;
 use Isotope\Interfaces\IsotopeProduct;
 
 /**
@@ -30,7 +31,7 @@ interface AttributeInterface
     /**
      * Return class name for the frontend widget or empty if none should be available.
      *
-     * @return class-string|null
+     * @return class-string<Widget>|null
      */
     public function getFrontendWidget(): string|null;
 

@@ -37,4 +37,9 @@ class RadioAttribute extends AbstractOptionsAttribute implements VariantAttribut
 
         return ['type' => Types::INTEGER, 'options' => ['unsigned' => true, 'default' => 0]];
     }
+
+    public function hasMultiple(): bool
+    {
+        return false;
+    }
 }
