@@ -509,12 +509,6 @@
       <trans-unit id="tl_module.iso_category_scope_ref.product.1">
         <source>Show all products that are assigned to the same pages the currently active product is assigned to.</source>
       </trans-unit>
-      <trans-unit id="tl_module.iso_category_scope_ref.article.0">
-        <source>Category of article</source>
-      </trans-unit>
-      <trans-unit id="tl_module.iso_category_scope_ref.article.1">
-        <source>If you place the module in an article, it will show products assigned to the artilce's partent page, even though if you place the article in another page (e.g. using insert tag).</source>
-      </trans-unit>
       <trans-unit id="tl_module.sortingDirection.ASC">
         <source>ASC</source>
       </trans-unit>

@@ -193,10 +193,6 @@ abstract class Module extends AbstractFrontendModule
                 }
                 break;
 
-            case 'article':
-                $arrCategories = array($GLOBALS['ISO_CONFIG']['current_article']['pid'] ? : $objPage->id);
-                break;
-
             case '':
             case 'current_category':
                 $arrCategories = [$objPage->id];

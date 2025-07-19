@@ -267,7 +267,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_noFilter'] = [
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_category_scope'] = [
     'inputType' => 'radio',
     'default' => 'current_category',
-    'options' => ['current_category', 'current_and_first_child', 'current_and_all_children', 'parent', 'product', 'article', 'global'],
+    'options' => ['current_category', 'current_and_first_child', 'current_and_all_children', 'parent', 'product', 'global'],
     'reference' => &$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref'],
     'explanation' => 'iso_category_scope',
     'eval' => ['tl_class' => 'clr w50 w50h', 'helpwizard' => true],

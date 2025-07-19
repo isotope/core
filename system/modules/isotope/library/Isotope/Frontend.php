@@ -202,18 +202,6 @@ class Frontend extends \Contao\Frontend
 
 
     /**
-     * Store the current article ID so we know it for the product list
-     *
-     * @param Result $objRow
-     */
-    public function storeCurrentArticle($objRow)
-    {
-        $GLOBALS['ISO_CONFIG']['current_article']['id']  = $objRow->id;
-        $GLOBALS['ISO_CONFIG']['current_article']['pid'] = $objRow->pid;
-    }
-
-
-    /**
      * Return pages in the current root available to the member
      * Necessary to check if a product is allowed in the current site and cache the value
      *

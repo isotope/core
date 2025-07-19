@@ -16,3 +16,4 @@
 - The `@IsotopeHook` annotation has been replaced by `#[AsIsotopeHook]` attribute.
 - The abstract ContentElement class loading Isotope JavaScript & CSS has been removed.
 - Removed the QuantitySurcharge, BasePrice, Downloads, FileTree, Media, PageTree, Price, PriceTiers, ShippingPrice, Upload and Weigth attributes.
+- The "product of current article" scope has been removed from product list category settings
