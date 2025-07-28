@@ -109,10 +109,6 @@ class RelatedProducts extends ProductList
         $columns = [Product::getTable() . '.id IN (' . implode(',', array_map('intval', $productIds)) . ')'];
         $options = ['order' => Database::getInstance()->findInSet(Product::getTable() . '.id', $productIds)];
 
-        if ($this->iso_list_where != '') {
-            $columns[] = $this->iso_list_where;
-        }
-
         if ($this->iso_listingSortField != '') {
             $direction = 'DESC' === $this->iso_listingSortDirection ? Sort::descending() : Sort::ascending();
             $options['sorting'] = [$this->iso_listingSortField => $direction];

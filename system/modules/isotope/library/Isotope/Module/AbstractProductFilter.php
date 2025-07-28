@@ -68,10 +68,9 @@ abstract class AbstractProductFilter extends Module
      * Returns an array of attribute values found in the product table
      *
      * @param string $attribute
-     * @param string $sqlWhere
      * @return array
      */
-    protected function getUsedValuesForAttribute($attribute, array $categories, $sqlWhere = '')
+    protected function getUsedValuesForAttribute($attribute, array $categories)
     {
         $attributeTypes = $this->getProductTypeIdsByAttribute($attribute);
         $variantTypes   = $this->getProductTypeIdsByAttribute($attribute, true);
@@ -89,10 +88,6 @@ abstract class AbstractProductFilter extends Module
         $published      = '';
         $time           = Date::floorToMinute();
         $isPreviewModel = \Contao\System::getContainer()->get('contao.security.token_checker')->isPreviewMode();
-
-        if ('' !== (string) $sqlWhere) {
-            $sqlWhere = ' AND ' . $sqlWhere;
-        }
 
         if (!$isPreviewModel) {
             $published = "
@@ -145,7 +140,6 @@ abstract class AbstractProductFilter extends Module
                 AND (
                     " . implode(' OR ', $typeConditions) . "
                 )
-                $sqlWhere
         ");
 
         while ($result->next()) {

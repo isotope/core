@@ -245,12 +245,6 @@
       <trans-unit id="tl_module.iso_category_scope.1">
         <source>Specify the scope of a product lister.</source>
       </trans-unit>
-      <trans-unit id="tl_module.iso_list_where.0">
-        <source>Condition</source>
-      </trans-unit>
-      <trans-unit id="tl_module.iso_list_where.1">
-        <source>Here you can enter a SQL condition to filter the products. You must prefix the fields with "tl_iso_product." (e.g. &lt;em&gt;tl_iso_product.featured=1&lt;/em&gt; or &lt;em&gt;tl_iso_product.color!='red'&lt;/em&gt;)!</source>
-      </trans-unit>
       <trans-unit id="tl_module.iso_filterModules.0">
         <source>Filter modules</source>
       </trans-unit>

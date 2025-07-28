@@ -273,7 +273,6 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
             $arrValues = $this->getUsedValuesForAttribute(
                 $strField,
                 $arrCategories,
-                $this->iso_list_where
             );
 
             if ($this->blnUpdateCache && \in_array($arrInput[$strField], $arrValues)) {
@@ -511,10 +510,6 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
             $arrColumns[] = "c.pid=".$arrCategories[0];
         } else {
             $arrColumns[] = "c.pid IN (".implode(',', $arrCategories).")";
-        }
-
-        if ($this->iso_list_where != '') {
-            $arrColumns[] = $this->iso_list_where;
         }
 
         $products = Product::findAvailableBy($arrColumns, $arrValues);

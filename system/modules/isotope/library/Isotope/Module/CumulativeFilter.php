@@ -326,7 +326,6 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
         $usedValues = $this->getUsedValuesForAttribute(
             $attribute,
             $this->findCategories(),
-            $this->iso_list_where
         );
 
         if (empty($usedValues)) {
@@ -414,10 +413,6 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
         $queryBuilder  = new FilterQueryBuilder($filters);
 
         $arrColumns[]  = "c.pid IN (" . implode(',', $arrCategories) . ")";
-
-        if ($this->iso_list_where != '') {
-            $arrColumns[] = $this->iso_list_where;
-        }
 
         if ($queryBuilder->hasSqlCondition()) {
             $arrColumns[] = $queryBuilder->getSqlWhere();

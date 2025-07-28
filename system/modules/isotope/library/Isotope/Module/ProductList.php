@@ -317,10 +317,6 @@ class ProductList extends Module
             $arrColumns[] = Product::getTable() . ".id IN (" . implode(',', $arrCacheIds) . ")";
         }
 
-        if ($this->iso_list_where != '') {
-            $arrColumns[] = $this->iso_list_where;
-        }
-
         if ($queryBuilder->hasSqlCondition()) {
             $arrColumns[] = $queryBuilder->getSqlWhere();
         }
@@ -512,7 +508,6 @@ class ProductList extends Module
 
         return md5(
             'productlist=' . $this->id . ':'
-            . 'where=' . $this->iso_list_where . ':'
             . 'isorc=' . (int) Input::get('isorc') . ':'
             . implode(',', $categories)
         );

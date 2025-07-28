@@ -51,10 +51,6 @@ class ProductVariantList extends ProductList
             $arrColumns[] = Product::getTable() . ".id IN (" . implode(',', $arrCacheIds) . ")";
         }
 
-        if ($this->iso_list_where != '') {
-            $arrColumns[] = $this->iso_list_where;
-        }
-
         if ($queryBuilder->hasSqlCondition()) {
             $arrColumns[] = $queryBuilder->getSqlWhere();
         }

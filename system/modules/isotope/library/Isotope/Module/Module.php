@@ -33,7 +33,6 @@ use Contao\PageModel;
  * Module implements a parent class for Isotope modules
  *
  * @property string $iso_category_scope
- * @property string $iso_list_where
  * @property string $iso_includeMessages
  * @property bool   $iso_hide_list
  * @property bool   $iso_disable_options
@@ -70,10 +69,6 @@ abstract class Module extends AbstractFrontendModule
     public function __construct($objModule, $strColumn = 'main')
     {
         parent::__construct($objModule, $strColumn);
-
-        if ($this->iso_list_where != '') {
-            $this->iso_list_where = \Contao\System::getContainer()->get('contao.insert_tag.parser')->replace($this->iso_list_where);
-        }
 
         Isotope::initialize();
 

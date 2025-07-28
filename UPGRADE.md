@@ -18,3 +18,4 @@
 - Removed the QuantitySurcharge, BasePrice, Downloads, FileTree, Media, PageTree, Price, PriceTiers, ShippingPrice, Upload and Weigth attributes.
 - The "product of current article" scope has been removed from product list category settings
 - The option to mark and filter new products has been removed
+- Custom SQL queries for product lists has been removed
