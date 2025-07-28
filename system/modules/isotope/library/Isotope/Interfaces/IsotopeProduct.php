@@ -85,13 +85,6 @@ interface IsotopeProduct
     public function isPublished();
 
     /**
-     * Checks whether a product is new according to the current store config
-     *
-     * @return bool
-     */
-    public function isNew();
-
-    /**
      * Checks whether a product is exempt from shipping
      *
      * @return bool
