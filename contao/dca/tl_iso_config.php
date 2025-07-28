@@ -50,8 +50,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
             {currency_legend},currency,currencyPosition,currencySymbol;
             {converter_legend:hide},priceCalculateFactor,priceCalculateMode,currencyAutomator;
             {order_legend:hide},orderPrefix,orderDigits,orderstatus_new,orderstatus_error,orderDetailsModule;
-            {config_legend},templateGroup,cartMinSubtotal;
-            {products_legend},newProductPeriod',
+            {config_legend},templateGroup,cartMinSubtotal',
     ],
     'subpalettes' => [
         'currencySymbol' => 'currencySpace',
@@ -397,14 +396,6 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
             'inputType' => 'select',
             'options_callback' => [Callback::class, 'getTemplateFolders'],
             'eval' => ['includeBlankOption' => true, 'tl_class' => 'w50'],
-            'sql' => "varchar(255) NOT NULL default ''",
-        ],
-        'newProductPeriod' => [
-            'default' => ['unit' => 'days', 'value' => ''],
-            'inputType' => 'timePeriod',
-            'options' => ['minutes', 'hours', 'days', 'weeks', 'months', 'years'],
-            'reference' => &$GLOBALS['TL_LANG']['MSC']['timePeriod'],
-            'eval' => ['rgxp' => 'digit', 'maxlength' => 5, 'tl_class' => 'w50'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
     ],

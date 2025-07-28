@@ -51,13 +51,6 @@ class ProductVariantList extends ProductList
             $arrColumns[] = Product::getTable() . ".id IN (" . implode(',', $arrCacheIds) . ")";
         }
 
-        // Apply new/old product filter
-        if ('show_new' === $this->iso_newFilter) {
-            $arrColumns[] = Product::getTable() . ".dateAdded>=" . Isotope::getConfig()->getNewProductLimit();
-        } elseif ('show_old' === $this->iso_newFilter) {
-            $arrColumns[] = Product::getTable() . ".dateAdded<" . Isotope::getConfig()->getNewProductLimit();
-        }
-
         if ($this->iso_list_where != '') {
             $arrColumns[] = $this->iso_list_where;
         }

@@ -162,16 +162,6 @@ abstract class AbstractProduct extends Product
     }
 
     /**
-     * Checks whether a product is new according to the current store config
-     *
-     * @return bool
-     */
-    public function isNew()
-    {
-        return $this->dateAdded >= Isotope::getConfig()->getNewProductLimit();
-    }
-
-    /**
      * @inheritdoc
      */
     public function isExemptFromShipping()
@@ -263,10 +253,6 @@ abstract class AbstractProduct extends Product
     public function getCssClass()
     {
         $classes = ['product'];
-
-        if ($this->isNew()) {
-            $classes[] = 'new';
-        }
 
         $arrCSS = StringUtil::deserialize($this->cssID, true);
         if (!empty($arrCSS[1])) {

@@ -305,12 +305,6 @@
       <trans-unit id="tl_iso_config.cartMinSubtotal.1">
         <source>The minimum cart subtotal required to order. Enter 0 to disable.</source>
       </trans-unit>
-      <trans-unit id="tl_iso_config.newProductPeriod.0">
-        <source>Duration to mark a product as "new"</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_config.newProductPeriod.1">
-        <source>If you would like to highlight new products, you can enter a time period here. It will automatically add a CSS class "new" to every product everywhere within Isotope eCommerce.</source>
-      </trans-unit>
       <trans-unit id="tl_iso_config.ga_account.0">
         <source>Account</source>
       </trans-unit>

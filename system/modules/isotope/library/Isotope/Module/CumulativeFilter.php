@@ -326,7 +326,6 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
         $usedValues = $this->getUsedValuesForAttribute(
             $attribute,
             $this->findCategories(),
-            $this->iso_newFilter,
             $this->iso_list_where
         );
 
@@ -415,13 +414,6 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
         $queryBuilder  = new FilterQueryBuilder($filters);
 
         $arrColumns[]  = "c.pid IN (" . implode(',', $arrCategories) . ")";
-
-        // Apply new/old product filter
-        if ($this->iso_newFilter == self::FILTER_NEW) {
-            $arrColumns[] = Product::getTable() . ".dateAdded>=" . Isotope::getConfig()->getNewProductLimit();
-        } elseif ($this->iso_newFilter == self::FILTER_OLD) {
-            $arrColumns[] = Product::getTable() . ".dateAdded<" . Isotope::getConfig()->getNewProductLimit();
-        }
 
         if ($this->iso_list_where != '') {
             $arrColumns[] = $this->iso_list_where;

@@ -109,13 +109,6 @@ class RelatedProducts extends ProductList
         $columns = [Product::getTable() . '.id IN (' . implode(',', array_map('intval', $productIds)) . ')'];
         $options = ['order' => Database::getInstance()->findInSet(Product::getTable() . '.id', $productIds)];
 
-        // Apply new/old product filter
-        if ('show_new' === $this->iso_newFilter) {
-            $columns[] = Product::getTable() . '.dateAdded>=' . Isotope::getConfig()->getNewProductLimit();
-        } elseif ('show_old' === $this->iso_newFilter) {
-            $columns[] = Product::getTable() . '.dateAdded<' . Isotope::getConfig()->getNewProductLimit();
-        }
-
         if ($this->iso_list_where != '') {
             $columns[] = $this->iso_list_where;
         }

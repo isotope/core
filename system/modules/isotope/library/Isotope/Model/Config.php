@@ -71,7 +71,6 @@ use Isotope\Translation;
  * @property int    $orderstatus_new
  * @property int    $orderstatus_error
  * @property string $templateGroup
- * @property array  $newProductPeriod
  * @property string $ga_account
  * @property string $ga_member
  */
@@ -294,28 +293,6 @@ class Config extends Model
         }
 
         return $format;
-    }
-
-    /**
-     * Get the limit to mark products as new
-     *
-     * @return int
-     */
-    public function getNewProductLimit()
-    {
-        if (!isset($this->arrCache['newProductLimit'])) {
-            $arrPeriod = StringUtil::deserialize($this->newProductPeriod);
-
-            if (!empty($arrPeriod) && \is_array($arrPeriod) && $arrPeriod['value'] > 0 && $arrPeriod['unit'] != '') {
-                $this->arrCache['newProductLimit'] = strtotime(
-                    '-' . $arrPeriod['value'] . ' ' . $arrPeriod['unit'] . ' 00:00:00'
-                );
-            } else {
-                $this->arrCache['newProductLimit'] = Date::floorToMinute();
-            }
-        }
-
-        return $this->arrCache['newProductLimit'];
     }
 
     /**

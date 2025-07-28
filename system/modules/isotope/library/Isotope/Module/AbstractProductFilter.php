@@ -27,7 +27,6 @@ use Isotope\Isotope;
  * @property string $iso_searchAutocomplete
  * @property array  $iso_filterFields
  * @property bool   $iso_filterHideSingle
- * @property string $iso_newFilter
  * @property array  $iso_sortingFields
  * @property string $iso_listingSortField
  * @property string $iso_listingSortDirection
@@ -37,9 +36,6 @@ use Isotope\Isotope;
  */
 abstract class AbstractProductFilter extends Module
 {
-    public const FILTER_NEW = 'show_new';
-    public const FILTER_OLD = 'show_old';
-
     /**
      * Constructor.
      *
@@ -72,11 +68,10 @@ abstract class AbstractProductFilter extends Module
      * Returns an array of attribute values found in the product table
      *
      * @param string $attribute
-     * @param string $newFilter
      * @param string $sqlWhere
      * @return array
      */
-    protected function getUsedValuesForAttribute($attribute, array $categories, $newFilter = '', $sqlWhere = '')
+    protected function getUsedValuesForAttribute($attribute, array $categories, $sqlWhere = '')
     {
         $attributeTypes = $this->getProductTypeIdsByAttribute($attribute);
         $variantTypes   = $this->getProductTypeIdsByAttribute($attribute, true);
@@ -97,13 +92,6 @@ abstract class AbstractProductFilter extends Module
 
         if ('' !== (string) $sqlWhere) {
             $sqlWhere = ' AND ' . $sqlWhere;
-        }
-
-        // Apply new/old product filter
-        if (self::FILTER_NEW === $newFilter) {
-            $sqlWhere .= ' AND tl_iso_product.dateAdded>=' . Isotope::getConfig()->getNewProductLimit();
-        } elseif (self::FILTER_OLD === $newFilter) {
-            $sqlWhere .= ' AND tl_iso_product.dateAdded<' . Isotope::getConfig()->getNewProductLimit();
         }
 
         if (!$isPreviewModel) {

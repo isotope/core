@@ -1676,7 +1676,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
             'product'           => $objProduct,
             'item'              => $objItem,
             'raw'               => $objItem->row(),
-            'rowClass'          => trim('product ' . (($blnHasProduct && $objProduct->isNew()) ? 'new ' : '') . ($arrCSS[1] ?? ''))
+            'rowClass'          => trim('product ' . ($arrCSS[1] ?? ''))
         );
 
         if ($blnHasProduct && null !== $objItem->getRelated('jumpTo') && $objProduct->isAvailableInFrontend()) {

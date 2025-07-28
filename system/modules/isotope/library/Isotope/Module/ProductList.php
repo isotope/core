@@ -317,13 +317,6 @@ class ProductList extends Module
             $arrColumns[] = Product::getTable() . ".id IN (" . implode(',', $arrCacheIds) . ")";
         }
 
-        // Apply new/old product filter
-        if ('show_new' === $this->iso_newFilter) {
-            $arrColumns[] = Product::getTable() . ".dateAdded>=" . Isotope::getConfig()->getNewProductLimit();
-        } elseif ('show_old' === $this->iso_newFilter) {
-            $arrColumns[] = Product::getTable() . ".dateAdded<" . Isotope::getConfig()->getNewProductLimit();
-        }
-
         if ($this->iso_list_where != '') {
             $arrColumns[] = $this->iso_list_where;
         }
@@ -539,21 +532,6 @@ class ProductList extends Module
             ->execute("SELECT MIN(start) AS expires FROM tl_iso_product WHERE start>'$time'")
             ->expires
         ;
-
-        // Find
-        if ('show_new' === $this->iso_newFilter || 'show_old' === $this->iso_newFilter) {
-            $added = Database::getInstance()
-                ->execute("
-                    SELECT MIN(dateAdded) AS expires
-                    FROM tl_iso_product
-                    WHERE dateAdded>" . Isotope::getConfig()->getNewProductLimit() . "
-                ")->expires
-            ;
-
-            if ($added < $expires) {
-                $expires = $added;
-            }
-        }
 
         return $expires;
     }

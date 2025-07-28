@@ -273,7 +273,6 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
             $arrValues = $this->getUsedValuesForAttribute(
                 $strField,
                 $arrCategories,
-                $this->iso_newFilter,
                 $this->iso_list_where
             );
 
@@ -512,13 +511,6 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
             $arrColumns[] = "c.pid=".$arrCategories[0];
         } else {
             $arrColumns[] = "c.pid IN (".implode(',', $arrCategories).")";
-        }
-
-        // Apply new/old product filter
-        if ('show_new' === $this->iso_newFilter) {
-            $arrColumns[] = Product::getTable() . ".dateAdded>=" . Isotope::getConfig()->getNewProductLimit();
-        } elseif ('show_old' === $this->iso_newFilter) {
-            $arrColumns[] = Product::getTable() . ".dateAdded<" . Isotope::getConfig()->getNewProductLimit();
         }
 
         if ($this->iso_list_where != '') {

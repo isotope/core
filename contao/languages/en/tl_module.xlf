@@ -362,21 +362,6 @@
       <trans-unit id="tl_module.iso_sortingFields.1">
         <source>Please select orderable fields to enable.</source>
       </trans-unit>
-      <trans-unit id="tl_module.iso_newFilter.0">
-        <source>Filtering for new products</source>
-      </trans-unit>
-      <trans-unit id="tl_module.iso_newFilter.1">
-        <source>If you have configured marking products as "new" in your shop configuration, you can either filter for old ones, new ones or just display all products.</source>
-      </trans-unit>
-      <trans-unit id="tl_module.iso_newFilter.show_all">
-        <source>Show all products</source>
-      </trans-unit>
-      <trans-unit id="tl_module.iso_newFilter.show_new">
-        <source>Only show new products</source>
-      </trans-unit>
-      <trans-unit id="tl_module.iso_newFilter.show_old">
-        <source>Only show old products</source>
-      </trans-unit>
       <trans-unit id="tl_module.iso_enableLimit.0">
         <source>Enable per-page limiting</source>
       </trans-unit>
