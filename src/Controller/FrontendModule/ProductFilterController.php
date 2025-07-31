@@ -1,0 +1,339 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Isotope\CoreBundle\Controller\FrontendModule;
+
+use Codefog\HasteBundle\Formatter;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsFrontendModule;
+use Contao\CoreBundle\Exception\BadRequestException;
+use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
+use Contao\CoreBundle\Twig\FragmentTemplate;
+use Contao\Database;
+use Contao\Date;
+use Contao\Input;
+use Contao\ModuleModel;
+use Contao\StringUtil;
+use Contao\Widget;
+use Doctrine\DBAL\Connection;
+use Isotope\CoreBundle\Attribute\AttributeRegistry;
+use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
+use Isotope\CoreBundle\Model\ProductType;
+use Isotope\CoreBundle\Product\Query\Filter\EqualFilter;
+use Isotope\CoreBundle\Product\Query\ProductQuery;
+use Isotope\CoreBundle\Product\Query\Sorting;
+use Isotope\Interfaces\IsotopeFilterModule;
+use Isotope\Model\Product;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
+#[AsFrontendModule('iso_productfilter', category: 'isotope')]
+class ProductFilterController extends AbstractFrontendModuleController implements IsotopeFilterModule
+{
+    public function __construct(
+        private readonly AttributeRegistry $attributeRegistry,
+        private readonly Formatter $formatter,
+        private readonly Connection $connection,
+        private readonly TokenChecker $tokenChecker,
+    ) {
+    }
+
+    protected function getResponse(FragmentTemplate $template, ModuleModel $model, Request $request): Response
+    {
+        if ($request->attributes->get('_content') instanceof Product && $model->iso_hide_list) {
+            return new Response('');
+        }
+
+        $template->filterWidgets = [];
+        $template->sortingOptions = [];
+        $template->limitOptions = [];
+
+        $moduleKey = 'fmd'.$model->id;
+        $productQuery = $this->getProductQuery($request);
+
+        if ([] !== ($filterFields = StringUtil::deserialize($model->iso_filterFields, true))) {
+            $template->filterWidgets = $this->getFilterWidgets(
+                $filterFields,
+                $this->getCurrentFilterValues($productQuery, $moduleKey, $filterFields),
+                (bool) $model->iso_filterHideSingle,
+            );
+        }
+
+        if ([] !== ($sortingFields = StringUtil::deserialize($model->iso_sortingFields, true))) {
+            $template->sortingOptions = $this->getSortingOptions(
+                $sortingFields,
+                $this->getCurrentSortingValue($productQuery, $moduleKey, $sortingFields),
+            );
+        }
+
+        if ($model->iso_enableLimit) {
+            $template->limitOptions = $this->getLimitOptions($model->iso_perPage, $productQuery, $moduleKey);
+        }
+
+        $this->applySearch($template, $model, $request);
+
+        return $template->getResponse();
+    }
+
+    private function getFilterWidgets(array $fields, array $current, bool $hideSingle): array
+    {
+        $widgets    = [];
+        // TODO: find configured categories
+        //$arrCategories = $this->findCategories();
+        $arrCategories = [$this->getPageModel()->id];
+
+        [$attributeTypes, $variantTypes] = $this->getProductTypeIdsByAttribute();
+
+        foreach ($fields as $fieldName) {
+            $widget = Widget::getAttributesFromDca($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$fieldName], $fieldName, $current[$fieldName] ?? null, $fieldName, 'tl_iso_product');
+            $values = $this->getUsedValuesForField($fieldName, $arrCategories, $attributeTypes[$fieldName] ?? [], $variantTypes[$fieldName] ?? []);
+            $attribute = $this->attributeRegistry->get($fieldName);
+
+            if ($attribute instanceof OptionsAttributeInterface) {
+                $widget['options'] = $attribute->getOptionsForProductFilter($values);
+            }
+
+            // Generate options from database values (e.g. for text fields)
+            if (!\is_array($widget['options'] ?? null)) {
+                $widget['options'] = array_map(static fn ($v) => ['value' => $v, 'label' => $v], $values);
+            }
+
+            foreach ($widget['options'] as $k => $option) {
+                if ('' === $option['value']) {
+                    $widget['blankOptionLabel'] = $option['label'];
+                    unset($widget['options'][$k]);
+                    continue;
+                }
+
+                $widget['options'][$k]['default'] = ($current[$fieldName] ?? null) === $option['value'];
+            }
+
+            // Hide fields with just one option (if enabled)
+            if ($hideSingle && \count($widget['options']) < 2) {
+                continue;
+            }
+
+            $widgets[] = $widget;
+        }
+
+        return $widgets;
+    }
+
+    private function getSortingOptions(array $fields, Sorting|null $current): array
+    {
+        $options = [];
+
+        foreach ($fields as $field) {
+            [$asc, $desc] = $this->getSortingLabels($field);
+            $isDefault = $current?->attribute === $field;
+
+            $options[] = [
+                'label'   => $this->formatter->dcaLabel('tl_iso_product', $field) . ', ' . $asc,
+                'value'   => $field . ':ASC',
+                'default' => $isDefault && !$current?->desc,
+            ];
+
+            $options[] = [
+                'label'   => $this->formatter->dcaLabel('tl_iso_product', $field) . ', ' . $desc,
+                'value'   => $field . ':DESC',
+                'default' => $isDefault && $current?->desc,
+            ];
+        }
+
+        return $options;
+    }
+
+    private function getLimitOptions(string $perPage, ProductQuery|null $productQuery, string $key): array
+    {
+        $options = [];
+        $limits = array_unique(array_map(intval(...), StringUtil::trimsplit(',', $perPage)));
+        sort($limits);
+
+        $current = $productQuery?->getLimit([$key]);
+
+        if (null !== $current && !\in_array($current, $limits, true)) {
+            throw new BadRequestException('Invalid limit configuration');
+        }
+
+        foreach ($limits as $limit) {
+            $options[] = [
+                'label'   => $limit,
+                'value'   => $limit,
+                'default' => $limit === $current,
+            ];
+        }
+
+        return $options;
+    }
+
+    private function applySearch(FragmentTemplate $template, ModuleModel $model, Request $request): void
+    {
+        $fields = StringUtil::deserialize($model->iso_searchFields, true);
+        $template->hasSearch = [] !== $fields;
+
+        if (!$template->hasSearch) {
+            return;
+        }
+
+        $template->keywords = Input::get('keywords');
+    }
+
+    /**
+     * Returns an array of attribute values found in the product table
+     *
+     * @return array<string>
+     */
+    private function getUsedValuesForField(string $field, array $categories, array $attributeTypes, $variantTypes): array
+    {
+        if ([] === $attributeTypes && [] === $variantTypes) {
+            return [];
+        }
+
+        $typeConditions = [];
+        $join = '';
+        $categoryWhere = '';
+        $published = '';
+        $time = Date::floorToMinute();
+        $isPreviewMode = $this->tokenChecker->isPreviewMode();
+
+        if (!$isPreviewMode) {
+            $published = "
+                AND tl_iso_product.published='1'
+                AND (tl_iso_product.start='' OR tl_iso_product.start<'$time')
+                AND (tl_iso_product.stop='' OR tl_iso_product.stop>'" . ($time + 60) . "')
+            ";
+        }
+
+        if ([] !== $attributeTypes) {
+            $typeConditions[] = 'tl_iso_product.type IN (' . implode(',', $attributeTypes) . ')';
+        }
+
+        if ([] !== $variantTypes) {
+            $typeConditions[] = 'translation.type IN (' . implode(',', $variantTypes) . ')';
+            $join             = 'LEFT OUTER JOIN tl_iso_product translation ON tl_iso_product.pid=translation.id';
+            $categoryWhere    = 'OR tl_iso_product.pid IN (
+                                    SELECT product_id
+                                    FROM tl_iso_product_category
+                                    #WHERE pid IN (' . implode(',', $categories) . ')
+                                )';
+
+            if (!$isPreviewMode) {
+                $published .= " AND (
+                    tl_iso_product.pid=0 OR (
+                        translation.published='1'
+                        AND (translation.start='' OR translation.start<'$time')
+                        AND (translation.stop='' OR translation.stop>'" . ($time + 60) . "')
+                    )
+                )";
+            }
+        }
+
+        $options = $this->connection->fetchFirstColumn("
+            SELECT DISTINCT tl_iso_product.$field AS options
+            FROM tl_iso_product
+            $join
+            WHERE
+                tl_iso_product.language=''
+                AND tl_iso_product.$field!=''
+                " . $published . '
+                AND (
+                    tl_iso_product.id IN (
+                        SELECT product_id
+                        FROM tl_iso_product_category
+                        WHERE pid IN (' . implode(',', $categories) . ")
+                    )
+                    $categoryWhere
+                )
+                AND (
+                    " . implode(' OR ', $typeConditions) . "
+                )
+        ");
+
+        $isCsv = true === ($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$field]['eval']['multiple'] ?? null)
+            && ',' === ($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$field]['eval']['csv'] ?? null);
+
+        return array_unique(array_merge(...array_map(
+            static fn ($v) => $isCsv ? explode(',', $v) : StringUtil::deserialize($v, true),
+            $options,
+        )));
+    }
+
+    /**
+     * Get product type IDs with attribute enabled
+     *
+     * @return array{0: array<string, array<int>>, 1: array<string, array<int>>}
+     */
+    private function getProductTypeIdsByAttribute(): array
+    {
+        $attributes = [];
+        $variantAttributes = [];
+
+        $productTypes = $this->connection->fetchAllAssociative('SELECT id, attributes, variants, variant_attributes FROM tl_iso_producttype');
+
+        foreach ($productTypes as $type) {
+            foreach (StringUtil::deserialize($type['attributes'], true) as $attribute => $config) {
+                if ($config['enabled'] ?? false) {
+                    $attributes[$attribute][] = $type['id'];
+                }
+            }
+
+            if ($type['variants']) {
+                foreach (StringUtil::deserialize($type['variant_attributes'], true) as $attribute => $config) {
+                    if ($config['enabled'] ?? false) {
+                        $variantAttributes[$attribute][] = $type['id'];
+                    }
+                }
+            }
+        }
+
+        return [$attributes, $variantAttributes];
+    }
+
+    private function getSortingLabels($field): array
+    {
+        $arrData = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'][$field];
+
+        switch ($arrData['eval']['rgxp'] ?? null) {
+            case 'price':
+            case 'digit':
+                return array($GLOBALS['TL_LANG']['MSC']['low_to_high'], $GLOBALS['TL_LANG']['MSC']['high_to_low']);
+
+            case 'date':
+            case 'time':
+            case 'datim':
+                return array($GLOBALS['TL_LANG']['MSC']['old_to_new'], $GLOBALS['TL_LANG']['MSC']['new_to_old']);
+        }
+
+        return array($GLOBALS['TL_LANG']['MSC']['a_to_z'], $GLOBALS['TL_LANG']['MSC']['z_to_a']);
+    }
+
+    private function getCurrentFilterValues(ProductQuery|null $productQuery, string $key, array $fields): array
+    {
+        $current = [];
+
+        foreach ($productQuery?->getFilters([$key]) ?? [] as $filter) {
+            if (!$filter instanceof EqualFilter || !\in_array($filter->getAttributeName(), $fields, true) || 1 !== \count($filter->getValue())) {
+                throw new BadRequestException('Invalid filter configuration');
+            }
+
+            $current[$filter->getAttributeName()] = $filter->getValue()[0];
+        }
+
+        return $current;
+    }
+
+    private function getCurrentSortingValue(ProductQuery|null $productQuery, string $key, array $fields): Sorting|null
+    {
+        $current = $productQuery?->getSortings([$key]) ?? [];
+
+        if ([] === $current) {
+            return null;
+        }
+
+        if (\count($current) > 1 || !\in_array($current[0]->attribute, $fields, true)) {
+            throw new BadRequestException('Invalid sorting configuration');
+        }
+
+        return $current[0];
+    }
+}

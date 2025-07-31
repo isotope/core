@@ -18,8 +18,15 @@ class ProductPageMigration extends AbstractMigration
     {
         $schemaManager = $this->connection->createSchemaManager();
 
-        return $schemaManager->tablesExist(['tl_page', 'tl_iso_product_category'])
-            && \array_key_exists('product_id', $schemaManager->listTableColumns('tl_iso_product_category'));
+        if (
+            !$schemaManager->tablesExist(['tl_page', 'tl_iso_product_category'])
+            || !\array_key_exists('product_id', $schemaManager->listTableColumns('tl_iso_product_category'))
+        ) {
+            return false;
+        }
+
+        // TODO: this could re-appear if a user changes all page types
+        return $this->connection->fetchOne("SELECT COUNT(*) FROM tl_page WHERE type='regular' AND id IN (SELECT DISTINCT pid FROM tl_iso_product_category)") > 0;
     }
 
     public function run(): MigrationResult

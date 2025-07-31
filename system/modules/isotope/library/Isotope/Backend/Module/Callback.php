@@ -182,18 +182,6 @@ class Callback extends Backend
         return $arrOptions;
     }
 
-
-    /**
-     * Return filter templates as array
-     * @param DataContainer
-     * @return array
-     */
-    public function getFilterTemplates()
-    {
-        return \Isotope\Backend::getTemplates('iso_filter_');
-    }
-
-
     /**
      * Get all filter modules and return them as array
      * @param DataContainer

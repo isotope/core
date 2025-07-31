@@ -6,7 +6,6 @@ namespace Isotope\CoreBundle\Attribute;
 
 use Doctrine\DBAL\Types\Types;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsAttribute;
-use Isotope\Interfaces\IsotopeProduct;
 
 #[AsAttribute]
 class TextareaAttribute extends AbstractAttribute
@@ -35,17 +34,6 @@ class TextareaAttribute extends AbstractAttribute
             $field['eval']['rte'] = $this->rte;
             $field['eval']['tl_class'] = 'clr';
         }
-    }
-
-    public function generate(IsotopeProduct $product, array $options = []): string
-    {
-        $value = $this->getValue($product);
-
-        if (!$this->rte) {
-            $value = nl2br((string) $value);
-        }
-
-        return $value;
     }
 
     protected function getSqlDefinition(): array|string

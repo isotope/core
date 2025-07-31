@@ -1,0 +1,41 @@
+{% trans_default_domain 'contao_default' %}
+{% extends '@Contao/frontend_module/_base.html.twig' %}
+{% use "@Contao/component/_stylesheet.html.twig" %}
+
+{% set attributes = attrs()
+    .set('data-controller', 'isotope--fragment')
+    .set('data-isotope--fragment-id-value', fragment_id)
+    .set('data-isotope--fragment-filters-value', filters|json_encode)
+    .set('data-action', 'isotope--productquery:update@window->isotope--fragment#update')
+    .mergeWith(attributes|default)
+%}
+
+{% block content %}
+    {% if products is not empty %}
+        <div class="product_list">
+            {% for product in products %}
+                {{ product|raw }}
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="empty message">{{ data.iso_noProducts|default('MSC.noProducts'|trans) }}</p>
+    {% endif %}
+
+    {{ block('style') }}
+    {{ block('script') }}
+
+{% endblock %}
+
+{% block style %}
+    {% add "isotope_css" to stylesheets %}
+        {% with {file: asset('isotope.css', 'isotope_core')} %}
+            {{ block('stylesheet_component') }}
+        {% endwith %}
+    {% endadd %}
+{% endblock %}
+
+{% block script %}
+    {% add "isotope_js" to head %}
+        <script src="{{ asset('isotope.js', 'isotope_core') }}"></script>
+    {% endadd %}
+{% endblock %}

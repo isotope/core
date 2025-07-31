@@ -1,0 +1,16 @@
+{% extends '@Contao/frontend_module/_base.html.twig' %}
+
+{% set attributes = attrs()
+    .set('data-controller', 'isotope--productquery isotope--fragment')
+    .set('data-isotope--productquery-id-value', fragment_id)
+    .set('data-isotope--fragment-id-value', fragment_id)
+    .set('data-isotope--fragment-filters-value', ["fmd#{data.id}"]|json_encode)
+    .set('data-action', 'isotope--productquery:update->isotope--fragment#update')
+    .mergeWith(attributes|default)
+%}
+
+{% block wrapper_tag %}nav{% endblock %}
+{% block content %}
+    {% set menu = knp_menu_get('isotope_categoryfilter', [], menuOptions) %}
+    {{ knp_menu_render(menu, { currentClass: 'active', ancestorClass: 'trail' }) }}
+{% endblock %}

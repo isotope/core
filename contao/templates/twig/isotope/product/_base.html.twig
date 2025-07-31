@@ -1,0 +1,74 @@
+{% trans_default_domain 'contao_default' %}
+
+{% set product_attributes = attrs()
+    .setIfExists('id', product_html_id)
+    .addClass(['product', product_css_classes, type.cssClass])
+    .addClass('active', isActive)
+    .set('data-controller', 'isotope--product')
+    .set('data-isotope--product-form-id-value', config.id)
+    .set('data-isotope--product-options-value', options|column('name')|json_encode)
+    .mergeWith(product_attributes|default)
+%}
+
+{% set form_attributes = attrs()
+    .set('id', config.id)
+    .set('method', 'post')
+    .set('enctype', 'multipart/form-data', hasUploads)
+    .set('data-isotope--product-target', 'form')
+    .set('data-action', 'isotope--product#submit')
+    .mergeWith(form_attributes|default)
+%}
+
+<div{{ product_attributes }}>
+    <form{{ form_attributes }}>
+        <div class="formbody">
+            <input type="hidden" name="FORM_SUBMIT" value="{{ config.id }}">
+            <input type="hidden" name="REQUEST_TOKEN" value="{{ request_token }}">
+
+            {% block formbody %}
+
+                {% block product_options %}
+                    {% if config.withOptions %}
+                        <div class="options">
+                            {% for option in options %}
+                                {{ option.widget.parse|raw }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endblock %}
+
+                {% block product_price %}
+                    {% set price = isotope_price() %}
+                    {% if price %}
+                        <div class="offer">
+                            <div class="price">{{ price|raw }}</div>
+                            {#{% if data.baseprice|default %}<div class="baseprice">{{ isotope_attribute('baseprice') }}</div>{% endif %}#}
+                        </div>
+                    {% endif %}
+                {% endblock %}
+
+                {% block product_actions %}
+                    {% if actions is not empty %}
+                        <div class="submit_container">
+
+                            {% block product_quantity %}
+                                {% if config.withQuantity %}
+                                    <div class="quantity_container">
+                                        <label for="quantity_requested_{{ product.id }}">{{ 'MSC.quantity'|trans }}:</label>
+                                        <input type="number" class="text" id="quantity_requested_{{ product.id }}" name="quantity_requested" placeholder="{{ product.minimumQuantity }}" value="{#<?= \Contao\StringUtil::specialchars(\Contao\Input::post('quantity_requested')); ?>#}" maxlength="10">
+                                    </div>
+                                {% endif %}
+                            {% endblock %}
+
+                            {% for action in actions %}
+                                {{ action.generate(product)|raw }}
+                            {% endfor %}
+
+                        </div>
+                    {% endif %}
+                {% endblock %}
+
+            {% endblock %}
+        </div>
+    </form>
+</div>

@@ -12,6 +12,7 @@ use Isotope\CoreBundle\DependencyInjection\Attribute\AsDocument;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsGallery;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsIsotopeHook;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsPayment;
+use Isotope\CoreBundle\DependencyInjection\Attribute\AsProductFilter;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsShipping;
 use Isotope\CoreBundle\ModelType\DocumentRegistry;
 use Isotope\CoreBundle\ModelType\GalleryRegistry;
@@ -52,6 +53,7 @@ class IsotopeCoreExtension extends Extension
 
         $attributesForAutoconfiguration = [
             AsIsotopeHook::class => 'isotope.hook',
+            AsProductFilter::class => 'isotope.product_filter',
             AsAttribute::class => AttributeRegistry::TAG_NAME,
             AsDocument::class => DocumentRegistry::TAG_NAME,
             AsGallery::class => GalleryRegistry::TAG_NAME,

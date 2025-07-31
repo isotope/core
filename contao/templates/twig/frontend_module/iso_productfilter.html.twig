@@ -1,0 +1,79 @@
+{% trans_default_domain 'contao_default' %}
+{% extends '@Contao/frontend_module/_base.html.twig' %}
+
+{% set attributes = attrs()
+    .set('data-controller', 'isotope--productquery isotope--fragment')
+    .set('data-isotope--productquery-id-value', fragment_id)
+    .set('data-isotope--fragment-id-value', fragment_id)
+    .set('data-isotope--fragment-filters-value', ["fmd#{data.id}"]|json_encode)
+    .mergeWith(attributes|default)
+%}
+
+{% block content %}
+
+    {% if sortingOptions|default %}
+        {% block sorting_filter %}
+            <div class="sorting">
+                {% set select_attributes = attrs()
+                    .set('id', "ctrl_#{fragment_id}_sorting")
+                    .set('name', 'sorting')
+                    .set('data-action', 'isotope--productquery#sort')
+                %}
+                {{ _self.select(select_attributes, sortingOptions, 'MSC.orderByLabel'|trans) }}
+            </div>
+        {% endblock %}
+    {% endif %}
+
+    {% if limitOptions|default %}
+        {% block limit_filter %}
+            <div class="limit">
+                {% set select_attributes = attrs()
+                    .set('id', "ctrl_#{fragment_id}_limit")
+                    .set('name', 'limit')
+                    .set('data-action', 'isotope--productquery#limit')
+                %}
+                {{ _self.select(select_attributes, limitOptions, 'MSC.perPageLabel'|trans) }}
+            </div>
+        {% endblock %}
+    {% endif %}
+
+    {% if filterWidgets is not empty %}
+        {% block attribute_filter %}
+            <div class="filters">
+                {% for widget in filterWidgets %}
+                    {% set select_attributes = attrs()
+                        .set('id', "ctrl_#{fragment_id}_#{widget.name}")
+                        .set('name', widget.name)
+                        .set('data-action', 'isotope--productquery#set')
+                        .set('data-isotope--productquery-operator-param', ':')
+                    %}
+                    {{ _self.select(select_attributes, widget.options, widget.label, widget.blankOptionLabel|default('-')) }}
+                {% endfor %}
+            </div>
+        {% endblock %}
+    {% endif %}
+
+    {% if hasSearch %}
+        {% block search_filter %}
+            <div class="search">
+                <label for="ctrl_keywords_{{ fragment_id }}">{{ 'MSC.searchTermsLabel'|trans }}</label>
+                <input type="text" name="keywords" id="ctrl_keywords_{{ fragment_id }}" class="text" value="{{ keywords }}" placeholder="{{ 'MSC.defaultSearchText'|trans }}">
+                <input type="submit" class="submit" value="{{ 'MSC.searchLabel'|trans }}">
+            </div>
+        {% endblock %}
+    {% endif %}
+
+    <a href="{{ app.request.pathInfo }}" class="clear_filters" data-action="isotope--productquery#reset isotope--productquery:update->isotope--fragment#update">{{ 'MSC.clearFiltersLabel'|trans }}</a>
+
+{% endblock %}
+
+{% macro select(attributes, options, label, blankOption = false) %}
+    {% set attributes = attrs(attributes).addClass('select') %}
+    {% if attributes.id|default and label %}<label for="{{ attributes.id }}">{{ label }}</label>{% endif %}
+    <select{{ attributes}}>
+        {% if blankOption %}<option value="">{{ blankOption|default('-') }}</option>{% endif %}
+        {% for option in options %}
+            <option value="{{ option.value }}"{% if option.default|default %} selected="selected"{% endif %}>{{ option.label }}</option>
+        {% endfor %}
+    </select>
+{% endmacro %}

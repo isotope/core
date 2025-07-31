@@ -31,8 +31,11 @@ use Isotope\CoreBundle\Gallery\GalleryInterface;
 use Isotope\CoreBundle\Model\Attribute;
 use Isotope\CoreBundle\Model\ProductType;
 use Isotope\CoreBundle\ModelType\GalleryRegistry;
+use Isotope\CoreBundle\Product\Render\RenderConfig;
 use Isotope\CoreBundle\Routing\ProductReference;
 use Isotope\CoreBundle\Routing\ProductResolver;
+use Isotope\CoreBundle\Twig\GalleryRuntime;
+use Isotope\CoreBundle\Twig\GalleryVariable;
 use Isotope\Frontend\ProductAction\ProductActionInterface;
 use Isotope\Frontend\ProductAction\Registry;
 use Isotope\Haste\Units\Mass\Weight;
@@ -58,20 +61,6 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
      * @var \Isotope\Model\ProductPrice
      */
     protected $objPrice = false;
-
-    /**
-     * Attributes assigned to this product type
-     * @var array
-     * @deprecated
-     */
-    protected $arrAttributes;
-
-    /**
-     * Variant attributes assigned to this product type
-     * @var array
-     * @deprecated
-     */
-    protected $arrVariantAttributes;
 
     /**
      * Available variant IDs
@@ -209,40 +198,6 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         }
 
         return $intLowest;
-    }
-
-
-    /**
-     * Return the product attributes
-     *
-     * @return array
-     *
-     * @deprecated Deprecated since Isotope 2.4, to be removed in Isotope 3. Use ProductType::getAttributes()
-     */
-    public function getAttributes()
-    {
-        if (null === $this->arrAttributes) {
-            $this->arrAttributes = $this->getType()->getAttributes();
-        }
-
-        return $this->arrAttributes;
-    }
-
-
-    /**
-     * Return the product variant attributes
-     *
-     * @return array
-     *
-     * @deprecated Deprecated since Isotope 2.4, to be removed in Isotope 3. Use ProductType::getVariantAttributes()
-     */
-    public function getVariantAttributes()
-    {
-        if (null === $this->arrVariantAttributes) {
-            $this->arrVariantAttributes = $this->getType()->getVariantAttributes();
-        }
-
-        return $this->arrVariantAttributes;
     }
 
     /**
@@ -462,13 +417,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         };
 
         $objTemplate->generateAttribute = function ($strAttribute, array $arrOptions = array()) use ($objProduct) {
-            $objAttribute = System::getContainer()->get(AttributeRegistry::class)->get($strAttribute);
-
-            if (!$objAttribute instanceof AttributeInterface) {
-                throw new \InvalidArgumentException($strAttribute . ' is not a valid attribute');
-            }
-
-            return $objAttribute->generate($objProduct, $arrOptions);
+            return $objProduct->{$strAttribute};
         };
 
         $objTemplate->generatePrice = function() use ($objProduct) {
@@ -498,14 +447,9 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             if (null === $currentGallery
                 || $currentGallery->getName() !== $objProduct->getFormId() . '_' . $strAttribute
             ) {
-                /** @var GalleryRegistry $registry */
-                $registry = System::getContainer()->get(GalleryRegistry::class);
-
-                $currentGallery = $registry->getForProductAttribute(
-                    $objProduct,
-                    $strAttribute,
-                    $arrConfig
-                );
+                /** @var GalleryVariable $variable */
+                $variable = System::getContainer()->get(GalleryRuntime::class)->get(['product' => $objProduct, 'config' => new RenderConfig('', '', $arrConfig['gallery'])], $strAttribute);
+                $currentGallery = $variable->getGallery();
             }
 
             return $currentGallery;
@@ -608,7 +552,6 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         $objTemplate->minimum_quantity = $this->getMinimumQuantity();
         $objTemplate->raw = $this->arrData;
         $objTemplate->raw_options = $this->getConfiguration();
-        $objTemplate->configuration = $this->getConfiguration();
         $objTemplate->href = '';
         $objTemplate->label_detail = $GLOBALS['TL_LANG']['MSC']['detailLabel'];
         $objTemplate->options = $arrProductOptions;
@@ -1034,24 +977,24 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
      */
     public function markModified($strKey)
     {
-        /** @var AttributeRegistry $attributeRegistry */
-        $attributeRegistry = System::getContainer()->get(AttributeRegistry::class);
-
-        if ($this->isVariant()) {
-            $arrAttributes = array_diff(
-                $this->getType()->getVariantAttributes(),
-                $this->getInheritedFields(),
-                $attributeRegistry->getCustomerDefinedFields()
-            );
-        } else {
-            $arrAttributes = array_diff($this->getType()->getAttributes(), $attributeRegistry->getCustomerDefinedFields());
-        }
-
-        if (!\in_array($strKey, $arrAttributes, true)
-            && '' !== (string) ($GLOBALS['TL_DCA'][static::$strTable]['fields'][$strKey]['attributes']['legend'] ?? '')
-        ) {
-            return;
-        }
+        ///** @var AttributeRegistry $attributeRegistry */
+        //$attributeRegistry = System::getContainer()->get(AttributeRegistry::class);
+        //
+        //if ($this->isVariant()) {
+        //    $arrAttributes = array_diff(
+        //        $this->getType()->getVariantAttributes(),
+        //        $this->getInheritedFields(),
+        //        $attributeRegistry->getCustomerDefinedFields()
+        //    );
+        //} else {
+        //    $arrAttributes = array_diff($this->getType()->getAttributes(), $attributeRegistry->getCustomerDefinedFields());
+        //}
+        //
+        //if (!\in_array($strKey, $arrAttributes, true)
+        //    && '' !== (string) ($GLOBALS['TL_DCA'][static::$strTable]['fields'][$strKey]['attributes']['legend'] ?? '')
+        //) {
+        //    return;
+        //}
 
         parent::markModified($strKey);
     }

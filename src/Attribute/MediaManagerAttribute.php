@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Attribute;
 
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsAttribute;
-use Isotope\Interfaces\IsotopeProduct;
 
 #[AsAttribute]
 class MediaManagerAttribute extends AbstractAttribute implements TranslatableAttributeInterface
@@ -22,11 +21,6 @@ class MediaManagerAttribute extends AbstractAttribute implements TranslatableAtt
         $this->extensions = $extensions;
 
         return $this;
-    }
-
-    public function generate(IsotopeProduct $product, array $options = []): string
-    {
-        throw new \BadMethodCallException('MediaManager attribute cannot be generated');
     }
 
     public function isTranslatable(): bool

@@ -10,3 +10,9 @@ services:
     isotope.fragment.registry:
         alias: contao.fragment.registry
         public: true
+
+    isotope.hashids:
+        class: Hashids\Hashids
+        arguments:
+            - '%kernel.secret%'
+            - 8

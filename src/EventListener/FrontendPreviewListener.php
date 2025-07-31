@@ -30,15 +30,15 @@ class FrontendPreviewListener
             return;
         }
 
-        [$table, $id] = $this->dcaUrlAnalyzer->getCurrentTableId();
-
         if ('tl_iso_product_category' === Input::get('table')) {
             $event->setQuery('page='.Input::get('id'));
 
             return;
         }
 
-        if ('tl_iso_product' === $table || null === $table) {
+        [$table, $id] = $this->dcaUrlAnalyzer->getCurrentTableId();
+
+        if ($id && ('tl_iso_product' === $table || null === $table)) {
             $event->setQuery('product='.$id);
         }
     }

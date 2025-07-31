@@ -342,15 +342,9 @@ abstract class Product extends TypeAgent implements IsotopeProduct
 
     /**
      * Find variant of a product
-     *
-     *
-     * @return Model|null
      */
-    public static function findVariantOfProduct(
-        IsotopeProduct $objProduct,
-        array $arrVariant,
-        array $arrOptions = array()
-    ) {
+    public static function findVariantOfProduct(IsotopeProduct $objProduct, array $arrVariant, array $arrOptions = array()): self|null
+    {
         $t = static::$strTable;
 
         $arrColumns = array(

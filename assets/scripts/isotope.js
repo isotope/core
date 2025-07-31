@@ -288,3 +288,32 @@ import '../styles/isotope.scss';
         };
     })();
 })(window, document);
+
+
+/*
+import { ProductQuery, Filter, Sort, Limit } from './_productquery';
+
+const test = ProductQuery.fromLocation();
+console.log(test);
+test
+    .apply(
+        new Filter(10)
+            .add('price', '>', 3)
+            .add('foo', 'csv', ['bar', 'baz'])
+            .add('colour', ':', ['white', 'red'])
+            .add('size', ':', 'M')
+    )
+    .apply(
+        new Sort(5)
+            .add('price', true)
+            .add('foo', false, true)
+    )
+    .apply(
+        new Limit(3, 20)
+    )
+    .apply(
+        new Filter(10)
+    )
+;
+console.log(test.toString())
+*/

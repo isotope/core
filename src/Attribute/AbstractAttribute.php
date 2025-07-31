@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Attribute;
 
-use Codefog\HasteBundle\Formatter;
-use Isotope\CoreBundle\Model\Attribute;
-use Isotope\Interfaces\IsotopeProduct;
+use Isotope\Model\Product;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface as SymfonyContainerInterface;
 
-abstract class AbstractAttribute implements AttributeInterface, ContainerAwareAttributeInterface
+abstract class AbstractAttribute implements AttributeInterface
 {
     protected ContainerInterface $container;
 
@@ -199,22 +197,9 @@ abstract class AbstractAttribute implements AttributeInterface, ContainerAwareAt
         throw new \RuntimeException(\sprintf('Unable to guess the frontend widget for %s, implement %s instead.', static::class, __METHOD__));
     }
 
-    public function getLabel(): string
-    {
-        return $this->getName();
-    }
-
-    public function getValue(IsotopeProduct $product)
+    public function getValue(Product $product)
     {
         return $product->{$this->fieldName};
-    }
-
-    public function generate(IsotopeProduct $product, array $options = []): string
-    {
-        return (string) $this->container
-            ->get(Formatter::class)
-            ->dcaValue(Attribute::getTable(), $this->getFieldName(), $this->getValue($product))
-        ;
     }
 
     public function updateDcaField(array &$field, array &$keys): void
@@ -232,6 +217,9 @@ abstract class AbstractAttribute implements AttributeInterface, ContainerAwareAt
 
         $field['filter'] = $this->backendFilterable && !$this->isCustomerDefined();
         $field['search'] = $this->backendSearchable && !$this->isCustomerDefined();
+        $field['attributes']['fe_filter'] = $this->frontendFilterable;
+        $field['attributes']['fe_sorting'] = $this->frontendSortable;
+        $field['attributes']['fe_search'] = $this->frontendSearchable;
         $field['eval']['mandatory'] = $this->mandatory;
 
         if (!isset($field['sql']) && !$this->isCustomerDefined()) {
@@ -242,13 +230,6 @@ abstract class AbstractAttribute implements AttributeInterface, ContainerAwareAt
     public function setContainer(ContainerInterface $container): void
     {
         $this->container = $container;
-    }
-
-    public static function getSubscribedServices(): array
-    {
-        return [
-            Formatter::class,
-        ];
     }
 
     /**

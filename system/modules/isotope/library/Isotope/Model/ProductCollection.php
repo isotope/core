@@ -1501,13 +1501,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
                 return '';
             }
 
-            $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$strAttribute];
-
-            if (!($objAttribute instanceof AttributeInterface)) {
-                throw new \InvalidArgumentException($strAttribute . ' is not a valid attribute');
-            }
-
-            return $objAttribute->generate($objItem->getProduct(), $arrOptions);
+            return $objItem->getProduct()->{$strAttribute};
         };
 
         $objTemplate->getGallery = function (
@@ -1546,7 +1540,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
                 return Format::dcaLabel('tl_iso_product', $name);
             }
 
-            return $attribute->getLabel($options);
+            return $attribute->getName();
         };
 
         $objTemplate->attributeValue = function ($name, $value, array $options = []) {

@@ -6,7 +6,7 @@ namespace Isotope\CoreBundle\Attribute;
 
 use Contao\Widget;
 use Isotope\Collection\AttributeOption;
-use Isotope\Interfaces\IsotopeProduct;
+use Isotope\Model\Product;
 
 interface OptionsAttributeInterface extends AttributeInterface
 {
@@ -23,12 +23,12 @@ interface OptionsAttributeInterface extends AttributeInterface
     /**
      * Get field options.
      */
-    public function getOptionsForWidget(IsotopeProduct|null $product = null): array;
+    public function getOptionsForWidget(Product|null $product = null): array;
 
     /**
      * Get AttributeOption models for current attribute.
      */
-    public function getOptionsFromManager(IsotopeProduct|null $product = null): AttributeOption|null;
+    public function getOptionsFromManager(Product|null $product = null): AttributeOption|null;
 
     /**
      * Get a list of options for the frontend product filter.

@@ -66,8 +66,6 @@ use Isotope\Module\CumulativeFilter;
 use Isotope\Module\Messages;
 use Isotope\Module\OrderDetails;
 use Isotope\Module\OrderHistory;
-use Isotope\Module\ProductFilter;
-use Isotope\Module\ProductList;
 use Isotope\Module\ProductVariantList;
 use Isotope\Module\RangeFilter;
 use Isotope\Module\RelatedProducts;
@@ -104,19 +102,15 @@ $GLOBALS['BE_MOD']['accounts']['member']['tables'][] = Address::getTable();
  * Frontend modules
  */
 $GLOBALS['FE_MOD']['isotope'] = [
-    'iso_productlist' => ProductList::class,
     'iso_productvariantlist' => ProductVariantList::class,
     'iso_cart' => Cart::class,
     'iso_checkout' => Checkout::class,
-    'iso_productfilter' => ProductFilter::class,
     'iso_cumulativefilter' => CumulativeFilter::class,
-    'iso_categoryfilter' => CategoryFilter::class,
     'iso_rangefilter' => RangeFilter::class,
     'iso_orderhistory' => OrderHistory::class,
     'iso_orderdetails' => OrderDetails::class,
     'iso_configswitcher' => ConfigSwitcher::class,
     'iso_addressbook' => AddressBook::class,
-    'iso_relatedproducts' => RelatedProducts::class,
     'iso_messages' => Messages::class,
     'iso_shipping_calculator' => ShippingCalculator::class,
     'iso_cart_address' => CartAddress::class,

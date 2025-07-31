@@ -256,34 +256,6 @@ class AttributeOption extends Multilingual
     }
 
     /**
-     * Find all options by field name
-     *
-     * @param OptionsAttributeInterface|Attribute $objAttribute
-     *
-     * @return \Isotope\Collection\AttributeOption|null
-     *
-     * @throws \LogicException if attribute option source is not the database table
-     */
-    public static function findByProducts(OptionsAttributeInterface $objAttribute, array $arrOptions = [])
-    {
-        if (OptionsSource::Product !== $objAttribute->getOptionsSource()) {
-            throw new \LogicException('Options source for attribute "' . $objAttribute->field_name . '" is not products');
-        }
-
-        $t = static::getTable();
-
-        return static::findBy(
-            [
-                "$t.ptable='tl_iso_product'",
-                "$t.field_name=?",
-                "$t.published='1'"
-            ],
-            [$objAttribute->field_name],
-            array_merge(['order' => "$t.sorting"], $arrOptions)
-        );
-    }
-
-    /**
      * Find all options by attribute
      *
      *

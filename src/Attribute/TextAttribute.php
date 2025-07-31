@@ -6,7 +6,7 @@ namespace Isotope\CoreBundle\Attribute;
 
 use Doctrine\DBAL\Types\Types;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsAttribute;
-use Isotope\Interfaces\IsotopeProduct;
+use Isotope\Model\Product;
 
 #[AsAttribute]
 class TextAttribute extends AbstractAttribute implements RangeAttributeInterface
@@ -79,17 +79,12 @@ class TextAttribute extends AbstractAttribute implements RangeAttributeInterface
         $field['eval']['datepicker'] = $this->datepicker;
     }
 
-    public function generate(IsotopeProduct $product, array $options = []): string
-    {
-        return $this->getValue($product);
-    }
-
     public function supportsRangeFilter(): bool
     {
         return 'digit' === $this->rgxp;
     }
 
-    public function getValueRange(IsotopeProduct $product): array
+    public function getValueRange(Product $product): array
     {
         return [$this->getValue($product)];
     }

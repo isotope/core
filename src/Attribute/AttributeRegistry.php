@@ -122,6 +122,13 @@ class AttributeRegistry implements ResetInterface
         };
     }
 
+    public function getNames(): array
+    {
+        $this->load();
+
+        return array_keys($GLOBALS['TL_DCA']['tl_iso_product']['fields']);
+    }
+
     /**
      * @return list<string>
      */

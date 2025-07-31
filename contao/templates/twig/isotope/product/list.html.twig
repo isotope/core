@@ -1,0 +1,25 @@
+{% extends '@Contao/isotope/product/_base.html.twig' %}
+
+{% trans_default_domain 'contao_default' %}
+{% set gallery = isotope_gallery('images') %}
+{% set href = content_url(config.reference ?: product) %}
+
+{% block formbody %}
+
+    <h3>{% if href|default %}<a href="{{ href }}">{% endif %}{{ data.name }}{% if href|default %}</a>{% endif %}</h3>
+
+    {{ gallery.main_image|raw }}
+
+    {% if data.sku|default %}<div class="sku">{{ data.sku }}</div>{% endif %}
+    {% if data.teaser|default %}<div class="teaser">{{ data.teaser|nl2br }}</div>{% endif %}
+
+    {{ block('product_price') }}
+
+    {% if href|default %}
+        <div class="details"><a href="{{ href }}">{{ 'MSC.detailLabel'|trans }}</a></div>
+    {% endif %}
+
+    {{ block('product_options') }}
+    {{ block('product_actions') }}
+
+{% endblock %}

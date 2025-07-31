@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Attribute;
 
-use Isotope\Interfaces\IsotopeProduct;
+use Isotope\Model\Product;
 
 /**
  * Interface for attributes that supports range filter, meaning the value can be "between" a range,
@@ -20,5 +20,5 @@ interface RangeAttributeInterface extends AttributeInterface
     /**
      * Gets array of values for range filter.
      */
-    public function getValueRange(IsotopeProduct $product): array|null;
+    public function getValueRange(Product $product): array|null;
 }

@@ -4,20 +4,10 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\ModelType;
 
-use Contao\CoreBundle\Framework\ContaoFramework;
-use Contao\CoreBundle\Image\Studio\Studio;
-use Contao\CoreBundle\Routing\ContentUrlGenerator;
-use Contao\StringUtil;
 use Isotope\CoreBundle\Gallery\GalleryInterface;
-use Isotope\CoreBundle\Gallery\StandardGallery;
 use Isotope\CoreBundle\Model\Gallery;
-use Isotope\CoreBundle\Routing\ProductReference;
-use Isotope\CoreBundle\Routing\ProductResolver;
-use Isotope\CoreBundle\Widget\MediaManager;
-use Isotope\Interfaces\IsotopeProduct;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Contracts\Service\ServiceProviderInterface;
-use Twig\Environment;
 
 /**
  * @extends AbstractModelTypeRegistry<GalleryInterface, Gallery>
@@ -27,41 +17,8 @@ class GalleryRegistry extends AbstractModelTypeRegistry
 {
     public const TAG_NAME = 'isotope.gallery';
 
-    public function __construct(
-        ServiceProviderInterface $factories,
-        private readonly ContaoFramework $framework,
-        private readonly Studio $imageStudio,
-        private readonly Environment $twig,
-        private readonly ContentUrlGenerator $urlGenerator,
-    ) {
-        parent::__construct($factories, GalleryInterface::class);
-    }
-
-    /**
-     * Create a gallery for product, falls back to standard gallery if none is defined.
-     *
-     * @param array{gallery: int} $config
-     */
-    public function getForProductAttribute(IsotopeProduct $product, string $attribute, array $config = []): GalleryInterface
+    public function __construct(ServiceProviderInterface $factories)
     {
-        $galleryModel = ($config['gallery'] ?? null) > 0 ? $this->framework->getAdapter(Gallery::class)->findById((int) $config['gallery']) : null;
-        $gallery = $galleryModel ? $this->get($galleryModel) : new StandardGallery(0, $this->imageStudio, $this->twig);
-
-        $href = null;
-        $files = MediaManager::mergeMediaData(
-            StringUtil::deserialize($product->$attribute, true),
-            StringUtil::deserialize($product->{$attribute.'_fallback'}, true),
-        );
-
-        if (!isset($config['jumpTo']) || ProductResolver::canLinkToPage($config['jumpTo'])) {
-            $href = $this->urlGenerator->generate(new ProductReference($product, $config['jumpTo'] ?? null));
-        }
-
-        return $gallery->withProductData(
-            $product->getFormId().'_'.$attribute,
-            $product->getProductId(),
-            $files,
-            $href,
-        );
+        parent::__construct($factories, GalleryInterface::class);
     }
 }

@@ -6,7 +6,6 @@ namespace Isotope\CoreBundle\Attribute;
 
 use Contao\StringUtil;
 use Contao\Widget;
-use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 use Isotope\Collection\AttributeOption as AttributeOptionCollection;
 use Isotope\CompatibilityHelper;
@@ -16,10 +15,8 @@ use Isotope\Model\AttributeOption;
 use Isotope\Model\Product;
 use Isotope\Translation;
 
-abstract class AbstractOptionsAttribute extends AbstractAttribute implements OptionsAttributeInterface
+abstract class AbstractOptionsAttribute extends AbstractAttribute implements OptionsAttributeInterface, ContainerAwareAttributeInterface
 {
-    private array $variantOptionsCache = [];
-
     private bool $variantOption = false;
 
     private array|null $options = null;
@@ -37,41 +34,7 @@ abstract class AbstractOptionsAttribute extends AbstractAttribute implements Opt
 
     public static function getSubscribedServices(): array
     {
-        return array_merge(parent::getSubscribedServices(), [
-            Connection::class,
-        ]);
-    }
-
-    public function getOptionsForVariants(array $variantIds, array $variantOptions = []): array
-    {
-        if (!$this instanceof VariantAttributeInterface) {
-            return [];
-        }
-
-        if (0 === \count($variantIds)) {
-            return [];
-        }
-
-        sort($variantIds);
-        ksort($variantOptions);
-        $strKey = md5(implode('-', $variantIds).'_'.json_encode($variantOptions));
-
-        if (!isset($this->variantOptionsCache[$strKey])) {
-            $qb = $this->get(Connection::class)->createQueryBuilder();
-            $qb
-                ->select('DISTINCT '.$this->fieldName)
-                ->from('tl_iso_product')
-                ->where($qb->expr()->in('id', $qb->createNamedParameter($variantIds, ArrayParameterType::INTEGER)))
-            ;
-
-            foreach ($variantOptions as $field => $value) {
-                $qb->andWhere($qb->expr()->eq($field, $qb->createNamedParameter($value)));
-            }
-
-            $this->variantOptionsCache[$strKey] = $qb->fetchFirstColumn();
-        }
-
-        return $this->variantOptionsCache[$strKey];
+        return [Connection::class];
     }
 
     public function isVariantOption(): bool
@@ -136,7 +99,7 @@ abstract class AbstractOptionsAttribute extends AbstractAttribute implements Opt
         return $columns;
     }
 
-    public function getOptionsForWidget(IsotopeProduct|null $product = null): array
+    public function getOptionsForWidget(Product|null $product = null): array
     {
         $arrOptions = [];
 
@@ -225,15 +188,15 @@ abstract class AbstractOptionsAttribute extends AbstractAttribute implements Opt
         return $arrOptions;
     }
 
-    public function getOptionsFromManager(IsotopeProduct|null $product = null): AttributeOptionCollection|null
+    public function getOptionsFromManager(Product|null $product = null): AttributeOptionCollection|null
     {
         switch ($this->optionsSource) {
             case OptionsSource::Table:
                 return AttributeOption::findByAttribute($this);
 
             case OptionsSource::Product:
-                if (CompatibilityHelper::isFrontend() && !($product instanceof IsotopeProduct)) {
-                    throw new \InvalidArgumentException('Must pass IsotopeProduct to Attribute::getOptionsFromManager if optionsSource is "product"');
+                if (null === $product && CompatibilityHelper::isFrontend()) {
+                    throw new \InvalidArgumentException('Must pass product to Attribute::getOptionsFromManager if optionsSource is "product"');
                 }
 
                 return AttributeOption::findByProductAndAttribute(

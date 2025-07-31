@@ -97,6 +97,8 @@ abstract class AbstractProduct extends Product
      */
     public function isAvailableInFrontend()
     {
+        return true;
+
         $objCollection = Isotope::getCart();
 
         if (null === $objCollection) {

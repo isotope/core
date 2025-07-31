@@ -1,0 +1,24 @@
+{% extends '@Contao/isotope/product/_base.html.twig' %}
+
+{% set gallery = isotope_gallery('images') %}
+
+{% block formbody %}
+
+    <img src="{{ path('isotope_product_hits', { hashid: product.id|hashid }) }}" alt="" width="1" height="1" aria-hidden="true" style="position:absolute">
+
+    <h2>{{ data.name }}</h2>
+
+    {{ gallery.main_image|raw }}
+
+    {{ block('product_options') }}
+
+    {{ gallery.gallery_images|raw }}
+
+    {% if data.sku|default %}<div class="sku">{{ data.sku }}</div>{% endif %}
+    {% if data.description|default %}<div class="description">{{ data.description|csp_inline_styles|insert_tag|encode_email|raw }}</div>{% endif %}
+
+    {{ block('product_price') }}
+
+    {{ block('product_actions') }}
+
+{% endblock %}

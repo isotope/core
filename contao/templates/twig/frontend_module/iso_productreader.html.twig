@@ -1,11 +1,10 @@
 {% trans_default_domain 'contao_default' %}
 {% extends '@Contao/frontend_module/_base.html.twig' %}
+{% use "@Contao/component/_stylesheet.html.twig" %}
 
 {% block content %}
 
-    <div{{ attributes }}>
-        {{ product|raw }}
-    </div>
+    {{ product|raw }}
 
     {% if referer %}
         <!-- indexer::stop -->
@@ -13,4 +12,21 @@
         <!-- indexer::continue -->
     {% endif %}
 
+    {{ block('style') }}
+    {{ block('script') }}
+
+{% endblock %}
+
+{% block style %}
+    {% add "isotope_css" to stylesheets %}
+        {% with {file: asset('isotope.css', 'isotope_core')} %}
+            {{ block('stylesheet_component') }}
+        {% endwith %}
+    {% endadd %}
+{% endblock %}
+
+{% block script %}
+    {% add "isotope_js" to head %}
+        <script src="{{ asset('isotope.js', 'isotope_core') }}"></script>
+    {% endadd %}
 {% endblock %}

@@ -92,16 +92,12 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = [
         ],
         'list_template' => [
             'inputType' => 'select',
-            'default' => 'iso_list_default',
-            'options_callback' => static fn () => Backend::getTemplates('iso_list_'),
-            'eval' => ['mandatory' => true, 'tl_class' => 'w50', 'chosen' => true],
+            'eval' => ['tl_class' => 'w50', 'chosen' => true],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'reader_template' => [
             'inputType' => 'select',
-            'default' => 'iso_reader_default',
-            'options_callback' => static fn () => Backend::getTemplates('iso_reader_'),
-            'eval' => ['mandatory' => true, 'tl_class' => 'w50', 'chosen' => true],
+            'eval' => ['tl_class' => 'w50', 'chosen' => true],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'list_gallery' => [
