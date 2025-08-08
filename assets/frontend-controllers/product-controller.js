@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
+import axios from '../scripts/_axios';
 
 export default class extends Controller {
     static values = {
@@ -8,42 +9,71 @@ export default class extends Controller {
 
     static targets = ['form'];
 
+    #abortController = null;
+
     connect () {
         this.xhr = new XMLHttpRequest();
 
         if (!this.hasFormTarget) return;
 
-        this.xhr.open(this.formTarget.getAttribute('method').toUpperCase(), this.formTarget.getAttribute('action') || location.href);
-        this.xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        this.xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-
-        this.xhr.onload = () => {
-            if (this.xhr.status === 200) {
-                this.#ajaxSuccess(this.xhr.responseText);
-            } else if (this.xhr.status !== 200) {
-                // Isotope.hideBox();
-            }
-        };
-
         this.#connectOptions();
     }
 
     disconnect() {
-        this.xhr.abort();
+        this.#abortController?.abort();
     }
 
-    submit() {
-        if (this.xhr.readyState > 1) {
-            this.xhr.abort();
-        }
+    update() {
+        this.#abortController?.abort();
 
         this.element.setAttribute('aria-busy', 'true');
+        this.formTarget.disabled = true;
 
-        // Isotope.displayBox(loadMessage);
-        this.xhr.send(new URLSearchParams(new FormData(this.formTarget).entries()).toString());
+        this.#ajaxSuccess(this.#submitForm());
     }
 
-    #ajaxSuccess(txt) {
+    async submit(event) {
+        event.preventDefault();
+
+        this.#abortController?.abort();
+
+        this.element.setAttribute('aria-busy', 'true');
+        this.formTarget.disabled = true;
+
+        const data = new FormData(this.formTarget);
+
+        if (event.submitter?.name && event.submitter?.value) {
+            data.set(event.submitter.name, event.submitter.value);
+        }
+
+        await this.#submitForm(data);
+
+        this.element.setAttribute('aria-busy', 'false');
+        this.formTarget.disabled = false;
+
+        this.dispatch(
+            event.submitter?.value || 'submit',
+            { target: event.submitter, detail: { form: this.formTarget, submitter: event.submitter, data }/*, cancelable: true*/ }
+        );
+    }
+
+    #submitForm(formData) {
+        this.#abortController = new AbortController();
+
+        return axios.request({
+            url: this.formTarget.getAttribute('action') || window.location.href,
+            method: this.formTarget.getAttribute('method').toUpperCase(),
+            data: formData || new FormData(this.formTarget),
+            signal: this.#abortController.signal,
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+        });
+    }
+
+    async #ajaxSuccess(axiosPromise) {
+        let txt = (await axiosPromise).data;
+
         var div = document.createElement('div'),
             scripts = '',
             script, i;
@@ -74,8 +104,6 @@ export default class extends Controller {
 
         this.element.replaceWith(...div.childNodes);
 
-        // Isotope.hideBox();
-
         if (scripts) {
             script = document.createElement('script');
             script.text = scripts;
@@ -88,11 +116,9 @@ export default class extends Controller {
 
     #connectOptions() {
         this.optionsValue.forEach((option) => {
-            const el = document.querySelector(`#ctrl_${this.formIdValue}_${option}`)
-
-            if (el) {
-                el.setAttribute('data-action', `${this.identifier}#submit`)
-            }
+            document
+                .querySelector(`#ctrl_${this.formIdValue}_${option}`)
+                ?.setAttribute('data-action', `${this.identifier}#update`);
         })
     }
 }

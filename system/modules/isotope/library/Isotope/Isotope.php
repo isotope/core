@@ -18,9 +18,6 @@ use Contao\System;
 use Contao\Widget;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
 use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
-use Isotope\Frontend\ProductAction\CartAction;
-use Isotope\Frontend\ProductAction\ProductActionInterface;
-use Isotope\Frontend\ProductAction\UpdateAction;
 use Isotope\Haste\Data\Plain;
 use Isotope\Haste\Util\Format;
 use Isotope\Interfaces\IsotopeProduct;
@@ -370,33 +367,6 @@ class Isotope extends Controller
         }
 
         return sprintf($GLOBALS['TL_LANG']['MSC']['productMultiple'], $intItems);
-    }
-
-    /**
-     * Callback for isoButton Hook
-     *
-     * @param array          $arrButtons
-     *
-     * @return array
-     * @deprecated Deprecated since Isotope 2.5
-     */
-    public static function defaultButtons($arrButtons, IsotopeProduct $objProduct = null)
-    {
-        $actions = [
-            new UpdateAction(),
-            new CartAction(),
-        ];
-
-        /** @var ProductActionInterface $action */
-        foreach ($actions as $action) {
-            $arrButtons[$action->getName()] = array(
-                'label' => $action->getLabel($objProduct),
-                'callback' => [\get_class($action), 'handleSubmit'],
-                'class'    => ($objProduct instanceof IsotopeProduct && \is_callable([$action, 'getClasses']) ? $action->getClasses($objProduct) : '')
-            );
-        }
-
-        return $arrButtons;
     }
 
     /**

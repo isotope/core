@@ -1,0 +1,48 @@
+<?php
+
+namespace Isotope\CoreBundle\ProductCollection\Action;
+
+use Contao\Controller;
+use Contao\CoreBundle\Routing\ContentUrlGenerator;
+use Contao\PageModel;
+use Isotope\CoreBundle\HttpFoundation\ActionResult;
+use Isotope\Interfaces\IsotopeProductCollection;
+use Symfony\Component\HttpFoundation\Response;
+use Twig\Environment;
+
+class GoToCartAction implements ProductCollectionActionInterface
+{
+
+    public function __construct(
+        private readonly Environment $twig,
+        private readonly ContentUrlGenerator $urlGenerator,
+    ) {
+    }
+
+    public function supports(IsotopeProductCollection $collection, array $context): bool
+    {
+        return null !== $this->getPageModel($context);
+    }
+
+    public function render(IsotopeProductCollection $collection, array $context): string
+    {
+        return $this->twig->render('@Contao/isotope/product_collection_action/go_to_cart.html.twig');
+    }
+
+    public function handle(IsotopeProductCollection $collection, array $context): ActionResult
+    {
+        return new ActionResult(
+            null,
+            $this->urlGenerator->generate($this->getPageModel($context))
+        );
+    }
+
+    private function getPageModel(array $context): PageModel|null
+    {
+        if (!isset($context['data']['iso_cart_jumpTo'])) {
+            return null;
+        }
+
+        return PageModel::findById($context['data']['iso_cart_jumpTo']);
+    }
+}

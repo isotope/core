@@ -14,8 +14,7 @@ namespace Isotope\Module;
 use Contao\Controller;
 use Contao\Input;
 use Contao\StringUtil;
-use Isotope\Frontend\ProductCollectionAction\LegacyButtonAction;
-use Isotope\Frontend\ProductCollectionAction\ProductCollectionActionInterface;
+use Isotope\CoreBundle\ProductCollection\Action\ProductCollectionActionInterface;
 use Isotope\Haste\Util\Url;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
@@ -101,39 +100,6 @@ abstract class AbstractProductCollection extends Module
             $arrItems[$k] = $this->updateItemTemplate($collection, $item, $data, $arrQuantity, $blnReload);
         }
 
-        // Must be before the reload
-        $actions = [];
-
-        foreach ($this->getActions() as $action) {
-            if (!$action->isAvailable($collection)) {
-                continue;
-            }
-
-            if (Input::post('FORM_SUBMIT') === $this->strFormId) {
-                if ($action->handleSubmit($collection)) {
-                    break;
-                }
-            }
-
-            $actions[$action->getName()] = $action;
-        }
-
-        $buttons = function() use ($collection, $actions) {
-            $buttons = [];
-
-            /** @var ProductCollectionActionInterface $action */
-            foreach ($actions as $action) {
-                $this->addButton(
-                    $buttons,
-                    $action->getName(),
-                    $action->getLabel($collection),
-                    \is_callable([$action, 'getHref']) ? $action->getHref() : null
-                );
-            }
-
-            return $buttons;
-        };
-
         // Reload the page if no button has handled it
         if ($blnReload) {
             if ($collection instanceof ProductCollection\Cart) {
@@ -151,8 +117,7 @@ abstract class AbstractProductCollection extends Module
         }
 
         $objTemplate->items         = $arrItems;
-        $objTemplate->actions       = $actions;
-        $objTemplate->buttons       = $buttons;
+        $objTemplate->actions       = []; // Removed, new implementation is in Twig
 
         $this->Template->empty      = false;
         $this->Template->collection = $collection;
@@ -246,67 +211,5 @@ abstract class AbstractProductCollection extends Module
                 return '' !== $v;
             }
         );
-    }
-
-    /**
-     * @return ProductCollectionActionInterface[]
-     */
-    protected function getActions()
-    {
-        $actions = [];
-
-        foreach ($this->generateButtons() as $button) {
-            $actions[] = new LegacyButtonAction($button);
-        }
-
-        return $actions;
-    }
-
-    /**
-     * Generate buttons for collection view template
-     *
-     *
-     * @return array
-     * @deprecated Deprecated since Isotope 2.5
-     */
-    protected function generateButtons(array $buttons = [])
-    {
-        return [];
-    }
-
-    /**
-     * @param string          $name
-     * @param string          $label
-     * @param \Closure|string $action
-     *
-     * @deprecated Deprecated since Isotope 2.5
-     */
-    protected function addButton(array &$buttons, $name, $label, $action = null, array $additional = [])
-    {
-        $button = array_merge(
-            [
-                'type'      => 'submit',
-                'name'      => 'button_' . $name,
-                'label'     => $label,
-            ],
-            $additional
-        );
-
-        if (\is_string($action)) {
-            $button['href'] = $action;
-        }
-
-        if (null !== $action
-            && Input::post('FORM_SUBMIT') === $this->strFormId
-            && null !== Input::post('button_' . $name)
-        ) {
-            if (\is_string($action)) {
-                Controller::redirect($action);
-            }
-
-            \call_user_func($action, $button);
-        }
-
-        $buttons[$name] = $button;
     }
 }

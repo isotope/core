@@ -28,9 +28,6 @@ use Isotope\CoreBundle\Widget\MediaManager;
 use Isotope\EventListener\ChangeLanguageListener;
 use Isotope\EventListener\PostCheckoutUploads;
 use Isotope\Frontend;
-use Isotope\Frontend\ProductAction\CartAction;
-use Isotope\Frontend\ProductAction\Registry;
-use Isotope\Frontend\ProductAction\UpdateAction;
 use Isotope\Isotope;
 use Isotope\Model\Address;
 use Isotope\Model\AttributeOption;
@@ -59,7 +56,6 @@ use Isotope\Model\TaxRate;
 use Isotope\Module\AddressBook;
 use Isotope\Module\Cart;
 use Isotope\Module\CartAddress;
-use Isotope\Module\CategoryFilter;
 use Isotope\Module\Checkout;
 use Isotope\Module\ConfigSwitcher;
 use Isotope\Module\CumulativeFilter;
@@ -68,7 +64,6 @@ use Isotope\Module\OrderDetails;
 use Isotope\Module\OrderHistory;
 use Isotope\Module\ProductVariantList;
 use Isotope\Module\RangeFilter;
-use Isotope\Module\RelatedProducts;
 use Isotope\Module\ShippingCalculator;
 use Isotope\VatNoValidator\EuViesValidator;
 use Isotope\Widget\InheritCheckBox;
@@ -139,12 +134,6 @@ ProductCollection::registerModelType('order', Order::class);
 ProductCollectionSurcharge::registerModelType('payment', PaymentSurcharge::class);
 ProductCollectionSurcharge::registerModelType('shipping', ShippingSurcharge::class);
 ProductCollectionSurcharge::registerModelType('tax', Tax::class);
-
-/*
- * Product actions
- */
-Registry::add(new UpdateAction());
-Registry::add(new CartAction());
 
 /*
  * Notification Center notification types
@@ -303,7 +292,6 @@ if (Contao\Config::getInstance()->isComplete()) {
     $GLOBALS['TL_HOOKS']['modifyFrontendPage'][] = [Frontend::class, 'injectScripts'];
     $GLOBALS['TL_HOOKS']['generateBreadcrumb'][] = [Frontend::class, 'addProductToBreadcrumb'];
 
-    $GLOBALS['ISO_HOOKS']['buttons'][] = [Isotope::class, 'defaultButtons'];
     $GLOBALS['ISO_HOOKS']['findSurchargesForCollection'][] = [Frontend::class, 'findShippingAndPaymentSurcharges'];
     $GLOBALS['ISO_HOOKS']['postCheckout'][] = ['Isotope\Analytics', 'trackOrder'];
     $GLOBALS['ISO_HOOKS']['postCheckout'][] = [PostCheckoutUploads::class, 'onPostCheckout'];

@@ -1,0 +1,29 @@
+{% trans_default_domain 'contao_default' %}
+{% extends '@Contao/frontend_module/_base.html.twig' %}
+{% use '@Contao/isotope/collection/default.html.twig' %}
+
+{% set attributes = attrs()
+    .set('data-controller', 'isotope--fragment')
+    .set('data-isotope--fragment-id-value', fragment_id)
+    .set('data-action', 'isotope--product:add_to_cart@window->isotope--fragment#update')
+    .mergeWith(attributes|default)
+%}
+
+{% block content %}
+    {% if collection.isEmpty %}
+        {% set empty_message = data.iso_emptyMessage ? data.iso_noProducts : 'MSC.noItemsInCart'|trans %}
+        {% block empty %}
+            <p class="message empty">{{ empty_message }}</p>
+        {% endblock %}
+    {% else %}
+        {{ block('product_collection') }}
+    {% endif %}
+
+{% endblock %}
+
+{% block product_collection_actions %}
+    {{ isotope_product_collection_action('update_cart') }}
+    {{ isotope_product_collection_action('go_to_cart') }}
+    {{ isotope_product_collection_action('go_to_checkout') }}
+    {{ isotope_product_collection_action('continue_shopping') }}
+{% endblock %}

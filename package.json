@@ -13,6 +13,8 @@
     },
     "dependencies": {
         "@hotwired/stimulus": "^3.2.1",
+        "axios": "^1.11.0",
+        "nprogress": "^0.2.0",
         "sortablejs": "^1.15.6"
     },
     "devDependencies": {

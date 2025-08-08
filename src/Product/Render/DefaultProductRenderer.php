@@ -10,8 +10,6 @@ use Contao\UploadableWidgetInterface;
 use Doctrine\DBAL\Connection;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
 use Isotope\CoreBundle\Product\ProductOptions;
-use Isotope\Frontend\ProductAction\ProductActionInterface;
-use Isotope\Frontend\ProductAction\Registry;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCollectionItem;
 use Symfony\Component\HttpFoundation\Request;
@@ -66,17 +64,6 @@ class DefaultProductRenderer implements ProductRendererInterface
             $context['options'] = $productOptions->generateVariantOptionWidgets();
             $context['hasUploads'] = array_reduce($context['options'], static fn ($v, $o) => $v || $o['widget'] instanceof UploadableWidgetInterface, false);
         }
-
-        $actions = array_filter(
-            Registry::all(true, $this),
-            static fn (ProductActionInterface $action) => \in_array($action->getName(), $config->buttons) && $action->isAvailable($product, $config->toArray()),
-        );
-
-        // Sort actions by order in module configuration
-        $buttonOrder = array_values($arrConfig['buttons'] ?? []);
-        usort($actions, static fn (ProductActionInterface $a, ProductActionInterface $b) => array_search($a->getName(), $buttonOrder) <=> array_search($b->getName(), $buttonOrder));
-
-        $context['actions'] = $actions;
 
         $content = $this->twig->render($config->template, $context);
 

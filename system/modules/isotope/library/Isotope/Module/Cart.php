@@ -12,11 +12,6 @@
 namespace Isotope\Module;
 
 use Contao\StringUtil;
-use Contao\System;
-use Isotope\Frontend\ProductCollectionAction\ContinueShoppingAction;
-use Isotope\Frontend\ProductCollectionAction\GoToCartAction;
-use Isotope\Frontend\ProductCollectionAction\GoToCheckoutAction;
-use Isotope\Frontend\ProductCollectionAction\UpdateCartAction;
 use Isotope\Haste\Util\Url;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
@@ -44,24 +39,6 @@ class Cart extends AbstractProductCollection
      * @var string
      */
     protected $strFormId = 'iso_cart_update_';
-
-    /**
-     * @inheritdoc
-     */
-    protected function compile()
-    {
-        parent::compile();
-
-        $strCustom = '';
-
-        if (isset($GLOBALS['ISO_HOOKS']['compileCart']) && \is_array($GLOBALS['ISO_HOOKS']['compileCart'])) {
-            foreach ($GLOBALS['ISO_HOOKS']['compileCart'] as $callback) {
-                $strCustom .= System::importStatic($callback[0])->{$callback[1]}($this);
-            }
-        }
-
-        $this->Template->custom = $strCustom;
-    }
 
     /**
      * @return IsotopeProductCollection
@@ -117,18 +94,5 @@ class Cart extends AbstractProductCollection
         }
 
         return $data;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getActions()
-    {
-        return [
-            new UpdateCartAction(),
-            new GoToCartAction($this),
-            new GoToCheckoutAction($this),
-            new ContinueShoppingAction($this),
-        ];
     }
 }

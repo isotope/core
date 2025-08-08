@@ -1,5 +1,6 @@
 import { Controller } from "@hotwired/stimulus";
 import { ProductQuery } from '../scripts/_productquery';
+import axios from '../scripts/_axios';
 
 export default class extends Controller {
     static values = {
@@ -10,7 +11,7 @@ export default class extends Controller {
         filters: Array,
     };
 
-    update (event) {
+    query (event) {
         const url = new URL(window.location);
 
         if (this.hasFiltersValue) {
@@ -31,7 +32,11 @@ export default class extends Controller {
             url.search = query.toString();
         }
 
-        this.#load(url);
+        this.#load(url.toString());
+    }
+
+    update () {
+        this.#load(new URL(window.location).toString());
     }
 
     async #load (url) {
@@ -39,9 +44,8 @@ export default class extends Controller {
             this.element.setAttribute('aria-busy', 'true');
         }, 500)
 
-        const response = await fetch(url, {
+        const response = await axios.get(url, {
             headers: {
-                'X-Requested-With': 'XMLHttpRequest',
                 'Isotope-Fragment': this.idValue,
             }
         });
@@ -49,7 +53,7 @@ export default class extends Controller {
         clearTimeout(timer);
 
         const div = document.createElement('div');
-        div.innerHTML = await response.text();
+        div.innerHTML = response.data;
         this.element.replaceWith(div.firstElementChild);
     }
 }

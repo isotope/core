@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle;
 
+use Isotope\CoreBundle\DependencyInjection\Compiler\RegisterActionPass;
 use Isotope\CoreBundle\DependencyInjection\Compiler\RegisterAttributePass;
 use Isotope\CoreBundle\DependencyInjection\Compiler\RegisterHookListenersPass;
 use Isotope\CoreBundle\DependencyInjection\Compiler\RegisterModelTypePass;
@@ -13,6 +14,8 @@ use Isotope\CoreBundle\ModelType\DocumentRegistry;
 use Isotope\CoreBundle\ModelType\GalleryRegistry;
 use Isotope\CoreBundle\ModelType\PaymentRegistry;
 use Isotope\CoreBundle\ModelType\ShippingRegistry;
+use Isotope\CoreBundle\Product\Action\ProductActionRegistry;
+use Isotope\CoreBundle\ProductCollection\Action\ProductCollectionActionRegistry;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -34,6 +37,8 @@ class IsotopeCoreBundle extends Bundle
         $container->addCompilerPass(new RegisterModelTypePass(ShippingRegistry::TAG_NAME, ShippingRegistry::class, ['tl_iso_shipping.type']), priority: 10);
         $container->addCompilerPass(new RegisterModelTypePass(DocumentRegistry::TAG_NAME, DocumentRegistry::class, ['tl_iso_document.type']), priority: 10);
         $container->addCompilerPass(new RegisterModelTypePass(GalleryRegistry::TAG_NAME, GalleryRegistry::class, ['tl_iso_gallery.type']), priority: 10);
+        $container->addCompilerPass(new RegisterActionPass(ProductActionRegistry::TAG_NAME, ProductActionRegistry::class));
+        $container->addCompilerPass(new RegisterActionPass(ProductCollectionActionRegistry::TAG_NAME, ProductCollectionActionRegistry::class));
     }
 
     public function getPath(): string

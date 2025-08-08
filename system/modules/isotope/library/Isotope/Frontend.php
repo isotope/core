@@ -11,12 +11,9 @@
 
 namespace Isotope;
 
-use Contao\Controller;
 use Contao\CoreBundle\ContaoCoreBundle;
 use Contao\Database;
 use Contao\Database\Result;
-use Contao\Date;
-use Contao\Environment;
 use Contao\FrontendTemplate;
 use Contao\FrontendUser;
 use Contao\MemberModel;
@@ -26,9 +23,7 @@ use Contao\System;
 use Contao\Widget;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
 use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
-use Isotope\CoreBundle\Model\Attribute;
 use Isotope\EventListener\ChangeLanguageListener;
-use Isotope\Frontend\ProductAction\CartAction;
 use Isotope\Haste\Input\Input;
 use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Interfaces\IsotopePrice;
@@ -502,30 +497,6 @@ class Frontend extends \Contao\Frontend
         }
 
         return $fltAmount;
-    }
-
-    /**
-     * Callback for add_to_cart button
-     *
-     *
-     * @deprecated Deprecated since Isotope 2.5
-     */
-    public function addToCart(IsotopeProduct $objProduct, array $arrConfig = array())
-    {
-        $action = new CartAction();
-        $action->handleSubmit($objProduct, $arrConfig);
-    }
-
-    /**
-     * Callback for add_to_cart button if a product is being edited.
-     *
-     *
-     * @deprecated Deprecated since Isotope 2.5
-     */
-    public function updateCart(IsotopeProduct $objProduct, array $arrConfig = array())
-    {
-        $action = new CartAction();
-        $action->handleSubmit($objProduct, $arrConfig);
     }
 
     /**

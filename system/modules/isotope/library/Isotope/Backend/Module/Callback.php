@@ -18,7 +18,6 @@ use Contao\DataContainer;
 use Contao\System;
 use Isotope\CoreBundle\Model\Payment;
 use Isotope\CoreBundle\Model\Shipping;
-use Isotope\Frontend\ProductAction\Registry;
 use Isotope\Interfaces\IsotopeFilterModule;
 
 
@@ -164,22 +163,6 @@ class Callback extends Backend
         }
 
         return $arrModules;
-    }
-
-
-    /**
-     * Get all buttons and return them as array
-     * @return array
-     */
-    public function getButtons()
-    {
-        $arrOptions = array();
-
-        foreach (Registry::all() as $action) {
-            $arrOptions[$action->getName()] = $action->getLabel();
-        }
-
-        return $arrOptions;
     }
 
     /**

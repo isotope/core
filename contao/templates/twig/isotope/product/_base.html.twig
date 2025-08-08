@@ -48,7 +48,7 @@
                 {% endblock %}
 
                 {% block product_actions %}
-                    {% if actions is not empty %}
+                    {% if config.buttons is not empty %}
                         <div class="submit_container">
 
                             {% block product_quantity %}
@@ -60,8 +60,8 @@
                                 {% endif %}
                             {% endblock %}
 
-                            {% for action in actions %}
-                                {{ action.generate(product)|raw }}
+                            {% for action in config.buttons %}
+                                {{ isotope_product_action(action) }}
                             {% endfor %}
 
                         </div>

@@ -93,7 +93,7 @@ abstract class AbstractAttribute implements AttributeInterface
 
     public function isMandatory(): bool
     {
-        return $this->mandatory;
+        return ($this instanceof VariantAttributeInterface && $this->isVariantOption()) ?: $this->mandatory;
     }
 
     public function setMandatory(bool $mandatory): self
@@ -215,12 +215,12 @@ abstract class AbstractAttribute implements AttributeInterface
             $field['eval']['placeholder'] = $this->placeholder;
         }
 
-        $field['filter'] = $this->backendFilterable && !$this->isCustomerDefined();
-        $field['search'] = $this->backendSearchable && !$this->isCustomerDefined();
-        $field['attributes']['fe_filter'] = $this->frontendFilterable;
-        $field['attributes']['fe_sorting'] = $this->frontendSortable;
-        $field['attributes']['fe_search'] = $this->frontendSearchable;
-        $field['eval']['mandatory'] = $this->mandatory;
+        $field['filter'] = $this->isBackendFilterable() && !$this->isCustomerDefined();
+        $field['search'] = $this->isBackendSearchable() && !$this->isCustomerDefined();
+        $field['attributes']['fe_filter'] = $this->isFrontendFilterable();
+        $field['attributes']['fe_sorting'] = $this->isFrontendSortable();
+        $field['attributes']['fe_search'] = $this->isFrontendSearchable();
+        $field['eval']['mandatory'] = $this->isMandatory();
 
         if (!isset($field['sql']) && !$this->isCustomerDefined()) {
             $field['sql'] = $this->getSqlDefinition();

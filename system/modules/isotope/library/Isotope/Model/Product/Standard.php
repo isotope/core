@@ -30,17 +30,13 @@ use Isotope\CoreBundle\Attribute\VariantAttributeInterface;
 use Isotope\CoreBundle\Gallery\GalleryInterface;
 use Isotope\CoreBundle\Model\Attribute;
 use Isotope\CoreBundle\Model\ProductType;
-use Isotope\CoreBundle\ModelType\GalleryRegistry;
 use Isotope\CoreBundle\Product\Render\RenderConfig;
 use Isotope\CoreBundle\Routing\ProductReference;
 use Isotope\CoreBundle\Routing\ProductResolver;
 use Isotope\CoreBundle\Twig\GalleryRuntime;
 use Isotope\CoreBundle\Twig\GalleryVariable;
-use Isotope\Frontend\ProductAction\ProductActionInterface;
-use Isotope\Frontend\ProductAction\Registry;
 use Isotope\Haste\Units\Mass\Weight;
 use Isotope\Haste\Units\Mass\WeightAggregate;
-use Isotope\Haste\Util\Url;
 use Isotope\Interfaces\IsotopePrice;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
@@ -481,63 +477,6 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             }
         }
 
-        $handleButtons = false;
-        $actions = array_filter(
-            Registry::all(true, $this),
-            function (ProductActionInterface $action) use ($arrConfig) {
-                return \in_array($action->getName(), $arrConfig['buttons'] ?? []) && $action->isAvailable($this, $arrConfig);
-            }
-        );
-
-        // Sort actions by order in module configuration
-        $buttonOrder = array_values($arrConfig['buttons'] ?? []);
-        usort($actions, function (ProductActionInterface $a, ProductActionInterface $b) use ($buttonOrder) {
-            return array_search($a->getName(), $buttonOrder) - array_search($b->getName(), $buttonOrder);
-        });
-
-        if (Input::post('FORM_SUBMIT') == $this->getFormId() && !$this->doNotSubmit) {
-            $handleButtons = true;
-
-            foreach ($actions as $action) {
-                if ($action->handleSubmit($this, $arrConfig)) {
-                    $handleButtons = false;
-                    break;
-                }
-            }
-        }
-
-        /**
-         * @deprecated Deprecated since Isotope 2.5
-         */
-        $objTemplate->buttons = function() use ($arrConfig, $handleButtons) {
-            $arrButtons = array();
-
-            // !HOOK: retrieve buttons
-            if (isset($arrConfig['buttons'], $GLOBALS['ISO_HOOKS']['buttons'])
-                && \is_array($arrConfig['buttons'])
-                && \is_array($GLOBALS['ISO_HOOKS']['buttons'])
-            ) {
-                foreach ($GLOBALS['ISO_HOOKS']['buttons'] as $callback) {
-                    $arrButtons = System::importStatic($callback[0])->{$callback[1]}($arrButtons, $this);
-                }
-            }
-
-            $arrButtons = array_intersect_key($arrButtons, array_flip($arrConfig['buttons'] ?? []));
-
-            if ($handleButtons) {
-                foreach ($arrButtons as $button => $data) {
-                    if (isset($_POST[$button])) {
-                        if (isset($data['callback'])) {
-                            System::importStatic($data['callback'][0])->{$data['callback'][1]}($this, $arrConfig);
-                        }
-                        break;
-                    }
-                }
-            }
-
-            return $arrButtons;
-        };
-
         $objTemplate->hitCountUrl = function () {
             $hashids = new Hashids(System::getContainer()->getParameter('kernel.secret'), 8);
 
@@ -547,7 +486,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             ;
         };
 
-        $objTemplate->actions = $actions;
+        $objTemplate->actions = []; // Removed, new implementation is in Twig
         $objTemplate->useQuantity = $arrConfig['useQuantity'] && null === $this->getCollectionItem();
         $objTemplate->minimum_quantity = $this->getMinimumQuantity();
         $objTemplate->raw = $this->arrData;

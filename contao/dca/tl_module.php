@@ -396,7 +396,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_listingSortDirection'] = [
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_buttons'] = [
     'inputType' => 'checkboxWizard',
     'default' => ['add_to_cart'],
-    'options_callback' => [Callback::class, 'getButtons'],
+    'reference' => &$GLOBALS['TL_LANG']['MSC']['buttonLabel'],
     'eval' => ['multiple' => true, 'tl_class' => 'clr'],
     'sql' => 'blob NULL',
 ];

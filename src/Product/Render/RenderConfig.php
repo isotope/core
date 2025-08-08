@@ -20,6 +20,7 @@ final class RenderConfig
     public bool $withQuantity = true;
     public bool $withOptions = true;
     public bool $loadFallback = true;
+    public array $options = [];
 
     public function __construct(string $id, string $template, int $gallery)
     {
@@ -53,6 +54,7 @@ final class RenderConfig
         $config->withQuantity = (bool) $model->iso_use_quantity;
         $config->withOptions = !$model->iso_disable_options;
         $config->buttons = StringUtil::deserialize($model->iso_buttons, true);
+        $config->options = $model->row();
 
         if ($model->defineRoot && $model->jumpTo) {
             $config->reference = new ProductReference($product, $model->jumpTo, (bool) $model->iso_link_primary);

@@ -1,0 +1,13 @@
+{% macro button(name, label, disabled = false) %}
+<button
+    type="submit"
+    name="_action"
+    value="{{ name }}"
+    class="submit {{ name }}"
+    {% if disabled %}disabled{% endif %}
+>{{ label }}</button>
+{% endmacro %}
+
+{% macro link(name, href, label) %}
+    <a href="{{ href }}" class="submit {{ name }}">{{ label }}</a>
+{% endmacro %}

@@ -18,7 +18,6 @@ use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
 use Isotope\CompatibilityHelper;
-use Isotope\Frontend\ProductCollectionAction\ReorderAction;
 use Isotope\Haste\Util\Format;
 use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\ProductCollection\Order;
@@ -137,19 +136,5 @@ class OrderDetails extends AbstractProductCollection
     protected function canRemoveProducts()
     {
         return false;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getActions()
-    {
-        if (CompatibilityHelper::isBackend()) {
-            return [];
-        }
-
-        return [
-            new ReorderAction($this),
-        ];
     }
 }

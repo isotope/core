@@ -7,7 +7,6 @@ namespace Isotope\CoreBundle\Controller\FrontendModule;
 use Contao\CoreBundle\Controller\FrontendModule\AbstractFrontendModuleController as CoreFrontendModuleController;
 use Contao\CoreBundle\Exception\ResponseException;
 use Contao\CoreBundle\Twig\FragmentTemplate;
-use Contao\Model;
 use Contao\ModuleModel;
 use Isotope\CoreBundle\Product\Query\ProductQuery;
 use Symfony\Component\HttpFoundation\Request;
@@ -59,8 +58,8 @@ abstract class AbstractFrontendModuleController extends CoreFrontendModuleContro
         return $productQuery instanceof ProductQuery ? $productQuery : null;
     }
 
-    private function getFragmentId(array $modelData): string
+    protected function getFragmentId(array $modelData): string
     {
-        return 'fmd'.($modelData['id'] ?? null ?: substr(md5(serialize($modelData)), 0, 8));
+        return 'fmd'.($modelData['id'] ?? null ?: '-'.substr(md5(serialize($modelData)), 0, 8));
     }
 }

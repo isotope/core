@@ -139,25 +139,6 @@ class ProductOptions
         return $arrProductOptions;
     }
 
-    private function getOptionsDefaults(): array
-    {
-        if (false !== $this->defaults) {
-            return $this->defaults;
-        }
-
-        $this->defaults = [];
-
-        //if (($item = $this->getCollectionItem()) !== null) {
-        //    $this->defaults = $item->getOptions();
-        //} else {
-            foreach ($_GET as $k => $v) {
-                $this->defaults[$k] = Input::get($k);
-            }
-        //}
-
-        return $this->defaults;
-    }
-
     /**
      * Return a widget object based on a product attribute's properties
      */
@@ -289,17 +270,6 @@ class ProductOptions
         }
 
         return $objWidget;
-    }
-
-    private function initialize(): void
-    {
-        if (null !== $this->attributes) {
-            return;
-        }
-
-        $this->attributes = [];
-
-
     }
 
     private function getOptionsForVariants(string $attributeName, array $variantIds, array $variantOptions = []): array
