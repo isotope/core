@@ -2,7 +2,7 @@
 
 {% block product_collection %}
     {% if block("product_collection_actions") is defined %}
-        <form id="{{ fragment_id }}" method="post">
+        <form id="{{ fragment_id }}" method="post" data-isotope--collection-target="form">
             <div class="formbody">
                 <input type="hidden" name="FORM_SUBMIT" value="{{ fragment_id }}">
                 <input type="hidden" name="REQUEST_TOKEN" value="{{ contao.request_token }}">
@@ -15,76 +15,99 @@
                 <table>
                     <tbody>
                     {% for item in collection.items %}
-                        <tr{# class="<?= $item['rowClass'] ?>"#}>
-                            {#<?php if(!$this->isNotification): ?>
-                            <td class="image"><?= $this->getGallery('images', $item['item'])->generateMainImage() ?></td>
-                            <?php endif; ?>#}
-                            <td class="name">
-                                {% if linkProducts|default and item.href|default %}
-                                    <a href="{{ item.href }}">{{ item.name }}</a>
-                                {% else %}
-                                    {{ item.name }}
-                                {% endif %}
-                                {#<?php if(!empty($item['attributes'])): ?>
-                                <ul>
-                                    <?php foreach($item['attributes'] as $name => $value): ?>
-                                    <li><strong><?= $this->attributeLabel($name) ?>:</strong> <?= $this->attributeValue($name, $value, ['html'=>true, 'item'=>$item['item']]) ?></li>
-                                    <?php endforeach; ?>
-                                </ul>
+                        {% block product_collection_item %}
+                            {% set item_row_attributes = attrs() %}
+                            {# class="<?= $item['rowClass'] ?>"#}
+                            <tr{{ item_row_attributes }}>
+                                {#<?php if(!$this->isNotification): ?>
+                                <td class="image"><?= $this->getGallery('images', $item['item'])->generateMainImage() ?></td>
                                 <?php endif; ?>#}
-                            </td>
-                            <td class="quantity">
-                                {#<?php if($this->isEditable): ?>
-                                <input name="quantity[<?= $item['id'] ?>]" type="number" class="text" value="{{ item.quantity }}" maxlength="10">
-                                <?php else: ?>#}
-                                {{ item.quantity }} x
-                                {#<?php endif; ?>#}
-                            </td>
-                            <td class="price">{{ item.price|isotope_price }}</td>
-                            <td class="price total">{{ item.totalPrice|isotope_price }}</td>{#<?php if ($this->total_tax_ids > 1): ?>
-                            <td class="tax"><?= $item['tax_id'] ?></td>#}
-                            <td class="actions">
-                                {#<?php if ($item['edit_href'] ?? null): ?><a href="<?= $item['edit_href'] ?>" class="edit" title="<?= $item['edit_title'] ?>"><?= $item['edit_link'] ?></a><?php endif; ?>#}
-                                <a href="{{ remove[item.id] }}" class="remove" title="{{ 'MSC.removeProductLinkTitle'|trans([item.name]) }}">{{ 'MSC.removeProductLinkText'|trans }}</a>
-                            </td>
-                        </tr>
-                        {#<?php if($item['item']->hasErrors()): ?>
-                        <tr class="<?= $item['rowClass'] ?>">
-                            <td colspan="<?= $i ?>"><p class="error"><?= implode('</p><p class="error">', $item['item']->getErrors()) ?></p></td>
-                        </tr>
-                        <?php endif; ?>#}
+                                <td class="name">
+                                    {% block item_name %}
+                                        {% set href = content_url(item) %}
+                                        {% if href %}
+                                            <a href="{{ href }}">{{ item.name }}</a>
+                                        {% else %}
+                                            {{ item.name }}
+                                        {% endif %}
+                                    {% endblock %}
+                                    {% block item_attributes %}
+                                        {#<?php if(!empty($item['attributes'])): ?>
+                                        <ul>
+                                            <?php foreach($item['attributes'] as $name => $value): ?>
+                                            <li><strong><?= $this->attributeLabel($name) ?>:</strong> <?= $this->attributeValue($name, $value, ['html'=>true, 'item'=>$item['item']]) ?></li>
+                                            <?php endforeach; ?>
+                                        </ul>
+                                        <?php endif; ?>#}
+                                    {% endblock %}
+                                </td>
+                                <td class="quantity">
+                                    {% if editable|default %}
+                                        <input name="quantity[{{ item.id }}]" type="number" class="text" value="{{ item.quantity }}" maxlength="10">
+                                    {% else %}
+                                        {{ item.quantity }} x
+                                    {% endif %}
+                                </td>
+                                <td class="price">{{ item.price|isotope_price }}</td>
+                                <td class="price total">{{ item.totalPrice|isotope_price }}</td>{#<?php if ($this->total_tax_ids > 1): ?>
+                                <td class="tax"><?= $item['tax_id'] ?></td>#}
+                                {% if block("product_collection_item_actions") is defined %}
+                                    <td class="actions">
+                                        {#<?php if ($item['edit_href'] ?? null): ?><a href="<?= $item['edit_href'] ?>" class="edit" title="<?= $item['edit_title'] ?>"><?= $item['edit_link'] ?></a><?php endif; ?>#}
+                                        {% block product_collection_item_actions %}{% endblock %}
+                                    </td>
+                                {% endif %}
+                            </tr>
+                            {#<?php if($item['item']->hasErrors()): ?>
+                            <tr class="<?= $item['rowClass'] ?>">
+                                <td colspan="<?= $i ?>"><p class="error"><?= implode('</p><p class="error">', $item['item']->getErrors()) ?></p></td>
+                            </tr>
+                            <?php endif; ?>#}
+                        {% endblock %}
                     {% endfor %}
                     </tbody>
                     <tfoot>
-                    <tr class="subtotal">
-                        {#<?php $i=0; if(!$this->isNotification): ?>
-                        <td class="col_first">&nbsp;</td><?php endif; ?>#}
-                        <td class="name" colspan="2">{{ 'MSC.subTotalLabel'|trans }}</td>
-                        <td class="price">&nbsp;</td>
-                        <td class="price total">{{ collection.subtotal|isotope_price }}</td>{#<?php if ($this->total_tax_ids > 1): ?>
-                        <td class="tax">&nbsp;</td><?php endif; ?>#}
-                        <td class="remove">&nbsp;</td>
-                    </tr>
-                    {#<?php foreach ($this->surcharges as $surcharge): $i=0; ?>
-                    <tr class="<?= $surcharge['rowClass'] ?>">
-                        <?php if(!$this->isNotification): ?>
-                        <td>&nbsp;</td><?php endif; ?>
-                        <td class="name" colspan="2"><?= $surcharge['label'] ?></td>
-                        <td class="price"><?= $surcharge['price'] ?></td>
-                        <td class="price total"><?= $surcharge['total_price'] ?></td><?php if ($this->total_tax_ids > 1): ?>
-                        <td class="tax"><?= $surcharge['tax_id'] ?></td><?php endif; if($this->isEditable): ?>
-                        <td class="remove">&nbsp;</td><?php endif; ?>
-                    </tr>
-                    <?php endforeach; ?>#}
-                    <tr class="total">
-                        {#<?php $i=0; if(!$this->isNotification): ?>
-                        <td class="col_first">&nbsp;</td><?php endif; ?>#}
-                        <td class="name" colspan="2">{{ 'MSC.grandTotalLabel'|trans }}</td>
-                        <td class="price">&nbsp;</td>
-                        <td class="price total">{{ collection.total|isotope_price }}</td>{#<?php if ($this->total_tax_ids > 1): ?>
-                        <td class="tax">&nbsp;</td>#}
-                        <td class="remove">&nbsp;</td>
-                    </tr>
+                    {% block product_collection_subtotal %}
+                        <tr class="subtotal">
+                            {#<?php $i=0; if(!$this->isNotification): ?>
+                            <td class="col_first">&nbsp;</td><?php endif; ?>#}
+                            <td class="name" colspan="2">{{ 'MSC.subTotalLabel'|trans }}</td>
+                            <td class="price">&nbsp;</td>
+                            <td class="price total">{{ collection.subtotal|isotope_price }}</td>{#<?php if ($this->total_tax_ids > 1): ?>
+                            <td class="tax">&nbsp;</td><?php endif; ?>#}
+                            {% if block("product_collection_item_actions") is defined %}
+                                <td class="actions">&nbsp;</td>
+                            {% endif %}
+                        </tr>
+                    {% endblock %}
+                    {% block product_collection_surcharges %}
+                        {#<?php foreach ($this->surcharges as $surcharge): $i=0; ?>
+                        <tr class="<?= $surcharge['rowClass'] ?>">
+                            <?php if(!$this->isNotification): ?>
+                            <td>&nbsp;</td><?php endif; ?>
+                            <td class="name" colspan="2"><?= $surcharge['label'] ?></td>
+                            <td class="price"><?= $surcharge['price'] ?></td>
+                            <td class="price total"><?= $surcharge['total_price'] ?></td><?php if ($this->total_tax_ids > 1): ?>
+                            <td class="tax"><?= $surcharge['tax_id'] ?></td><?php endif; ?>
+                            {% if block("product_collection_item_actions") is defined %}
+                                <td class="actions">&nbsp;</td>
+                            {% endif %}
+                        </tr>
+                        <?php endforeach; ?>#}
+                    {% endblock %}
+                    {% block product_collection_total %}
+                        <tr class="total">
+                            {#<?php $i=0; if(!$this->isNotification): ?>
+                            <td class="col_first">&nbsp;</td><?php endif; ?>#}
+                            <td class="name" colspan="2">{{ 'MSC.grandTotalLabel'|trans }}</td>
+                            <td class="price">&nbsp;</td>
+                            <td class="price total">{{ collection.total|isotope_price }}</td>{#<?php if ($this->total_tax_ids > 1): ?>
+                            <td class="tax">&nbsp;</td>#}
+                            {% if block("product_collection_item_actions") is defined %}
+                                <td class="actions">&nbsp;</td>
+                            {% endif %}
+                        </tr>
+                    {% endblock %}
                     </tfoot>
                 </table>
 

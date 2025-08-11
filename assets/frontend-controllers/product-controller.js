@@ -12,8 +12,6 @@ export default class extends Controller {
     #abortController = null;
 
     connect () {
-        this.xhr = new XMLHttpRequest();
-
         if (!this.hasFormTarget) return;
 
         this.#connectOptions();
@@ -52,9 +50,16 @@ export default class extends Controller {
         this.formTarget.disabled = false;
 
         this.dispatch(
-            event.submitter?.value || 'submit',
+            'submit',
             { target: event.submitter, detail: { form: this.formTarget, submitter: event.submitter, data }/*, cancelable: true*/ }
         );
+
+        if (event.submitter?.value) {
+            this.dispatch(
+                `submit.${event.submitter.value}`,
+                { target: event.submitter, detail: { form: this.formTarget, submitter: event.submitter, data }/*, cancelable: true*/ }
+            );
+        }
     }
 
     #submitForm(formData) {

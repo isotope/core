@@ -35,7 +35,9 @@ export default class extends Controller {
         this.#load(url.toString());
     }
 
-    update () {
+    update (event) {
+        event.preventDefault();
+
         this.#load(new URL(window.location).toString());
     }
 

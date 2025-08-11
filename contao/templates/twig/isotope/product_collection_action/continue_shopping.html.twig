@@ -1,4 +1,8 @@
 {% trans_default_domain 'contao_default' %}
 {% from '@Contao/component/isotope_action.html.twig' import link %}
 
-{{ link('continue_shopping', href, 'MSC.continueShoppingBT'|trans) }}
+{% set attributes = attrs()
+    .addClass(['submit', 'continue_shopping'])
+%}
+
+{{ link(href, 'MSC.continueShoppingBT'|trans, attributes) }}

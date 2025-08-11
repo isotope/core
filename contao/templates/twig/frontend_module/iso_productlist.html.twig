@@ -1,5 +1,5 @@
 {% trans_default_domain 'contao_default' %}
-{% extends '@Contao/frontend_module/_base.html.twig' %}
+{% extends '@Contao/frontend_module/_isotope_base.html.twig' %}
 {% use "@Contao/component/_stylesheet.html.twig" %}
 
 {% set attributes = attrs()
@@ -21,21 +21,4 @@
         <p class="empty message">{{ data.iso_noProducts|default('MSC.noProducts'|trans) }}</p>
     {% endif %}
 
-    {{ block('style') }}
-    {{ block('script') }}
-
-{% endblock %}
-
-{% block style %}
-    {% add "isotope_css" to stylesheets %}
-        {% with {file: asset('isotope.css', 'isotope_core')} %}
-            {{ block('stylesheet_component') }}
-        {% endwith %}
-    {% endadd %}
-{% endblock %}
-
-{% block script %}
-    {% add "isotope_js" to head %}
-        <script src="{{ asset('isotope.js', 'isotope_core') }}"></script>
-    {% endadd %}
 {% endblock %}

@@ -16,6 +16,7 @@ use Isotope\CoreBundle\ModelType\PaymentRegistry;
 use Isotope\CoreBundle\ModelType\ShippingRegistry;
 use Isotope\CoreBundle\Product\Action\ProductActionRegistry;
 use Isotope\CoreBundle\ProductCollection\Action\ProductCollectionActionRegistry;
+use Isotope\CoreBundle\ProductCollection\ItemAction\ProductCollectionItemActionRegistry;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -39,6 +40,7 @@ class IsotopeCoreBundle extends Bundle
         $container->addCompilerPass(new RegisterModelTypePass(GalleryRegistry::TAG_NAME, GalleryRegistry::class, ['tl_iso_gallery.type']), priority: 10);
         $container->addCompilerPass(new RegisterActionPass(ProductActionRegistry::TAG_NAME, ProductActionRegistry::class));
         $container->addCompilerPass(new RegisterActionPass(ProductCollectionActionRegistry::TAG_NAME, ProductCollectionActionRegistry::class));
+        $container->addCompilerPass(new RegisterActionPass(ProductCollectionItemActionRegistry::TAG_NAME, ProductCollectionItemActionRegistry::class));
     }
 
     public function getPath(): string

@@ -2,15 +2,14 @@
 
 namespace Isotope\CoreBundle\ProductCollection\Action;
 
-use Contao\Controller;
 use Contao\CoreBundle\Routing\ContentUrlGenerator;
 use Contao\PageModel;
 use Isotope\CoreBundle\HttpFoundation\ActionResult;
 use Isotope\Interfaces\IsotopeProductCollection;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Twig\Environment;
 
-class GoToCheckoutAction implements ProductCollectionActionInterface
+class  LinkToCheckoutAction implements ProductCollectionActionInterface
 {
     public function __construct(
         private readonly Environment $twig,
@@ -20,12 +19,14 @@ class GoToCheckoutAction implements ProductCollectionActionInterface
 
     public function supports(IsotopeProductCollection $collection, array $context): bool
     {
-        return !$collection->hasErrors() && null !== $this->getPageModel($context);
+        return null !== $this->getPageModel($context);
     }
 
     public function render(IsotopeProductCollection $collection, array $context): string
     {
-        return $this->twig->render('@Contao/isotope/product_collection_action/go_to_checkout.html.twig');
+        return $this->twig->render('@Contao/isotope/product_collection_action/link_to_checkout.html.twig', [
+            'href' => $this->urlGenerator->generate($this->getPageModel($context)),
+        ]);
     }
 
     public function handle(IsotopeProductCollection $collection, array $context): ActionResult

@@ -1,0 +1,37 @@
+{% trans_default_domain 'contao_default' %}
+
+{% block product_collection %}
+    {% for item in collection.items %}
+        {% block product_collection_item %}
+            <div class="product">
+                {% if block("product_collection_item_actions") is defined %}
+                    <div class="actions">{% block product_collection_item_actions %}{% endblock %}</div>
+                {% endif %}
+                <div class="name">
+                    {% block item_name %}
+                        {% set href = content_url(item) %}
+                        {% if href %}
+                            <a href="{{ href }}">{{ item.name }}</a>
+                        {% else %}
+                            {{ item.name }}
+                        {% endif %}
+                    {% endblock %}
+                </div>
+                <div class="info">
+                    {% block item_attributes %}
+                    {#<?php if(!empty($item['attributes'])): ?>
+                    <ul>
+                        <?php foreach($item['attributes'] as $name => $value): ?>
+                        <li><strong><?= $this->attributeLabel($name) ?>:</strong> <?= $this->attributeValue($name, $value, ['html'=>true, 'item'=>$item['item']]) ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                    <?php endif; ?>#}
+                    {% endblock %}
+                    <div class="price">{{ item.quantity }} x {{ item.price|isotope_price }} = <span class="total">{{ item.totalPrice|isotope_price }}</span></div>
+                </div>
+            </div>
+        {% endblock %}
+    {% endfor %}
+    <div class="subtotal"><span class="label">{{ 'MSC.subTotalLabel'|trans }}</span> {{ collection.subtotal|isotope_price }}</div>
+    {% block product_collection_actions %}{% endblock %}
+{% endblock %}

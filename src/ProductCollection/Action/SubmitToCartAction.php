@@ -10,7 +10,7 @@ use Isotope\Interfaces\IsotopeProductCollection;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 
-class GoToCartAction implements ProductCollectionActionInterface
+class SubmitToCartAction implements ProductCollectionActionInterface
 {
 
     public function __construct(
@@ -26,7 +26,7 @@ class GoToCartAction implements ProductCollectionActionInterface
 
     public function render(IsotopeProductCollection $collection, array $context): string
     {
-        return $this->twig->render('@Contao/isotope/product_collection_action/go_to_cart.html.twig');
+        return $this->twig->render('@Contao/isotope/product_collection_action/submit_to_cart.html.twig');
     }
 
     public function handle(IsotopeProductCollection $collection, array $context): ActionResult

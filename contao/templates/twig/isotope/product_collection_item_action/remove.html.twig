@@ -1,0 +1,10 @@
+{% trans_default_domain 'contao_default' %}
+{% from '@Contao/component/isotope_action.html.twig' import link %}
+
+{% set attributes = attrs()
+    .set('title', 'MSC.removeProductLinkTitle'|trans([item.name]))
+    .set('data-action', 'isotope--collection#linkAction')
+    .addClass('remove')
+%}
+
+{{ link(href, 'MSC.removeProductLinkText'|trans, attributes) }}

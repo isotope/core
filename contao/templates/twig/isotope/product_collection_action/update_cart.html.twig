@@ -1,4 +1,7 @@
 {% trans_default_domain 'contao_default' %}
 {% from '@Contao/component/isotope_action.html.twig' import button %}
 
-{{ button('update_cart', 'MSC.updateCartBT'|trans) }}
+{% set attributes = attrs()
+    .set('data-action', 'isotope--collection#formAction')
+%}
+{{ button('update_cart', 'MSC.updateCartBT'|trans, attributes) }}

@@ -1,13 +1,18 @@
-{% macro button(name, label, disabled = false) %}
-<button
-    type="submit"
-    name="_action"
-    value="{{ name }}"
-    class="submit {{ name }}"
-    {% if disabled %}disabled{% endif %}
->{{ label }}</button>
+{% macro button(name, label, attributes) %}
+    {% set attributes = attrs()
+        .set('type', 'submit')
+        .set('name', '_action')
+        .set('value', name)
+        .addClass(['submit', name])
+        .mergeWith(attributes)
+    %}
+    <button{{ attributes }}>{{ label }}</button>
 {% endmacro %}
 
-{% macro link(name, href, label) %}
-    <a href="{{ href }}" class="submit {{ name }}">{{ label }}</a>
+{% macro link(href, label, attributes) %}
+    {% set attributes = attrs()
+        .set('href', href)
+        .mergeWith(attributes)
+    %}
+    <a{{ attributes}}>{{ label }}</a>
 {% endmacro %}

@@ -18,6 +18,7 @@ use Contao\StringUtil;
 use Contao\System;
 use Isotope\Haste\Data\Plain;
 use Isotope\Interfaces\IsotopeProduct;
+use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopeProductWithOptions;
 use Isotope\Isotope;
 
@@ -72,6 +73,10 @@ class ProductCollectionItem extends Model
      */
     protected $blnLocked = false;
 
+    public function getCollection(): IsotopeProductCollection
+    {
+        return $this->getRelated('pid');
+    }
 
     /**
      * Check if collection item is available

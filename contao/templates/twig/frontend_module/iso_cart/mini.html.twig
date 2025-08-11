@@ -1,0 +1,12 @@
+{% trans_default_domain 'contao_default' %}
+{% extends '@Contao/frontend_module/iso_cart.html.twig' %}
+{% use '@Contao/isotope/collection/mini.html.twig' %}
+
+{% block product_collection_actions %}
+    <div class="cart">{{ isotope_product_collection_action('link_to_cart') }}</div>
+    <div class="checkout">{{ isotope_product_collection_action('link_to_checkout') }}</div>
+{% endblock %}
+
+{% block product_collection_item_actions %}
+    {{ isotope_product_collection_item_action('remove') }}
+{% endblock %}

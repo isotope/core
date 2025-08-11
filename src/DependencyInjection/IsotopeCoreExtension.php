@@ -14,6 +14,7 @@ use Isotope\CoreBundle\DependencyInjection\Attribute\AsIsotopeHook;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsPayment;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsProductAction;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsProductCollectionAction;
+use Isotope\CoreBundle\DependencyInjection\Attribute\AsProductCollectionItemAction;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsProductFilter;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsShipping;
 use Isotope\CoreBundle\ModelType\DocumentRegistry;
@@ -24,6 +25,8 @@ use Isotope\CoreBundle\Product\Action\ProductActionInterface;
 use Isotope\CoreBundle\Product\Action\ProductActionRegistry;
 use Isotope\CoreBundle\ProductCollection\Action\ProductCollectionActionInterface;
 use Isotope\CoreBundle\ProductCollection\Action\ProductCollectionActionRegistry;
+use Isotope\CoreBundle\ProductCollection\ItemAction\ProductCollectionItemActionInterface;
+use Isotope\CoreBundle\ProductCollection\ItemAction\ProductCollectionItemActionRegistry;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -67,6 +70,11 @@ class IsotopeCoreExtension extends Extension
             ->addTag('isotope.product_collection_action')
         ;
 
+        $container
+            ->registerForAutoconfiguration(ProductCollectionItemActionInterface::class)
+            ->addTag('isotope.product_collection_item_action')
+        ;
+
         $attributesForAutoconfiguration = [
             AsIsotopeHook::class => 'isotope.hook',
             AsProductFilter::class => 'isotope.product_filter',
@@ -77,6 +85,7 @@ class IsotopeCoreExtension extends Extension
             AsShipping::class => ShippingRegistry::TAG_NAME,
             AsProductAction::class => ProductActionRegistry::TAG_NAME,
             AsProductCollectionAction::class => ProductCollectionActionRegistry::TAG_NAME,
+            AsProductCollectionItemAction::class => ProductCollectionItemActionRegistry::TAG_NAME,
         ];
 
         foreach ($attributesForAutoconfiguration as $attributeClass => $tag) {
