@@ -25,7 +25,6 @@ use Isotope\Isotope;
 use Isotope\Message;
 use Isotope\Model\Product;
 use Isotope\Model\Product\AbstractProduct;
-use Isotope\RequestCache\CategoryFilter;
 use Contao\PageModel;
 
 
@@ -112,28 +111,8 @@ abstract class Module extends AbstractFrontendModule
      *
      * @return array|null
      */
-    protected function findCategories(array &$arrFilters = null)
+    protected function findCategories()
     {
-        if (null !== $arrFilters) {
-            $arrCategories = null;
-
-            foreach ($arrFilters as $k => $filter) {
-                if ($filter instanceof CategoryFilter) {
-                    unset($arrFilters[$k]);
-
-                    if (!\is_array($arrCategories)) {
-                        $arrCategories = $filter['value'];
-                    } else {
-                        $arrCategories = array_intersect($arrCategories, $filter['value']);
-                    }
-                }
-            }
-
-            if (\is_array($arrCategories)) {
-                return empty($arrCategories) ? array(0) : array_map('intval', $arrCategories);
-            }
-        }
-
         if (null !== $this->arrCategories) {
             return $this->arrCategories;
         }

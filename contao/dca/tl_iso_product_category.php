@@ -12,9 +12,6 @@ $GLOBALS['TL_DCA']['tl_iso_product_category'] = [
         'notEditable' => true,
         'notCopyable' => true,
         'notDeletable' => true,
-        'oncut_callback' => [
-            [Backend::class, 'truncateProductCache'],
-        ],
         'sql' => [
             'keys' => [
                 'id' => 'primary',

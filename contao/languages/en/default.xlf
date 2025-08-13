@@ -446,12 +446,6 @@
       <trans-unit id="MSC.activeStep">
         <source>active step: </source>
       </trans-unit>
-      <trans-unit id="MSC.productcacheLoading">
-        <source>Loading products...</source>
-      </trans-unit>
-      <trans-unit id="MSC.productcacheNoscript">
-        <source>Your browser does not support JavaScript. Please &lt;a href="%s"&gt;click here&lt;/a&gt; to load the product list.</source>
-      </trans-unit>
       <trans-unit id="MSC.loadingProductData">
         <source>Loading product data …</source>
       </trans-unit>

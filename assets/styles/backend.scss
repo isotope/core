@@ -272,27 +272,6 @@ h3.inherit,
     margin-right: 4px;
 }
 
-#ctrl_iso_rangeFields {
-    max-width: none;
-}
-#ctrl_iso_rangeFields td:nth-child(1n) {
-    width: 15%;
-}
-#ctrl_iso_rangeFields td:nth-child(2n),
-#ctrl_iso_rangeFields td:nth-child(3n) {
-    width: 30%;
-}
-
-#ctrl_iso_rangeFields td:nth-child(4n) {
-    width: 10%;
-}
-#ctrl_iso_rangeFields td:nth-child(5n) {
-    width: 10%;
-}
-#ctrl_iso_rangeFields td:nth-child(6n) {
-    width: 5%;
-}
-
 // Print styles for the back end order view
 @media print {
     #header,

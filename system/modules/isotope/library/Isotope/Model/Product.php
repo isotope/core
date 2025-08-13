@@ -14,7 +14,6 @@ namespace Isotope\Model;
 use Contao\Database;
 use Contao\Date;
 use Contao\DcaExtractor;
-use Contao\Model;
 use Contao\Model\Collection;
 use Contao\System;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
@@ -22,7 +21,6 @@ use Isotope\CoreBundle\Model\Attribute;
 use Isotope\CoreBundle\Model\ProductCategory;
 use Isotope\CoreBundle\Model\ProductType;
 use Isotope\Interfaces\IsotopeProduct;
-use Isotope\RequestCache\Filter;
 
 /**
  * The basic Isotope product model
@@ -469,98 +467,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
     {
         $arrOptions['group'] = static::getTable() . '.id' . (null === ($arrOptions['group'] ?? null) ? '' : ', '.$arrOptions['group']);
 
-        $objProducts = parent::find($arrOptions);
-
-        if (null === $objProducts) {
-            return null;
-        }
-
-        /** @var Filter[] $arrFilters */
-        $arrFilters = $arrOptions['filters'] ?? null;
-        $arrSorting = $arrOptions['sorting'] ?? null;
-
-        $hasFilters = \is_array($arrFilters) && 0 !== \count($arrFilters);
-        $hasSorting = \is_array($arrSorting) && 0 !== \count($arrSorting);
-
-        if ($hasFilters || $hasSorting) {
-
-            /** @var static[] $arrProducts */
-            $arrProducts = $objProducts->getModels();
-
-            if ($hasFilters) {
-                $arrProducts = array_filter($arrProducts, function ($objProduct) use ($arrFilters) {
-                    $arrGroups = [];
-
-                    foreach ($arrFilters as $objFilter) {
-                        $blnMatch = $objFilter->matches($objProduct);
-
-                        if ($objFilter->hasGroup()) {
-                            $arrGroups[$objFilter->getGroup()] = $arrGroups[$objFilter->getGroup()] ? : $blnMatch;
-                        } elseif (!$blnMatch) {
-                            return false;
-                        }
-                    }
-
-                    return !\in_array(false, $arrGroups, true);
-                });
-            }
-
-            // $arrProducts can be empty if the filter removed all records
-            if ($hasSorting && 0 !== \count($arrProducts)) {
-                $arrParam = array();
-                $arrData  = array();
-
-                foreach ($arrSorting as $strField => $arrConfig) {
-                    foreach ($arrProducts as $objProduct) {
-
-                        // Both SORT_STRING and SORT_REGULAR are case sensitive, strings starting with a capital letter
-                        // will come before strings starting with a lowercase letter. To perform a case insensitive
-                        // search, force the sorting order to be determined by a lowercase copy of the original value.
-
-                        // Temporary fix for price attribute (see #945)
-                        if ('price' === $strField) {
-                            if (null !== $objProduct->getPrice()) {
-                                $arrData[$strField][$objProduct->id] = $objProduct->getPrice()->getAmount();
-                            } else {
-                                $arrData[$strField][$objProduct->id] = 0;
-                            }
-
-                            continue;
-                        }
-
-                        if(
-                            $objProduct->hasVariants()
-                            && !$objProduct->isVariant()
-                            && \in_array($strField, $objProduct->getType()->getVariantAttributes(), true)
-                            && ($defaultVariant = Product::findDefaultVariantOfProduct($objProduct))
-                        ) {
-                            $arrData[$strField][$objProduct->id] = strtolower(
-                                str_replace('"', '', $defaultVariant->$strField)
-                            );
-
-                            continue;
-                        }
-
-                        $arrData[$strField][$objProduct->id] = strtolower(
-                            str_replace('"', '', $objProduct->$strField)
-                        );
-                    }
-
-                    $arrParam[] = &$arrData[$strField];
-                    $arrParam[] = $arrConfig[0];
-                    $arrParam[] = $arrConfig[1];
-                }
-
-                // Add product array as the last item.
-                // This will sort the products array based on the sorting of the passed in arguments.
-                $arrParam[] = &$arrProducts;
-                array_multisort(...$arrParam);
-            }
-
-            $objProducts = new Collection($arrProducts, static::$strTable);
-        }
-
-        return $objProducts;
+        return parent::find($arrOptions);
     }
 
     /**

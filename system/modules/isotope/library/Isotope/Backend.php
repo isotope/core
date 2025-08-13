@@ -18,38 +18,12 @@ use Contao\System;
 use Contao\Widget;
 use Isotope\Backend\Product\Permission;
 use Isotope\Model\Config;
-use Isotope\Model\ProductCache;
-use Isotope\Model\RequestCache;
 
 /**
  * Provide methods to handle Isotope back end components.
  */
 class Backend extends ContaoBackend
 {
-
-    /**
-     * Truncate the product cache table if a product is changed
-     * Second parameter and return value is to use the method as save_callback
-     *
-     * @param mixed $varValue
-     *
-     * @return mixed
-     */
-    public static function truncateProductCache($varValue = null)
-    {
-        ProductCache::purge();
-
-        return $varValue;
-    }
-
-    /**
-     * Truncate the request cache table
-     */
-    public static function truncateRequestCache()
-    {
-        RequestCache::purge();
-    }
-
     /**
      * Get array of subdivisions, delay loading of file if not necessary
      *

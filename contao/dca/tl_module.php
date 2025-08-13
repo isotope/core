@@ -347,9 +347,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_listingSortField'] = [
     'options_callback' => [Callback::class, 'getSortingFields'],
     'eval' => ['includeBlankOption' => true, 'tl_class' => 'clr w50'],
     'sql' => "varchar(255) NOT NULL default ''",
-    'save_callback' => [
-        [Backend::class, 'truncateProductCache'],
-    ],
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_listingSortDirection'] = [
@@ -417,10 +414,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_addressFields'] = [
         return $arrOptions;
     },
     'eval' => ['mandatory' => true, 'multiple' => true, 'tl_class' => 'clr'],
-    'sql' => 'blob NULL',
-];
-
-$GLOBALS['TL_DCA']['tl_module']['fields']['iso_productcache'] = [
     'sql' => 'blob NULL',
 ];
 

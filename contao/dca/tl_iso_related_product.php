@@ -16,9 +16,6 @@ $GLOBALS['TL_DCA']['tl_iso_related_product'] = [
         'onload_callback' => [
             [Callback::class, 'initDCA'],
         ],
-        'onsubmit_callback' => [
-            [Backend::class, 'truncateProductCache'],
-        ],
         'sql' => [
             'keys' => [
                 'id' => 'primary',

@@ -12,8 +12,6 @@
 namespace Isotope;
 
 use Contao\Controller;
-use Contao\Environment;
-use Contao\Input;
 use Contao\System;
 use Contao\Widget;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
@@ -25,7 +23,6 @@ use Isotope\Model\Config;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCollection\Cart;
 use Isotope\Model\ProductPrice;
-use Isotope\Model\RequestCache;
 use Isotope\Model\TaxClass;
 
 
@@ -58,13 +55,6 @@ class Isotope extends Controller
      */
     protected static $objConfig;
 
-    /**
-     * Current request cache instance
-     * @var RequestCache
-     */
-    protected static $objRequestCache;
-
-
     public static function initialize()
     {
         if (static::$blnInitialized === false) {
@@ -74,31 +64,6 @@ class Isotope extends Controller
             // Make sure field data is available
             Controller::loadDataContainer('tl_iso_product');
             System::loadLanguageFile('tl_iso_product');
-
-            // Initialize request cache for product list filters
-            if (Input::get('isorc') != '') {
-                if (static::getRequestCache()->isEmpty()) {
-                    global $objPage;
-                    $objPage->noSearch = 1;
-
-                } elseif (static::getRequestCache()->id != Input::get('isorc')) {
-                    unset($_GET['isorc']);
-
-                    // Unset the language parameter
-                    if ($GLOBALS['TL_CONFIG']['addLanguageToUrl']) {
-                        unset($_GET['language']);
-                    }
-
-                    $strQuery = http_build_query($_GET);
-                    Controller::redirect(
-                        preg_replace(
-                            '/\?.*$/i',
-                            '',
-                            Environment::get('request') . ($strQuery ? '?' . $strQuery : '')
-                        )
-                    );
-                }
-            }
         }
     }
 
@@ -164,32 +129,6 @@ class Isotope extends Controller
     public static function setConfig(Config $objConfig = null)
     {
         static::$objConfig = $objConfig;
-    }
-
-    /**
-     * Get active request cache
-     *
-     * @return RequestCache
-     */
-    public static function getRequestCache()
-    {
-        $cart = static::getCart();
-
-        // The system has not been initialized yet, return a temporary empty object
-        if (null === $cart) {
-            return new RequestCache();
-        }
-
-        if (null === static::$objRequestCache) {
-            static::$objRequestCache = RequestCache::findByIdAndStore(Input::get('isorc'), $cart->store_id);
-
-            if (null === static::$objRequestCache) {
-                static::$objRequestCache = new RequestCache();
-                static::$objRequestCache->store_id = $cart->store_id;
-            }
-        }
-
-        return static::$objRequestCache;
     }
 
     /**

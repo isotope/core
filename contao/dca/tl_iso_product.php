@@ -25,9 +25,6 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
         'onload_callback' => [
             [Permission::class, 'check'],
         ],
-        'onsubmit_callback' => [
-            [Backend::class, 'truncateProductCache'],
-        ],
         'sql' => [
             'keys' => [
                 'id' => 'primary',
@@ -302,9 +299,6 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'eval' => ['doNotCopy' => true, 'tl_class' => 'clr'],
             'attributes' => ['legend' => 'publish_legend', 'fixed' => true, 'variant_fixed' => true, 'systemColumn' => true],
             'sql' => "char(1) NOT NULL default ''",
-            'save_callback' => [
-                [Backend::class, 'truncateProductCache'],
-            ],
         ],
         'start' => [
             'inputType' => 'text',

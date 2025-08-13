@@ -36,7 +36,6 @@ use Isotope\Model\Download;
 use Isotope\Model\Label;
 use Isotope\Model\Product;
 use Isotope\Model\Product\Standard as StandardProduct;
-use Isotope\Model\ProductCache;
 use Isotope\Model\ProductCollection;
 use Isotope\Model\ProductCollection\Cart as CartCollection;
 use Isotope\Model\ProductCollection\Order;
@@ -50,7 +49,6 @@ use Isotope\Model\ProductCollectionSurcharge\Tax;
 use Isotope\Model\ProductPrice;
 use Isotope\Model\RelatedCategory;
 use Isotope\Model\RelatedProduct;
-use Isotope\Model\RequestCache;
 use Isotope\Model\TaxClass;
 use Isotope\Model\TaxRate;
 use Isotope\Module\AddressBook;
@@ -216,11 +214,9 @@ $GLOBALS['TL_MODELS'][ProductCollectionItem::getTable()] = ProductCollectionItem
 $GLOBALS['TL_MODELS'][ProductCollectionLog::getTable()] = ProductCollectionLog::class;
 $GLOBALS['TL_MODELS'][ProductCollectionSurcharge::getTable()] = ProductCollectionSurcharge::class;
 $GLOBALS['TL_MODELS'][ProductPrice::getTable()] = ProductPrice::class;
-$GLOBALS['TL_MODELS'][ProductCache::getTable()] = ProductCache::class;
 $GLOBALS['TL_MODELS'][ProductType::getTable()] = ProductType::class;
 $GLOBALS['TL_MODELS'][RelatedCategory::getTable()] = RelatedCategory::class;
 $GLOBALS['TL_MODELS'][RelatedProduct::getTable()] = RelatedProduct::class;
-$GLOBALS['TL_MODELS'][RequestCache::getTable()] = RequestCache::class;
 $GLOBALS['TL_MODELS'][Shipping::getTable()] = Shipping::class;
 $GLOBALS['TL_MODELS'][TaxClass::getTable()] = TaxClass::class;
 $GLOBALS['TL_MODELS'][TaxRate::getTable()] = TaxRate::class;
@@ -257,19 +253,6 @@ $GLOBALS['TL_PERMISSIONS'][] = 'iso_tax_classp';
 $GLOBALS['TL_PERMISSIONS'][] = 'iso_configs';
 $GLOBALS['TL_PERMISSIONS'][] = 'iso_configp';
 $GLOBALS['TL_PERMISSIONS'][] = 'iso_member_groups';
-
-/*
- * Allow to delete the cache in maintenance module
- */
-$GLOBALS['TL_PURGE']['tables']['iso_productcache'] = [
-    'callback' => [Backend::class, 'truncateProductCache'],
-    'affected' => ['tl_iso_productcache'],
-];
-
-$GLOBALS['TL_PURGE']['tables']['iso_requestcache'] = [
-    'callback' => [Backend::class, 'truncateRequestCache'],
-    'affected' => ['tl_iso_requestcache'],
-];
 
 /*
  * Number formatting

@@ -18,7 +18,6 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
             [Callback::class, 'checkPermission'],
         ],
         'onsubmit_callback' => [
-            [Backend::class, 'truncateProductCache'],
             [Callback::class, 'convertCurrencies'],
         ],
         'sql' => [

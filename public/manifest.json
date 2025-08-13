@@ -1,5 +1,5 @@
 {
-  "backend.css": "/bundles/isotopecore/backend.58653a09.css",
+  "backend.css": "/bundles/isotopecore/backend.976274b1.css",
   "backend.js": "/bundles/isotopecore/backend.02f28715.js",
   "isotope.css": "/bundles/isotopecore/isotope.2f465aeb.css",
   "isotope.js": "/bundles/isotopecore/isotope.51b7fc86.js",
@@ -64,7 +64,7 @@
   "plugins/noUiSlider/nouislider.tooltips.css": "/bundles/isotopecore/plugins/noUiSlider/nouislider.tooltips.css",
   "images/sitemap.png": "/bundles/isotopecore/images/sitemap.png",
   "images/module.svg": "/bundles/isotopecore/images/module.svg",
-  "backend.58653a09.css.map": "/bundles/isotopecore/backend.58653a09.css.map",
+  "backend.976274b1.css.map": "/bundles/isotopecore/backend.976274b1.css.map",
   "backend.02f28715.js.map": "/bundles/isotopecore/backend.02f28715.js.map",
   "isotope.2f465aeb.css.map": "/bundles/isotopecore/isotope.2f465aeb.css.map",
   "isotope.51b7fc86.js.map": "/bundles/isotopecore/isotope.51b7fc86.js.map"
