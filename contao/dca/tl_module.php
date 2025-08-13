@@ -5,9 +5,7 @@ use Contao\System;
 use Isotope\Backend;
 use Isotope\Backend\Config\Callback as ConfigCallback;
 use Isotope\Backend\Module\Callback;
-use Isotope\Backend\Module\CumulativeFields;
 use Isotope\Backend\Module\OrderConditionFields;
-use Isotope\Backend\Module\RangeFields;
 use Isotope\CoreBundle\Model\Gallery;
 use Isotope\CoreBundle\Model\Payment;
 use Isotope\CoreBundle\Model\Shipping;
@@ -32,9 +30,7 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_orderhistory'] = '{title_legend
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_orderdetails'] = '{title_legend},name,headline,type;{config_legend},iso_loginRequired;{redirect_legend:hide},iso_cart_jumpTo;{template_legend},customTpl,iso_collectionTpl,iso_orderCollectionBy,iso_gallery,iso_includeMessages;{protected_legend:hide},protected;{expert_legend:hide},cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_configswitcher'] = '{title_legend},name,headline,type;{config_legend},iso_config_ids;{template_legend},customTpl,iso_includeMessages;{protected_legend:hide},protected;{expert_legend:hide},cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productfilter'] = '{title_legend},name,headline,type;{config_legend},iso_category_scope,iso_enableLimit,iso_filterFields,iso_filterHideSingle,iso_searchFields,iso_searchExact,iso_searchAutocomplete,iso_sortingFields,iso_listingSortField,iso_listingSortDirection;{template_legend},customTpl,iso_includeMessages,iso_hide_list;{redirect_legend},jumpTo,iso_link_primary;{reference_legend:hide},defineRoot;{protected_legend:hide},protected;{expert_legend:hide},cssID,space';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_cumulativefilter'] = '{title_legend},name,headline,type;{config_legend},iso_category_scope,iso_cumulativeFields,iso_filterHideSingle,iso_listingSortField,iso_listingSortDirection;{template_legend},customTpl,navigationTpl,iso_includeMessages,iso_hide_list;{redirect_legend},jumpTo;{reference_legend:hide},defineRoot;{protected_legend:hide},protected;{expert_legend:hide},cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_categoryfilter'] = '{title_legend},name,headline,type;{nav_legend},levelOffset,showLevel,showProtected,showHidden;{reference_legend:hide},defineRoot;{template_legend},customTpl,iso_includeMessages,iso_hide_list;{redirect_legend},jumpTo;{protected_legend:hide},protected;{expert_legend:hide},cssID,space';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_rangefilter'] = '{title_legend},name,headline,type;{config_legend},iso_category_scope,iso_rangeFields;{template_legend},customTpl,navigationTpl,iso_includeMessages,iso_hide_list;{redirect_legend},jumpTo;{reference_legend:hide},defineRoot;{protected_legend:hide},protected;{expert_legend:hide},cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_addressbook'] = '{title_legend},name,headline,type;{config_legend},nc_notification;{template_legend},customTpl,memberTpl,iso_includeMessages;{protected_legend:hide},protected;{expert_legend:hide},cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_relatedproducts'] = '{title_legend},name,headline,type;{config_legend},iso_related_categories,numberOfItems,perPage,iso_listingSortField,iso_listingSortDirection;{redirect_legend},iso_addProductJumpTo;{template_legend:hide},customTpl,iso_list_layout,iso_gallery,iso_use_quantity,iso_disable_options,iso_includeMessages,iso_emptyMessage,iso_buttons;{protected_legend:hide},protected;{expert_legend:hide},cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_messages'] = '{title_legend},name,headline,type;{template_legend},customTpl;{protected_legend:hide},protected;{expert_legend:hide},cssID,space';
@@ -279,34 +275,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_filterFields'] = [
     'options_callback' => [Callback::class, 'getFilterFields'],
     'eval' => ['multiple' => true, 'tl_class' => 'clr w50 w50h'],
     'sql' => 'blob NULL',
-];
-
-$GLOBALS['TL_DCA']['tl_module']['fields']['iso_cumulativeFields'] = [
-    'inputType' => 'multiColumnWizard',
-    'eval' => [
-        'mandatory' => true,
-        'dragAndDrop' => true,
-        'tl_class' => 'clr',
-        'columnsCallback' => [CumulativeFields::class, 'getColumns'],
-    ],
-    'sql' => 'blob NULL',
-    'save_callback' => [
-        [CumulativeFields::class, 'validateConfiguration'],
-    ],
-];
-
-$GLOBALS['TL_DCA']['tl_module']['fields']['iso_rangeFields'] = [
-    'inputType' => 'multiColumnWizard',
-    'eval' => [
-        'mandatory' => true,
-        'dragAndDrop' => true,
-        'tl_class' => 'clr',
-        'columnsCallback' => [RangeFields::class, 'getColumns'],
-    ],
-    'sql' => 'blob NULL',
-    'save_callback' => [
-        [RangeFields::class, 'validateConfiguration'],
-    ],
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_filterHideSingle'] = [

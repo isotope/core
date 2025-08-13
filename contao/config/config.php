@@ -58,12 +58,10 @@ use Isotope\Module\Cart;
 use Isotope\Module\CartAddress;
 use Isotope\Module\Checkout;
 use Isotope\Module\ConfigSwitcher;
-use Isotope\Module\CumulativeFilter;
 use Isotope\Module\Messages;
 use Isotope\Module\OrderDetails;
 use Isotope\Module\OrderHistory;
 use Isotope\Module\ProductVariantList;
-use Isotope\Module\RangeFilter;
 use Isotope\Module\ShippingCalculator;
 use Isotope\VatNoValidator\EuViesValidator;
 use Isotope\Widget\InheritCheckBox;
@@ -100,8 +98,6 @@ $GLOBALS['FE_MOD']['isotope'] = [
     'iso_productvariantlist' => ProductVariantList::class,
     'iso_cart' => Cart::class,
     'iso_checkout' => Checkout::class,
-    'iso_cumulativefilter' => CumulativeFilter::class,
-    'iso_rangefilter' => RangeFilter::class,
     'iso_orderhistory' => OrderHistory::class,
     'iso_orderdetails' => OrderDetails::class,
     'iso_configswitcher' => ConfigSwitcher::class,

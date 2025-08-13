@@ -6,10 +6,9 @@ namespace Isotope\CoreBundle\Attribute;
 
 use Doctrine\DBAL\Types\Types;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsAttribute;
-use Isotope\Model\Product;
 
 #[AsAttribute]
-class TextAttribute extends AbstractAttribute implements RangeAttributeInterface
+class TextAttribute extends AbstractAttribute
 {
     use TranslatableTrait;
 
@@ -77,16 +76,6 @@ class TextAttribute extends AbstractAttribute implements RangeAttributeInterface
         $field['eval']['maxlength'] = $this->maxlength;
         $field['eval']['rgxp'] = $this->rgxp;
         $field['eval']['datepicker'] = $this->datepicker;
-    }
-
-    public function supportsRangeFilter(): bool
-    {
-        return 'digit' === $this->rgxp;
-    }
-
-    public function getValueRange(Product $product): array
-    {
-        return [$this->getValue($product)];
     }
 
     protected function getSqlDefinition(): array|string
