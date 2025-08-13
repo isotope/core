@@ -5,19 +5,8 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Controller\FrontendModule;
 
 use Contao\CoreBundle\DependencyInjection\Attribute\AsFrontendModule;
-use Contao\CoreBundle\Security\ContaoCorePermissions;
-use Contao\CoreBundle\String\HtmlAttributes;
 use Contao\CoreBundle\Twig\FragmentTemplate;
-use Contao\Database;
-use Contao\Date;
-use Contao\FrontendTemplate;
 use Contao\ModuleModel;
-use Contao\PageModel;
-use Contao\StringUtil;
-use Contao\System;
-use Isotope\CoreBundle\Util\NavigationBuilder;
-use Isotope\CoreBundle\Util\PageHelper;
-use Isotope\Haste\Util\Url;
 use Isotope\Model\Product;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,9 +29,6 @@ class CategoryFilterController extends AbstractFrontendModuleController
             $level = ($model->levelOffset > 0) ? $model->levelOffset : 0;
         }
 
-        $currentIds = [];
-        $allIds = [];
-
         $template->menuOptions = [
             'filterId' => 'fmd'.$model->id,
             'rootPage' => $trail[$level] ?? 0,
@@ -50,8 +36,6 @@ class CategoryFilterController extends AbstractFrontendModuleController
             'showHidden' => $model->showHidden,
             'showProtected' => $model->showProtected,
         ];
-
-        //$template->items = $this->renderFilterTree($trail[$level], 1, $model->showLevel, $currentIds, $trail, $allIds);
 
         return $template->getResponse();
     }
