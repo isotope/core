@@ -4,18 +4,12 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\DependencyInjection\Compiler;
 
-use Isotope\CoreBundle\EventListener\DataContainer\ModelTypeOptionsListener;
-use Isotope\CoreBundle\Product\Action\ProductActionRegistry;
-use Symfony\Component\DependencyInjection\Argument\ServiceClosureArgument;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PriorityTaggedServiceTrait;
 use Symfony\Component\DependencyInjection\Compiler\ServiceLocatorTagPass;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Exception\LogicException;
-use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\DependencyInjection\ServiceLocator;
 
 /**
  * @internal
