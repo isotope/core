@@ -5,15 +5,14 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\DependencyInjection\Compiler;
 
 use Isotope\CoreBundle\EventListener\DataContainer\ModelTypeOptionsListener;
-use Symfony\Component\DependencyInjection\Argument\ServiceClosureArgument;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PriorityTaggedServiceTrait;
+use Symfony\Component\DependencyInjection\Compiler\ServiceLocatorTagPass;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Exception\LogicException;
 use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\DependencyInjection\ServiceLocator;
 
 /**
  * @internal
@@ -41,16 +40,14 @@ class RegisterModelTypePass implements CompilerPassInterface
             foreach ($definition->getTag($this->tagName) as $attributes) {
                 $type = $this->getType($definition, $attributes);
                 $types[] = $type;
-                $factories[$type] = new ServiceClosureArgument(new Reference($this->getFactory($definition, $attributes)));
+                $factories[$type] = new Reference($this->getFactory($definition, $attributes));
             }
 
             $container->removeDefinition((string) $reference);
         }
 
         $registry = $container->getDefinition($this->registryId);
-        $locator = new Definition(ServiceLocator::class);
-        $locator->setArguments([$factories]);
-        $registry->setArgument(0, $locator);
+        $registry->setArgument(0, ServiceLocatorTagPass::register($container, $factories));
 
         if ([] === $this->dcaOptions) {
             return;
