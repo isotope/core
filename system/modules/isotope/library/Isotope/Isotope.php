@@ -309,42 +309,6 @@ class Isotope extends Controller
     }
 
     /**
-     * Validate a custom regular expression
-     *
-     * @param string  $strRegexp
-     * @param mixed   $varValue
-     *
-     * @return bool
-     */
-    public static function validateRegexp($strRegexp, $varValue, Widget $objWidget)
-    {
-        switch ($strRegexp) {
-            case 'price':
-                if (!preg_match('/^[\d .-]*$/', $varValue)) {
-                    $objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR']['digit'], $objWidget->label));
-                }
-
-                return true;
-
-            case 'discount':
-                if (!preg_match('/^[-+]\d+(\.\d+)?%?$/', $varValue)) {
-                    $objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR']['discount'], $objWidget->label));
-                }
-
-                return true;
-
-            case 'surcharge':
-                if (!preg_match('/^-?\d+(\.\d+)?%?$/', $varValue)) {
-                    $objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR']['surcharge'], $objWidget->label));
-                }
-
-                return true;
-        }
-
-        return false;
-    }
-
-    /**
      * Format options label and value
      *
      * @param string $strTable
