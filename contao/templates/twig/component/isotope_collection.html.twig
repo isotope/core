@@ -1,0 +1,19 @@
+{% block item_name %}
+    {% set href = content_url(item) %}
+    {% if href %}
+        <a href="{{ href }}">{{ item.name }}</a>
+    {% else %}
+        {{ item.name }}
+    {% endif %}
+{% endblock %}
+
+{% block item_attributes %}
+    {% set options = item.options %}
+    {% if options is not empty %}
+        <ul>
+            {% for attribute, value in item.options %}
+                <li><strong>{{ isotope_attribute_label(attribute) }}:</strong> {{ isotope_attribute_value(attribute, value) }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

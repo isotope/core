@@ -1,6 +1,15 @@
 {% trans_default_domain 'contao_default' %}
 {% for item in items %}
-{{ item.name }}{% if item.attributes is not empty %} (<?php $i=0; foreach ($item['attributes'] as $name => $value): ?><?= ($i++==0 ? '' : ', ').$this->attributeLabel($name) ?>: <?= $this->attributeValue($name, $value) ?><?php endforeach; ?>){% endif %}: {{ item.quantity}} x {{ item.price }} = {{ item.total }}
+    {{- item.name }}
+    {%- set options = item.options -%}
+    {%- if options is not empty -%}
+        (
+            {% for attribute, value in item.options %}
+                {% if not loop.first %}, {% endif %}
+                {{ isotope_attribute_label(attribute) }}: {{ isotope_attribute_value(attribute, value) }}
+            {% endfor %}
+        )
+    {%- endif -%}
 {% endfor %}
 --------------------
 {{ 'MSC.subTotalLabel'|trans }}: {{ subtotal }}

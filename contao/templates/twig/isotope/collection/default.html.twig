@@ -1,4 +1,5 @@
 {% trans_default_domain 'contao_default' %}
+{% use '@Contao/component/isotope_collection.html.twig' %}
 
 {% block product_collection %}
     {% if block("product_collection_actions") is defined %}
@@ -23,23 +24,8 @@
                                 <td class="image"><?= $this->getGallery('images', $item['item'])->generateMainImage() ?></td>
                                 <?php endif; ?>#}
                                 <td class="name">
-                                    {% block item_name %}
-                                        {% set href = content_url(item) %}
-                                        {% if href %}
-                                            <a href="{{ href }}">{{ item.name }}</a>
-                                        {% else %}
-                                            {{ item.name }}
-                                        {% endif %}
-                                    {% endblock %}
-                                    {% block item_attributes %}
-                                        {#<?php if(!empty($item['attributes'])): ?>
-                                        <ul>
-                                            <?php foreach($item['attributes'] as $name => $value): ?>
-                                            <li><strong><?= $this->attributeLabel($name) ?>:</strong> <?= $this->attributeValue($name, $value, ['html'=>true, 'item'=>$item['item']]) ?></li>
-                                            <?php endforeach; ?>
-                                        </ul>
-                                        <?php endif; ?>#}
-                                    {% endblock %}
+                                    {{ block('item_name') }}
+                                    {{ block('item_attributes') }}
                                 </td>
                                 <td class="quantity">
                                     {% if editable|default %}

@@ -13,11 +13,6 @@ namespace Isotope;
 
 use Contao\Controller;
 use Contao\System;
-use Contao\Widget;
-use Isotope\CoreBundle\Attribute\AttributeRegistry;
-use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
-use Isotope\Haste\Data\Plain;
-use Isotope\Haste\Util\Format;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Config;
 use Isotope\Model\Product;
@@ -284,114 +279,5 @@ class Isotope extends Controller
         }
 
         return $strCurrency . $space . $strPrice;
-    }
-
-    /**
-     * Format options label and value
-     *
-     * @param string $strTable
-     * @param bool   $blnSkipEmpty
-     *
-     * @return array
-     * @deprecated Deprecated since Isotope 2.4, to be removed in Isotope 3.0
-     */
-    public static function formatOptions(array $arrData, $strTable = 'tl_iso_product', $blnSkipEmpty = true)
-    {
-        $arrOptions = array();
-
-        foreach ($arrData as $field => $value) {
-            if ($blnSkipEmpty && ($value == '' || $value == '-')) {
-                continue;
-            }
-
-            $arrOptions[$field] = array
-            (
-                'label' => Format::dcaLabel($strTable, $field),
-                'value' => \Contao\System::getContainer()->get('contao.insert_tag.parser')->replace(Format::dcaValue($strTable, $field, $value)),
-            );
-        }
-
-        return $arrOptions;
-    }
-
-    /**
-     * Format product configuration using \Haste\Data
-     *
-     * @param IsotopeProduct|Product $objProduct
-     *
-     * @return array
-     * @deprecated Deprecated since Isotope 2.4, to be removed in Isotope 3.0
-     */
-    public static function formatProductConfiguration(array $arrConfig, IsotopeProduct $objProduct)
-    {
-        Product::setActive($objProduct);
-
-        $strTable = Product::getTable();
-
-        /** @var AttributeRegistry $attributeRegistry */
-        $attributeRegistry = System::getContainer()->get(AttributeRegistry::class);
-
-        foreach ($arrConfig as $k => $v) {
-            if (($objAttribute = $attributeRegistry->get($k)) !== null
-                && $objAttribute instanceof OptionsAttributeInterface
-            ) {
-                /** @var Widget $strClass */
-                $strClass = $objAttribute->getFrontendWidget();
-                $arrField = $strClass::getAttributesFromDca(
-                    $GLOBALS['TL_DCA'][$strTable]['fields'][$k],
-                    $k,
-                    $v,
-                    $k,
-                    $strTable,
-                    $objProduct
-                );
-
-                $arrOptions = array();
-                $values     = $v;
-
-                if (!empty($arrField['options']) && \is_array($arrField['options'])) {
-
-                    if (!\is_array($values)) {
-                        $values = array($values);
-                    }
-
-                    $arrOptions = array_filter(
-                        $arrField['options'],
-                        function($option) use (&$values) {
-                            if (($pos = array_search($option['value'], $values)) !== false) {
-                                unset($values[$pos]);
-
-                                return true;
-                            }
-
-                            return false;
-                        }
-                    );
-
-                    $arrOptions = array_column($arrOptions, 'label');
-
-                    if (!empty($values)) {
-                        $arrOptions = array_merge($arrOptions, $values);
-                    }
-                }
-
-                $formatted = implode(', ', $arrOptions);
-
-            } else {
-                $formatted = Format::dcaValue($strTable, $k, $v);
-            }
-
-            $arrConfig[$k] = new Plain(
-                $v,
-                Format::dcaLabel($strTable, $k),
-                array (
-                    'formatted' => \Contao\System::getContainer()->get('contao.insert_tag.parser')->replace($formatted),
-                )
-            );
-        }
-
-        Product::unsetActive();
-
-        return $arrConfig;
     }
 }

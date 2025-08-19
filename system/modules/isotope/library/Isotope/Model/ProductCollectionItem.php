@@ -11,16 +11,13 @@
 
 namespace Isotope\Model;
 
-use Contao\CoreBundle\Monolog\ContaoContext;
 use Contao\Database;
 use Contao\Model;
 use Contao\StringUtil;
 use Contao\System;
-use Isotope\Haste\Data\Plain;
-use Isotope\Interfaces\IsotopeProduct;
+use Isotope\CoreBundle\ModelType\ProductRegistry;
+use Isotope\CoreBundle\Product\ProductInterface;
 use Isotope\Interfaces\IsotopeProductCollection;
-use Isotope\Interfaces\IsotopeProductWithOptions;
-use Isotope\Isotope;
 
 
 /**
@@ -230,18 +227,6 @@ class ProductCollectionItem extends Model
     /**
      * Returns key-value array for variant-enabled and customer editable attributes.
      *
-     * @return array
-     *
-     * @deprecated Use getOptions()
-     */
-    public function getAttributes()
-    {
-        return $this->getOptions();
-    }
-
-    /**
-     * Returns key-value array for variant-enabled and customer editable attributes.
-     *
      * @return  array
      */
     public function getOptions()
@@ -249,33 +234,6 @@ class ProductCollectionItem extends Model
         $arrConfig = StringUtil::deserialize($this->configuration);
 
         return \is_array($arrConfig) ? $arrConfig : [];
-    }
-
-    /**
-     * Get product configuration
-     *
-     * @return array
-     *
-     * @deprecated Deprecated since Isotope 2.4, to be removed in Isotope 3.0. Use getOptions() instead.
-     */
-    public function getConfiguration()
-    {
-        $arrConfig = StringUtil::deserialize($this->configuration);
-
-        if (empty($arrConfig) || !\is_array($arrConfig)) {
-            return array();
-        }
-
-        if ($this->hasProduct()) {
-            return Isotope::formatProductConfiguration($arrConfig, $this->getProduct());
-
-        } else {
-            foreach ($arrConfig as $k => $v) {
-                $arrConfig[$k] = new Plain($v, $k);
-            }
-
-            return $arrConfig;
-        }
     }
 
     /**

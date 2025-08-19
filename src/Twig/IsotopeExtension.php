@@ -36,6 +36,8 @@ class IsotopeExtension extends AbstractExtension
             new TwigFunction('isotope_product_action', [ActionRuntime::class, 'renderProductAction'], ['needs_context' => true, 'is_safe' => ['html']]),
             new TwigFunction('isotope_product_collection_action', [ActionRuntime::class, 'renderProductCollectionAction'], ['needs_context' => true, 'is_safe' => ['html']]),
             new TwigFunction('isotope_product_collection_item_action', [ActionRuntime::class, 'renderProductCollectionItemAction'], ['needs_context' => true, 'is_safe' => ['html']]),
+            new TwigFunction('isotope_attribute_label', [AttributeRuntime::class, 'getLabel']),
+            new TwigFunction('isotope_attribute_value', [AttributeRuntime::class, 'getValue']),
             new TwigFunction('isotope_gallery', [GalleryRuntime::class, 'get'], ['needs_context' => true]),
         ];
     }
