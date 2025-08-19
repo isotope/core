@@ -55,7 +55,7 @@ class PriceListener extends AbstractSubtableListener
     #[AsCallback('tl_iso_product', 'fields.price.save')]
     public function save(mixed $value, DC_Table $dc): void
     {
-        if ($this->saveValueForProduct(StringUtil::deserialize($value, true), (int) $dc->id)) {
+        if ($this->saveValue(StringUtil::deserialize($value, true), (int) $dc->id)) {
             $dc->createNewVersion = true;
         }
     }
