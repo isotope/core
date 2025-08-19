@@ -190,7 +190,7 @@ class SalesProduct extends Sales
 
             foreach ($arrColumns as $i => $column) {
                 $arrRow[$i + 1] = array(
-                    'value' => Isotope::formatPriceWithCurrency($arrProduct[$column] ?? 0).(isset($arrProduct[$column.'_quantity']) ? '<br><span class="variant">'.Isotope::formatItemsString($arrProduct[$column.'_quantity']).'</span>' : ''),
+                    'value' => Isotope::formatPriceWithCurrency($arrProduct[$column] ?? 0).(isset($arrProduct[$column.'_quantity']) ? '<br><span class="variant">'.$this->formatItemsString($arrProduct[$column.'_quantity']).'</span>' : ''),
                 );
 
                 $arrFooter[$i + 1] = array(
@@ -200,7 +200,7 @@ class SalesProduct extends Sales
             }
 
             $arrRow[$i + 2] = array(
-                'value' => Isotope::formatPriceWithCurrency($arrProduct['total']).(($arrProduct['quantity'] !== null) ? '<br><span class="variant">'.Isotope::formatItemsString($arrProduct['quantity']).'</span>' : ''),
+                'value' => Isotope::formatPriceWithCurrency($arrProduct['total']).(($arrProduct['quantity'] !== null) ? '<br><span class="variant">'.$this->formatItemsString($arrProduct['quantity']).'</span>' : ''),
             );
 
             $arrFooter[$i + 2] = array(
@@ -214,7 +214,7 @@ class SalesProduct extends Sales
         }
 
         for ($i = 1, $iMax = \count($arrFooter); $i < $iMax; $i++) {
-            $arrFooter[$i]['value'] = Isotope::formatPriceWithCurrency($arrFooter[$i]['total']).'<br><span class="variant">'.Isotope::formatItemsString($arrFooter[$i]['quantity']).'</span>';
+            $arrFooter[$i]['value'] = Isotope::formatPriceWithCurrency($arrFooter[$i]['total']).'<br><span class="variant">'.$this->formatItemsString($arrFooter[$i]['quantity']).'</span>';
             unset($arrFooter[$i]['total']);
         }
 
@@ -289,5 +289,27 @@ class SalesProduct extends Sales
         );
 
         return $arrHeader;
+    }
+
+    /**
+     * Format the number of items and return the items string
+     *
+     * @param int $intItems
+     *
+     * @return string
+     */
+    private function formatItemsString($intItems)
+    {
+        if ($intItems == 1) {
+            return $GLOBALS['TL_LANG']['MSC']['productSingle'];
+        }
+
+        $arrFormat = $GLOBALS['ISO_NUM'][Isotope::getConfig()->currencyFormat];
+
+        if (\is_array($arrFormat)) {
+            $intItems = number_format($intItems, 0, $arrFormat[1], $arrFormat[2]);
+        }
+
+        return sprintf($GLOBALS['TL_LANG']['MSC']['productMultiple'], $intItems);
     }
 }
