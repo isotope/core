@@ -19,8 +19,8 @@ class AbstractModelTypeRegistry
      * @param ServiceProviderInterface<ModelTypeFactoryInterface<TType, TModel>> $factories
      */
     public function __construct(
-        private readonly ServiceProviderInterface $factories,
-        private readonly string $interface,
+        protected readonly ServiceProviderInterface $factories,
+        protected readonly string $interface,
     ) {
     }
 
@@ -33,8 +33,8 @@ class AbstractModelTypeRegistry
     {
         return match (true) {
             null === $modelOrCollection => null,
-            $modelOrCollection instanceof Collection => array_map(fn ($m) => $this->create($m), $modelOrCollection->getModels()),
-            \is_array($modelOrCollection) => array_map(fn ($m) => $this->create($m), $modelOrCollection),
+            $modelOrCollection instanceof Collection => array_map(fn ($m) => $this->get($m), $modelOrCollection->getModels()),
+            \is_array($modelOrCollection) => array_map(fn ($m) => $this->get($m), $modelOrCollection),
             default => $this->create($modelOrCollection),
         };
     }
@@ -44,7 +44,7 @@ class AbstractModelTypeRegistry
      *
      * @return TType
      */
-    private function create(Model $model): object
+    protected function create(Model $model): object
     {
         try {
             $factory = $this->factories->get($model->type);

@@ -234,41 +234,4 @@ abstract class AbstractProduct extends Product
 
         return $blnPublished ? $categories->getPublishedForProduct($this) : $categories->getForProduct($this);
     }
-
-    /**
-     * Gets the CSS ID for this product
-     *
-     * @return string|null
-     */
-    public function getCssId()
-    {
-        $css = StringUtil::deserialize($this->cssID, true);
-
-        return ($css[0] ?? null) ? ' id="' . $css[0] . '"' : null;
-    }
-
-    /**
-     * Gets the CSS classes for this product
-     *
-     * @return string
-     */
-    public function getCssClass()
-    {
-        $classes = ['product'];
-
-        $arrCSS = StringUtil::deserialize($this->cssID, true);
-        if (!empty($arrCSS[1])) {
-            $classes[] = (string) $arrCSS[1];
-        }
-
-        if (null !== ($type = $this->getType()) && !empty($type->cssClass)) {
-            $classes[] = $type->cssClass;
-        }
-
-        if ($this->alias === Input::getAutoItem('product', false, true)) {
-            $classes[] = 'active';
-        }
-
-        return implode(' ', $classes);
-    }
 }

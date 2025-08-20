@@ -3,13 +3,8 @@
 use Contao\DataContainer;
 use Contao\DC_Table;
 use Contao\System;
-use Isotope\Backend;
-use Isotope\Backend\ProductType\AttributeWizard;
 use Isotope\Backend\ProductType\Callback;
 use Isotope\Backend\ProductType\Label;
-use Isotope\Backend\ProductType\Permission;
-use Isotope\CoreBundle\Model\Gallery;
-use Isotope\Model\Product;
 
 $GLOBALS['TL_DCA']['tl_iso_producttype'] = [
     'config' => [
@@ -64,7 +59,6 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = [
             'filter' => true,
             'inputType' => 'select',
             'default' => 'standard',
-            'options_callback' => static fn () => Product::getModelTypeOptions(),
             'reference' => &$GLOBALS['TL_LANG']['MODEL']['tl_iso_product'],
             'eval' => ['mandatory' => true, 'submitOnChange' => true, 'helpwizard' => true, 'tl_class' => 'w50'],
             'sql' => "varchar(64) NOT NULL default ''",

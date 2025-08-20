@@ -14,7 +14,7 @@ namespace Isotope\Model;
 use Contao\Database;
 use Contao\Model;
 use Contao\Model\Collection;
-use Isotope\Interfaces\IsotopeProduct;
+use Isotope\CoreBundle\Product\ProductInterface;
 
 
 /**
@@ -41,7 +41,7 @@ class RelatedProduct extends Model
      *
      * @return Collection|null
      */
-    public static function findByProductAndCategories(IsotopeProduct $objProduct, array $arrCategories, array $arrOptions = array())
+    public static function findByProductAndCategories(ProductInterface $objProduct, array $arrCategories, array $arrOptions = array())
     {
         $t = static::$strTable;
 

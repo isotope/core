@@ -30,6 +30,7 @@ use Isotope\CoreBundle\Attribute\VariantAttributeInterface;
 use Isotope\CoreBundle\Gallery\GalleryInterface;
 use Isotope\CoreBundle\Model\Attribute;
 use Isotope\CoreBundle\Model\ProductType;
+use Isotope\CoreBundle\Product\ProductInterface;
 use Isotope\CoreBundle\Product\Render\RenderConfig;
 use Isotope\CoreBundle\Routing\ProductReference;
 use Isotope\CoreBundle\Routing\ProductResolver;
@@ -38,7 +39,6 @@ use Isotope\CoreBundle\Twig\GalleryVariable;
 use Isotope\Haste\Units\Mass\Weight;
 use Isotope\Haste\Units\Mass\WeightAggregate;
 use Isotope\Interfaces\IsotopePrice;
-use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopeProductWithOptions;
 use Isotope\Isotope;
@@ -201,7 +201,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
      *
      * @return int[]
      */
-    public function getVariantIds()
+    public function getVariantIds(): array
     {
         if (null === $this->arrVariantIds) {
             $this->arrVariantIds = [];
@@ -318,19 +318,6 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
     }
 
     /**
-     * Get the product configuration
-     * This includes customer defined fields and variant options
-     *
-     * @return array
-     *
-     * @deprecated Deprecated since Isotope 2.4, to be removed in Isotope 3.0. Use getOptions() instead.
-     */
-    public function getConfiguration()
-    {
-        return Isotope::formatProductConfiguration($this->getOptions(), $this);
-    }
-
-    /**
      * Get customer defined field values
      *
      * @return array
@@ -360,166 +347,6 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
 
         return $arrVariantConfig;
     }
-
-    /**
-     * Generate a product template
-     *
-     *
-     * @return string
-     * @throws \InvalidArgumentException
-     */
-    public function generate(array $arrConfig)
-    {
-        $objProduct = $this;
-        $loadFallback = isset($arrConfig['loadFallback']) ? (bool) $arrConfig['loadFallback'] : true;
-
-        $this->strFormId = (($arrConfig['module'] instanceof ContentElement) ? 'cte' : 'fmd') . $arrConfig['module']->id . '_product_' . $this->getProductId();
-
-        if (!($arrConfig['disableOptions'] ?? false)) {
-            $objProduct = $this->validateVariant($loadFallback);
-
-            // A variant has been loaded, generate the variant
-            if ($objProduct->getId() != $this->getId()) {
-                return $objProduct->generate($arrConfig);
-            }
-        }
-
-        /** @var Template|\stdClass $objTemplate */
-        $objTemplate = new Template($arrConfig['template']);
-        $objTemplate->setData($this->arrData);
-        $objTemplate->product = $this;
-        $objTemplate->config  = $arrConfig;
-
-        $objTemplate->highlightKeywords = function($text) {
-            $keywords = Input::get('keywords');
-
-            if (empty($keywords)) {
-                return $text;
-            }
-
-            $keywords = StringUtil::trimsplit(' |-', $keywords);
-            $keywords = array_filter(array_unique($keywords));
-
-            foreach ($keywords as $word) {
-                $text = StringUtil::highlight($text, $word, '<em>', '</em>');
-            }
-
-            return $text;
-        };
-
-        $objTemplate->hasAttribute = function ($strAttribute) use ($objProduct) {
-            return \in_array($strAttribute, $objProduct->getType()->getAttributes(), true)
-                || \in_array($strAttribute, $objProduct->getType()->getVariantAttributes(), true);
-        };
-
-        $objTemplate->generateAttribute = function ($strAttribute, array $arrOptions = array()) use ($objProduct) {
-            return $objProduct->{$strAttribute};
-        };
-
-        $objTemplate->generatePrice = function() use ($objProduct) {
-            $objPrice = $objProduct->getPrice();
-
-            /** @var ProductType $objType */
-            $objType = $objProduct->getType();
-
-            if (null === $objPrice) {
-                return '';
-            }
-
-            return $objPrice->generate($objType->showPriceTiers(), 1, $objProduct->getOptions());
-        };
-
-        /** @var GalleryInterface|null $currentGallery */
-        $currentGallery = null;
-        $objTemplate->getGallery = static function (string $strAttribute, int $galleryId = null) use ($objProduct, $arrConfig, &$currentGallery) {
-            if ($galleryId) {
-                $arrConfig['gallery'] = $galleryId;
-
-                if ($currentGallery && $currentGallery->getId() != $galleryId) {
-                    $currentGallery = null;
-                }
-            }
-
-            if (null === $currentGallery
-                || $currentGallery->getName() !== $objProduct->getFormId() . '_' . $strAttribute
-            ) {
-                /** @var GalleryVariable $variable */
-                $variable = System::getContainer()->get(GalleryRuntime::class)->get(['product' => $objProduct, 'config' => new RenderConfig('', '', $arrConfig['gallery'])], $strAttribute);
-                $currentGallery = $variable->getGallery();
-            }
-
-            return $currentGallery;
-        };
-
-        $arrVariantOptions = array();
-        $arrProductOptions = array();
-        $arrAjaxOptions    = array();
-
-        if (!($arrConfig['disableOptions'] ?? false)) {
-            foreach (array_unique(array_merge($this->getType()->getAttributes(), $this->getType()->getVariantAttributes())) as $attribute) {
-                $arrData = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute];
-
-                if (($arrData['attributes']['customer_defined'] ?? null) || ($arrData['attributes']['variant_option'] ?? null)) {
-
-                    $strWidget = $this->generateProductOptionWidget($attribute, $arrVariantOptions, $arrAjaxOptions, $objWidget);
-
-                    if ($strWidget != '') {
-                        $arrProductOptions[$attribute] = array_merge($arrData, array
-                        (
-                            'name'    => $attribute,
-                            'html'    => $strWidget,
-                            'widget'  => $objWidget,
-                        ));
-                    }
-
-                    unset($objWidget);
-                }
-            }
-        }
-
-        $objTemplate->hitCountUrl = function () {
-            $hashids = new Hashids(System::getContainer()->getParameter('kernel.secret'), 8);
-
-            return System::getContainer()
-                ->get('router')
-                ->generate('isotope_product_hits', ['hashid' => $hashids->encode($this->id)])
-            ;
-        };
-
-        $objTemplate->actions = []; // Removed, new implementation is in Twig
-        $objTemplate->useQuantity = $arrConfig['useQuantity'] && null === $this->getCollectionItem();
-        $objTemplate->minimum_quantity = $this->getMinimumQuantity();
-        $objTemplate->raw = $this->arrData;
-        $objTemplate->raw_options = $this->getConfiguration();
-        $objTemplate->href = '';
-        $objTemplate->label_detail = $GLOBALS['TL_LANG']['MSC']['detailLabel'];
-        $objTemplate->options = $arrProductOptions;
-        $objTemplate->hasOptions = \count($arrProductOptions) > 0;
-        $objTemplate->enctype = $this->hasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
-        $objTemplate->formId = $this->getFormId();
-        $objTemplate->formSubmit = $this->getFormId();
-        $objTemplate->product_id = $this->getProductId();
-        $objTemplate->module_id = $arrConfig['module']->id ?? null;
-        $objTemplate->requestToken = System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue();
-
-        if (!isset($arrConfig['jumpTo']) || ProductResolver::canLinkToPage($arrConfig['jumpTo'])) {
-            $objTemplate->href = $this->generateUrl($arrConfig['jumpTo'] ?? null);
-        }
-
-        if (!($arrConfig['disableOptions'] ?? false)) {
-            $GLOBALS['AJAX_PRODUCTS'][] = array('formId' => $this->getFormId(), 'attributes' => $arrAjaxOptions);
-        }
-
-        // !HOOK: alter product data before output
-        if (isset($GLOBALS['ISO_HOOKS']['generateProduct']) && \is_array($GLOBALS['ISO_HOOKS']['generateProduct'])) {
-            foreach ($GLOBALS['ISO_HOOKS']['generateProduct'] as $callback) {
-                System::importStatic($callback[0])->{$callback[1]}($objTemplate, $this, $arrConfig);
-            }
-        }
-
-        return trim($objTemplate->parse());
-    }
-
 
     /**
      * Return a widget object based on a product attribute's properties
@@ -755,7 +582,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
      *
      * @param bool $loadDefaultVariant
      *
-     * @return IsotopeProduct|$this
+     * @return ProductInterface|$this
      */
     public function validateVariant($loadDefaultVariant = true)
     {
@@ -936,35 +763,6 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         //}
 
         parent::markModified($strKey);
-    }
-
-    /**
-     * Generate url
-     *
-     * @return string
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @deprecated
-     */
-    public function generateUrl(PageModel $objJumpTo = null/*, bool $absolute = false*/)
-    {
-        $absolute = false;
-
-        if (func_num_args() >= 2) {
-            $absolute = (bool) func_get_arg(1);
-        }
-
-        $productReference = new ProductReference($this);
-
-        if ($objJumpTo) {
-            $productReference->referencePage = $objJumpTo;
-        }
-
-        return System::getContainer()
-            ->get('contao.routing.content_url_generator')
-            ->generate($productReference, $this->getOptions(), $absolute ? UrlGeneratorInterface::ABSOLUTE_URL : UrlGeneratorInterface::ABSOLUTE_PATH)
-        ;
     }
 
     /**

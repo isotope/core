@@ -16,7 +16,8 @@ use Contao\Model;
 use Contao\StringUtil;
 use Contao\System;
 use Isotope\CoreBundle\ModelType\ProductRegistry;
-use Isotope\CoreBundle\Product\ProductInterface;
+use Isotope\CoreBundle\Product\CollectibleInterface;
+use Isotope\CoreBundle\Product\VariantProductInterface;
 use Isotope\Interfaces\IsotopeProductCollection;
 
 
@@ -26,8 +27,7 @@ use Isotope\Interfaces\IsotopeProductCollection;
  * @property int    $id
  * @property int    $pid
  * @property int    $tstamp
- * @property int    $product_id
- * @property string $type
+ * @property string $identifier
  * @property string $sku
  * @property string $name
  * @property mixed  $configuration
@@ -48,9 +48,8 @@ class ProductCollectionItem extends Model
 
     /**
      * Cache the current product
-     * @var IsotopeProduct|IsotopeProductWithOptions|false
      */
-    protected $objProduct = false;
+    protected CollectibleInterface|null|false $objProduct = false;
 
     /**
      * Cache downloads for the collection item
@@ -97,15 +96,24 @@ class ProductCollectionItem extends Model
             }
         }
 
-        if (!$this->hasProduct() || !$this->getProduct()->isAvailableForCollection($this->getRelated('pid'))) {
+        $product = $this->getProduct();
+
+        if (!$product || !$product->isAvailableForCollection($this->getCollection())) {
             return false;
         }
 
-        $arrConfig = $this->getOptions();
-        foreach ($this->getProduct()->getOptions() as $k => $v) {
+        if (!$product instanceof VariantProductInterface) {
+            return true;
+        }
+
+        $arrConfig = $this->getConfiguration();
+        foreach ($product->getVariantConfig() as $k => $v) {
             if (
-                $arrConfig[$k] !== $v
-                && (!\is_scalar($arrConfig[$k]) || !\is_scalar($v) || (string) $arrConfig[$k] !== (string) $v)
+                !isset($arrConfig[$k])
+                || (
+                    $arrConfig[$k] !== $v
+                    && (!\is_scalar($arrConfig[$k]) || !\is_scalar($v) || (string) $arrConfig[$k] !== (string) $v)
+                )
             ) {
                 return false;
             }
@@ -151,43 +159,16 @@ class ProductCollectionItem extends Model
      * Get the product related to this item
      *
      * @param bool $blnNoCache
-     *
-     * @return IsotopeProduct|null
      */
-    public function getProduct($blnNoCache = false)
+    public function getProduct($blnNoCache = false): CollectibleInterface|null
     {
         if (false === $this->objProduct || true === $blnNoCache) {
-
             $this->objProduct = null;
 
-            /** @var string|\Isotope\Model\Product $strClass */
-            $strClass = Product::getClassForModelType($this->type);
-
-            if ($strClass == '' || !class_exists($strClass)) {
-                System::getContainer()->get('monolog.logger.contao')->error('Error creating product object of type "' . $this->type . '"', ['contao' => new ContaoContext(__METHOD__, ContaoContext::ERROR)]);
-
-                return null;
-            }
-
             try {
-                $this->objProduct = $strClass::findByPk($this->product_id);
-            } catch (\Exception $e) {
+                $this->objProduct = System::getContainer()->get(ProductRegistry::class)->get($this);
+            } catch (\Exception) {
                 $this->objProduct = null;
-                $this->addError($e->getMessage());
-            }
-
-            if (null !== $this->objProduct && $this->objProduct instanceof IsotopeProductWithOptions) {
-                try {
-                    if ($this->objProduct instanceof Model) {
-                        $this->objProduct = clone $this->objProduct;
-                        $this->objProduct->preventSaving(false);
-                        $this->objProduct->id = $this->product_id;
-                    }
-
-                    $this->objProduct->setOptions($this->getOptions());
-                } catch (\RuntimeException $e) {
-                    $this->addError($GLOBALS['TL_LANG']['ERR']['collectionItemNotAvailable']);
-                }
             }
         }
 
@@ -202,6 +183,11 @@ class ProductCollectionItem extends Model
     public function hasProduct()
     {
         return (null !== $this->getProduct());
+    }
+
+    public function isProduct(CollectibleInterface $product): bool
+    {
+        return $this->identifier === $product->getType().'.'.$product->getId();
     }
 
     /**
@@ -226,14 +212,12 @@ class ProductCollectionItem extends Model
 
     /**
      * Returns key-value array for variant-enabled and customer editable attributes.
-     *
-     * @return  array
      */
-    public function getOptions()
+    public function getConfiguration(): array
     {
-        $arrConfig = StringUtil::deserialize($this->configuration);
+        $configuration = StringUtil::deserialize($this->configuration);
 
-        return \is_array($arrConfig) ? $arrConfig : [];
+        return \is_array($configuration) ? $configuration : [];
     }
 
     /**
@@ -253,7 +237,7 @@ class ProductCollectionItem extends Model
             return null;
         }
 
-        return $objPrice->getAmount((int) $this->quantity, $this->getOptions());
+        return $objPrice->getAmount((int) $this->quantity, $this->getConfiguration());
     }
 
     /**
@@ -273,7 +257,7 @@ class ProductCollectionItem extends Model
             return null;
         }
 
-        return $objPrice->getNetAmount((int) $this->quantity, $this->getOptions());
+        return $objPrice->getNetAmount((int) $this->quantity, $this->getConfiguration());
     }
 
     /**
@@ -293,7 +277,7 @@ class ProductCollectionItem extends Model
             return null;
         }
 
-        return $objPrice->getOriginalAmount((int) $this->quantity, $this->getOptions());
+        return $objPrice->getOriginalAmount((int) $this->quantity, $this->getConfiguration());
     }
 
     /**
@@ -451,18 +435,19 @@ class ProductCollectionItem extends Model
      *
      * @return bool
      */
-    public function hasErrors()
+    public function hasErrors(): bool
     {
-        return 0 !== \count($this->arrErrors);
+        return 0 !== \count($this->getErrors());
     }
 
-    /**
-     * Return the errors array
-     *
-     * @return array
-     */
-    public function getErrors()
+    public function getErrors(): array
     {
-        return $this->arrErrors;
+        $errors = $this->arrErrors;
+
+        if (!$this->isLocked() && null === $this->getProduct()) {
+            $errors[] = $GLOBALS['TL_LANG']['ERR']['collectionItemNotAvailable'];
+        }
+
+        return $errors;
     }
 }

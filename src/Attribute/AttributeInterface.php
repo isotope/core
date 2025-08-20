@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Attribute;
 
 use Contao\Widget;
-use Isotope\Model\Product;
+use Isotope\CoreBundle\Product\ProductInterface;
 
 /**
  * A product attribute for Isotope eCommerce.
@@ -46,5 +46,5 @@ interface AttributeInterface
     /**
      * Gets attribute value from given product.
      */
-    public function getValue(Product $product);
+    public function getValue(ProductInterface $product);
 }

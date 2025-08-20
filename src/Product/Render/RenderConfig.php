@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Product\Render;
 
 use Contao\ModuleModel;
-use Contao\PageModel;
 use Contao\StringUtil;
+use Isotope\CoreBundle\Product\ProductInterface;
 use Isotope\CoreBundle\Routing\ProductReference;
-use Isotope\Model\Product;
 
 final class RenderConfig
 {
@@ -43,12 +42,12 @@ final class RenderConfig
         ];
     }
 
-    public static function createList(ModuleModel $model, Product $product): self
+    public static function createList(ModuleModel $model, ProductInterface $product): self
     {
         $config = new self(
             'fmd'.$model->id.'_product'.$product->getProductId(),
-            '@Contao/'.($model->iso_list_layout ?: $product->getType()->list_template ?: 'isotope/product/list.html.twig'),
-            $model->iso_gallery ?: $product->getType()->list_gallery,
+            '@Contao/'.($model->iso_list_layout ?: $product->getProductType()->list_template ?: 'isotope/product/list.html.twig'),
+            $model->iso_gallery ?: $product->getProductType()->list_gallery,
         );
 
         $config->withQuantity = (bool) $model->iso_use_quantity;
@@ -65,12 +64,12 @@ final class RenderConfig
         return $config;
     }
 
-    public static function createReader(ModuleModel $model, Product $product): self
+    public static function createReader(ModuleModel $model, ProductInterface $product): self
     {
         $config = new self(
             'fmd'.$model->id.'_product'.$product->getProductId(),
-            '@Contao/'.($model->iso_reader_layout ?: $product->getType()->reader_template ?: 'isotope/product/reader.html.twig'),
-            $model->iso_gallery ?: $product->getType()->reader_gallery,
+            '@Contao/'.($model->iso_reader_layout ?: $product->getProductType()->reader_template ?: 'isotope/product/reader.html.twig'),
+            $model->iso_gallery ?: $product->getProductType()->reader_gallery,
         );
 
         $config->withQuantity = (bool) $model->iso_use_quantity;

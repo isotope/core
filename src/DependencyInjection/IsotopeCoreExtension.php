@@ -12,6 +12,7 @@ use Isotope\CoreBundle\DependencyInjection\Attribute\AsDocument;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsGallery;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsIsotopeHook;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsPayment;
+use Isotope\CoreBundle\DependencyInjection\Attribute\AsProduct;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsProductAction;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsProductCollectionAction;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsProductCollectionItemAction;
@@ -20,6 +21,7 @@ use Isotope\CoreBundle\DependencyInjection\Attribute\AsShipping;
 use Isotope\CoreBundle\ModelType\DocumentRegistry;
 use Isotope\CoreBundle\ModelType\GalleryRegistry;
 use Isotope\CoreBundle\ModelType\PaymentRegistry;
+use Isotope\CoreBundle\ModelType\ProductRegistry;
 use Isotope\CoreBundle\ModelType\ShippingRegistry;
 use Isotope\CoreBundle\Product\Action\ProductActionInterface;
 use Isotope\CoreBundle\Product\Action\ProductActionRegistry;
@@ -79,6 +81,7 @@ class IsotopeCoreExtension extends Extension
             AsIsotopeHook::class => 'isotope.hook',
             AsProductFilter::class => 'isotope.product_filter',
             AsAttribute::class => AttributeRegistry::TAG_NAME,
+            AsProduct::class => ProductRegistry::TAG_NAME,
             AsDocument::class => DocumentRegistry::TAG_NAME,
             AsGallery::class => GalleryRegistry::TAG_NAME,
             AsPayment::class => PaymentRegistry::TAG_NAME,

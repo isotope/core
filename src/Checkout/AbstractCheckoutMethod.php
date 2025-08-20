@@ -262,7 +262,7 @@ abstract class AbstractCheckoutMethod
 
             foreach ($items as $item) {
                 if ($item->hasProduct()) {
-                    $types[] = (int) $item->getProduct()?->getType()?->id;
+                    $types[] = (int) $item->getProduct()?->getProductType()?->id;
                 } elseif (ProductTypeCondition::onlyAvailable === $this->productTypesCondition) {
                     // If one product in collection is not of given type, shipping method is not available
                     return false;

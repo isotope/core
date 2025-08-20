@@ -17,6 +17,7 @@ use Isotope\CoreBundle\Attribute\OptionsSource;
 use Isotope\CoreBundle\Attribute\VariantAttributeInterface;
 use Isotope\CoreBundle\DataContainer\ProductData;
 use Isotope\CoreBundle\Model\ProductType;
+use Isotope\CoreBundle\Product\ProductInterface;
 use Isotope\Model\Product;
 use Isotope\Model\RelatedCategory;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -60,7 +61,7 @@ class AttributeListener
             return $config;
         }
 
-        $config['options'] = ($dc instanceof Product) ? $attribute->getOptionsForWidget($dc) : $attribute->getOptionsForWidget();
+        $config['options'] = ($dc instanceof ProductInterface) ? $attribute->getOptionsForWidget($dc) : $attribute->getOptionsForWidget();
 
         if ($config['includeBlankOption'] ?? null) {
             array_unshift($config['options'], ['value' => '', 'label' => ($config['blankOptionLabel'] ?? '-')]);

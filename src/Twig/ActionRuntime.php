@@ -7,15 +7,13 @@ namespace Isotope\CoreBundle\Twig;
 use Contao\Controller;
 use Contao\CoreBundle\Exception\ResponseException;
 use Isotope\CoreBundle\HttpFoundation\ActionResult;
-use Isotope\CoreBundle\Product\Action\ProductActionInterface;
 use Isotope\CoreBundle\Product\Action\ProductActionRegistry;
+use Isotope\CoreBundle\Product\ProductInterface;
 use Isotope\CoreBundle\Product\Render\RenderConfig;
-use Isotope\CoreBundle\ProductCollection\Action\ProductCollectionActionInterface;
 use Isotope\CoreBundle\ProductCollection\Action\ProductCollectionActionRegistry;
 use Isotope\CoreBundle\ProductCollection\ItemAction\ProductCollectionItemActionRegistry;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Message;
-use Isotope\Model\Product;
 use Isotope\Model\ProductCollectionItem;
 use Symfony\Component\HttpFoundation\Request;
 use Twig\Extension\RuntimeExtensionInterface;
@@ -41,7 +39,7 @@ class ActionRuntime implements RuntimeExtensionInterface
         }
 
         if (
-            !$product instanceof Product
+            !$product instanceof ProductInterface
             || !$renderConfig instanceof RenderConfig
             || !$request instanceof Request
             || !$action->supports($product, $renderConfig)
@@ -50,7 +48,9 @@ class ActionRuntime implements RuntimeExtensionInterface
         }
 
         if ($request->request->get('FORM_SUBMIT') === $renderConfig->id /*&& !$this->doNotSubmit*/ && $request->request->get('_action') === $name) {
-            $result = $action->handle($product, $renderConfig);
+            $configuration = array_filter(array_map(static fn ($o) => $o['value'] ?? null, $context['options'] ?? []));
+
+            $result = $action->handle($product, $configuration, $renderConfig);
 
             $this->handleActionResult($request, $result);
         }

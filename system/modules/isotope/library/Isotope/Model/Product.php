@@ -20,7 +20,7 @@ use Isotope\CoreBundle\Attribute\AttributeRegistry;
 use Isotope\CoreBundle\Model\Attribute;
 use Isotope\CoreBundle\Model\ProductCategory;
 use Isotope\CoreBundle\Model\ProductType;
-use Isotope\Interfaces\IsotopeProduct;
+use Isotope\CoreBundle\Product\CollectibleInterface;
 
 /**
  * The basic Isotope product model
@@ -49,7 +49,7 @@ use Isotope\Interfaces\IsotopeProduct;
  * @property string $start
  * @property string $stop
  */
-abstract class Product extends TypeAgent implements IsotopeProduct
+abstract class Product extends TypeAgent
 {
 
     /**
@@ -62,7 +62,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
      * Interface to validate attribute
      * @var string
      */
-    protected static $strInterface = '\Isotope\Interfaces\IsotopeProduct';
+    protected static $strInterface = Product::class;
 
     /**
      * List of types (classes) for this model
@@ -84,32 +84,6 @@ abstract class Product extends TypeAgent implements IsotopeProduct
      * @return array
      */
     abstract public function getCategories($blnPublished = false);
-
-    /**
-     * Get product that is currently active (needed e.g. for insert tag replacement)
-     *
-     * @return IsotopeProduct|null
-     */
-    public static function getActive()
-    {
-        return 0 === \count(static::$arrActive) ? null : end(static::$arrActive);
-    }
-
-    /**
-     * Set product that is currently active (needed e.g. for insert tag replacement)
-     */
-    public static function setActive(IsotopeProduct $objProduct)
-    {
-        static::$arrActive[] = $objProduct;
-    }
-
-    /**
-     * Unset product that is currently active (prevent later use of it)
-     */
-    public static function unsetActive()
-    {
-        array_pop(static::$arrActive);
-    }
 
     /**
      * Find all published products
@@ -339,22 +313,23 @@ abstract class Product extends TypeAgent implements IsotopeProduct
     }
 
     /**
-     * Find variant of a product
+     * Find variant of a product based on attribute values.
+     * The given variant IDs must be published and available to the current user.
      */
-    public static function findVariantOfProduct(IsotopeProduct $objProduct, array $arrVariant, array $arrOptions = array()): self|null
+    public static function findVariantOfProduct(array $variantIds, array $attributes, array $arrOptions = array()): self|null
     {
         $t = static::$strTable;
 
         $arrColumns = array(
-            "$t.id IN (" . implode(',', $objProduct->getVariantIds()) . ')',
-            "$t." . implode("=? AND $t.", array_keys($arrVariant)) . '=?'
+            "$t.id IN (" . implode(',', $variantIds) . ')',
+            "$t." . implode("=? AND $t.", array_keys($attributes)) . '=?'
         );
 
         $arrOptions = array_merge(
             array(
                  'limit'  => 1,
                  'column' => $arrColumns,
-                 'value'  => $arrVariant,
+                 'value'  => $attributes,
                  'return' => 'Model'
             ),
             $arrOptions
@@ -366,10 +341,9 @@ abstract class Product extends TypeAgent implements IsotopeProduct
     /**
      * Finds the default variant of a product.
      *
-     *
      * @return static|null
      */
-    public static function findDefaultVariantOfProduct(IsotopeProduct $objProduct, array $arrOptions = array())
+    public static function findDefaultVariantOfProduct(int $pid, array $variantIds, array $arrOptions = array())
     {
         static $cache;
 
@@ -384,9 +358,9 @@ abstract class Product extends TypeAgent implements IsotopeProduct
             }
         }
 
-        $defaultId = $cache[$objProduct->getProductId()] ?? null;
+        $defaultId = $cache[$pid] ?? null;
 
-        if ($defaultId < 1 || !\in_array($defaultId, $objProduct->getVariantIds())) {
+        if ($defaultId < 1 || !\in_array($defaultId, $variantIds)) {
             return null;
         }
 

@@ -19,8 +19,9 @@ use Contao\Model\Collection;
 use Contao\Model\QueryBuilder;
 use Contao\StringUtil;
 use Isotope\Collection\ProductPrice as ProductPriceCollection;
+use Isotope\CoreBundle\Product\ProductInterface;
+use Isotope\CoreBundle\Product\VariantProductInterface;
 use Isotope\Interfaces\IsotopePrice;
-use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 
@@ -236,7 +237,7 @@ class ProductPrice extends Model implements IsotopePrice
         return $this->getRelated('tax_class');
     }
 
-    public function setProduct(IsotopeProduct $product)
+    public function setProduct(ProductInterface $product)
     {
         $this->arrRelated['pid'] = $product;
     }
@@ -248,14 +249,14 @@ class ProductPrice extends Model implements IsotopePrice
      *
      * @return IsotopePrice
      */
-    public static function findByProductAndCollection(IsotopeProduct $objProduct, IsotopeProductCollection $objCollection, array $arrOptions = array())
+    public static function findByProductAndCollection(ProductInterface $objProduct, IsotopeProductCollection $objCollection, array $arrOptions = array())
     {
         $t = static::$strTable;
 
         $arrOptions['column'] = array();
         $arrOptions['value'] = array();
 
-        if ($objProduct->hasAdvancedPrices()) {
+        if ($objProduct->getType()?->hasAdvancedPrices()) {
 
             $time = Date::floorToMinute($objCollection->getLastModification());
             $arrGroups = static::getMemberGroups($objCollection->getRelated('member'));
@@ -275,11 +276,11 @@ class ProductPrice extends Model implements IsotopePrice
             $arrOptions['column'][] = "$t.stop=''";
         }
 
-        if ($objProduct->hasVariantPrices() && !$objProduct->isVariant()) {
+        if ($objProduct instanceof VariantProductInterface && $objProduct->hasVariantPrices() && !$objProduct->isVariant()) {
             $arrIds = $objProduct->getVariantIds() ?: array(0);
             $arrOptions['column'][] = "$t.pid IN (" . implode(',', $arrIds) . ")";
         } else {
-            $arrOptions['column'][] = "$t.pid=" . ($objProduct->hasVariantPrices() ? $objProduct->getId() : $objProduct->getProductId());
+            $arrOptions['column'][] = "$t.pid=" . ($objProduct instanceof VariantProductInterface && $objProduct->hasVariantPrices() ? $objProduct->getId() : $objProduct->getProductId());
         }
 
         /** @var ProductPriceCollection $objResult */

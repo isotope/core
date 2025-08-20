@@ -6,8 +6,8 @@ namespace Isotope\CoreBundle\Checkout\Shipping;
 
 use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsShipping;
+use Isotope\CoreBundle\Product\ProductInterface;
 use Isotope\Interfaces\IsotopeOrderableCollection;
-use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -99,9 +99,9 @@ class ProductPriceShipping extends AbstractShipping
         return Isotope::calculatePrice($price, $this, 'price', $this->taxClass);
     }
 
-    private function hasShippingPrice(IsotopeProduct $product): bool
+    private function hasShippingPrice(ProductInterface $product): bool
     {
-        $attributes = array_merge($product->getType()->getAttributes(), $product->getType()->getVariantAttributes());
+        $attributes = array_merge($product->getProductType()->getAttributes(), $product->getProductType()->getVariantAttributes());
 
         if (!$product->isExemptFromShipping() && \in_array(self::ATTRIBUTE_NAME, $attributes, true)) {
             return true;

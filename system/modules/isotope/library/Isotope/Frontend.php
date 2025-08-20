@@ -23,11 +23,11 @@ use Contao\System;
 use Contao\Widget;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
 use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
+use Isotope\CoreBundle\Product\ProductInterface;
 use Isotope\EventListener\ChangeLanguageListener;
 use Isotope\Haste\Input\Input;
 use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Interfaces\IsotopePrice;
-use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\AttributeOption;
 use Isotope\Model\Product;
@@ -153,7 +153,7 @@ class Frontend extends \Contao\Frontend
      *
      * @deprecated Deprecated since Isotope 2.4, to be removed in Isotope 3.0.
      */
-    public function saveUpload($varValue, IsotopeProduct $objProduct, Widget $objWidget)
+    public function saveUpload($varValue, ProductInterface $objProduct, Widget $objWidget)
     {
         if (\is_array($_SESSION['FILES'][$objWidget->name])
             && $_SESSION['FILES'][$objWidget->name]['uploaded'] == '1'
@@ -447,9 +447,9 @@ class Frontend extends \Contao\Frontend
         $fltAmount = (float) $fltPrice;
 
         if ($objSource instanceof IsotopePrice
-            && ($objProduct = $objSource->getRelated('pid')) instanceof IsotopeProduct
+            && ($objProduct = $objSource->getRelated('pid')) instanceof ProductInterface
             && $objProduct->getType() !== null) {
-            /** @var IsotopeProduct|Standard $objProduct */
+            /** @var ProductInterface|Standard $objProduct */
 
             /** @var AttributeRegistry $attributeRegistry */
             $attributeRegistry = System::getContainer()->get(AttributeRegistry::class);
@@ -457,8 +457,8 @@ class Frontend extends \Contao\Frontend
             $arrAttributes = array_intersect(
                 $attributeRegistry->getPricedFields(),
                 array_merge(
-                    $objProduct->getType()->getAttributes(),
-                    $objProduct->getType()->getVariantAttributes()
+                    $objProduct->getProductType()->getAttributes(),
+                    $objProduct->getProductType()->getVariantAttributes()
                 )
             );
 

@@ -27,13 +27,16 @@ use Isotope\CoreBundle\Model\Attribute;
 use Isotope\CoreBundle\ModelType\GalleryRegistry;
 use Isotope\CoreBundle\ModelType\PaymentRegistry;
 use Isotope\CoreBundle\ModelType\ShippingRegistry;
+use Isotope\CoreBundle\Product\CollectibleInterface;
+use Isotope\CoreBundle\Product\ShippableInterface;
+use Isotope\CoreBundle\Product\VariantProductInterface;
+use Isotope\CoreBundle\Routing\ProductReference;
 use Isotope\Frontend;
 use Isotope\Haste\Units\Mass\Scale;
 use Isotope\Haste\Units\Mass\Weighable;
 use Isotope\Haste\Units\Mass\WeightAggregate;
 use Isotope\Haste\Util\Format;
 use Isotope\Interfaces\IsotopeOrderableCollection;
-use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Message;
@@ -403,7 +406,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
             $arrItems = $this->getItems();
 
             foreach ($arrItems as $objItem) {
-                if ($objItem->hasProduct() && !$objItem->getProduct()->isExemptFromShipping()) {
+                if (!$objItem->getProduct()?->isExemptFromShipping()) {
                     $this->arrCache['requiresShipping'] = true;
                     break;
                 }
@@ -456,7 +459,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
 
             foreach ($arrItems as $objItem) {
                 $product = $objItem->getProduct();
-                if ($product instanceof IsotopeProduct && \method_exists($product, 'isPickupOnly') && $product->isPickupOnly()) {
+                if ($product instanceof ShippableInterface && $product->isPickupOnly()) {
                     $this->arrCache['requiresShippingAddress'] = false;
                     break;
                 }
@@ -974,13 +977,11 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
      *
      * @return ProductCollectionItem|null
      */
-    public function getItemForProduct(IsotopeProduct $objProduct)
+    public function getItemForProduct(CollectibleInterface $objProduct, array $configuration = [])
     {
-        $strClass = array_search(\get_class($objProduct), Product::getModelTypes(), true);
-
         return ProductCollectionItem::findOneBy(
-            array('pid=?', 'type=?', 'product_id=?', 'configuration=?'),
-            array($this->id, $strClass, $objProduct->getId(), serialize($objProduct->getOptions()))
+            array('pid=?', 'identifier=?', 'configuration=?'),
+            array($this->id, $objProduct->getType().'.'.$objProduct->getId(), serialize($configuration))
         );
     }
 
@@ -1003,38 +1004,13 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
     }
 
     /**
-     * Check if a given product is already in the collection
-     *
-     * @param bool           $blnIdentical
-     * @return bool
-     */
-    public function hasProduct(IsotopeProduct $objProduct, $blnIdentical = true)
-    {
-        if (true === $blnIdentical) {
-            return null !== $this->getItemForProduct($objProduct);
-        }
-
-        $intId = $objProduct->getProductId();
-
-        foreach ($this->getItems() as $objItem) {
-            if ($objItem->hasProduct()
-                && ($objItem->getProduct()->getId() == $intId || $objItem->getProduct()->getProductId() == $intId)
-            ) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
      * Add a product to the collection
      *
      * @param int            $intQuantity
      *
      * @return ProductCollectionItem|false
      */
-    public function addProduct(IsotopeProduct $objProduct, $intQuantity, array $arrConfig = array())
+    public function addProduct(CollectibleInterface $objProduct, int $intQuantity, array $configuration = [], array $arrConfig = array())
     {
         // !HOOK: additional functionality when adding product to collection
         if (isset($GLOBALS['ISO_HOOKS']['addProductToCollection'])
@@ -1060,7 +1036,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
         // Remove uploaded files from session so they are not added to the next product (see #646)
         unset($_SESSION['FILES']);
 
-        $objItem            = $this->getItemForProduct($objProduct);
+        $objItem            = $this->getItemForProduct($objProduct, $configuration);
         $intMinimumQuantity = $objProduct->getMinimumQuantity();
 
         if (null !== $objItem) {
@@ -1088,7 +1064,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
             $objItem->pid      = $this->id;
             $objItem->jumpTo   = isset($arrConfig['jumpTo']) ? (int) $arrConfig['jumpTo']->id : 0;
 
-            $this->setProductForItem($objProduct, $objItem, $intQuantity);
+            $this->setProductForItem($objProduct, $objItem, $intQuantity, $configuration);
             $objItem->save();
 
             // Add the new item to our cache
@@ -1113,7 +1089,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
      *
      * @return bool
      */
-    public function updateProduct(IsotopeProduct $objProduct, ProductCollectionItem $objItem)
+    public function updateProduct(CollectibleInterface $objProduct, ProductCollectionItem $objItem)
     {
         if ($objItem->pid != $this->id) {
             throw new \InvalidArgumentException('Item does not belong to this collection');
@@ -1352,13 +1328,9 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
                 }
             }
 
-            if ($objOldItem->hasProduct() && $this->hasProduct($objOldItem->getProduct())) {
-
-                $objNewItem = $this->getItemForProduct($objOldItem->getProduct());
+            if ($objOldItem->hasProduct() && ($objNewItem = $this->getItemForProduct($objOldItem->getProduct(), $objOldItem->getConfiguration()))) {
                 $objNewItem->increaseQuantityBy($objOldItem->quantity);
-
             } else {
-
                 $objNewItem         = clone $objOldItem;
                 $objNewItem->pid    = $this->id;
                 $objNewItem->tstamp = $time;
@@ -1488,8 +1460,8 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
 
             $objProduct = $objItem->getProduct();
 
-            return \in_array($strAttribute, $objProduct->getType()->getAttributes(), true)
-                || \in_array($strAttribute, $objProduct->getType()->getVariantAttributes(), true);
+            return \in_array($strAttribute, $objProduct->getProductType()->getAttributes(), true)
+                || \in_array($strAttribute, $objProduct->getProductType()->getVariantAttributes(), true);
         };
 
         $objTemplate->generateAttribute = function (
@@ -1645,16 +1617,11 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
         $objConfig     = $this->getRelated('config_id') ?: Isotope::getConfig();
         $arrCSS        = ($blnHasProduct ? StringUtil::deserialize($objProduct->cssID, true) : array());
 
-        // Set the active product for insert tags replacement
-        if ($blnHasProduct) {
-            Product::setActive($objProduct);
-        }
-
         $arrItem = array(
             'id'                => $objItem->id,
             'sku'               => $objItem->getSku(),
             'name'              => $objItem->getName(),
-            'attributes'        => $objItem->getOptions(),
+            'attributes'        => $objItem->getConfiguration(),
             'quantity'          => $objItem->quantity,
             'price'             => Isotope::formatPriceWithCurrency($objItem->getPrice(), true, $objConfig->currency),
             'tax_free_price'    => Isotope::formatPriceWithCurrency($objItem->getTaxFreePrice(), true, $objConfig->currency),
@@ -1672,10 +1639,11 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
         );
 
         if ($blnHasProduct && null !== $objItem->getRelated('jumpTo') && $objProduct->isAvailableInFrontend()) {
-            $arrItem['href'] = $objProduct->generateUrl($objItem->getRelated('jumpTo'));
+            $arrItem['href'] = System::getContainer()
+                ->get('contao.routing.content_url_generator')
+                ->generate(new ProductReference($objProduct, $objItem->getRelated('jumpTo')))
+            ;
         }
-
-        Product::unsetActive();
 
         return $arrItem;
     }
@@ -2007,7 +1975,6 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
 
                 return $arrItems;
             };
-
         }
 
         if ('desc' === $direction) {
@@ -2026,17 +1993,16 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
     /**
      * @param int                   $quantity
      */
-    private function setProductForItem(IsotopeProduct $product, ProductCollectionItem $item, $quantity)
+    private function setProductForItem(CollectibleInterface $product, ProductCollectionItem $item, int $quantity, array $configuration = [])
     {
         $item->tstamp         = time();
-        $item->type           = array_search(\get_class($product), Product::getModelTypes(), true);
-        $item->product_id     = (int) $product->getId();
-        $item->sku            = (string) $product->getSku();
-        $item->name           = (string) $product->getName();
-        $item->configuration  = $product->getOptions();
-        $item->quantity       = (int) $quantity;
-        $item->price          = (float) ($product->getPrice($this) ? $product->getPrice($this)->getAmount((int) $quantity) : 0);
-        $item->tax_free_price = (float) ($product->getPrice($this) ? $product->getPrice($this)->getNetAmount((int) $quantity) : 0);
+        $item->identifier     = $product->getType().'.'.$product->getId();
+        $item->sku            = $product->getSku();
+        $item->name           = $product->getName();
+        $item->configuration  = $product instanceof VariantProductInterface ? array_merge($product->getVariantConfig(), $configuration) : $configuration;
+        $item->quantity       = $quantity;
+        $item->price          = (float) ($product->getPrice($this) ? $product->getPrice($this)->getAmount($quantity) : 0);
+        $item->tax_free_price = (float) ($product->getPrice($this) ? $product->getPrice($this)->getNetAmount($quantity) : 0);
     }
 
     /**

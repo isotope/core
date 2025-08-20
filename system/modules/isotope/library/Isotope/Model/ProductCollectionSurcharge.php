@@ -384,13 +384,12 @@ abstract class ProductCollectionSurcharge extends TypeAgent
     private static function addTaxesForItems(array &$arrTaxes, IsotopeProductCollection $objCollection, array $arrSurcharges, array $arrAddresses = null)
     {
         foreach ($objCollection->getItems() as $objItem) {
+            $objProduct  = $objItem->getProduct();
 
             // This should never happen, but we can't calculate it
-            if (!$objItem->hasProduct()) {
+            if (!$objProduct) {
                 continue;
             }
-
-            $objProduct  = $objItem->getProduct();
 
             /** @var TaxClass $objTaxClass */
             $objTaxClass = $objProduct->getPrice() ? $objProduct->getPrice()->getRelated('tax_class') : null;

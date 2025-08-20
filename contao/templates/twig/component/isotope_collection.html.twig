@@ -8,10 +8,10 @@
 {% endblock %}
 
 {% block item_attributes %}
-    {% set options = item.options %}
-    {% if options is not empty %}
+    {% set configuration = item.configuration %}
+    {% if configuration is not empty %}
         <ul>
-            {% for attribute, value in item.options %}
+            {% for attribute, value in configuration %}
                 <li><strong>{{ isotope_attribute_label(attribute) }}:</strong> {{ isotope_attribute_value(attribute, value) }}</li>
             {% endfor %}
         </ul>

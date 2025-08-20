@@ -14,9 +14,10 @@ use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
+use Isotope\CoreBundle\ModelType\ProductRegistry;
+use Isotope\CoreBundle\Product\ProductInterface;
 use Isotope\CoreBundle\Product\Category\CategoryFinder;
 use Isotope\CoreBundle\Product\Category\CategoryScope;
-use Isotope\CoreBundle\Product\Query\ProductQuery;
 use Isotope\CoreBundle\Product\Render\ProductRendererInterface;
 use Isotope\CoreBundle\Product\Render\RenderConfig;
 use Isotope\Model\Product;
@@ -28,6 +29,7 @@ class ProductListController extends AbstractFrontendModuleController
 {
     public function __construct(
         private readonly Connection $connection,
+        private readonly ProductRegistry $productRegistry,
         private readonly ProductRendererInterface $productRenderer,
         private readonly AttributeRegistry $attributeRegistry,
         private readonly CategoryFinder $categoryFinder,
@@ -37,15 +39,20 @@ class ProductListController extends AbstractFrontendModuleController
 
     protected function getResponse(FragmentTemplate $template, ModuleModel $model, Request $request): Response
     {
-        if ($request->attributes->get('_content') instanceof Product && $model->iso_hide_list) {
+        if ($request->attributes->get('_content') instanceof ProductInterface && $model->iso_hide_list) {
             return new Response();
         }
 
         $products = [];
         $filterModules = array_map(static fn ($id) => 'fmd'.$id, StringUtil::deserialize($model->iso_filterModules, true));
 
-        foreach ($this->findProducts($model, $request, $filterModules) as $product) {
-            $products[] = $this->productRenderer->render($product, RenderConfig::createList($model, $product), $request);
+        foreach ($this->findProducts($model, $request, $filterModules) as $productModel) {
+            $product = $this->productRegistry->get($productModel);
+            $products[] = $this->productRenderer->render(
+                $product,
+                RenderConfig::createList($model, $product),
+                $request
+            );
         }
 
         $template->products = $products;
@@ -124,7 +131,7 @@ class ProductListController extends AbstractFrontendModuleController
         return $this->categoryFinder->getIds(
             CategoryScope::tryFrom($model->iso_category_scope) ?? $model->iso_category_scope,
             $pageModel ?: $this->getPageModel(),
-            $product instanceof Product ? $product : null,
+            $product instanceof ProductInterface ? $product : null,
         );
     }
 }

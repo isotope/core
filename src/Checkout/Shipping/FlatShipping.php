@@ -90,7 +90,7 @@ class FlatShipping extends AbstractShipping
             }
 
             if (null !== $this->flatProductTypes) {
-                $productType = $product->getType();
+                $productType = $product->getProductType();
 
                 if (!$productType || !\in_array((int) $productType->id, $this->flatProductTypes, true)) {
                     continue;

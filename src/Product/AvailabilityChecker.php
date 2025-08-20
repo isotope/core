@@ -8,7 +8,6 @@ use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use Contao\FrontendUser;
 use Contao\MemberModel;
 use Contao\StringUtil;
-use Isotope\Model\Product;
 
 class AvailabilityChecker
 {
@@ -17,28 +16,33 @@ class AvailabilityChecker
     ) {
     }
 
-    public function isAvailable(Product $product, MemberModel|FrontendUser|int|null $member = null): bool
+    public function isAvailable(CollectibleInterface $product, MemberModel|FrontendUser|int|null $member = null): bool
     {
         $time = time();
 
+        if (!$product instanceof ProductInterface) {
+            // TODO: add check for collectibles
+            return true;
+        }
+
         if (
-            !$this->tokenChecker->isPreviewMode()
-            && (
-                !$product->published
-                || ('' !== $product->start && $product->start > $time)
-                || ('' !== $product->stop && $product->stop < $time)
+            (
+                !$product['published']
+                || ('' !== $product['start'] && $product['start'] > $time)
+                || ('' !== $product['stop'] && $product['stop'] < $time)
             )
+            && !$this->tokenChecker->isPreviewMode()
         ) {
             return false;
         }
 
-        $attributes = $product->getType()->getAttributes();
+        $attributes = $product->getProductType()?->getAttributes() ?? [];
 
         if (
             \in_array('protected', $attributes, true)
             && \in_array('groups', $attributes, true)
-            && $product->protected
-            && !$this->isGranted($member, $product->groups)
+            && $product['protected']
+            && !$this->isGranted($member, $product['groups'])
         ) {
             return false;
         }
@@ -46,6 +50,9 @@ class AvailabilityChecker
         return true;
     }
 
+    /**
+     * TODO: use the security voters here
+     */
     public static function isGranted(MemberModel|FrontendUser|int|null $member, array|string $groups): bool
     {
         $groups = StringUtil::deserialize($groups, true);

@@ -7,7 +7,7 @@ use Isotope\Collection\ProductPrice as ProductPriceCollection;
 use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
 use Isotope\CoreBundle\Attribute\OptionsSource;
 use Isotope\CoreBundle\Model\Attribute;
-use Isotope\Interfaces\IsotopeProduct;
+use Isotope\CoreBundle\Product\ProductInterface;
 use Isotope\Isotope;
 use Terminal42\DcMultilingualBundle\Model\Multilingual;
 
@@ -42,7 +42,7 @@ class AttributeOption extends Multilingual
      * @param bool           $blnPriceInLabel
      * @return array
      */
-    public function getAsArray(IsotopeProduct $objProduct = null, $blnPriceInLabel = true)
+    public function getAsArray(ProductInterface $objProduct = null, $blnPriceInLabel = true)
     {
         return array(
             'value'     => $this->getLanguageId(),
@@ -88,7 +88,7 @@ class AttributeOption extends Multilingual
      *
      * @return bool
      */
-    public function isFromPrice(IsotopeProduct $objProduct = null)
+    public function isFromPrice(ProductInterface $objProduct = null)
     {
         if ($this->isPercentage() && null !== $objProduct) {
 
@@ -132,7 +132,7 @@ class AttributeOption extends Multilingual
      * @deprecated Deprecated since Isotope 2.2.6, to be removed in 3.0.
      *             This method can result in an endless loop, use getAmount() instead.
      */
-    public function getPrice(IsotopeProduct $objProduct = null)
+    public function getPrice(ProductInterface $objProduct = null)
     {
         if ($this->isPercentage() && null !== $objProduct) {
 
@@ -192,7 +192,7 @@ class AttributeOption extends Multilingual
      *
      * @return string
      */
-    public function getLabel(IsotopeProduct $objProduct = null)
+    public function getLabel(ProductInterface $objProduct = null)
     {
         $strLabel    = $this->label;
         $priceFormat = $GLOBALS['TL_LANG']['MSC']['attributePriceLabel'];
@@ -263,7 +263,7 @@ class AttributeOption extends Multilingual
      *
      * @throws \LogicException if attribute options source is not the product
      */
-    public static function findByProductAndAttribute(IsotopeProduct $objProduct, OptionsAttributeInterface $objAttribute, array $arrOptions = [])
+    public static function findByProductAndAttribute(ProductInterface $objProduct, OptionsAttributeInterface $objAttribute, array $arrOptions = [])
     {
         if (OptionsSource::Product !== $objAttribute->getOptionsSource()) {
             throw new \LogicException('Options source for attribute "' . $objAttribute->getFieldName() . '" is not the product');
@@ -272,7 +272,7 @@ class AttributeOption extends Multilingual
         $t = static::getTable();
         $productId = $objProduct->id;
 
-        if ($objProduct->isVariant() && !\in_array($objAttribute->getFieldName(), $objProduct->getType()->getVariantAttributes())) {
+        if ($objProduct->isVariant() && !\in_array($objAttribute->getFieldName(), $objProduct->getProductType()->getVariantAttributes())) {
             $productId = $objProduct->getProductId();
         }
 

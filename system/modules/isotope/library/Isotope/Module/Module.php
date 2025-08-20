@@ -11,21 +11,20 @@
 
 namespace Isotope\Module;
 
-use Contao\Controller;
 use Contao\Database;
 use Contao\Date;
 use Contao\Environment;
 use Contao\FrontendUser;
+use Contao\PageModel;
 use Contao\System;
-use Isotope\Haste\Input\Input;
 use Isotope\CompatibilityHelper;
+use Isotope\CoreBundle\Product\ProductInterface;
 use Isotope\Frontend;
-use Isotope\Interfaces\IsotopeProduct;
+use Isotope\Haste\Input\Input;
 use Isotope\Isotope;
 use Isotope\Message;
 use Isotope\Model\Product;
 use Isotope\Model\Product\AbstractProduct;
-use Contao\PageModel;
 
 
 /**
@@ -191,7 +190,7 @@ abstract class Module extends AbstractFrontendModule
      *
      * @return PageModel
      */
-    protected function findJumpToPage(IsotopeProduct $objProduct)
+    protected function findJumpToPage(ProductInterface $objProduct)
     {
         global $objPage;
         global $objIsotopeListPage;

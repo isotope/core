@@ -15,7 +15,7 @@ use Contao\FilesModel;
 use Contao\Model;
 use Contao\StringUtil;
 use Contao\System;
-use Isotope\Interfaces\IsotopeProduct;
+use Isotope\CoreBundle\Product\ProductInterface;
 
 /**
  * Download model represents a file or folder download for a product.
@@ -89,7 +89,7 @@ class Download extends Model
      *
      * @return Download[]|\Contao\Model\Collection|null
      */
-    public static function findByProduct(IsotopeProduct $product)
+    public static function findByProduct(ProductInterface $product)
     {
         $t = static::getTable();
 

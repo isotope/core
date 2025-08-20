@@ -13,9 +13,9 @@ namespace Isotope;
 
 use Contao\Controller;
 use Contao\System;
-use Isotope\Interfaces\IsotopeProduct;
+use Isotope\CoreBundle\Product\ProductInterface;
+use Isotope\CoreBundle\ProductCollection\StoreManager;
 use Isotope\Model\Config;
-use Isotope\Model\Product;
 use Isotope\Model\ProductCollection\Cart;
 use Isotope\Model\ProductPrice;
 use Isotope\Model\TaxClass;
@@ -175,7 +175,7 @@ class Isotope extends Controller
             }
         }
 
-        $sourceIsProduct = $objSource instanceof IsotopeProduct;
+        $sourceIsProduct = $objSource instanceof ProductInterface;
         $sourceIsPrice   = $objSource instanceof ProductPrice;
 
         if (!\is_array($arrAddresses) && ($sourceIsProduct || $sourceIsPrice)) {

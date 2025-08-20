@@ -10,7 +10,7 @@ use Doctrine\DBAL\Connection;
 use Isotope\Collection\AttributeOption as AttributeOptionCollection;
 use Isotope\CompatibilityHelper;
 use Isotope\CoreBundle\Model\Attribute;
-use Isotope\Interfaces\IsotopeProduct;
+use Isotope\CoreBundle\Product\ProductInterface;
 use Isotope\Model\AttributeOption;
 use Isotope\Model\Product;
 use Isotope\Translation;
@@ -99,7 +99,7 @@ abstract class AbstractOptionsAttribute extends AbstractAttribute implements Opt
         return $columns;
     }
 
-    public function getOptionsForWidget(Product|null $product = null): array
+    public function getOptionsForWidget(ProductInterface|null $product = null): array
     {
         $arrOptions = [];
 
@@ -156,7 +156,7 @@ abstract class AbstractOptionsAttribute extends AbstractAttribute implements Opt
                 break;
 
             case OptionsSource::Product:
-                if (CompatibilityHelper::isFrontend() && !($product instanceof IsotopeProduct)) {
+                if (CompatibilityHelper::isFrontend() && !($product instanceof ProductInterface)) {
                     throw new \InvalidArgumentException('Must pass product to Attribute::getOptions if optionsSource is "product"');
                 }
 
@@ -188,7 +188,7 @@ abstract class AbstractOptionsAttribute extends AbstractAttribute implements Opt
         return $arrOptions;
     }
 
-    public function getOptionsFromManager(Product|null $product = null): AttributeOptionCollection|null
+    public function getOptionsFromManager(ProductInterface|null $product = null): AttributeOptionCollection|null
     {
         switch ($this->optionsSource) {
             case OptionsSource::Table:

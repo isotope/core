@@ -9,7 +9,11 @@ use Contao\StringUtil;
 use Contao\UploadableWidgetInterface;
 use Doctrine\DBAL\Connection;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
+use Isotope\CoreBundle\ModelType\ProductRegistry;
+use Isotope\CoreBundle\Product\ProductInterface;
+use Isotope\CoreBundle\Product\CollectibleInterface;
 use Isotope\CoreBundle\Product\ProductOptions;
+use Isotope\CoreBundle\Product\VariantProductInterface;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCollectionItem;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,34 +25,34 @@ class DefaultProductRenderer implements ProductRendererInterface
     public function __construct(
         private readonly Environment $twig,
         private readonly AttributeRegistry $attributeRegistry,
+        private readonly ProductRegistry $productRegistry,
         private readonly Connection $connection,
     ) {
     }
 
-    public function render(Product $product, RenderConfig $config, Request $request): string
+    public function render(ProductInterface $product, RenderConfig $config, Request $request): string
     {
         $this->strFormId = $config->id;
         $defaults = $this->getDefaults($product, $request);
-        $productOptions = new ProductOptions($this->attributeRegistry, $this->connection, $product, $config, $request, $defaults, (bool) $product->getType()->force_variant_options);
+        $productOptions = new ProductOptions($this->attributeRegistry, $this->connection, $product, $config, $request, $defaults, (bool) $product->getProductType()->force_variant_options);
 
-        if ($config->withOptions) {
+        if ($config->withOptions && $product instanceof VariantProductInterface) {
             $variantOptions = $productOptions->getVariantOptions();
 
-            if (null !== $variantOptions && null !== ($variant = Product::findVariantOfProduct($product, $variantOptions))) {
-                $productOptions = new ProductOptions($this->attributeRegistry, $this->connection, $variant, $config, $request, $defaults, (bool) $variant->getType()->force_variant_options);
+            if (null !== $variantOptions && null !== ($variant = $product->getVariant($variantOptions))) {
+                $productOptions = new ProductOptions($this->attributeRegistry, $this->connection, $variant, $config, $request, $defaults, (bool) $variant->getProductType()->force_variant_options);
                 $product = $variant;
-            } elseif (null === $variantOptions && $config->loadFallback && null !== ($variant = Product::findDefaultVariantOfProduct($product))) {
-                $productOptions = new ProductOptions($this->attributeRegistry, $this->connection, $variant, $config, $request, $defaults, (bool) $variant->getType()->force_variant_options);
+            } elseif (null === $variantOptions && $config->loadFallback && null !== ($variant = $product->getDefaultVariant())) {
+                $productOptions = new ProductOptions($this->attributeRegistry, $this->connection, $variant, $config, $request, $defaults, (bool) $variant->getProductType()->force_variant_options);
                 $product = $variant;
             }
         }
 
-        $type = $product->getType();
+        $type = $product->getProductType();
         $attributes = array_unique(array_merge($type->getAttributes(), $type->getVariantAttributes()));
-        $cssID = StringUtil::deserialize($product->cssID, true);
+        $cssID = StringUtil::deserialize($product['cssID'], true);
 
         $context = [
-            'data' => $product->row(),
             'product_html_id' => $cssID[0] ?? null,
             'product_css_classes' => $cssID[1] ?? null,
             'product' => $product,
@@ -57,7 +61,7 @@ class DefaultProductRenderer implements ProductRendererInterface
             'attributes' => $attributes,
             'options' => [],
             'hasUploads' => false,
-            'isActive' => $request->attributes->get('_content') instanceof Product && $request->attributes->get('_content')?->getProductId() === $product->getProductId(),
+            'isActive' => $request->attributes->get('_content') instanceof ProductInterface && $request->attributes->get('_content')?->getProductId() === $product->getProductId(),
         ];
 
         if ($config->withOptions) {
@@ -78,17 +82,14 @@ class DefaultProductRenderer implements ProductRendererInterface
         return $content;
     }
 
-    private function getDefaults(Product $product, Request $request): array
+    private function getDefaults(ProductInterface $product, Request $request): array
     {
         if ($request->query->has('collection_item')) {
             $item = ProductCollectionItem::findById($request->query->get('collection_item'));
             // TODO: check this item belongs to a collection that belongs to the current user
 
-            if (null !== $item
-                && $item->hasProduct()
-                && $item->getProduct()->getProductId() === $product->getProductId()
-            ) {
-                return $item->getOptions();
+            if ($item && $item->isProduct($product)) {
+                return $item->getConfiguration();
             }
         }
 

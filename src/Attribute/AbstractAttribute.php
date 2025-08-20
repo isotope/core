@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Attribute;
 
-use Isotope\Model\Product;
+use Isotope\CoreBundle\Product\ProductInterface;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface as SymfonyContainerInterface;
 
@@ -197,9 +197,9 @@ abstract class AbstractAttribute implements AttributeInterface
         throw new \RuntimeException(\sprintf('Unable to guess the frontend widget for %s, implement %s instead.', static::class, __METHOD__));
     }
 
-    public function getValue(Product $product)
+    public function getValue(ProductInterface $product)
     {
-        return $product->{$this->fieldName};
+        return $product[$this->fieldName];
     }
 
     public function updateDcaField(array &$field, array &$keys): void

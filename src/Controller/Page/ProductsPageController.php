@@ -17,6 +17,8 @@ use Contao\FrontendIndex;
 use Contao\Input;
 use Contao\PageModel;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
+use Isotope\CoreBundle\ModelType\ProductRegistry;
+use Isotope\CoreBundle\Product\ProductInterface;
 use Isotope\CoreBundle\Product\Query\ProductQueryFactory;
 use Isotope\CoreBundle\Routing\ProductReference;
 use Isotope\CoreBundle\Routing\ResponseContext\IsotopeBag;
@@ -34,6 +36,7 @@ class ProductsPageController extends AbstractController
         private readonly ResponseContextAccessor $responseContextAccessor,
         private readonly HtmlDecoder $htmlDecoder,
         private readonly ProductCategoryUtil $productCategoryUtil,
+        private readonly ProductRegistry $productRegistry,
         private readonly AttributeRegistry $attributeRegistry,
         private readonly ProductQueryFactory $queryFactory,
     ) {
@@ -49,9 +52,9 @@ class ProductsPageController extends AbstractController
             return $this->renderPage($pageModel, $request);
         }
 
-        $product = Product::findAvailableByIdOrAlias($alias);
+        $product = $this->productRegistry->get(Product::findAvailableByIdOrAlias($alias));
 
-        if (null === $product) {
+        if (!$product instanceof ProductInterface) {
             throw new PageNotFoundException();
         }
 
@@ -68,7 +71,7 @@ class ProductsPageController extends AbstractController
         return $this->renderPage($pageModel, $request, $product);
     }
 
-    private function renderPage(PageModel $pageModel, Request $request, Product|null $product = null): Response
+    private function renderPage(PageModel $pageModel, Request $request, ProductInterface|null $product = null): Response
     {
         $request->attributes->set('_content', $product);
         $request->attributes->set('_product_query', $this->queryFactory->parse($request));
@@ -80,8 +83,8 @@ class ProductsPageController extends AbstractController
         if ($product) {
             $htmlHeadBag = $context->get(HtmlHeadBag::class);
             $htmlHeadBag
-                ->setTitle($this->htmlDecoder->inputEncodedToPlainText($product->meta_title ?: $product->getName()))
-                ->setMetaDescription($this->htmlDecoder->inputEncodedToPlainText($product->meta_description ?: $product->teaser ?: $product->description ?: ''))
+                ->setTitle($this->htmlDecoder->inputEncodedToPlainText($product->getMetaTitle()))
+                ->setMetaDescription($this->htmlDecoder->inputEncodedToPlainText($product->getMetaDescription()))
             ;
 
             if ($pageModel->enableCanonical) {
@@ -102,10 +105,10 @@ class ProductsPageController extends AbstractController
         return $response;
     }
 
-    private function addCanonicalUrls(HtmlHeadBag $htmlHeadBag, PageModel $pageModel, Product $product): void
+    private function addCanonicalUrls(HtmlHeadBag $htmlHeadBag, PageModel $pageModel, ProductInterface $product): void
     {
         $htmlHeadBag->setKeepParamsForCanonical(
-            array_intersect($product->getType()->getVariantAttributes(), $this->attributeRegistry->getVariantOptionFields())
+            array_intersect($product->getProductType()->getVariantAttributes(), $this->attributeRegistry->getVariantOptionFields())
         );
 
         if ($pageModel->canonicalLink) {

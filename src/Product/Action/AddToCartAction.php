@@ -4,9 +4,10 @@ namespace Isotope\CoreBundle\Product\Action;
 
 use Contao\Input;
 use Isotope\CoreBundle\HttpFoundation\ActionResult;
+use Isotope\CoreBundle\Product\ProductInterface;
 use Isotope\CoreBundle\Product\Render\RenderConfig;
+use Isotope\CoreBundle\Product\VariantProductInterface;
 use Isotope\Haste\Util\Url;
-use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
 use Isotope\Model\ProductCollectionItem;
 use Twig\Environment;
@@ -17,15 +18,15 @@ class AddToCartAction implements ProductActionInterface
     {
     }
 
-    public function supports(IsotopeProduct $product, RenderConfig $renderConfig): bool
+    public function supports(ProductInterface $product, RenderConfig $renderConfig): bool
     {
         return true;
     }
 
-    public function render(IsotopeProduct $product, RenderConfig $renderConfig): string
+    public function render(ProductInterface $product, RenderConfig $renderConfig): string
     {
         return $this->twig->render('@Contao/isotope/product_action/add_to_cart.html.twig', [
-            'disabled' => $product->hasVariants() && !$product->isVariant(),
+            'disabled' => !$product instanceof VariantProductInterface || ($product->hasVariants() && !$product->isVariant()),
         ]);
     }
 
@@ -38,14 +39,14 @@ class AddToCartAction implements ProductActionInterface
     //    return $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'];
     //}
 
-    public function handle(IsotopeProduct $product, RenderConfig $renderConfig): ActionResult
+    public function handle(ProductInterface $product, array $configuration, RenderConfig $renderConfig): ActionResult
     {
         $item = $this->getCurrentCartItem($product);
 
         if ($item) {
             $response = $this->handleUpdateCart($item, $product);
         } else {
-            $response = $this->handleAddToCart($product, $renderConfig);
+            $response = $this->handleAddToCart($product, $configuration, $renderConfig);
         }
 
         if ($response->success && ($renderConfig->options['iso_addProductJumpTo'] ?? null)) {
@@ -61,31 +62,19 @@ class AddToCartAction implements ProductActionInterface
         return $response;
     }
 
-    /**
-     * @param IsotopeProduct|null $product
-     *
-     * @return ProductCollectionItem|null
-     */
-    private function getCurrentCartItem(IsotopeProduct $product = null)
+    private function getCurrentCartItem(ProductInterface $product): ProductCollectionItem|null
     {
-        if (null === $product || !Input::get('collection_item')) {
+        if (!Input::get('collection_item')) {
             return null;
         }
 
         /** @var ProductCollectionItem $item */
         $item = Isotope::getCart()->getItemById(Input::get('collection_item'));
 
-        if (null !== $item
-            && $item->hasProduct()
-            && $item->getProduct()->getProductId() == $product->getProductId()
-        ) {
-            return $item;
-        }
-
-        return null;
+        return $item?->isProduct($product) ? $item : null;
     }
 
-    private function handleAddToCart(IsotopeProduct $product, RenderConfig $config): ActionResult
+    private function handleAddToCart(ProductInterface $product, array $configuration, RenderConfig $config): ActionResult
     {
         $quantity = 1;
 
@@ -95,7 +84,7 @@ class AddToCartAction implements ProductActionInterface
 
         // Do not add parent of variant product to the cart
         if (($product->hasVariants() && !$product->isVariant())
-            || !Isotope::getCart()->addProduct($product, $quantity, $config->toArray())
+            || !Isotope::getCart()->addProduct($product, $quantity, $configuration, $config->toArray())
         ) {
             return new ActionResult('Das Produkt konnte nicht in den Warenkorb gelegt werden', success: false);
         }
@@ -103,7 +92,7 @@ class AddToCartAction implements ProductActionInterface
         return new ActionResult($GLOBALS['TL_LANG']['MSC']['addedToCart']);
     }
 
-    private function handleUpdateCart(ProductCollectionItem $item, IsotopeProduct $product): ActionResult
+    private function handleUpdateCart(ProductCollectionItem $item, ProductInterface $product): ActionResult
     {
         $success = Isotope::getCart()->updateProduct($product, $item);
 

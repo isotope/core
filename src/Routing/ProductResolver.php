@@ -7,6 +7,8 @@ namespace Isotope\CoreBundle\Routing;
 use Contao\CoreBundle\Routing\Content\ContentUrlResolverInterface;
 use Contao\CoreBundle\Routing\Content\ContentUrlResult;
 use Contao\PageModel;
+use Isotope\CoreBundle\Product\ProductInterface;
+use Isotope\CoreBundle\Product\VariantProductInterface;
 use Isotope\CoreBundle\Util\ProductCategoryUtil;
 use Isotope\Model\Product;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -77,22 +79,22 @@ class ProductResolver implements ContentUrlResolverInterface
             return [];
         }
 
-        if ($product->isVariant()) {
-            $product = Product::findById($product->getProductId());
+        if ($product instanceof VariantProductInterface && $product->isVariant()) {
+            $product = $product->getMainProduct();
         }
 
         return [
-            'parameters' => '/'.($product->alias ?: $product->getProductId()),
+            'parameters' => '/'.$product->getAlias(),
         ];
     }
 
-    private function getProduct(object $content): Product|null
+    private function getProduct(object $content): ProductInterface|null
     {
         if ($content instanceof ProductReference) {
             return $content->product;
         }
 
-        if ($content instanceof Product) {
+        if ($content instanceof ProductInterface) {
             return $content;
         }
 

@@ -6,12 +6,12 @@
 
 {% block formbody %}
 
-    <h3>{% if href|default %}<a href="{{ href }}">{% endif %}{{ data.name }}{% if href|default %}</a>{% endif %}</h3>
+    <h3>{% if href|default %}<a href="{{ href }}">{% endif %}{{ product.name }}{% if href|default %}</a>{% endif %}</h3>
 
     {{ gallery.main_image|raw }}
 
-    {% if data.sku|default %}<div class="sku">{{ data.sku }}</div>{% endif %}
-    {% if data.teaser|default %}<div class="teaser">{{ data.teaser|nl2br }}</div>{% endif %}
+    {% if product.sku|default %}<div class="sku">{{ product.sku }}</div>{% endif %}
+    {% if product.teaser|default %}<div class="teaser">{{ product.teaser|nl2br }}</div>{% endif %}
 
     {{ block('product_price') }}
 

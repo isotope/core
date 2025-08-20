@@ -16,8 +16,6 @@ use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
 use Isotope\CoreBundle\Attribute\VariantAttributeInterface;
 use Isotope\CoreBundle\Model\Attribute;
 use Isotope\CoreBundle\Product\Render\RenderConfig;
-use Isotope\Model\Product;
-use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\HttpFoundation\Request;
 
 class ProductOptions
@@ -39,7 +37,7 @@ class ProductOptions
     public function __construct(
         private readonly AttributeRegistry $attributeRegistry,
         private readonly Connection $connection,
-        private readonly Product $product,
+        private readonly ProductInterface $product,
         private readonly RenderConfig $config,
         private readonly Request $request,
         private readonly array $defaults = [],
@@ -63,7 +61,7 @@ class ProductOptions
         }
 
         $options = array();
-        $variantAttributes = array_intersect($this->product->getType()->getVariantAttributes(), $this->attributeRegistry->getVariantOptionFields());
+        $variantAttributes = array_intersect($this->product->getProductType()->getVariantAttributes(), $this->attributeRegistry->getVariantOptionFields());
         $variantIds = $this->product->getVariantIds();
 
         // We don't need to validate VariantAttributeInterface here, because AttributeRegistry::getVariantOptionFields will check it
@@ -104,10 +102,11 @@ class ProductOptions
 
     public function generateVariantOptionWidgets(): array
     {
-        $type = $this->product->getType();
+        $type = $this->product->getProductType();
         $attributes = array_unique(array_merge($type->getAttributes(), $type->getVariantAttributes()));
 
         $arrVariantOptions = array();
+        $arrProductConfiguration = array();
         $arrProductOptions = array();
         $arrAjaxOptions    = array();
 
@@ -123,11 +122,12 @@ class ProductOptions
                 continue;
             }
 
-            $widget = $this->generateProductOptionWidget($attributeName, $arrVariantOptions, $arrAjaxOptions);
+            $widget = $this->generateProductOptionWidget($attributeName, $arrVariantOptions, $arrProductConfiguration, $arrAjaxOptions);
 
             if (null !== $widget) {
                 $arrProductOptions[$attributeName] = [
                     'name' => $attributeName,
+                    'value' => $arrProductConfiguration[$attributeName] ?? null,
                     'attribute' => $attribute,
                     'widget' => $widget,
                 ];
@@ -142,7 +142,7 @@ class ProductOptions
     /**
      * Return a widget object based on a product attribute's properties
      */
-    private function generateProductOptionWidget(string $attributeName, array &$arrVariantOptions, array &$arrAjaxOptions): Widget|null
+    private function generateProductOptionWidget(string $attributeName, array &$arrVariantOptions, array &$arrProductConfiguration, array &$arrAjaxOptions): Widget|null
     {
         /** @var AttributeInterface|OptionsAttributeInterface|VariantAttributeInterface|Attribute $objAttribute */
         $objAttribute = $this->attributeRegistry->get($attributeName);
@@ -195,7 +195,7 @@ class ProductOptions
                 $arrField['options'] = array_values($arrField['options']);
             }
 
-            $arrField['value'] = $this->product->$attributeName;
+            $arrField['value'] = $this->product[$attributeName];
 
         } elseif ($objAttribute instanceof OptionsAttributeInterface && empty($arrField['options'])) {
             return null;
@@ -263,7 +263,7 @@ class ProductOptions
                     if ($objAttribute instanceof VariantAttributeInterface && $objAttribute->isVariantOption()) {
                         $arrVariantOptions[$attributeName] = $varValue;
                     } else {
-                        $this->product->arrCustomerConfig[$attributeName] = $varValue;
+                        $arrProductConfiguration[$attributeName] = $varValue;
                     }
                 }
             }

@@ -8,7 +8,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_item'] = [
             'keys' => [
                 'id' => 'primary',
                 'pid' => 'index',
-                'product_id' => 'index',
+                'identifier' => 'index',
             ],
         ],
     ],
@@ -24,13 +24,8 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_item'] = [
         'tstamp' => [
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
-        'product_id' => [
-            'foreignKey' => 'tl_iso_product.name',
-            'sql' => "int(10) unsigned NOT NULL default '0'",
-            'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
-        ],
-        'type' => [
-            'sql' => "varchar(32) NOT NULL default ''",
+        'identifier' => [
+            'sql' => 'varchar(64) NOT NULL',
         ],
         'sku' => [
             'sql' => 'varchar(128) NULL',

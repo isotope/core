@@ -16,8 +16,10 @@ use Contao\MemberModel;
 use Contao\Model;
 use Contao\Model\Collection;
 use Contao\StringUtil;
+use Contao\System;
 use Isotope\CoreBundle\Model\ProductCategory;
-use Isotope\Interfaces\IsotopeProduct;
+use Isotope\CoreBundle\ModelType\ProductRegistry;
+use Isotope\CoreBundle\Product\ProductInterface;
 use Isotope\Isotope;
 use Isotope\Translation;
 
@@ -156,7 +158,7 @@ class Rule extends Model
         return $fltDiscount * -1;
     }
 
-    public static function findByProduct(IsotopeProduct $objProduct, $strField, $fltPrice)
+    public static function findByProduct(ProductInterface $objProduct, $strField, $fltPrice)
     {
         return static::findByConditions(array("type='product'"), array(), array($objProduct), 'low_price' === $strField, array($strField => $fltPrice));
     }
@@ -283,26 +285,31 @@ class Rule extends Model
 
             foreach ($arrProducts as $objProduct) {
                 if ($objProduct instanceof ProductCollectionItem) {
-                    if (!$objProduct->hasProduct()) {
+                    $objProduct = System::getContainer()->get(ProductRegistry::class)->create($objProduct);
+
+                    if (!$objProduct) {
                         continue;
                     }
-
-                    $objProduct = $objProduct->getProduct();
                 }
 
-                $arrProductIds[] = (int) $objProduct->getProductId();
-                $arrVariantIds[] = (int) $objProduct->{$objProduct->getPk()};
-                $arrTypes[] = (int) $objProduct->type;
+                if (!$objProduct instanceof ProductInterface) {
+                    continue;
+                }
+
+                $arrProductIds[] = $objProduct->getProductId();
+                $arrVariantIds[] = (int) $objProduct->getId();
+                $arrTypes[] = (int) $objProduct->getProductType()?->id;
 
                 if ($objProduct->isVariant()) {
-                    $arrVariantIds[] = (int) $objProduct->pid;
+                    $arrVariantIds[] = $objProduct->getProductId();
                 }
 
                 if ($blnIncludeVariants && $objProduct->hasVariants()) {
                     $arrVariantIds = array_merge($arrVariantIds, $objProduct->getVariantIds());
                 }
 
-                $arrOptions = $objProduct->getOptions();
+                // TODO: should this use the configuration of the given ProductCollectionItem ?
+                $arrOptions = $objProduct->getVariantConfig();
                 foreach ($arrAttributes as $k => $restriction) {
                     $varValue = null;
 

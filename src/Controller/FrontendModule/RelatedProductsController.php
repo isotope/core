@@ -8,6 +8,7 @@ use Contao\CoreBundle\DependencyInjection\Attribute\AsFrontendModule;
 use Contao\CoreBundle\Twig\FragmentTemplate;
 use Contao\ModuleModel;
 use Contao\StringUtil;
+use Isotope\CoreBundle\Product\ProductInterface;
 use Isotope\Model\Product;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,11 +21,9 @@ class RelatedProductsController extends AbstractFrontendModuleController
         $categories = StringUtil::deserialize($model->iso_related_categories, true);
         $product = $request->attributes->get('_content');
 
-        if (!$product instanceof Product || [] === $categories) {
+        if (!$product instanceof ProductInterface || [] === $categories) {
             return new Response();
         }
-
-
 
         return $template->getResponse();
     }

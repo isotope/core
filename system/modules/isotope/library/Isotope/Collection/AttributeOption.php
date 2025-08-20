@@ -11,8 +11,8 @@
 
 namespace Isotope\Collection;
 
-use Isotope\Interfaces\IsotopeProduct;
 use Contao\Model\Collection;
+use Isotope\CoreBundle\Product\ProductInterface;
 
 
 /**
@@ -30,7 +30,7 @@ class AttributeOption extends Collection
      * @param bool           $blnPriceInLabel
      * @return array
      */
-    public function getArrayForFrontendWidget(IsotopeProduct $objProduct = null, $blnPriceInLabel = true)
+    public function getArrayForFrontendWidget(ProductInterface $objProduct = null, $blnPriceInLabel = true)
     {
         $arrOptions = array();
 

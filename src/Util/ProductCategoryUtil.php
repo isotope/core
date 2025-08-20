@@ -5,8 +5,8 @@ namespace Isotope\CoreBundle\Util;
 use Contao\CoreBundle\Routing\PageFinder;
 use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use Contao\Database;
-use Contao\PageModel;
 use Doctrine\DBAL\Connection;
+use Isotope\CoreBundle\Product\ProductInterface;
 use Isotope\Model\Product;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -47,13 +47,13 @@ class ProductCategoryUtil implements ResetInterface
             $this->unpublished = $this->preload(false);
         }
 
-        return $this->unpublished[$product->getProductId()] ?? [];
+        return $this->unpublished[$product->pid ?: $product->id] ?? [];
     }
 
     /**
      * @return array<int>
      */
-    public function getPublishedForProduct(Product $product): array
+    public function getPublishedForProduct(ProductInterface $product): array
     {
         if (null === $this->published) {
             $this->published = $this->preload(true);
@@ -65,7 +65,7 @@ class ProductCategoryUtil implements ResetInterface
     /**
      * @return array<int>
      */
-    public function getPublishedForProductInRoot(int $rootId, Product $product): array
+    public function getPublishedForProductInRoot(int $rootId, ProductInterface $product): array
     {
         if (!isset($this->root[$rootId])) {
             $this->root[$rootId] = Database::getInstance()->getChildRecords($rootId, 'tl_page', false, [$rootId]);
@@ -77,7 +77,7 @@ class ProductCategoryUtil implements ResetInterface
     /**
      * @return array<int>
      */
-    public function getPublishedForProductInCurrentRoot(Product $product): array
+    public function getPublishedForProductInCurrentRoot(ProductInterface $product): array
     {
         $request = $this->requestStack->getCurrentRequest();
 

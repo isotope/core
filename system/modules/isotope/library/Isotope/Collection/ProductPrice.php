@@ -11,10 +11,10 @@
 
 namespace Isotope\Collection;
 
-use Isotope\Interfaces\IsotopePrice;
-use Isotope\Interfaces\IsotopeProduct;
-use Isotope\Isotope;
 use Contao\Model\Collection;
+use Isotope\CoreBundle\Product\ProductInterface;
+use Isotope\Interfaces\IsotopePrice;
+use Isotope\Isotope;
 
 /**
  * @method \Isotope\Model\ProductPrice current()
@@ -164,7 +164,7 @@ class ProductPrice extends Collection implements IsotopePrice
         }
     }
 
-    public function setProduct(IsotopeProduct $product)
+    public function setProduct(ProductInterface $product)
     {
         foreach ($this->arrModels as $model) {
             if ($model instanceof \Isotope\Model\ProductPrice) {

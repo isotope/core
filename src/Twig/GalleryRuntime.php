@@ -10,6 +10,7 @@ use Contao\StringUtil;
 use Isotope\CoreBundle\Gallery\StandardGallery;
 use Isotope\CoreBundle\Model\Gallery;
 use Isotope\CoreBundle\ModelType\GalleryRegistry;
+use Isotope\CoreBundle\Product\ProductInterface;
 use Isotope\CoreBundle\Product\Render\RenderConfig;
 use Isotope\CoreBundle\Routing\ProductReference;
 use Isotope\CoreBundle\Routing\ProductResolver;
@@ -36,7 +37,7 @@ class GalleryRuntime implements RuntimeExtensionInterface
         $product = $context['product'] ?? null;
         $config = $context['config'] ?? null;
 
-        if (!$product instanceof Product || !$config instanceof RenderConfig) {
+        if (!$product instanceof ProductInterface || !$config instanceof RenderConfig) {
             return null;
         }
 
@@ -45,8 +46,8 @@ class GalleryRuntime implements RuntimeExtensionInterface
 
         $href = null;
         $files = MediaManager::mergeMediaData(
-            StringUtil::deserialize($product->$attributeName, true),
-            StringUtil::deserialize($product->{$attributeName.'_fallback'}, true),
+            StringUtil::deserialize($product[$attributeName], true),
+            StringUtil::deserialize($product[$attributeName.'_fallback'], true),
         );
 
         //if (!isset($config['jumpTo']) || ProductResolver::canLinkToPage($config['jumpTo'])) {
@@ -54,7 +55,7 @@ class GalleryRuntime implements RuntimeExtensionInterface
         //}
 
         return new GalleryVariable($gallery->withProductData(
-            $product->getFormId().'_'.$attributeName,
+            'iso_product_'.$product->getId().'_'.$attributeName,
             $product->getProductId(),
             $files,
             $href,

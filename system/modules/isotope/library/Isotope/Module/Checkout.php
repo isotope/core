@@ -595,7 +595,7 @@ class Checkout extends Module
         $productTypeIds = [];
         foreach (Isotope::getCart()->getItems() as $objItem) {
             if ($objItem->hasProduct()) {
-                $productType = $objItem->getProduct()->getType();
+                $productType = $objItem->getProduct()->getProductType();
                 $productTypeIds[] = null === $productType ? 0 : (int) $productType->id;
             }
         }

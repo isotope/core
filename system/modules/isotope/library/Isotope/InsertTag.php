@@ -12,9 +12,12 @@
 namespace Isotope;
 
 use Contao\StringUtil;
+use Contao\System;
+use Isotope\CoreBundle\ModelType\ProductRegistry;
+use Isotope\CoreBundle\Product\AvailabilityChecker;
+use Isotope\CoreBundle\Product\ProductInterface;
 use Isotope\Haste\Input\Input;
 use Isotope\Interfaces\IsotopeOrderableCollection;
-use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Address;
 use Isotope\Model\Product;
@@ -178,7 +181,7 @@ class InsertTag
      * @param string         $attribute
      * @return string
      */
-    private function getValueForProductTag(IsotopeProduct $product, $attribute)
+    private function getValueForProductTag(ProductInterface $product, $attribute)
     {
         return $product->$attribute;
     }
@@ -219,17 +222,24 @@ class InsertTag
      *
      * @param int $id
      *
-     * @return IsotopeProduct|null
+     * @return ProductInterface|null
      */
     private function findCurrentProduct($id = null)
     {
         if (null !== $id) {
-            return Product::findAvailableByPk($id);
-        } elseif (Product::getActive() !== null) {
-            return Product::getActive();
+            $product = System::getContainer()->get(ProductRegistry::class)->get(Product::findById($id));
         } else {
-            return Product::findAvailableByIdOrAlias(Input::getAutoItem('product', false, true));
+            $product = System::getContainer()->get('request_stack')->getCurrentRequest()->get('_product');
         }
+
+        /** @var AvailabilityChecker $availabilityChecker */
+        $availabilityChecker = System::getContainer()->get(AvailabilityChecker::class);
+
+        if (!$product instanceof ProductInterface || !$availabilityChecker->isAvailable($product)) {
+            return null;
+        }
+
+        return $product;
     }
 
     /**
@@ -243,7 +253,7 @@ class InsertTag
      * @param string         $type
      * @return string
      */
-    private function getPriceForProductTag(IsotopeProduct $product, $type)
+    private function getPriceForProductTag(ProductInterface $product, $type)
     {
         switch ($type) {
             case 'amount':
