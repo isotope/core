@@ -32,7 +32,7 @@ class ReorderAction implements ProductCollectionActionInterface
 
         $redirect = null;
 
-        if (isset($context['data']['iso_cart_jumpTo'])) {
+        if (($context['data']['iso_cart_jumpTo'] ?? null) > 0) {
             $redirect = Url::addQueryString('continue=' . base64_encode(System::getReferer()), $context['data']['iso_cart_jumpTo']);
         }
 

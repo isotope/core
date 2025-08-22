@@ -1,0 +1,24 @@
+{% trans_default_domain 'contao_default' %}
+{% extends '@Contao/frontend_module/_isotope_base.html.twig' %}
+{% use '@Contao/isotope/collection/default.html.twig' %}
+
+{% block content %}
+
+    <h2>{{ 'MSC.orderDetailsHeadline'|trans([collection.documentNumber, collection.locked|date(contao.page.datimFormat)]) }}</h2>
+    <div class="order_status {{ collection.statusAlias }}">{{ 'MSC.orderStatusHeadline'|trans([collection.statusLabel]) }}</div>
+
+    {% for type,data in info %}
+        <div class="info_container {{ type }} {{ data.class|default }}">
+            <h3>{{ data.headline }}</h3>
+            <div class="info">{{ data.info|raw }}</div>
+        </div>
+    {% endfor %}
+
+
+    {{ block('product_collection') }}
+
+{% endblock %}
+
+{% block product_collection_actions %}
+    {{ isotope_product_collection_action('reorder') }}
+{% endblock %}

@@ -28,7 +28,6 @@ use Isotope\CoreBundle\Widget\MediaManager;
 use Isotope\EventListener\ChangeLanguageListener;
 use Isotope\EventListener\PostCheckoutUploads;
 use Isotope\Frontend;
-use Isotope\Isotope;
 use Isotope\Model\Address;
 use Isotope\Model\AttributeOption;
 use Isotope\Model\Config;
@@ -57,7 +56,6 @@ use Isotope\Module\CartAddress;
 use Isotope\Module\Checkout;
 use Isotope\Module\ConfigSwitcher;
 use Isotope\Module\Messages;
-use Isotope\Module\OrderDetails;
 use Isotope\Module\OrderHistory;
 use Isotope\Module\ProductVariantList;
 use Isotope\Module\ShippingCalculator;
@@ -97,7 +95,6 @@ $GLOBALS['FE_MOD']['isotope'] = [
     'iso_cart' => Cart::class,
     'iso_checkout' => Checkout::class,
     'iso_orderhistory' => OrderHistory::class,
-    'iso_orderdetails' => OrderDetails::class,
     'iso_configswitcher' => ConfigSwitcher::class,
     'iso_addressbook' => AddressBook::class,
     'iso_messages' => Messages::class,
