@@ -147,13 +147,6 @@ interface IsotopeProductCollection
     public function getCurrency();
 
     /**
-     * Return the item with the latest timestamp (e.g. the latest added item)
-     *
-     * @return ProductCollectionItem|null
-     */
-    public function getLatestItem();
-
-    /**
      * Return all items in the collection
      *
      * @param callable

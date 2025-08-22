@@ -895,28 +895,6 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
     }
 
     /**
-     * Return the item with the latest timestamp (e.g. the latest added item)
-     *
-     * @return ProductCollectionItem|null
-     */
-    public function getLatestItem()
-    {
-        if (!isset($this->arrCache['latestItem'])) {
-            $latest   = 0;
-            $arrItems = $this->getItems();
-
-            foreach ($arrItems as $objItem) {
-                if ($objItem->tstamp > $latest) {
-                    $this->arrCache['latestItem'] = $objItem;
-                    $latest                       = $objItem->tstamp;
-                }
-            }
-        }
-
-        return $this->arrCache['latestItem'];
-    }
-
-    /**
      * Return timestamp when this collection was created
      * This is relevant for price calculation
      *

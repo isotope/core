@@ -124,16 +124,6 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
     }
 
     /**
-     * Return true if the user should see lowest price tier as lowest price
-     *
-     * @return bool
-     */
-    public function canSeePriceTiers()
-    {
-        return $this->getType()->showPriceTiers();
-    }
-
-    /**
      * Return the unique form ID for the product
      *
      * @return string
@@ -164,15 +154,6 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         }
 
         return $this->objPrice;
-    }
-
-    public function setPrice(IsotopePrice $price)
-    {
-        $this->objPrice = $price;
-
-        if ($price instanceof ProductPrice || $price instanceof ProductPriceCollection) {
-            $price->setProduct($this);
-        }
     }
 
     /**
