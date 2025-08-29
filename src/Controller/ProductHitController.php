@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Controller;
 
+use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 use Hashids\Hashids;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
@@ -30,7 +31,7 @@ class ProductHitController
             $this->connection->executeStatement(
                 'UPDATE tl_iso_product SET hitCount=hitCount+1 WHERE id IN (?)',
                 [$hashids->decode($hashid)],
-                [Connection::PARAM_INT_ARRAY],
+                [ArrayParameterType::INTEGER],
             );
         } catch (\Throwable) {
             // ignore

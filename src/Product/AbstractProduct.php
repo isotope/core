@@ -72,12 +72,12 @@ abstract class AbstractProduct implements ProductInterface
 
     public function getSku(): string
     {
-        return $this['sku'];
+        return $this['sku'] ?? '';
     }
 
     public function getAlias(): string
     {
-        return $this['alias'] ?? (string) $this->getId();
+        return $this['alias'] ?: (string) $this->getId();
     }
 
     public function getMetaTitle(): string

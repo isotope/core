@@ -2,9 +2,7 @@
 
 use Contao\DataContainer;
 use Contao\DC_Table;
-use Isotope\Backend;
 use Isotope\Backend\RelatedProduct\Callback;
-use Isotope\Model\Product;
 use Isotope\Model\RelatedCategory;
 
 $GLOBALS['TL_DCA']['tl_iso_related_product'] = [
@@ -64,7 +62,7 @@ $GLOBALS['TL_DCA']['tl_iso_related_product'] = [
             'inputType' => 'picker',
             'eval' => ['mandatory' => true, 'multiple' => true, 'csv' => ',', 'tl_class' => 'clr', 'orderField' => 'productsOrder'],
             'sql' => 'blob NULL',
-            'relation' => ['table' => Product::getTable(), 'type' => 'hasMany', 'load' => 'lazy'],
+            'relation' => ['table' => 'tl_iso_product', 'type' => 'hasMany', 'load' => 'lazy'],
         ],
         'productsOrder' => [
             'sql' => 'blob NULL',

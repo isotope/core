@@ -126,7 +126,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
         'type' => [
             'filter' => true,
             'inputType' => 'select',
-            'foreignKey' => ProductType::getTable().'.name',
+            'foreignKey' => 'tl_iso_producttype.name',
             'eval' => ['mandatory' => true, 'submitOnChange' => true, 'includeBlankOption' => true, 'tl_class' => 'w50 wizard', 'helpwizard' => true],
             'attributes' => ['legend' => 'general_legend', 'fixed' => true, 'inherit' => true, 'systemColumn' => true],
             'sql' => "int(10) unsigned NOT NULL default '0'",

@@ -146,11 +146,11 @@ class ProductOptions
     {
         /** @var AttributeInterface|OptionsAttributeInterface|VariantAttributeInterface|Attribute $objAttribute */
         $objAttribute = $this->attributeRegistry->get($attributeName);
-        $arrData = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attributeName];
+        $arrData = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attributeName] ?? [];
 
         $strClass = $objAttribute->getFrontendWidget();
 
-        $arrData['eval']['required'] = $arrData['eval']['mandatory'];
+        $arrData['eval']['required'] = $arrData['eval']['mandatory'] ?? false;
 
         // Value can be predefined in the URL, e.g. to preselect a variant
         if (!empty($this->defaults[$attributeName])) {
