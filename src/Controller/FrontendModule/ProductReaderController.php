@@ -37,7 +37,6 @@ class ProductReaderController extends AbstractFrontendModuleController
         }
 
         $template->product = $this->productRenderer->render($product, RenderConfig::createReader($model, $product), $request);
-        $template->referer = $this->generateContentUrl($this->requestStack->getMainRequest()->attributes->get('pageModel'));
 
         return $template->getResponse();
     }

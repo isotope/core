@@ -5,6 +5,7 @@
 
     {{ product|raw }}
 
+    {% set referer = content_url(app.request.attributes.get('originalPageModel')) %}
     {% if referer %}
         <!-- indexer::stop -->
         <p class="back"><a href="{{ referer }}">{{ 'MSC.goBack'|trans }}</a></p>

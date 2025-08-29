@@ -77,6 +77,10 @@ class ProductsPageController extends AbstractController
         $request->attributes->set('_product_query', $this->queryFactory->parse($request));
         $request->attributes->set('_isotope_fragment', $fragmentId = $request->headers->get('Isotope-Fragment'));
 
+        // Override page model in the request
+        $request->attributes->set('originalPageModel', $request->attributes->get('pageModel'));
+        $request->attributes->set('pageModel', $pageModel);
+
         $context = $this->responseContextFactory->createContaoWebpageResponseContext($pageModel);
         $context->add(new IsotopeBag());
 
