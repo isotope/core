@@ -16,11 +16,6 @@ interface OptionsAttributeInterface extends AttributeInterface
     public function getOptionsSource(): OptionsSource|null;
 
     /**
-     * Adjust the attribute option wizard for this widget in the back end.
-     */
-    public function prepareOptionsWizard(Widget $widget, array $columns): array;
-
-    /**
      * Get field options.
      */
     public function getOptionsForWidget(ProductInterface|null $product = null): array;

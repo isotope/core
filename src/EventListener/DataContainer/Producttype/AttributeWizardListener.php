@@ -9,12 +9,12 @@ use Contao\Backend;
 use Contao\Controller;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\DataContainer;
+use Contao\Input;
 use Contao\StringUtil;
 use Contao\System;
 use Doctrine\DBAL\Connection;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
 use Isotope\CoreBundle\Attribute\VariantAttributeInterface;
-use MenAtWork\MultiColumnWizardBundle\Contao\Widgets\MultiColumnWizard;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
@@ -29,50 +29,50 @@ class AttributeWizardListener
     ) {
     }
 
-    #[AsCallback('tl_iso_producttype', 'fields.attributes.eval.columnsCallback', exact: true, singleton: true)]
-    #[AsCallback('tl_iso_producttype', 'fields.variant_attributes.eval.columnsCallback', exact: true, singleton: true)]
-    public function getColumns(MultiColumnWizard $widget): array
+    #[AsCallback('tl_iso_producttype', 'fields.attributes.attributes')]
+    #[AsCallback('tl_iso_producttype', 'fields.variant_attributes.attributes')]
+    public function getColumns(array $attributes, DataContainer $dc): array
     {
-        $values = StringUtil::deserialize($widget->value);
+        $currentRecord = $dc->getCurrentRecord();
+
+        $values = $this->load($currentRecord[$dc->field], $dc);
 
         if (!\is_array($values)) {
             $values = [];
         }
 
-        if ([] !== $values) {
-            $fixed = $this->getFixedFields($this->isVariants($widget->name), $widget->dataContainer?->getCurrentRecord()['class'] ?? null);
+        $fixed = [] !== $values ? $this->getFixedFields($this->isVariants($dc->field), $currentRecord['class'] ?? null) : [];
+        $enabledConfig = $values;
+        $mandatoryConfig = $values;
 
-            foreach ($values as $i => $config) {
-                if (\in_array($config['name'], $fixed, true)) {
-                    $widget->addDataToFieldAtIndex($i, 'enabled', ['eval' => ['disabled' => true]]);
-                }
+        $legends = $this->getLegends($values);
 
-                $attribute = $this->attributeRegistry->get($config['name']);
-
-                if ($attribute instanceof VariantAttributeInterface && $attribute->isVariantOption()) {
-                    $widget->addDataToFieldAtIndex($i, 'mandatory', ['eval' => ['disabled' => true]]);
-                }
-            }
-        }
-
-        return [
+        $attributes['fields'] = [
             'enabled' => [
                 'inputType' => 'checkbox',
-                'eval' => ['hideHead' => true],
+                'attributes_callback' => [static function (array $attributes) use ($fixed, &$enabledConfig) {
+                    $config = array_shift($enabledConfig);
+
+                    if ($config && \in_array($config['name'], $fixed, true)) {
+                        $attributes['disabled'] = true;
+                    }
+
+                    return $attributes;
+                }]
             ],
             'name' => [
-                'input_field_callback' => $this->getNameClosure($widget->name, $values),
-                'eval' => ['hideHead' => true, 'tl_class' => 'mcwUpdateFields'],
+                'input_field_callback' => $this->getNameClosure($dc->field, $values),
             ],
             'legend' => [
                 'label' => &$GLOBALS['TL_LANG']['tl_iso_producttype']['attributes']['legend'],
                 'inputType' => 'select',
-                'options_callback' => fn () => $this->getLegends($values),
+                'options' => $legends,
                 'eval' => ['class' => 'extendable', 'data-controller' => 'isotope--extendable-select'],
             ],
             'tl_class' => [
                 'label' => &$GLOBALS['TL_LANG']['tl_iso_producttype']['attributes']['tl_class'],
                 'inputType' => 'text',
+                'eval' => ['style' => 'width:100px'],
             ],
             'mandatory' => [
                 'label' => &$GLOBALS['TL_LANG']['tl_iso_producttype']['attributes']['mandatory'],
@@ -83,12 +83,29 @@ class AttributeWizardListener
                     'includeBlankOption' => true,
                     'blankOptionLabel' => &$GLOBALS['TL_LANG']['tl_iso_producttype']['attributes']['default'],
                 ],
+                'attributes_callback' => [function (array $attributes) use (&$mandatoryConfig) {
+                    $config = array_shift($mandatoryConfig);
+
+                    if (!($config['name'] ?? null)) {
+                        return $attributes;
+                    }
+
+                    $attribute = $this->attributeRegistry->get($config['name']);
+
+                    if ($attribute instanceof VariantAttributeInterface && $attribute->isVariantOption()) {
+                        $attributes['disabled'] = true;
+                    }
+
+                    return $attributes;
+                }]
             ],
             'edit' => [
                 'input_field_callback' => $this->getEditAttributeClosure($values),
-                'eval' => ['hideHead' => true, 'tl_class' => 'mcwUpdateFields'],
+                'eval' => ['tl_class' => 'mcwUpdateFields'],
             ],
         ];
+
+        return $attributes;
     }
 
     #[AsCallback('tl_iso_producttype', 'fields.attributes.load')]
@@ -162,14 +179,17 @@ class AttributeWizardListener
         }
 
         $fixed = $this->getFixedFields($isVariants, $dc->getCurrentRecord()['class'] ?? null);
+        $input = Input::post($dc->field);
 
         foreach ($value as $k => $config) {
-            if (\in_array($config['name'] ?? null, $fixed, true)) {
+            $name = $config['name'] ?? $input[$k]['name'] ?? null;
+
+            if (\in_array($name, $fixed, true)) {
                 $value[$k]['enabled'] = '1';
             }
 
             $legends[] = $config['legend'];
-            $hasVariantField = $hasVariantField || ($config['enabled'] && $this->isVariantAttribute($config['name']));
+            $hasVariantField = $hasVariantField || ($config['enabled'] && $this->isVariantAttribute($name));
         }
 
         // Make sure at least one variant attribute is enabled
@@ -204,12 +224,15 @@ class AttributeWizardListener
         $values = [];
 
         foreach (array_values($value) as $pos => $config) {
-            if (!isset($config['name'])) {
+            $name = $config['name'] ?? $input[$pos]['name'] ?? null;
+
+            if (!$name) {
                 continue;
             }
 
+            $config['name'] = $name;
             $config['position'] = $pos;
-            $values[$config['name']] = $config;
+            $values[$name] = $config;
         }
 
         return serialize($values);
@@ -218,7 +241,6 @@ class AttributeWizardListener
     #[AsCallback('tl_iso_producttype', 'config.onbeforesubmit')]
     public function validateSingularFields(array $values, DataContainer $dc): array
     {
-        $found = [];
         $singular = $this->getSingularFields();
         $data = array_merge($dc->getCurrentRecord(), $values);
 
@@ -308,7 +330,7 @@ class AttributeWizardListener
                 $current = $values;
             }
 
-            $field = array_shift($values);
+            $field = array_shift($current);
 
             if (null === $field) {
                 return '';

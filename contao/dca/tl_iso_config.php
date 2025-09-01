@@ -4,9 +4,9 @@ use Contao\BackendUser;
 use Contao\DataContainer;
 use Contao\DC_Table;
 use Isotope\Backend;
-use Isotope\Backend\Config\AddressFieldsWizard;
 use Isotope\Backend\Config\Callback;
 use Isotope\CompatibilityHelper;
+use Isotope\CoreBundle\EventListener\DataContainer\Config\AddressFieldsListener;
 use Isotope\CoreBundle\Model\OrderStatus;
 use Isotope\Model\Config;
 
@@ -188,38 +188,30 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'address_fields' => [
-            'inputType' => 'multiColumnWizard',
+            'inputType' => 'rowWizard',
+            'fields' => [
+                'name' => [
+                    'label' => ['&nbsp;'],
+                ],
+                'billing' => [
+                    'label' => &$GLOBALS['TL_LANG']['tl_iso_config']['address_fields']['billing'],
+                    'inputType' => 'select',
+                    'options' => ['disabled', 'enabled', 'mandatory'],
+                    'reference' => &$GLOBALS['TL_LANG']['tl_iso_config']['address_fields'],
+                    'eval' => ['style' => 'width:140px'],
+                ],
+                'shipping' => [
+                    'label' => &$GLOBALS['TL_LANG']['tl_iso_config']['address_fields']['shipping'],
+                    'inputType' => 'select',
+                    'options' => ['disabled', 'enabled', 'mandatory'],
+                    'reference' => &$GLOBALS['TL_LANG']['tl_iso_config']['address_fields'],
+                    'eval' => ['style' => 'width:140px'],
+                ],
+            ],
             'eval' => [
                 'tl_class' => 'clr',
                 'dragAndDrop' => true,
-                'buttons' => ['new' => false, 'copy' => false, 'delete' => false],
-                'columnFields' => [
-                    'name' => [
-                        'label' => ['&nbsp;'],
-                        'input_field_callback' => [AddressFieldsWizard::class, 'getNextName'],
-                        'eval' => ['tl_class' => 'mcwUpdateFields'],
-                    ],
-                    'billing' => [
-                        'label' => &$GLOBALS['TL_LANG']['tl_iso_config']['address_fields']['billing'],
-                        'inputType' => 'select',
-                        'options' => ['disabled', 'enabled', 'mandatory'],
-                        'reference' => &$GLOBALS['TL_LANG']['tl_iso_config']['address_fields'],
-                        'eval' => ['style' => 'width:140px'],
-                    ],
-                    'shipping' => [
-                        'label' => &$GLOBALS['TL_LANG']['tl_iso_config']['address_fields']['shipping'],
-                        'inputType' => 'select',
-                        'options' => ['disabled', 'enabled', 'mandatory'],
-                        'reference' => &$GLOBALS['TL_LANG']['tl_iso_config']['address_fields'],
-                        'eval' => ['style' => 'width:140px'],
-                    ],
-                ],
-            ],
-            'load_callback' => [
-                [AddressFieldsWizard::class, 'load'],
-            ],
-            'save_callback' => [
-                [AddressFieldsWizard::class, 'save'],
+                'actions' => [],
             ],
             'sql' => 'blob NULL',
         ],

@@ -18,19 +18,19 @@ body.popup a[href*="table=tl_iso_attribute_option"].header_back {
     display: none;
 }
 
+#ctrl_attributes td:nth-child(2),
+#ctrl_variant_attributes td:nth-child(2) {
+    padding-left: 8px;
 
+    label {
+        display: none;
+    }
+}
 
 #ctrl_attributes tr:hover td,
 #ctrl_variant_attributes tr:hover td,
 #ctrl_address_fields tr:hover td {
     background-color: #EBFDD7;
-}
-
-table.multicolumnwizard {
-    max-width: 663px;
-}
-table.multicolumnwizard .operations {
-    white-space: nowrap;
 }
 
 .mod_iso_orderdetails .order_status {

@@ -127,10 +127,10 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = [
                 ['name' => 'start', 'enabled' => 1],
                 ['name' => 'stop', 'enabled' => 1],
             ],
-            'inputType' => 'multiColumnWizard',
+            'inputType' => 'rowWizard',
             'eval' => [
                 'tl_class' => 'clr',
-                'buttons' => ['new' => false, 'delete' => false],
+                'actions' => [],
             ],
             'sql' => 'blob NULL',
         ],
@@ -141,10 +141,10 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = [
             'sql' => "char(1) NOT NULL default ''",
         ],
         'variant_attributes' => [
-            'inputType' => 'multiColumnWizard',
+            'inputType' => 'rowWizard',
             'eval' => [
                 'tl_class' => 'clr',
-                'buttons' => ['new' => false, 'delete' => false],
+                'buttons' => [],
             ],
             'sql' => 'blob NULL',
         ],

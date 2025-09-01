@@ -153,11 +153,28 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
             'sql' => "varchar(16) NOT NULL default ''",
         ],
         'options' => [
-            'inputType' => 'multiColumnWizard',
-            'eval' => [
-                'mandatory' => true,
-                'tl_class' => 'clr',
+            'inputType' => 'rowWizard',
+            'fields' => [
+                'value' => [
+                    'label' => &$GLOBALS['TL_LANG']['tl_iso_attribute']['options']['value'],
+                    'inputType' => 'text',
+                    'eval' => ['mandatory' => true, 'maxlength' => 64],
+                ],
+                'label' => [
+                    'label' => &$GLOBALS['TL_LANG']['tl_iso_attribute']['options']['label'],
+                    'inputType' => 'text',
+                    'eval' => ['mandatory' => true],
+                ],
+                'default' => [
+                    'label' => &$GLOBALS['TL_LANG']['tl_iso_attribute']['options']['default'],
+                    'inputType' => 'checkbox',
+                ],
+                'group' => [
+                    'label' => &$GLOBALS['TL_LANG']['tl_iso_attribute']['options']['group'],
+                    'inputType' => 'checkbox',
+                ],
             ],
+            'eval' => ['mandatory' => true, 'tl_class' => 'clr'],
             'sql' => 'blob NULL',
         ],
         'optionsTable' => [

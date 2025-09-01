@@ -5,7 +5,6 @@ use Contao\System;
 use Isotope\Backend;
 use Isotope\Backend\Config\Callback as ConfigCallback;
 use Isotope\Backend\Module\Callback;
-use Isotope\Backend\Module\OrderConditionFields;
 use Isotope\CoreBundle\Model\Gallery;
 use Isotope\CoreBundle\Model\Payment;
 use Isotope\CoreBundle\Model\Shipping;
@@ -203,12 +202,61 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_checkout_skippable'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_order_conditions'] = [
-    'inputType' => 'multiColumnWizard',
+    'inputType' => 'rowWizard',
+    'fields' => [
+        'form' => [
+            'label' => &$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions']['form'],
+            'exclude' => true,
+            'inputType' => 'select',
+            'foreignKey' => 'tl_form.title',
+            'eval' => [
+                'includeBlankOption' => true,
+                'style' => 'width:300px',
+                'chosen' => true,
+            ],
+        ],
+        'step' => [
+            'label' => &$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions']['step'],
+            'inputType' => 'select',
+            'eval' => [
+                'decodeEntities' => true,
+                'includeBlankOption' => true,
+                'style' => 'width:150px',
+            ],
+        ],
+        'position' => [
+            'label' => &$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions']['position'],
+            'default' => 'before',
+            'inputType' => 'select',
+            'options' => ['before', 'after'],
+            'reference' => &$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions']['position'],
+            'eval' => [
+                'style' => 'width:150px',
+            ],
+        ],
+        'product_types' => [
+            'label' => &$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions']['product_types'],
+            'inputType' => 'select',
+            'foreignKey' => 'tl_iso_producttype.name',
+            'eval' => [
+                'multiple' => true,
+                'chosen' => true,
+                'style' => 'width:300px',
+            ],
+        ],
+        'product_types_condition' => [
+            'label' => &$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions']['product_types_condition'],
+            'inputType' => 'select',
+            'options' => ['oneAvailable', 'allAvailable', 'onlyAvailable'],
+            'reference' => &$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions']['product_types_condition'],
+            'eval' => [
+                'style' => 'width:300px',
+            ],
+        ],
+    ],
     'eval' => [
         'decodeEntities' => true,
         'tl_class' => 'clr',
-        'disableSorting' => true,
-        'columnsCallback' => [OrderConditionFields::class, 'getColumns'],
     ],
     'sql' => 'blob NULL',
 ];

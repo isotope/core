@@ -137,12 +137,13 @@ class AdvancedPricesListener extends AbstractSubtableListener
         $createNewVersion = false;
 
         foreach ($value as $new) {
-            $pos = array_search($new['min'], $delete, true);
+            $min = (int) $new['min'];
+            $pos = array_search($min, $delete, true);
 
             if (false === $pos) {
-                $insert[$new['min']] = $new['price'];
+                $insert[$min] = $new['price'];
             } else {
-                $update[$new['min']] = $new['price'];
+                $update[$min] = $new['price'];
                 unset($delete[$pos]);
             }
         }

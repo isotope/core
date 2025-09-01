@@ -90,15 +90,6 @@ abstract class AbstractOptionsAttribute extends AbstractAttribute implements Opt
         return $this;
     }
 
-    public function prepareOptionsWizard(Widget $widget, array $columns): array
-    {
-        if ($this->isVariantOption()) {
-            unset($columns['default'], $columns['group']);
-        }
-
-        return $columns;
-    }
-
     public function getOptionsForWidget(ProductInterface|null $product = null): array
     {
         $arrOptions = [];

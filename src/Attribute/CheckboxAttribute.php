@@ -17,13 +17,6 @@ class CheckboxAttribute extends AbstractOptionsAttribute
         return OptionsSource::Name !== $this->optionsSource;
     }
 
-    public function prepareOptionsWizard(Widget $widget, array $columns): array
-    {
-        unset($columns['group']);
-
-        return $columns;
-    }
-
     public function updateDcaField(array &$field, array &$keys): void
     {
         parent::updateDcaField($field, $keys);

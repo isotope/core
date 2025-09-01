@@ -53,24 +53,20 @@ $GLOBALS['TL_DCA']['tl_iso_product_price'] = [
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
         'price_tiers' => [
-            'inputType' => 'multiColumnWizard',
-            'eval' => [
-                'doNotSaveEmpty' => true,
-                'tl_class' => 'clr',
-                'disableSorting' => true,
-                'columnFields' => [
-                    'min' => [
-                        'label' => &$GLOBALS['TL_LANG']['tl_iso_product_price']['price_tier_columns']['min'],
-                        'inputType' => 'text',
-                        'eval' => ['mandatory' => true, 'rgxp' => 'digit'],
-                    ],
-                    'price' => [
-                        'label' => &$GLOBALS['TL_LANG']['tl_iso_product_price']['price_tier_columns']['price'],
-                        'inputType' => 'text',
-                        'eval' => ['mandatory' => true, 'rgxp' => 'digit'],
-                    ],
+            'inputType' => 'rowWizard',
+            'fields' => [
+                'min' => [
+                    'label' => &$GLOBALS['TL_LANG']['tl_iso_product_price']['price_tier_columns']['min'],
+                    'inputType' => 'text',
+                    'eval' => ['mandatory' => true, 'rgxp' => 'digit'],
+                ],
+                'price' => [
+                    'label' => &$GLOBALS['TL_LANG']['tl_iso_product_price']['price_tier_columns']['price'],
+                    'inputType' => 'text',
+                    'eval' => ['mandatory' => true, 'rgxp' => 'digit'],
                 ],
             ],
+            'eval' => ['doNotSaveEmpty' => true, 'tl_class' => 'clr', 'sortable' => false],
         ],
         'tax_class' => [
             'default' => static fn () => TaxClass::findFallback()?->id,

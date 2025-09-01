@@ -1,0 +1,115 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Isotope\CoreBundle\EventListener\DataContainer\Config;
+
+use Contao\Backend;
+use Contao\Controller;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
+use Contao\DataContainer;
+use Contao\Input;
+use Contao\StringUtil;
+use Contao\System;
+use Isotope\Model\Address;
+
+class AddressFieldsListener extends Backend
+{
+    #[AsCallback('tl_iso_config', 'fields.address_fields.attributes')]
+    public function addNameCallback(array $attributes, DataContainer $dc): array
+    {
+        $attributes['fields']['name']['input_field_callback'] = $this->getNameClosure($dc->field, $this->load($attributes['value'] ?? null));
+
+        return $attributes;
+    }
+
+    #[AsCallback('tl_iso_config', 'fields.address_fields.load')]
+    public function load($varValue): array
+    {
+        Controller::loadDataContainer(Address::getTable());
+
+        $arrDCA = &$GLOBALS['TL_DCA'][Address::getTable()]['fields'];
+        $arrFields = array();
+        $arrValues = StringUtil::deserialize($varValue);
+
+        if (!\is_array($arrValues)) {
+            $arrValues = array();
+        }
+
+        foreach ($arrValues as $arrField) {
+            $strName = $arrField['name'];
+
+            if ($strName == '' || !isset($arrDCA[$strName]) || !$arrDCA[$strName]['eval']['feEditable']) {
+                continue;
+            }
+
+            $arrFields[$arrField['name']] = $arrField;
+        }
+
+        foreach (array_diff_key($arrDCA, $arrFields) as $strName => $arrField) {
+            if (!($arrDCA[$strName]['eval']['feEditable'] ?? false)) {
+                continue;
+            }
+
+            $mandatory = $arrField['eval']['mandatory'] ?? null;
+
+            $arrFields[$strName] = array(
+                'name'      => $strName,
+                'billing'   => $mandatory === true ? 'mandatory' : ($mandatory === false ? 'enabled' : 'disabled'),
+                'shipping'  => $mandatory === true ? 'mandatory' : ($mandatory === false ? 'enabled' : 'disabled'),
+            );
+        }
+
+        return array_values($arrFields);
+    }
+
+    #[AsCallback('tl_iso_config', 'fields.address_fields.save')]
+    public function save($value, DataContainer $dc): string
+    {
+        Controller::loadDataContainer(Address::getTable());
+
+        $fields = StringUtil::deserialize($value);
+        $input = Input::post($dc->field);
+
+        if (empty($fields) || !\is_array($fields)) {
+            return $value;
+        }
+
+        $value = [];
+        foreach (array_values($fields) as $pos => $config) {
+            $name = $config['name'] ?? $input[$pos]['name'] ?? null;
+
+            $config['name'] = $name;
+            $config['position'] = $pos;
+            $value[$name] = $config;
+        }
+
+        return serialize($value);
+    }
+
+    /**
+     * For each call, return the name of the next address field in the wizard (for input_field_callback)
+     */
+    private function getNameClosure(string $name, array|null $value): \Closure
+    {
+        System::loadLanguageFile(Address::getTable());
+
+        $row = 0;
+
+        return static function () use ($name, &$row, &$value) {
+            $arrField = array_shift($value);
+            $strName = $arrField['name'];
+
+            return sprintf(
+                '<input type="hidden" name="%s[%s][name]" id="ctrl_%s_row%s_name" value="%s"><div style="width:344px">%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span></div>',
+                $name,
+                $row,
+                $name,
+                $row++,
+                $strName,
+                $GLOBALS['TL_DCA'][Address::getTable()]['fields'][$strName]['label'][0] ?: $strName,
+                $strName
+            );
+        };
+    }
+}
