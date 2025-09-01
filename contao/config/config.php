@@ -73,13 +73,9 @@ if (!is_array($GLOBALS['BE_MOD']['isotope'] ?? null)) {
 ArrayUtil::arrayInsert($GLOBALS['BE_MOD']['isotope'], 0, [
     'iso_products' => [
         'tables' => [Product::getTable(), ProductCategory::getTable(), Download::getTable(), RelatedProduct::getTable(), ProductPrice::getTable(), 'tl_iso_product_pricetier', AttributeOption::getTable()],
-        'javascript' => CompatibilityHelper::asset('backend.js'),
-        'stylesheet' => CompatibilityHelper::asset('backend.css'),
     ],
     'iso_orders' => [
         'tables' => [ProductCollection::getTable(), ProductCollectionItem::getTable(), ProductCollectionSurcharge::getTable(), ProductCollectionDownload::getTable(), Address::getTable()],
-        'javascript' => CompatibilityHelper::asset('backend.js'),
-        'stylesheet' => CompatibilityHelper::asset('backend.css'),
         'print_document' => [Callback::class, 'printDocument'],
     ],
     'iso_setup' => [],

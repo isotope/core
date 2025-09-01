@@ -1,5 +1,5 @@
 {
-  "backend.css": "/bundles/isotopecore/backend.976274b1.css",
+  "backend.css": "/bundles/isotopecore/backend.97f9630c.css",
   "backend.js": "/bundles/isotopecore/backend.02f28715.js",
   "isotope.css": "/bundles/isotopecore/isotope.2f465aeb.css",
   "isotope.js": "/bundles/isotopecore/isotope.51b7fc86.js",
@@ -41,7 +41,6 @@
   "images/magnifier.png": "/bundles/isotopecore/images/magnifier.png",
   "images/table--pencil.png": "/bundles/isotopecore/images/table--pencil.png",
   "images/currency.png": "/bundles/isotopecore/images/currency.png",
-  "images/copy.svg": "/bundles/isotopecore/images/copy.3403337f.svg",
   "images/paper-clip.png": "/bundles/isotopecore/images/paper-clip.png",
   "images/table-insert-row.png": "/bundles/isotopecore/images/table-insert-row.png",
   "images/price-tag.png": "/bundles/isotopecore/images/price-tag.png",
@@ -64,7 +63,7 @@
   "images/related.svg": "/bundles/isotopecore/images/related.svg",
   "plugins/noUiSlider/nouislider.tooltips.css": "/bundles/isotopecore/plugins/noUiSlider/nouislider.tooltips.css",
   "images/module.svg": "/bundles/isotopecore/images/module.svg",
-  "backend.976274b1.css.map": "/bundles/isotopecore/backend.976274b1.css.map",
+  "backend.97f9630c.css.map": "/bundles/isotopecore/backend.97f9630c.css.map",
   "backend.02f28715.js.map": "/bundles/isotopecore/backend.02f28715.js.map",
   "isotope.2f465aeb.css.map": "/bundles/isotopecore/isotope.2f465aeb.css.map",
   "isotope.51b7fc86.js.map": "/bundles/isotopecore/isotope.51b7fc86.js.map"

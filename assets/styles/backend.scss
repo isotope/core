@@ -2,20 +2,12 @@
 @import './backend/_shop-config.scss';
 
 #tl_navigation .group-isotope {
-    background: url(../images/module.svg) 5px 1px no-repeat;
+    background: url(../images/module.svg) 3px 1px no-repeat;
     background-size: 14px 14px;
 }
 
 .tl_version_panel.tl_iso_products_panel #tl_version {
     float: right;
-}
-
-.header_iso_copy
-{
-    background-image:url(../../vendor/contao/core-bundle/contao/themes/flexible/icons/copy.svg);
-    background-position:left center;
-    background-repeat:no-repeat;
-    padding:2px 0 3px 20px;
 }
 
 .tl_iso_category_sorting {
