@@ -144,7 +144,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = [
             'inputType' => 'rowWizard',
             'eval' => [
                 'tl_class' => 'clr',
-                'buttons' => [],
+                'actions' => [],
             ],
             'sql' => 'blob NULL',
         ],
