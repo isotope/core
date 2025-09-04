@@ -87,7 +87,6 @@ $GLOBALS['BE_MOD']['accounts']['member']['tables'][] = Address::getTable();
  * Frontend modules
  */
 $GLOBALS['FE_MOD']['isotope'] = [
-    'iso_productvariantlist' => ProductVariantList::class,
     'iso_cart' => Cart::class,
     'iso_checkout' => Checkout::class,
     'iso_orderhistory' => OrderHistory::class,
