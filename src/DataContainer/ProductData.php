@@ -2527,6 +2527,11 @@ class ProductData extends DC_Table
 
 		$active = isset($session['search'][$sessionKey]['value']) && (string) $session['search'][$sessionKey]['value'] !== '';
 
+		if (method_exists($this, 'setPanelState'))
+		{
+			$this->setPanelState($active);
+		}
+
 		return '
 <div class="tl_search tl_subpanel">
 <strong>' . $GLOBALS['TL_LANG']['MSC']['search'] . ':</strong>
@@ -2669,8 +2674,19 @@ class ProductData extends DC_Table
 				return '';
 			}
 
+			$resultsPerPage = Config::get('resultsPerPage');
+
+			$limit = $session['filter'][$filter]['limit'] ?? null;
+			$active = $limit != 'all' && $this->total > $resultsPerPage ? ' active' : '';
+
+			// Only disable reset button if it is not on the first page
+			if ($limit !== ('0,' . $resultsPerPage) && $limit !== null && method_exists($this, 'setPanelState'))
+			{
+				$this->setPanelState($active);
+			}
+
 			$fields = '
-<select name="tl_limit" class="tl_select tl_chosen' . (($session['filter'][$filter]['limit'] ?? null) != 'all' && $this->total > Config::get('resultsPerPage') ? ' active' : '') . '" onchange="this.form.submit()">
+<select name="tl_limit" class="tl_select tl_chosen' . ($active ? ' active' : '') . '" onchange="this.form.requestSubmit()">
   <option value="tl_limit">' . $GLOBALS['TL_LANG']['MSC']['filterRecords'] . '</option>' . $options . '
 </select> ';
 		}
@@ -2713,6 +2729,8 @@ class ProductData extends DC_Table
 			return '';
 		}
 
+		$db = Database::getInstance();
+
 		// Set filter from user input
 		if (Input::post('FORM_SUBMIT') == 'tl_filters')
 		{
@@ -2741,7 +2759,7 @@ class ProductData extends DC_Table
 				if (isset($session['filter'][$filter][$field]))
 				{
 					// Sort by day
-					if (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'] ?? null, array(5, 6)))
+					if (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'] ?? null, array(self::SORT_DAY_ASC, self::SORT_DAY_DESC, self::SORT_DAY_BOTH)))
 					{
 						if (!$session['filter'][$filter][$field])
 						{
@@ -2757,7 +2775,7 @@ class ProductData extends DC_Table
 					}
 
 					// Sort by month
-					elseif (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'] ?? null, array(7, 8)))
+					elseif (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'] ?? null, array(self::SORT_MONTH_ASC, self::SORT_MONTH_DESC, self::SORT_MONTH_BOTH)))
 					{
 						if (!$session['filter'][$filter][$field])
 						{
@@ -2773,7 +2791,7 @@ class ProductData extends DC_Table
 					}
 
 					// Sort by year
-					elseif (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'] ?? null, array(9, 10)))
+					elseif (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'] ?? null, array(self::SORT_YEAR_ASC, self::SORT_YEAR_DESC, self::SORT_YEAR_BOTH)))
 					{
 						if (!$session['filter'][$filter][$field])
 						{
@@ -2794,8 +2812,8 @@ class ProductData extends DC_Table
 						// CSV lists (see #2890)
 						if (isset($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['eval']['csv']))
 						{
-							$this->procedure[] = $this->Database->findInSet('?', $field, true);
-							$this->values[] = $session['filter'][$filter][$field] ?? null;
+							$this->procedure[] = $db->findInSet('?', $field, true);
+							$this->values[] = $session['filter'][$filter][$field];
 						}
 						else
 						{
@@ -2808,19 +2826,19 @@ class ProductData extends DC_Table
 					else
 					{
 						$this->procedure[] = $what . '=?';
-						$this->values[] = $session['filter'][$filter][$field] ?? null;
+						$this->values[] = $session['filter'][$filter][$field];
 					}
 				}
 			}
 		}
 
 		// Add sorting options
-		foreach ($sortingFields as $cnt=>$field)
+		foreach ($sortingFields as $field)
 		{
 			$arrValues = array();
 			$arrProcedure = array();
 
-			if (($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] ?? null) == 4)
+			if (($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] ?? null) == self::MODE_PARENT)
 			{
 				$arrProcedure[] = 'pid=?';
 				$arrValues[] = $this->intCurrentPid;
@@ -2848,10 +2866,9 @@ class ProductData extends DC_Table
 				}
 			}
 
-			// Support empty ptable fields
 			if ($GLOBALS['TL_DCA'][$this->strTable]['config']['dynamicPtable'] ?? null)
 			{
-				$arrProcedure[] = ($this->ptable == 'tl_article') ? "(ptable=? OR ptable='')" : "ptable=?";
+				$arrProcedure[] = 'ptable=?';
 				$arrValues[] = $this->ptable;
 			}
 
@@ -2861,38 +2878,38 @@ class ProductData extends DC_Table
 			if (isset($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag']))
 			{
 				// Sort by day
-				if (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'], array(5, 6)))
+				if (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'], array(self::SORT_DAY_ASC, self::SORT_DAY_DESC, self::SORT_DAY_BOTH)))
 				{
-					$what = "IF($what!='', FLOOR(UNIX_TIMESTAMP(FROM_UNIXTIME($what , '%%Y-%%m-%%d'))), '') AS $what";
+					$what = "IF($what!='', FLOOR(UNIX_TIMESTAMP(FROM_UNIXTIME($what , '%Y-%m-%d'))), '') AS $what";
 				}
 
 				// Sort by month
-				elseif (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'], array(7, 8)))
+				elseif (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'], array(self::SORT_MONTH_ASC, self::SORT_MONTH_DESC, self::SORT_MONTH_BOTH)))
 				{
-					$what = "IF($what!='', FLOOR(UNIX_TIMESTAMP(FROM_UNIXTIME($what , '%%Y-%%m-01'))), '') AS $what";
+					$what = "IF($what!='', FLOOR(UNIX_TIMESTAMP(FROM_UNIXTIME($what , '%Y-%m-01'))), '') AS $what";
 				}
 
 				// Sort by year
-				elseif (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'], array(9, 10)))
+				elseif (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'], array(self::SORT_YEAR_ASC, self::SORT_YEAR_DESC, self::SORT_YEAR_BOTH)))
 				{
-					$what = "IF($what!='', FLOOR(UNIX_TIMESTAMP(FROM_UNIXTIME($what , '%%Y-01-01'))), '') AS $what";
+					$what = "IF($what!='', FLOOR(UNIX_TIMESTAMP(FROM_UNIXTIME($what , '%Y-01-01'))), '') AS $what";
 				}
 			}
 
-			$table = ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 6) ? $this->ptable : $this->strTable;
+			$table = ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] ?? null) == self::MODE_TREE_EXTENDED ? $this->ptable : $this->strTable;
 
 			// Limit the options if there are root records
-			if (isset($GLOBALS['TL_DCA'][$table]['list']['sorting']['root']) && $GLOBALS['TL_DCA'][$table]['list']['sorting']['root'] !== false)
+			if ($this->root)
 			{
-				$rootIds = array_map('\intval', $GLOBALS['TL_DCA'][$table]['list']['sorting']['root']);
+				$rootIds = $this->root;
 
 				// Also add the child records of the table (see #1811)
-				if (($GLOBALS['TL_DCA'][$table]['list']['sorting']['mode'] ?? null) == 5)
+				if (($GLOBALS['TL_DCA'][$table]['list']['sorting']['mode'] ?? null) == self::MODE_TREE)
 				{
-					$rootIds = array_merge($rootIds, $this->Database->getChildRecords($rootIds, $table));
+					$rootIds = array_merge($rootIds, $db->getChildRecords($rootIds, $table));
 				}
 
-				if (($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] ?? null) == 6)
+				if (($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] ?? null) == self::MODE_TREE_EXTENDED)
 				{
 					$arrProcedure[] = "pid IN(" . implode(',', $rootIds) . ")";
 				}
@@ -2902,12 +2919,20 @@ class ProductData extends DC_Table
 				}
 			}
 
-			$objFields = $this->Database->prepare("SELECT DISTINCT " . $what . " FROM " . $this->strTable . ((\is_array($arrProcedure) && isset($arrProcedure[0])) ? ' WHERE ' . implode(' AND ', $arrProcedure) : ''))
-										->execute(...$arrValues);
+			$objFields = $db
+				->prepare("SELECT DISTINCT " . $what . " FROM " . $this->strTable . ((\is_array($arrProcedure) && isset($arrProcedure[0])) ? ' WHERE ' . implode(' AND ', $arrProcedure) : ''))
+				->execute(...$arrValues);
+
+			$active = isset($session['filter'][$filter][$field]);
+
+            if (method_exists($this, 'setPanelState'))
+            {
+				$this->setPanelState($active);
+            }
 
 			// Begin select menu
 			$fields .= '
-<select name="' . $field . '" id="' . $field . '" class="tl_select tl_chosen' . (isset($session['filter'][$filter][$field]) ? ' active' : '') . '">
+<select name="' . $field . '" id="' . $field . '" class="tl_select tl_chosen' . ($active ? ' active' : '') . '">
   <option value="tl_' . $field . '">' . (\is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'] ?? null) ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'][0] : ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'] ?? null)) . '</option>
   <option value="tl_' . $field . '">---</option>';
 
@@ -2916,9 +2941,9 @@ class ProductData extends DC_Table
 				$options = $objFields->fetchEach($field);
 
 				// Sort by day
-				if (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'] ?? null, array(5, 6)))
+				if (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'] ?? null, array(self::SORT_DAY_ASC, self::SORT_DAY_DESC, self::SORT_DAY_BOTH)))
 				{
-					($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'] ?? null) == 6 ? rsort($options) : sort($options);
+					($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'] ?? null) == self::SORT_DAY_DESC ? rsort($options) : sort($options);
 
 					foreach ($options as $k=>$v)
 					{
@@ -2936,9 +2961,9 @@ class ProductData extends DC_Table
 				}
 
 				// Sort by month
-				elseif (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'] ?? null, array(7, 8)))
+				elseif (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'] ?? null, array(self::SORT_MONTH_ASC, self::SORT_MONTH_DESC, self::SORT_MONTH_BOTH)))
 				{
-					($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'] ?? null) == 8 ? rsort($options) : sort($options);
+					($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'] ?? null) == self::SORT_MONTH_DESC ? rsort($options) : sort($options);
 
 					foreach ($options as $k=>$v)
 					{
@@ -2949,7 +2974,7 @@ class ProductData extends DC_Table
 						else
 						{
 							$options[$v] = date('Y-m', $v);
-							$intMonth = (date('m', $v) - 1);
+							$intMonth = date('m', $v) - 1;
 
 							if (isset($GLOBALS['TL_LANG']['MONTHS'][$intMonth]))
 							{
@@ -2962,9 +2987,9 @@ class ProductData extends DC_Table
 				}
 
 				// Sort by year
-				elseif (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'] ?? null, array(9, 10)))
+				elseif (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'] ?? null, array(self::SORT_YEAR_ASC, self::SORT_YEAR_DESC, self::SORT_YEAR_BOTH)))
 				{
-					($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'] ?? null) == 10 ? rsort($options) : sort($options);
+					($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'] ?? null) == self::SORT_YEAR_DESC ? rsort($options) : sort($options);
 
 					foreach ($options as $k=>$v)
 					{
@@ -3019,20 +3044,16 @@ class ProductData extends DC_Table
 						$strClass = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['options_callback'][0];
 						$strMethod = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['options_callback'][1];
 
-						$this->import($strClass);
-						$options_callback = $this->$strClass->$strMethod($this);
+						$options_callback = System::importStatic($strClass)->$strMethod($this);
 					}
 					elseif (\is_callable($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['options_callback'] ?? null))
 					{
 						$options_callback = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['options_callback']($this);
 					}
-
-					// Sort options according to the keys of the callback array
-					$options = array_intersect(array_keys($options_callback), $options);
 				}
 
 				$options_sorter = array();
-				$blnDate = \in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'] ?? null, array(5, 6, 7, 8, 9, 10));
+				$blnDate = \in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'] ?? null, array(self::SORT_DAY_ASC, self::SORT_DAY_DESC, self::SORT_DAY_BOTH, self::SORT_MONTH_ASC, self::SORT_MONTH_DESC, self::SORT_MONTH_BOTH, self::SORT_YEAR_ASC, self::SORT_YEAR_DESC, self::SORT_YEAR_BOTH));
 
 				// Options
 				foreach ($options as $kk=>$vv)
@@ -3040,7 +3061,7 @@ class ProductData extends DC_Table
 					$value = $blnDate ? $kk : $vv;
 
 					// Options callback
-					if (!empty($options_callback) && \is_array($options_callback))
+					if (!empty($options_callback) && \is_array($options_callback) && isset($options_callback[$vv]))
 					{
 						$vv = $options_callback[$vv];
 					}
@@ -3050,9 +3071,10 @@ class ProductData extends DC_Table
 					{
 						$key = explode('.', $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['foreignKey'], 2);
 
-						$objParent = $this->Database->prepare("SELECT " . Database::quoteIdentifier($key[1]) . " AS value FROM " . $key[0] . " WHERE id=?")
-													->limit(1)
-													->execute($vv);
+						$objParent = $db
+							->prepare("SELECT " . Database::quoteIdentifier($key[1]) . " AS value FROM " . $key[0] . " WHERE id=?")
+							->limit(1)
+							->execute($vv);
 
 						if ($objParent->numRows)
 						{
@@ -3077,9 +3099,10 @@ class ProductData extends DC_Table
 							$showFields[0] = 'id';
 						}
 
-						$objShowFields = $this->Database->prepare("SELECT " . Database::quoteIdentifier($showFields[0]) . " FROM " . $this->ptable . " WHERE id=?")
-														->limit(1)
-														->execute($vv);
+						$objShowFields = $db
+							->prepare("SELECT " . Database::quoteIdentifier($showFields[0]) . " FROM " . $this->ptable . " WHERE id=?")
+							->limit(1)
+							->execute($vv);
 
 						if ($objShowFields->numRows)
 						{
@@ -3105,23 +3128,22 @@ class ProductData extends DC_Table
 					if (!$option_label)
 					{
 						if (isset($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['foreignKey']))
-					{
-						$option_label = $vv ?: '-';
-					}
+						{
+							$option_label = $vv ?: '-';
+						}
 						else
 						{
 							$option_label = (string) $vv !== '' ? $vv : '-';
 						}
 					}
 
-					$options_sorter[$option_label . '_' . $field] = '  <option value="' . StringUtil::specialchars($value) . '"' . ((isset($session['filter'][$filter][$field]) && $value == $session['filter'][$filter][$field]) ? ' selected="selected"' : '') . '>' . StringUtil::specialchars($option_label) . '</option>';
+					$options_sorter[$option_label . '_' . $field . '_' . $kk] = '  <option value="' . StringUtil::specialchars($value) . '"' . ((isset($session['filter'][$filter][$field]) && $value == $session['filter'][$filter][$field]) ? ' selected="selected"' : '') . '>' . StringUtil::specialchars($option_label) . '</option>';
 				}
 
 				// Sort by option values
 				if (!$blnDate)
 				{
-					uksort($options_sorter, static function ($a, $b)
-					{
+					uksort($options_sorter, static function ($a, $b) {
 						$a = (new UnicodeString($a))->folded();
 						$b = (new UnicodeString($b))->folded();
 
@@ -3133,7 +3155,7 @@ class ProductData extends DC_Table
 						return strnatcmp($a->ascii()->toString(), $b->ascii()->toString());
 					});
 
-					if (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'] ?? null, array(2, 4, 12)))
+					if (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'] ?? null, array(self::SORT_INITIAL_LETTER_DESC, self::SORT_INITIAL_LETTERS_DESC, self::SORT_DESC)))
 					{
 						$options_sorter = array_reverse($options_sorter, true);
 					}
@@ -3145,12 +3167,6 @@ class ProductData extends DC_Table
 			// End select menu
 			$fields .= '
 </select> ';
-
-			// Force a line-break after six elements (see #3777)
-			if ((($cnt + 1) % 6) == 0)
-			{
-				$fields .= '<br>';
-			}
 		}
 
 		return '
