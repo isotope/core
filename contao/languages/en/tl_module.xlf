@@ -245,6 +245,12 @@
       <trans-unit id="tl_module.iso_category_scope.1">
         <source>Specify the scope of a product lister.</source>
       </trans-unit>
+      <trans-unit id="tl_module.iso_filterQuery.0">
+        <source>Filter Query</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_filterQuery.1">
+        <source>Enter a product query to filter the products. See the help wizard for details about the syntax.</source>
+      </trans-unit>
       <trans-unit id="tl_module.iso_filterModules.0">
         <source>Filter modules</source>
       </trans-unit>

@@ -18,6 +18,9 @@ use Isotope\CoreBundle\ModelType\ProductRegistry;
 use Isotope\CoreBundle\Product\ProductInterface;
 use Isotope\CoreBundle\Product\Category\CategoryFinder;
 use Isotope\CoreBundle\Product\Category\CategoryScope;
+use Isotope\CoreBundle\Product\Query\ProductQuery;
+use Isotope\CoreBundle\Product\Query\ProductQueryFactory;
+use Isotope\CoreBundle\Product\Query\Sorting;
 use Isotope\CoreBundle\Product\Render\ProductRendererInterface;
 use Isotope\CoreBundle\Product\Render\RenderConfig;
 use Isotope\Model\Product;
@@ -33,6 +36,7 @@ class ProductListController extends AbstractFrontendModuleController
         private readonly ProductRendererInterface $productRenderer,
         private readonly AttributeRegistry $attributeRegistry,
         private readonly CategoryFinder $categoryFinder,
+        private readonly ProductQueryFactory $productQueryFactory,
         private readonly TokenChecker $tokenChecker,
     ) {
     }
@@ -74,7 +78,22 @@ class ProductListController extends AbstractFrontendModuleController
         }
 
         $qb = $this->prepareQueryBuilder($categories, $request->getLocale());
-        $this->getProductQuery($request)?->apply($qb, $filterModules);
+
+        $productQuery = $this->getProductQuery($request);
+
+        if ($model->iso_filterQuery) {
+            $productQuery = $productQuery ? clone $productQuery : new ProductQuery();
+            $productQuery->setFilters('fmd'.$model->id, $this->productQueryFactory->parseFilters($model->iso_filterQuery, $this->attributeRegistry->getNames()));
+            $filterModules[] = 'fmd'.$model->id;
+        }
+
+        if ($model->iso_listingSortField) {
+            $productQuery = $productQuery ? clone $productQuery : new ProductQuery();
+            $productQuery->setSorting('fmd'.$model->id, [new Sorting($model->iso_listingSortField, 'DESC' === $model->iso_listingSortDirection)]);
+            $filterModules[] = 'fmd'.$model->id;
+        }
+
+        $productQuery?->apply($qb, $filterModules);
 
         if ($model->numberOfItems > 0) {
             $qb->setMaxResults((int) $model->numberOfItems);

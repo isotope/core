@@ -30,7 +30,7 @@ class ProductQueryFactory
         $validAttributes = null;
 
         foreach ($request->query->all() as $k => $v) {
-            if (!preg_match('/^_([fsl])(\w+)$/', $k, $match)) {
+            if (!\is_string($v) || !preg_match('/^_([fsl])(\w+)$/', $k, $match)) {
                 continue;
             }
 
@@ -57,7 +57,7 @@ class ProductQueryFactory
     /**
      * @return array<FilterInterface>
      */
-    private function parseFilters(string $value, array $validAttributes): array
+    public function parseFilters(string $value, array $validAttributes): array
     {
         $filters = [];
 

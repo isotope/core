@@ -38,6 +38,63 @@
             Select which product categories (pages) should be considered for the products.<br><br><u>If this is a product list module and you configured a category filter module, the category filter selection will override this configuration!</u><br><br>
         ]]></source>
       </trans-unit>
+      <trans-unit id="XPL.iso_filterQuery">
+      <source><![CDATA[
+            <p class="tl_help_table">Isotope includes a custom «Product Query» syntax to filter, search and limit products through simplified URL parameters.<br>
+            You can enter a filter query to limit the products that should be listed/matched here.</p>
+
+            <h3 class="tl_help_table">Example</h3>
+            <p class="tl_help_table">
+              Each filter query segment consists of an attribute name, an operator and a value. Here's a very simple example:<br><br>
+              <code>type:1</code><br><br>
+              <code>[type]</code> is the attribute, <code>[:]</code> is the operator for "equals", and <code>[1]</code> is the value.<br>
+              The example above will only match product types with ID 1. The SQL equivalent would be <code>WHERE type=1</code>.
+            </p>
+            <p class="tl_help_table">
+              You can build a lot more complex filters.<br><br>
+              <code>color!red,blue;size:M|L;</code><br><br>
+              The SQL equivalent of this would be <code>WHERE (color != "red" AND color != "blue") AND (size = "M" OR size = "L")</code><br>
+              For most operators, you can pass multiple values as comma-separated (<code>AND</code>) or pipe-separated (<code>OR</code>) condition.
+            </p>
+
+            <h3 class="tl_help_table">Simple Operators</h3>
+            <p>
+              Simple operators cosist of a unique value that can never be used in an attribute name. Isotope ships with a few useful simple operators.
+            <p/>
+            <table class="tl_help_table">
+              <tr>
+                <th>Operator</th>
+                <th>Description</td>
+                <th>SQL equivalent</th>
+              </tr>
+              <tr><td><code>:</code></td><td>equal</td><td><code>=</code></td></tr>
+              <tr><td><code>!</code></td><td>not equal</td><td><code>!=</code></td></tr>
+              <tr><td><code>&lt;</code></td><td>lesser than</td><td><code>&lt;</code></td></tr>
+              <tr><td><code>≤</code></td><td>lesser than or equal</td><td><code>&lt;=</code></td></tr>
+              <tr><td><code>&gt;</code></td><td>greater than</td><td><code>&gt;</code></td></tr>
+              <tr><td><code>≥</code></td><td>greater than or equal</td><td><code>&gt;=</code></td></tr>
+            </table>
+
+            <h3 class="tl_help_table">Complex Operators</h3>
+            <p class="tl_help_table">
+              Since there's only a limited number of characters that can be useful, operators can also have a regular string name. In this case,
+              the operator has to be encapsulated in brackets like this: <code>type(modulo)1</code><br>
+              Assuming an imaginary <code>modulo</code> operator, this would probably match product types where the ID matches the modulo of 1.
+            <p/>
+            <p class="tl_help_table">
+              Operators can perform any special query or manual filtering of a product list. Sometimes, this means an operator does not need an attribute
+              name, e.g. if the operator already knows which attribute or relational table it needs to operate on.
+            </p>
+            <table class="tl_help_table">
+              <tr>
+                <th>Operator</th>
+                <th>Description</td>
+                <th>Needs attribute</td>
+              </tr>
+              <tr><td><code>(cat)</cat></td><td>Filter products by category.</td><td>no</td></tr>
+            </table>
+        ]]></source>
+      </trans-unit>
       <trans-unit id="XPL.checkoutTargetFile">
         <source>&lt;p class="tl_help_table"&gt;Use these simple tokens to generate a dynamic file name.&lt;/p&gt;</source>
       </trans-unit>
