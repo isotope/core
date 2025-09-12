@@ -8,9 +8,7 @@ use Contao\CoreBundle\Routing\Content\ContentUrlResolverInterface;
 use Contao\CoreBundle\Routing\Content\ContentUrlResult;
 use Contao\PageModel;
 use Isotope\CoreBundle\Product\ProductInterface;
-use Isotope\CoreBundle\Product\VariantProductInterface;
 use Isotope\CoreBundle\Util\ProductCategoryUtil;
-use Isotope\Model\Product;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class ProductResolver implements ContentUrlResolverInterface
@@ -79,7 +77,7 @@ class ProductResolver implements ContentUrlResolverInterface
             return [];
         }
 
-        if ($product instanceof VariantProductInterface && $product->isVariant()) {
+        if ($product->isVariant()) {
             $product = $product->getMainProduct();
         }
 

@@ -29,7 +29,6 @@ use Isotope\CoreBundle\ModelType\PaymentRegistry;
 use Isotope\CoreBundle\ModelType\ShippingRegistry;
 use Isotope\CoreBundle\Product\CollectibleInterface;
 use Isotope\CoreBundle\Product\ShippableInterface;
-use Isotope\CoreBundle\Product\VariantProductInterface;
 use Isotope\CoreBundle\Routing\ProductReference;
 use Isotope\Frontend;
 use Isotope\Haste\Units\Mass\Scale;
@@ -1977,7 +1976,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
         $item->identifier     = $product->getType().'.'.$product->getId();
         $item->sku            = $product->getSku();
         $item->name           = $product->getName();
-        $item->configuration  = $product instanceof VariantProductInterface ? array_merge($product->getVariantConfig(), $configuration) : $configuration;
+        $item->configuration  = array_merge($product->getVariantConfig(), $configuration);
         $item->quantity       = $quantity;
         $item->price          = (float) ($product->getPrice($this) ? $product->getPrice($this)->getAmount($quantity) : 0);
         $item->tax_free_price = (float) ($product->getPrice($this) ? $product->getPrice($this)->getNetAmount($quantity) : 0);

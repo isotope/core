@@ -6,7 +6,6 @@ use Contao\Input;
 use Isotope\CoreBundle\HttpFoundation\ActionResult;
 use Isotope\CoreBundle\Product\ProductInterface;
 use Isotope\CoreBundle\Product\Render\RenderConfig;
-use Isotope\CoreBundle\Product\VariantProductInterface;
 use Isotope\Haste\Util\Url;
 use Isotope\Isotope;
 use Isotope\Model\ProductCollectionItem;
@@ -26,7 +25,7 @@ class AddToCartAction implements ProductActionInterface
     public function render(ProductInterface $product, RenderConfig $renderConfig): string
     {
         return $this->twig->render('@Contao/isotope/product_action/add_to_cart.html.twig', [
-            'disabled' => !$product instanceof VariantProductInterface || ($product->hasVariants() && !$product->isVariant()),
+            'disabled' => ($product->hasVariants() && !$product->isVariant()),
         ]);
     }
 

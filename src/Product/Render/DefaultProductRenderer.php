@@ -11,10 +11,7 @@ use Doctrine\DBAL\Connection;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
 use Isotope\CoreBundle\ModelType\ProductRegistry;
 use Isotope\CoreBundle\Product\ProductInterface;
-use Isotope\CoreBundle\Product\CollectibleInterface;
 use Isotope\CoreBundle\Product\ProductOptions;
-use Isotope\CoreBundle\Product\VariantProductInterface;
-use Isotope\Model\Product;
 use Isotope\Model\ProductCollectionItem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,7 +33,7 @@ class DefaultProductRenderer implements ProductRendererInterface
         $defaults = $this->getDefaults($product, $request);
         $productOptions = new ProductOptions($this->attributeRegistry, $this->connection, $product, $config, $request, $defaults, (bool) $product->getProductType()->force_variant_options);
 
-        if ($config->withOptions && $product instanceof VariantProductInterface) {
+        if ($config->withOptions) {
             $variantOptions = $productOptions->getVariantOptions();
 
             if (null !== $variantOptions && null !== ($variant = $product->getVariant($variantOptions))) {

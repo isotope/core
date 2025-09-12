@@ -17,7 +17,6 @@ use Contao\StringUtil;
 use Contao\System;
 use Isotope\CoreBundle\ModelType\ProductRegistry;
 use Isotope\CoreBundle\Product\CollectibleInterface;
-use Isotope\CoreBundle\Product\VariantProductInterface;
 use Isotope\Interfaces\IsotopeProductCollection;
 
 
@@ -102,7 +101,7 @@ class ProductCollectionItem extends Model
             return false;
         }
 
-        if (!$product instanceof VariantProductInterface) {
+        if (!$product->hasVariants()) {
             return true;
         }
 
