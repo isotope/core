@@ -6,6 +6,11 @@ namespace Isotope\CoreBundle\Model;
 
 use Contao\Model;
 
+/**
+ * @property string $name
+ * @property string $amount
+ * @property string $label
+ */
 class BasePrice extends Model
 {
     /**
