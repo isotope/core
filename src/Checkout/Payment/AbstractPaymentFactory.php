@@ -21,7 +21,7 @@ abstract class AbstractPaymentFactory extends AbstractCheckoutMethodFactory
     public function create(Model $model): AbstractPayment
     {
         if (!$model instanceof Payment) {
-            throw new \RuntimeException(\sprintf('%s should be an instance of %s', $model::class, Payment::class));
+            throw new \LogicException(\sprintf('%s should be an instance of %s', $model::class, Payment::class));
         }
 
         /** @var AbstractPayment $payment */

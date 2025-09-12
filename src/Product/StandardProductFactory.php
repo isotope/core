@@ -16,13 +16,13 @@ class StandardProductFactory implements ProductFactoryInterface
     public function create(Model $model): StandardProduct
     {
         if (!$model instanceof Product) {
-            throw new \RuntimeException(\sprintf('%s should be an instance of %s', $model::class, Product::class));
+            throw new \LogicException(\sprintf('%s should be an instance of %s', $model::class, Product::class));
         }
 
         $productType = $model->getRelated('type');
 
         if (!$productType instanceof ProductType) {
-            throw new \RuntimeException(\sprintf('ProductType for product ID %s not found', $model->id));
+            throw new \UnderflowException(\sprintf('ProductType for product ID %s not found', $model->id));
         }
 
         return new StandardProduct($model, $productType);
@@ -33,7 +33,7 @@ class StandardProductFactory implements ProductFactoryInterface
         $product = Product::findById($id);
 
         if (!$product instanceof Product) {
-            throw new \RuntimeException('Product with ID "'.$id.'" not found.');
+            throw new \UnderflowException('Product with ID "'.$id.'" not found.');
         }
 
         return $this->create($product);

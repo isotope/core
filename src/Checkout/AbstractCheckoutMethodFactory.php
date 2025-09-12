@@ -29,7 +29,7 @@ abstract class AbstractCheckoutMethodFactory implements ModelTypeFactoryInterfac
     public function create(Model $model): AbstractCheckoutMethod
     {
         if (!$model instanceof Payment && !$model instanceof Shipping) {
-            throw new \RuntimeException(\sprintf('%s should be an instance of %s or %s', $model::class, Payment::class, Shipping::class));
+            throw new \LogicException(\sprintf('%s should be an instance of %s or %s', $model::class, Payment::class, Shipping::class));
         }
 
         $instance = $this->doCreate($model)

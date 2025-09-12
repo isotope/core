@@ -31,7 +31,7 @@ class StandardDocumentFactory implements ModelTypeFactoryInterface
     public function create(Model $model): StandardDocument
     {
         if (!$model instanceof Document) {
-            throw new \RuntimeException(\sprintf('%s should be an instance of %s', $model::class, Document::class));
+            throw new \LogicException(\sprintf('%s should be an instance of %s', $model::class, Document::class));
         }
 
         $document = new StandardDocument(

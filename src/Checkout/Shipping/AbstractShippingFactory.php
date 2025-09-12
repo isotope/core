@@ -28,7 +28,7 @@ abstract class AbstractShippingFactory extends AbstractCheckoutMethodFactory
     public function create(Model $model): AbstractShipping
     {
         if (!$model instanceof Shipping) {
-            throw new \RuntimeException(\sprintf('%s should be an instance of %s', $model::class, Shipping::class));
+            throw new \LogicException(\sprintf('%s should be an instance of %s', $model::class, Shipping::class));
         }
 
         /** @var AbstractShipping $shipping */

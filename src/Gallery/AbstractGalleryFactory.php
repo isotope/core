@@ -24,7 +24,7 @@ abstract class AbstractGalleryFactory implements ModelTypeFactoryInterface
     public function create(Model $model): AbstractGallery
     {
         if (!$model instanceof Gallery) {
-            throw new \RuntimeException(\sprintf('%s should be an instance of %s', $model::class, Gallery::class));
+            throw new \LogicException(\sprintf('%s should be an instance of %s', $model::class, Gallery::class));
         }
 
         $instance = $this->doCreate($model)
