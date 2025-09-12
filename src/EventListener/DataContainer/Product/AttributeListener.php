@@ -167,6 +167,10 @@ class AttributeListener
                 }
 
                 $attributes[] = $objType->getAttributes();
+
+                if ($objType->hasVariants()) {
+                    $attributes[] = $objType->getVariantAttributes();
+                }
             }
         }
 
