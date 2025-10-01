@@ -34,8 +34,8 @@
     "require":{
         "php": "^8.1",
         "composer-runtime-api": "^2",
-        "contao/core-bundle": "~5.3.34 || ^5.5.12",
-        "doctrine/dbal": "^3.0",
+        "contao/core-bundle": "^5.7",
+        "doctrine/dbal": "^3.7 || ^4.3",
         "terminal42/contao-conditionalselectmenu":"^4.1",
         "terminal42/dcawizard": "^3.0",
         "codefog/contao-haste": "^5.3",
@@ -43,8 +43,8 @@
         "terminal42/notification_center": "^2.0",
         "terminal42/dc_multilingual": "^4.5",
         "tecnickcom/tcpdf": "^6.2.22",
-        "symfony/filesystem": "^6.4",
-        "symfony/http-client": "^6.4",
+        "symfony/filesystem": "^7.3",
+        "symfony/http-client": "^7.3",
         "symfony/service-contracts": "^3.2",
         "hashids/hashids": "^4.1"
     },
