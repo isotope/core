@@ -43,12 +43,12 @@ class ProductSoldVoter extends AbstractDataContainerVoter implements ResetInterf
 
         if (null === $this->used) {
             $this->used = $this->connection->fetchFirstColumn("
-                    SELECT i.product_id AS id FROM tl_iso_product_collection_item i
+                    SELECT REPLACE(i.identifier, 'tl_iso_product.', '') AS id FROM tl_iso_product_collection_item i
                     INNER JOIN tl_iso_product_collection c ON i.pid=c.id
                     WHERE c.type='order'
                 UNION
                     SELECT p.pid AS id FROM tl_iso_product p
-                    INNER JOIN tl_iso_product_collection_item i ON i.product_id=p.id
+                    INNER JOIN tl_iso_product_collection_item i ON i.identifier=CONCAT('tl_iso_product.', p.id)
                     INNER JOIN tl_iso_product_collection c ON i.pid=c.id
                     WHERE p.pid>0 AND c.type='order'
             ");
