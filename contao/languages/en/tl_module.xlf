@@ -50,6 +50,12 @@
       <trans-unit id="tl_module.iso_hide_list.1">
         <source>Hide product list when a product alias is found in the URL.</source>
       </trans-unit>
+      <trans-unit id="tl_module.iso_hide_empty.0">
+        <source>Hide empty list</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_hide_empty.1">
+        <source>Hide product list when there are no products found.</source>
+      </trans-unit>
       <trans-unit id="tl_module.iso_disable_options.0">
         <source>Disable product options (performance!)</source>
       </trans-unit>

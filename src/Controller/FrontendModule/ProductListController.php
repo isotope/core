@@ -49,8 +49,13 @@ class ProductListController extends AbstractFrontendModuleController
 
         $products = [];
         $filterModules = array_map(static fn ($id) => 'fmd'.$id, StringUtil::deserialize($model->iso_filterModules, true));
+        $models = $this->findProducts($model, $request, $filterModules);
 
-        foreach ($this->findProducts($model, $request, $filterModules) as $productModel) {
+        if ($model->iso_hide_empty && [] === $models) {
+            return new Response('');
+        }
+
+        foreach ($models as $productModel) {
             $product = $this->productRegistry->get($productModel);
             $products[] = $this->productRenderer->render(
                 $product,

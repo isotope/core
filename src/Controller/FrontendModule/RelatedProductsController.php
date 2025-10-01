@@ -37,8 +37,13 @@ class RelatedProductsController extends AbstractFrontendModuleController
         }
 
         $products = [];
+        $models = $this->findProducts($product, $categories, (string) $model->iso_listingSortField, (string) $model->iso_listingSortDirection);
 
-        foreach ($this->findProducts($product, $categories, (string) $model->iso_listingSortField, (string) $model->iso_listingSortDirection) as $productModel) {
+        if ($model->iso_hide_empty && [] === $models) {
+            return new Response('');
+        }
+
+        foreach ($models as $productModel) {
             $product = $this->productRegistry->get($productModel);
             $products[] = $this->productRenderer->render(
                 $product,
