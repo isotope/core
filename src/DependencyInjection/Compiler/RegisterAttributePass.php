@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\DependencyInjection\Compiler;
 
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
-use Isotope\CoreBundle\Attribute\ContainerAwareAttributeInterface;
 use Isotope\CoreBundle\EventListener\DataContainer\ModelTypeOptionsListener;
+use Isotope\CoreBundle\ModelType\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PriorityTaggedServiceTrait;
 use Symfony\Component\DependencyInjection\Compiler\ServiceLocatorTagPass;
@@ -21,12 +21,13 @@ use Symfony\Component\DependencyInjection\Reference;
 class RegisterAttributePass implements CompilerPassInterface
 {
     use PriorityTaggedServiceTrait;
+    use ContainerAwareTrait;
 
     public function process(ContainerBuilder $container): void
     {
         $types = [];
         $services = $this->findAndSortTaggedServices('isotope.attribute', $container);
-        $attributeRegistry = $container->getDefinition(AttributeRegistry::class);
+        $registry = $container->getDefinition(AttributeRegistry::class);
 
         foreach ($services as $reference) {
             $definition = $container->findDefinition((string) $reference);
@@ -35,7 +36,7 @@ class RegisterAttributePass implements CompilerPassInterface
                 $types[] = $this->getType($definition, $attributes);
             }
 
-            $this->registerContainer($reference, $definition, $container, $attributeRegistry);
+            $this->registerContainer($reference, $definition, $container, $registry);
 
             $container->removeDefinition((string) $reference);
         }
@@ -59,22 +60,5 @@ class RegisterAttributePass implements CompilerPassInterface
         }
 
         return lcfirst(Container::camelize($className));
-    }
-
-    private function registerContainer(Reference $reference, Definition $definition, ContainerBuilder $container, Definition $attributeRegistry): void
-    {
-        $class = $definition->getClass() ?: (string) $reference;
-
-        if (!is_a($class, ContainerAwareAttributeInterface::class, true)) {
-            return;
-        }
-
-        $map = [];
-
-        foreach ($class::getSubscribedServices() as $k => $v) {
-            $map[is_numeric($k) ? $v : $k] = new Reference($v);
-        }
-
-        $attributeRegistry->addMethodCall('setContainer', [$class, ServiceLocatorTagPass::register($container, $map, (string) $reference)]);
     }
 }

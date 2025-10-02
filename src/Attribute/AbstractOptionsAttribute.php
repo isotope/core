@@ -10,12 +10,13 @@ use Doctrine\DBAL\Connection;
 use Isotope\Collection\AttributeOption as AttributeOptionCollection;
 use Isotope\CompatibilityHelper;
 use Isotope\CoreBundle\Model\Attribute;
+use Isotope\CoreBundle\ModelType\ContainerAwareInterface;
 use Isotope\CoreBundle\Product\ProductInterface;
 use Isotope\Model\AttributeOption;
 use Isotope\Model\Product;
 use Isotope\Translation;
 
-abstract class AbstractOptionsAttribute extends AbstractAttribute implements OptionsAttributeInterface, ContainerAwareAttributeInterface
+abstract class AbstractOptionsAttribute extends AbstractAttribute implements OptionsAttributeInterface, ContainerAwareInterface
 {
     private bool $variantOption = false;
 

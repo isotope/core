@@ -4,14 +4,11 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Attribute;
 
+use Isotope\CoreBundle\ModelType\AbstractModelType;
 use Isotope\CoreBundle\Product\ProductInterface;
-use Psr\Container\ContainerInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface as SymfonyContainerInterface;
 
-abstract class AbstractAttribute implements AttributeInterface
+abstract class AbstractAttribute extends AbstractModelType implements AttributeInterface
 {
-    protected ContainerInterface $container;
-
     private string|null $name = null;
 
     private string|null $description = null;
@@ -225,23 +222,6 @@ abstract class AbstractAttribute implements AttributeInterface
         if (!isset($field['sql']) && !$this->isCustomerDefined()) {
             $field['sql'] = $this->getSqlDefinition();
         }
-    }
-
-    public function setContainer(ContainerInterface $container): void
-    {
-        $this->container = $container;
-    }
-
-    /**
-     * @template T
-     *
-     * @param class-string<T> $id
-     *
-     * @return T|null
-     */
-    protected function get(string $id, int $invalidBehavior = SymfonyContainerInterface::EXCEPTION_ON_INVALID_REFERENCE): object|null
-    {
-        return $this->container->get($id, $invalidBehavior);
     }
 
     abstract protected function getSqlDefinition(): array|string;

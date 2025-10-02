@@ -20,6 +20,7 @@ use Symfony\Component\DependencyInjection\Reference;
 class RegisterModelTypePass implements CompilerPassInterface
 {
     use PriorityTaggedServiceTrait;
+    use ContainerAwareTrait;
 
     public function __construct(
         private readonly string $tagName,
@@ -33,6 +34,7 @@ class RegisterModelTypePass implements CompilerPassInterface
         $types = [];
         $factories = [];
         $services = $this->findAndSortTaggedServices($this->tagName, $container);
+        $registry = $container->getDefinition($this->registryId);
 
         foreach ($services as $reference) {
             $definition = $container->findDefinition((string) $reference);
@@ -43,10 +45,11 @@ class RegisterModelTypePass implements CompilerPassInterface
                 $factories[$type] = new Reference($this->getFactory($definition, $attributes));
             }
 
+            $this->registerContainer($reference, $definition, $container, $registry);
+
             $container->removeDefinition((string) $reference);
         }
 
-        $registry = $container->getDefinition($this->registryId);
         $registry->setArgument(0, ServiceLocatorTagPass::register($container, $factories));
 
         if ([] === $this->dcaOptions) {

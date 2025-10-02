@@ -35,6 +35,14 @@ class ProductRegistry extends AbstractModelTypeRegistry
             default => throw new \RuntimeException($model::class.' must be an instance of '.Product::class.' or '.ProductCollectionItem::class),
         };
 
+        if ($instance instanceof ContainerAwareInterface) {
+            if (!isset($this->subscribedServices[$instance::class])) {
+                throw new \RuntimeException($instance::class.' requires a service container but the registry does not have one');
+            }
+
+            $instance->setContainer($this->subscribedServices[$instance::class]);
+        }
+
         return $instance;
     }
 

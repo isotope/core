@@ -6,6 +6,8 @@ namespace Isotope\CoreBundle\ModelType;
 
 use Contao\Model;
 use Contao\Model\Collection;
+use Isotope\CoreBundle\Attribute\AttributeInterface;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Contracts\Service\ServiceProviderInterface;
 
@@ -16,12 +18,22 @@ use Symfony\Contracts\Service\ServiceProviderInterface;
 class AbstractModelTypeRegistry
 {
     /**
+     * @var array<class-string<AttributeInterface>, ContainerInterface|null>
+     */
+    protected array $subscribedServices = [];
+
+    /**
      * @param ServiceProviderInterface<ModelTypeFactoryInterface<TType, TModel>> $factories
      */
     public function __construct(
         protected readonly ServiceProviderInterface $factories,
         protected readonly string $interface,
     ) {
+    }
+
+    public function setContainer(string $attributeClass, ContainerInterface $container): void
+    {
+        $this->subscribedServices[$attributeClass] = $container;
     }
 
     /**
@@ -56,6 +68,14 @@ class AbstractModelTypeRegistry
 
         if (!$instance instanceof $this->interface) {
             throw new \RuntimeException($instance::class.' is not instanceof '.$this->interface);
+        }
+
+        if ($instance instanceof ContainerAwareInterface) {
+            if (!isset($this->subscribedServices[$instance::class])) {
+                throw new \RuntimeException($instance::class.' requires a service container but the registry does not have one');
+            }
+
+            $instance->setContainer($this->subscribedServices[$instance::class]);
         }
 
         return $instance;
