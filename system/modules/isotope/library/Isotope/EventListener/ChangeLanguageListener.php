@@ -11,6 +11,8 @@
 
 namespace Isotope\EventListener;
 
+use Contao\System;
+use Isotope\CoreBundle\Product\ProductInterface;
 use Isotope\Haste\Input\Input;
 use Isotope\Model\Product;
 use Terminal42\ChangeLanguage\Event\ChangelanguageNavigationEvent;
@@ -60,8 +62,12 @@ class ChangeLanguageListener
      */
     private function getProductAlias()
     {
-        $alias = (string) Input::getAutoItem('product', false, true);
+        $product = System::getContainer()->get('request_stack')?->getCurrentRequest()?->attributes->get('_content');
 
-        return '' !== $alias && null !== Product::findAvailableByIdOrAlias($alias) ? $alias : null;
+        if ($product instanceof ProductInterface) {
+            return $product->getAlias();
+        }
+
+        return null;
     }
 }
