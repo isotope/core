@@ -284,66 +284,6 @@ class Frontend extends \Contao\Frontend
     }
 
     /**
-     * Show product name in breadcrumb
-     *
-     * @param array  $arrItems
-     *
-     * @return array
-     */
-    public function addProductToBreadcrumb($arrItems)
-    {
-        /** @var PageModel $objPage */
-        global $objPage;
-
-        if ($objPage->type === 'error_404'
-            || $objPage->type === 'error_403'
-            || !($alias = Input::getAutoItem('product', false, true))
-            || ($objProduct = Product::findAvailableByIdOrAlias($alias)) === null
-        ) {
-            return $arrItems;
-        }
-
-        global $objIsotopeListPage;
-        $last = \count($arrItems) - 1;
-
-        // If we have a reader page that is a level below the list, rename the last item (the reader) to the product title
-        if (null !== $objIsotopeListPage && $objPage->pid == $objIsotopeListPage->id) {
-            $arrItems[$last]['title'] = $this->prepareMetaDescription($objProduct->meta_title ? : $objProduct->name);
-            $arrItems[$last]['link']  = $objProduct->name;
-        } else {
-            try {
-                $listPage = $objIsotopeListPage ?: $objPage;
-                $originalRow = $listPage->originalRow();
-
-                // Replace the current page (if breadcrumb is insert tag, it would already be the product name)
-                $arrItems[$last] = array(
-                    'isRoot' => (bool) $arrItems[$last]['isRoot'],
-                    'isActive' => false,
-                    'href' => $listPage->getFrontendUrl(),
-                    'title' => StringUtil::specialchars($originalRow['pageTitle'] ?: $originalRow['title']),
-                    'link' => $originalRow['title'],
-                    'data' => $originalRow,
-                    'class' => ''
-                );
-
-                // Add a new item for the current product
-                $arrItems[] = array(
-                    'isRoot' => false,
-                    'isActive' => true,
-                    'href' => $objProduct->generateUrl($objPage),
-                    'title' => StringUtil::specialchars($this->prepareMetaDescription($objProduct->meta_title ?: $objProduct->name)),
-                    'link' => $objProduct->name,
-                    'data' => $objPage->row(),
-                );
-            } catch (ExceptionInterface $exception) {
-                // Ignore exceptions when generating front end URLs
-            }
-        }
-
-        return $arrItems;
-    }
-
-    /**
      * Initialize environment (language, objPage) for a given order
      *
      * @param string $strLanguage

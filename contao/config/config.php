@@ -260,7 +260,6 @@ $GLOBALS['ISO_NUM']["10'000.00"] = [2, '.', "'"];
 if (Contao\Config::getInstance()->isComplete()) {
     $GLOBALS['TL_HOOKS']['replaceInsertTags'][] = [Frontend::class, 'replaceIsotopeTags'];
     $GLOBALS['TL_HOOKS']['modifyFrontendPage'][] = [Frontend::class, 'injectScripts'];
-    $GLOBALS['TL_HOOKS']['generateBreadcrumb'][] = [Frontend::class, 'addProductToBreadcrumb'];
 
     $GLOBALS['ISO_HOOKS']['findSurchargesForCollection'][] = [Frontend::class, 'findShippingAndPaymentSurcharges'];
     $GLOBALS['ISO_HOOKS']['postCheckout'][] = ['Isotope\Analytics', 'trackOrder'];
