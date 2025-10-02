@@ -3,6 +3,7 @@
 namespace Isotope\CoreBundle\Product;
 
 use Isotope\CoreBundle\Model\ProductType;
+use Isotope\CoreBundle\Product\Render\ProductRendererInterface;
 
 interface ProductInterface extends CollectibleInterface, \IteratorAggregate, \ArrayAccess, \Countable
 {
@@ -21,6 +22,8 @@ interface ProductInterface extends CollectibleInterface, \IteratorAggregate, \Ar
     public function getMetaTitle(): string;
 
     public function getMetaDescription(): string;
+
+    public function getRenderer(): ProductRendererInterface;
 
     public function hasVariants(): bool;
 

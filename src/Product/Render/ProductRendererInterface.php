@@ -9,5 +9,5 @@ use Symfony\Component\HttpFoundation\Request;
 
 interface ProductRendererInterface
 {
-    public function render(ProductInterface $product, RenderConfig $config, Request $request): string;
+    public function render(ProductInterface $product, ViewInterface $view, Request $request): string;
 }

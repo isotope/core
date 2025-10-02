@@ -3,7 +3,7 @@
 
 {% block content %}
 
-    {{ product|raw }}
+    {{ isotope_product(product) }}
 
     {% set referer = content_url(app.request.attributes.get('originalPageModel')) %}
     {% if referer %}

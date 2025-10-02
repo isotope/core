@@ -9,7 +9,7 @@ use Contao\CoreBundle\Exception\ResponseException;
 use Isotope\CoreBundle\HttpFoundation\ActionResult;
 use Isotope\CoreBundle\Product\Action\ProductActionRegistry;
 use Isotope\CoreBundle\Product\ProductInterface;
-use Isotope\CoreBundle\Product\Render\RenderConfig;
+use Isotope\CoreBundle\Product\Render\ViewInterface;
 use Isotope\CoreBundle\ProductCollection\Action\ProductCollectionActionRegistry;
 use Isotope\CoreBundle\ProductCollection\ItemAction\ProductCollectionItemActionRegistry;
 use Isotope\Interfaces\IsotopeProductCollection;
@@ -27,10 +27,10 @@ class ActionRuntime implements RuntimeExtensionInterface
     ) {
     }
 
-    public function renderProductAction(array $context, string $name): string
+    public function renderProductAction(array $context, string $name, ProductInterface|null $product = null, ViewInterface|null $view = null): string
     {
-        $product = $context['product'] ?? null;
-        $renderConfig = $context['config'] ?? null;
+        $product = $product ?? $context['product'] ?? null;
+        $view = $view ?? $context['view'] ?? null;
         $request = $context['app']->getRequest();
         $action = $this->productActionRegistry->get($name);
 
@@ -38,24 +38,31 @@ class ActionRuntime implements RuntimeExtensionInterface
             throw new \RuntimeException('Unknown product action "'.$name.'"');
         }
 
-        if (
-            !$product instanceof ProductInterface
-            || !$renderConfig instanceof RenderConfig
-            || !$request instanceof Request
-            || !$action->supports($product, $renderConfig)
-        ) {
+        if (!$product instanceof ProductInterface) {
+            throw new \RuntimeException('A product is required to render a product action.');
+        }
+
+        if (!$view instanceof ViewInterface) {
+            throw new \RuntimeException('A view is required to render a product action.');
+        }
+
+        if (!$request instanceof Request) {
+            throw new \RuntimeException('A request is required to render a product action.');
+        }
+
+        if (!$action->supports($product, $view)) {
             return '';
         }
 
-        if ($request->request->get('FORM_SUBMIT') === $renderConfig->id /*&& !$this->doNotSubmit*/ && $request->request->get('_action') === $name) {
+        if ($request->request->get('FORM_SUBMIT') === $view->getFormId($product) /*&& !$this->doNotSubmit*/ && $request->request->get('_action') === $name) {
             $configuration = array_filter(array_map(static fn ($o) => $o['value'] ?? null, $context['options'] ?? []));
 
-            $result = $action->handle($product, $configuration, $renderConfig);
+            $result = $action->handle($product, $configuration, $view);
 
             $this->handleActionResult($request, $result);
         }
 
-        return $action->render($product, $renderConfig);
+        return $action->render($product, $view);
     }
 
     public function renderProductCollectionAction(array $context, string $name): string

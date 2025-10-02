@@ -18,7 +18,6 @@ use Isotope\CoreBundle\Attribute\VariantAttributeInterface;
 use Isotope\CoreBundle\DataContainer\ProductData;
 use Isotope\CoreBundle\Model\ProductType;
 use Isotope\CoreBundle\Product\ProductInterface;
-use Isotope\Model\Product;
 use Isotope\Model\RelatedCategory;
 use Symfony\Component\HttpFoundation\RequestStack;
 

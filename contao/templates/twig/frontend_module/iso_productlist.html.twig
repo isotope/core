@@ -4,19 +4,15 @@
 {% set attributes = attrs()
     .set('data-controller', 'isotope--fragment')
     .set('data-isotope--fragment-id-value', fragment_id)
-    .set('data-isotope--fragment-filters-value', filters|json_encode)
+    .setIfExists('data-isotope--fragment-filters-value', filters|default|json_encode)
     .set('data-action', 'isotope--productquery:update@window->isotope--fragment#query')
     .mergeWith(attributes|default)
 %}
 
 {% block content %}
-    {% if products is not empty %}
-        <div class="product_list">
-            {% for product in products %}
-                {{ product|raw }}
-            {% endfor %}
-        </div>
+    {% for product in products %}
+        {{ isotope_product(product) }}
     {% else %}
         <p class="empty message">{{ data.iso_noProducts|default('MSC.noProducts'|trans) }}</p>
-    {% endif %}
+    {% endfor %}
 {% endblock %}

@@ -9,21 +9,13 @@ use Contao\CoreBundle\Exception\PageNotFoundException;
 use Contao\CoreBundle\Twig\FragmentTemplate;
 use Contao\ModuleModel;
 use Isotope\CoreBundle\Product\ProductInterface;
-use Isotope\CoreBundle\Product\Render\DefaultProductRenderer;
-use Isotope\CoreBundle\Product\Render\RenderConfig;
+use Isotope\CoreBundle\Product\Render\ReaderView;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 
 #[AsFrontendModule('iso_productreader', category: 'isotope')]
 class ProductReaderController extends AbstractFrontendModuleController
 {
-    public function __construct(
-        private readonly DefaultProductRenderer $productRenderer,
-        private readonly RequestStack $requestStack,
-    ) {
-    }
-
     protected function getResponse(FragmentTemplate $template, ModuleModel $model, Request $request): Response
     {
         $product = $request->attributes->get('_content');
@@ -36,7 +28,8 @@ class ProductReaderController extends AbstractFrontendModuleController
             return new Response();
         }
 
-        $template->product = $this->productRenderer->render($product, RenderConfig::createReader($model, $product), $request);
+        $template->product = $product;
+        $template->view = ReaderView::createFromModule($model);
 
         return $template->getResponse();
     }

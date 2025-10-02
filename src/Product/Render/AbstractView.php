@@ -1,0 +1,69 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Isotope\CoreBundle\Product\Render;
+
+use Contao\StringUtil;
+use Isotope\CoreBundle\Product\ProductInterface;
+use Isotope\CoreBundle\Routing\ProductReference;
+
+abstract class AbstractView implements ViewInterface
+{
+    public function __construct(
+        protected readonly string $prefix,
+        protected readonly string|null $template,
+        protected int|null $gallery,
+        protected array $config,
+    ) {
+    }
+
+    public function getFormId(ProductInterface $product): string
+    {
+        return $this->prefix.'_product'.$product->getProductId();
+    }
+
+    public function getProductReference(ProductInterface $product): ProductReference
+    {
+        return new ProductReference($product);
+    }
+
+    public function getActions(ProductInterface $product): array
+    {
+        return StringUtil::deserialize($this->get('iso_buttons'), true);
+    }
+
+    public function useQuantity(ProductInterface $product): bool
+    {
+        return (bool) $this->get('iso_use_quantity');
+    }
+
+    public function useOptions(ProductInterface $product): bool
+    {
+        return !$this->get('iso_disable_options');
+    }
+
+    public function useFallbackVariant(ProductInterface $product): bool
+    {
+        return true;
+    }
+
+    public function get(string $key): mixed
+    {
+        return $this->config[$key] ?? null;
+    }
+
+    public function toArray(ProductInterface $product): array
+    {
+        return [
+            'id' => $this->getFormId($product),
+            'template' => $this->getTemplate($product),
+            'gallery' => $this->getGallery($product),
+            'jumpTo' => $this->getProductReference($product)->referencePage,
+            'buttons' => $this->getActions($product),
+            'useQuantity' => $this->useQuantity($product),
+            'disableOptions' => !$this->useOptions($product),
+            'loadFallback' => $this->useFallbackVariant($product),
+        ];
+    }
+}

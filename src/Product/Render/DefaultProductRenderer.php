@@ -9,7 +9,6 @@ use Contao\StringUtil;
 use Contao\UploadableWidgetInterface;
 use Doctrine\DBAL\Connection;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
-use Isotope\CoreBundle\ModelType\ProductRegistry;
 use Isotope\CoreBundle\Product\ProductInterface;
 use Isotope\CoreBundle\Product\ProductOptions;
 use Isotope\Model\ProductCollectionItem;
@@ -22,26 +21,22 @@ class DefaultProductRenderer implements ProductRendererInterface
     public function __construct(
         private readonly Environment $twig,
         private readonly AttributeRegistry $attributeRegistry,
-        private readonly ProductRegistry $productRegistry,
         private readonly Connection $connection,
     ) {
     }
 
-    public function render(ProductInterface $product, RenderConfig $config, Request $request): string
+    public function render(ProductInterface $product, ViewInterface $view, Request $request): string
     {
-        $this->strFormId = $config->id;
         $defaults = $this->getDefaults($product, $request);
-        $productOptions = new ProductOptions($this->attributeRegistry, $this->connection, $product, $config, $request, $defaults, (bool) $product->getProductType()->force_variant_options);
+        $useOptions = $view->useOptions($product);
 
-        if ($config->withOptions) {
+        if ($useOptions) {
+            $productOptions = $this->createProductOptions($product, $view, $request, $defaults);
             $variantOptions = $productOptions->getVariantOptions();
 
-            if (null !== $variantOptions && null !== ($variant = $product->getVariant($variantOptions))) {
-                $productOptions = new ProductOptions($this->attributeRegistry, $this->connection, $variant, $config, $request, $defaults, (bool) $variant->getProductType()->force_variant_options);
+            if ($variant = $this->getVariant($product, $variantOptions, $view->useFallbackVariant($product))) {
                 $product = $variant;
-            } elseif (null === $variantOptions && $config->loadFallback && null !== ($variant = $product->getDefaultVariant())) {
-                $productOptions = new ProductOptions($this->attributeRegistry, $this->connection, $variant, $config, $request, $defaults, (bool) $variant->getProductType()->force_variant_options);
-                $product = $variant;
+                $productOptions = $this->createProductOptions($product, $view, $request, $defaults);
             }
         }
 
@@ -54,24 +49,24 @@ class DefaultProductRenderer implements ProductRendererInterface
             'product_css_classes' => $cssID[1] ?? null,
             'product' => $product,
             'type' => $type,
-            'config' => $config,
+            'view' => $view,
             'attributes' => $attributes,
             'options' => [],
             'hasUploads' => false,
             'isActive' => $request->attributes->get('_content') instanceof ProductInterface && $request->attributes->get('_content')?->getProductId() === $product->getProductId(),
         ];
 
-        if ($config->withOptions) {
+        if ($useOptions) {
             $context['options'] = $productOptions->generateVariantOptionWidgets();
             $context['hasUploads'] = array_reduce($context['options'], static fn ($v, $o) => $v || $o['widget'] instanceof UploadableWidgetInterface, false);
         }
 
-        $content = $this->twig->render($config->template, $context);
+        $content = $this->twig->render($view->getTemplate($product), $context);
 
         if (
-            $config->withOptions
+            $useOptions
             && $request->isXmlHttpRequest()
-            && $request->request->get('FORM_SUBMIT') === $config->id
+            && $request->request->get('FORM_SUBMIT') === $view->getFormId($product)
         ) {
             throw new ResponseException(new Response($content));
         }
@@ -91,5 +86,31 @@ class DefaultProductRenderer implements ProductRendererInterface
         }
 
         return $request->query->all();
+    }
+
+    private function createProductOptions(ProductInterface $product, ViewInterface $view, Request $request, array $defaults): ProductOptions
+    {
+        return new ProductOptions(
+            $this->attributeRegistry,
+            $this->connection,
+            $product,
+            $view,
+            $request,
+            $defaults,
+            (bool) $product->getProductType()->force_variant_options
+        );
+    }
+
+    private function getVariant(ProductInterface $product, array|null $variantOptions, bool $loadFallback): ProductInterface|null
+    {
+        if (null !== $variantOptions) {
+            return $product->getVariant($variantOptions);
+        }
+
+        if ($loadFallback) {
+            return $product->getDefaultVariant();
+        }
+
+        return null;
     }
 }

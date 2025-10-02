@@ -15,7 +15,7 @@ use Isotope\CoreBundle\Attribute\AttributeRegistry;
 use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
 use Isotope\CoreBundle\Attribute\VariantAttributeInterface;
 use Isotope\CoreBundle\Model\Attribute;
-use Isotope\CoreBundle\Product\Render\RenderConfig;
+use Isotope\CoreBundle\Product\Render\ViewInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class ProductOptions
@@ -38,7 +38,7 @@ class ProductOptions
         private readonly AttributeRegistry $attributeRegistry,
         private readonly Connection $connection,
         private readonly ProductInterface $product,
-        private readonly RenderConfig $config,
+        private readonly ViewInterface $view,
         private readonly Request $request,
         private readonly array $defaults = [],
         private readonly bool $forceVariantOptions = false,
@@ -88,7 +88,7 @@ class ProductOptions
 
             if (
                 $this->request->isMethod(Request::METHOD_POST)
-                && $this->request->request->get('FORM_SUBMIT') === $this->config->id
+                && $this->request->request->get('FORM_SUBMIT') === $this->view->getFormId($this->product)
             ) {
 
             }
@@ -209,7 +209,7 @@ class ProductOptions
             $arrAjaxOptions[] = $attributeName;
         }
 
-        $arrField['id'] = $this->config->id.'_'.$attributeName;
+        $arrField['id'] = $this->view->getFormId($this->product).'_'.$attributeName;
 
         $objWidget = new $strClass($arrField);
         $objWidget->storeValues = true;
@@ -224,7 +224,7 @@ class ProductOptions
         // Validate input
         if (
             $this->request->isMethod(Request::METHOD_POST)
-            && $this->request->request->get('FORM_SUBMIT') === $this->config->id
+            && $this->request->request->get('FORM_SUBMIT') === $this->view->getFormId($this->product)
         ) {
             $objWidget->validate();
 

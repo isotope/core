@@ -5,7 +5,7 @@ namespace Isotope\CoreBundle\Product\Action;
 use Contao\Input;
 use Isotope\CoreBundle\HttpFoundation\ActionResult;
 use Isotope\CoreBundle\Product\ProductInterface;
-use Isotope\CoreBundle\Product\Render\RenderConfig;
+use Isotope\CoreBundle\Product\Render\ViewInterface;
 use Isotope\Haste\Util\Url;
 use Isotope\Isotope;
 use Isotope\Model\ProductCollectionItem;
@@ -17,12 +17,12 @@ class AddToCartAction implements ProductActionInterface
     {
     }
 
-    public function supports(ProductInterface $product, RenderConfig $renderConfig): bool
+    public function supports(ProductInterface $product, ViewInterface $view): bool
     {
         return true;
     }
 
-    public function render(ProductInterface $product, RenderConfig $renderConfig): string
+    public function render(ProductInterface $product, ViewInterface $view): string
     {
         return $this->twig->render('@Contao/isotope/product_action/add_to_cart.html.twig', [
             'disabled' => ($product->hasVariants() && !$product->isVariant()),
@@ -38,22 +38,22 @@ class AddToCartAction implements ProductActionInterface
     //    return $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'];
     //}
 
-    public function handle(ProductInterface $product, array $configuration, RenderConfig $renderConfig): ActionResult
+    public function handle(ProductInterface $product, array $configuration, ViewInterface $view): ActionResult
     {
         $item = $this->getCurrentCartItem($product);
 
         if ($item) {
             $response = $this->handleUpdateCart($item, $product);
         } else {
-            $response = $this->handleAddToCart($product, $configuration, $renderConfig);
+            $response = $this->handleAddToCart($product, $configuration, $view);
         }
 
-        if ($response->success && ($renderConfig->options['iso_addProductJumpTo'] ?? null)) {
+        if ($response->success && $view->get('iso_addProductJumpTo')) {
             return new ActionResult(
                 null,
                 Url::addQueryString(
                     'continue=' . base64_encode(\Contao\Environment::get('request')),
-                    $renderConfig->options['iso_addProductJumpTo'],
+                    $view->get('iso_addProductJumpTo'),
                 )
             );
         }
@@ -73,17 +73,17 @@ class AddToCartAction implements ProductActionInterface
         return $item?->isProduct($product) ? $item : null;
     }
 
-    private function handleAddToCart(ProductInterface $product, array $configuration, RenderConfig $config): ActionResult
+    private function handleAddToCart(ProductInterface $product, array $configuration, ViewInterface $view): ActionResult
     {
         $quantity = 1;
 
-        if ($config->withQuantity && Input::post('quantity_requested') > 0) {
+        if ($view->useQuantity($product) && Input::post('quantity_requested') > 0) {
             $quantity = (int) Input::post('quantity_requested');
         }
 
         // Do not add parent of variant product to the cart
         if (($product->hasVariants() && !$product->isVariant())
-            || !Isotope::getCart()->addProduct($product, $quantity, $configuration, $config->toArray())
+            || !Isotope::getCart()->addProduct($product, $quantity, $configuration, $view->toArray($product))
         ) {
             return new ActionResult('Das Produkt konnte nicht in den Warenkorb gelegt werden', success: false);
         }

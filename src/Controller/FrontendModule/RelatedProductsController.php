@@ -11,8 +11,7 @@ use Contao\ModuleModel;
 use Contao\StringUtil;
 use Isotope\CoreBundle\ModelType\ProductRegistry;
 use Isotope\CoreBundle\Product\ProductInterface;
-use Isotope\CoreBundle\Product\Render\DefaultProductRenderer;
-use Isotope\CoreBundle\Product\Render\RenderConfig;
+use Isotope\CoreBundle\Product\Render\ListView;
 use Isotope\Model\Product;
 use Isotope\Model\RelatedProduct;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,7 +22,6 @@ class RelatedProductsController extends AbstractFrontendModuleController
 {
     public function __construct(
         private readonly ProductRegistry $productRegistry,
-        private readonly DefaultProductRenderer $productRenderer,
     ) {
     }
 
@@ -45,14 +43,16 @@ class RelatedProductsController extends AbstractFrontendModuleController
 
         foreach ($models as $productModel) {
             $product = $this->productRegistry->get($productModel);
-            $products[] = $this->productRenderer->render(
-                $product,
-                RenderConfig::createList($model, $product),
-                $request
-            );
+
+            if (!$product instanceof ProductInterface) {
+                continue;
+            }
+
+            $products[] = $product;
         }
 
         $template->products = $products;
+        $template->view = ListView::createFromModule($model);
 
         return $template->getResponse();
     }

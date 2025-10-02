@@ -11,11 +11,8 @@ use Isotope\CoreBundle\Gallery\StandardGallery;
 use Isotope\CoreBundle\Model\Gallery;
 use Isotope\CoreBundle\ModelType\GalleryRegistry;
 use Isotope\CoreBundle\Product\ProductInterface;
-use Isotope\CoreBundle\Product\Render\RenderConfig;
-use Isotope\CoreBundle\Routing\ProductReference;
-use Isotope\CoreBundle\Routing\ProductResolver;
+use Isotope\CoreBundle\Product\Render\ViewInterface;
 use Isotope\CoreBundle\Widget\MediaManager;
-use Isotope\Model\Product;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Twig\Environment;
 use Twig\Extension\RuntimeExtensionInterface;
@@ -32,17 +29,19 @@ class GalleryRuntime implements RuntimeExtensionInterface
     ) {
     }
 
-    public function get(array $context, string $attributeName): GalleryVariable|null
+    public function get(array $context, string $attributeName, int|null $galleryId = null): GalleryVariable|null
     {
         $product = $context['product'] ?? null;
-        $config = $context['config'] ?? null;
+        $view = $context['view'] ?? null;
 
-        if (!$product instanceof ProductInterface || !$config instanceof RenderConfig) {
+        if (!$product instanceof ProductInterface || (!$galleryId && !$view instanceof ViewInterface)) {
             return null;
         }
 
-        $galleryModel = $config->gallery > 0 ? Gallery::findById($config->gallery) : null;
-        $gallery = $galleryModel ? $this->galleryRegistry->get($galleryModel) : new StandardGallery(0, $this->imageStudio, $this->twig);
+        $galleryId ??= $view->getGallery($product);
+        $model = $galleryId > 0 ? Gallery::findById($galleryId) : null;
+
+        $gallery = $model ? $this->galleryRegistry->get($model) : new StandardGallery(0, $this->imageStudio, $this->twig);
 
         $href = null;
         $files = MediaManager::mergeMediaData(
@@ -50,8 +49,8 @@ class GalleryRuntime implements RuntimeExtensionInterface
             StringUtil::deserialize($product[$attributeName.'_fallback'], true),
         );
 
-        //if (!isset($config['jumpTo']) || ProductResolver::canLinkToPage($config['jumpTo'])) {
-        //    $href = $this->urlGenerator->generate(new ProductReference($product, $config['jumpTo'] ?? null));
+        //if (!isset($view['jumpTo']) || ProductResolver::canLinkToPage($view['jumpTo'])) {
+        //    $href = $this->urlGenerator->generate(new ProductReference($product, $view['jumpTo'] ?? null));
         //}
 
         return new GalleryVariable($gallery->withProductData(

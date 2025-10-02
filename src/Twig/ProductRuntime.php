@@ -7,11 +7,23 @@ namespace Isotope\CoreBundle\Twig;
 use Contao\StringUtil;
 use Isotope\CoreBundle\Model\BasePrice;
 use Isotope\CoreBundle\Product\ProductInterface;
+use Isotope\CoreBundle\Product\Render\ViewInterface;
 use Isotope\Isotope;
 use Twig\Extension\RuntimeExtensionInterface;
 
 class ProductRuntime implements RuntimeExtensionInterface
 {
+    public function generateProduct(array $context, ProductInterface $product, ViewInterface|null $view = null): string
+    {
+        $view = $view ?? $context['view'] ?? null;
+
+        if (!$view instanceof ViewInterface) {
+            throw new \RuntimeException('Cannot render product without a render view.');
+        }
+
+        return $product->getRenderer()->render($product, $view, $context['app']->getRequest());
+    }
+
     public function generatePrice(array $context): string
     {
         $product = $context['product'] ?? null;

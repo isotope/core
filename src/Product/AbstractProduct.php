@@ -5,14 +5,23 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Product;
 
 use Isotope\CoreBundle\Model\ProductType;
+use Isotope\CoreBundle\ModelType\AbstractModelType;
+use Isotope\CoreBundle\ModelType\ContainerAwareInterface;
+use Isotope\CoreBundle\Product\Render\DefaultProductRenderer;
+use Isotope\CoreBundle\Product\Render\ProductRendererInterface;
 use Isotope\Model\Product;
 
-abstract class AbstractProduct implements ProductInterface
+abstract class AbstractProduct extends AbstractModelType implements ProductInterface, ContainerAwareInterface
 {
     public function __construct(
         protected readonly Product $model,
         protected readonly ProductType $productType,
     ) {
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return [DefaultProductRenderer::class];
     }
 
     public function offsetExists(mixed $offset): bool
@@ -88,5 +97,10 @@ abstract class AbstractProduct implements ProductInterface
     public function getMetaDescription(): string
     {
         return $this['meta_description'] ?: $this['teaser'] ?: $this['description'] ?: '';
+    }
+
+    public function getRenderer(): ProductRendererInterface
+    {
+        return $this->get(DefaultProductRenderer::class);
     }
 }

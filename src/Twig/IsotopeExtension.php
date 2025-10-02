@@ -32,6 +32,7 @@ class IsotopeExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
+            new TwigFunction('isotope_product', [ProductRuntime::class, 'generateProduct'], ['needs_context' => true, 'is_safe' => ['html']]),
             new TwigFunction('isotope_price', [ProductRuntime::class, 'generatePrice'], ['needs_context' => true]),
             new TwigFunction('isotope_baseprice', [ProductRuntime::class, 'generateBasePrice'], ['needs_context' => true]),
             new TwigFunction('isotope_product_action', [ActionRuntime::class, 'renderProductAction'], ['needs_context' => true, 'is_safe' => ['html']]),

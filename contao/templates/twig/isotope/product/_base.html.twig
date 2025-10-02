@@ -5,13 +5,13 @@
     .addClass(['product', product_css_classes, type.cssClass])
     .addClass('active', isActive)
     .set('data-controller', 'isotope--product')
-    .set('data-isotope--product-form-id-value', config.id)
+    .set('data-isotope--product-form-id-value', view.formId(product))
     .set('data-isotope--product-options-value', options|column('name')|json_encode)
     .mergeWith(product_attributes|default)
 %}
 
 {% set form_attributes = attrs()
-    .set('id', config.id)
+    .set('id', view.formId(product))
     .set('method', 'post')
     .set('enctype', 'multipart/form-data', hasUploads)
     .set('data-isotope--product-target', 'form')
@@ -22,13 +22,13 @@
 <div{{ product_attributes }}>
     <form{{ form_attributes }}>
         <div class="formbody">
-            <input type="hidden" name="FORM_SUBMIT" value="{{ config.id }}">
+            <input type="hidden" name="FORM_SUBMIT" value="{{ view.formId(product) }}">
             <input type="hidden" name="REQUEST_TOKEN" value="{{ request_token }}">
 
             {% block formbody %}
 
                 {% block product_options %}
-                    {% if config.withOptions %}
+                    {% if view.useOptions(product) %}
                         <div class="options">
                             {% for option in options %}
                                 {{ option.widget.parse|raw }}
@@ -48,11 +48,12 @@
                 {% endblock %}
 
                 {% block product_actions %}
-                    {% if config.buttons is not empty %}
+                    {% set actions = view.actions(product) %}
+                    {% if actions is not empty %}
                         <div class="submit_container">
 
                             {% block product_quantity %}
-                                {% if config.withQuantity %}
+                                {% if view.useQuantity(product) %}
                                     <div class="quantity_container">
                                         <label for="quantity_requested_{{ product.id }}">{{ 'MSC.quantity'|trans }}:</label>
                                         <input type="number" class="text" id="quantity_requested_{{ product.id }}" name="quantity_requested" placeholder="{{ product.minimumQuantity }}" value="{#<?= \Contao\StringUtil::specialchars(\Contao\Input::post('quantity_requested')); ?>#}" maxlength="10">
@@ -60,7 +61,7 @@
                                 {% endif %}
                             {% endblock %}
 
-                            {% for action in config.buttons %}
+                            {% for action in actions %}
                                 {{ isotope_product_action(action) }}
                             {% endfor %}
 

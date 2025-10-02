@@ -2,7 +2,7 @@
 
 {% trans_default_domain 'contao_default' %}
 {% set gallery = isotope_gallery('images') %}
-{% set href = content_url(config.reference ?: product) %}
+{% set href = content_url(view.productReference(product)) %}
 
 {% block formbody %}
 

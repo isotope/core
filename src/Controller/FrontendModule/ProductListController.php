@@ -21,8 +21,7 @@ use Isotope\CoreBundle\Product\Category\CategoryScope;
 use Isotope\CoreBundle\Product\Query\ProductQuery;
 use Isotope\CoreBundle\Product\Query\ProductQueryFactory;
 use Isotope\CoreBundle\Product\Query\Sorting;
-use Isotope\CoreBundle\Product\Render\ProductRendererInterface;
-use Isotope\CoreBundle\Product\Render\RenderConfig;
+use Isotope\CoreBundle\Product\Render\ListView;
 use Isotope\Model\Product;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,7 +32,6 @@ class ProductListController extends AbstractFrontendModuleController
     public function __construct(
         private readonly Connection $connection,
         private readonly ProductRegistry $productRegistry,
-        private readonly ProductRendererInterface $productRenderer,
         private readonly AttributeRegistry $attributeRegistry,
         private readonly CategoryFinder $categoryFinder,
         private readonly ProductQueryFactory $productQueryFactory,
@@ -57,14 +55,16 @@ class ProductListController extends AbstractFrontendModuleController
 
         foreach ($models as $productModel) {
             $product = $this->productRegistry->get($productModel);
-            $products[] = $this->productRenderer->render(
-                $product,
-                RenderConfig::createList($model, $product),
-                $request
-            );
+
+            if (!$product instanceof ProductInterface) {
+                continue;
+            }
+
+            $products[] = $product;
         }
 
         $template->products = $products;
+        $template->view = ListView::createFromModule($model);
         $template->filters = $filterModules;
 
         return $template->getResponse();
