@@ -49,7 +49,7 @@
         "hashids/hashids": "^4.1"
     },
     "require-dev": {
-        "contao/core-bundle": "5.3.*",
+        "contao/core-bundle": "5.x-dev",
         "contao/manager-plugin": "^2.0",
         "terminal42/contao-changelanguage": "^3.4",
         "terminal42/contao-build-tools": "dev-main"
@@ -64,9 +64,7 @@
         },
         "psr-0": {
             "Isotope\\": [
-                "system/modules/isotope/library",
-                "system/modules/isotope_reports/library",
-                "system/modules/isotope_rules/library"
+                "system/modules/isotope/library"
             ]
         }
     },
@@ -79,7 +77,8 @@
             "php-http/discovery": false
         }
     },
-    "extra":{
+    "extra": {
         "contao-manager-plugin": "Isotope\\CoreBundle\\ContaoManager\\Plugin"
-    }
+    },
+    "minimum-stabilitye": "dev"
 }
