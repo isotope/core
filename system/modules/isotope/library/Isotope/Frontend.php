@@ -15,12 +15,9 @@ use Contao\CoreBundle\ContaoCoreBundle;
 use Contao\Database;
 use Contao\Database\Result;
 use Contao\FrontendTemplate;
-use Contao\FrontendUser;
-use Contao\MemberModel;
 use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
-use Contao\Widget;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
 use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
 use Isotope\CoreBundle\Product\ProductInterface;
@@ -30,14 +27,12 @@ use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Interfaces\IsotopePrice;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\AttributeOption;
-use Isotope\Model\Product;
 use Isotope\Model\Product\Standard;
 use Isotope\Model\ProductCollection\Cart;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Model\ProductCollectionSurcharge;
 use Isotope\Model\TaxClass;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Routing\Exception\ExceptionInterface;
 
 /**
  * Provide methods to handle Isotope front end components.
@@ -149,24 +144,6 @@ class Frontend extends \Contao\Frontend
     }
 
     /**
-     * save_callback for upload widget to store $_FILES data into the product
-     *
-     * @deprecated Deprecated since Isotope 2.4, to be removed in Isotope 3.0.
-     */
-    public function saveUpload($varValue, ProductInterface $objProduct, Widget $objWidget)
-    {
-        if (\is_array($_SESSION['FILES'][$objWidget->name])
-            && $_SESSION['FILES'][$objWidget->name]['uploaded'] == '1'
-            && $_SESSION['FILES'][$objWidget->name]['error'] == 0
-        ) {
-            return $_SESSION['FILES'][$objWidget->name]['name'];
-        }
-
-        return $varValue;
-    }
-
-
-    /**
      * Get postal codes from CSV and ranges
      *
      * @param string $strPostalCodes
@@ -193,94 +170,6 @@ class Frontend extends \Contao\Frontend
         }
 
         return $arrCodes;
-    }
-
-
-    /**
-     * Return pages in the current root available to the member
-     * Necessary to check if a product is allowed in the current site and cache the value
-     *
-     * @param MemberModel|FrontendUser $objMember
-     * @return array
-     */
-    public static function getPagesInCurrentRoot(array $arrPages, $objMember = null)
-    {
-        if (0 === \count($arrPages)) {
-            return $arrPages;
-        }
-
-        /** @var PageModel $objPage */
-        global $objPage;
-
-        // $objPage not available, we don't know if the page is allowed
-        if (null === $objPage || $objPage == 0) {
-            return $arrPages;
-        }
-
-        static $arrAvailable = array();
-        static $arrUnavailable = array();
-
-        $intMember = 0;
-        $arrGroups = [];
-
-        if (null !== $objMember) {
-            $intMember = $objMember->id;
-            $arrGroups = StringUtil::deserialize($objMember->groups, true);
-        }
-
-        if (!isset($arrAvailable[$intMember])) {
-            $arrAvailable[$intMember] = array();
-        }
-
-        if (!isset($arrUnavailable[$intMember])) {
-            $arrUnavailable[$intMember] = array();
-        }
-
-        // Load remaining (not cached) pages.
-        foreach (array_diff($arrPages, $arrAvailable[$intMember], $arrUnavailable[$intMember]) as $intPage) {
-            $objPageDetails = PageModel::findWithDetails($intPage);
-
-            // Page is not in the current root
-            if (null === $objPageDetails || $objPageDetails->rootId != $objPage->rootId) {
-                continue;
-            }
-
-            // Page is for guests only but we have a member
-            if ($objPageDetails->guests && $intMember > 0 && !$objPageDetails->protected) {
-                $arrUnavailable[$intMember][] = $intPage;
-                continue;
-            }
-
-            if ($objPageDetails->protected) {
-                $arrPGroups = StringUtil::deserialize($objPageDetails->groups);
-
-                // Page is protected but has no groups
-                if (!\is_array($arrPGroups)) {
-                    $arrUnavailable[$intMember][] = $intPage;
-                    continue;
-                }
-
-                // Page is protected but we have no member
-                if ($intMember == 0) {
-                    if (in_array(-1, $arrPGroups, false)) { // "Guests" group in Contao 4.13+
-                        $arrAvailable[$intMember][] = $intPage;
-                    } else {
-                        $arrUnavailable[$intMember][] = $intPage;
-                    }
-                    continue;
-                }
-
-                // Page groups do not match with member groups
-                if (\count(array_intersect($arrGroups, $arrPGroups)) == 0) {
-                    $arrUnavailable[$intMember][] = $intPage;
-                    continue;
-                }
-            }
-
-            $arrAvailable[$intMember][] = $intPage;
-        }
-
-        return array_intersect($arrPages, $arrAvailable[$intMember]);
     }
 
     /**
@@ -454,32 +343,6 @@ class Frontend extends \Contao\Frontend
     }
 
     /**
-     * Hook callback for changelanguage extension to support language switching on product reader page
-     *
-     * @param array $arrGet
-     *
-     * @return array
-     *
-     * @deprecated Deprecated since Isotope 2.4. See ChangeLanguageListener
-     */
-    public function translateProductUrls($arrGet)
-    {
-        return (new ChangeLanguageListener())->onTranslateUrlParameters($arrGet);
-    }
-
-    /**
-     * Return all error, confirmation and info messages as HTML string
-     *
-     * @return string
-     *
-     * @deprecated use Message::generate
-     */
-    public static function getIsotopeMessages()
-    {
-        return Message::generate();
-    }
-
-    /**
      * Switches the environment to the given language.
      *
      * @param string $language
@@ -502,14 +365,5 @@ class Frontend extends \Contao\Frontend
         }
 
         System::loadLanguageFile('default', $language, true);
-    }
-
-    private static function define(string $constant_name, $value): void
-    {
-        if (defined($constant_name)) {
-            return;
-        }
-
-        \define($constant_name, $value);
     }
 }

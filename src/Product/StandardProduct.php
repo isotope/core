@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Product;
 
 use Contao\System;
+use Isotope\CoreBundle\Attribute\AttributeRegistry;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsProduct;
+use Isotope\CoreBundle\Model\ProductType;
 use Isotope\CoreBundle\ModelType\ProductRegistry;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
@@ -15,29 +17,39 @@ use Isotope\Model\ProductPrice;
 #[AsProduct]
 class StandardProduct extends AbstractProduct
 {
-    public function isAvailableInFrontend()
-    {
-        return $this->model->isAvailableInFrontend();
+    public function __construct(
+        Product $model,
+        ProductType $productType,
+    ) {
+        parent::__construct($model, $productType);
     }
 
-    public function isAvailableForCollection(IsotopeProductCollection $objCollection)
+    public static function getSubscribedServices(): array
     {
-        return $this->model->isAvailableForCollection($objCollection);
+        return [...parent::getSubscribedServices(), AttributeRegistry::class];
     }
 
     public function isExemptFromShipping(): bool
     {
-        return $this->model->isExemptFromShipping();
+        if ($this['shipping_exempt']) {
+            return true;
+        }
+
+        return '1' === $this->productType->shipping_exempt;
     }
 
     public function isPickupOnly(): bool
     {
-        return $this->model->isPickupOnly();
+        if ($this['shipping_pickup']) {
+            return true;
+        }
+
+        return '2' === $this->productType->shipping_exempt;
     }
 
     public function hasVariants(): bool
     {
-        return $this->model->hasVariants();
+        return $this->productType->hasVariants();
     }
 
     public function getVariantIds(): array
@@ -47,7 +59,7 @@ class StandardProduct extends AbstractProduct
 
     public function isVariant(): bool
     {
-        return $this->model->isVariant();
+        return $this['pid'] > 0 && $this->hasVariants();
     }
 
     public function getMainProduct(): self
@@ -67,12 +79,26 @@ class StandardProduct extends AbstractProduct
 
     public function hasVariantPrices(): bool
     {
-        return $this->model->hasVariantPrices();
+        return $this->hasVariants() && \in_array('price', $this->productType->getVariantAttributes(), true);
     }
 
     public function getVariantConfig(): array
     {
-        return $this->model->getVariantConfig();
+        if (!$this->isVariant()) {
+            return array();
+        }
+
+        $arrVariantConfig = array();
+        $arrAttributes = array_intersect(
+            $this->productType->getVariantAttributes(),
+            $this->get(AttributeRegistry::class)->getVariantOptionFields()
+        );
+
+        foreach (array_unique($arrAttributes) as $attribute) {
+            $arrVariantConfig[$attribute] = $this[$attribute];
+        }
+
+        return $arrVariantConfig;
     }
 
     public function getPrice(IsotopeProductCollection $objCollection = null)

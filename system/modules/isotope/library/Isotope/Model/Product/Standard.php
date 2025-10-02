@@ -11,40 +11,20 @@
 
 namespace Isotope\Model\Product;
 
-use Contao\ContentElement;
 use Contao\Controller;
 use Contao\CoreBundle\Security\ContaoCorePermissions;
 use Contao\Database;
 use Contao\Date;
-use Contao\Input;
-use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
-use Contao\Widget;
-use Hashids\Hashids;
-use Isotope\Collection\ProductPrice as ProductPriceCollection;
-use Isotope\CoreBundle\Attribute\AttributeInterface;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
-use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
-use Isotope\CoreBundle\Attribute\VariantAttributeInterface;
-use Isotope\CoreBundle\Gallery\GalleryInterface;
-use Isotope\CoreBundle\Model\Attribute;
 use Isotope\CoreBundle\Model\ProductType;
-use Isotope\CoreBundle\Product\ProductInterface;
-use Isotope\CoreBundle\Product\Render\RenderConfig;
-use Isotope\CoreBundle\Routing\ProductReference;
-use Isotope\CoreBundle\Routing\ProductResolver;
-use Isotope\CoreBundle\Twig\GalleryRuntime;
-use Isotope\CoreBundle\Twig\GalleryVariable;
+use Isotope\CoreBundle\ModelType\ProductRegistry;
 use Isotope\Haste\Units\Mass\Weight;
 use Isotope\Haste\Units\Mass\WeightAggregate;
-use Isotope\Interfaces\IsotopePrice;
 use Isotope\Interfaces\IsotopeProductCollection;
-use Isotope\Interfaces\IsotopeProductWithOptions;
 use Isotope\Isotope;
 use Isotope\Model\ProductPrice;
-use Isotope\Template;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Standard implementation of an Isotope product.
@@ -95,35 +75,6 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
     protected $doNotSubmit = false;
 
     /**
-     * @inheritdoc
-     */
-    public function isAvailableForCollection(IsotopeProductCollection $objCollection)
-    {
-        if (false === parent::isAvailableForCollection($objCollection)) {
-            return false;
-        }
-
-        // Check that the product is in any page of the current site
-        if (\count(\Isotope\Frontend::getPagesInCurrentRoot($this->getCategories(), $objCollection->getMember())) == 0) {
-            return false;
-        }
-
-        if ($this->hasVariants() && !count($this->getVariantIds())) {
-            return false;
-        }
-
-        // Check if "advanced price" is available
-        if ($this->getType()->hasAdvancedPrices()
-            && (\in_array('price', $this->getType()->getAttributes(), true) || $this->hasVariantPrices())
-            && null === $this->getPrice($objCollection)
-        ) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
      * Return the unique form ID for the product
      *
      * @return string
@@ -141,8 +92,10 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
      */
     public function getPrice(IsotopeProductCollection $objCollection = null)
     {
+        $product = System::getContainer()->get(ProductRegistry::class)->get($this);
+
         if (null !== $objCollection && $objCollection !== Isotope::getCart()) {
-            return ProductPrice::findByProductAndCollection($this, $objCollection);
+            return ProductPrice::findByProductAndCollection($product, $objCollection);
         }
 
         if (false === $this->objPrice) {
@@ -150,7 +103,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
                 $objCollection = Isotope::getCart();
             }
 
-            $this->objPrice = ProductPrice::findByProductAndCollection($this, $objCollection);
+            $this->objPrice = ProductPrice::findByProductAndCollection($product, $objCollection);
         }
 
         return $this->objPrice;
