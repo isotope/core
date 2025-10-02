@@ -2,6 +2,8 @@
 
 namespace Isotope\CoreBundle\Product;
 
+use Contao\FrontendUser;
+use Contao\MemberModel;
 use Isotope\CoreBundle\Model\ProductType;
 use Isotope\Interfaces\IsotopePrice;
 use Isotope\Interfaces\IsotopeProductCollection;
@@ -28,19 +30,12 @@ interface CollectibleInterface extends ShippableInterface
     public function getSku(): string;
 
     /**
-     * Returns true if the product is available in the frontend
+     * Returns true if the product is available.
+     * If the collection is null, the check must be done for the current cart.
      *
      * @return bool
      */
-    public function isAvailableInFrontend();
-
-    /**
-     * Returns true if the product is available in the given collection
-     *
-     *
-     * @return bool
-     */
-    public function isAvailableForCollection(IsotopeProductCollection $objCollection);
+    public function isAvailable(IsotopeProductCollection|null $collection = null): bool;
 
     /**
      * Get product price model

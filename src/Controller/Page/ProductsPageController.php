@@ -52,9 +52,9 @@ class ProductsPageController extends AbstractController
             return $this->renderPage($pageModel, $request);
         }
 
-        $product = $this->productRegistry->get(Product::findAvailableByIdOrAlias($alias));
+        $product = $this->productRegistry->get(Product::findByIdOrAlias($alias));
 
-        if (!$product instanceof ProductInterface) {
+        if (!$product instanceof ProductInterface || !$product->isAvailable()) {
             throw new PageNotFoundException();
         }
 

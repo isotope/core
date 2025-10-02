@@ -97,7 +97,7 @@ class ProductCollectionItem extends Model
 
         $product = $this->getProduct();
 
-        if (!$product || !$product->isAvailableForCollection($this->getCollection())) {
+        if (!$product || !$product->isAvailable($this->getCollection())) {
             return false;
         }
 

@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Product;
 
+use Contao\FrontendUser;
+use Contao\MemberModel;
 use Isotope\CoreBundle\Model\ProductType;
 use Isotope\CoreBundle\ModelType\AbstractModelType;
 use Isotope\CoreBundle\ModelType\ContainerAwareInterface;
 use Isotope\CoreBundle\Product\Render\DefaultProductRenderer;
 use Isotope\CoreBundle\Product\Render\ProductRendererInterface;
+use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Product;
 
 abstract class AbstractProduct extends AbstractModelType implements ProductInterface, ContainerAwareInterface
@@ -21,7 +24,7 @@ abstract class AbstractProduct extends AbstractModelType implements ProductInter
 
     public static function getSubscribedServices(): array
     {
-        return [DefaultProductRenderer::class];
+        return [DefaultProductRenderer::class, AvailabilityChecker::class];
     }
 
     public function offsetExists(mixed $offset): bool
@@ -102,5 +105,10 @@ abstract class AbstractProduct extends AbstractModelType implements ProductInter
     public function getRenderer(): ProductRendererInterface
     {
         return $this->get(DefaultProductRenderer::class);
+    }
+
+    public function isAvailable(IsotopeProductCollection|null $collection = null): bool
+    {
+        return $this->get(AvailabilityChecker::class)->isAvailable($this, $collection);
     }
 }

@@ -28,6 +28,7 @@ use Isotope\CoreBundle\ModelType\GalleryRegistry;
 use Isotope\CoreBundle\ModelType\PaymentRegistry;
 use Isotope\CoreBundle\ModelType\ShippingRegistry;
 use Isotope\CoreBundle\Product\CollectibleInterface;
+use Isotope\CoreBundle\Product\ProductInterface;
 use Isotope\CoreBundle\Product\ShippableInterface;
 use Isotope\CoreBundle\Routing\ProductReference;
 use Isotope\Frontend;
@@ -1615,7 +1616,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
             'rowClass'          => trim('product ' . ($arrCSS[1] ?? ''))
         );
 
-        if ($blnHasProduct && null !== $objItem->getRelated('jumpTo') && $objProduct->isAvailableInFrontend()) {
+        if ($objProduct instanceof ProductInterface && null !== $objItem->getRelated('jumpTo') && $objProduct->isAvailable($this)) {
             $arrItem['href'] = System::getContainer()
                 ->get('contao.routing.content_url_generator')
                 ->generate(new ProductReference($objProduct, $objItem->getRelated('jumpTo')))

@@ -44,7 +44,7 @@ class RelatedProductsController extends AbstractFrontendModuleController
         foreach ($models as $productModel) {
             $product = $this->productRegistry->get($productModel);
 
-            if (!$product instanceof ProductInterface) {
+            if (!$product instanceof ProductInterface || !$product->isAvailable()) {
                 continue;
             }
 
@@ -85,7 +85,7 @@ class RelatedProductsController extends AbstractFrontendModuleController
             $options['sorting'] = [$sortingField => 'DESC' === $sortingDirection ? 'desc' : 'asc'];
         }
 
-        $objProducts = Product::findAvailableBy($columns, [], $options);
+        $objProducts = Product::findBy($columns, [], $options);
 
         return (null === $objProducts) ? [] : $objProducts->getModels();
     }

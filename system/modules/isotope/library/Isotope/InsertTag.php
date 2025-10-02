@@ -229,13 +229,10 @@ class InsertTag
         if (null !== $id) {
             $product = System::getContainer()->get(ProductRegistry::class)->get(Product::findById($id));
         } else {
-            $product = System::getContainer()->get('request_stack')->getCurrentRequest()->get('_product');
+            $product = System::getContainer()->get('request_stack')->getCurrentRequest()->get('_content');
         }
 
-        /** @var AvailabilityChecker $availabilityChecker */
-        $availabilityChecker = System::getContainer()->get(AvailabilityChecker::class);
-
-        if (!$product instanceof ProductInterface || !$availabilityChecker->isAvailable($product)) {
+        if (!$product instanceof ProductInterface || !$product->isAvailable()) {
             return null;
         }
 
