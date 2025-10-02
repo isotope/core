@@ -20,7 +20,6 @@ use Contao\Model\QueryBuilder;
 use Contao\StringUtil;
 use Isotope\Collection\ProductPrice as ProductPriceCollection;
 use Isotope\CoreBundle\Product\ProductInterface;
-use Isotope\CoreBundle\Product\VariantProductInterface;
 use Isotope\Interfaces\IsotopePrice;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
@@ -256,7 +255,7 @@ class ProductPrice extends Model implements IsotopePrice
         $arrOptions['column'] = array();
         $arrOptions['value'] = array();
 
-        if ($objProduct->getType()?->hasAdvancedPrices()) {
+        if ($objProduct->getProductType()->hasAdvancedPrices()) {
 
             $time = Date::floorToMinute($objCollection->getLastModification());
             $arrGroups = static::getMemberGroups($objCollection->getRelated('member'));
@@ -276,11 +275,11 @@ class ProductPrice extends Model implements IsotopePrice
             $arrOptions['column'][] = "$t.stop=''";
         }
 
-        if ($objProduct instanceof VariantProductInterface && $objProduct->hasVariantPrices() && !$objProduct->isVariant()) {
+        if ($objProduct->hasVariantPrices() && !$objProduct->isVariant()) {
             $arrIds = $objProduct->getVariantIds() ?: array(0);
             $arrOptions['column'][] = "$t.pid IN (" . implode(',', $arrIds) . ")";
         } else {
-            $arrOptions['column'][] = "$t.pid=" . ($objProduct instanceof VariantProductInterface && $objProduct->hasVariantPrices() ? $objProduct->getId() : $objProduct->getProductId());
+            $arrOptions['column'][] = "$t.pid=" . ($objProduct->hasVariantPrices() ? $objProduct->getId() : $objProduct->getProductId());
         }
 
         /** @var ProductPriceCollection $objResult */
