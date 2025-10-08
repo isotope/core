@@ -163,16 +163,8 @@ class Isotope extends Controller
 
         $objConfig = static::getConfig();
 
-        if ($objConfig->priceMultiplier != 1) {
-            switch ($objConfig->priceCalculateMode) {
-                case 'mul':
-                    $fltPrice = $fltPrice * $objConfig->priceCalculateFactor;
-                    break;
-
-                case 'div':
-                    $fltPrice = $fltPrice / $objConfig->priceCalculateFactor;
-                    break;
-            }
+        if ($objConfig->priceCalculateFactor != 1) {
+            $fltPrice = $fltPrice * $objConfig->priceCalculateFactor;
         }
 
         $sourceIsProduct = $objSource instanceof ProductInterface;

@@ -62,7 +62,6 @@ use Isotope\Translation;
  * @property bool   $currencySpace
  * @property string $currencyPosition
  * @property string $priceCalculateFactor
- * @property string $priceCalculateMode
  * @property bool   $currencyAutomator
  * @property string $currencyOrigin
  * @property string $currencyProvider

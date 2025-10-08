@@ -47,7 +47,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
             {checkout_legend},address_fields,billing_country,shipping_country,billing_countries,shipping_countries,limitMemberCountries,vatNoValidators;
             {pricing_legend},priceDisplay,currencyFormat,priceRoundPrecision,priceRoundIncrement;
             {currency_legend},currency,currencyPosition,currencySymbol;
-            {converter_legend:hide},priceCalculateFactor,priceCalculateMode,currencyAutomator;
+            {converter_legend:hide},priceCalculateFactor,currencyAutomator;
             {order_legend:hide},orderPrefix,orderDigits,orderstatus_new,orderstatus_error,orderDetailsModule;
             {config_legend},templateGroup,cartMinSubtotal',
     ],
@@ -312,14 +312,6 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'maxlength' => 16, 'rgxp' => 'digit', 'tl_class' => 'w50'],
             'sql' => "varchar(16) NOT NULL default ''",
-        ],
-        'priceCalculateMode' => [
-            'default' => 'mul',
-            'inputType' => 'radio',
-            'options' => ['mul', 'div'],
-            'reference' => &$GLOBALS['TL_LANG']['tl_iso_config'],
-            'eval' => ['mandatory' => true, 'tl_class' => 'w50'],
-            'sql' => "varchar(3) NOT NULL default ''",
         ],
         'currencyAutomator' => [
             'inputType' => 'checkbox',

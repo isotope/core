@@ -233,12 +233,6 @@
       <trans-unit id="tl_iso_config.priceCalculateFactor.1">
         <source>Defaults should be 1. You can use this to convert between multiple currencies.</source>
       </trans-unit>
-      <trans-unit id="tl_iso_config.priceCalculateMode.0">
-        <source>Calculation mode</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_config.priceCalculateMode.1">
-        <source>Divide or multiply using this factor.</source>
-      </trans-unit>
       <trans-unit id="tl_iso_config.currencyAutomator.0">
         <source>Automatic currency conversion</source>
       </trans-unit>
@@ -322,12 +316,6 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.right">
         <source>To the right of price</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_config.div">
-        <source>Divide</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_config.mul">
-        <source>Multiply</source>
       </trans-unit>
       <trans-unit id="tl_iso_config.iwName.0">
         <source>Name</source>
