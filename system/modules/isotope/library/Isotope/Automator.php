@@ -37,7 +37,7 @@ class Automator extends Controller
         $t = Cart::getTable();
         $objCarts = Cart::findBy(
             ["($t.member=0 AND $t.tstamp<?) OR ($t.member > 0 AND $t.member NOT IN (SELECT id FROM tl_member))"],
-            [time() - $GLOBALS['TL_CONFIG']['iso_cartTimeout']]
+            [time() - strtotime(System::getContainer()->getParameter('isotope.cart_timeout'), 0)]
         );
 
         if (($intPurged = $this->deleteOldCollections($objCarts)) > 0) {
@@ -57,7 +57,7 @@ class Automator extends Controller
                 "$t.tstamp<?"
             ],
             [
-                time() - $GLOBALS['TL_CONFIG']['iso_orderTimeout']
+                time() - strtotime(System::getContainer()->getParameter('isotope.order_timeout'), 0),
             ]
         );
 

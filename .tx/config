@@ -232,13 +232,6 @@ source_lang = en
 type = XLIFF
 resource_name = v2_9-isotope-tl_page
 
-[o:terminal42:p:isotope:r:v2_9-isotope-tl_settings]
-file_filter = contao/languages/<lang>/tl_settings.xlf
-source_file = contao/languages/en/tl_settings.xlf
-source_lang = en
-type = XLIFF
-resource_name = v2_9-isotope-tl_settings
-
 [o:terminal42:p:isotope:r:v2_9-isotope-tl_user]
 file_filter = contao/languages/<lang>/tl_user.xlf
 source_file = contao/languages/en/tl_user.xlf

@@ -35,16 +35,20 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\LogicException;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
 
-class IsotopeCoreExtension extends Extension
+class IsotopeCoreExtension extends ConfigurableExtension
 {
     public function getAlias(): string
     {
         return 'isotope';
     }
 
-    public function load(array $configs, ContainerBuilder $container): void
+    protected function loadInternal(array $mergedConfig, ContainerBuilder $container): void
     {
+        $container->setParameter('isotope.cart_timeout', $mergedConfig['cart_timeout']);
+        $container->setParameter('isotope.order_timeout', $mergedConfig['order_timeout']);
+
         $loader = new YamlFileLoader(
             $container,
             new FileLocator(__DIR__.'/../../config'),

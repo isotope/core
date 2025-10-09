@@ -264,25 +264,6 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function save()
-    {
-        parent::save();
-
-        // Create/renew the guest cart cookie
-        if (!$this->member && !headers_sent()) {
-            System::setCookie(
-                static::$strCookie,
-                $this->uniqid,
-                $this->tstamp + $GLOBALS['TL_CONFIG']['iso_cartTimeout']
-            );
-        }
-
-        return $this;
-    }
-
-    /**
      * Get a collection-specific error message for items with errors
      *
      * @return string
@@ -362,23 +343,6 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
         }
 
         $objCart->tstamp = $time;
-
-        // Renew the guest cart cookie
-        if (!$objCart->member) {
-
-            // Create a new cookie ID if it's an old sha1() hash
-            if (40 == strlen($objCart->uniqid)) {
-                $objCart->uniqid = self::generateCookieId();
-            }
-
-            if (!headers_sent()) {
-                System::setCookie(
-                    static::$strCookie,
-                    $objCart->uniqid,
-                    $time + $GLOBALS['TL_CONFIG']['iso_cartTimeout']
-                );
-            }
-        }
 
         return $objCart;
     }
