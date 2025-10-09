@@ -6,15 +6,14 @@ namespace Isotope\CoreBundle\Product;
 
 use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use Contao\StringUtil;
-use Isotope\CoreBundle\ProductCollection\StoreManager;
 use Isotope\CoreBundle\Util\ProductCategoryUtil;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Isotope;
 
 class AvailabilityChecker
 {
     public function __construct(
         private readonly TokenChecker $tokenChecker,
-        private readonly StoreManager $storeManager,
         private readonly ProductCategoryUtil $categoryUtil,
     ) {
     }
@@ -50,7 +49,7 @@ class AvailabilityChecker
             return true;
         }
 
-        $collection ??= $this->storeManager->getCart();
+        $collection ??= Isotope::getCart();
         $member = $collection?->getMember();
         $groups = StringUtil::deserialize($product['groups'], true);
 
@@ -75,7 +74,7 @@ class AvailabilityChecker
             return true;
         }
 
-        $collection ??= $this->storeManager->getCart();
+        $collection ??= Isotope::getCart();
 
         return null !== $product->getPrice($collection);
     }
