@@ -27,7 +27,6 @@ use Isotope\Translation;
  * @property int    $tstamp
  * @property string $name
  * @property string $label
- * @property bool   $fallback
  * @property string $firstname
  * @property string $lastname
  * @property string $company
@@ -295,46 +294,21 @@ class Config extends Model
     }
 
     /**
-     * Find config set in root page or the fallback
-     *
-     * @param int   $intRoot
-     *
-     * @return object|null
+     * Find config set in root page.
      */
-    public static function findByRootPageOrFallback($intRoot, array $arrOptions = array())
+    public static function findByRootPage(int $rootPageId, array $options = array()): self|null
     {
         $t = static::$strTable;
 
-        $arrOptions = array_merge(
+        $options = array_merge(
             array(
-                 'column' => array("($t.id=(SELECT iso_config FROM tl_page WHERE id=?) OR $t.fallback='1')"),
-                 'value'  => $intRoot,
-                 'order'  => 'fallback',
+                 'column' => array("$t.id=(SELECT iso_config FROM tl_page WHERE id=?)"),
+                 'value'  => $rootPageId,
                  'return' => 'Model'
             ),
-            $arrOptions
+            $options
         );
 
-        return static::find($arrOptions);
-    }
-
-    /**
-     * Find the fallback config
-     *
-     *
-     * @return object|null
-     */
-    public static function findByFallback(array $arrOptions = array())
-    {
-        $arrOptions = array_merge(
-            array(
-                 'column' => 'fallback',
-                 'value'  => '1',
-                 'return' => 'Model'
-            ),
-            $arrOptions
-        );
-
-        return static::find($arrOptions);
+        return static::find($options);
     }
 }

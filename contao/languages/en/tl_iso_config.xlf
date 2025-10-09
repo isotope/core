@@ -14,12 +14,6 @@
       <trans-unit id="tl_iso_config.label.1">
         <source>The label is used in frontend, e.g. for config switcher.</source>
       </trans-unit>
-      <trans-unit id="tl_iso_config.fallback.0">
-        <source>Set as default store</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_config.fallback.1">
-        <source>Set this as the default store for back-end currency formatting and other locale-specific information.</source>
-      </trans-unit>
       <trans-unit id="tl_iso_config.firstname.0">
         <source>First name</source>
       </trans-unit>

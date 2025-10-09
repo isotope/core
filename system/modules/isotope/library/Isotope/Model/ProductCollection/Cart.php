@@ -344,7 +344,7 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
 
         // Create new cart
         if ($objCart === null) {
-            $objConfig = Config::findByRootPageOrFallback($objPage->rootId);
+            $objConfig = Config::findByRootPage((int) $objPage->rootId);
             $objCart   = new static();
 
             // Can't call the individual rows here, it would trigger markModified and a save()

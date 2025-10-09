@@ -33,7 +33,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
             'flag' => DataContainer::SORT_INITIAL_LETTER_ASC,
         ],
         'label' => [
-            'fields' => ['name', 'fallback'],
+            'fields' => ['name'],
             'format' => '%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>',
             'label_callback' => [Callback::class, 'addIcon'],
         ],
@@ -41,7 +41,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
     'palettes' => [
         '__selector__' => ['currencySymbol', 'currencyAutomator'],
         'default' => '
-            {name_legend},name,label,fallback;
+            {name_legend},name,label;
             {address_legend:hide},firstname,lastname,company,vat_no,street_1,street_2,street_3,postal,city,country,subdivision,email,phone;
             {bank_legend:hide},bankName,bankAccount,bankCode,taxNumber;
             {checkout_legend},address_fields,billing_country,shipping_country,billing_countries,shipping_countries,limitMemberCountries,vatNoValidators;
@@ -71,11 +71,6 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
             'inputType' => 'text',
             'eval' => ['maxlength' => 255, 'tl_class' => 'w50'],
             'sql' => "varchar(255) NOT NULL default ''",
-        ],
-        'fallback' => [
-            'inputType' => 'checkbox',
-            'eval' => ['doNotCopy' => true, 'fallback' => true, 'tl_class' => 'w50 m12'],
-            'sql' => "char(1) NOT NULL default ''",
         ],
         'firstname' => [
             'search' => true,
