@@ -34,7 +34,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
         ],
         'label' => [
             'fields' => ['name'],
-            'format' => '%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>',
+            'format' => '%s',
             'label_callback' => [Callback::class, 'addIcon'],
         ],
     ],
