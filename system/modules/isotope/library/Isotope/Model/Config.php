@@ -77,7 +77,6 @@ class Config extends Model
     public const PRICE_DISPLAY_NET = 'net';
     public const PRICE_DISPLAY_GROSS = 'gross';
     public const PRICE_DISPLAY_FIXED = 'fixed';
-    public const PRICE_DISPLAY_LEGACY = 'legacy';
 
     /**
      * Name of the current table

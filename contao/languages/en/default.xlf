@@ -563,12 +563,6 @@
       <trans-unit id="MSC.iso_priceDisplay.fixed.1">
         <source>The product price will always be shown as in the product setting. Taxes are always calculated as "included". This means the shop owner's profit varies depending on the applicable taxes.</source>
       </trans-unit>
-      <trans-unit id="MSC.iso_priceDisplay.legacy.0">
-        <source>Legacy</source>
-      </trans-unit>
-      <trans-unit id="MSC.iso_priceDisplay.legacy.1">
-        <source>Price display as in Isotope &lt; 2.3. Prices are shown as gross prices if a tax is included and applicable. Additional taxes are only shown as surcharges.</source>
-      </trans-unit>
       <trans-unit id="CTE.isotope">
         <source>Isotope eCommerce</source>
       </trans-unit>

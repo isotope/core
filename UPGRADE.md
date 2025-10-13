@@ -22,3 +22,4 @@
 - The range product list filter module has been removed
 - The cumulative product list filter module has been removed 
 - The product variant list has been removed
+- The "legacy" price display in shop config has been removed

@@ -1,7 +1,7 @@
 <?php
 
 use Contao\CoreBundle\DataContainer\PaletteManipulator;
-use Isotope\Model\Config;
+use Isotope\CoreBundle\Store\Price\PriceDisplay;
 
 PaletteManipulator::create()
     ->addLegend('isotope_legend', 'account_legend', PaletteManipulator::POSITION_BEFORE, true)
@@ -12,7 +12,7 @@ PaletteManipulator::create()
 $GLOBALS['TL_DCA']['tl_member_group']['fields']['iso_priceDisplay'] = [
     'exclude' => true,
     'inputType' => 'select',
-    'options' => [Config::PRICE_DISPLAY_NET, Config::PRICE_DISPLAY_GROSS, Config::PRICE_DISPLAY_FIXED],
+    'enum' => PriceDisplay::class,
     'reference' => &$GLOBALS['TL_LANG']['MSC']['iso_priceDisplay'],
     'eval' => ['includeBlankOption' => true, 'tl_class' => 'w50', 'helpwizard' => true],
     'sql' => "varchar(8) NOT NULL default ''",

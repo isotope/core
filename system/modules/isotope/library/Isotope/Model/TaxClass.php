@@ -76,9 +76,8 @@ class TaxClass extends Model
             case Config::PRICE_DISPLAY_FIXED:
                 return $fltPrice;
 
-            case Config::PRICE_DISPLAY_LEGACY:
             default:
-                return $this->calculateLegacyPrice($fltPrice, $arrAddresses);
+                throw new \RuntimeException('Invalid price display "'.Isotope::getConfig()->getPriceDisplay().'"');
         }
     }
 
@@ -159,32 +158,6 @@ class TaxClass extends Model
                     }
                 }
             }
-        }
-
-        return $fltPrice;
-    }
-
-    /**
-     * Calculate a price like it was in Isotope < 2.3
-     *
-     * @param float $fltPrice
-     *
-     * @return float
-     */
-    public function calculateLegacyPrice($fltPrice, array $arrAddresses = null)
-    {
-        if (!\is_array($arrAddresses)) {
-            $arrAddresses = array(
-                'billing'  => Isotope::getCart()->getBillingAddress(),
-                'shipping' => Isotope::getCart()->getShippingAddress(),
-            );
-        }
-
-        /** @var \Isotope\Model\TaxRate $objIncludes */
-        $objIncludes = $this->getRelated('includes');
-
-        if ($objIncludes !== null && !$objIncludes->isApplicable($fltPrice, $arrAddresses)) {
-            $fltPrice -= $objIncludes->calculateAmountIncludedInPrice($fltPrice);
         }
 
         return $fltPrice;

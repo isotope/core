@@ -8,6 +8,7 @@ use Isotope\Backend\Config\Callback;
 use Isotope\CompatibilityHelper;
 use Isotope\CoreBundle\EventListener\DataContainer\Config\AddressFieldsListener;
 use Isotope\CoreBundle\Model\OrderStatus;
+use Isotope\CoreBundle\Store\Price\PriceDisplay;
 use Isotope\Model\Config;
 
 $GLOBALS['TL_DCA']['tl_iso_config'] = [
@@ -249,7 +250,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
         'priceDisplay' => [
             'default' => 'gross',
             'inputType' => 'select',
-            'options' => [Config::PRICE_DISPLAY_NET, Config::PRICE_DISPLAY_GROSS, Config::PRICE_DISPLAY_FIXED, Config::PRICE_DISPLAY_LEGACY],
+            'enum' => PriceDisplay::class,
             'reference' => &$GLOBALS['TL_LANG']['MSC']['iso_priceDisplay'],
             'eval' => ['mandatory' => true, 'tl_class' => 'w50', 'helpwizard' => true],
             'sql' => "varchar(8) NOT NULL default ''",

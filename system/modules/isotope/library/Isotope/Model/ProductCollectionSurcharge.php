@@ -614,7 +614,6 @@ abstract class ProductCollectionSurcharge extends TypeAgent
             case Config::PRICE_DISPLAY_FIXED:
                 return false;
 
-            case Config::PRICE_DISPLAY_LEGACY:
             default:
                 return $default;
         }
