@@ -17,7 +17,11 @@ use Contao\StringUtil;
 use Contao\System;
 use Isotope\CoreBundle\ModelType\ProductRegistry;
 use Isotope\CoreBundle\Product\CollectibleInterface;
+use Isotope\CoreBundle\Store\Context\StoreContext;
+use Isotope\CoreBundle\Store\Context\StoreContextFactory;
+use Isotope\CoreBundle\Store\StoreManager;
 use Isotope\Interfaces\IsotopeProductCollection;
+use phpDocumentor\Reflection\Types\Static_;
 
 
 /**
@@ -95,9 +99,11 @@ class ProductCollectionItem extends Model
             }
         }
 
+        /** @var StoreManager $storeManager */
+        $storeManager = System::getContainer()->get(StoreManager::class);
         $product = $this->getProduct();
 
-        if (!$product || !$product->isAvailable($this->getCollection())) {
+        if (!$product || !$storeManager->runWithCollection($this->getCollection(), static fn (StoreContext $context) => $product->isAvailable($context))) {
             return false;
         }
 
@@ -230,7 +236,10 @@ class ProductCollectionItem extends Model
             return $this->price;
         }
 
-        $objPrice = $this->getProduct()->getPrice($this->getRelated('pid'));
+        /** @var StoreManager $storeManager */
+        $storeManager = System::getContainer()->get(StoreManager::class);
+
+        $objPrice = $storeManager->runWithCollection($this->getCollection(), fn (StoreContext $context) => $this->getProduct()->getPrice($context));
 
         if (null === $objPrice) {
             return null;
@@ -250,13 +259,18 @@ class ProductCollectionItem extends Model
             return $this->tax_free_price;
         }
 
-        $objPrice = $this->getProduct()->getPrice($this->getRelated('pid'));
+        /** @var StoreManager $storeManager */
+        $storeManager = System::getContainer()->get(StoreManager::class);
 
-        if (null === $objPrice) {
-            return null;
-        }
+        return $storeManager->runWithCollection($this->getCollection(), function (StoreContext $context) {
+            $objPrice = $this->getProduct()->getPrice($context);
 
-        return $objPrice->getNetAmount((int) $this->quantity, $this->getConfiguration());
+            if (null === $objPrice) {
+                return null;
+            }
+
+            return $objPrice->getNetAmount((int) $this->quantity, $this->getConfiguration());
+        });
     }
 
     /**
@@ -270,13 +284,18 @@ class ProductCollectionItem extends Model
             return $this->price;
         }
 
-        $objPrice = $this->getProduct()->getPrice($this->getRelated('pid'));
+        /** @var StoreManager $storeManager */
+        $storeManager = System::getContainer()->get(StoreManager::class);
 
-        if (null === $objPrice) {
-            return null;
-        }
+        return $storeManager->runWithCollection($this->getCollection(), function (StoreContext $context) {
+            $objPrice = $this->getProduct()->getPrice($context);
 
-        return $objPrice->getOriginalAmount((int) $this->quantity, $this->getConfiguration());
+            if (null === $objPrice) {
+                return null;
+            }
+
+            return $objPrice->getOriginalAmount((int) $this->quantity, $this->getConfiguration());
+        });
     }
 
     /**

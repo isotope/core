@@ -14,12 +14,14 @@ namespace Isotope\Model;
 use Contao\Database;
 use Contao\Database\Result;
 use Contao\Date;
+use Contao\MemberModel;
 use Contao\Model;
 use Contao\Model\Collection;
 use Contao\Model\QueryBuilder;
 use Contao\StringUtil;
 use Isotope\Collection\ProductPrice as ProductPriceCollection;
 use Isotope\CoreBundle\Product\ProductInterface;
+use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\Interfaces\IsotopePrice;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
@@ -248,7 +250,7 @@ class ProductPrice extends Model implements IsotopePrice
      *
      * @return IsotopePrice
      */
-    public static function findByProductAndCollection(ProductInterface $objProduct, IsotopeProductCollection $objCollection, array $arrOptions = array())
+    public static function findByProductAndContext(ProductInterface $objProduct, StoreContext $context, array $arrOptions = array())
     {
         $t = static::$strTable;
 
@@ -257,10 +259,10 @@ class ProductPrice extends Model implements IsotopePrice
 
         if ($objProduct->getProductType()->hasAdvancedPrices()) {
 
-            $time = Date::floorToMinute($objCollection->getLastModification());
-            $arrGroups = static::getMemberGroups($objCollection->getRelated('member'));
+            $time = time();
+            $arrGroups = static::getMemberGroups($context->getMemberId() ? MemberModel::findById($context->getMemberId()) : null);
 
-            $arrOptions['column'][] = "$t.config_id IN (" . (int) $objCollection->config_id . ",0)";
+            $arrOptions['column'][] = "$t.config_id IN (" . $context->getConfigId() . ",0)";
             $arrOptions['column'][] = "$t.member_group IN(" . implode(',', $arrGroups) . ")";
             $arrOptions['column'][] = "($t.start='' OR $t.start<'$time')";
             $arrOptions['column'][] = "($t.stop='' OR $t.stop>'" . ($time + 60) . "')";

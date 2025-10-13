@@ -20,6 +20,8 @@ use Contao\System;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
 use Isotope\CoreBundle\Model\ProductType;
 use Isotope\CoreBundle\ModelType\ProductRegistry;
+use Isotope\CoreBundle\Store\Context\StoreContext;
+use Isotope\CoreBundle\Store\StoreManager;
 use Isotope\Haste\Units\Mass\Weight;
 use Isotope\Haste\Units\Mass\WeightAggregate;
 use Isotope\Interfaces\IsotopeProductCollection;
@@ -90,23 +92,14 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
      *
      * @return \Isotope\Interfaces\IsotopePrice|ProductPrice
      */
-    public function getPrice(IsotopeProductCollection $objCollection = null)
+    public function getPrice()
     {
+        /** @var StoreManager $storeManager */
+        $storeManager = System::getContainer()->get(StoreManager::class);
+        $context = $storeManager->getCurrentContext();
         $product = System::getContainer()->get(ProductRegistry::class)->get($this);
 
-        if (null !== $objCollection && $objCollection !== Isotope::getCart()) {
-            return ProductPrice::findByProductAndCollection($product, $objCollection);
-        }
-
-        if (false === $this->objPrice) {
-            if (null === $objCollection) {
-                $objCollection = Isotope::getCart();
-            }
-
-            $this->objPrice = ProductPrice::findByProductAndCollection($product, $objCollection);
-        }
-
-        return $this->objPrice;
+        return ProductPrice::findByProductAndContext($product, $context);
     }
 
     /**

@@ -5,6 +5,7 @@ namespace Isotope\CoreBundle\Product;
 use Contao\FrontendUser;
 use Contao\MemberModel;
 use Isotope\CoreBundle\Model\ProductType;
+use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\Interfaces\IsotopePrice;
 use Isotope\Interfaces\IsotopeProductCollection;
 
@@ -31,11 +32,8 @@ interface CollectibleInterface extends ShippableInterface
 
     /**
      * Returns true if the product is available.
-     * If the collection is null, the check must be done for the current cart.
-     *
-     * @return bool
      */
-    public function isAvailable(IsotopeProductCollection|null $collection = null): bool;
+    public function isAvailable(StoreContext $context): bool;
 
     /**
      * Get product price model
@@ -43,7 +41,7 @@ interface CollectibleInterface extends ShippableInterface
      *
      * @return IsotopePrice
      */
-    public function getPrice(IsotopeProductCollection $objCollection = null);
+    public function getPrice(StoreContext $context);
 
     /**
      * Return minimum quantity for the product (from advanced price tiers)

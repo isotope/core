@@ -16,6 +16,7 @@ use Contao\System;
 use Isotope\CoreBundle\ModelType\ProductRegistry;
 use Isotope\CoreBundle\Product\AvailabilityChecker;
 use Isotope\CoreBundle\Product\ProductInterface;
+use Isotope\CoreBundle\Store\StoreManager;
 use Isotope\Haste\Input\Input;
 use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Interfaces\IsotopeProductCollection;
@@ -252,22 +253,26 @@ class InsertTag
      */
     private function getPriceForProductTag(ProductInterface $product, $type)
     {
+        /** @var StoreManager $storeManager */
+        $storeManager = System::getContainer()->get(StoreManager::class);
+        $context = $storeManager->getCurrentContext();
+
         switch ($type) {
             case 'amount':
-                return Isotope::formatPriceWithCurrency($product->getPrice()->getAmount());
+                return Isotope::formatPriceWithCurrency($product->getPrice($context)->getAmount());
 
             case 'original_amount':
-                return Isotope::formatPriceWithCurrency($product->getPrice()->getOriginalAmount());
+                return Isotope::formatPriceWithCurrency($product->getPrice($context)->getOriginalAmount());
 
             case 'net_amount':
-                return Isotope::formatPriceWithCurrency($product->getPrice()->getNetAmount());
+                return Isotope::formatPriceWithCurrency($product->getPrice($context)->getNetAmount());
 
             case 'gross_amount':
-                return Isotope::formatPriceWithCurrency($product->getPrice()->getGrossAmount());
+                return Isotope::formatPriceWithCurrency($product->getPrice($context)->getGrossAmount());
 
             case 'html':
             default:
-                return Isotope::formatPriceWithCurrency($product->getPrice()->generate());
+                return Isotope::formatPriceWithCurrency($product->getPrice($context)->generate());
         }
     }
 }

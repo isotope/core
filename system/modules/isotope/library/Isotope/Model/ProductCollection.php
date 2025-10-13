@@ -31,6 +31,9 @@ use Isotope\CoreBundle\Product\CollectibleInterface;
 use Isotope\CoreBundle\Product\ProductInterface;
 use Isotope\CoreBundle\Product\ShippableInterface;
 use Isotope\CoreBundle\Routing\ProductReference;
+use Isotope\CoreBundle\Store\Context\StoreContext;
+use Isotope\CoreBundle\Store\Context\StoreContextFactory;
+use Isotope\CoreBundle\Store\StoreManager;
 use Isotope\Frontend;
 use Isotope\Haste\Units\Mass\Scale;
 use Isotope\Haste\Units\Mass\Weighable;
@@ -1973,14 +1976,23 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
      */
     private function setProductForItem(CollectibleInterface $product, ProductCollectionItem $item, int $quantity, array $configuration = [])
     {
-        $item->tstamp         = time();
-        $item->identifier     = $product->getType().'.'.$product->getId();
-        $item->sku            = $product->getSku();
-        $item->name           = $product->getName();
-        $item->configuration  = array_merge($product->getVariantConfig(), $configuration);
-        $item->quantity       = $quantity;
-        $item->price          = (float) ($product->getPrice($this) ? $product->getPrice($this)->getAmount($quantity) : 0);
-        $item->tax_free_price = (float) ($product->getPrice($this) ? $product->getPrice($this)->getNetAmount($quantity) : 0);
+        /** @var StoreManager $storeManager */
+        $storeManager = System::getContainer()->get(StoreManager::class);
+
+        $storeManager->runWithCollection($this, static function (StoreContext $context) use ($product, $item, $quantity, $configuration) {
+            if ($product instanceof ProductInterface) {
+                $configuration = array_merge($product->getVariantConfig(), $configuration);
+            }
+
+            $item->tstamp         = time();
+            $item->identifier     = $product->getType().'.'.$product->getId();
+            $item->sku            = $product->getSku();
+            $item->name           = $product->getName();
+            $item->configuration  = $configuration;
+            $item->quantity       = $quantity;
+            $item->price          = (float) ($product->getPrice($context) ? $product->getPrice($context)->getAmount($quantity) : 0);
+            $item->tax_free_price = (float) ($product->getPrice($context) ? $product->getPrice($context)->getNetAmount($quantity) : 0);
+        });
     }
 
     /**

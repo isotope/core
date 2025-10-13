@@ -8,6 +8,7 @@ use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
 use Isotope\CoreBundle\Attribute\OptionsSource;
 use Isotope\CoreBundle\Model\Attribute;
 use Isotope\CoreBundle\Product\ProductInterface;
+use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\Isotope;
 use Terminal42\DcMultilingualBundle\Model\Multilingual;
 
@@ -42,11 +43,11 @@ class AttributeOption extends Multilingual
      * @param bool           $blnPriceInLabel
      * @return array
      */
-    public function getAsArray(ProductInterface $objProduct = null, $blnPriceInLabel = true)
+    public function getAsArray(ProductInterface $objProduct = null, $blnPriceInLabel = true, StoreContext $context = null)
     {
         return array(
             'value'     => $this->getLanguageId(),
-            'label'     => $blnPriceInLabel ? $this->getLabel($objProduct) : $this->label,
+            'label'     => $blnPriceInLabel ? $this->getLabel($objProduct, $context) : $this->label,
             'group'     => 'group' === $this->type ? '1' : '',
             'default'   => $this->isDefault ? '1' : '',
             'cssClass'  => $this->cssClass,
@@ -88,12 +89,12 @@ class AttributeOption extends Multilingual
      *
      * @return bool
      */
-    public function isFromPrice(ProductInterface $objProduct = null)
+    public function isFromPrice(ProductInterface $objProduct = null, StoreContext $context = null)
     {
-        if ($this->isPercentage() && null !== $objProduct) {
+        if ($this->isPercentage() && null !== $objProduct && null !== $context) {
 
             /** @var ProductPrice[] $objPrice */
-            $objPrice = $objProduct->getPrice();
+            $objPrice = $objProduct->getPrice($context);
 
             if (null !== $objPrice && $objPrice instanceof ProductPriceCollection) {
                 $arrPrices = array();
@@ -132,12 +133,12 @@ class AttributeOption extends Multilingual
      * @deprecated Deprecated since Isotope 2.2.6, to be removed in 3.0.
      *             This method can result in an endless loop, use getAmount() instead.
      */
-    public function getPrice(ProductInterface $objProduct = null)
+    public function getPrice(ProductInterface $objProduct = null, StoreContext $context = null)
     {
-        if ($this->isPercentage() && null !== $objProduct) {
+        if ($this->isPercentage() && null !== $objProduct && null !== $context) {
 
             /** @var ProductPrice|ProductPrice[] $objPrice */
-            $objPrice = $objProduct->getPrice();
+            $objPrice = $objProduct->getPrice($context);
 
             if (null !== $objPrice) {
                 if ($objPrice instanceof ProductPriceCollection) {
@@ -159,7 +160,7 @@ class AttributeOption extends Multilingual
         } else {
 
             /** @var ProductPrice|ProductPrice[] $objPrice */
-            if (null !== $objProduct && ($objPrice = $objProduct->getPrice()) !== null) {
+            if (null !== $objProduct && null !== $context && ($objPrice = $objProduct->getPrice($context)) !== null) {
                 return Isotope::calculatePrice($this->price, $this, 'price', $objPrice->tax_class);
             }
 
@@ -192,7 +193,7 @@ class AttributeOption extends Multilingual
      *
      * @return string
      */
-    public function getLabel(ProductInterface $objProduct = null)
+    public function getLabel(ProductInterface $objProduct = null, StoreContext $context = null)
     {
         $strLabel    = $this->label;
         $priceFormat = $GLOBALS['TL_LANG']['MSC']['attributePriceLabel'];
@@ -218,9 +219,9 @@ class AttributeOption extends Multilingual
             return sprintf($priceFormat, $strLabel, $this->price);
         }
 
-        $strPrice = Isotope::formatPriceWithCurrency($this->getPrice($objProduct), false);
+        $strPrice = Isotope::formatPriceWithCurrency($this->getPrice($objProduct, $context), false);
 
-        if ($this->isFromPrice($objProduct)) {
+        if ($objProduct && $context && $this->isFromPrice($objProduct, $context)) {
             $strPrice = sprintf($GLOBALS['TL_LANG']['MSC']['priceRangeLabel'], $strPrice);
         }
 

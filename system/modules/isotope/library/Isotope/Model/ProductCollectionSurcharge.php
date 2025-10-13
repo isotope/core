@@ -16,6 +16,8 @@ use Contao\StringUtil;
 use Contao\System;
 use Isotope\CoreBundle\Checkout\Payment\PaymentInterface;
 use Isotope\CoreBundle\Checkout\Shipping\ShippingInterface;
+use Isotope\CoreBundle\Store\Context\StoreContext;
+use Isotope\CoreBundle\Store\StoreManager;
 use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopeProductCollectionSurcharge;
@@ -383,100 +385,105 @@ abstract class ProductCollectionSurcharge extends TypeAgent
      */
     private static function addTaxesForItems(array &$arrTaxes, IsotopeProductCollection $objCollection, array $arrSurcharges, array $arrAddresses = null)
     {
-        foreach ($objCollection->getItems() as $objItem) {
-            $objProduct  = $objItem->getProduct();
+        /** @var StoreManager $storeManager */
+        $storeManager = System::getContainer()->get(StoreManager::class);
 
-            // This should never happen, but we can't calculate it
-            if (!$objProduct) {
-                continue;
-            }
+        return $storeManager->runWithCollection($objCollection, function (StoreContext $context) use ($arrTaxes, $objCollection, $arrSurcharges, $arrAddresses) {
+            foreach ($objCollection->getItems() as $objItem) {
+                $objProduct = $objItem->getProduct();
 
-            /** @var TaxClass $objTaxClass */
-            $objTaxClass = $objProduct->getPrice() ? $objProduct->getPrice()->getRelated('tax_class') : null;
+                // This should never happen, but we can't calculate it
+                if (!$objProduct) {
+                    continue;
+                }
 
-            // Skip products without tax class
-            if (null === $objTaxClass) {
-                continue;
-            }
+                /** @var TaxClass $objTaxClass */
+                $objTaxClass = $objProduct->getPrice($context) ? $objProduct->getPrice($context)->getRelated('tax_class') : null;
 
-            $arrTaxIds = [];
-            $fltPrice  = $objItem->getTotalPrice();
+                // Skip products without tax class
+                if (null === $objTaxClass) {
+                    continue;
+                }
 
-            /** @var ProductCollectionSurcharge $objSurcharge */
-            foreach ($arrSurcharges as $objSurcharge) {
-                $fltPrice += $objSurcharge->getAmountForCollectionItem($objItem);
-            }
+                $arrTaxIds = [];
+                $fltPrice = $objItem->getTotalPrice();
 
-            $productAddresses = $arrAddresses;
+                /** @var ProductCollectionSurcharge $objSurcharge */
+                foreach ($arrSurcharges as $objSurcharge) {
+                    $fltPrice += $objSurcharge->getAmountForCollectionItem($objItem);
+                }
 
-            if (null === $productAddresses) {
-                $productAddresses = array(
-                    'billing'  => $objCollection->getBillingAddress(),
-                    'shipping' => $objProduct->isExemptFromShipping() ? $objCollection->getBillingAddress() : $objCollection->getShippingAddress(),
-                );
-            }
+                $productAddresses = $arrAddresses;
 
-            /** @var TaxRate $objIncludes */
-            if (($objIncludes = $objTaxClass->getRelated('includes')) !== null
-                && $objIncludes->isApplicable($fltPrice, $productAddresses)
-            ) {
-                $addToTotal = static::getTaxAddState(false);
-                $total = $addToTotal ? $objIncludes->calculateAmountAddedToPrice($fltPrice) : $objIncludes->calculateAmountIncludedInPrice($fltPrice);
+                if (null === $productAddresses) {
+                    $productAddresses = array(
+                        'billing' => $objCollection->getBillingAddress(),
+                        'shipping' => $objProduct->isExemptFromShipping() ? $objCollection->getBillingAddress() : $objCollection->getShippingAddress(),
+                    );
+                }
 
-                $arrTaxIds[] = static::addTax(
-                    $arrTaxes,
-                    $objTaxClass->id . '_' . $objIncludes->id,
-                    ($objTaxClass->getLabel() ?: $objIncludes->getLabel()),
-                    $objIncludes->getAmount(),
-                    $objIncludes->isPercentage(),
-                    $total,
-                    $objTaxClass->applyRoundingIncrement,
-                    $addToTotal,
-                    $objTaxClass->notNegative
-                );
-            }
+                /** @var TaxRate $objIncludes */
+                if (($objIncludes = $objTaxClass->getRelated('includes')) !== null
+                    && $objIncludes->isApplicable($fltPrice, $productAddresses)
+                ) {
+                    $addToTotal = static::getTaxAddState(false);
+                    $total = $addToTotal ? $objIncludes->calculateAmountAddedToPrice($fltPrice) : $objIncludes->calculateAmountIncludedInPrice($fltPrice);
 
-            /** @var TaxRate[] $objRates */
-            if (($objRates = $objTaxClass->getRelated('rates')) !== null) {
-                foreach ($objRates as $objTaxRate) {
+                    $arrTaxIds[] = static::addTax(
+                        $arrTaxes,
+                        $objTaxClass->id.'_'.$objIncludes->id,
+                        ($objTaxClass->getLabel() ?: $objIncludes->getLabel()),
+                        $objIncludes->getAmount(),
+                        $objIncludes->isPercentage(),
+                        $total,
+                        $objTaxClass->applyRoundingIncrement,
+                        $addToTotal,
+                        $objTaxClass->notNegative
+                    );
+                }
 
-                    if ($objTaxRate->isApplicable($fltPrice, $productAddresses)) {
-                        $addToTotal = static::getTaxAddState(true);
-                        $total = $addToTotal ? $objTaxRate->calculateAmountAddedToPrice($fltPrice) : $objTaxRate->calculateAmountIncludedInPrice($fltPrice);
+                /** @var TaxRate[] $objRates */
+                if (($objRates = $objTaxClass->getRelated('rates')) !== null) {
+                    foreach ($objRates as $objTaxRate) {
 
-                        $arrTaxIds[] = static::addTax(
-                            $arrTaxes,
-                            $objTaxRate->id,
-                            $objTaxRate->getLabel(),
-                            $objTaxRate->getAmount(),
-                            $objTaxRate->isPercentage(),
-                            $total,
-                            $objTaxClass->applyRoundingIncrement,
-                            $addToTotal,
-                            $objTaxClass->notNegative
-                        );
+                        if ($objTaxRate->isApplicable($fltPrice, $productAddresses)) {
+                            $addToTotal = static::getTaxAddState(true);
+                            $total = $addToTotal ? $objTaxRate->calculateAmountAddedToPrice($fltPrice) : $objTaxRate->calculateAmountIncludedInPrice($fltPrice);
 
-                        if ($objTaxRate->stop) {
-                            break;
+                            $arrTaxIds[] = static::addTax(
+                                $arrTaxes,
+                                $objTaxRate->id,
+                                $objTaxRate->getLabel(),
+                                $objTaxRate->getAmount(),
+                                $objTaxRate->isPercentage(),
+                                $total,
+                                $objTaxClass->applyRoundingIncrement,
+                                $addToTotal,
+                                $objTaxClass->notNegative
+                            );
+
+                            if ($objTaxRate->stop) {
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                $strTaxId = implode(',', $arrTaxIds);
+
+                if ($objItem->tax_id != $strTaxId) {
+                    $objCollection->updateItem($objItem, array('tax_id' => $strTaxId));
+                }
+
+                foreach ($arrSurcharges as $objSurcharge) {
+                    if ($objSurcharge->getAmountForCollectionItem($objItem) > 0) {
+                        foreach ($arrTaxIds as $taxId) {
+                            $objSurcharge->addTaxNumber($taxId);
                         }
                     }
                 }
             }
-
-            $strTaxId = implode(',', $arrTaxIds);
-
-            if ($objItem->tax_id != $strTaxId) {
-                $objCollection->updateItem($objItem, array('tax_id' => $strTaxId));
-            }
-
-            foreach ($arrSurcharges as $objSurcharge) {
-                if ($objSurcharge->getAmountForCollectionItem($objItem) > 0) {
-                    foreach ($arrTaxIds as $taxId) {
-                        $objSurcharge->addTaxNumber($taxId);
-                    }
-                }
-            }
-        }
+        });
     }
 
     /**

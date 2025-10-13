@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Product;
 
 use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
+use Contao\MemberModel;
 use Contao\StringUtil;
+use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Util\ProductCategoryUtil;
-use Isotope\Interfaces\IsotopeProductCollection;
-use Isotope\Isotope;
 
 class AvailabilityChecker
 {
@@ -18,12 +18,12 @@ class AvailabilityChecker
     ) {
     }
 
-    public function isAvailable(ProductInterface $product, IsotopeProductCollection|null $collection = null): bool
+    public function isAvailable(ProductInterface $product, StoreContext $context): bool
     {
         return $this->isPublished($product)
-            && $this->hasAccess($product, $collection)
+            && $this->hasAccess($product, $context)
             && $this->hasVariantsAvailable($product)
-            && $this->hasValidPrice($product, $collection)
+            && $this->hasValidPrice($product, $context)
             && $this->hasCategoriesInCurrentRoot($product);
     }
 
@@ -37,7 +37,7 @@ class AvailabilityChecker
             ) || $this->tokenChecker->isPreviewMode();
     }
 
-    private function hasAccess(ProductInterface $product, IsotopeProductCollection|null $collection = null): bool
+    private function hasAccess(ProductInterface $product, StoreContext $context): bool
     {
         $attributes = $product->getProductType()->getAttributes() ?? [];
 
@@ -49,8 +49,7 @@ class AvailabilityChecker
             return true;
         }
 
-        $collection ??= Isotope::getCart();
-        $member = $collection?->getMember();
+        $member = $context->getMemberId() ? MemberModel::findById($context->getMemberId()) : null;
         $groups = StringUtil::deserialize($product['groups'], true);
 
         if (!$member) {
@@ -65,7 +64,7 @@ class AvailabilityChecker
         return !$product->hasVariants() || [] !== $product->getVariantIds();
     }
 
-    private function hasValidPrice(ProductInterface $product, IsotopeProductCollection|null $collection = null): bool
+    private function hasValidPrice(ProductInterface $product, StoreContext $context): bool
     {
         if (
             !$product->getProductType()->hasAdvancedPrices()
@@ -74,9 +73,7 @@ class AvailabilityChecker
             return true;
         }
 
-        $collection ??= Isotope::getCart();
-
-        return null !== $product->getPrice($collection);
+        return null !== $product->getPrice($context);
     }
 
     private function hasCategoriesInCurrentRoot(ProductInterface $product): bool

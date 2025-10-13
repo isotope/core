@@ -14,7 +14,7 @@ namespace Isotope;
 use Contao\Controller;
 use Contao\System;
 use Isotope\CoreBundle\Product\ProductInterface;
-use Isotope\CoreBundle\ProductCollection\StoreManager;
+use Isotope\CoreBundle\Store\StoreManager;
 use Isotope\Model\Config;
 use Isotope\Model\ProductCollection\Cart;
 use Isotope\Model\ProductPrice;
@@ -91,31 +91,17 @@ class Isotope extends Controller
      * Get the currently active Isotope configuration
      *
      * @return Config
+     *
+     * @deprecated
      */
-    public static function getConfig()
+    public static function getConfig(): Config
     {
-        if (null === static::$objConfig) {
-            static::initialize();
+        trigger_deprecation('isotope/core', '3.0', __METHOD__.' is deprecated.');
 
-            if (($objCart = static::getCart()) !== null) {
-                static::$objConfig = Config::findByPk($objCart->config_id);
-            }
+        /** @var StoreManager $storeManager */
+        $storeManager = System::getContainer()->get(StoreManager::class);
 
-            // If cart was null or still did not find a config
-            if (null === static::$objConfig) {
-                global $objPage;
-
-                static::$objConfig = (CompatibilityHelper::isFrontend() ? Config::findByRootPageOrFallback($objPage ? $objPage->rootId : 0) : Config::findByFallback());
-            }
-
-            // No config at all, create empty model as fallback
-            if (null === static::$objConfig) {
-                static::$objConfig = new Config();
-                trigger_error($GLOBALS['TL_LANG']['ERR']['noDefaultStoreConfiguration']);
-            }
-        }
-
-        return static::$objConfig;
+        return Config::findById($storeManager->getCurrentContext()->getConfigId());
     }
 
     /**

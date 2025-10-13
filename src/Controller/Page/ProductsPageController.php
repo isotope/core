@@ -22,6 +22,8 @@ use Isotope\CoreBundle\Product\ProductInterface;
 use Isotope\CoreBundle\Product\Query\ProductQueryFactory;
 use Isotope\CoreBundle\Routing\ProductReference;
 use Isotope\CoreBundle\Routing\ResponseContext\IsotopeBag;
+use Isotope\CoreBundle\Store\Context\StoreContext;
+use Isotope\CoreBundle\Store\StoreManager;
 use Isotope\CoreBundle\Util\ProductCategoryUtil;
 use Isotope\Model\Product;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,7 +44,7 @@ class ProductsPageController extends AbstractController
     ) {
     }
 
-    public function __invoke(Request $request, PageModel $pageModel): Response
+    public function __invoke(Request $request, PageModel $pageModel, StoreContext $context): Response
     {
         Input::setUnusedRouteParameters([]); // Disable check on custom page controller
 
@@ -54,7 +56,7 @@ class ProductsPageController extends AbstractController
 
         $product = $this->productRegistry->get(Product::findByIdOrAlias($alias));
 
-        if (!$product instanceof ProductInterface || !$product->isAvailable()) {
+        if (!$product instanceof ProductInterface || !$product->isAvailable($context)) {
             throw new PageNotFoundException();
         }
 

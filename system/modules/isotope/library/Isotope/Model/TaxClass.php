@@ -12,6 +12,9 @@
 namespace Isotope\Model;
 
 use Contao\Model;
+use Contao\System;
+use Isotope\CoreBundle\Store\Price\PriceDisplay;
+use Isotope\CoreBundle\Store\StoreManager;
 use Isotope\Isotope;
 use Isotope\Translation;
 
@@ -66,19 +69,15 @@ class TaxClass extends Model
      */
     public function calculatePrice($fltPrice, array $arrAddresses = null)
     {
-        switch (Isotope::getConfig()->getPriceDisplay()) {
-            case Config::PRICE_DISPLAY_NET:
-                return $this->calculateNetPrice($fltPrice, $arrAddresses);
+        /** @var StoreManager $storeManager */
+        $storeManager = System::getContainer()->get(StoreManager::class);
 
-            case Config::PRICE_DISPLAY_GROSS:
-                return $this->calculateGrossPrice($fltPrice, $arrAddresses);
-
-            case Config::PRICE_DISPLAY_FIXED:
-                return $fltPrice;
-
-            default:
-                throw new \RuntimeException('Invalid price display "'.Isotope::getConfig()->getPriceDisplay().'"');
-        }
+        return match ($storeManager->getCurrentContext()->getPriceDisplay()) {
+            PriceDisplay::Net => $this->calculateNetPrice($fltPrice, $arrAddresses),
+            PriceDisplay::Gross => $this->calculateGrossPrice($fltPrice, $arrAddresses),
+            PriceDisplay::Fixed => $fltPrice,
+            default => throw new \RuntimeException('Invalid PriceDisplay config'),
+        };
     }
 
 

@@ -11,6 +11,7 @@ use Isotope\CoreBundle\ModelType\AbstractModelType;
 use Isotope\CoreBundle\ModelType\ContainerAwareInterface;
 use Isotope\CoreBundle\Product\Render\DefaultProductRenderer;
 use Isotope\CoreBundle\Product\Render\ProductRendererInterface;
+use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Product;
 
@@ -107,8 +108,8 @@ abstract class AbstractProduct extends AbstractModelType implements ProductInter
         return $this->get(DefaultProductRenderer::class);
     }
 
-    public function isAvailable(IsotopeProductCollection|null $collection = null): bool
+    public function isAvailable(StoreContext $context): bool
     {
-        return $this->get(AvailabilityChecker::class)->isAvailable($this, $collection);
+        return $this->get(AvailabilityChecker::class)->isAvailable($this, $context);
     }
 }

@@ -9,6 +9,7 @@ use Isotope\CoreBundle\Attribute\AttributeRegistry;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsProduct;
 use Isotope\CoreBundle\Model\ProductType;
 use Isotope\CoreBundle\ModelType\ProductRegistry;
+use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\Product;
@@ -101,17 +102,9 @@ class StandardProduct extends AbstractProduct
         return $arrVariantConfig;
     }
 
-    public function getPrice(IsotopeProductCollection $objCollection = null)
+    public function getPrice(StoreContext $context)
     {
-        if (null !== $objCollection && $objCollection !== Isotope::getCart()) {
-            return ProductPrice::findByProductAndCollection($this, $objCollection);
-        }
-
-        if (null === $objCollection) {
-            $objCollection = Isotope::getCart();
-        }
-
-        return ProductPrice::findByProductAndCollection($this, $objCollection);
+        return ProductPrice::findByProductAndContext($this, $context);
     }
 
     public function getMinimumQuantity()

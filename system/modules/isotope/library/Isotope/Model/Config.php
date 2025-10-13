@@ -102,34 +102,6 @@ class Config extends Model
     }
 
     /**
-     * Returns an address model for the shop configuration address data.
-     *
-     * @return Address
-     */
-    public function getOwnerAddress()
-    {
-        $address = new Address();
-
-        $address->company     = $this->company;
-        $address->firstname   = $this->firstname;
-        $address->lastname    = $this->lastname;
-        $address->street_1    = $this->street_1;
-        $address->street_2    = $this->street_2;
-        $address->street_3    = $this->street_3;
-        $address->postal      = $this->postal;
-        $address->city        = $this->city;
-        $address->subdivision = $this->subdivision;
-        $address->country     = $this->country;
-        $address->email       = $this->email;
-        $address->phone       = $this->phone;
-        $address->vat_no      = $this->vat_no;
-
-        $address->preventSaving(false);
-
-        return $address;
-    }
-
-    /**
      * Get billing address fields
      *
      * @return  array
@@ -292,9 +264,6 @@ class Config extends Model
         return $format;
     }
 
-    /**
-     * Find config set in root page.
-     */
     public static function findByRootPage(int $rootPageId, array $options = array()): self|null
     {
         $t = static::$strTable;

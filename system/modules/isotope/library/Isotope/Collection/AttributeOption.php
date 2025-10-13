@@ -12,7 +12,10 @@
 namespace Isotope\Collection;
 
 use Contao\Model\Collection;
+use Contao\System;
 use Isotope\CoreBundle\Product\ProductInterface;
+use Isotope\CoreBundle\Store\Context\StoreContext;
+use Isotope\CoreBundle\Store\StoreManager;
 
 
 /**
@@ -32,10 +35,14 @@ class AttributeOption extends Collection
      */
     public function getArrayForFrontendWidget(ProductInterface $objProduct = null, $blnPriceInLabel = true)
     {
+        /** @var StoreManager $storeManager */
+        $storeManager = System::getContainer()->get(StoreManager::class);
+        $context = $storeManager->getCurrentContext();
+
         $arrOptions = array();
 
         foreach ($this->getModels() as $objModel) {
-            $arrOptions[] = $objModel->getAsArray($objProduct, $blnPriceInLabel);
+            $arrOptions[] = $objModel->getAsArray($objProduct, $blnPriceInLabel, $context);
         }
 
         return $arrOptions;

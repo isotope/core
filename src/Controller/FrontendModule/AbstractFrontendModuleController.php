@@ -9,6 +9,8 @@ use Contao\CoreBundle\Exception\ResponseException;
 use Contao\CoreBundle\Twig\FragmentTemplate;
 use Contao\ModuleModel;
 use Isotope\CoreBundle\Product\Query\ProductQuery;
+use Isotope\CoreBundle\Store\Context\StoreContext;
+use Isotope\CoreBundle\Store\StoreManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -61,5 +63,22 @@ abstract class AbstractFrontendModuleController extends CoreFrontendModuleContro
     protected function getFragmentId(array $modelData): string
     {
         return 'fmd'.($modelData['id'] ?? null ?: '-'.substr(md5(serialize($modelData)), 0, 8));
+    }
+
+    protected function getStoreContext(): StoreContext
+    {
+        /** @var StoreManager $storeManager */
+        $storeManager = $this->container->get(StoreManager::class);
+
+        return $storeManager->getCurrentContext();
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        $services = parent::getSubscribedServices();
+
+        $services[StoreManager::class] = StoreManager::class;
+
+        return $services;
     }
 }
