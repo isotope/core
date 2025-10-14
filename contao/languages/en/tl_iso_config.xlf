@@ -227,24 +227,6 @@
       <trans-unit id="tl_iso_config.priceCalculateFactor.1">
         <source>Defaults should be 1. You can use this to convert between multiple currencies.</source>
       </trans-unit>
-      <trans-unit id="tl_iso_config.currencyAutomator.0">
-        <source>Automatic currency conversion</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_config.currencyAutomator.1">
-        <source>Enable automatic update of price calcuation factors by using an online currency conversion provider.</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_config.currencyOrigin.0">
-        <source>Currency origin</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_config.currencyOrigin.1">
-        <source>Please select the source currency for calculation.</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_config.currencyProvider.0">
-        <source>Currency Data Provider</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_config.currencyProvider.1">
-        <source>Select an available online provider of currency calculation data.</source>
-      </trans-unit>
       <trans-unit id="tl_iso_config.orderPrefix.0">
         <source>Order number prefix</source>
       </trans-unit>

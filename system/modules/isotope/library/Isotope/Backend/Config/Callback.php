@@ -213,32 +213,4 @@ class Callback extends Backend
 
         return $return;
     }
-
-    /**
-     * Store if we need to update the currencies
-     *
-     * @param mixed          $varValue
-     *
-     * @return mixed
-     */
-    public function checkNeedToConvertCurrencies($varValue, DataContainer $dc)
-    {
-        $objConfig = Config::findByPk($dc->id);
-        if ($objConfig !== null && $varValue != $objConfig->{$dc->field}) {
-            $GLOBALS['ISOTOPE_CONFIG_UPDATE_CURRENCIES'] = true;
-        }
-
-        return $varValue;
-    }
-
-    /**
-     * Convert currencies if the settings have changed
-     */
-    public function convertCurrencies(DataContainer $dc)
-    {
-        if ($GLOBALS['ISOTOPE_CONFIG_UPDATE_CURRENCIES'] ?? false) {
-            $objAutomator = new Automator();
-            $objAutomator->convertCurrencies($dc->id);
-        }
-    }
 }

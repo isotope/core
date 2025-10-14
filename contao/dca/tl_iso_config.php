@@ -18,9 +18,6 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
         'onload_callback' => [
             [Callback::class, 'checkPermission'],
         ],
-        'onsubmit_callback' => [
-            [Callback::class, 'convertCurrencies'],
-        ],
         'sql' => [
             'keys' => [
                 'id' => 'primary',
@@ -40,7 +37,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
         ],
     ],
     'palettes' => [
-        '__selector__' => ['currencySymbol', 'currencyAutomator'],
+        '__selector__' => ['currencySymbol'],
         'default' => '
             {name_legend},name,label;
             {address_legend:hide},firstname,lastname,company,vat_no,street_1,street_2,street_3,postal,city,country,subdivision,email,phone;
@@ -48,13 +45,12 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
             {checkout_legend},address_fields,billing_country,shipping_country,billing_countries,shipping_countries,limitMemberCountries,vatNoValidators;
             {pricing_legend},priceDisplay,currencyFormat,priceRoundPrecision,priceRoundIncrement;
             {currency_legend},currency,currencyPosition,currencySymbol;
-            {converter_legend:hide},priceCalculateFactor,currencyAutomator;
+            {converter_legend:hide},priceCalculateFactor;
             {order_legend:hide},orderPrefix,orderDigits,orderstatus_new,orderstatus_error,orderDetailsModule;
             {config_legend},templateGroup,cartMinSubtotal',
     ],
     'subpalettes' => [
         'currencySymbol' => 'currencySpace',
-        'currencyAutomator' => 'currencyOrigin,currencyProvider',
     ],
     'fields' => [
         'id' => [
@@ -303,33 +299,6 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'maxlength' => 16, 'rgxp' => 'digit', 'tl_class' => 'w50'],
             'sql' => "varchar(16) NOT NULL default ''",
-        ],
-        'currencyAutomator' => [
-            'inputType' => 'checkbox',
-            'eval' => ['submitOnChange' => true, 'tl_class' => 'clr w50'],
-            'save_callback' => [
-                [Callback::class, 'checkNeedToConvertCurrencies'],
-            ],
-            'sql' => "char(1) NOT NULL default ''",
-        ],
-        'currencyOrigin' => [
-            'inputType' => 'select',
-            'options' => &$GLOBALS['TL_LANG']['CUR'],
-            'eval' => ['includeBlankOption' => true, 'mandatory' => true, 'tl_class' => 'clr w50'],
-            'save_callback' => [
-                [Callback::class, 'checkNeedToConvertCurrencies'],
-            ],
-            'sql' => "varchar(3) NOT NULL default ''",
-        ],
-        'currencyProvider' => [
-            'inputType' => 'select',
-            'options' => ['ecb_int', 'admin_ch'],
-            'reference' => &$GLOBALS['TL_LANG']['tl_iso_config'],
-            'eval' => ['mandatory' => true, 'tl_class' => 'w50'],
-            'save_callback' => [
-                [Callback::class, 'checkNeedToConvertCurrencies'],
-            ],
-            'sql' => "varchar(32) NOT NULL default ''",
         ],
         'orderPrefix' => [
             'inputType' => 'text',

@@ -23,3 +23,4 @@
 - The cumulative product list filter module has been removed 
 - The product variant list has been removed
 - The "legacy" price display in shop config has been removed
+- The automatic currency converter for shop configs has been removed

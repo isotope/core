@@ -289,4 +289,3 @@ if (Contao\Config::getInstance()->isComplete()) {
  */
 $GLOBALS['TL_CRON']['daily'][] = [Automator::class, 'deleteOldCarts'];
 $GLOBALS['TL_CRON']['daily'][] = [Automator::class, 'deleteOldOrders'];
-$GLOBALS['TL_CRON']['daily'][] = [Automator::class, 'convertCurrencies'];
