@@ -19,6 +19,7 @@ use Contao\Model\Collection;
 use Contao\StringUtil;
 use Contao\System;
 use Isotope\Backend;
+use Isotope\CoreBundle\Store\StoreManager;
 use Isotope\Haste\Util\Format;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopeVatNoValidator;
@@ -187,7 +188,9 @@ class Address extends Model
     public function getTokens($arrFields = null)
     {
         if (!\is_array($arrFields)) {
-            $arrFields = Isotope::getConfig()->getBillingFieldsConfig();
+            /** @var StoreManager $storeManager */
+            $storeManager = System::getContainer()->get(StoreManager::class);
+            $arrFields = $storeManager->getCurrentContext()->getBillingAddressConfig()->getAddressFieldsConfig();
         }
 
         $arrTokens = array('outputFormat' => 'html');

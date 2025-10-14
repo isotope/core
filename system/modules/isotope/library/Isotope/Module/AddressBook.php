@@ -22,6 +22,7 @@ use Contao\StringUtil;
 use Contao\System;
 use Contao\User;
 use Isotope\CompatibilityHelper;
+use Isotope\CoreBundle\Store\StoreManager;
 use Isotope\Isotope;
 use Isotope\Model\Address;
 use Isotope\Model\Config;
@@ -68,9 +69,13 @@ class AddressBook extends Module
             return '';
         }
 
-        $this->arrFields = array_unique(array_merge(Isotope::getConfig()->getBillingFields(), Isotope::getConfig()->getShippingFields()));
+        /** @var StoreManager $storeManager */
+        $storeManager = System::getContainer()->get(StoreManager::class);
+        $context = $storeManager->getCurrentContext();
 
-        // Return if there are not editable fields
+        $this->arrFields = array_unique(array_merge($context->getBillingAddressConfig()->getAddressFields(), $context->getShippingAddressConfig()->getAddressFields()));
+
+        // Return if there are no editable fields
         if (0 === \count($this->arrFields)) {
             return '';
         }
@@ -218,10 +223,18 @@ class AddressBook extends Module
 
             // Special field "country"
             if ('country' === $strName) {
-                $arrCountries = array_merge(Isotope::getConfig()->getBillingCountries(), Isotope::getConfig()->getShippingCountries());
-                $arrDca['reference'] = $arrDca['options'];
-                $arrDca['options'] = array_values(array_intersect(array_keys($arrDca['options']), $arrCountries));
-                $arrDca['default'] = Isotope::getConfig()->billing_country;
+                /** @var StoreManager $storeManager */
+                $storeManager = System::getContainer()->get(StoreManager::class);
+                $context = $storeManager->getCurrentContext();
+                $billing = $context->getBillingAddressConfig();
+
+                $arrDca['default'] = $billing->getDefaultCountryCode();
+                $arrDca['attributes_callback'][] = static function (array $attributes) use ($context, $billing): array {
+                    $arrCountries = array_merge($billing->getCountryCodes(), $context->getShippingAddressConfig()->getCountryCodes());
+                    $attributes['options'] = array_filter($attributes['options'], static fn (array $option) => \in_array($option['value'], $arrCountries, true));
+
+                    return $attributes;
+                };
             }
 
             return true;

@@ -1619,12 +1619,17 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
             'rowClass'          => trim('product ' . ($arrCSS[1] ?? ''))
         );
 
-        if ($objProduct instanceof ProductInterface && null !== $objItem->getRelated('jumpTo') && $objProduct->isAvailable($this)) {
-            $arrItem['href'] = System::getContainer()
-                ->get('contao.routing.content_url_generator')
-                ->generate(new ProductReference($objProduct, $objItem->getRelated('jumpTo')))
-            ;
-        }
+        /** @var StoreManager $storeManager */
+        $storeManager = System::getContainer()->get(StoreManager::class);
+
+        $storeManager->runWithCollection($this, function (StoreContext $context) use ($objProduct, $objItem, &$arrItem) {
+            if ($objProduct instanceof ProductInterface && null !== $objItem->getRelated('jumpTo') && $objProduct->isAvailable($context)) {
+                $arrItem['href'] = System::getContainer()
+                    ->get('contao.routing.content_url_generator')
+                    ->generate(new ProductReference($objProduct, $objItem->getRelated('jumpTo')))
+                ;
+            }
+        });
 
         return $arrItem;
     }

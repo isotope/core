@@ -44,7 +44,7 @@ class RelatedProductsController extends AbstractFrontendModuleController
         foreach ($models as $productModel) {
             $product = $this->productRegistry->get($productModel);
 
-            if (!$product instanceof ProductInterface || !$product->isAvailable()) {
+            if (!$product instanceof ProductInterface || !$product->isAvailable($this->getStoreContext())) {
                 continue;
             }
 

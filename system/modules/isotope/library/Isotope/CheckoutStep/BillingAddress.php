@@ -11,6 +11,9 @@
 
 namespace Isotope\CheckoutStep;
 
+use Contao\MemberModel;
+use Contao\System;
+use Isotope\CoreBundle\Store\StoreManager;
 use Isotope\Interfaces\IsotopeCheckoutStep;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
@@ -88,10 +91,14 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
             $strHeadline = $GLOBALS['TL_LANG']['MSC']['customer_address'];
         }
 
+        /** @var StoreManager $storeManager */
+        $storeManager = System::getContainer()->get(StoreManager::class);
+        $context = $storeManager->getCurrentContext();
+
         return array('billing_address' => array
         (
             'headline' => $strHeadline,
-            'info'     => $objBillingAddress->generate(Isotope::getConfig()->getBillingFieldsConfig()),
+            'info'     => $objBillingAddress->generate($context->getBillingAddressConfig()->getAddressFieldsConfig()),
             'edit'     => $canEdit ? Checkout::generateUrlForStep(Checkout::STEP_ADDRESS) : '',
         ));
     }
@@ -109,7 +116,10 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
      */
     protected function getAddressOptions($arrFields = null)
     {
-        $arrOptions = parent::getAddressOptions(Isotope::getConfig()->getBillingFieldsConfig());
+        /** @var StoreManager $storeManager */
+        $storeManager = System::getContainer()->get(StoreManager::class);
+
+        $arrOptions = parent::getAddressOptions($storeManager->getCurrentContext()->getBillingAddressConfig()->getAddressFieldsConfig());
 
         if (0 !== \count($arrOptions)) {
             $arrOptions[] = [
@@ -153,9 +163,13 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
         $objAddress = AddressModel::findDefaultBillingForProductCollection(Isotope::getCart()->id);
 
         if (null === $objAddress) {
+            /** @var StoreManager $storeManager */
+            $storeManager = System::getContainer()->get(StoreManager::class);
+            $context = $storeManager->getCurrentContext();
+
             $objAddress = AddressModel::createForProductCollection(
                 Isotope::getCart(),
-                Isotope::getConfig()->getBillingFields(),
+                $context->getBillingAddressConfig()->getAddressFields(),
                 true
             );
         }
@@ -168,7 +182,11 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
      */
     protected function getAddressFields()
     {
-        return Isotope::getConfig()->getBillingFieldsConfig();
+        /** @var StoreManager $storeManager */
+        $storeManager = System::getContainer()->get(StoreManager::class);
+        $context = $storeManager->getCurrentContext();
+
+        return $context->getBillingAddressConfig()->getAddressFieldsConfig();
     }
 
     /**
@@ -176,7 +194,10 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
      */
     protected function getAddressCountries()
     {
-        return Isotope::getConfig()->getBillingCountries();
+        /** @var StoreManager $storeManager */
+        $storeManager = System::getContainer()->get(StoreManager::class);
+
+        return $storeManager->getCurrentContext()->getBillingAddressConfig()->getCountryCodes();
     }
 
     /**
@@ -208,14 +229,22 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
     {
         $address = $this->getDefaultAddress();
 
-        if ($address->id > 0 && \Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER')) {
-            $data = AddressModel::getAddressDataForMember(
-                Isotope::getCart()->getMember(),
-                Isotope::getConfig()->getBillingFields()
-            );
+        /** @var StoreManager $storeManager */
+        $storeManager = System::getContainer()->get(StoreManager::class);
+        $context = $storeManager->getCurrentContext();
 
-            foreach ($data as $k => $v) {
-                $address->{$k} = $v;
+        if ($address->id > 0 && $context->getMemberId() > 0) {
+            $member = MemberModel::findById($context->getMemberId());
+
+            if ($member) {
+                $data = AddressModel::getAddressDataForMember(
+                    $member,
+                    $context->getBillingAddressConfig()->getAddressFields(),
+                );
+
+                foreach ($data as $k => $v) {
+                    $address->{$k} = $v;
+                }
             }
         }
 

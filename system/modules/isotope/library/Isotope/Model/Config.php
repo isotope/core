@@ -43,8 +43,8 @@ use Isotope\Translation;
  * @property array  $address_fields
  * @property string $billing_country
  * @property string $shipping_country
- * @property array  $billing_countries
- * @property array  $shipping_countries
+ * @property string $billing_countries
+ * @property string $shipping_countries
  * @property bool   $limitMemberCountries
  * @property array  $vatNoValidators
  * @property string $bankName
@@ -187,46 +187,6 @@ class Config extends Model
         }
 
         return $this->arrCache['shippingFieldsConfig'];
-    }
-
-    /**
-     * Get enabled billing countries
-     *
-     * @return array
-     */
-    public function getBillingCountries()
-    {
-        if (!isset($this->arrCache['billingCountries'])) {
-            $arrCountries = StringUtil::deserialize($this->billing_countries);
-
-            if (empty($arrCountries) || !\is_array($arrCountries)) {
-                $arrCountries = array_keys(CompatibilityHelper::getCountries());
-            }
-
-            $this->arrCache['billingCountries'] = $arrCountries;
-        }
-
-        return $this->arrCache['billingCountries'];
-    }
-
-    /**
-     * Get enabled shipping countries
-     *
-     * @return array
-     */
-    public function getShippingCountries()
-    {
-        if (!isset($this->arrCache['shippingCountries'])) {
-            $arrCountries = StringUtil::deserialize($this->shipping_countries);
-
-            if (empty($arrCountries) || !\is_array($arrCountries)) {
-                $arrCountries = array_keys(CompatibilityHelper::getCountries());
-            }
-
-            $this->arrCache['shippingCountries'] = $arrCountries;
-        }
-
-        return $this->arrCache['shippingCountries'];
     }
 
     /**

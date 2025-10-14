@@ -100,15 +100,14 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
         ],
         'countries' => [
             'inputType' => 'select',
-            'options_callback' => static fn () => CompatibilityHelper::getCountries(),
-            'eval' => ['multiple' => true, 'size' => 8, 'tl_class' => 'w50 w50h', 'chosen' => true],
-            'sql' => 'blob NULL',
+            'eval' => ['multiple' => true, 'size' => 8, 'csv' => ',', 'tl_class' => 'w50 w50h', 'chosen' => true],
+            'sql' => 'text NULL',
         ],
         'subdivisions' => [
             'sorting' => true,
             'inputType' => 'conditionalselect',
             'options_callback' => [Backend::class, 'getSubdivisions'],
-            'eval' => ['multiple' => true, 'size' => 8, 'conditionField' => 'countries', 'tl_class' => 'w50 w50h'],
+            'eval' => ['multiple' => true, 'size' => 8, 'csv' => ',', 'conditionField' => 'countries', 'tl_class' => 'w50 w50h'],
             'sql' => 'longblob NULL',
         ],
         'postalCodes' => [

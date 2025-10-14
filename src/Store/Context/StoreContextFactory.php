@@ -14,6 +14,7 @@ use Isotope\CoreBundle\Store\Price\MoneyFormat;
 use Isotope\CoreBundle\Store\Price\PriceDisplay;
 use Isotope\Model\Address;
 use Isotope\Model\Config;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 
 /**
@@ -26,6 +27,7 @@ class StoreContextFactory
         private readonly ContaoFramework $framework,
         private readonly Connection $connection,
         private readonly Countries $countries,
+        private readonly EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -35,22 +37,24 @@ class StoreContextFactory
 
         // TODO: load applicable taxes, etc.
 
-        // TODO: add event to modify the store config on init
-
-        return new StoreContext(
+        $context = new StoreContext(
             $identifier,
             $storeId,
             (int) $config->id,
             $memberId,
             $locale,
-            fn () => $this->getMoneyFormat($config),
-            fn () => $this->getPriceDisplay($config, $memberId),
-            fn () => $this->getCurrency($config),
-            (float) $config->priceCalculateFactor,
-            fn () => $this->getOwnerAddress($config),
-            fn () => $this->getCountries($config->billing_countries),
-            fn () => $this->getCountries($config->shipping_countries),
+            moneyFormat: fn () => $this->getMoneyFormat($config),
+            priceDisplay: fn () => $this->getPriceDisplay($config, $memberId),
+            currency: fn () => $this->getCurrency($config),
+            currencyFactor: (float) $config->priceCalculateFactor,
+            ownerAddress: fn () => $this->getOwnerAddress($config),
+            billingAddressConfig: fn () => $this->getAddressConfig($config->address_fields, 'billing', $config->billing_countries, $config->billing_country),
+            shippingAddressConfig: fn () => $this->getAddressConfig($config->address_fields, 'shipping', $config->shipping_countries, $config->shipping_country),
         );
+
+        $this->eventDispatcher->dispatch(new CreateContextEvent($context, $config));
+
+        return $context;
     }
 
     private function getCurrency(Config $config): Currency
@@ -141,18 +145,38 @@ class StoreContextFactory
         return $address;
     }
 
-    private function getCountries(string|array $value): array
+    private function getAddressConfig(string|array $fieldConfig, string $type, string $countries, string $defaultCountry): AddressConfig
     {
-        $countries = StringUtil::deserialize($value);
+        $addressFields = [];
+        $addressFieldsConfig = [];
 
-        if (empty($countries) || !\is_array($countries)) {
-            $countries = $this->countries->getCountries();
+        $fields = StringUtil::deserialize($fieldConfig);
 
-            // Convert country keys to lowercase
-            // TODO: should switch to uppercase countries
-            return array_combine(array_map('strtolower', array_keys($countries)), $countries);
+        if (\is_array($fields)) {
+            foreach ($fields as $field) {
+                if ('disabled' !== $field[$type]) {
+                    $addressFields[] = $field['name'];
+                }
+
+                $addressFieldsConfig[] = [
+                    'value'     => $field['name'],
+                    'enabled'   => 'disabled' !== $field[$type],
+                    'mandatory' => 'mandatory' === $field[$type],
+                ];
+            }
         }
 
-        return $countries;
+        if ('' === $countries) {
+            $countryCodes =  array_keys($this->countries->getCountries());
+        } else {
+            $countryCodes = explode(',', $countries);
+        }
+
+        return new AddressConfig(
+            $addressFields,
+            $addressFieldsConfig,
+            $countryCodes,
+            $defaultCountry,
+        );
     }
 }

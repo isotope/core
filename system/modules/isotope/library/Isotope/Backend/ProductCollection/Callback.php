@@ -36,6 +36,7 @@ use Isotope\CoreBundle\Model\Payment;
 use Isotope\CoreBundle\Model\Shipping;
 use Isotope\CoreBundle\Model\OrderStatus;
 use Isotope\CoreBundle\ModelType\DocumentRegistry;
+use Isotope\CoreBundle\Store\StoreManager;
 use Isotope\CoreBundle\Util\ColorUtil;
 use Isotope\Frontend;
 use Isotope\Haste\Util\Format;
@@ -74,7 +75,10 @@ class Callback extends Backend
             switch ($field) {
                 case 'billing_address_id':
                     if (null !== ($objAddress = $objOrder->getBillingAddress())) {
-                        $arrTokens = $objAddress->getTokens(Isotope::getConfig()->getBillingFieldsConfig());
+                        /** @var StoreManager $storeManager */
+                        $storeManager = System::getContainer()->get(StoreManager::class);
+
+                        $arrTokens = $objAddress->getTokens($storeManager->getCurrentContext()->getBillingAddressConfig()->getAddressFieldsConfig());
                         $args[$i] = $arrTokens['hcard_fn'];
                     }
                     break;

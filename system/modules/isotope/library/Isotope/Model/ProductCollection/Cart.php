@@ -17,6 +17,7 @@ use Contao\Input;
 use Contao\PageModel;
 use Contao\System;
 use Isotope\CompatibilityHelper;
+use Isotope\CoreBundle\Store\StoreManager;
 use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Isotope;
 use Isotope\Message;
@@ -87,9 +88,13 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
 
         // Last option: create a new address, including member data if available
         if (null === $objAddress) {
+            /** @var StoreManager $storeManager */
+            $storeManager = System::getContainer()->get(StoreManager::class);
+            $context = $storeManager->getCurrentContext();
+
             $objAddress = Address::createForProductCollection(
                 $this,
-                Isotope::getConfig()->getBillingFields(),
+                $context->getBillingAddressConfig()->getAddressFields(),
                 true
             );
         }
@@ -124,9 +129,13 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
 
         // Last option: create a new address, including member data if available
         if (null === $objAddress) {
+            /** @var StoreManager $storeManager */
+            $storeManager = System::getContainer()->get(StoreManager::class);
+            $context = $storeManager->getCurrentContext();
+
             $objAddress = Address::createForProductCollection(
                 $this,
-                Isotope::getConfig()->getShippingFields(),
+                $context->getShippingAddressConfig()->getAddressFields(),
                 false,
                 true
             );

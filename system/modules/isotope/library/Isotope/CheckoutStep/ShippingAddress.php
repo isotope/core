@@ -11,6 +11,8 @@
 
 namespace Isotope\CheckoutStep;
 
+use Contao\System;
+use Isotope\CoreBundle\Store\StoreManager;
 use Isotope\Interfaces\IsotopeCheckoutStep;
 use Isotope\Isotope;
 use Isotope\Model\Address as AddressModel;
@@ -29,7 +31,15 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
      */
     public function isAvailable()
     {
-        return Isotope::getCart()->requiresShippingAddress() && \count(Isotope::getConfig()->getShippingFields()) > 0;
+        if (!Isotope::getCart()->requiresShippingAddress()) {
+            return false;
+        }
+
+        /** @var StoreManager $storeManager */
+        $storeManager = System::getContainer()->get(StoreManager::class);
+        $context = $storeManager->getCurrentContext();
+
+        return [] !== $context->getShippingAddressConfig()->getAddressFields();
     }
 
     /**
@@ -68,10 +78,14 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
             return false;
         }
 
+        /** @var StoreManager $storeManager */
+        $storeManager = System::getContainer()->get(StoreManager::class);
+        $context = $storeManager->getCurrentContext();
+
         return array('shipping_address' => array
         (
             'headline' => $GLOBALS['TL_LANG']['MSC']['shipping_address'],
-            'info'     => $objAddress->generate(Isotope::getConfig()->getShippingFieldsConfig()),
+            'info'     => $objAddress->generate($context->getShippingAddressConfig()->getAddressFieldsConfig()),
             'edit'     => $this->isSkippable() ? '' : Checkout::generateUrlForStep(Checkout::STEP_ADDRESS),
         ));
     }
@@ -85,7 +99,11 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
      */
     protected function getAddressOptions($arrFields = null)
     {
-        $arrOptions = parent::getAddressOptions(Isotope::getConfig()->getShippingFieldsConfig());
+        /** @var StoreManager $storeManager */
+        $storeManager = System::getContainer()->get(StoreManager::class);
+        $context = $storeManager->getCurrentContext();
+
+        $arrOptions = parent::getAddressOptions($context->getShippingAddressConfig()->getAddressFieldsConfig());
 
         array_unshift(
             $arrOptions,
@@ -147,9 +165,13 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
         $objAddress = AddressModel::findDefaultShippingForProductCollection(Isotope::getCart()->id);
 
         if (null === $objAddress) {
+            /** @var StoreManager $storeManager */
+            $storeManager = System::getContainer()->get(StoreManager::class);
+            $context = $storeManager->getCurrentContext();
+
             $objAddress = AddressModel::createForProductCollection(
                 Isotope::getCart(),
-                Isotope::getConfig()->getShippingFields(),
+                $context->getShippingAddressConfig()->getAddressFields(),
                 false,
                 true
             );
@@ -175,7 +197,10 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
      */
     protected function getAddressCountries()
     {
-        return Isotope::getConfig()->getShippingCountries();
+        /** @var StoreManager $storeManager */
+        $storeManager = System::getContainer()->get(StoreManager::class);
+
+        return $storeManager->getCurrentContext()->getShippingAddressConfig()->getCountryCodes();
     }
 
     /**

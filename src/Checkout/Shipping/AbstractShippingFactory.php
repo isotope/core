@@ -39,8 +39,8 @@ abstract class AbstractShippingFactory extends AbstractCheckoutMethodFactory
             ->setShippingWeight(Weight::createFromTimePeriod($model->shipping_weight))
             ->setAddressType(AddressType::tryFrom($model->address_type))
             ->setAllowedAddress(
-                $this->unserialize($model->countries, 'strval'),
-                $this->unserialize($model->subdivisions, 'strval'),
+                $model->countries ? explode(',', $model->countries) : null,
+                $model->subdivisions ? explode(',', $model->subdivisions) : null,
                 Frontend::parsePostalCodes($model->postalCodes) ?: null,
             )
         ;

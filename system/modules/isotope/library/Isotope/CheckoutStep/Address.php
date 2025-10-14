@@ -17,6 +17,7 @@ use Contao\FrontendUser;
 use Contao\Input;
 use Contao\System;
 use Contao\Widget;
+use Isotope\CoreBundle\Store\StoreManager;
 use Isotope\Model\Address as AddressModel;
 use Isotope\Module\Checkout;
 use Isotope\Template;
@@ -287,23 +288,26 @@ abstract class Address extends CheckoutStep
                 /** @var Widget $strClass */
                 $strClass = $GLOBALS['TL_FFL'][$field['dca']['inputType']];
 
-                if ('country' === $field['value']) {
-                    // Special field "country"
-                    $arrCountries = $this->getAddressCountries();
-                    $field['dca']['reference'] = $field['dca']['options'];
-                    $field['dca']['options'] = array_values(array_intersect(array_keys($field['dca']['options']), $arrCountries));
-                } elseif (!empty($field['dca']['eval']['conditionField'])) {
+                if (!empty($field['dca']['eval']['conditionField'])) {
                     // Special field type "conditionalselect"
                     $field['dca']['eval']['conditionField'] = $this->getStepClass() . '_' . $field['dca']['eval']['conditionField'];
                 }
 
-                $objWidget = new $strClass(
-                    $strClass::getAttributesFromDca(
-                        $field['dca'],
-                        $this->getStepClass() . '_' . $field['value'],
-                        $objAddress->{$field['value']}
-                    )
+                $arrAttributes = $strClass::getAttributesFromDca(
+                    $field['dca'],
+                    $this->getStepClass() . '_' . $field['value'],
+                    $objAddress->{$field['value']}
                 );
+
+                // Special field "country"
+                if ('country' === $field['value']) {
+                    $arrAttributes['options'] = $field['dca']['options'] = array_filter(
+                        $arrAttributes['options'],
+                        fn (array $option) => \in_array($option['value'], $this->getAddressCountries(), true)
+                    );
+                }
+
+                $objWidget = new $strClass($arrAttributes);
 
                 $objWidget->mandatory   = $field['mandatory'] ? true : false;
                 $objWidget->required    = $objWidget->mandatory;

@@ -17,6 +17,7 @@ use Contao\Input;
 use Contao\StringUtil;
 use Contao\System;
 use Isotope\CompatibilityHelper;
+use Isotope\CoreBundle\Store\StoreManager;
 use Isotope\Isotope;
 use Isotope\Model\Address;
 
@@ -115,16 +116,17 @@ class CartAddress extends Module
 
             // Special field "country"
             if ('country' === $strName) {
-                if ($useBilling) {
-                    $arrCountries = Isotope::getConfig()->getBillingCountries();
-                    $arrDca['default'] = Isotope::getConfig()->billing_country;
-                } else {
-                    $arrCountries = Isotope::getConfig()->getShippingCountries();
-                    $arrDca['default'] = Isotope::getConfig()->shipping_country;
-                }
+                /** @var StoreManager $storeManager */
+                $storeManager = System::getContainer()->get(StoreManager::class);
+                $context = $storeManager->getCurrentContext();
+                $addressConfig = $useBilling ? $context->getBillingAddressConfig() : $context->getShippingAddressConfig();
 
-                $arrDca['reference'] = $arrDca['options'];
-                $arrDca['options'] = array_values(array_intersect(array_keys($arrDca['options']), $arrCountries));
+                $arrDca['default'] = $addressConfig->getDefaultCountryCode();
+                $arrDca['attributes_callback'][] = static function (array $attributes) use ($addressConfig): array {
+                    $attributes['options'] = array_filter($attributes['options'], static fn (array $option) => \in_array($option['value'], $addressConfig->getCountryCodes(), true));
+
+                    return $attributes;
+                };
             }
 
             return true;
@@ -216,9 +218,14 @@ class CartAddress extends Module
         }
 
         if (null === $objAddress) {
+            /** @var StoreManager $storeManager */
+            $storeManager = System::getContainer()->get(StoreManager::class);
+            $context = $storeManager->getCurrentContext();
+            $addressConfig = $useBilling ? $context->getBillingAddressConfig() : $context->getShippingAddressConfig();
+
             $objAddress = Address::createForProductCollection(
                 Isotope::getCart(),
-                ($useBilling ? Isotope::getConfig()->getBillingFields() : Isotope::getConfig()->getShippingFields()),
+                $addressConfig->getAddressFields(),
                 $useBilling,
                 !$useBilling
             );

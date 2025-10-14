@@ -8,7 +8,6 @@ use Isotope\Model\Address;
  * Add a child table to tl_member
  */
 $GLOBALS['TL_DCA']['tl_member']['config']['ctable'][] = Address::getTable();
-$GLOBALS['TL_DCA']['tl_member']['config']['ondelete_callback'][] = [Callback::class, 'deleteMemberCart'];
 
 /*
  * Add a global operation to tl_member

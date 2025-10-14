@@ -30,8 +30,8 @@ use Isotope\Translation;
  * @property string $name
  * @property string $label
  * @property array  $address
- * @property array  $countries
- * @property array  $subdivisions
+ * @property string $countries
+ * @property string $subdivisions
  * @property string $postalCodes
  * @property array  $rate
  * @property array  $amount
@@ -89,11 +89,11 @@ class TaxRate extends Model
                     continue;
                 }
 
-                if ($this->countries != '' && !\in_array($objAddress->country, StringUtil::trimsplit(',', $this->countries))) {
+                if ($this->countries && !\in_array($objAddress->country, explode(',', $this->countries))) {
                     continue;
                 }
 
-                if ($this->subdivisions != '' && !\in_array($objAddress->subdivision, StringUtil::trimsplit(',', $this->subdivisions))) {
+                if ($this->subdivisions && !\in_array($objAddress->subdivision, explode(',', $this->subdivisions))) {
                     continue;
                 }
 

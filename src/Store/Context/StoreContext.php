@@ -16,6 +16,11 @@ use Isotope\Model\Address;
 final class StoreContext
 {
     /**
+     * @var array<string, mixed>
+     */
+    private array $properties = [];
+
+    /**
      * @internal Use the StoreContextFactory to create a new instance.
      */
     public function __construct(
@@ -29,9 +34,26 @@ final class StoreContext
         private Currency|\Closure $currency,
         private readonly float $currencyFactor,
         private Address|\Closure $ownerAddress,
-        private array|\Closure $billingCountries,
-        private array|\Closure $shippingCountries,
+        private AddressConfig|\Closure $billingAddressConfig,
+        private AddressConfig|\Closure $shippingAddressConfig,
     ) {
+    }
+
+    public function set(string $key, mixed $value): self
+    {
+        $this->properties[$key] = $value;
+
+        return $this;
+    }
+
+    public function get(string $key): mixed
+    {
+        return $this->properties[$key] ?? null;
+    }
+
+    public function has(string $key): bool
+    {
+        return isset($this->properties[$key]);
     }
 
     public function getIdentifier(): string
@@ -92,14 +114,18 @@ final class StoreContext
         return $this->ownerAddress;
     }
 
-    /**
-     * @return array<string>
-     */
-    public function getBillingCountries(): array
+    public function getBillingAddressConfig(): AddressConfig
     {
-        $this->resolveClosure($this->billingCountries);
+        $this->resolveClosure($this->billingAddressConfig);
 
-        return $this->billingCountries;
+        return $this->billingAddressConfig;
+    }
+
+    public function getShippingAddressConfig(): AddressConfig
+    {
+        $this->resolveClosure($this->shippingAddressConfig);
+
+        return $this->shippingAddressConfig;
     }
 
     /**
@@ -107,9 +133,9 @@ final class StoreContext
      */
     public function getShippingCountries(): array
     {
-        $this->resolveClosure($this->shippingCountries);
+        $this->resolveClosure($this->shippingAddressConfig);
 
-        return $this->shippingCountries;
+        return $this->shippingAddressConfig->getCountryCodes();
     }
 
     /**

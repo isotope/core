@@ -127,9 +127,8 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = [
         ],
         'countries' => [
             'inputType' => 'select',
-            'options_callback' => static fn () => CompatibilityHelper::getCountries(),
-            'eval' => ['multiple' => true, 'size' => 8, 'tl_class' => 'w50 w50h', 'chosen' => true],
-            'sql' => 'blob NULL',
+            'eval' => ['multiple' => true, 'size' => 8, 'csv' => ',', 'tl_class' => 'w50 w50h', 'chosen' => true],
+            'sql' => 'text NULL',
         ],
         'shipping_modules' => [
             'inputType' => 'select',

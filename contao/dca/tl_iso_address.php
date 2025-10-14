@@ -149,8 +149,6 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = [
             'filter' => true,
             'sorting' => true,
             'inputType' => 'select',
-            'options' => CompatibilityHelper::getCountries(),
-            // Do not use options_callback, countries are modified by store config in the frontend
             'eval' => ['mandatory' => true, 'feEditable' => true, 'feGroup' => 'address', 'tl_class' => 'w50', 'chosen' => true],
             'sql' => "varchar(32) NOT NULL default ''",
         ],
