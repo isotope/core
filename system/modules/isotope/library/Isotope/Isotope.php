@@ -19,6 +19,8 @@ use Isotope\Model\Config;
 use Isotope\Model\ProductCollection\Cart;
 use Isotope\Model\ProductPrice;
 use Isotope\Model\TaxClass;
+use Symfony\Component\Intl\Currencies;
+use Symfony\Component\Intl\Exception\MissingResourceException;
 
 
 /**
@@ -240,12 +242,14 @@ class Isotope extends Controller
         $strPrice    = static::formatPrice($fltPrice, $blnApplyRoundingIncrement);
         $space       = $blnHtml ? '&nbsp;' : ' ';
 
-        if ($objConfig->currencySymbol && $GLOBALS['TL_LANG']['CUR_SYMBOL'][$strCurrency] != '') {
-            $strCurrency = $GLOBALS['TL_LANG']['CUR_SYMBOL'][$strCurrency];
+        if ($objConfig->currencySymbol) {
+            try {
+                $strCurrency = Currencies::getSymbol($objConfig->currency);
 
-            if (!$objConfig->currencySpace) {
-                $space = '';
-            }
+                if (!$objConfig->currencySpace) {
+                    $space = '';
+                }
+            } catch (MissingResourceException) {}
         }
 
         if ($blnHtml) {

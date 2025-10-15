@@ -10,12 +10,11 @@ final class Currency
      * @internal
      */
     public function __construct(
-        public readonly string $isoCode,
-        public readonly string|null $symbol,
-        public readonly bool $space,
-        public readonly string $position,
-        public readonly int|null $isoNumber,
-        public readonly int $minorUnits,
+        public readonly string $code,
+        public bool $symbol,
+        public bool $space,
+        public string $position,
+        public int $minorUnits,
     ) {
     }
 

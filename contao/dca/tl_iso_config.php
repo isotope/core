@@ -31,9 +31,8 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
             'flag' => DataContainer::SORT_INITIAL_LETTER_ASC,
         ],
         'label' => [
-            'fields' => ['name'],
-            'format' => '%s',
-            'label_callback' => [Callback::class, 'addIcon'],
+            'fields' => ['name', 'label'],
+            'format' => '%s <span style="color:#999;margin-left:3px">(%s)</span>',
         ],
     ],
     'palettes' => [
@@ -272,7 +271,6 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
         ],
         'currency' => [
             'inputType' => 'select',
-            'options' => &$GLOBALS['TL_LANG']['CUR'],
             'eval' => ['includeBlankOption' => true, 'mandatory' => true, 'chosen' => true, 'tl_class' => 'w50'],
             'sql' => "varchar(3) NOT NULL default ''",
         ],

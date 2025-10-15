@@ -57,7 +57,7 @@ use Isotope\Translation;
  * @property string $priceRoundIncrement
  * @property float  $cartMinSubtotal
  * @property string $currency
- * @property string $currencySymbol
+ * @property bool   $currencySymbol
  * @property bool   $currencySpace
  * @property string $currencyPosition
  * @property string $priceCalculateFactor

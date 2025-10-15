@@ -1428,7 +1428,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
         $objTemplate->id                = $this->id;
         $objTemplate->collection        = $this;
         $objTemplate->config            = $objConfig;
-        $objTemplate->surcharges        = Frontend::formatSurcharges($this->getSurcharges(), $objConfig->currency);
+        $objTemplate->surcharges        = $this->formatSurcharges($this->getSurcharges(), $objConfig->currency);
         $objTemplate->subtotal          = Isotope::formatPriceWithCurrency($this->getSubtotal(), true, $objConfig->currency);
         $objTemplate->total             = Isotope::formatPriceWithCurrency($this->getTotal(), true, $objConfig->currency);
         $objTemplate->tax_free_subtotal = Isotope::formatPriceWithCurrency($this->getTaxFreeSubtotal(), true, $objConfig->currency);
@@ -2014,5 +2014,32 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
         }
 
         return false;
+    }
+
+    /**
+     * Format surcharge prices
+     *
+     * @param ProductCollectionSurcharge[] $arrSurcharges
+     * @param string|null                  $currencyCode
+     *
+     * @return array
+     */
+    private function formatSurcharges($arrSurcharges, $currencyCode = null)
+    {
+        $i         = 0;
+        $arrReturn = array();
+
+        foreach ($arrSurcharges as $k => $objSurcharge) {
+            $arrReturn[$k]                = $objSurcharge->row();
+            $arrReturn[$k]['price']       = Isotope::formatPriceWithCurrency($objSurcharge->price, true, $currencyCode, $objSurcharge->applyRoundingIncrement);
+            $arrReturn[$k]['total_price'] = Isotope::formatPriceWithCurrency($objSurcharge->total_price, true, $currencyCode, $objSurcharge->applyRoundingIncrement);
+            $arrReturn[$k]['tax_free_total_price'] = Isotope::formatPriceWithCurrency($objSurcharge->tax_free_total_price, true, $currencyCode, $objSurcharge->applyRoundingIncrement);
+            $arrReturn[$k]['rowClass']    = trim('foot_' . (++$i) . ' ' . $objSurcharge->rowClass);
+            $arrReturn[$k]['tax_id']      = $objSurcharge->getTaxNumbers();
+            $arrReturn[$k]['raw']         = $objSurcharge->row();
+            $arrReturn[$k]['surcharge']   = $objSurcharge;
+        }
+
+        return $arrReturn;
     }
 }

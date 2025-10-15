@@ -16,6 +16,7 @@ use Isotope\Model\Address;
 use Isotope\Model\Config;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\Intl\Currencies;
 
 /**
  * @internal
@@ -59,16 +60,12 @@ class StoreContextFactory
 
     private function getCurrency(Config $config): Currency
     {
-        $isoCode = $config->currency;
-        $currencies = include(__DIR__.'/../../../contao/config/currencies.php');
-
         return new Currency(
-            $isoCode,
-            $config->currencySymbol ?: null,
+            $config->currency,
+            (bool) $config->currencySymbol,
             (bool) $config->currencySpace,
             $config->currencyPosition,
-            $currencies[$isoCode]['number'] ?? null,
-            $currencies[$isoCode]['units'] ?? 2,
+            Currencies::getCashFractionDigits($config->currency),
         );
     }
 

@@ -46,7 +46,8 @@
         "symfony/filesystem": "^7.3",
         "symfony/http-client": "^7.3",
         "symfony/service-contracts": "^3.2",
-        "hashids/hashids": "^4.1"
+        "hashids/hashids": "^4.1",
+        "symfony/intl": "^7.3"
     },
     "require-dev": {
         "contao/core-bundle": "5.x-dev",
