@@ -1123,9 +1123,9 @@ System::getContainer()->get('contao.data_container.global_operations_builder')->
 		// Display buttons
 		$operations = System::getContainer()->get('contao.data_container.global_operations_builder')->initialize($this->strTable);
 
-		if (Input::get('act') == 'select' || $this->ptable)
+		if (Input::get('act') == 'select')
 		{
-			$operations->addBackButton($this->getReferer(true, $this->ptable));
+			$operations->addBackButton('do='.Input::get('do'));
 		}
 		elseif (isset($GLOBALS['TL_DCA'][$this->strTable]['config']['backlink']))
 		{
@@ -1378,7 +1378,7 @@ System::getContainer()->get('contao.data_container.global_operations_builder')->
 		{
 			if ($this->ptable)
 			{
-				$operations->addBackButton($this->getReferer(true, $this->ptable));
+				$operations->addBackButton('do='.Input::get('do'));
 			}
 			elseif (isset($GLOBALS['TL_DCA'][$this->strTable]['config']['backlink']))
 			{
