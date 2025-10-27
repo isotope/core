@@ -8,7 +8,7 @@ use Isotope\Backend\Module\Callback;
 use Isotope\CoreBundle\Model\Gallery;
 use Isotope\CoreBundle\Model\Payment;
 use Isotope\CoreBundle\Model\Shipping;
-use Isotope\CoreBundle\Product\CategoryScope;
+use Isotope\CoreBundle\Product\Category\CategoryScope;
 use Isotope\Model\Address;
 use Isotope\Model\Config;
 use Isotope\Model\RelatedCategory;
@@ -307,7 +307,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_noFilter'] = [
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_category_scope'] = [
     'inputType' => 'radio',
     'default' => 'current_category',
-    'options' => ['current_category', 'current_and_first_child', 'current_and_all_children', 'parent', 'product', 'global'],
+    'enum' => CategoryScope::class,
     'reference' => &$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref'],
     'explanation' => 'iso_category_scope',
     'eval' => ['tl_class' => 'clr w50 w50h', 'helpwizard' => true],
