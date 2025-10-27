@@ -57,7 +57,6 @@ use Isotope\Module\Checkout;
 use Isotope\Module\ConfigSwitcher;
 use Isotope\Module\Messages;
 use Isotope\Module\OrderHistory;
-use Isotope\Module\ProductVariantList;
 use Isotope\Module\ShippingCalculator;
 use Isotope\VatNoValidator\EuViesValidator;
 use Isotope\Widget\InheritCheckBox;
