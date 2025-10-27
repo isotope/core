@@ -1,6 +1,17 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.9.8 (2025-10-27)
+--------------------------
+
+- Correctly store source_id of rules in product collection surcharges (#2578)
+- Fix pid reference for folder downloads (#2575)
+- Only set member subdivision if it actually exists
+- Fix possible runtime error when product is not registered (#2570)
+- Fix TypeError if tax rate has empty `rate` field (#2569)
+- Fixed skipping items on copyCollectionItem hook
+
+
 Version 2.9.7 (2025-04-07)
 --------------------------
 
