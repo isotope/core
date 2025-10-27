@@ -13,6 +13,7 @@ namespace Isotope;
 
 use Contao\Controller;
 use Contao\System;
+use Isotope\CoreBundle\ModelType\ProductRegistry;
 use Isotope\CoreBundle\Product\ProductInterface;
 use Isotope\CoreBundle\Store\StoreManager;
 use Isotope\Model\Config;
@@ -159,7 +160,9 @@ class Isotope extends Controller
         $sourceIsPrice   = $objSource instanceof ProductPrice;
 
         if (!\is_array($arrAddresses) && ($sourceIsProduct || $sourceIsPrice)) {
-            $product = $sourceIsPrice ? $objSource->getRelated('pid') : $objSource;
+            /** @var ProductRegistry $productRegistry */
+            $productRegistry = System::getContainer()->get(ProductRegistry::class);
+            $product = $sourceIsPrice ? $productRegistry->get($objSource->getRelated('pid')) : $objSource;
 
             $arrAddresses = array(
                 'billing'  => Isotope::getCart()->getBillingAddress(),
