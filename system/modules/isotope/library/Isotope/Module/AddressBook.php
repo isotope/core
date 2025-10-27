@@ -295,7 +295,7 @@ class AddressBook extends Module
         foreach ($arrGroups as $k => $v) {
             $this->Template->$k = $v; // backwards compatibility
 
-            $key = $k . (('personal' === $k) ? 'Data' : 'Details');
+            $key = $k . 'Details';
             $categories[$GLOBALS['TL_LANG']['tl_member'][$key]] = $v;
         }
 
