@@ -1346,7 +1346,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
             ) {
                 foreach ($GLOBALS['ISO_HOOKS']['copyCollectionItem'] as $callback) {
                     if (System::importStatic($callback[0])->{$callback[1]}($objOldItem, $objSource, $this) === false) {
-                        continue;
+                        continue(2);
                     }
                 }
             }
