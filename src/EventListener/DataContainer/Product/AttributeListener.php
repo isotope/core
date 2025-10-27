@@ -252,19 +252,21 @@ class AttributeListener
                 $columnFields[] = 'images';
             }
 
-            if (\in_array('name', $variantAttributes, true)) {
-                $columnFields[] = 'name';
-                $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['fields'] = ['name'];
-            }
-
             if (\in_array('sku', $variantAttributes, true)) {
                 $columnFields[] = 'sku';
                 $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['fields'] = ['sku'];
             }
 
+            if (\in_array('name', $variantAttributes, true)) {
+                $columnFields[] = 'name';
+                $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['fields'] = ['name'];
+            }
+
             if (\in_array('price', $variantAttributes, true)) {
                 $columnFields[] = 'price';
             }
+
+            $variantOptionFields = array_diff($variantOptionFields, $columnFields);
 
             // Limit the number of columns if there are more than 2
             if (\count($variantOptionFields) > 4) {
@@ -302,9 +304,9 @@ class AttributeListener
             return;
         }
 
-        $config = $isVariant ? $type->variant_attributes : $type->attributes;
+        $config = $isVariant ? $type->getVariantAttributes() : $type->getAttributes();
 
-        foreach (array_intersect(array_keys($GLOBALS['TL_DCA']['tl_iso_product']['fields']), array_keys($config)) as $field) {
+        foreach (array_intersect(array_keys($GLOBALS['TL_DCA']['tl_iso_product']['fields']), $config) as $field) {
             $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$field]['attributes_callback'][] = static function (array $attributes) use ($field) {
                 // Apply product type attribute config
                 if (!empty($config[$field]['tl_class'])) {
