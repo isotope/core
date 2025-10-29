@@ -1,0 +1,41 @@
+{% trans_default_domain 'contao_default' %}
+
+{% set fields = options|map(o => o.value) %}
+
+{% set attributes = attrs()
+    .set('id', 'ctrl_'~id)
+    .addClass('tl_checkbox_container')
+    .addClass(class|default)
+    .set('data-controller', 'contao--check-all')
+    .set('data-isotope--inherit-checkbox-target', 'checkbox')
+    .set('data-isotope--inherit-checkbox-fields', fields|json_encode)
+    .mergeWith(attributes|default)
+%}
+
+<fieldset{{ attributes }}>
+    <legend>
+        {% if mandatory %}<span class="invisible">{{ 'MSC.mandatory'|trans }}</span>{% endif %}
+        {{ label }}
+        {% if mandatory %}<span class="mandatory">*</span>{% endif %}
+        {{ xlabel }}
+    </legend>
+    <input type="hidden" name="{{ name }}" value="">
+    {% if options is not empty %}
+        <span><input type="checkbox" id="check_all_{{ id }}" class="tl_checkbox" data-action="focus->contao--scroll-offset#store contao--check-all#toggleAll"> <label for="check_all_{{ id }}" class="check-all"><em>{{ 'MSC.selectAll'|trans }}</em></label></span>
+        {% for option in options %}
+            {% set option_attributes = attrs()
+                .set('type', 'checkbox')
+                .set('name', name~'[]')
+                .set('id', 'opt_'~id~'_'~loop.index)
+                .addClass('tl_checkbox')
+                .set('value', option.value)
+                .setIfExists('checked', option.checked)
+                .set('data-action', 'focus->contao--scroll-offset#store contao--check-all#toggleInput isotope--inherit-checkbox#toggleField')
+                .set('data-contao--check-all-target', 'input')
+            %}
+            <span><input{{ option_attributes }}> <label for="opt_{{ id }}_{{ loop.index }}">{{ option.label }}</label></span>
+        {% endfor %}
+    {% else %}
+        <p class="tl_noopt">{{ 'MSC.noResult'|trans }}</p>
+    {% endif %}
+</fieldset>%s

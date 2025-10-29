@@ -214,7 +214,19 @@ h3.inherit,
 {
     background-color: #f8f8f8;
     padding: 2px 2px 2px 0;
-    margin: 14px 0 1px 0
+    margin: 11px 0 1px 0;
+}
+
+.inherit-default {
+    float: right;
+    display: flex;
+    align-items: center;
+    column-gap: 3px;
+    margin: 2px 0;
+
+    label {
+        font-weight: normal;
+    }
 }
 
 .tl_version_panel.tl_iso_products_panel:after {

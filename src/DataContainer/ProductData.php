@@ -727,13 +727,365 @@ class ProductData extends Driver
 <input type="hidden" name="REQUEST_TOKEN" value="' . htmlspecialchars(System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue(), ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5) . '">' . $strVersionField . $return;
 
 		$return = '
-<div data-controller="contao--jump-targets">
+<div data-controller="contao--jump-targets isotope--inherit-checkbox" data-isotope--inherit-checkbox-label-value="'.StringUtil::specialcharsAttribute($GLOBALS['TL_LANG']['MSC']['useDefault']).'">
 	<div class="jump-targets"><div class="inner" data-contao--jump-targets-target="navigation"></div></div>
 	' . $return . '
 </div>';
 
 		return $return;
 	}
+
+    /**
+     * Auto-generate a form to edit all records that are currently shown
+     *
+     * @param integer $intId
+     * @param integer $ajaxId
+     *
+     * @return string
+     *
+     * @throws AccessDeniedException
+     */
+    public function editAll($intId=null, $ajaxId=null)
+    {
+        if ($GLOBALS['TL_DCA'][$this->strTable]['config']['notEditable'] ?? null)
+        {
+            throw new AccessDeniedException('Table "' . $this->strTable . '" is not editable.');
+        }
+
+        $return = '';
+
+        $objSession = System::getContainer()->get('request_stack')->getSession();
+
+        // Get current IDs from session
+        $session = $objSession->all();
+        $ids = $session['CURRENT']['IDS'] ?? array();
+
+        if ($intId && Environment::get('isAjaxRequest'))
+        {
+            $ids = array($intId);
+        }
+
+        // Save field selection in session
+        if (Input::post('FORM_SUBMIT') == $this->strTable . '_all' && Input::get('fields'))
+        {
+            $session['CURRENT'][$this->strTable] = Input::post('all_fields');
+            $objSession->replace($session);
+        }
+
+        $db = Database::getInstance();
+        $security = System::getContainer()->get('security.helper');
+        $user = BackendUser::getInstance();
+
+        $this->configurePidAndSortingFields();
+
+        // Add fields
+        $fields = $session['CURRENT'][$this->strTable] ?? array();
+
+        $blnAddJumpTarget = \count($ids) < min(Config::get('resultsPerPage') ?? 30, 50);
+
+        if (!empty($fields) && \is_array($fields) && Input::get('fields'))
+        {
+            $class = 'tl_tbox';
+
+            if (Input::post('FORM_SUBMIT') == $this->strTable)
+            {
+                $db->beginTransaction();
+            }
+
+            try
+            {
+                $blnNoReload = false;
+
+                static::preloadCurrentRecords($ids, $this->strTable);
+
+                // Walk through each record
+                foreach ($ids as $id)
+                {
+                    try
+                    {
+                        $currentRecord = $this->getCurrentRecord($id);
+
+                        if (null === $currentRecord)
+                        {
+                            continue;
+                        }
+
+                        $this->denyAccessUnlessGranted(ContaoCorePermissions::DC_PREFIX . $this->strTable, new UpdateAction($this->strTable, $currentRecord));
+                    }
+                    catch (AccessDeniedException)
+                    {
+                        continue;
+                    }
+
+                    $this->intId = $id;
+                    $this->procedure = array('id=?');
+                    $this->values = array($this->intId);
+                    $this->arrSubmit = array();
+                    $this->blnCreateNewVersion = false;
+                    $this->strPalette = $this->getPalette();
+
+                    $boxes = System::getContainer()->get('contao.data_container.palette_builder')->getBoxes($this->strPalette, $this->strTable, true);
+                    $paletteFields = array_merge(...array_column($boxes, 'fields'));
+
+                    // Reset the "noReload" state but remember it for the final handling
+                    $blnNoReload = $blnNoReload || $this->noReload;
+                    $this->noReload = false;
+
+                    $objVersions = new Versions($this->strTable, $this->intId);
+                    $objVersions->initialize();
+
+                    // Begin current row
+                    $arrAjax = array();
+                    $blnAjax = false;
+                    $thisId = '';
+                    $box = '';
+
+                    // Store the active record (backwards compatibility)
+                    $this->objActiveRecord = (object) $currentRecord;
+
+                    foreach ($paletteFields as $v)
+                    {
+                        if ($v == '[EOF]')
+                        {
+                            if ($blnAjax && Environment::get('isAjaxRequest'))
+                            {
+                                if ($ajaxId == $thisId)
+                                {
+                                    if (($intLatestVersion = $objVersions->getLatestVersion()) !== null)
+                                    {
+                                        $arrAjax[$thisId] .= '<input type="hidden" name="VERSION_NUMBER" value="' . $intLatestVersion . '">';
+                                    }
+
+                                    return $arrAjax[$thisId];
+                                }
+
+                                if (\count($arrAjax) > 1)
+                                {
+                                    $current = "\n" . '<div id="' . $thisId . '" class="subpal widget-group">' . $arrAjax[$thisId] . '</div>';
+                                    unset($arrAjax[$thisId]);
+                                    end($arrAjax);
+                                    $thisId = key($arrAjax);
+                                    $arrAjax[$thisId] .= $current;
+                                }
+                            }
+
+                            $box .= "\n  " . '</div>';
+
+                            continue;
+                        }
+
+                        if (preg_match('/^\[.*]$/', $v))
+                        {
+                            $thisId = 'sub_' . substr($v, 1, -1) . '_' . $id;
+                            $arrAjax[$thisId] = '';
+                            $blnAjax = ($ajaxId == $thisId && Environment::get('isAjaxRequest')) ? true : $blnAjax;
+                            $box .= "\n  " . '<div id="' . $thisId . '" class="subpal widget-group">';
+
+                            continue;
+                        }
+
+                        if (!\in_array($v, $fields))
+                        {
+                            continue;
+                        }
+
+                        $this->strField = $v;
+                        $this->strInputName = $v . '_' . $this->intId;
+
+                        // Set the default value and try to load the current value from DB (see #5252)
+                        if (\array_key_exists('default', $GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField] ?? array()))
+                        {
+                            $default = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['default'];
+
+                            if ($default instanceof \Closure)
+                            {
+                                $default = $default($this);
+                            }
+
+                            $this->varValue = \is_array($default) ? serialize($default) : $default;
+                        }
+
+                        if (($currentRecord[$v] ?? null) !== false)
+                        {
+                            $this->varValue = $currentRecord[$v] ?? null;
+                        }
+
+                        // Convert CSV fields (see #2890)
+                        if (($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['multiple'] ?? null) && isset($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['csv']))
+                        {
+                            $this->varValue = StringUtil::trimsplit($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['csv'], $this->varValue);
+                        }
+
+                        // Call load_callback
+                        if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['load_callback'] ?? null))
+                        {
+                            foreach ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['load_callback'] as $callback)
+                            {
+                                if (\is_array($callback))
+                                {
+                                    $this->varValue = System::importStatic($callback[0])->{$callback[1]}($this->varValue, $this);
+                                }
+                                elseif (\is_callable($callback))
+                                {
+                                    $this->varValue = $callback($this->varValue, $this);
+                                }
+                            }
+                        }
+
+                        // Re-set the current value
+                        $this->objActiveRecord->{$this->strField} = $this->varValue;
+
+                        // Build the row and pass the current palette string (thanks to Tristan Lins)
+                        $blnAjax ? $arrAjax[$thisId] .= $this->row() : $box .= $this->row();
+                    }
+
+                    // Save record
+                    try
+                    {
+                        $this->submit();
+                    }
+                    catch (AccessDeniedException)
+                    {
+                        continue;
+                    }
+
+                    $label = StringUtil::specialchars(System::getContainer()->get('contao.data_container.record_labeler')->getLabel('contao.db.' . $this->strTable . '.' . $currentRecord['id'], $currentRecord));
+
+                    $return .= Message::generateUnwrapped() . \sprintf(
+                            '<fieldset data-controller="contao--toggle-fieldset isotope--inherit-checkbox" data-isotope--inherit-checkbox-suffix-value="%s" data-isotope--inherit-checkbox-label-value="%s" data-contao--toggle-fieldset-collapsed-class="collapsed"%s class="%s cf"><legend><button type="button" data-action="contao--toggle-fieldset#toggle">%s</button></legend>%s</fieldset>',
+                            '_'.$id,
+                            $GLOBALS['TL_LANG']['MSC']['useDefault'],
+                            $blnAddJumpTarget ? ('data-contao--jump-targets-target="section" data-contao--jump-targets-label-value="' . $label . '" data-action="contao--jump-targets:scrollto->contao--toggle-fieldset#open"') : '',
+                            $class,
+                            $label,
+                            $box
+                        );
+
+                    $class = 'tl_box';
+                }
+
+                $this->noReload = $blnNoReload || $this->noReload;
+            }
+            catch (\Throwable $e)
+            {
+                if (Input::post('FORM_SUBMIT') == $this->strTable)
+                {
+                    $db->rollbackTransaction();
+                }
+
+                throw $e;
+            }
+
+            // Reload the page to prevent _POST variables from being sent twice
+            if (Input::post('FORM_SUBMIT') == $this->strTable)
+            {
+                if ($this->noReload)
+                {
+                    $db->rollbackTransaction();
+                }
+                else
+                {
+                    $db->commitTransaction();
+
+                    if (Input::post('saveNclose') !== null)
+                    {
+                        $this->redirect($this->getReferer());
+                    }
+
+                    $this->reload();
+                }
+            }
+
+            $strButtons = System::getContainer()->get('contao.data_container.buttons_builder')->generateEditAllButtons($this->strTable, $this);
+
+            // Add the form
+            $return = '
+
+<form id="' . $this->strTable . '" class="tl_form tl_edit_form" method="post" enctype="' . ($this->blnUploadable ? 'multipart/form-data' : 'application/x-www-form-urlencoded') . '">
+<div class="tl_formbody_edit nogrid">
+<input type="hidden" name="FORM_SUBMIT" value="' . $this->strTable . '">
+<input type="hidden" name="REQUEST_TOKEN" value="' . htmlspecialchars(System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue(), ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5) . '">
+<input type="hidden" name="IDS[]" value="' . implode('"><input type="hidden" name="IDS[]" value="', $ids) . '">' . ($this->noReload ? '
+<p class="tl_error">' . $GLOBALS['TL_LANG']['ERR']['submit'] . '</p>' : '') . $return . '
+</div>
+  ' . $strButtons . '
+</form>';
+        }
+
+        // Else show a form to select the fields
+        else
+        {
+            $options = '';
+            $fields = array();
+
+            // Add fields of the current table
+            $fields = array_merge($fields, array_keys($GLOBALS['TL_DCA'][$this->strTable]['fields'] ?? array()));
+
+            // Add meta fields if the current user is an administrator
+            if ($user->isAdmin)
+            {
+                if ($db->fieldExists('sorting', $this->strTable) && !\in_array('sorting', $fields))
+                {
+                    array_unshift($fields, 'sorting');
+                }
+
+                if ($db->fieldExists('pid', $this->strTable) && !\in_array('pid', $fields))
+                {
+                    array_unshift($fields, 'pid');
+                }
+            }
+
+            // Show all non-excluded fields
+            foreach ($fields as $field)
+            {
+                if ((!DataContainer::isFieldExcluded($this->strTable, $field) || $security->isGranted(ContaoCorePermissions::USER_CAN_EDIT_FIELD_OF_TABLE, $this->strTable . '::' . $field)) && !($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['eval']['doNotShow'] ?? null) && (isset($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['inputType']) || \is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['input_field_callback'] ?? null) || \is_callable($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['input_field_callback'] ?? null)))
+                {
+                    $options .= '
+  <input type="checkbox" name="all_fields[]" id="all_' . $field . '" class="tl_checkbox" value="' . StringUtil::specialchars($field) . '"> <label for="all_' . $field . '" class="tl_checkbox_label">' . (($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'][0] ?? (\is_array($GLOBALS['TL_LANG']['MSC'][$field] ?? null) ? $GLOBALS['TL_LANG']['MSC'][$field][0] : ($GLOBALS['TL_LANG']['MSC'][$field] ?? null)) ?? $field) . ' <span class="label-info">[' . $field . ']</span>') . '</label><br>';
+                }
+            }
+
+            $blnIsError = Input::isPost() && !Input::post('all_fields');
+
+            // Return the select menu
+            $return .= '
+
+<form action="' . StringUtil::ampersand(Environment::get('requestUri')) . '&amp;fields=1" id="' . $this->strTable . '_all" class="tl_form tl_edit_form" method="post" data-turbo="false">
+<div class="tl_formbody_edit">
+<input type="hidden" name="FORM_SUBMIT" value="' . $this->strTable . '_all">
+<input type="hidden" name="REQUEST_TOKEN" value="' . htmlspecialchars(System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue(), ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5) . '">
+<input type="hidden" name="IDS[]" value="' . implode('"><input type="hidden" name="IDS[]" value="', $ids) . '">' . ($blnIsError ? '
+<p class="tl_error">' . $GLOBALS['TL_LANG']['ERR']['submit'] . '</p>' : '') . '
+<div class="tl_tbox">
+<div class="widget">
+<fieldset class="tl_checkbox_container">
+  <legend' . ($blnIsError ? ' class="error"' : '') . '>' . $GLOBALS['TL_LANG']['MSC']['all_fields'][0] . '<span class="mandatory">*</span></legend>
+  <input type="checkbox" id="check_all" class="tl_checkbox" data-action="contao--check-all#toggleAll"> <label for="check_all" class="check-all"><em>' . $GLOBALS['TL_LANG']['MSC']['selectAll'] . '</em></label><br>' . $options . '
+</fieldset>' . ($blnIsError ? '
+<p class="tl_error">' . $GLOBALS['TL_LANG']['ERR']['all_fields'] . '</p>' : ((Config::get('showHelp') && isset($GLOBALS['TL_LANG']['MSC']['all_fields'][1])) ? '
+<p class="tl_help tl_tip">' . $GLOBALS['TL_LANG']['MSC']['all_fields'][1] . '</p>' : '')) . '
+</div>
+</div>
+</div>
+<div class="tl_formbody_submit">
+<div class="tl_submit_container">
+  <button type="submit" name="save" id="save" class="tl_submit" accesskey="s">' . $GLOBALS['TL_LANG']['MSC']['continue'] . '</button>
+</div>
+</div>
+</form>';
+        }
+
+        // Return
+        $return = ($this->noReload ? '
+<p class="tl_error">' . $GLOBALS['TL_LANG']['ERR']['submit'] . '</p>' : '') .
+            System::getContainer()->get('contao.data_container.global_operations_builder')->initialize($this->strTable)->addBackButton() . $return;
+
+        return $blnAddJumpTarget ? '
+<div data-controller="contao--jump-targets">
+	<div class="jump-targets"><div class="inner" data-contao--jump-targets-target="navigation"></div></div>
+	' . $return . '
+</div>' : $return;
+    }
 
 	/**
 	 * Auto-generate a form to override all records that are currently shown

@@ -82,12 +82,14 @@ class MediaManager extends Widget implements UploadableWidgetInterface
         }
 
         return System::getContainer()->get('twig')->render('@Contao/backend/iso_mediamanager.html.twig', [
+            'id' => 'ctrl_'.$this->strId,
             'name' => $this->strName,
             'accept' => array_map(static fn ($v) => '.'.$v, $this->validExtensions),
             'isLanguage' => $blnLanguage,
             'dragIcon' => Image::getHtml('drag.svg', $GLOBALS['TL_LANG']['MSC']['move'] ?? ''),
             'deleteIcon' => Image::getHtml('delete.svg', $GLOBALS['TL_LANG']['MSC']['lw_delete'] ?? ''),
             'files' => $files,
+            'attributes' => $this->getAttributes(),
         ]);
     }
 

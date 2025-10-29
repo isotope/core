@@ -24,6 +24,7 @@ use Isotope\CoreBundle\Model\Payment;
 use Isotope\CoreBundle\Model\ProductCategory;
 use Isotope\CoreBundle\Model\ProductType;
 use Isotope\CoreBundle\Model\Shipping;
+use Isotope\CoreBundle\Widget\InheritCheckBox;
 use Isotope\CoreBundle\Widget\MediaManager;
 use Isotope\EventListener\ChangeLanguageListener;
 use Isotope\EventListener\PostCheckoutUploads;
@@ -59,7 +60,6 @@ use Isotope\Module\Messages;
 use Isotope\Module\OrderHistory;
 use Isotope\Module\ShippingCalculator;
 use Isotope\VatNoValidator\EuViesValidator;
-use Isotope\Widget\InheritCheckBox;
 use Symfony\Component\HttpFoundation\Request;
 
 /*

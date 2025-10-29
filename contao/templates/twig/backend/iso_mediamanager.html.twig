@@ -1,13 +1,17 @@
 {% trans_default_domain 'contao_tl_iso_product' %}
 {% use "@Contao/component/_figure.html.twig" %}
 
-<div
-    class="tl_mediamanager"
-    data-controller="isotope--mediamanager"
-    data-isotope--mediamanager-url-value="{{ path('iso_mediamanager_upload') }}"
-    data-isotope--mediamanager-accept-value="{{ accept|json_encode }}"
-    data-action="dragover->isotope--mediamanager#dragover dragover@window->isotope--mediamanager#activate dragleave@window->isotope--mediamanager#deactivate drop@window->isotope--mediamanager#drop"
->
+{% set attributes = attrs()
+    .set('id', id)
+    .addClass('tl_mediamanager')
+    .set('data-controller', 'isotope--mediamanager')
+    .set('data-isotope--mediamanager-url-value', path('iso_mediamanager_upload'))
+    .set('data-isotope--mediamanager-accept-value', accept|json_encode)
+    .set('data-action', 'dragover->isotope--mediamanager#dragover dragover@window->isotope--mediamanager#activate dragleave@window->isotope--mediamanager#deactivate drop@window->isotope--mediamanager#drop')
+    .mergeWith(attributes)
+%}
+
+<div{{ attributes }}>
     <input type="hidden" name="{{ name }}" value="">
 
     <div

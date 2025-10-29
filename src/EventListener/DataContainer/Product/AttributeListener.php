@@ -143,6 +143,10 @@ class AttributeListener
                 }
             }
 
+            if (null !== $dc->currentPid) {
+                $attributes[] = 'inherit';
+            }
+
             foreach (array_diff(array_keys($GLOBALS['TL_DCA']['tl_iso_product']['fields']), $attributes) as $field) {
                 $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$field]['eval']['doNotShow'] = true;
             }
@@ -392,10 +396,9 @@ class AttributeListener
             $attribute = $this->attributeRegistry->get($name);
 
             if (
-                $attribute instanceof VariantAttributeInterface
-                && \in_array($name, $canInherit, true)
+                \in_array($name, $canInherit, true)
                 && !\in_array($name, ['price', 'published', 'start', 'stop'], true)
-                && !$attribute->isVariantOption()
+                && (!$attribute instanceof VariantAttributeInterface || !$attribute->isVariantOption())
             ) {
                 $inherit[$name] = $this->formatter->dcaLabel('tl_iso_product', $name);
             }
