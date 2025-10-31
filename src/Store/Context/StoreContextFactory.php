@@ -6,6 +6,7 @@ namespace Isotope\CoreBundle\Store\Context;
 
 use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\CoreBundle\Intl\Countries;
+use Contao\MemberModel;
 use Contao\StringUtil;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
@@ -42,8 +43,9 @@ class StoreContextFactory
             $identifier,
             $storeId,
             (int) $config->id,
-            $memberId,
-            $locale,
+            memberId: $memberId,
+            memberGroups: $this->getMemberGroups($memberId),
+            locale: $locale,
             moneyFormat: fn () => $this->getMoneyFormat($config),
             priceDisplay: fn () => $this->getPriceDisplay($config, $memberId),
             currency: fn () => $this->getCurrency($config),
@@ -174,6 +176,18 @@ class StoreContextFactory
             $addressFieldsConfig,
             $countryCodes,
             $defaultCountry,
+        );
+    }
+
+    private function getMemberGroups(int|null $memberId): array|\Closure
+    {
+        if (!$memberId) {
+            return [];
+        }
+
+        return static fn () => array_map(
+            intval(...),
+            StringUtil::deserialize(MemberModel::findById($memberId)?->groups ?? [], true)
         );
     }
 }

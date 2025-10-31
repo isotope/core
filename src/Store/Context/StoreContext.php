@@ -20,6 +20,8 @@ final class StoreContext
      */
     private array $properties = [];
 
+    private \DateTimeImmutable $timestamp;
+
     /**
      * @internal Use the StoreContextFactory to create a new instance.
      */
@@ -28,6 +30,7 @@ final class StoreContext
         private readonly int $storeId,
         private readonly int $configId,
         private readonly int|null $memberId,
+        private array|\Closure $memberGroups,
         private readonly string $locale,
         private MoneyFormat|\Closure $moneyFormat,
         private PriceDisplay|\Closure $priceDisplay,
@@ -37,6 +40,7 @@ final class StoreContext
         private AddressConfig|\Closure $billingAddressConfig,
         private AddressConfig|\Closure $shippingAddressConfig,
     ) {
+        $this->timestamp = new \DateTimeImmutable();
     }
 
     public function set(string $key, mixed $value): self
@@ -76,9 +80,31 @@ final class StoreContext
         return $this->memberId;
     }
 
+    /**
+     * @return array<int>
+     */
+    public function getMemberGroups(): array
+    {
+        $this->resolveClosure($this->memberGroups);
+
+        return $this->memberGroups;
+    }
+
     public function getLocale(): string
     {
         return $this->locale;
+    }
+
+    public function getTimestamp(): \DateTimeImmutable
+    {
+        return $this->timestamp;
+    }
+
+    public function setTimestamp(\DateTimeImmutable $timestamp): self
+    {
+        $this->timestamp = $timestamp;
+
+        return $this;
     }
 
     public function getMoneyFormat(): MoneyFormat
