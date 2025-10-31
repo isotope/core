@@ -6,10 +6,6 @@
     background-size: 14px 14px;
 }
 
-.tl_version_panel.tl_iso_products_panel #tl_version {
-    float: right;
-}
-
 .tl_iso_category_sorting {
     padding:3px 0 0 8px;
 }
@@ -136,79 +132,6 @@ body.popup a[href*="table=tl_iso_attribute_option"].header_back {
     border-radius: 2px;
 }
 
-.tl_listing.picker .iso_operations a.show {
-    margin-right: 24px;
-}
-
-.tl_productdata .tl_file {
-    min-height: 36px;
-}
-
-.tl_productdata .tl_file .tl_left a,
-.product_tree .tl_file .tl_left a
-{
-    float: left;
-    margin-top: 10px;
-}
-
-.tl_productdata .tl_file .tl_left a.tl_tip,
-.product_tree .tl_file .tl_left a.tl_tip
-{
-    float: none;
-}
-
-.tl_productdata .tl_file .tl_right,
-.product_tree .tl_file .tl_right
-{
-    height: auto;
-    text-align: right
-}
-
-.tl_productdata label,
-.tl_productdata .tl_folder .tl_left
-{
-    line-height:18px;
-}
-
-.iso_product
-{
-    margin-top: 2px;
-    margin-bottom: 2px;
-    width: 500px;
-    text-indent: 0;
-}
-
-.iso_product .thumbnail
-{
-    padding-right: 5px;
-    float: left;
-    width: 34px;
-    height: 34px;
-}
-
-.iso_product ul
-{
-    margin-left: 34px;
-}
-
-.iso_product p
-{
-    font-weight: bold;
-    margin: 0 0 5px 0;
-    padding: 0;
-}
-
-.iso_product p span
-{
-    font-weight: normal;
-}
-
-.tree_view .iso_product a
-{
-    float: none;
-    margin-top: 0;
-}
-
 h3.inherit,
 .tl_checkbox_single_container.inherit
 {
@@ -227,17 +150,6 @@ h3.inherit,
     label {
         font-weight: normal;
     }
-}
-
-.tl_version_panel.tl_iso_products_panel:after {
-    content: "";
-    display: table;
-    clear: both;
-}
-
-.tl_version_panel.tl_iso_products_panel #tl_language {
-    float:left;
-    margin-left:20px;
 }
 
 .mod_iso_orderdetails {
