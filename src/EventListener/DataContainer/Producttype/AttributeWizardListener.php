@@ -50,6 +50,7 @@ class AttributeWizardListener
         $attributes['fields'] = [
             'enabled' => [
                 'inputType' => 'checkbox',
+                'eval' => ['cell_style' => 'white-space:nowrap;width:1%'],
                 'attributes_callback' => [static function (array $attributes) use ($fixed, &$enabledConfig) {
                     $config = array_shift($enabledConfig);
 
@@ -58,7 +59,7 @@ class AttributeWizardListener
                     }
 
                     return $attributes;
-                }]
+                }],
             ],
             'name' => [
                 'input_field_callback' => $this->getNameClosure($dc->field, $values),
@@ -72,7 +73,7 @@ class AttributeWizardListener
             'tl_class' => [
                 'label' => &$GLOBALS['TL_LANG']['tl_iso_producttype']['attributes']['tl_class'],
                 'inputType' => 'text',
-                'eval' => ['style' => 'width:100px'],
+                'eval' => ['cell_style' => 'width:100px'],
             ],
             'mandatory' => [
                 'label' => &$GLOBALS['TL_LANG']['tl_iso_producttype']['attributes']['mandatory'],
@@ -82,6 +83,7 @@ class AttributeWizardListener
                 'eval' => [
                     'includeBlankOption' => true,
                     'blankOptionLabel' => &$GLOBALS['TL_LANG']['tl_iso_producttype']['attributes']['default'],
+                    'cell_style' => 'width:100px'
                 ],
                 'attributes_callback' => [function (array $attributes) use (&$mandatoryConfig) {
                     $config = array_shift($mandatoryConfig);
@@ -101,7 +103,7 @@ class AttributeWizardListener
             ],
             'edit' => [
                 'input_field_callback' => $this->getEditAttributeClosure($values),
-                'eval' => ['tl_class' => 'mcwUpdateFields'],
+                'eval' => ['cell_class' => 'tl_right'],
             ],
         ];
 
@@ -183,6 +185,7 @@ class AttributeWizardListener
 
         foreach ($value as $k => $config) {
             $name = $config['name'] ?? $input[$k]['name'] ?? null;
+            $value[$k]['name'] = $name;
 
             if (\in_array($name, $fixed, true)) {
                 $value[$k]['enabled'] = '1';
@@ -224,15 +227,12 @@ class AttributeWizardListener
         $values = [];
 
         foreach (array_values($value) as $pos => $config) {
-            $name = $config['name'] ?? $input[$pos]['name'] ?? null;
-
-            if (!$name) {
+            if (!$config['name']) {
                 continue;
             }
 
-            $config['name'] = $name;
             $config['position'] = $pos;
-            $values[$name] = $config;
+            $values[$config['name']] = $config;
         }
 
         return serialize($values);
