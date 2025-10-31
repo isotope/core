@@ -21,7 +21,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
         'label' => &$GLOBALS['TL_LANG']['MOD']['iso_products'][0],
         'dataContainer' => ProductData::class,
         'enableVersioning' => true,
-        'ctable' => [Download::getTable(), ProductPrice::getTable(), AttributeOption::getTable()],
+        'ctable' => [Download::getTable(), AttributeOption::getTable()],
         'onload_callback' => [
             [Permission::class, 'check'],
         ],
@@ -218,17 +218,62 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'foreignKey' => TaxClass::getTable().'.name',
             'eval' => ['mandatory' => true, 'maxlength' => 13, 'rgxp' => 'digit', 'includeBlankOption' => true, 'blankOptionLabel' => &$GLOBALS['TL_LANG']['MSC']['taxFree'], 'doNotSaveEmpty' => true, 'tl_class' => 'w50'],
             'attributes' => ['legend' => 'pricing_legend', 'fe_sorting' => true, 'dynamic' => true, 'singular' => true, 'systemColumn' => true],
+            'sql' => 'text NULL',
         ],
         'prices' => [
-            'inputType' => 'dcaWizard',
-            'foreignTable' => ProductPrice::getTable(),
-            'attributes' => ['systemColumn' => true],
-            'eval' => [
-                'applyButtonLabel' => &$GLOBALS['TL_LANG']['tl_iso_product']['prices']['apply_and_close'],
-                'global_operations' => ['new'],
-                'operations' => ['edit', 'copy', 'delete', 'show'],
-                'tl_class' => 'clr',
+            'inputType' => 'rowWizard',
+            'exclude' => false,
+            'fields' => [
+                'price_tiers' => [
+                    'label' => &$GLOBALS['TL_LANG']['tl_iso_product']['prices']['price_tiers'],
+                    'inputType' => 'rowWizard',
+                    'fields' => [
+                        'min' => [
+                            'label' => '',
+                            'default' => 1,
+                            'inputType' => 'text',
+                            'eval' => ['mandatory' => true, 'rgxp' => 'digit', 'style' => 'width:50px'],
+                        ],
+                        'price' => [
+                            'label' => '',
+                            'inputType' => 'text',
+                            'eval' => ['mandatory' => true, 'rgxp' => 'digit', 'style' => 'width:120px'],
+                        ],
+                    ],
+                    'eval' => ['mandatory' => true, 'cell_style' => 'width:220px', 'sortable' => false],
+                ],
+                'tax_class' => [
+                    'label' => &$GLOBALS['TL_LANG']['tl_iso_product']['prices']['tax_class'],
+                    'default' => static fn () => TaxClass::findFallback()?->id,
+                    'inputType' => 'select',
+                    'foreignKey' => TaxClass::getTable().'.name',
+                    'eval' => ['includeBlankOption' => true, 'blankOptionLabel' => &$GLOBALS['TL_LANG']['MSC']['taxFree'], 'tl_class' => 'clr'],
+                ],
+                'config_id' => [
+                    'label' => &$GLOBALS['TL_LANG']['tl_iso_product']['prices']['config_id'],
+                    'inputType' => 'select',
+                    'foreignKey' => 'tl_iso_config.name',
+                    'eval' => ['includeBlankOption' => true],
+                ],
+                'member_group' => [
+                    'label' => &$GLOBALS['TL_LANG']['tl_iso_product']['prices']['member_group'],
+                    'inputType' => 'select',
+                    'foreignKey' => 'tl_member_group.name',
+                    'eval' => ['includeBlankOption' => true, 'chosen' => true],
+                ],
+                'start' => [
+                    'label' => &$GLOBALS['TL_LANG']['tl_iso_product']['prices']['start'],
+                    'inputType' => 'text',
+                    'eval' => ['rgxp' => 'date', 'datepicker' => true, 'cell_style' => 'width:150px'],
+                ],
+                'stop' => [
+                    'label' => &$GLOBALS['TL_LANG']['tl_iso_product']['prices']['stop'],
+                    'inputType' => 'text',
+                    'eval' => ['rgxp' => 'date', 'datepicker' => true, 'cell_style' => 'width:150px'],
+                ],
             ],
+            'eval' => ['tl_class' => 'clr'],
+            'sql' => 'text NULL',
         ],
         'baseprice' => [
             'inputType' => 'timePeriod',

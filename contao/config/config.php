@@ -46,7 +46,6 @@ use Isotope\Model\ProductCollectionSurcharge;
 use Isotope\Model\ProductCollectionSurcharge\Payment as PaymentSurcharge;
 use Isotope\Model\ProductCollectionSurcharge\Shipping as ShippingSurcharge;
 use Isotope\Model\ProductCollectionSurcharge\Tax;
-use Isotope\Model\ProductPrice;
 use Isotope\Model\RelatedCategory;
 use Isotope\Model\RelatedProduct;
 use Isotope\Model\TaxClass;
@@ -71,7 +70,7 @@ if (!is_array($GLOBALS['BE_MOD']['isotope'] ?? null)) {
 
 ArrayUtil::arrayInsert($GLOBALS['BE_MOD']['isotope'], 0, [
     'iso_products' => [
-        'tables' => [Product::getTable(), ProductCategory::getTable(), Download::getTable(), RelatedProduct::getTable(), ProductPrice::getTable(), 'tl_iso_product_pricetier', AttributeOption::getTable()],
+        'tables' => [Product::getTable(), ProductCategory::getTable(), Download::getTable(), RelatedProduct::getTable(), AttributeOption::getTable()],
     ],
     'iso_orders' => [
         'tables' => [ProductCollection::getTable(), ProductCollectionItem::getTable(), ProductCollectionSurcharge::getTable(), ProductCollectionDownload::getTable(), Address::getTable()],
@@ -204,7 +203,6 @@ $GLOBALS['TL_MODELS'][ProductCollectionDownload::getTable()] = ProductCollection
 $GLOBALS['TL_MODELS'][ProductCollectionItem::getTable()] = ProductCollectionItem::class;
 $GLOBALS['TL_MODELS'][ProductCollectionLog::getTable()] = ProductCollectionLog::class;
 $GLOBALS['TL_MODELS'][ProductCollectionSurcharge::getTable()] = ProductCollectionSurcharge::class;
-$GLOBALS['TL_MODELS'][ProductPrice::getTable()] = ProductPrice::class;
 $GLOBALS['TL_MODELS'][ProductType::getTable()] = ProductType::class;
 $GLOBALS['TL_MODELS'][RelatedCategory::getTable()] = RelatedCategory::class;
 $GLOBALS['TL_MODELS'][RelatedProduct::getTable()] = RelatedProduct::class;

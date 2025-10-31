@@ -40,6 +40,8 @@ use Isotope\CoreBundle\Product\CollectibleInterface;
  * @property string $description
  * @property string $meta_title
  * @property string $meta_description
+ * @property string $price
+ * @property string $prices
  * @property bool   $shipping_exempt
  * @property array  $images
  * @property bool   $protected

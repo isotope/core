@@ -260,8 +260,41 @@
       <trans-unit id="tl_iso_product.prices.0">
         <source>Advanced prices</source>
       </trans-unit>
-      <trans-unit id="tl_iso_product.prices.1">
-        <source>Click the button to manage advanced prices for this product.</source>
+      <trans-unit id="tl_iso_product.prices.price_tiers.0">
+        <source>Price Tiers</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.prices.price_tiers.1">
+        <source>Setup at least one price tier for "Quantity 1". You can enter discount prices if the user orders more than one product.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.prices.tax_class.0">
+        <source>Tax Class</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.prices.tax_class.1">
+        <source>Please select a tax class for this price.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.prices.config_id.0">
+        <source>Store configuration</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.prices.config_id.1">
+        <source>Select a store configuration for this price.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.prices.member_group.0">
+        <source>Member group</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.prices.member_group.1">
+        <source>Select a member group for this price.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.prices.start.0">
+        <source>Use from</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.prices.start.1">
+        <source>Do not use the price on the website before this day.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.prices.stop.0">
+        <source>Use until</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.prices.stop.1">
+        <source>Do not use the price on the website after this day.</source>
       </trans-unit>
       <trans-unit id="tl_iso_product.prices.apply_and_close">
         <source>Apply and close</source>

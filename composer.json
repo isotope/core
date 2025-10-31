@@ -37,7 +37,6 @@
         "contao/core-bundle": "^5.7",
         "doctrine/dbal": "^3.7 || ^4.3",
         "terminal42/contao-conditionalselectmenu":"^4.1",
-        "terminal42/dcawizard": "^3.0",
         "codefog/contao-haste": "^5.3",
         "zoglo/contao-row-wizard": "^1.0",
         "terminal42/notification_center": "^2.0",
