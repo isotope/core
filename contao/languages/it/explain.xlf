@@ -20,7 +20,6 @@ La pagina del lettore (alias) sarà sempre la stessa pagina che hai selezionato 
       </trans-unit>
       <trans-unit id="XPL.noVariantAttributes">
         <source>To use product variants with Isotope eCommerce, you must first configure the attributes.&lt;br&gt;Please refer to &lt;a href=&quot;https://docs.isotopeecommerce.org/&quot; target=&quot;_blank&quot; style=&quot;text-decoration:underline&quot;&gt;the manual&lt;/a&gt; for more information about attribute setup.</source>
-        <target>Per utilizzare le varianti di prodotto con Isotope eCommerce, è necessario prima configurare gli attributi. &lt;br&gt;Consultare &lt;a href=&quot;https://docs.isotopeecommerce.org/&quot; target=&quot;_blank&quot; style=&quot;text-decoration:underline&quot;&gt;il manuale&lt;/a&gt; per maggiori informazioni sulla configurazione degli attributi.</target>
       </trans-unit>
       <trans-unit id="XPL.shippingExempt">
         <source>

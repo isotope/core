@@ -418,6 +418,12 @@ class Address extends Model
      */
     public static function getAddressDataForMember(MemberModel $member, array $fields)
     {
+        $subdivision = strtoupper($member->country.'-'.$member->state);
+
+        if ('' === Backend::getLabelForSubdivision($member->country, $subdivision)) {
+            $subdivision = '';
+        }
+
         return array_intersect_key(
             array_merge(
                 $member->row(),
@@ -425,7 +431,7 @@ class Address extends Model
                     'street_1'    => $member->street,
 
                     // Trying to guess subdivision by country and state
-                    'subdivision' => strtoupper($member->country . '-' . $member->state)
+                    'subdivision' => $subdivision,
                 )
             ),
             array_flip($fields)

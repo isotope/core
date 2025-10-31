@@ -53,9 +53,11 @@ Isotope kommer nu att använda den här sidan för att skapa webbplatsen om ett 
       </trans-unit>
         <trans-unit id="tl_page.iso_sitemapVariants.0">
             <source>Link to product variants in sitemap</source>
+            <target>Länk till produktvarianter i sitemap</target>
         </trans-unit>
         <trans-unit id="tl_page.iso_sitemapVariants.1">
             <source>Check here if the sitemap should show the product variants (if available).</source>
+            <target>Kontrollera här om sitemap ska visa produktvarianterna (om de finns).</target>
         </trans-unit>
       <trans-unit id="tl_page.iso_readerJumpTo.0">
         <source>Reader page</source>

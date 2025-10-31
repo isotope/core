@@ -63,6 +63,10 @@ class Callback extends Backend
     {
         $arrRate = StringUtil::deserialize($row['rate']);
 
+        if (!is_array($arrRate)) {
+            return $row['name'];
+        }
+        
         if ($row['config'] && !$arrRate['unit']) {
             Isotope::setConfig(Config::findByPk($row['config']));
 
