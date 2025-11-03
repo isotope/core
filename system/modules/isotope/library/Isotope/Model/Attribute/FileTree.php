@@ -92,7 +92,7 @@ class FileTree extends Attribute
                 $files[$k] = $v->path;
             }
 
-            if ($arrOptions['noHtml']) {
+            if ($arrOptions['noHtml'] ?? false) {
                 if (!$this->multiple) {
                     return reset($files);
                 }

@@ -532,12 +532,12 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
                     continue;
                 }
 
-                if ('price' === $arrFormat[$name]['rgxp'] ?? null) {
+                if ('price' === ($arrFormat[$name]['rgxp'] ?? null)) {
                     $intTax = (int) $row['tax_class'];
 
                     $value = Isotope::formatPriceWithCurrency(Isotope::calculatePrice($value, $objProduct, $this->field_name, $intTax));
                 } else {
-                    $value = $arrFormat[$name]['format'] ? sprintf($arrFormat[$name]['format'], $value) : $value;
+                    $value = ($arrFormat[$name]['format'] ?? null) ? sprintf($arrFormat[$name]['format'], $value) : $value;
                 }
 
                 $strBuffer .= '
