@@ -8,10 +8,10 @@ use Isotope\Backend\Product\Permission;
 use Isotope\CompatibilityHelper;
 use Isotope\CoreBundle\DataContainer\ProductData;
 use Isotope\CoreBundle\Model\ProductType;
+use Isotope\CoreBundle\Model\RelatedProduct;
 use Isotope\Model\AttributeOption;
 use Isotope\Model\Download;
 use Isotope\Model\ProductPrice;
-use Isotope\Model\RelatedProduct;
 use Isotope\Model\TaxClass;
 
 System::loadLanguageFile(ProductType::getTable());

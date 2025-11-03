@@ -1,25 +1,13 @@
 <?php
 
-/*
- * Isotope eCommerce for Contao Open Source CMS
- *
- * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
- *
- * @link       https://isotopeecommerce.org
- * @license    https://opensource.org/licenses/lgpl-3.0.html
- */
-
-namespace Isotope\Model;
+namespace Isotope\CoreBundle\Model;
 
 use Contao\Database;
 use Contao\Model;
 use Contao\Model\Collection;
-use Isotope\CoreBundle\Product\ProductInterface;
-
+use Isotope\CoreBundle\Product\CoreProduct;
 
 /**
- * RelatedProduct holds array of related products
- *
  * @property int    $pid
  * @property int    $tstamp
  * @property int    $sorting
@@ -28,29 +16,26 @@ use Isotope\CoreBundle\Product\ProductInterface;
  */
 class RelatedProduct extends Model
 {
-
     /**
-     * Name of the current table
      * @var string
      */
     protected static $strTable = 'tl_iso_related_product';
 
     /**
-     * Find related products of a product
+     * Find related products of a product.
      *
-     *
-     * @return Collection|null
+     * @return Collection<RelatedProduct>|null
      */
-    public static function findByProductAndCategories(ProductInterface $objProduct, array $arrCategories, array $arrOptions = array())
+    public static function findByProductAndCategories(CoreProduct $objProduct, array $arrCategories, array $arrOptions = array()): Collection|null
     {
         $t = static::$strTable;
 
         if ($objProduct->isVariant()) {
             $pid = "($t.pid=? OR $t.pid=?)";
-            $value = [$objProduct->getProductId(), $objProduct->getId()];
+            $value = [$objProduct->pid, $objProduct->id];
         } else {
             $pid = "$t.pid=?";
-            $value = [$objProduct->getProductId()];
+            $value = [$objProduct->id];
         }
 
         $arrOptions = array_merge(

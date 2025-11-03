@@ -15,7 +15,7 @@ use Contao\Backend;
 use Contao\Database;
 use Contao\Input;
 use Contao\StringUtil;
-use Isotope\Model\RelatedCategory;
+use Isotope\CoreBundle\Model\RelatedCategory;
 
 
 class Callback extends Backend

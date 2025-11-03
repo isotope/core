@@ -7,11 +7,11 @@ use Isotope\Backend\Config\Callback as ConfigCallback;
 use Isotope\Backend\Module\Callback;
 use Isotope\CoreBundle\Model\Gallery;
 use Isotope\CoreBundle\Model\Payment;
+use Isotope\CoreBundle\Model\RelatedCategory;
 use Isotope\CoreBundle\Model\Shipping;
 use Isotope\CoreBundle\Product\Category\CategoryScope;
 use Isotope\Model\Address;
 use Isotope\Model\Config;
-use Isotope\Model\RelatedCategory;
 
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'iso_checkout_method';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'iso_enableLimit';
