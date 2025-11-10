@@ -12,14 +12,12 @@
 namespace Isotope\Model;
 
 use Contao\CoreBundle\Security\ContaoCorePermissions;
-use Contao\FrontendUser;
 use Contao\Model;
 use Contao\StringUtil;
 use Contao\System;
 use Isotope\Frontend;
 use Isotope\Interfaces\IsotopeVatNoValidator;
 use Isotope\Isotope;
-use Isotope\Translation;
 
 /**
  * TaxRate implements the tax rate model.
@@ -165,7 +163,7 @@ class TaxRate extends Model
      */
     public function getLabel()
     {
-        return Translation::get($this->label ? : $this->name);
+        return System::getContainer()->get('translator')->trans($this->label ? : $this->name, [], 'isotope');
     }
 
     /**

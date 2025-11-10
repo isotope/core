@@ -15,8 +15,6 @@ use Contao\Model;
 use Contao\System;
 use Isotope\CoreBundle\Store\Price\PriceDisplay;
 use Isotope\CoreBundle\Store\StoreManager;
-use Isotope\Isotope;
-use Isotope\Translation;
 
 /**
  * TaxRate implements the tax class model.
@@ -47,7 +45,7 @@ class TaxClass extends Model
      */
     public function getName()
     {
-        return Translation::get($this->name);
+        return System::getContainer()->get('translator')->trans($this->name, [], 'isotope');
     }
 
     /**
@@ -57,7 +55,7 @@ class TaxClass extends Model
      */
     public function getLabel()
     {
-        return $this->label ? Translation::get($this->label) : '';
+        return $this->label ? System::getContainer()->get('translator')->trans($this->label, [], 'isotope') : '';
     }
 
     /**

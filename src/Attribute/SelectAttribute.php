@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Attribute;
 
+use Contao\System;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Types\Types;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsAttribute;
 use Isotope\Translation;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[AsAttribute]
 class SelectAttribute extends AbstractOptionsAttribute implements VariantAttributeInterface
@@ -21,6 +23,11 @@ class SelectAttribute extends AbstractOptionsAttribute implements VariantAttribu
     private int $size = 1;
 
     private bool $chosen = false;
+
+    public static function getSubscribedServices(): array
+    {
+        return [...parent::getSubscribedServices(), TranslatorInterface::class];
+    }
 
     public function isIncludeBlankOption(): bool
     {
@@ -90,7 +97,10 @@ class SelectAttribute extends AbstractOptionsAttribute implements VariantAttribu
         $field['eval']['size'] = $this->getSize();
         $field['eval']['chosen'] = $this->hasChosen();
         $field['eval']['includeBlankOption'] = $this->isIncludeBlankOption();
-        $field['eval']['blankOptionLabel'] = Translation::get($this->getBlankOptionLabel());
+
+        if ($blankOptionLabel = $this->getBlankOptionLabel()) {
+            $field['eval']['blankOptionLabel'] = $this->get(TranslatorInterface::class)->trans($blankOptionLabel, [], 'isotope');
+        }
 
         if ($this->isVariantOption()) {
             $field['eval']['includeBlankOption'] = true;

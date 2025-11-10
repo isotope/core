@@ -6,7 +6,7 @@ namespace Isotope\CoreBundle\Model;
 
 use Contao\Model;
 use Contao\StringUtil;
-use Isotope\Translation;
+use Contao\System;
 
 /**
  * @property int    $id
@@ -39,7 +39,7 @@ class OrderStatus extends Model
      */
     public function getName(): string
     {
-        return Translation::get($this->name);
+        return System::getContainer()->get('translator')->trans($this->name, [], 'isotope');
     }
 
     /**

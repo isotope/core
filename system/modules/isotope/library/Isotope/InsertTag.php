@@ -57,7 +57,7 @@ class InsertTag
                 return $this->getValueForProductTag($product, $tokens[1]);
 
             case 'isolabel':
-                return $this->getValueForLabel($tokens[1], $tokens[2]);
+                return System::getContainer()->get('translator')->trans($tokens[1], [], 'isotope', $tokens[2] ?? null);
 
             case 'isotope':
             case 'cache_isotope':
@@ -185,19 +185,6 @@ class InsertTag
     private function getValueForProductTag(ProductInterface $product, $attribute)
     {
         return $product->$attribute;
-    }
-
-    /**
-     * Replaces given label from values in the translation table
-     *
-     * @param string $label    The label to be translated
-     * @param string $language Optionally accepts the desired language, uses current language if empty
-     *
-     * @return string
-     */
-    private function getValueForLabel($label, $language = null)
-    {
-        return Translation::get($label, $language);
     }
 
     /**

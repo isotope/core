@@ -12,13 +12,10 @@
 namespace Isotope\Model;
 
 use Contao\Database;
-use Contao\Date;
 use Contao\FrontendUser;
 use Contao\Model;
 use Contao\StringUtil;
 use Contao\System;
-use Isotope\CompatibilityHelper;
-use Isotope\Translation;
 
 /**
  * Isotope\Model\Config represents an Isotope config model
@@ -95,7 +92,7 @@ class Config extends Model
      */
     public function getLabel()
     {
-        return Translation::get(($this->label ? : $this->name));
+        return System::getContainer()->get('translator')->trans($this->label ? : $this->name, [], 'isotope');
     }
 
     /**

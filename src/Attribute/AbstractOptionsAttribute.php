@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Attribute;
 
 use Contao\StringUtil;
+use Contao\System;
 use Contao\Widget;
 use Doctrine\DBAL\Connection;
 use Isotope\Collection\AttributeOption as AttributeOptionCollection;
@@ -104,11 +105,13 @@ abstract class AbstractOptionsAttribute extends AbstractAttribute implements Opt
                     return [];
                 }
 
+                $translator = System::getContainer()->get('translator');
+
                 if ($this->isCustomerDefined()) {
                     // Build for a frontend widget
 
                     foreach ($this->options as $option) {
-                        $option['label'] = Translation::get($option['label']);
+                        $option['label'] = $translator->trans($option['label'], [], 'isotope');
 
                         $arrOptions[] = $option;
                     }
@@ -118,7 +121,7 @@ abstract class AbstractOptionsAttribute extends AbstractAttribute implements Opt
                     $group = '';
 
                     foreach ($this->options as $option) {
-                        $option['label'] = Translation::get($option['label']);
+                        $option['label'] = $translator->trans($option['label'], [], 'isotope');
 
                         if ($option['group'] ?? false) {
                             $group = $option['label'];
@@ -219,11 +222,12 @@ abstract class AbstractOptionsAttribute extends AbstractAttribute implements Opt
             case OptionsSource::Attribute:
                 $arrOptions = [];
                 $options = StringUtil::deserialize($this->options);
+                $translator = System::getContainer()->get('translator');
 
                 if (!empty($options) && \is_array($options)) {
                     foreach ($options as $option) {
                         if (\in_array($option['value'], $values, true)) {
-                            $option['label'] = Translation::get($option['label']);
+                            $option['label'] = $translator->trans($option['label'], [], 'isotope');
                             $arrOptions[] = $option;
                         }
                     }
