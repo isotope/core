@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Isotope\CoreBundle\EventListener\DataContainer;
+namespace Isotope\CoreBundle\EventListener\DataContainer\Product;
 
 use Contao\BackendUser;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;

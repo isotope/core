@@ -47,7 +47,11 @@ class AttributeListener
     #[AsHook('getAttributesFromDca')]
     public function addOptionsFromAttribute(array $config, mixed $dc): array
     {
-        if ('tl_iso_product' !== ($config['strTable'] ?? null) || !isset($config['strField'])) {
+        if (
+            'tl_iso_product' !== ($config['strTable'] ?? null)
+            || !isset($config['strField'])
+            || true === ($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$config['strField']]['attributes']['systemColumn'] ?? false)
+        ) {
             return $config;
         }
 
