@@ -1,6 +1,6 @@
 {
-  "backend.css": "/bundles/isotopecore/backend.b77083be.css",
-  "backend.js": "/bundles/isotopecore/backend.9df126d5.js",
+  "backend.css": "/bundles/isotopecore/backend.bc9e8c41.css",
+  "backend.js": "/bundles/isotopecore/backend.ca7fb2c0.js",
   "isotope.css": "/bundles/isotopecore/isotope.2f465aeb.css",
   "isotope.js": "/bundles/isotopecore/isotope.51b7fc86.js",
   "plugins/noUiSlider/nouislider.min.js": "/bundles/isotopecore/plugins/noUiSlider/nouislider.min.js",
@@ -63,8 +63,8 @@
   "images/related.svg": "/bundles/isotopecore/images/related.svg",
   "plugins/noUiSlider/nouislider.tooltips.css": "/bundles/isotopecore/plugins/noUiSlider/nouislider.tooltips.css",
   "images/module.svg": "/bundles/isotopecore/images/module.svg",
-  "backend.b77083be.css.map": "/bundles/isotopecore/backend.b77083be.css.map",
-  "backend.9df126d5.js.map": "/bundles/isotopecore/backend.9df126d5.js.map",
+  "backend.bc9e8c41.css.map": "/bundles/isotopecore/backend.bc9e8c41.css.map",
+  "backend.ca7fb2c0.js.map": "/bundles/isotopecore/backend.ca7fb2c0.js.map",
   "isotope.2f465aeb.css.map": "/bundles/isotopecore/isotope.2f465aeb.css.map",
   "isotope.51b7fc86.js.map": "/bundles/isotopecore/isotope.51b7fc86.js.map"
 }

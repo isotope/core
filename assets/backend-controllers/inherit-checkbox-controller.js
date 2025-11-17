@@ -54,6 +54,10 @@ export default class extends Controller {
 
         if (!injectError) {
             this.checkboxTarget.parentNode.style.display = 'none';
+
+            if (this.checkboxTarget.parentNode.closest('fieldset').querySelectorAll('.widget').length === 1) {
+                this.checkboxTarget.parentNode.closest('fieldset').style.display = 'none';
+            }
         }
     }
 
