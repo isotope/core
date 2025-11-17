@@ -2,7 +2,6 @@
 
 use Contao\DataContainer;
 use Contao\DC_Table;
-use Isotope\Backend\Download\Callback;
 
 $GLOBALS['TL_DCA']['tl_iso_download'] = [
     'config' => [
@@ -22,10 +21,7 @@ $GLOBALS['TL_DCA']['tl_iso_download'] = [
             'fields' => ['sorting'],
             'flag' => DataContainer::SORT_INITIAL_LETTER_ASC,
             'panelLayout' => 'filter;search,limit',
-            'headerFields' => [],
-            'header_callback' => [Callback::class, 'headerFields'],
-            'child_record_callback' => [Callback::class, 'listRows'],
-            'disableGrouping' => true,
+            'headerFields' => ['name', 'alias', 'sku'],
         ],
         'label' => [
             'fields' => ['title', 'singleSRC'],
