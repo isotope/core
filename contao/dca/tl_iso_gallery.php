@@ -60,12 +60,12 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = [
         'anchor' => [
             'inputType' => 'radio',
             'enum' => AnchorTarget::class,
-            'eval' => ['mandatory' => true, 'submitOnChange' => true, 'tl_class' => 'clr w50 w50h'],
+            'eval' => ['mandatory' => true, 'submitOnChange' => true, 'tl_class' => 'clr w50'],
             'sql' => "varchar(8) NOT NULL default ''",
         ],
         'placeholder' => [
             'inputType' => 'fileTree',
-            'eval' => ['fieldType' => 'radio', 'files' => true, 'filesOnly' => true, 'extensions' => '%contao.image.valid_extensions%', 'tl_class' => 'w50 w50h'],
+            'eval' => ['fieldType' => 'radio', 'files' => true, 'filesOnly' => true, 'extensions' => '%contao.image.valid_extensions%', 'tl_class' => 'w50'],
             'sql' => 'binary(16) NULL',
         ],
         'main_size' => [
@@ -91,7 +91,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = [
                     Controller::getTemplateGroup('j_'),
                     Controller::getTemplateGroup('js_'),
                 ),
-            'eval' => ['mandatory' => true, 'multiple' => true, 'tl_class' => 'w50 w50h'],
+            'eval' => ['mandatory' => true, 'multiple' => true, 'tl_class' => 'w50'],
             'sql' => 'blob NULL',
         ],
         'lightbox_size' => [

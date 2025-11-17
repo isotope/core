@@ -76,14 +76,14 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = [
         'countries' => [
             'filter' => true,
             'inputType' => 'select',
-            'eval' => ['multiple' => true, 'size' => 10, 'csv' => ',', 'tl_class' => 'w50 w50h', 'chosen' => true],
+            'eval' => ['multiple' => true, 'size' => 10, 'csv' => ',', 'tl_class' => 'w50', 'chosen' => true],
             'sql' => 'text NULL',
         ],
         'subdivisions' => [
             'filter' => true,
             'inputType' => 'conditionalselect',
             'options_callback' => [Backend::class, 'getSubdivisions'],
-            'eval' => ['conditionField' => 'countries', 'multiple' => true, 'size' => 10, 'csv' => ',', 'tl_class' => 'w50 w50h'],
+            'eval' => ['conditionField' => 'countries', 'multiple' => true, 'size' => 10, 'csv' => ',', 'tl_class' => 'w50'],
             'sql' => 'text NULL',
         ],
         'postalCodes' => [

@@ -100,14 +100,14 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
         ],
         'countries' => [
             'inputType' => 'select',
-            'eval' => ['multiple' => true, 'size' => 8, 'csv' => ',', 'tl_class' => 'w50 w50h', 'chosen' => true],
+            'eval' => ['multiple' => true, 'size' => 8, 'csv' => ',', 'tl_class' => 'w50', 'chosen' => true],
             'sql' => 'text NULL',
         ],
         'subdivisions' => [
             'sorting' => true,
             'inputType' => 'conditionalselect',
             'options_callback' => [Backend::class, 'getSubdivisions'],
-            'eval' => ['multiple' => true, 'size' => 8, 'csv' => ',', 'conditionField' => 'countries', 'tl_class' => 'w50 w50h'],
+            'eval' => ['multiple' => true, 'size' => 8, 'csv' => ',', 'conditionField' => 'countries', 'tl_class' => 'w50'],
             'sql' => 'longblob NULL',
         ],
         'postalCodes' => [
@@ -160,7 +160,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
         'product_types' => [
             'inputType' => 'select',
             'foreignKey' => ProductType::getTable().'.name',
-            'eval' => ['multiple' => true, 'size' => 8, 'chosen' => true, 'tl_class' => 'clr w50 w50h'],
+            'eval' => ['multiple' => true, 'size' => 8, 'chosen' => true, 'tl_class' => 'clr w50'],
             'sql' => 'blob NULL',
             'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
         ],
@@ -173,7 +173,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
         'config_ids' => [
             'inputType' => 'select',
             'foreignKey' => Config::getTable().'.name',
-            'eval' => ['multiple' => true, 'size' => 8, 'tl_class' => 'clr w50 w50h', 'chosen' => true],
+            'eval' => ['multiple' => true, 'size' => 8, 'tl_class' => 'clr w50', 'chosen' => true],
             'sql' => 'blob NULL',
             'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
         ],
@@ -214,7 +214,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
         'flatProductTypes' => [
             'inputType' => 'select',
             'foreignKey' => ProductType::getTable().'.name',
-            'eval' => ['multiple' => true, 'size' => 8, 'chosen' => true, 'tl_class' => 'w50 w50h'],
+            'eval' => ['multiple' => true, 'size' => 8, 'chosen' => true, 'tl_class' => 'w50'],
             'sql' => 'blob NULL',
             'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
         ],
@@ -240,7 +240,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
 
                 return null === $objShipping ? [] : $objShipping->fetchEach('name');
             },
-            'eval' => ['mandatory' => true, 'multiple' => true, 'tl_class' => 'clr w50 w50h'],
+            'eval' => ['mandatory' => true, 'multiple' => true, 'tl_class' => 'clr w50'],
             'sql' => 'blob NULL',
         ],
         'group_calculation' => [

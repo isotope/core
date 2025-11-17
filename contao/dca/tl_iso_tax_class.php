@@ -67,7 +67,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_class'] = [
         'rates' => [
             'inputType' => 'checkboxWizard',
             'foreignKey' => TaxRate::getTable().'.name',
-            'eval' => ['multiple' => true, 'tl_class' => 'clr w50 w50h'],
+            'eval' => ['multiple' => true, 'tl_class' => 'clr w50'],
             'sql' => 'blob NULL',
             'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
         ],

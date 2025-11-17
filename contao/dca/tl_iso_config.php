@@ -217,12 +217,12 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
         ],
         'billing_countries' => [
             'inputType' => 'select',
-            'eval' => ['multiple' => true, 'size' => 8, 'csv' => ',', 'tl_class' => 'w50 w50h', 'chosen' => true],
+            'eval' => ['multiple' => true, 'size' => 8, 'csv' => ',', 'tl_class' => 'w50', 'chosen' => true],
             'sql' => 'text NULL',
         ],
         'shipping_countries' => [
             'inputType' => 'select',
-            'eval' => ['multiple' => true, 'size' => 8, 'csv' => ',', 'tl_class' => 'w50 w50h', 'chosen' => true],
+            'eval' => ['multiple' => true, 'size' => 8, 'csv' => ',', 'tl_class' => 'w50', 'chosen' => true],
             'sql' => 'text NULL',
         ],
         'limitMemberCountries' => [

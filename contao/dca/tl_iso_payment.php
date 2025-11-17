@@ -127,18 +127,18 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = [
         ],
         'countries' => [
             'inputType' => 'select',
-            'eval' => ['multiple' => true, 'size' => 8, 'csv' => ',', 'tl_class' => 'w50 w50h', 'chosen' => true],
+            'eval' => ['multiple' => true, 'size' => 8, 'csv' => ',', 'tl_class' => 'w50', 'chosen' => true],
             'sql' => 'text NULL',
         ],
         'shipping_modules' => [
             'inputType' => 'select',
-            'eval' => ['multiple' => true, 'size' => 8, 'tl_class' => 'w50 w50h', 'chosen' => true],
+            'eval' => ['multiple' => true, 'size' => 8, 'tl_class' => 'w50', 'chosen' => true],
             'sql' => 'blob NULL',
         ],
         'product_types' => [
             'inputType' => 'select',
             'foreignKey' => ProductType::getTable().'.name',
-            'eval' => ['multiple' => true, 'size' => 8, 'tl_class' => 'clr w50 w50h', 'chosen' => true],
+            'eval' => ['multiple' => true, 'size' => 8, 'tl_class' => 'clr w50', 'chosen' => true],
             'sql' => 'blob NULL',
             'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
         ],
@@ -151,7 +151,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = [
         'config_ids' => [
             'inputType' => 'select',
             'foreignKey' => Config::getTable().'.name',
-            'eval' => ['multiple' => true, 'size' => 8, 'tl_class' => 'clr w50 w50h', 'chosen' => true],
+            'eval' => ['multiple' => true, 'size' => 8, 'tl_class' => 'clr w50', 'chosen' => true],
             'sql' => 'blob NULL',
             'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
         ],

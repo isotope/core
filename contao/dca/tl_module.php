@@ -310,7 +310,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_category_scope'] = [
     'enum' => CategoryScope::class,
     'reference' => &$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref'],
     'explanation' => 'iso_category_scope',
-    'eval' => ['tl_class' => 'clr w50 w50h', 'helpwizard' => true],
+    'eval' => ['tl_class' => 'clr w50', 'helpwizard' => true],
     'sql' => "varchar(64) NOT NULL default ''",
 ];
 
@@ -333,7 +333,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_filterModules'] = [
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_filterFields'] = [
     'inputType' => 'checkboxWizard',
     'options_callback' => [Callback::class, 'getFilterFields'],
-    'eval' => ['multiple' => true, 'tl_class' => 'clr w50 w50h'],
+    'eval' => ['multiple' => true, 'tl_class' => 'clr w50'],
     'sql' => 'blob NULL',
 ];
 
@@ -346,7 +346,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_filterHideSingle'] = [
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_searchFields'] = [
     'inputType' => 'checkboxWizard',
     'options_callback' => [Callback::class, 'getSearchFields'],
-    'eval' => ['multiple' => true, 'tl_class' => 'clr w50 w50h'],
+    'eval' => ['multiple' => true, 'tl_class' => 'clr w50'],
     'sql' => 'blob NULL',
 ];
 
@@ -367,7 +367,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_searchAutocomplete'] = [
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_sortingFields'] = [
     'inputType' => 'checkboxWizard',
     'options_callback' => [Callback::class, 'getSortingFields'],
-    'eval' => ['multiple' => true, 'tl_class' => 'clr w50 w50h'],
+    'eval' => ['multiple' => true, 'tl_class' => 'clr w50'],
     'sql' => 'blob NULL',
 ];
 

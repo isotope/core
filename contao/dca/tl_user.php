@@ -38,14 +38,14 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['iso_modules'] = [
     'filter' => true,
     'inputType' => 'checkbox',
     'reference' => &$GLOBALS['TL_LANG']['IMD'],
-    'eval' => ['multiple' => true, 'helpwizard' => true, 'tl_class' => 'clr w50 w50h'],
+    'eval' => ['multiple' => true, 'helpwizard' => true, 'tl_class' => 'clr w50'],
     'sql' => 'blob NULL',
 ];
 
 $GLOBALS['TL_DCA']['tl_user']['fields']['iso_product_types'] = [
     'inputType' => 'checkbox',
     'foreignKey' => ProductType::getTable().'.name',
-    'eval' => ['multiple' => true, 'tl_class' => 'clr w50 w50h'],
+    'eval' => ['multiple' => true, 'tl_class' => 'clr w50'],
     'sql' => 'blob NULL',
 ];
 
@@ -53,14 +53,14 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['iso_product_typep'] = [
     'inputType' => 'checkbox',
     'options' => ['create', 'delete'],
     'reference' => &$GLOBALS['TL_LANG']['MSC'],
-    'eval' => ['multiple' => true, 'tl_class' => 'w50 w50h'],
+    'eval' => ['multiple' => true, 'tl_class' => 'w50'],
     'sql' => 'blob NULL',
 ];
 
 $GLOBALS['TL_DCA']['tl_user']['fields']['iso_payment_modules'] = [
     'inputType' => 'checkbox',
     'foreignKey' => Payment::getTable().'.name',
-    'eval' => ['multiple' => true, 'tl_class' => 'clr w50 w50h'],
+    'eval' => ['multiple' => true, 'tl_class' => 'clr w50'],
     'sql' => 'blob NULL',
 ];
 
@@ -68,14 +68,14 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['iso_payment_modulep'] = [
     'inputType' => 'checkbox',
     'options' => ['create', 'delete'],
     'reference' => &$GLOBALS['TL_LANG']['MSC'],
-    'eval' => ['multiple' => true, 'tl_class' => 'w50 w50h'],
+    'eval' => ['multiple' => true, 'tl_class' => 'w50'],
     'sql' => 'blob NULL',
 ];
 
 $GLOBALS['TL_DCA']['tl_user']['fields']['iso_shipping_modules'] = [
     'inputType' => 'checkbox',
     'foreignKey' => Shipping::getTable().'.name',
-    'eval' => ['multiple' => true, 'tl_class' => 'clr w50 w50h'],
+    'eval' => ['multiple' => true, 'tl_class' => 'clr w50'],
     'sql' => 'blob NULL',
 ];
 
@@ -83,14 +83,14 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['iso_shipping_modulep'] = [
     'inputType' => 'checkbox',
     'options' => ['create', 'delete'],
     'reference' => &$GLOBALS['TL_LANG']['MSC'],
-    'eval' => ['multiple' => true, 'tl_class' => 'w50 w50h'],
+    'eval' => ['multiple' => true, 'tl_class' => 'w50'],
     'sql' => 'blob NULL',
 ];
 
 $GLOBALS['TL_DCA']['tl_user']['fields']['iso_tax_classes'] = [
     'inputType' => 'checkbox',
     'foreignKey' => TaxClass::getTable().'.name',
-    'eval' => ['multiple' => true, 'tl_class' => 'clr w50 w50h'],
+    'eval' => ['multiple' => true, 'tl_class' => 'clr w50'],
     'sql' => 'blob NULL',
 ];
 
@@ -98,14 +98,14 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['iso_tax_classp'] = [
     'inputType' => 'checkbox',
     'options' => ['create', 'delete'],
     'reference' => &$GLOBALS['TL_LANG']['MSC'],
-    'eval' => ['multiple' => true, 'tl_class' => 'w50 w50h'],
+    'eval' => ['multiple' => true, 'tl_class' => 'w50'],
     'sql' => 'blob NULL',
 ];
 
 $GLOBALS['TL_DCA']['tl_user']['fields']['iso_tax_rates'] = [
     'inputType' => 'checkbox',
     'foreignKey' => TaxRate::getTable().'.name',
-    'eval' => ['multiple' => true, 'tl_class' => 'clr w50 w50h'],
+    'eval' => ['multiple' => true, 'tl_class' => 'clr w50'],
     'sql' => 'blob NULL',
 ];
 
@@ -113,14 +113,14 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['iso_tax_ratep'] = [
     'inputType' => 'checkbox',
     'options' => ['create', 'delete'],
     'reference' => &$GLOBALS['TL_LANG']['MSC'],
-    'eval' => ['multiple' => true, 'tl_class' => 'w50 w50h'],
+    'eval' => ['multiple' => true, 'tl_class' => 'w50'],
     'sql' => 'blob NULL',
 ];
 
 $GLOBALS['TL_DCA']['tl_user']['fields']['iso_configs'] = [
     'inputType' => 'checkbox',
     'foreignKey' => Config::getTable().'.name',
-    'eval' => ['multiple' => true, 'tl_class' => 'clr w50 w50h'],
+    'eval' => ['multiple' => true, 'tl_class' => 'clr w50'],
     'sql' => 'blob NULL',
 ];
 
@@ -128,7 +128,7 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['iso_configp'] = [
     'inputType' => 'checkbox',
     'options' => ['create', 'delete'],
     'reference' => &$GLOBALS['TL_LANG']['MSC'],
-    'eval' => ['multiple' => true, 'tl_class' => 'w50 w50h'],
+    'eval' => ['multiple' => true, 'tl_class' => 'w50'],
     'sql' => 'blob NULL',
 ];
 
