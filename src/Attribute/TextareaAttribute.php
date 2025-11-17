@@ -34,6 +34,10 @@ class TextareaAttribute extends AbstractAttribute
             $field['eval']['rte'] = $this->rte;
             $field['eval']['tl_class'] = 'clr';
         }
+
+        if ($this->isTranslatable()) {
+            $field['eval']['translatableFor'] = '*';
+        }
     }
 
     protected function getSqlDefinition(): array|string

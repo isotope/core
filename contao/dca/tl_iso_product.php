@@ -3,15 +3,12 @@
 use Contao\DataContainer;
 use Contao\Input;
 use Contao\System;
-use Isotope\Backend;
 use Isotope\Backend\Product\Permission;
 use Isotope\CompatibilityHelper;
 use Isotope\CoreBundle\DataContainer\ProductData;
 use Isotope\CoreBundle\Model\ProductType;
 use Isotope\CoreBundle\Model\RelatedProduct;
-use Isotope\Model\AttributeOption;
 use Isotope\Model\Download;
-use Isotope\Model\ProductPrice;
 use Isotope\Model\TaxClass;
 
 System::loadLanguageFile(ProductType::getTable());
@@ -21,7 +18,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
         'label' => &$GLOBALS['TL_LANG']['MOD']['iso_products'][0],
         'dataContainer' => ProductData::class,
         'enableVersioning' => true,
-        'ctable' => [Download::getTable(), AttributeOption::getTable()],
+        'ctable' => ['tl_iso_download', 'tl_iso_attribute_option'],
         'onload_callback' => [
             [Permission::class, 'check'],
         ],
@@ -33,7 +30,6 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
                 'language,published,start,stop,pid' => 'index',
                 'start' => 'index',
                 'sku' => 'index',
-                'gtin' => 'index',
             ],
         ],
     ],
@@ -52,6 +48,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
         'operations' => [
             'edit',
             'children' => [
+                // needs to be defined, otherwise Contao will generate children for the first ctable
                 'href' => '',
                 'icon' => 'children.svg',
                 'primary' => true,
@@ -95,8 +92,6 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'sql' => 'int(10) unsigned NOT NULL auto_increment',
         ],
         'pid' => [
-            // Fix for DC_Table, otherwise getPalette() will not use the PID value
-            'eval' => ['submitOnChange' => true],
             'attributes' => ['systemColumn' => true],
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
@@ -142,7 +137,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
         ],
         'inherit' => [
             'inputType' => 'inheritCheckbox',
-            'eval' => ['multiple' => true],
+            'eval' => ['multiple' => true, 'translatableFor' => '*'],
             'attributes' => ['systemColumn' => true],
             'sql' => 'blob NULL',
         ],
@@ -181,36 +176,36 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'search' => true,
             'sorting' => true,
             'inputType' => 'text',
-            'eval' => ['mandatory' => true, 'tl_class' => 'clr long'],
-            'attributes' => ['legend' => 'general_legend', 'multilingual' => true, 'fixed' => true, 'fe_sorting' => true, 'fe_search' => true],
+            'eval' => ['mandatory' => true, 'translatableFor' => '*', 'tl_class' => 'clr long'],
+            'attributes' => ['legend' => 'general_legend', 'fixed' => true, 'fe_sorting' => true, 'fe_search' => true],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'teaser' => [
             'search' => true,
             'inputType' => 'textarea',
-            'eval' => ['style' => 'height:80px', 'tl_class' => 'clr'],
-            'attributes' => ['legend' => 'general_legend', 'multilingual' => true, 'fe_search' => true],
+            'eval' => ['translatableFor' => '*', 'style' => 'height:80px', 'tl_class' => 'clr'],
+            'attributes' => ['legend' => 'general_legend', 'fe_search' => true],
             'sql' => 'text NULL',
         ],
         'description' => [
             'search' => true,
             'inputType' => 'textarea',
-            'eval' => ['mandatory' => true, 'rte' => 'tinyMCE', 'tl_class' => 'clr'],
-            'attributes' => ['legend' => 'general_legend', 'multilingual' => true, 'fe_search' => true],
+            'eval' => ['mandatory' => true, 'rte' => 'tinyMCE', 'translatableFor' => '*', 'tl_class' => 'clr'],
+            'attributes' => ['legend' => 'general_legend', 'fe_search' => true],
             'sql' => 'text NULL',
         ],
         'meta_title' => [
             'search' => true,
             'inputType' => 'text',
-            'eval' => ['maxlength' => 255, 'tl_class' => 'clr long'],
-            'attributes' => ['legend' => 'meta_legend', 'multilingual' => true, 'variant_excluded' => true],
+            'eval' => ['maxlength' => 255, 'translatableFor' => '*', 'tl_class' => 'clr long'],
+            'attributes' => ['legend' => 'meta_legend', 'variant_excluded' => true],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'meta_description' => [
             'search' => true,
             'inputType' => 'textarea',
-            'eval' => ['style' => 'height:60px', 'tl_class' => 'clr'],
-            'attributes' => ['legend' => 'meta_legend', 'multilingual' => true, 'variant_excluded' => true],
+            'eval' => ['translatableFor' => '*', 'style' => 'height:60px', 'tl_class' => 'clr'],
+            'attributes' => ['legend' => 'meta_legend', 'variant_excluded' => true],
             'sql' => 'text NULL',
         ],
         'price' => [
@@ -312,8 +307,8 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
         'images' => [
             'inputType' => 'mediaManager',
             'explanation' => 'mediaManager',
-            'eval' => ['extensions' => '%contao.image.valid_extensions%', 'helpwizard' => true, 'tl_class' => 'clr'],
-            'attributes' => ['legend' => 'media_legend', 'fixed' => true, 'multilingual' => true, 'dynamic' => true, 'systemColumn' => true, 'fetch_fallback' => true],
+            'eval' => ['translatableFor' => '*', 'extensions' => '%contao.image.valid_extensions%', 'helpwizard' => true, 'tl_class' => 'clr'],
+            'attributes' => ['legend' => 'media_legend', 'fixed' => true, 'dynamic' => true, 'systemColumn' => true, 'fetch_fallback' => true],
             'sql' => 'blob NULL',
         ],
         'protected' => [

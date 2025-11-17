@@ -7,7 +7,6 @@ use Contao\Backend;
 use Contao\BackendTemplate;
 use Contao\BackendUser;
 use Contao\Config;
-use Contao\Controller;
 use Contao\CoreBundle\Exception\AccessDeniedException;
 use Contao\CoreBundle\Exception\InternalServerErrorException;
 use Contao\CoreBundle\Exception\NotFoundException;
@@ -20,10 +19,8 @@ use Contao\CoreBundle\String\HtmlAttributes;
 use Contao\Database;
 use Contao\DataContainer;
 use Contao\Date;
-use Contao\DC_Table;
 use Contao\Environment;
 use Contao\FilesModel;
-use Contao\Image;
 use Contao\Input;
 use Contao\Message;
 use Contao\StringUtil;
@@ -37,23 +34,6 @@ use Terminal42\DcMultilingualBundle\Driver;
 
 class ProductData extends Driver
 {
-	/**
-	 * True if we are editing a language
-	 */
-	protected $blnEditLanguage;
-
-	/**
-	 * Array of translations for this product's type
-	 * @var array
-	 */
-	protected $arrTranslations;
-
-	/**
-	 * Array of language labels
-	 * @var array
-	 */
-	protected $arrLanguageLabels;
-
 	/**
 	 * Initialize the object
 	 * @param string
@@ -82,35 +62,6 @@ class ProductData extends Driver
                 Input::setGet('children', '1');
             }
 		}
-
-		// Allow to customize languages via the onload_callback
-		if (isset($GLOBALS['TL_DCA'][$this->strTable]['config']['languages'])) {
-			$arrPageLanguages = $GLOBALS['TL_DCA'][$this->strTable]['config']['languages'];
-		} else {
-			$arrPageLanguages = array_map(
-				function ($strLang) {
-					return str_replace('-', '_', $strLang);
-				},
-				$this->Database
-					->execute("SELECT DISTINCT language FROM tl_page WHERE type='root' AND language!=''")
-					->fetchEach('language')
-			);
-		}
-
-		if (\count($arrPageLanguages) > 1) {
-			$this->arrTranslationLabels = System::getContainer()->get('contao.intl.locales')->getLocales(null, true);
-			$this->arrTranslations      = array_intersect(array_keys($this->arrTranslationLabels), $arrPageLanguages);
-		}
-	}
-
-	public function __get($strKey)
-	{
-		switch ($strKey) {
-			case 'editLanguage':
-				return $this->blnEditLanguage;
-		}
-
-		return parent::__get($strKey);
 	}
 
 	/**
@@ -359,10 +310,11 @@ class ProductData extends Driver
 		$currentRecord = $this->getCurrentRecord();
 
 		// Access to a translation detected, redirect with main language id and request translated version
-		if ($currentRecord[$this->pidColumnName] > 0)
+		if ($currentRecord[$this->pidColumnName] > 0 && $currentRecord['language'] !== '')
 		{
+            /** @var AttributeBagInterface $objSessionBag */
+            $objSessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
 			$this->sessionKey = 'dc_multilingual:' . $this->strTable . ':' . $currentRecord[$this->pidColumnName];
-			$objSessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
 			$objSessionBag->set($this->sessionKey, $currentRecord[$this->langColumnName]);
 			$this->redirect($this->addToUrl('id=' . $currentRecord[$this->pidColumnName]));
 		}
@@ -385,7 +337,7 @@ class ProductData extends Driver
 		$this->blnCreateNewVersion = false;
 
 		// Load the language record
-		$currentRecord = $this->loadCurrentLanguageRecord($currentRecord);
+		$currentRecord = $this->loadCurrentLanguageRecord(array_diff_key($currentRecord, ['pid' => 0]));
 
 		// Handle language change or deletion
 		$this->handleLanguageOperation();
@@ -707,15 +659,15 @@ class ProductData extends Driver
 			$operations->addBackButton($strBackUrl);
 		}
 
-		if ($this->blnEditLanguage)
+		if ($this->editLang)
 		{
-            $operations->append([
-                'label' => $GLOBALS['TL_LANG']['MSC']['copyFallback'] ?? 'copyFallback',
-                'href' => Backend::addToUrl('act=copyFallback'),
-                'class' => 'header_iso_copy',
-                'attributes' => new HtmlAttributes('accesskey="d" onclick="Backend.getScrollOffset();"'),
-                'primary' => true,
-            ]);
+			$operations->append([
+				'label' => $GLOBALS['TL_LANG']['MSC']['copyFallback'] ?? 'copyFallback',
+				'href' => Backend::addToUrl('act=copyFallback'),
+				'icon' => 'copy.svg',
+				'attributes' => new HtmlAttributes('accesskey="d" onclick="Backend.getScrollOffset();"'),
+				'primary' => true,
+			]);
 		}
 
 		// Begin the form (-> DO NOT CHANGE THIS ORDER -> this way the onsubmit attribute of the form can be changed by a field)

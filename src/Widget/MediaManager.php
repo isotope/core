@@ -11,8 +11,10 @@ use Contao\StringUtil;
 use Contao\System;
 use Contao\UploadableWidgetInterface;
 use Contao\Widget;
+use Doctrine\DBAL\Connection;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
+use Terminal42\DcMultilingualBundle\Driver;
 
 class MediaManager extends Widget implements UploadableWidgetInterface
 {
@@ -218,27 +220,32 @@ class MediaManager extends Widget implements UploadableWidgetInterface
     /**
      * Get the file path or folder only.
      */
-    protected function getFilePath(string $file, bool $folder = false): string
+    private function getFilePath(string $file): string
     {
         if (false !== stripos($file, self::TEMP_FOLDER)) {
-            return $folder ? \dirname($folder) : $file;
+            return $file;
         }
 
-        return 'isotope/'.$file[0].($folder ? '' : '/'.$file);
+        return 'isotope/'.$file[0].'/'.$file;
     }
 
     /**
      * Retrieve image data from fallback language.
      */
-    protected function getFallbackData(): array|null
+    private function getFallbackData(): array|null
     {
-        // Fetch fallback language record
-        if ($this->objDca->editLanguage) {
-            $data = StringUtil::deserialize(Database::getInstance()->execute("SELECT {$this->strField} FROM {$this->strTable} WHERE id={$this->currentRecord}")->{$this->strField});
+        $dc = $this->objDca;
 
-            if (\is_array($data)) {
-                return $data;
-            }
+        if (!$dc instanceof Driver || !$dc->getCurrentLanguage()) {
+            return null;
+        }
+
+        /** @var Connection $connection */
+        $connection = System::getContainer()->get('database_connection');
+        $data = StringUtil::deserialize($connection->fetchOne("SELECT {$this->strField} FROM {$this->strTable} WHERE id={$this->currentRecord}"));
+
+        if (\is_array($data)) {
+            return $data;
         }
 
         return null;

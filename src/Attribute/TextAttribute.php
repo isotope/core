@@ -76,6 +76,10 @@ class TextAttribute extends AbstractAttribute
         $field['eval']['maxlength'] = $this->maxlength;
         $field['eval']['rgxp'] = $this->rgxp;
         $field['eval']['datepicker'] = $this->datepicker;
+
+        if ($this->isTranslatable()) {
+            $field['eval']['translatableFor'] = '*';
+        }
     }
 
     protected function getSqlDefinition(): array|string

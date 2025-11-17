@@ -104,7 +104,7 @@
         </td>
         <td class="col_2">
             <label for="{{ name }}_{{ key }}_desc" class="invisible">{{ 'tl_iso_product.mmDesc'|trans }}</label>
-            <textarea id="{{ name }}_{{ key }}_desc" name="{{ name }}[{{ key }}][desc]" cols="40" rows="3" class="tl_textarea"{% if isLanguage and translate != 'all' %} disabled{% endif %}>{{ file.desc|default }}</textarea>
+            <textarea id="{{ name }}_{{ key }}_desc" name="{{ name }}[{{ key }}][desc]" cols="40" rows="3" class="tl_textarea"{% if isLanguage and translate == 'none' %} disabled{% endif %}>{{ file.desc|default }}</textarea>
         </td>
         <td class="col_3">
             {% if isLanguage %}<input type="hidden" name="{{ name }}[{{ key }}][translate]" value="{{ translate }}">{% endif %}
