@@ -263,20 +263,6 @@ if (Contao\Config::getInstance()->isComplete()) {
 
     // changelanguage
     $GLOBALS['TL_HOOKS']['changelanguageNavigation'][] = [ChangeLanguageListener::class, '__invoke'];
-
-    // Set module and module id for payment and/or shipping modules
-    if (System::getContainer()->get('contao.routing.scope_matcher')->isFrontendRequest(System::getContainer()->get('request_stack')->getCurrentRequest() ?? Request::create(''))) {
-        // Only limit countries in FE
-        $GLOBALS['TL_HOOKS']['loadDataContainer'][] = [MemberCallback::class, 'limitCountries'];
-    }
-
-    if (System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest(System::getContainer()->get('request_stack')->getCurrentRequest() ?? Request::create(''))) {
-        // Type agent help is only needed in back end
-        $GLOBALS['TL_HOOKS']['loadDataContainer'][] = [Backend::class, 'loadTypeAgentHelp'];
-        $GLOBALS['TL_HOOKS']['loadLanguageFile'][] = [Help::class, 'initializeWizard'];
-
-        $GLOBALS['TL_HOOKS']['parseTemplate'][] = [SubtableVersion::class, 'removeFromWelcomeScreen'];
-    }
 }
 
 /*
