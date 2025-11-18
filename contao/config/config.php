@@ -69,16 +69,16 @@ if (!is_array($GLOBALS['BE_MOD']['isotope'] ?? null)) {
 
 ArrayUtil::arrayInsert($GLOBALS['BE_MOD']['isotope'], 0, [
     'iso_products' => [
-        'tables' => [Product::getTable(), ProductCategory::getTable(), Download::getTable(), RelatedProduct::getTable(), AttributeOption::getTable()],
+        'tables' => ['tl_iso_product', 'tl_iso_product_category', 'tl_iso_download', 'tl_iso_related_product', 'tl_iso_attribute_option'],
     ],
     'iso_orders' => [
-        'tables' => [ProductCollection::getTable(), ProductCollectionItem::getTable(), ProductCollectionSurcharge::getTable(), ProductCollectionDownload::getTable(), Address::getTable()],
+        'tables' => ['tl_iso_product_collection', 'tl_iso_product_collection_item', 'tl_iso_product_collection_surcharge', 'tl_iso_product_collection_download', 'tl_iso_address'],
         'print_document' => [Callback::class, 'printDocument'],
     ],
     'iso_setup' => [],
 ]);
 
-$GLOBALS['BE_MOD']['accounts']['member']['tables'][] = Address::getTable();
+$GLOBALS['BE_MOD']['accounts']['member']['tables'][] = 'tl_iso_address';
 
 /*
  * Frontend modules

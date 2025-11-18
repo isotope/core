@@ -6,14 +6,6 @@ use Contao\Input;
 use Contao\System;
 use Isotope\Backend\ProductCollection\Callback;
 use Isotope\CompatibilityHelper;
-use Isotope\CoreBundle\Model\OrderStatus;
-use Isotope\CoreBundle\Model\Payment;
-use Isotope\CoreBundle\Model\Shipping;
-use Isotope\Model\Address;
-use Isotope\Model\Config;
-use Isotope\Model\ProductCollectionItem;
-use Isotope\Model\ProductCollectionLog;
-use Isotope\Model\ProductCollectionSurcharge;
 
 /*
  * Load tl_iso_product data container and language files
@@ -25,7 +17,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
     'config' => [
         'dataContainer' => DC_Table::class,
         'enableVersioning' => false,
-        'ctable' => [ProductCollectionItem::getTable(), ProductCollectionLog::getTable(), ProductCollectionSurcharge::getTable(), Address::getTable()],
+        'ctable' => ['tl_iso_product_collection_item', 'tl_iso_product_collection_surcharge', 'tl_iso_product_collection_log', 'tl_iso_address'],
         'closed' => true,
         'notCreatable' => true,
         'notCopyable' => true,
@@ -137,7 +129,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
             'filter' => true,
             'sorting' => true,
             'inputType' => 'select',
-            'foreignKey' => OrderStatus::getTable().'.name',
+            'foreignKey' => 'tl_iso_orderstatus.name',
             'eval' => ['tl_class' => 'w50'],
             'sql' => "int(10) unsigned NOT NULL default '0'",
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
@@ -177,32 +169,32 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
         ],
         'config_id' => [
             'filter' => true,
-            'foreignKey' => Config::getTable().'.name',
+            'foreignKey' => 'tl_iso_config.name',
             'sql' => "int(10) unsigned NOT NULL default '0'",
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
         ],
         'payment_id' => [
             'filter' => true,
-            'foreignKey' => Payment::getTable().'.name',
+            'foreignKey' => 'tl_iso_payment.name',
             'sql' => "int(10) unsigned NOT NULL default '0'",
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
         ],
         'shipping_id' => [
             'filter' => true,
-            'foreignKey' => Shipping::getTable().'.name',
+            'foreignKey' => 'tl_iso_shipping.name',
             'sql' => "int(10) unsigned NOT NULL default '0'",
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
         ],
         'billing_address_id' => [
             'search' => true,
-            'foreignKey' => Address::getTable().".CONCAT_WS(' ', label, company, firstname, lastname, street_1, street_2, street_3, postal, city)",
+            'foreignKey' => "tl_iso_address.CONCAT_WS(' ', label, company, firstname, lastname, street_1, street_2, street_3, postal, city)",
             'eval' => ['doNotShow' => true],
             'sql' => "int(10) unsigned NOT NULL default '0'",
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
         ],
         'shipping_address_id' => [
             'search' => true,
-            'foreignKey' => Address::getTable().".CONCAT_WS(' ', label, company, firstname, lastname, street_1, street_2, street_3, postal, city)",
+            'foreignKey' => "tl_iso_address.CONCAT_WS(' ', label, company, firstname, lastname, street_1, street_2, street_3, postal, city)",
             'eval' => ['doNotShow' => true],
             'sql' => "int(10) unsigned NOT NULL default '0'",
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],

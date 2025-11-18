@@ -5,11 +5,8 @@ use Contao\DataContainer;
 use Contao\DC_Table;
 use Isotope\Backend;
 use Isotope\Backend\Config\Callback;
-use Isotope\CompatibilityHelper;
-use Isotope\CoreBundle\EventListener\DataContainer\Config\AddressFieldsListener;
 use Isotope\CoreBundle\Model\OrderStatus;
 use Isotope\CoreBundle\Store\Price\PriceDisplay;
-use Isotope\Model\Config;
 
 $GLOBALS['TL_DCA']['tl_iso_config'] = [
     'config' => [

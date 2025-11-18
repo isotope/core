@@ -93,12 +93,12 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
         ],
         'pid' => [
             'attributes' => ['systemColumn' => true],
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => 'int(10) unsigned NOT NULL default 0',
         ],
         'tstamp' => [
             'sorting' => true,
             'attributes' => ['systemColumn' => true],
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => 'int(10) unsigned NOT NULL default 0',
         ],
         'language' => [
             'eval' => ['doNotShow' => true],
@@ -110,13 +110,13 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'sorting' => true,
             'eval' => ['rgxp' => 'datim', 'doNotCopy' => true],
             'attributes' => ['fe_sorting' => true, 'systemColumn' => true],
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => 'int(10) unsigned NOT NULL default 0',
         ],
         'hitCount' => [
             'sorting' => true,
             'flag' => DataContainer::SORT_DESC,
             'attributes' => ['fe_sorting' => true, 'systemColumn' => true],
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => 'int(10) unsigned NOT NULL default 0',
         ],
         'type' => [
             'filter' => true,
@@ -124,7 +124,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'foreignKey' => 'tl_iso_producttype.name',
             'eval' => ['mandatory' => true, 'submitOnChange' => true, 'includeBlankOption' => true, 'tl_class' => 'w50 wizard', 'helpwizard' => true],
             'attributes' => ['legend' => 'general_legend', 'fixed' => true, 'inherit' => true, 'systemColumn' => true],
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => 'int(10) unsigned NOT NULL default 0',
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
             'explanation' => 'tl_iso_product.type',
         ],
