@@ -8,32 +8,35 @@ use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\DataContainer;
 use Isotope\CoreBundle\Controller\Backend\ShopConfigController;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 #[AsCallback('tl_iso_product', 'fields.type.wizard')]
-class ProductTypeWizard
+class ProductTypeWizardListener
 {
     public function __construct(
         private readonly UrlGeneratorInterface $urlGenerator,
         private readonly Environment $twig,
+        private readonly TranslatorInterface $translator,
     ) {
     }
 
     public function __invoke(DataContainer $dc): string
     {
-        if (!$dc->value) {
-            return '';
-        }
+        $href = null;
 
-        $href = $this->urlGenerator->generate(ShopConfigController::class, [
-            'table' => 'tl_iso_producttype',
-            'act' => 'edit',
-            'id' => $dc->value,
-        ]);
+        if ($dc->value) {
+            $href = $this->urlGenerator->generate(ShopConfigController::class, [
+                'table' => 'tl_iso_producttype',
+                'act' => 'edit',
+                'id' => $dc->value,
+            ]);
+        }
 
         return $this->twig->render('@Contao/backend/isotope/edit-wizard.html.twig', [
             'href' => $href,
-            'title' => \sprintf($GLOBALS['TL_LANG']['tl_iso_producttype']['edit'][1], $dc->value),
+            'table' => 'tl_iso_producttype',
+            'value' => $dc->value,
         ]);
     }
 }

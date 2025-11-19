@@ -337,16 +337,17 @@ class AttributeWizardListener
             }
 
             $href = null;
-            $title = null;
+            $value = null;
 
             if (isset($attributes[$field['name']])) {
                 $href = Backend::addToUrl('mod=attributes&table=tl_iso_attribute&id='.$attributes[$field['name']]);
-                $title = $this->translator->trans('tl_iso_attribute.edit.1', [$attributes[$field['name']]], 'contao_tl_iso_attribute');
+                $value = $attributes[$field['name']];
             }
 
             return $this->twig->render('@Contao/backend/isotope/edit-wizard.html.twig', [
                 'href' => $href,
-                'title' => $title,
+                'table' => 'tl_iso_attribute',
+                'value' => $value,
             ]);
         };
     }

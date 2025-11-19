@@ -1,4 +1,5 @@
 {% if href %}
+    {% set title = "#{table}.edit.1"|trans([value], "contao_#{table}") %}
     <a href="{{ href }}" onclick="Backend.openModalIframe({title:'{{ title }}',url:`${this.href}&popup=1&nb=1`});return false">
         {{ backend_icon('edit.svg', title) }}
     </a>
