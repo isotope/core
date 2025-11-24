@@ -244,6 +244,10 @@ class AttributeWizardListener
         $singular = $this->getSingularFields();
         $data = array_merge($dc->getCurrentRecord(), $values);
 
+        if (!$data['variants']) {
+            return $values;
+        }
+
         $duplicates = array_intersect(
             array_map(static fn ($v) => $v['name'], array_filter(StringUtil::deserialize($data['attributes'], true), static fn ($v) => $v['enabled'])),
             array_map(static fn ($v) => $v['name'], array_filter(StringUtil::deserialize($data['variant_attributes'], true), static fn ($v) => $v['enabled'])),
