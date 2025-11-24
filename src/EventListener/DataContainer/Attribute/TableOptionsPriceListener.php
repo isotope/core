@@ -14,7 +14,7 @@ use Terminal42\DcawizardBundle\Widget\DcaWizard;
 /**
  * Show price column in dcaWizard if attribute is not a variant option.
  */
-#[AsCallback('tl_iso_attribute', 'config.onload')]
+#[AsCallback('tl_iso_attribute', 'fields.optionsTable.foreignTable', singleton: true)]
 class TableOptionsPriceListener
 {
     public function __construct(
@@ -23,13 +23,7 @@ class TableOptionsPriceListener
     ) {
     }
 
-    public function __invoke(): void
-    {
-        // Cannot use #[AsCallback(...)] because the array only expects one callback and Contao creates multiple by default
-        $GLOBALS['TL_DCA']['tl_iso_attribute']['fields']['optionsTable']['foreignTable_callback'] = $this->getForeignTable(...);
-    }
-
-    private function getForeignTable(DcaWizard $widget): string
+    public function __invoke(DcaWizard $widget): string
     {
         if ('iso_products' === $this->requestStack->getCurrentRequest()?->query->get('do')) {
             $attribute = $this->attributeRegistry->get($widget->name);
