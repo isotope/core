@@ -110,7 +110,7 @@ class Backend extends ContaoBackend
             return $arrSubdivisions[$country][$subdivision];
         }
 
-        if (\is_array($arrSubdivisions[$country])) {
+        if (\is_array($arrSubdivisions[$country] ?? null)) {
             foreach ($arrSubdivisions[$country] as $regionGroup) {
                 if (\is_array($regionGroup)) {
                     foreach ($regionGroup as $regions) {
