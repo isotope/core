@@ -34,6 +34,7 @@ class CoreAttributeFactory implements AttributeFactoryInterface
             ->setMandatory((bool) ($config['mandatory'] ?? $dca['eval']['mandatory'] ?? false))
             ->setBackendSearchable((bool) ($config['be_search'] ?? $dca['search'] ?? false))
             ->setBackendFilterable((bool) ($config['be_filter'] ?? $dca['filter'] ?? false))
+            ->setBackendColumn((bool) ($config['be_column'] ?? $dca['attributes']['be_column'] ?? false))
             ->setFrontendSearchable((bool) ($config['fe_search'] ?? $dca['attributes']['fe_search'] ?? false))
             ->setFrontendFilterable((bool) ($config['fe_filter'] ?? $dca['attributes']['fe_filter'] ?? false))
             ->setFrontendSortable((bool) ($config['fe_sorting'] ?? $dca['attributes']['fe_sorting'] ?? false))

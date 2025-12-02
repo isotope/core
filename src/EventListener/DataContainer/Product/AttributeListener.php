@@ -249,7 +249,7 @@ class AttributeListener
 
             $columnFields = [];
             $variantAttributes = $type->getVariantAttributes();
-            $variantOptionFields = array_intersect($variantAttributes, $this->attributeRegistry->getVariantOptionFields());
+            $variantOptionFields = array_intersect($variantAttributes, array_merge($this->attributeRegistry->getVariantOptionFields(), $this->attributeRegistry->getBackendColumnFields()));
 
             $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['headerFields'] = array_intersect(
                 $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['headerFields'],
@@ -268,10 +268,6 @@ class AttributeListener
             if (\in_array('name', $variantAttributes, true)) {
                 $columnFields[] = 'name';
                 $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['fields'] = ['name'];
-            }
-
-            if (\in_array('price', $variantAttributes, true)) {
-                $columnFields[] = 'price';
             }
 
             $variantOptionFields = array_diff($variantOptionFields, $columnFields);
@@ -293,6 +289,10 @@ class AttributeListener
 
                     $columnFields[] = $name;
                 }
+            }
+
+            if (\in_array('price', $variantAttributes, true)) {
+                $columnFields[] = 'price';
             }
 
             $GLOBALS['TL_DCA']['tl_iso_product']['list']['label']['fields'] = $columnFields;

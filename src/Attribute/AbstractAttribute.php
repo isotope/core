@@ -23,6 +23,8 @@ abstract class AbstractAttribute extends AbstractModelType implements AttributeI
 
     private bool $backendFilterable = false;
 
+    private bool $backendColumn = false;
+
     private bool $frontendSearchable = false;
 
     private bool $frontendFilterable = false;
@@ -120,6 +122,18 @@ abstract class AbstractAttribute extends AbstractModelType implements AttributeI
     public function setBackendSearchable(bool $backendSearchable): self
     {
         $this->backendSearchable = $backendSearchable;
+
+        return $this;
+    }
+
+    public function isBackendColumn(): bool
+    {
+        return $this->backendColumn;
+    }
+
+    public function setBackendColumn(bool $backendColumn): self
+    {
+        $this->backendColumn = $backendColumn;
 
         return $this;
     }

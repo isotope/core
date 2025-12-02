@@ -3,6 +3,7 @@
 use Contao\DataContainer;
 use Contao\DC_Table;
 use Contao\System;
+use Doctrine\DBAL\Types\Types;
 use Isotope\CoreBundle\Attribute\OptionsSource;
 use Isotope\Model\AttributeOption;
 
@@ -47,16 +48,16 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
     'palettes' => [
         '__selector__' => ['type', 'optionsSource', 'includeBlankOption', 'variant_option', 'multiple', 'rgxp'],
         'default' => '{attribute_legend},name,field_name,type,legend',
-        'text' => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{config_legend},minlength,maxlength,rgxp,placeholder,mandatory,multilingual;{search_filters_legend},fe_search,fe_filter,fe_sorting,be_search,be_filter',
-        'textdigit' => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{config_legend},minval,maxval,step,rgxp,placeholder,mandatory,multilingual;{search_filters_legend},fe_search,fe_filter,fe_sorting,be_search,be_filter',
-        'textdate' => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{config_legend},minlength,maxlength,rgxp,placeholder,mandatory,multilingual,datepicker;{search_filters_legend},fe_search,fe_filter,fe_sorting,be_search,be_filter',
-        'texttime' => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{config_legend},minlength,maxlength,rgxp,placeholder,mandatory,multilingual,datepicker;{search_filters_legend},fe_search,fe_filter,fe_sorting,be_search,be_filter',
-        'textdatim' => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{config_legend},minlength,maxlength,rgxp,placeholder,mandatory,multilingual,datepicker;{search_filters_legend},fe_search,fe_filter,fe_sorting,be_search,be_filter',
+        'text' => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{config_legend},minlength,maxlength,rgxp,placeholder,mandatory,multilingual;{search_filters_legend},fe_search,fe_filter,fe_sorting,be_filter,be_search,be_column',
+        'textdigit' => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{config_legend},minval,maxval,step,rgxp,placeholder,mandatory,multilingual;{search_filters_legend},fe_search,fe_filter,fe_sorting,be_filter,be_search,be_column',
+        'textdate' => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{config_legend},minlength,maxlength,rgxp,placeholder,mandatory,multilingual,datepicker;{search_filters_legend},fe_search,fe_filter,fe_sorting,be_filter,be_search,be_column',
+        'texttime' => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{config_legend},minlength,maxlength,rgxp,placeholder,mandatory,multilingual,datepicker;{search_filters_legend},fe_search,fe_filter,fe_sorting,be_filter,be_search,be_column',
+        'textdatim' => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{config_legend},minlength,maxlength,rgxp,placeholder,mandatory,multilingual,datepicker;{search_filters_legend},fe_search,fe_filter,fe_sorting,be_filter,be_search,be_column',
         'textarea' => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{config_legend},minlength,maxlength,rgxp,placeholder,rte,mandatory,multilingual;{search_filters_legend},fe_search,fe_sorting,be_search',
-        'select' => '{attribute_legend},name,field_name,type,legend,variant_option,customer_defined;{description_legend:hide},description;{options_legend},optionsSource,includeBlankOption;{config_legend},mandatory,chosen,multiple;{search_filters_legend},fe_filter,fe_sorting,be_filter',
+        'select' => '{attribute_legend},name,field_name,type,legend,variant_option,customer_defined;{description_legend:hide},description;{options_legend},optionsSource,includeBlankOption;{config_legend},mandatory,chosen,multiple;{search_filters_legend},fe_filter,fe_sorting,be_filter,be_column',
         'selectproduct' => '{attribute_legend},name,field_name,type,legend,variant_option,customer_defined;{description_legend:hide},description;{options_legend},optionsSource,includeBlankOption;{config_legend},mandatory,chosen,multiple;{search_filters_legend},fe_sorting',
         'selectvariant_option' => '{attribute_legend},name,field_name,type,legend,variant_option;{description_legend:hide},description;{options_legend},optionsSource,blankOptionLabel;{search_filters_legend},fe_filter,fe_sorting,be_filter',
-        'radio' => '{attribute_legend},name,field_name,type,legend,variant_option,customer_defined;{description_legend:hide},description;{options_legend},optionsSource;{config_legend},mandatory;{search_filters_legend},fe_filter,fe_sorting,be_filter',
+        'radio' => '{attribute_legend},name,field_name,type,legend,variant_option,customer_defined;{description_legend:hide},description;{options_legend},optionsSource;{config_legend},mandatory;{search_filters_legend},fe_filter,fe_sorting,be_filter,be_column',
         'radioproduct' => '{attribute_legend},name,field_name,type,legend,variant_option,customer_defined;{description_legend:hide},description;{options_legend},optionsSource;{config_legend},mandatory;{search_filters_legend},fe_sorting',
         'radiovariant_option' => '{attribute_legend},name,field_name,type,legend,variant_option;{description_legend:hide},description;{options_legend},optionsSource;{search_filters_legend},fe_filter,fe_sorting,be_filter',
         'checkbox' => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{options_legend},optionsSource;{config_legend},mandatory;{search_filters_legend},fe_filter,fe_sorting,be_filter',
@@ -209,13 +210,20 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
             'eval' => ['submitOnChange' => true, 'tl_class' => 'w50'],
             'sql' => "char(1) NOT NULL default ''",
         ],
-        'be_search' => [
-            'inputType' => 'checkbox',
-            'sql' => "char(1) NOT NULL default ''",
-        ],
         'be_filter' => [
             'inputType' => 'checkbox',
-            'sql' => "char(1) NOT NULL default ''",
+            'eval' => ['tl_class' => 'clr w25'],
+            'sql' => ['type' => Types::BOOLEAN, 'default' => false],
+        ],
+        'be_search' => [
+            'inputType' => 'checkbox',
+            'eval' => ['tl_class' => 'w25'],
+            'sql' => ['type' => Types::BOOLEAN, 'default' => false],
+        ],
+        'be_column' => [
+            'inputType' => 'checkbox',
+            'eval' => ['tl_class' => 'w25'],
+            'sql' => ['type' => Types::BOOLEAN, 'default' => false],
         ],
         'customer_defined' => [
             'filter' => true,
@@ -230,15 +238,18 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
         ],
         'fe_filter' => [
             'inputType' => 'checkbox',
-            'sql' => "char(1) NOT NULL default ''",
+            'eval' => ['tl_class' => 'w25'],
+            'sql' => ['type' => Types::BOOLEAN, 'default' => false],
         ],
         'fe_search' => [
             'inputType' => 'checkbox',
-            'sql' => "char(1) NOT NULL default ''",
+            'eval' => ['tl_class' => 'w25'],
+            'sql' => ['type' => Types::BOOLEAN, 'default' => false],
         ],
         'fe_sorting' => [
             'inputType' => 'checkbox',
-            'sql' => "char(1) NOT NULL default ''",
+            'eval' => ['tl_class' => 'w25'],
+            'sql' => ['type' => Types::BOOLEAN, 'default' => false],
         ],
         'multiple' => [
             'inputType' => 'checkbox',

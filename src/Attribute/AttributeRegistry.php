@@ -183,6 +183,19 @@ class AttributeRegistry implements ResetInterface
     }
 
     /**
+     * @return list<string>
+     */
+    public function getBackendColumnFields(): array
+    {
+        $this->load();
+
+        return array_keys(array_filter(
+            $this->attributes,
+            static fn (AttributeInterface $attribute) => $attribute instanceof AbstractAttribute && $attribute->isBackendColumn(),
+        ));
+    }
+
+    /**
      * Return array of attributes that have price relevant information.
      *
      * @return list<string>

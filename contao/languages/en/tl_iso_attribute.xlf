@@ -209,6 +209,12 @@
       <trans-unit id="tl_iso_attribute.be_search.1">
         <source>Should the field be available in the backend search?</source>
       </trans-unit>
+      <trans-unit id="tl_iso_attribute.be_column.0">
+        <source>Show as variant column</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.be_column.1">
+        <source>Show this attribute in the product variant list.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_attribute.fe_filter.0">
         <source>Frontend filterable</source>
       </trans-unit>
