@@ -2181,11 +2181,14 @@ System::getContainer()->get('contao.data_container.global_operations_builder')->
 	 */
 	protected function reviseTable()
 	{
-		$GLOBALS['TL_DCA'][$this->strTable]['config']['ptable'] = $this->strTable;
+		$GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] = DataContainer::MODE_TREE;
+
+		if (false !== ($key = array_search($this->strTable, $GLOBALS['TL_DCA'][$this->strTable]['config']['ctable'] ?? [])))
+		{
+			unset($GLOBALS['TL_DCA'][$this->strTable]['config']['ctable'][$key]);
+		}
 
 		parent::reviseTable();
-
-		unset($GLOBALS['TL_DCA'][$this->strTable]['config']['ptable']);
 	}
 
 	/**
