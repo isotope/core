@@ -253,7 +253,7 @@ class OpenPaymentPlatform extends Payment
     {
         $payments = StringUtil::deserialize($objOrder->payment_data, true);
 
-        if (!\is_array($payments['OPP'])) {
+        if (!\is_array($payments['OPP'] ?? null)) {
             $payments['OPP'] = array();
         }
 
