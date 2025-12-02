@@ -312,10 +312,11 @@ class AttributeListener
             return;
         }
 
-        $config = $isVariant ? $type->getVariantAttributes() : $type->getAttributes();
+        $fields = $isVariant ? $type->getVariantAttributes() : $type->getAttributes();
+        $config = $isVariant ? $type->variant_attributes : $type->attributes;
 
-        foreach (array_intersect(array_keys($GLOBALS['TL_DCA']['tl_iso_product']['fields']), $config) as $field) {
-            $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$field]['attributes_callback'][] = static function (array $attributes) use ($field) {
+        foreach (array_intersect(array_keys($GLOBALS['TL_DCA']['tl_iso_product']['fields']), $fields) as $field) {
+            $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$field]['attributes_callback'][] = static function (array $attributes) use ($field, $config) {
                 // Apply product type attribute config
                 if (!empty($config[$field]['tl_class'])) {
                     $attributes['tl_class'] = $config[$field]['tl_class'];
