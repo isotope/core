@@ -128,14 +128,16 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
             'filter' => true,
             'inputType' => 'radio',
             'enum' => OptionsSource::class,
-            'options_callback' => static function ($dc) {
+            'options_callback' => static function (DataContainer $dc) {
                 $arrOptions = [
                     OptionsSource::Table->value,
                     OptionsSource::ForeignKey->value,
                     OptionsSource::Attribute->value,
                 ];
+                
+                $currentRecord = $dc->getCurrentRecord();
 
-                if (!$dc->activeRecord->variant_option && $dc->activeRecord->customer_defined) {
+                if (!($currentRecord['variant_option'] ?? null) && ($currentRecord['customer_defined'] ?? null)) {
                     $arrOptions = [
                         OptionsSource::Table->value,
                         OptionsSource::Product->value,
@@ -144,7 +146,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
                     ];
                 }
 
-                if ('checkbox' === $dc->activeRecord->type && !$dc->activeRecord->customer_defined) {
+                if ('checkbox' === ($currentRecord['type'] ?? null) && !($currentRecord['customer_defined'] ?? null)) {
                     array_unshift($arrOptions, OptionsSource::Name->value);
                 }
 
