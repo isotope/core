@@ -220,11 +220,11 @@ class Address extends Model
          */
 
         // Set "fn" (full name) to company if no first- and lastname is given
-        if ($arrTokens['company'] != '') {
+        if (!empty($arrTokens['company'])) {
             $fn        = $arrTokens['company'];
             $fnCompany = ' fn';
         } else {
-            $fn        = trim($arrTokens['firstname'] . ' ' . $arrTokens['lastname']);
+            $fn        = trim(($arrTokens['firstname'] ?? '') . ' ' . ($arrTokens['lastname'] ?? ''));
             $fnCompany = '';
         }
 
@@ -232,20 +232,20 @@ class Address extends Model
 
         return $arrTokens + [
             'hcard_fn'               => $fn ? '<span class="fn">' . $fn . '</span>' : '',
-            'hcard_n'                => ($arrTokens['firstname'] || $arrTokens['lastname']) ? '1' : '',
-            'hcard_honorific_prefix' => $arrTokens['salutation'] ? '<span class="honorific-prefix">' . $arrTokens['salutation'] . '</span>' : '',
-            'hcard_given_name'       => $arrTokens['firstname'] ? '<span class="given-name">' . $arrTokens['firstname'] . '</span>' : '',
-            'hcard_family_name'      => $arrTokens['lastname'] ? '<span class="family-name">' . $arrTokens['lastname'] . '</span>' : '',
-            'hcard_org'              => $arrTokens['company'] ? '<div class="org' . $fnCompany . '">' . $arrTokens['company'] . '</div>' : '',
-            'hcard_email'            => $arrTokens['email'] ? '<a href="mailto:' . $arrTokens['email'] . '">' . $arrTokens['email'] . '</a>' : '',
-            'hcard_tel'              => $arrTokens['phone'] ? '<div class="tel">' . $arrTokens['phone'] . '</div>' : '',
+            'hcard_n'                => (($arrTokens['firstname'] ?? null) || ($arrTokens['lastname'] ?? null)) ? '1' : '',
+            'hcard_honorific_prefix' => ($arrTokens['salutation'] ?? null) ? '<span class="honorific-prefix">' . $arrTokens['salutation'] . '</span>' : '',
+            'hcard_given_name'       => ($arrTokens['firstname'] ?? null) ? '<span class="given-name">' . $arrTokens['firstname'] . '</span>' : '',
+            'hcard_family_name'      => ($arrTokens['lastname'] ?? null) ? '<span class="family-name">' . $arrTokens['lastname'] . '</span>' : '',
+            'hcard_org'              => ($arrTokens['company'] ?? null) ? '<div class="org' . $fnCompany . '">' . $arrTokens['company'] . '</div>' : '',
+            'hcard_email'            => ($arrTokens['email'] ?? null) ? '<a href="mailto:' . $arrTokens['email'] . '">' . $arrTokens['email'] . '</a>' : '',
+            'hcard_tel'              => ($arrTokens['phone'] ?? null) ? '<div class="tel">' . $arrTokens['phone'] . '</div>' : '',
             'hcard_adr'              => ($street || $arrTokens['city'] || $arrTokens['postal'] || $arrTokens['subdivision'] || $arrTokens['country']) ? '1' : '',
             'hcard_street_address'   => $street ? '<div class="street-address">' . $street . '</div>' : '',
-            'hcard_locality'         => $arrTokens['city'] ? '<span class="locality">' . $arrTokens['city'] . '</span>' : '',
-            'hcard_region'           => $arrTokens['subdivision'] ? '<span class="region">' . $arrTokens['subdivision'] . '</span>' : '',
+            'hcard_locality'         => ($arrTokens['city'] ?? null) ? '<span class="locality">' . $arrTokens['city'] . '</span>' : '',
+            'hcard_region'           => ($arrTokens['subdivision'] ?? null) ? '<span class="region">' . $arrTokens['subdivision'] . '</span>' : '',
             'hcard_region_abbr'      => !empty($arrTokens['subdivision_abbr']) ? '<abbr class="region" title="' . $arrTokens['subdivision'] . '">' . $arrTokens['subdivision_abbr'] . '</abbr>' : '',
-            'hcard_postal_code'      => $arrTokens['postal'] ? '<span class="postal-code">' . $arrTokens['postal'] . '</span>' : '',
-            'hcard_country_name'     => $arrTokens['country'] ? '<div class="country-name">' . $arrTokens['country'] . '</div>' : '',
+            'hcard_postal_code'      => ($arrTokens['postal'] ?? null) ? '<span class="postal-code">' . $arrTokens['postal'] . '</span>' : '',
+            'hcard_country_name'     => ($arrTokens['country'] ?? null) ? '<div class="country-name">' . $arrTokens['country'] . '</div>' : '',
         ];
     }
 
