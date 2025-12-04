@@ -1,3 +1,4 @@
+<?php if ($this->src): ?>
 <?php if ($this->type === 'gallery'): ?>
 <figure data-type="gallery" data-uid="g<?= $this->name ?>" class="image_container<?php if ($this->class) echo ' '.$this->class; ?>">
 <a title="<?= $this->title ?>" href="<?= $this->link ?>"<?php if($this->zoom): ?> data-zoom-image="<?= $this->zoom['zoom'] ?>" onclick="return Isotope.elevateZoom(this, 'g<?= $this->name ?>');"<?php endif; ?>>
@@ -28,5 +29,6 @@
     });
 })(jQuery);
 </script>
+<?php endif; ?>
 <?php endif; ?>
 <?php endif; ?>

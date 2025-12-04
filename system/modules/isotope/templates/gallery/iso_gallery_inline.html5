@@ -1,3 +1,4 @@
+<?php if ($this->src): ?>
 <?php if ($this->type === 'gallery'): ?>
 <figure data-type="gallery" data-uid="g<?= $this->name ?>" class="image_container<?php if ($this->class) echo ' '.$this->class; ?>">
 <a title="<?= $this->title ?>" href="<?= $this->link ?>" onclick="return Isotope.inlineGallery(this, 'g<?= $this->name ?>');"<?php if ($this->lightboxUrl): ?> data-lightbox-url="<?= $this->lightboxUrl ?>"<?php endif; ?>>
@@ -16,4 +17,5 @@
         </a>
     <?php endif; ?>
 </figure>
+<?php endif; ?>
 <?php endif; ?>

@@ -1,3 +1,4 @@
+<?php if ($this->src): ?>
 <figure class="image_container">
 <?php if ($this->hasLink): ?>
 <a title="<?= $this->title ?>" href="<?= $this->link ?>"<?= $this->attributes ?>>
@@ -8,3 +9,4 @@
 <?php endif; ?>
 </figure>
 <?= $this->javascript ?>
+<?php endif; ?>
