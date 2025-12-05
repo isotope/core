@@ -77,9 +77,9 @@ class CategoryListener extends AbstractSubtableListener
     #[AsCallback('tl_iso_product', 'fields.pages.save')]
     public function save(mixed $value, DC_Table $dc): void
     {
-        $pageIds = StringUtil::deserialize($value);
+        $pageIds = StringUtil::deserialize($value, true);
 
-        if (\is_array($pageIds) && $this->saveValue($pageIds, (int) $dc->id)) {
+        if ($this->saveValue($pageIds, (int) $dc->id)) {
             $dc->createNewVersion = true;
         }
     }
