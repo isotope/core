@@ -254,6 +254,15 @@
       <trans-unit id="tl_iso_product.show.1">
         <source>Show details of product ID %s</source>
       </trans-unit>
+      <trans-unit id="tl_iso_product.filter">
+        <source>Advanced filter:</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.filter_noimages">
+        <source>Without images</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.filter_nocategory">
+        <source>Without categories</source>
+      </trans-unit>
       <trans-unit id="tl_iso_product.sorting">
         <source>Manually sort products in a page</source>
       </trans-unit>

@@ -1,0 +1,35 @@
+{% trans_default_domain 'contao_default' %}
+
+<div class="iso_filter tl_subpanel">
+    <a href="{{ pagePickerUrl }}" class="tl_submit{% if pageValue > 0 %} active{% endif %}" id="pageFilter">{{ 'MSC.filterByPages'|trans }}</a>
+    <script>
+        document.getElementById('pageFilter').addEventListener('click', function (e) {
+            e.preventDefault();
+            Backend.openModalSelector({
+                id: 'tl_listing',
+                title: '{{ 'MSC.filterByPages'|trans }}',
+                url: this.href + '{{ pageValue|default('') }}',
+                callback: function (table, value) {
+                    new Request.Contao({
+                        evalScripts: false,
+                        onRequest: AjaxRequest.displayBox(Contao.lang.loading + ' …')
+                    }).post({ action: 'filterPages', value: value[0], REQUEST_TOKEN: '{{ contao.request_token }}' });
+                }
+            })
+        });
+    </script>
+</div>
+
+<div class="tl_advanced_filter iso_filter tl_subpanel">
+    <strong>{{ 'tl_iso_product.filter'|trans([], 'contao_tl_iso_product') }}</strong>
+
+    {% for filter in filters %}
+        <select name="{{ filter.name }}" id="{{ filter.name }}" class="tl_select{% if filter.value is not null %} active{% endif %}">
+            <option value="{{ filter.name }}">{{ filter.label }}</option>
+            <option value="{{ filter.name }}">---</option>
+            {% for option in filter.options %}
+                <option value="{{ option.value }}"{% if option.value is same as filter.value %} selected{% endif %}>{{ option.label }}</option>
+            {% endfor %}
+        </select>
+    {% endfor %}
+</div>

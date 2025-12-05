@@ -39,7 +39,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'fields' => ['name'],
             'headerFields' => ['name', 'sku', 'price', 'published'],
             'flag' => DataContainer::SORT_INITIAL_LETTER_ASC,
-            'panelLayout' => 'filter;sort,iso_sorting,search,limit',
+            'panelLayout' => 'iso_buttons,iso_filter;filter;sort,iso_sorting,search,limit',
         ],
         'label' => [
             'fields' => ['images', 'name', 'sku', 'price'],
