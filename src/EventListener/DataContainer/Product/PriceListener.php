@@ -83,9 +83,12 @@ class PriceListener
         }
 
         $price = round((float) $price, 8);
-        $price = rtrim((string) $price, '0');
 
-        if ((int) strpos(strrev($price), '.') < 2) {
+        if (str_contains((string) $price, '.')) {
+            $price = rtrim((string) $price, '0');
+        }
+
+        if ((int) strpos(strrev((string) $price), '.') < 2) {
             $price = number_format((float) $price, 2, '.', '');
         }
 
