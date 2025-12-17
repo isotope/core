@@ -77,6 +77,7 @@ class AttributeRegistry implements ResetInterface
                     $dca['fields'][$name] = [];
                 }
 
+                $this->applyContainer($attribute);
                 $attribute->updateDcaField($dca['fields'][$name], $dca['config']['sql']['keys']);
                 $this->attributes[$name] = $attribute;
 
@@ -93,18 +94,9 @@ class AttributeRegistry implements ResetInterface
             $attribute = $this->create($name, $field['attributes'] ?? [], $field);
 
             if (null !== $attribute) {
+                $this->applyContainer($attribute);
                 $attribute->updateDcaField($dca['fields'][$name], $dca['config']['sql']['keys']);
                 $this->attributes[$name] = $attribute;
-            }
-        }
-
-        foreach ($this->attributes as $attribute) {
-            if ($attribute instanceof ContainerAwareInterface) {
-                if (!isset($this->subscribedServices[$attribute::class])) {
-                    throw new \RuntimeException($attribute::class.' requires a service container but the registry does not have one');
-                }
-
-                $attribute->setContainer($this->subscribedServices[$attribute::class]);
             }
         }
     }
@@ -259,5 +251,16 @@ class AttributeRegistry implements ResetInterface
         }
 
         return null;
+    }
+
+    private function applyContainer(AttributeInterface $attribute): void
+    {
+        if ($attribute instanceof ContainerAwareInterface) {
+            if (!isset($this->subscribedServices[$attribute::class])) {
+                throw new \RuntimeException($attribute::class.' requires a service container but the registry does not have one');
+            }
+
+            $attribute->setContainer($this->subscribedServices[$attribute::class]);
+        }
     }
 }
