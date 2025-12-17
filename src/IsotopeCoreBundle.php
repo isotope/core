@@ -8,12 +8,12 @@ use Isotope\CoreBundle\DependencyInjection\Compiler\RegisterActionPass;
 use Isotope\CoreBundle\DependencyInjection\Compiler\RegisterAttributePass;
 use Isotope\CoreBundle\DependencyInjection\Compiler\RegisterHookListenersPass;
 use Isotope\CoreBundle\DependencyInjection\Compiler\RegisterModelTypePass;
+use Isotope\CoreBundle\DependencyInjection\Compiler\RegisterProductFactoryPass;
 use Isotope\CoreBundle\DependencyInjection\Compiler\RegisterProductFilterPass;
 use Isotope\CoreBundle\DependencyInjection\IsotopeCoreExtension;
 use Isotope\CoreBundle\ModelType\DocumentRegistry;
 use Isotope\CoreBundle\ModelType\GalleryRegistry;
 use Isotope\CoreBundle\ModelType\PaymentRegistry;
-use Isotope\CoreBundle\ModelType\ProductRegistry;
 use Isotope\CoreBundle\ModelType\ShippingRegistry;
 use Isotope\CoreBundle\Product\Action\ProductActionRegistry;
 use Isotope\CoreBundle\ProductCollection\Action\ProductCollectionActionRegistry;
@@ -34,8 +34,8 @@ class IsotopeCoreBundle extends Bundle
 
         $container->addCompilerPass(new RegisterHookListenersPass());
         $container->addCompilerPass(new RegisterAttributePass(), priority: 10);
+        $container->addCompilerPass(new RegisterProductFactoryPass(), priority: 10);
         $container->addCompilerPass(new RegisterProductFilterPass());
-        $container->addCompilerPass(new RegisterModelTypePass(ProductRegistry::TAG_NAME, ProductRegistry::class, ['tl_iso_producttype.class']), priority: 10);
         $container->addCompilerPass(new RegisterModelTypePass(PaymentRegistry::TAG_NAME, PaymentRegistry::class, ['tl_iso_payment.type']), priority: 10);
         $container->addCompilerPass(new RegisterModelTypePass(ShippingRegistry::TAG_NAME, ShippingRegistry::class, ['tl_iso_shipping.type']), priority: 10);
         $container->addCompilerPass(new RegisterModelTypePass(DocumentRegistry::TAG_NAME, DocumentRegistry::class, ['tl_iso_document.type']), priority: 10);

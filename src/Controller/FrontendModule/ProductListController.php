@@ -14,15 +14,19 @@ use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
-use Isotope\CoreBundle\ModelType\ProductRegistry;
-use Isotope\CoreBundle\Product\ProductInterface;
 use Isotope\CoreBundle\Product\Category\CategoryFinder;
 use Isotope\CoreBundle\Product\Category\CategoryScope;
+use Isotope\CoreBundle\Product\CoreProduct;
+use Isotope\CoreBundle\Product\DataCollector\ProductDto;
+use Isotope\CoreBundle\Product\DataCollector\ProductDtoCollection;
+use Isotope\CoreBundle\Product\ProductBuilder;
+use Isotope\CoreBundle\Product\ProductCollection;
 use Isotope\CoreBundle\Product\Query\ProductQuery;
 use Isotope\CoreBundle\Product\Query\ProductQueryFactory;
 use Isotope\CoreBundle\Product\Query\Sorting;
 use Isotope\CoreBundle\Product\Render\ListView;
-use Isotope\Model\Product;
+use Isotope\CoreBundle\Store\StoreManager;
+use Ramsey\Collection\CollectionInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -31,36 +35,26 @@ class ProductListController extends AbstractFrontendModuleController
 {
     public function __construct(
         private readonly Connection $connection,
-        private readonly ProductRegistry $productRegistry,
         private readonly AttributeRegistry $attributeRegistry,
         private readonly CategoryFinder $categoryFinder,
         private readonly ProductQueryFactory $productQueryFactory,
         private readonly TokenChecker $tokenChecker,
+        private readonly ProductBuilder $productBuilder,
+        private readonly StoreManager $storeManager,
     ) {
     }
 
     protected function getResponse(FragmentTemplate $template, ModuleModel $model, Request $request): Response
     {
-        if ($request->attributes->get('_content') instanceof ProductInterface && $model->iso_hide_list) {
+        if ($request->attributes->get('_content') instanceof CoreProduct && $model->iso_hide_list) {
             return new Response();
         }
 
-        $products = [];
         $filterModules = array_map(static fn ($id) => 'fmd'.$id, StringUtil::deserialize($model->iso_filterModules, true));
-        $models = $this->findProducts($model, $request, $filterModules);
+        $products = $this->findProducts($model, $request, $filterModules);
 
-        if ($model->iso_hide_empty && [] === $models) {
+        if ($model->iso_hide_empty && $products->isEmpty()) {
             return new Response('');
-        }
-
-        foreach ($models as $productModel) {
-            $product = $this->productRegistry->get($productModel);
-
-            if (!$product instanceof ProductInterface) {
-                continue;
-            }
-
-            $products[] = $product;
         }
 
         $template->products = $products;
@@ -71,15 +65,15 @@ class ProductListController extends AbstractFrontendModuleController
     }
 
     /**
-     * @return array<Product>
+     * @return ProductCollection
      */
-    private function findProducts(ModuleModel $model, Request $request, array $filterModules): array
+    private function findProducts(ModuleModel $model, Request $request, array $filterModules): CollectionInterface
     {
         $categories = $this->getCategories($model, $request);
 
         // Cannot find products without having categories
         if ([] === $categories) {
-            return [];
+            return new ProductCollection();
         }
 
         $qb = $this->prepareQueryBuilder($categories, $request->getLocale());
@@ -106,14 +100,18 @@ class ProductListController extends AbstractFrontendModuleController
 
         $ids = $qb->fetchFirstColumn();
 
-        return Product::findMultipleByIds($ids)?->getModels() ?? [];
+        $dtoCollection = new ProductDtoCollection(array_map(static fn (string|int $id) => new ProductDto('tl_iso_product.'.$id), $ids));
+
+        $products = $this->productBuilder->build($dtoCollection, $this->storeManager->getCurrentContext());
+
+        return $products->filter(static fn (CoreProduct $product) => $product->isAvailable());
     }
 
     private function prepareQueryBuilder(array $categories, string $locale): QueryBuilder
     {
         $qb = $this->connection->createQueryBuilder();
         $qb
-            ->select(['IFNULL(parent.id, tl_iso_product.id)'])
+            ->select('IFNULL(parent.id, tl_iso_product.id)')
             ->from('tl_iso_product')
             ->where($qb->expr()->in('c.pid', $qb->createNamedParameter($categories, ArrayParameterType::INTEGER)))
             ->leftJoin('tl_iso_product', 'tl_iso_product', 'translation', "tl_iso_product.id=translation.pid AND translation.language='$locale'")
@@ -155,7 +153,7 @@ class ProductListController extends AbstractFrontendModuleController
         return $this->categoryFinder->getIds(
             CategoryScope::tryFrom($model->iso_category_scope) ?? $model->iso_category_scope,
             $pageModel ?: $this->getPageModel(),
-            $product instanceof ProductInterface ? $product : null,
+            $product instanceof CoreProduct ? $product : null,
         );
     }
 }

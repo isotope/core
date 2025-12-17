@@ -40,8 +40,8 @@ use Contao\System;
  * @property array  $address_fields
  * @property string $billing_country
  * @property string $shipping_country
- * @property string $billing_countries
- * @property string $shipping_countries
+ * @property string|null $billing_countries
+ * @property string|null $shipping_countries
  * @property bool   $limitMemberCountries
  * @property array  $vatNoValidators
  * @property string $bankName
@@ -227,6 +227,38 @@ class Config extends Model
                  'column' => array("$t.id=(SELECT iso_config FROM tl_page WHERE id=?)"),
                  'value'  => $rootPageId,
                  'return' => 'Model'
+            ),
+            $options
+        );
+
+        return static::find($options);
+    }
+
+    public static function findByMemberCart(int $memberId, int $storeId, array $options = array()): self|null
+    {
+        $t = static::$strTable;
+
+        $options = array_merge(
+            array(
+                'column' => array("$t.id=(SELECT config_id FROM tl_iso_product_collection WHERE type='cart' AND member=? AND store_id=?)"),
+                'value'  => [$memberId, $storeId],
+                'return' => 'Model'
+            ),
+            $options
+        );
+
+        return static::find($options);
+    }
+
+    public static function findByGuestCart(string $uniqid, int $storeId, array $options = array()): self|null
+    {
+        $t = static::$strTable;
+
+        $options = array_merge(
+            array(
+                'column' => array("$t.id=(SELECT config_id FROM tl_iso_product_collection WHERE type='cart' AND uniqid=? AND store_id=?)"),
+                'value'  => [$uniqid, $storeId],
+                'return' => 'Model'
             ),
             $options
         );

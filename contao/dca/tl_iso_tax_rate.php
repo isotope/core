@@ -14,7 +14,6 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = [
         'enableVersioning' => true,
         'onload_callback' => [
             [Callback::class, 'checkPermission'],
-            [Callback::class, 'addCurrencyRate'],
         ],
         'sql' => [
             'keys' => [
@@ -30,14 +29,13 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = [
             'panelLayout' => 'filter;search,limit',
         ],
         'label' => [
-            'fields' => ['name'],
-            'format' => '%s',
-            'label_callback' => [Callback::class, 'listRow'],
+            'fields' => ['name', 'rate'],
+            'format' => '%s <span style="color:#b3b3b3; padding-left:3px;">[%s%%]</span>',
         ],
     ],
     'palettes' => [
         '__selector__' => ['protected'],
-        'default' => '{name_legend},name,label;{rate_legend},rate;{location_legend},address,countries,subdivisions,postalCodes;{condition_legend},amount;{config_legend:hide},config,exemptOnValidVAT,stop,protected',
+        'default' => '{name_legend},name,label,rate;{location_legend},address,countries,subdivisions,postalCodes;{config_legend:hide},config,exemptOnValidVAT,stop,protected',
     ],
     'subpalettes' => [
         'protected' => 'groups',
@@ -64,14 +62,19 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = [
             'eval' => ['maxlength' => 255, 'tl_class' => 'w50'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
+        'rate' => [
+            'inputType' => 'text',
+            'eval' => ['mandatory' => true, 'maxlength' => 32, 'rgxp' => 'digit', 'tl_class' => 'w50'],
+            'sql' => "varchar(32) NOT NULL default ''",
+        ],
         'address' => [
             'filter' => true,
             'inputType' => 'checkbox',
             'default' => ['shipping'],
             'options' => ['billing', 'shipping'],
             'reference' => &$GLOBALS['TL_LANG']['tl_iso_tax_rate'],
-            'eval' => ['mandatory' => true, 'multiple' => true],
-            'sql' => 'blob NULL',
+            'eval' => ['mandatory' => true, 'multiple' => true, 'csv' => ','],
+            'sql' => 'text NULL',
         ],
         'countries' => [
             'filter' => true,
@@ -90,17 +93,6 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = [
             'inputType' => 'textarea',
             'eval' => ['style' => 'height:40px', 'tl_class' => 'clr'],
             'sql' => 'text NULL',
-        ],
-        'rate' => [
-            'inputType' => 'inputUnit',
-            'options' => ['%' => '%'],
-            'eval' => ['mandatory' => true, 'maxlength' => 255, 'rgxp' => 'digit'],
-            'sql' => "varchar(255) NOT NULL default ''",
-        ],
-        'amount' => [
-            'inputType' => 'text',
-            'eval' => ['multiple' => true, 'size' => 2, 'maxlength' => 10, 'rgxp' => 'digit', 'tl_class' => 'w50'],
-            'sql' => "varchar(255) NOT NULL default ''",
         ],
         'config' => [
             'filter' => true,

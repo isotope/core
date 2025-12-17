@@ -8,7 +8,7 @@ use Contao\CoreBundle\DependencyInjection\Attribute\AsFrontendModule;
 use Contao\CoreBundle\Exception\PageNotFoundException;
 use Contao\CoreBundle\Twig\FragmentTemplate;
 use Contao\ModuleModel;
-use Isotope\CoreBundle\Product\ProductInterface;
+use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\Render\ReaderView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,7 +20,7 @@ class ProductReaderController extends AbstractFrontendModuleController
     {
         $product = $request->attributes->get('_content');
 
-        if (!$product instanceof ProductInterface) {
+        if (!$product instanceof CoreProduct) {
             if ($model->iso_display404Page) {
                 throw new PageNotFoundException();
             }

@@ -4,8 +4,8 @@ use Contao\DataContainer;
 use Contao\DC_Table;
 use Contao\System;
 use Doctrine\DBAL\Types\Types;
-use Isotope\CoreBundle\Attribute\OptionsSource;
-use Isotope\Model\AttributeOption;
+use Isotope\CoreBundle\Attribute\Option\OptionsSource;
+use Isotope\CoreBundle\Model\AttributeOption;
 
 /*
  * Load tl_iso_product language file for field legends
@@ -134,7 +134,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
                     OptionsSource::ForeignKey->value,
                     OptionsSource::Attribute->value,
                 ];
-                
+
                 $currentRecord = $dc->getCurrentRecord();
 
                 if (!($currentRecord['variant_option'] ?? null) && ($currentRecord['customer_defined'] ?? null)) {

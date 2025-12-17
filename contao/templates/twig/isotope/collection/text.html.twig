@@ -1,6 +1,6 @@
 {% trans_default_domain 'contao_default' %}
 {% for item in items %}
-    {{- item.name }}
+    {{- item.label }}
     {%- set options = item.options -%}
     {%- if options is not empty -%}
         (
@@ -12,7 +12,7 @@
     {%- endif -%}
 {% endfor %}
 --------------------
-{{ 'MSC.subTotalLabel'|trans }}: {{ subtotal }}
+{{ 'MSC.subTotalLabel'|trans }}: {{ include('@Contao/component/isotope_price.html.twig', isotope_price(collection.lineItems|first)|merge({ amount: collection.subtotal, html: false }), with_context: false) }}
 
 {% for surcharge in surcharges %}
 {{ surcharge.label }}: {{ surcharge.price }} = {{ surcharge.total_price }}

@@ -53,10 +53,10 @@ $GLOBALS['TL_DCA']['tl_iso_tax_class'] = [
         ],
         'includes' => [
             'inputType' => 'select',
-            'foreignKey' => TaxRate::getTable().'.name',
+            'foreignKey' => 'tl_iso_tax_rate.name',
             'eval' => ['includeBlankOption' => true, 'tl_class' => 'w50'],
             'sql' => "int(10) unsigned NOT NULL default '0'",
-            'relation' => ['type' => 'hasOne', 'load' => 'eager'],
+            'relation' => ['type' => 'hasOne'],
         ],
         'label' => [
             'search' => true,
@@ -66,10 +66,10 @@ $GLOBALS['TL_DCA']['tl_iso_tax_class'] = [
         ],
         'rates' => [
             'inputType' => 'checkboxWizard',
-            'foreignKey' => TaxRate::getTable().'.name',
-            'eval' => ['multiple' => true, 'tl_class' => 'clr w50'],
-            'sql' => 'blob NULL',
-            'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
+            'foreignKey' => 'tl_iso_tax_rate.name',
+            'eval' => ['multiple' => true, 'csv' => ',', 'tl_class' => 'clr w50'],
+            'sql' => 'text NULL',
+            'relation' => ['type' => 'hasMany'],
         ],
         'applyRoundingIncrement' => [
             'inputType' => 'checkbox',

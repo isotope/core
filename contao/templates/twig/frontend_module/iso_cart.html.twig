@@ -13,10 +13,7 @@
 
 {% block content %}
     {% if collection.isEmpty %}
-        {% set empty_message = data.iso_emptyMessage ? data.iso_noProducts : 'MSC.noItemsInCart'|trans %}
-        {% block empty %}
-            <p class="message empty">{{ empty_message }}</p>
-        {% endblock %}
+        {% include('@Contao/component/isotope_empty.html.twig') %}
     {% else %}
         {% with { editable: true } %}
             {{ block('product_collection') }}
@@ -32,5 +29,5 @@
 {% endblock %}
 
 {% block product_collection_item_actions %}
-    {{ isotope_product_collection_item_action('remove') }}
+    {{ isotope_product_collection_item_action('remove_from_cart') }}
 {% endblock %}

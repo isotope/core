@@ -4,7 +4,7 @@ import axios from '../scripts/_axios';
 export default class extends Controller {
     static values = {
         formId: String,
-        options: Array,
+        attributes: Array,
     };
 
     static targets = ['form'];
@@ -14,7 +14,7 @@ export default class extends Controller {
     connect () {
         if (!this.hasFormTarget) return;
 
-        this.#connectOptions();
+        this.#connectAttributes();
     }
 
     disconnect() {
@@ -119,11 +119,18 @@ export default class extends Controller {
         // window.dispatchEvent(new CustomEvent('isotopeProductReload', { detail: config }));
     }
 
-    #connectOptions() {
-        this.optionsValue.forEach((option) => {
+    #connectAttributes() {
+        this.attributesValue.forEach((name) => {
             document
-                .querySelector(`#ctrl_${this.formIdValue}_${option}`)
-                ?.setAttribute('data-action', `${this.identifier}#update`);
+                .querySelectorAll(`
+                    #${this.formIdValue} input[name="${name}"],
+                    #${this.formIdValue} input[name="${name}[]"],
+                    #${this.formIdValue} select[name="${name}"],
+                    #${this.formIdValue} textarea[name="${name}"]
+                `)
+                .forEach((input) => {
+                    input.setAttribute('data-action', `${this.identifier}#update`);
+                })
         })
     }
 }

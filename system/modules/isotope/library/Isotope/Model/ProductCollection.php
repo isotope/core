@@ -24,17 +24,16 @@ use Isotope\CoreBundle\Checkout\Payment\PaymentInterface;
 use Isotope\CoreBundle\Checkout\Shipping\ShippingInterface;
 use Isotope\CoreBundle\Gallery\StandardGallery;
 use Isotope\CoreBundle\Model\Attribute;
+use Isotope\CoreBundle\Model\ProductCollectionItem;
 use Isotope\CoreBundle\ModelType\GalleryRegistry;
 use Isotope\CoreBundle\ModelType\PaymentRegistry;
 use Isotope\CoreBundle\ModelType\ShippingRegistry;
-use Isotope\CoreBundle\Product\CollectibleInterface;
-use Isotope\CoreBundle\Product\ProductInterface;
-use Isotope\CoreBundle\Product\ShippableInterface;
+use Isotope\CoreBundle\Product\CoreProduct;
+use Isotope\CoreBundle\Product\Extension\ShippingExtension;
+use Isotope\CoreBundle\Product\Product;
 use Isotope\CoreBundle\Routing\ProductReference;
 use Isotope\CoreBundle\Store\Context\StoreContext;
-use Isotope\CoreBundle\Store\Context\StoreContextFactory;
 use Isotope\CoreBundle\Store\StoreManager;
-use Isotope\Frontend;
 use Isotope\Haste\Units\Mass\Scale;
 use Isotope\Haste\Units\Mass\Weighable;
 use Isotope\Haste\Units\Mass\WeightAggregate;
@@ -75,7 +74,7 @@ use Isotope\Model\ProductCollectionSurcharge\Tax;
  * @property array     $email_data
  * @property int       $orderdetails_page
  */
-abstract class ProductCollection extends TypeAgent implements IsotopeProductCollection
+abstract class ProductCollection extends TypeAgent
 {
 
     /**
@@ -462,7 +461,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
 
             foreach ($arrItems as $objItem) {
                 $product = $objItem->getProduct();
-                if ($product instanceof ShippableInterface && $product->isPickupOnly()) {
+                if ($product?->getExtension(ShippingExtension::class)?->isPickupOnly()) {
                     $this->arrCache['requiresShippingAddress'] = false;
                     break;
                 }
@@ -958,7 +957,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
      *
      * @return ProductCollectionItem|null
      */
-    public function getItemForProduct(CollectibleInterface $objProduct, array $configuration = [])
+    public function getItemForProduct(Product $objProduct, array $configuration = [])
     {
         return ProductCollectionItem::findOneBy(
             array('pid=?', 'identifier=?', 'configuration=?'),
@@ -991,7 +990,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
      *
      * @return ProductCollectionItem|false
      */
-    public function addProduct(CollectibleInterface $objProduct, int $intQuantity, array $configuration = [], array $arrConfig = array())
+    public function addProduct(Product $objProduct, int $intQuantity, array $configuration = [], array $arrConfig = array())
     {
         // !HOOK: additional functionality when adding product to collection
         if (isset($GLOBALS['ISO_HOOKS']['addProductToCollection'])
@@ -1070,7 +1069,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
      *
      * @return bool
      */
-    public function updateProduct(CollectibleInterface $objProduct, ProductCollectionItem $objItem)
+    public function updateProduct(Product $objProduct, ProductCollectionItem $objItem)
     {
         if ($objItem->pid != $this->id) {
             throw new \InvalidArgumentException('Item does not belong to this collection');
@@ -1304,7 +1303,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
             ) {
                 foreach ($GLOBALS['ISO_HOOKS']['copyCollectionItem'] as $callback) {
                     if (System::importStatic($callback[0])->{$callback[1]}($objOldItem, $objSource, $this) === false) {
-                        continue(2);
+                        continue;
                     }
                 }
             }
@@ -1623,7 +1622,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
         $storeManager = System::getContainer()->get(StoreManager::class);
 
         $storeManager->runWithCollection($this, function (StoreContext $context) use ($objProduct, $objItem, &$arrItem) {
-            if ($objProduct instanceof ProductInterface && null !== $objItem->getRelated('jumpTo') && $objProduct->isAvailable($context)) {
+            if ($objProduct instanceof CoreProduct && null !== $objItem->getRelated('jumpTo') && $objProduct->isAvailable($context)) {
                 $arrItem['href'] = System::getContainer()
                     ->get('contao.routing.content_url_generator')
                     ->generate(new ProductReference($objProduct, $objItem->getRelated('jumpTo')))
@@ -1979,13 +1978,13 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
     /**
      * @param int                   $quantity
      */
-    private function setProductForItem(CollectibleInterface $product, ProductCollectionItem $item, int $quantity, array $configuration = [])
+    private function setProductForItem(Product $product, ProductCollectionItem $item, int $quantity, array $configuration = [])
     {
         /** @var StoreManager $storeManager */
         $storeManager = System::getContainer()->get(StoreManager::class);
 
         $storeManager->runWithCollection($this, static function (StoreContext $context) use ($product, $item, $quantity, $configuration) {
-            if ($product instanceof ProductInterface) {
+            if ($product instanceof CoreProduct) {
                 $configuration = array_merge($product->getVariantConfig(), $configuration);
             }
 

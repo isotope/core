@@ -6,8 +6,8 @@ use Contao\CoreBundle\Routing\PageFinder;
 use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use Contao\Database;
 use Doctrine\DBAL\Connection;
-use Isotope\CoreBundle\Product\ProductInterface;
-use Isotope\Model\Product;
+use Isotope\CoreBundle\Model\Product;
+use Isotope\CoreBundle\Product\CoreProduct;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Service\ResetInterface;
@@ -53,7 +53,7 @@ class ProductCategoryUtil implements ResetInterface
     /**
      * @return array<int>
      */
-    public function getPublishedForProduct(ProductInterface $product): array
+    public function getPublishedForProduct(CoreProduct $product): array
     {
         if (null === $this->published) {
             $this->published = $this->preload(true);
@@ -65,7 +65,7 @@ class ProductCategoryUtil implements ResetInterface
     /**
      * @return array<int>
      */
-    public function getPublishedForProductInRoot(int $rootId, ProductInterface $product): array
+    public function getPublishedForProductInRoot(int $rootId, CoreProduct $product): array
     {
         if (!isset($this->root[$rootId])) {
             $this->root[$rootId] = Database::getInstance()->getChildRecords($rootId, 'tl_page', false, [$rootId]);
@@ -77,7 +77,7 @@ class ProductCategoryUtil implements ResetInterface
     /**
      * @return array<int>
      */
-    public function getPublishedForProductInCurrentRoot(ProductInterface $product): array
+    public function getPublishedForProductInCurrentRoot(CoreProduct $product): array
     {
         $request = $this->requestStack->getCurrentRequest();
 

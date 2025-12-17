@@ -18,20 +18,12 @@ use Contao\FrontendTemplate;
 use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
-use Isotope\CoreBundle\Attribute\AttributeRegistry;
-use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
 use Isotope\CoreBundle\Product\ProductInterface;
-use Isotope\EventListener\ChangeLanguageListener;
-use Isotope\Haste\Input\Input;
 use Isotope\Interfaces\IsotopeOrderableCollection;
-use Isotope\Interfaces\IsotopePrice;
 use Isotope\Interfaces\IsotopeProductCollection;
-use Isotope\Model\AttributeOption;
-use Isotope\Model\Product\Standard;
 use Isotope\Model\ProductCollection\Cart;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Model\ProductCollectionSurcharge;
-use Isotope\Model\TaxClass;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -231,74 +223,6 @@ class Frontend extends \Contao\Frontend
         self::setLanguage($objPage->language);
 
         return $objPage;
-    }
-
-    /**
-     * Calculate price surcharge for attribute options
-     *
-     * @param float  $fltPrice
-     * @param object $objSource
-     * @param string $strField
-     * @param int    $intTaxClass
-     *
-     * @return float
-     * @throws \Exception
-     */
-    public function addOptionsPrice($fltPrice, $objSource, $strField, $intTaxClass, array $arrOptions)
-    {
-        $fltAmount = (float) $fltPrice;
-
-        if ($objSource instanceof IsotopePrice
-            && ($objProduct = $objSource->getRelated('pid')) instanceof ProductInterface
-            && $objProduct->getType() !== null) {
-            /** @var ProductInterface|Standard $objProduct */
-
-            /** @var AttributeRegistry $attributeRegistry */
-            $attributeRegistry = System::getContainer()->get(AttributeRegistry::class);
-
-            $arrAttributes = array_intersect(
-                $attributeRegistry->getPricedFields(),
-                array_merge(
-                    $objProduct->getProductType()->getAttributes(),
-                    $objProduct->getProductType()->getVariantAttributes()
-                )
-            );
-
-            foreach ($arrAttributes as $field) {
-                if (($objAttribute = $attributeRegistry->get($field)) !== null
-                    && $objAttribute instanceof OptionsAttributeInterface
-                    && $objAttribute->canHavePrices()
-                    && ($objOptions = $objAttribute->getOptionsFromManager($objProduct)) !== null
-                ) {
-                    $value = $objAttribute->isCustomerDefined() ? ($arrOptions[$field] ?? null) : $objProduct->$field;
-                    $value = StringUtil::deserialize($value, true);
-
-                    /** @var AttributeOption $objOption */
-                    foreach ($objOptions as $objOption) {
-                        if (\in_array($objOption->getLanguageId(), $value)) {
-                            // Do not use getAmount() for non-percentage price, it would run Isotope::calculatePrice again (see isotope/core#2342)
-                            $amount = $objOption->isPercentage() ? $objOption->getAmount($fltPrice, 0) : (float) $objOption->price;
-                            $objTax = $objSource->getRelated('tax_class');
-
-                            if ($objOption->isPercentage() || !$objTax instanceof TaxClass) {
-                                $fltAmount += $amount;
-                                continue;
-                            }
-
-                            if ('net_price' === $strField) {
-                                $fltAmount += $objTax->calculateNetPrice($amount);
-                            } elseif ('gross_price' === $strField) {
-                                $fltAmount += $objTax->calculateGrossPrice($amount);
-                            } else {
-                                $fltAmount += $amount;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return $fltAmount;
     }
 
     /**

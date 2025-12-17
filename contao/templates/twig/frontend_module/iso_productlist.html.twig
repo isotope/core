@@ -11,7 +11,7 @@
 
 {% block content %}
     {% for product in products %}
-        {{ isotope_product(product) }}
+        {{ isotope_product(product, view) }}
     {% else %}
         <p class="empty message">{{ data.iso_noProducts|default('MSC.noProducts'|trans) }}</p>
     {% endfor %}

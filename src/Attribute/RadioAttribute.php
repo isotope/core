@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Attribute;
 
-use Contao\Widget;
 use Doctrine\DBAL\Types\Types;
+use Isotope\CoreBundle\Attribute\Option\OptionsSource;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsAttribute;
 
 #[AsAttribute]
@@ -22,7 +22,7 @@ class RadioAttribute extends AbstractOptionsAttribute implements VariantAttribut
 
     protected function getSqlDefinition(): array|string
     {
-        if (OptionsSource::Attribute === $this->optionsSource) {
+        if (OptionsSource::Attribute === $this->getOptionsSource()) {
             return ['type' => Types::STRING, 'length' => 64, 'options' => ['default' => '']];
         }
 

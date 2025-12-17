@@ -11,7 +11,9 @@ use Contao\DataContainer;
 use Contao\StringUtil;
 use Doctrine\DBAL\Connection;
 use Isotope\CoreBundle\Model\ProductType;
-use Isotope\Model\ProductPrice;
+use Isotope\CoreBundle\Product\Price\DefaultPriceFactory;
+use Isotope\CoreBundle\Product\Price\PriceCollection;
+use Isotope\CoreBundle\Store\Price\MoneyFormat;
 use Isotope\Model\TaxClass;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -25,12 +27,16 @@ class LabelListener
         private readonly Formatter $formatter,
         private readonly UrlGeneratorInterface $urlGenerator,
         private readonly TranslatorInterface $translator,
+        private readonly DefaultPriceFactory $priceFactory,
     ) {
     }
 
-    public function __invoke(array $row, string $label, DataContainer $dc): array
+    public function __invoke(array $row, string $label, DataContainer $dc, array|string $args): array|string
     {
-        $args = [];
+        // Deleting a product
+        if (!\is_array($args)) {
+            $args = [];
+        }
 
         foreach ($GLOBALS['TL_DCA'][$dc->table]['list']['label']['fields'] as $i => $field) {
             switch ($field) {
@@ -68,7 +74,7 @@ class LabelListener
                             $args[$i] .= '<br><span title="'.StringUtil::specialchars(implode(', ', $removed)).'">…</span><span class="invisible">'.StringUtil::specialchars(implode(', ', $removed)).'</span>';
                         }
                     } else {
-                        $args[$i] = $this->formatter->dcaValue('tl_iso_product', $field, $row[$field] ?? null);
+                        $args[$i] ??= $row[$field] ?? null;
                     }
             }
         }
@@ -134,62 +140,52 @@ class LabelListener
         $objPrice = null;
         $fromPrice = false;
 
+        if (0 === $row['pid']) {
+            $type = ProductType::findById($row['type']);
+        } else {
+            $type = ProductType::findById($this->connection->fetchOne('SELECT type FROM tl_iso_product WHERE id=?', [$row['pid']]));
+        }
+
         if (
             0 === $row['pid']
-            && null !== ($objProductType = ProductType::findById($row['type']))
-            && $objProductType->hasVariants()
-            && \in_array('price', $objProductType->getVariantAttributes(), true)
+            && $type
+            && $type->hasVariants()
+            && \in_array('price', $type->getVariantAttributes(), true)
         ) {
-            $variantIds = $this->connection->fetchFirstColumn(
-                "SELECT id FROM tl_iso_product WHERE pid=? AND language=''",
+            $variants = $this->connection->fetchAllAssociative(
+                "SELECT * FROM tl_iso_product WHERE pid=? AND language=''",
                 [$row['id']],
             );
 
-            if (empty($variantIds)) {
+            if (empty($variants)) {
                 return '';
             }
 
-            $objPrices = ProductPrice::findPrimaryByProductIds($variantIds);
+            /** @var PriceCollection $prices */
+            $prices = array_map(fn (array $variant) => $this->priceFactory->createFromArray($variant, $type->hasAdvancedPrices()), $variants);
+            $prices = (new PriceCollection())->merge(...$prices)->filterDefault();
 
-            if (null !== $objPrices) {
-                $fltPrice = null;
-                $arrPrices = [];
-
-                /** @var ProductPrice $price */
-                foreach ($objPrices as $price) {
-                    $fltNew = $price->getValueForTier($price->getLowestTier());
-                    $arrPrices[] = $fltNew;
-
-                    if (null === $fltPrice || $fltNew < $fltPrice) {
-                        $fltPrice = $fltNew;
-                        $objPrice = $price;
-                    }
-                }
-
-                if (\count(array_unique($arrPrices)) > 1) {
-                    $fromPrice = true;
-                }
-            }
+            $objPrice = $prices->getLowest();
+            $fromPrice = $prices->hasRange();
         }
 
         if (null === $objPrice) {
-            $objPrice = ProductPrice::findPrimaryByProductId($row['id']);
+            $prices = $this->priceFactory->createFromArray($row, $type?->hasAdvancedPrices() ?? false);
+            $objPrice = $prices->getDefault();
         }
 
         if (null !== $objPrice) {
-            try {
-                /** @var TaxClass $objTax */
-                $objTax = $objPrice->getRelated('tax_class');
-                $strTax = (null === $objTax ? '' : ' ('.$objTax->getName().')');
+            $label = (new MoneyFormat())->format($objPrice->getPrice());
 
-                if ($fromPrice) {
-                    return $this->translator->trans('MSC.priceRangeLabel', [$objPrice->getValueForTier(1)], 'contao_default').$strTax;
-                }
-
-                return $objPrice->getValueForTier(1).$strTax;
-            } catch (\Exception) {
-                return '';
+            if ($fromPrice) {
+                $label = $this->translator->trans('MSC.priceRangeLabel', [$label], 'contao_default');
             }
+
+            /** @var TaxClass $objTax */
+            $objTax = $objPrice->getTaxId() ? TaxClass::findById($objPrice->getTaxId()) : null;
+            $label .= sprintf(' <span style="color:#999">[%s]</span>', $objTax ? $objTax->getName() : $this->translator->trans('MSC.taxFree', [], 'contao_default'));
+
+            return $label;
         }
 
         return '';

@@ -3,7 +3,7 @@
 namespace Isotope\CoreBundle\Product\Action;
 
 use Isotope\CoreBundle\HttpFoundation\ActionResult;
-use Isotope\CoreBundle\Product\ProductInterface;
+use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\Render\ViewInterface;
 
 interface ProductActionInterface
@@ -11,15 +11,15 @@ interface ProductActionInterface
     /**
      * Returns whether the action is supported for the given product.
      */
-    public function supports(ProductInterface $product, ViewInterface $view): bool;
+    public function supports(CoreProduct $product, ViewInterface $view): bool;
 
     /**
      * Generates HTML content for this action.
      */
-    public function render(ProductInterface $product, ViewInterface $view): string;
+    public function render(CoreProduct $product, ViewInterface $view): string;
 
     /**
      * Handles submit of the product action.
      */
-    public function handle(ProductInterface $product, array $configuration, ViewInterface $view): ActionResult;
+    public function handle(CoreProduct $product, array $configuration, ViewInterface $view): ActionResult;
 }

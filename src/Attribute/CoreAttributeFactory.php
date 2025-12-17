@@ -5,10 +5,20 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Attribute;
 
 use Contao\StringUtil;
+use Isotope\CoreBundle\Attribute\Option\OptionFactory;
+use Isotope\CoreBundle\Attribute\Option\OptionsSource;
+use Isotope\CoreBundle\Product\CoreProduct;
+use Isotope\CoreBundle\Store\Context\ProductContext;
+use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\Interfaces\IsotopeAttribute;
 
 class CoreAttributeFactory implements AttributeFactoryInterface
 {
+    public function __construct(
+        private readonly OptionFactory $optionFactory,
+    ) {
+    }
+
     public function create(string $fieldName, array $config, array $dca): AttributeInterface|null
     {
         /** @var class-string<IsotopeAttribute> $class */
@@ -94,11 +104,20 @@ class CoreAttributeFactory implements AttributeFactoryInterface
         };
 
         if (\is_a($class, AbstractOptionsAttribute::class, true)) {
-            return (new $class($fieldName, $optionsSource))
-                ->setOptions($this->getOptions($config, $dca))
-                ->setForeignKey($config['foreignKey'] ?? $dca['foreignKey'] ?? null)
-                ->setMultiple((bool) ($config['multiple'] ?? $dca['eval']['multiple'] ?? false))
-            ;
+            $optionsFactory = fn (AbstractOptionsAttribute $attribute, ProductContext|null $productContext = null) => $this->optionFactory->create(
+                $attribute,
+                $productContext,
+                $this->getOptions($config, $dca),
+                $config['foreignKey'] ?? $dca['foreignKey'] ?? null,
+            );
+
+            $instance = (new $class($fieldName, $optionsSource, $optionsFactory));
+
+            if ($instance instanceof SelectAttribute) {
+                $instance->setMultiple((bool) ($config['multiple'] ?? $dca['eval']['multiple'] ?? false));
+            }
+
+            return $instance;
         }
 
         return new $class($fieldName);

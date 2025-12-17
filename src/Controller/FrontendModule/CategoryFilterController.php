@@ -7,7 +7,7 @@ namespace Isotope\CoreBundle\Controller\FrontendModule;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsFrontendModule;
 use Contao\CoreBundle\Twig\FragmentTemplate;
 use Contao\ModuleModel;
-use Isotope\CoreBundle\Product\ProductInterface;
+use Isotope\CoreBundle\Product\CoreProduct;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -16,7 +16,7 @@ class CategoryFilterController extends AbstractFrontendModuleController
 {
     protected function getResponse(FragmentTemplate $template, ModuleModel $model, Request $request): Response
     {
-        if ($request->attributes->get('_content') instanceof ProductInterface && $model->iso_hide_list) {
+        if ($request->attributes->get('_content') instanceof CoreProduct && $model->iso_hide_list) {
             return new Response('');
         }
 

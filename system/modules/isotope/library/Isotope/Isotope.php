@@ -13,8 +13,10 @@ namespace Isotope;
 
 use Contao\Controller;
 use Contao\System;
-use Isotope\CoreBundle\ModelType\ProductRegistry;
-use Isotope\CoreBundle\Product\ProductInterface;
+use Isotope\CoreBundle\Product\DataCollector\ProductDto;
+use Isotope\CoreBundle\Product\Extension\ShippingExtension;
+use Isotope\CoreBundle\Product\Product;
+use Isotope\CoreBundle\Product\ProductBuilder;
 use Isotope\CoreBundle\Store\StoreManager;
 use Isotope\Model\Config;
 use Isotope\Model\ProductCollection\Cart;
@@ -68,15 +70,17 @@ class Isotope extends Controller
     /**
      * Get the currently active Isotope cart
      *
-     * @return Cart|null
+     * @deprecated
      */
     public static function getCart()
     {
         if (null === static::$objCart && CompatibilityHelper::isFrontend()) {
             static::initialize();
-            if ((static::$objCart = Cart::findForCurrentStore()) !== null) {
-                static::$objCart->mergeGuestCart();
-            }
+
+            /** @var StoreManager $storeManager */
+            $storeManager = System::getContainer()->get(StoreManager::class);
+
+            static::$objCart = Cart::findByUniqid($storeManager->getCurrentContext()->getIdentifier());
         }
 
         return static::$objCart;
@@ -156,17 +160,21 @@ class Isotope extends Controller
             $fltPrice = $fltPrice * $objConfig->priceCalculateFactor;
         }
 
-        $sourceIsProduct = $objSource instanceof ProductInterface;
+        $sourceIsProduct = $objSource instanceof Product;
         $sourceIsPrice   = $objSource instanceof ProductPrice;
 
         if (!\is_array($arrAddresses) && ($sourceIsProduct || $sourceIsPrice)) {
-            /** @var ProductRegistry $productRegistry */
-            $productRegistry = System::getContainer()->get(ProductRegistry::class);
-            $product = $sourceIsPrice ? $productRegistry->get($objSource->getRelated('pid')) : $objSource;
+            /** @var ProductBuilder $productBuilder */
+            $productBuilder = System::getContainer()->get(ProductBuilder::class);
+
+            /** @var StoreManager $storeManager */
+            $storeManager = System::getContainer()->get(StoreManager::class);
+
+            $product = $sourceIsPrice ? $productBuilder->buildOne(new ProductDto('tl_iso_product.'.$objSource->getRelated('pid')), $storeManager->getCurrentContext()) : $objSource;
 
             $arrAddresses = array(
                 'billing'  => Isotope::getCart()->getBillingAddress(),
-                'shipping' => $product->isExemptFromShipping() ? Isotope::getCart()->getBillingAddress() : Isotope::getCart()->getShippingAddress(),
+                'shipping' => $product->getExtension(ShippingExtension::class)?->isExemptFromShipping() ? Isotope::getCart()->getBillingAddress() : Isotope::getCart()->getShippingAddress(),
             );
         }
 

@@ -27,12 +27,11 @@ use Isotope\Isotope;
  * @property int    $tstamp
  * @property string $name
  * @property string $label
- * @property array  $address
+ * @property string $address
  * @property string $countries
  * @property string $subdivisions
  * @property string $postalCodes
- * @property array  $rate
- * @property array  $amount
+ * @property string $rate
  * @property int    $config
  * @property bool   $exemptOnValidVAT
  * @property bool   $stop
@@ -145,18 +144,6 @@ class TaxRate extends Model
         return true;
     }
 
-
-    /**
-     * Return true if the tax rate is a percentage (not fixed) amount
-     * @return bool
-     */
-    public function isPercentage()
-    {
-        $arrTaxRate = StringUtil::deserialize($this->rate, true);
-
-        return ('%' === $arrTaxRate['unit']);
-    }
-
     /**
      * Get label
      * @return  string
@@ -172,9 +159,7 @@ class TaxRate extends Model
      */
     public function getAmount()
     {
-        $arrTaxRate = StringUtil::deserialize($this->rate, true);
-
-        return (float) $arrTaxRate['value'];
+        return (float) $this->rate;
     }
 
 
@@ -186,12 +171,7 @@ class TaxRate extends Model
     public function calculateAmountIncludedInPrice($fltPrice)
     {
         // Percentual amount. Final price / (1 + (tax / 100)
-        if ($this->isPercentage()) {
-            return $fltPrice - ($fltPrice / (1 + ($this->getAmount() / 100)));
-        } // Full amount
-        else {
-            return $this->getAmount();
-        }
+        return $fltPrice - ($fltPrice / (1 + ($this->getAmount() / 100)));
     }
 
 
@@ -203,11 +183,6 @@ class TaxRate extends Model
     public function calculateAmountAddedToPrice($fltPrice)
     {
         // Final price * (1 + (tax / 100)
-        if ($this->isPercentage()) {
-            return ($fltPrice * (1 + ($this->getAmount() / 100))) - $fltPrice;
-        } // Full amount
-        else {
-            return $this->getAmount();
-        }
+        return ($fltPrice * (1 + ($this->getAmount() / 100))) - $fltPrice;
     }
 }

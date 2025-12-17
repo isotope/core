@@ -13,10 +13,10 @@ namespace Isotope\Interfaces;
 
 use Contao\MemberModel;
 use Contao\Template;
-use Isotope\CoreBundle\Product\CollectibleInterface;
+use Isotope\CoreBundle\Model\ProductCollectionItem;
+use Isotope\CoreBundle\Product\Product;
 use Isotope\Haste\Units\Mass\Scale;
 use Isotope\Model\Config;
-use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\ProductCollectionSurcharge;
 
 
@@ -152,7 +152,7 @@ interface IsotopeProductCollection
      * @param callable
      * @param bool
      *
-     * @return \Isotope\Model\ProductCollectionItem[]
+     * @return \Isotope\CoreBundle\Model\ProductCollectionItem[]
      */
     public function getItems($varCallable = null, $blnNoCache = false);
 
@@ -162,7 +162,7 @@ interface IsotopeProductCollection
      *
      * @return ProductCollectionItem|null
      */
-    public function getItemForProduct(CollectibleInterface $objProduct, array $configuration = []);
+    public function getItemForProduct(Product $objProduct, array $configuration = []);
 
     /**
      * Add a product to the collection
@@ -171,7 +171,7 @@ interface IsotopeProductCollection
      *
      * @return ProductCollectionItem
      */
-    public function addProduct(CollectibleInterface $objProduct, int $intQuantity, array $configuration, array $arrConfig = []);
+    public function addProduct(Product $objProduct, int $intQuantity, array $configuration, array $arrConfig = []);
 
     /**
      * Update a product collection item

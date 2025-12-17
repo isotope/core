@@ -11,20 +11,10 @@
 
 namespace Isotope\Module;
 
-use Contao\Database;
-use Contao\Date;
-use Contao\Environment;
-use Contao\FrontendUser;
-use Contao\PageModel;
-use Contao\System;
 use Isotope\CompatibilityHelper;
 use Isotope\CoreBundle\Product\ProductInterface;
-use Isotope\Frontend;
-use Isotope\Haste\Input\Input;
 use Isotope\Isotope;
 use Isotope\Message;
-use Isotope\Model\Product;
-use Isotope\Model\Product\AbstractProduct;
 
 
 /**

@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Twig;
 
 use Contao\CoreBundle\Image\Studio\Studio;
-use Contao\CoreBundle\Routing\ContentUrlGenerator;
 use Contao\StringUtil;
 use Isotope\CoreBundle\Gallery\StandardGallery;
 use Isotope\CoreBundle\Model\Gallery;
 use Isotope\CoreBundle\ModelType\GalleryRegistry;
-use Isotope\CoreBundle\Product\ProductInterface;
+use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\Render\ViewInterface;
 use Isotope\CoreBundle\Widget\MediaManager;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
@@ -25,7 +24,6 @@ class GalleryRuntime implements RuntimeExtensionInterface
         private readonly GalleryRegistry $galleryRegistry,
         private readonly Studio $imageStudio,
         private readonly Environment $twig,
-        private readonly ContentUrlGenerator $urlGenerator,
     ) {
     }
 
@@ -34,7 +32,7 @@ class GalleryRuntime implements RuntimeExtensionInterface
         $product = $context['product'] ?? null;
         $view = $context['view'] ?? null;
 
-        if (!$product instanceof ProductInterface || (!$galleryId && !$view instanceof ViewInterface)) {
+        if (!$product instanceof CoreProduct || (!$galleryId && !$view instanceof ViewInterface)) {
             return null;
         }
 
@@ -45,8 +43,8 @@ class GalleryRuntime implements RuntimeExtensionInterface
 
         $href = null;
         $files = MediaManager::mergeMediaData(
-            StringUtil::deserialize($product[$attributeName], true),
-            StringUtil::deserialize($product[$attributeName.'_fallback'], true),
+            StringUtil::deserialize($product->{$attributeName}, true),
+            StringUtil::deserialize($product->{$attributeName.'_fallback'}, true),
         );
 
         //if (!isset($view['jumpTo']) || ProductResolver::canLinkToPage($view['jumpTo'])) {
@@ -54,7 +52,7 @@ class GalleryRuntime implements RuntimeExtensionInterface
         //}
 
         return new GalleryVariable($gallery->withProductData(
-            'iso_product_'.$product->getId().'_'.$attributeName,
+            'iso_product_'.$product->id.'_'.$attributeName,
             $product->getProductId(),
             $files,
             $href,

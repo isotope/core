@@ -12,13 +12,12 @@ use Contao\Input;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
+use Isotope\CoreBundle\Attribute\Option\OptionsSource;
 use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
-use Isotope\CoreBundle\Attribute\OptionsSource;
 use Isotope\CoreBundle\Attribute\VariantAttributeInterface;
 use Isotope\CoreBundle\DataContainer\ProductData;
 use Isotope\CoreBundle\Model\ProductType;
-use Isotope\CoreBundle\Product\ProductInterface;
-use Isotope\Model\RelatedCategory;
+use Isotope\CoreBundle\Model\RelatedCategory;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
@@ -41,45 +40,8 @@ class AttributeListener
             return;
         }
 
-        $this->attributeRegistry->load();
-    }
-
-    #[AsHook('getAttributesFromDca')]
-    public function addOptionsFromAttribute(array $config, mixed $dc): array
-    {
-        if (
-            'tl_iso_product' !== ($config['strTable'] ?? null)
-            || !isset($config['strField'])
-            || true === ($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$config['strField']]['attributes']['systemColumn'] ?? false)
-        ) {
-            return $config;
-        }
-
-        $attribute = $this->attributeRegistry->get($config['strField']);
-
-        if (
-            !$attribute instanceof OptionsAttributeInterface
-            || OptionsSource::ForeignKey === $attribute->getOptionsSource()
-        ) {
-            return $config;
-        }
-
-        $config['options'] = ($dc instanceof ProductInterface) ? $attribute->getOptionsForWidget($dc) : $attribute->getOptionsForWidget();
-
-        if ($config['includeBlankOption'] ?? null) {
-            array_unshift($config['options'], ['value' => '', 'label' => ($config['blankOptionLabel'] ?? '-')]);
-        }
-
-        if (null !== ($config['default'] ?? null)) {
-            $defaults = array_filter($config['options'], static fn ($option) => (bool) $option['default']);
-
-            if ([] !== $defaults) {
-                $defaults = array_map(static fn ($option) => $option['value'], $defaults);
-                $config['value'] = $attribute->hasMultiple() ? $defaults : reset($defaults);
-            }
-        }
-
-        return $config;
+        // TODO: this should not force reload
+        $this->attributeRegistry->load(true);
     }
 
     /**

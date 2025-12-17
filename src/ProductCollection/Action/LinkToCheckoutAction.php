@@ -5,8 +5,7 @@ namespace Isotope\CoreBundle\ProductCollection\Action;
 use Contao\CoreBundle\Routing\ContentUrlGenerator;
 use Contao\PageModel;
 use Isotope\CoreBundle\HttpFoundation\ActionResult;
-use Isotope\Interfaces\IsotopeProductCollection;
-use Symfony\Component\HttpFoundation\Request;
+use Isotope\CoreBundle\ProductCollection\AbstractProductCollection;
 use Twig\Environment;
 
 class  LinkToCheckoutAction implements ProductCollectionActionInterface
@@ -17,19 +16,19 @@ class  LinkToCheckoutAction implements ProductCollectionActionInterface
     ) {
     }
 
-    public function supports(IsotopeProductCollection $collection, array $context): bool
+    public function supports(AbstractProductCollection $collection, array $context): bool
     {
         return null !== $this->getPageModel($context);
     }
 
-    public function render(IsotopeProductCollection $collection, array $context): string
+    public function render(AbstractProductCollection $collection, array $context): string
     {
         return $this->twig->render('@Contao/isotope/product_collection_action/link_to_checkout.html.twig', [
             'href' => $this->urlGenerator->generate($this->getPageModel($context)),
         ]);
     }
 
-    public function handle(IsotopeProductCollection $collection, array $context): ActionResult
+    public function handle(AbstractProductCollection $collection, array $context): ActionResult
     {
         return new ActionResult(null, $this->urlGenerator->generate($this->getPageModel($context)));
     }

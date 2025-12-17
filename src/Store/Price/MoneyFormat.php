@@ -39,6 +39,13 @@ final class MoneyFormat
 
         $multiplier = 100 / ($this->roundingIncrement * 100);
 
-        return round($rounded * $multiplier, 0) / $multiplier;
+        return round($rounded * $multiplier) / $multiplier;
+    }
+
+    public function format(float $price): string
+    {
+        $price = $this->moneyRound($price);
+
+        return number_format($price, $this->decimals, $this->decimalSeparator, $this->thousandsSeparator);
     }
 }

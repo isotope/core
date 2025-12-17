@@ -25,6 +25,10 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = [
             'panelLayout' => 'filter,search,limit',
             'headerFields' => ['name', 'field_name', 'type', 'variant_option', 'customer_defined'],
         ],
+        'label' => [
+            'fields' => ['label'],
+            'label' => '%s',
+        ],
     ],
     'palettes' => [
         '__selector__' => ['type'],

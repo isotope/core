@@ -25,7 +25,7 @@ use Isotope\CoreBundle\Store\StoreManager;
  * @property bool   $fallback
  * @property int    $includes
  * @property string $label
- * @property array  $rates
+ * @property string|null $rates
  * @property bool   $applyRoundingIncrement
  * @property bool   $notNegative
  */
@@ -88,10 +88,14 @@ class TaxClass extends Model
      */
     public function calculateNetPrice($fltPrice, array $arrAddresses = null)
     {
+        /** @var StoreManager $storeManager */
+        $storeManager = System::getContainer()->get(StoreManager::class);
+        $context = $storeManager->getCurrentContext();
+
         if (!\is_array($arrAddresses)) {
             $arrAddresses = array(
-                'billing'  => Isotope::getCart()->getBillingAddress(),
-                'shipping' => Isotope::getCart()->getShippingAddress(),
+                'billing'  => $context->getCart()->getBillingAddress(),
+                'shipping' => $context->getCart()->getShippingAddress(),
             );
         }
 
@@ -102,7 +106,7 @@ class TaxClass extends Model
             $fltNetPrice -= $objIncludes->calculateAmountIncludedInPrice($fltPrice);
         }
 
-        if (Config::PRICE_DISPLAY_FIXED === Isotope::getConfig()->getPriceDisplay()) {
+        if (PriceDisplay::Fixed === $context->getPriceDisplay()) {
             if (($objRates = $this->getRelated('rates')) !== null) {
 
                 /** @var \Isotope\Model\TaxRate $objTaxRate */
@@ -132,9 +136,12 @@ class TaxClass extends Model
     public function calculateGrossPrice($fltPrice, array $arrAddresses = null)
     {
         if (!\is_array($arrAddresses)) {
+            /** @var StoreManager $storeManager */
+            $storeManager = System::getContainer()->get(StoreManager::class);
+            $context = $storeManager->getCurrentContext();
             $arrAddresses = array(
-                'billing'  => Isotope::getCart()->getBillingAddress(),
-                'shipping' => Isotope::getCart()->getShippingAddress(),
+                'billing'  => $context->getCart()->getBillingAddress(),
+                'shipping' => $context->getCart()->getShippingAddress(),
             );
         }
 

@@ -1,27 +1,25 @@
 <?php
 
 use Contao\ArrayUtil;
-use Contao\System;
 use Isotope\Automator;
-use Isotope\Backend;
-use Isotope\Backend\Member\Callback as MemberCallback;
 use Isotope\Backend\ProductCollection\Callback;
-use Isotope\Backend\ProductType\Help;
-use Isotope\Backend\SubtableVersion;
 use Isotope\CheckoutStep\BillingAddress;
 use Isotope\CheckoutStep\OrderInfo;
 use Isotope\CheckoutStep\OrderProducts;
 use Isotope\CheckoutStep\PaymentMethod;
 use Isotope\CheckoutStep\ShippingAddress;
 use Isotope\CheckoutStep\ShippingMethod;
-use Isotope\CompatibilityHelper;
 use Isotope\CoreBundle\Model\Attribute;
+use Isotope\CoreBundle\Model\AttributeOption;
 use Isotope\CoreBundle\Model\BasePrice;
 use Isotope\CoreBundle\Model\Document;
 use Isotope\CoreBundle\Model\Gallery;
 use Isotope\CoreBundle\Model\OrderStatus;
 use Isotope\CoreBundle\Model\Payment;
+use Isotope\CoreBundle\Model\Product;
 use Isotope\CoreBundle\Model\ProductCategory;
+use Isotope\CoreBundle\Model\ProductCollection;
+use Isotope\CoreBundle\Model\ProductCollectionItem;
 use Isotope\CoreBundle\Model\ProductType;
 use Isotope\CoreBundle\Model\RelatedCategory;
 use Isotope\CoreBundle\Model\RelatedProduct;
@@ -31,16 +29,9 @@ use Isotope\CoreBundle\Widget\MediaManager;
 use Isotope\EventListener\PostCheckoutUploads;
 use Isotope\Frontend;
 use Isotope\Model\Address;
-use Isotope\Model\AttributeOption;
 use Isotope\Model\Config;
 use Isotope\Model\Download;
-use Isotope\Model\Product;
-use Isotope\Model\Product\Standard as StandardProduct;
-use Isotope\Model\ProductCollection;
-use Isotope\Model\ProductCollection\Cart as CartCollection;
-use Isotope\Model\ProductCollection\Order;
 use Isotope\Model\ProductCollectionDownload;
-use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\ProductCollectionLog;
 use Isotope\Model\ProductCollectionSurcharge;
 use Isotope\Model\ProductCollectionSurcharge\Payment as PaymentSurcharge;
@@ -57,7 +48,6 @@ use Isotope\Module\Messages;
 use Isotope\Module\OrderHistory;
 use Isotope\Module\ShippingCalculator;
 use Isotope\VatNoValidator\EuViesValidator;
-use Symfony\Component\HttpFoundation\Request;
 
 /*
  * Backend modules
@@ -98,24 +88,6 @@ $GLOBALS['FE_MOD']['isotope'] = [
  */
 $GLOBALS['BE_FFL']['mediaManager'] = MediaManager::class;
 $GLOBALS['BE_FFL']['inheritCheckbox'] = InheritCheckBox::class;
-
-/*
- * Products
- */
-Product::registerModelType('standard', StandardProduct::class);
-
-/*
- * Product collections
- */
-ProductCollection::registerModelType('cart', CartCollection::class);
-ProductCollection::registerModelType('order', Order::class);
-
-/*
- * Product collection surcharge
- */
-ProductCollectionSurcharge::registerModelType('payment', PaymentSurcharge::class);
-ProductCollectionSurcharge::registerModelType('shipping', ShippingSurcharge::class);
-ProductCollectionSurcharge::registerModelType('tax', Tax::class);
 
 /*
  * Notification Center notification types
@@ -251,15 +223,11 @@ $GLOBALS['ISO_NUM']["10'000.00"] = [2, '.', "'"];
 /*
  * Hooks
  */
-if (Contao\Config::getInstance()->isComplete()) {
-    $GLOBALS['TL_HOOKS']['replaceInsertTags'][] = [Frontend::class, 'replaceIsotopeTags'];
-    $GLOBALS['TL_HOOKS']['modifyFrontendPage'][] = [Frontend::class, 'injectScripts'];
+$GLOBALS['TL_HOOKS']['replaceInsertTags'][] = [Frontend::class, 'replaceIsotopeTags'];
+$GLOBALS['TL_HOOKS']['modifyFrontendPage'][] = [Frontend::class, 'injectScripts'];
 
-    $GLOBALS['ISO_HOOKS']['findSurchargesForCollection'][] = [Frontend::class, 'findShippingAndPaymentSurcharges'];
-    $GLOBALS['ISO_HOOKS']['postCheckout'][] = ['Isotope\Analytics', 'trackOrder'];
-    $GLOBALS['ISO_HOOKS']['postCheckout'][] = [PostCheckoutUploads::class, 'onPostCheckout'];
-    $GLOBALS['ISO_HOOKS']['calculatePrice'][] = [Frontend::class, 'addOptionsPrice'];
-}
+$GLOBALS['ISO_HOOKS']['findSurchargesForCollection'][] = [Frontend::class, 'findShippingAndPaymentSurcharges'];
+$GLOBALS['ISO_HOOKS']['postCheckout'][] = ['Isotope\Analytics', 'trackOrder'];
 
 /*
  * Cron Jobs

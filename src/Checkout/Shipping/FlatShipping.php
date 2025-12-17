@@ -6,10 +6,10 @@ namespace Isotope\CoreBundle\Checkout\Shipping;
 
 use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsShipping;
+use Isotope\CoreBundle\Model\ProductCollectionItem;
 use Isotope\Haste\Units\Mass\Weighable;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
-use Isotope\Model\ProductCollectionItem;
 use Symfony\Bundle\SecurityBundle\Security;
 
 #[AsShipping]

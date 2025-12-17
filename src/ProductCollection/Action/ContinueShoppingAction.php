@@ -3,6 +3,7 @@
 namespace Isotope\CoreBundle\ProductCollection\Action;
 
 use Isotope\CoreBundle\HttpFoundation\ActionResult;
+use Isotope\CoreBundle\ProductCollection\AbstractProductCollection;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Symfony\Component\HttpFoundation\Request;
 use Twig\Environment;
@@ -14,19 +15,19 @@ class  ContinueShoppingAction implements ProductCollectionActionInterface
     ) {
     }
 
-    public function supports(IsotopeProductCollection $collection, array $context): bool
+    public function supports(AbstractProductCollection $collection, array $context): bool
     {
         return ($context['data']['iso_continueShopping'] ?? null) && null !== $this->getHref($context);
     }
 
-    public function render(IsotopeProductCollection $collection, array $context): string
+    public function render(AbstractProductCollection $collection, array $context): string
     {
         return $this->twig->render('@Contao/isotope/product_collection_action/continue_shopping.html.twig', [
             'href' => $this->getHref($context),
         ]);
     }
 
-    public function handle(IsotopeProductCollection $collection, array $context): ActionResult
+    public function handle(AbstractProductCollection $collection, array $context): ActionResult
     {
         return new ActionResult(null, $this->getHref($context));
     }

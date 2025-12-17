@@ -17,15 +17,16 @@ use Contao\FrontendIndex;
 use Contao\Input;
 use Contao\PageModel;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
-use Isotope\CoreBundle\ModelType\ProductRegistry;
-use Isotope\CoreBundle\Product\ProductInterface;
+use Isotope\CoreBundle\Model\Product;
+use Isotope\CoreBundle\Product\CoreProduct;
+use Isotope\CoreBundle\Product\DataCollector\ProductDto;
+use Isotope\CoreBundle\Product\Extension\MetadataExtension;
+use Isotope\CoreBundle\Product\ProductBuilder;
 use Isotope\CoreBundle\Product\Query\ProductQueryFactory;
 use Isotope\CoreBundle\Routing\ProductReference;
 use Isotope\CoreBundle\Routing\ResponseContext\IsotopeBag;
 use Isotope\CoreBundle\Store\Context\StoreContext;
-use Isotope\CoreBundle\Store\StoreManager;
 use Isotope\CoreBundle\Util\ProductCategoryUtil;
-use Isotope\Model\Product;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -38,9 +39,9 @@ class ProductsPageController extends AbstractController
         private readonly ResponseContextAccessor $responseContextAccessor,
         private readonly HtmlDecoder $htmlDecoder,
         private readonly ProductCategoryUtil $productCategoryUtil,
-        private readonly ProductRegistry $productRegistry,
         private readonly AttributeRegistry $attributeRegistry,
         private readonly ProductQueryFactory $queryFactory,
+        private readonly ProductBuilder $productBuilder,
     ) {
     }
 
@@ -54,9 +55,15 @@ class ProductsPageController extends AbstractController
             return $this->renderPage($pageModel, $request);
         }
 
-        $product = $this->productRegistry->get(Product::findByIdOrAlias($alias));
+        $product = Product::findByIdOrAlias($alias);
 
-        if (!$product instanceof ProductInterface || !$product->isAvailable($context)) {
+        if (!$product) {
+            throw new PageNotFoundException();
+        }
+
+        $product = $this->productBuilder->buildOne(new ProductDto('tl_iso_product.'.$product->id), $context);
+
+        if (!$product instanceof CoreProduct || !$product->isAvailable()) {
             throw new PageNotFoundException();
         }
 
@@ -73,7 +80,7 @@ class ProductsPageController extends AbstractController
         return $this->renderPage($pageModel, $request, $product);
     }
 
-    private function renderPage(PageModel $pageModel, Request $request, ProductInterface|null $product = null): Response
+    private function renderPage(PageModel $pageModel, Request $request, CoreProduct|null $product = null): Response
     {
         $request->attributes->set('_content', $product);
         $request->attributes->set('_product_query', $this->queryFactory->parse($request));
@@ -86,12 +93,15 @@ class ProductsPageController extends AbstractController
         $context = $this->responseContextFactory->createContaoWebpageResponseContext($pageModel);
         $context->add(new IsotopeBag());
 
-        if ($product) {
+        if ($product && $context->has(HtmlHeadBag::class)) {
             $htmlHeadBag = $context->get(HtmlHeadBag::class);
-            $htmlHeadBag
-                ->setTitle($this->htmlDecoder->inputEncodedToPlainText($product->getMetaTitle()))
-                ->setMetaDescription($this->htmlDecoder->inputEncodedToPlainText($product->getMetaDescription()))
-            ;
+
+            if ($metadata = $product->getExtension(MetadataExtension::class)) {
+                $htmlHeadBag
+                    ->setTitle($this->htmlDecoder->inputEncodedToPlainText($metadata->getTitle()))
+                    ->setMetaDescription($this->htmlDecoder->inputEncodedToPlainText($metadata->getDescription()))
+                ;
+            }
 
             if ($pageModel->enableCanonical) {
                 $this->addCanonicalUrls($htmlHeadBag, $pageModel, $product);
@@ -111,7 +121,7 @@ class ProductsPageController extends AbstractController
         return $response;
     }
 
-    private function addCanonicalUrls(HtmlHeadBag $htmlHeadBag, PageModel $pageModel, ProductInterface $product): void
+    private function addCanonicalUrls(HtmlHeadBag $htmlHeadBag, PageModel $pageModel, CoreProduct $product): void
     {
         $htmlHeadBag->setKeepParamsForCanonical(
             array_intersect($product->getProductType()->getVariantAttributes(), $this->attributeRegistry->getVariantOptionFields())

@@ -7,10 +7,11 @@ namespace Isotope\CoreBundle\Store;
 use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\CoreBundle\Routing\PageFinder;
 use Contao\FrontendUser;
+use Isotope\CoreBundle\Model\ProductCollection;
+use Isotope\CoreBundle\ProductCollection\LockableCollectionInterface;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Context\StoreContextException;
 use Isotope\CoreBundle\Store\Context\StoreContextFactory;
-use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Config;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
@@ -66,6 +67,13 @@ class StoreManager
         return $context;
     }
 
+    /**
+     * @template T
+     *
+     * @param \Closure(): T $closure
+     *
+     * @return T
+     */
     public function runWithContext(StoreContext $context, \Closure $closure): mixed
     {
         try {
@@ -77,15 +85,26 @@ class StoreManager
         }
     }
 
-    public function runWithCollection(IsotopeProductCollection $collection, \Closure $closure): mixed
+    /**
+     * @template T
+     *
+     * @param \Closure(): T $closure
+     *
+     * @return T
+     */
+    public function runWithCollection(ProductCollection $collection, \Closure $closure): mixed
     {
         $context = $this->contextFactory->create(
-            $collection->getStoreId(),
-            $collection->getConfig(),
+            $collection->store_id,
+            Config::findById($collection->config_id),
             $collection->language ?? $GLOBALS['TL_LANGUAGE'], // TODO: a collection must always have a language!
-            $collection->getUniqueId() ?? $this->generateCookieId(), // TODO: a collection must always have an ID!
-            $collection->getMember()?->id
+            $collection->uniqid ?? $this->generateCookieId(), // TODO: a collection must always have an ID!
+            $collection->member ?: null,
         );
+
+        if ($collection instanceof LockableCollectionInterface && $collection->getLockTime()) {
+            $context->setTimestamp($collection->getLockTime());
+        }
 
         return $this->runWithContext($context, $closure);
     }

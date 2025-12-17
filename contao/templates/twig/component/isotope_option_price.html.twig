@@ -1,0 +1,4 @@
+{%- set sign = amount > 0 ? '+ ' : (amount < 0 ? '- ' : '') -%}
+{%- set amount = amount|abs -%}
+{%- set price = include('@Contao/component/isotope_price.html.twig', { html: false }) -%}
+{{- label }} ({{ sign }}{{ price -}})

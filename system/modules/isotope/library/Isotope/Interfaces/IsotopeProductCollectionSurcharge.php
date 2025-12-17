@@ -11,7 +11,7 @@
 
 namespace Isotope\Interfaces;
 
-use Isotope\Model\ProductCollectionItem;
+use Isotope\CoreBundle\Model\ProductCollectionItem;
 
 /**
  * IsotopeProductCollectionSurcharge interface defines an Isotope collection surcharge

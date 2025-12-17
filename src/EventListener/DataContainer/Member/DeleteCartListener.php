@@ -7,18 +7,20 @@ namespace Isotope\CoreBundle\EventListener\DataContainer\Member;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 use Contao\DataContainer;
-use Isotope\Model\ProductCollection\Cart;
+use Isotope\CoreBundle\Model\ProductCollection;
+use Isotope\CoreBundle\ProductCollection\Cart\Cart;
+use Isotope\CoreBundle\ProductCollection\Cart\CartStorage;
 
 class DeleteCartListener
 {
-    public function __construct()
+    public function __construct(private readonly CartStorage $storage)
     {
     }
 
     #[AsCallback('tl_member', 'config.ondelete')]
     public function onDeleteMember(DataContainer $dc): void
     {
-        $this->deleteCarts($dc->id);
+        $this->deleteCarts((int) $dc->id);
     }
 
     #[AsHook('closeAccount')]
@@ -29,11 +31,11 @@ class DeleteCartListener
 
     private function deleteCarts(int $memberId): void
     {
-        $carts = Cart::findBy('member', $memberId);
+        $carts = ProductCollection::findByMember($memberId, Cart::COLLECTION_TYPE);
 
         if (null !== $carts) {
             foreach ($carts as $cart) {
-                $cart->delete();
+                $this->storage->delete($cart);
             }
         }
     }

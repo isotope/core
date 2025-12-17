@@ -7,16 +7,22 @@ namespace Isotope\CoreBundle\Controller\FrontendModule;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsFrontendModule;
 use Contao\CoreBundle\Twig\FragmentTemplate;
 use Contao\ModuleModel;
-use Isotope\Isotope;
+use Isotope\CoreBundle\Store\CartManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 #[AsFrontendModule('iso_cart')]
 class CartController extends AbstractFrontendModuleController
 {
+    public function __construct(
+        private readonly CartManager $cartManager,
+    ) {
+    }
+
     protected function getResponse(FragmentTemplate $template, ModuleModel $model, Request $request): Response
     {
-        $collection = Isotope::getCart();
+        $context = $this->getStoreContext();
+        $collection = $context->getCart();
 
         $template->collection = $collection;
 
@@ -25,9 +31,9 @@ class CartController extends AbstractFrontendModuleController
             && $request->request->get('FORM_SUBMIT') === $this->getFragmentId($model->row())
             && !empty($quantity = $request->request->all('quantity'))
         ) {
-            foreach ($collection->getItems() as $item) {
-                if (isset($quantity[$item->id])) {
-                    $collection->updateItem($item, array('quantity' => $quantity[$item->id]));
+            foreach ($collection->getLineItems() as $item) {
+                if (isset($quantity[$item->getId()])) {
+                    $this->cartManager->changeQuantity($collection, $item->getId(), (int) $quantity[$item->getId()], $context);
                 }
             }
         }

@@ -7,7 +7,7 @@ namespace Isotope\CoreBundle\Routing;
 use Contao\CoreBundle\Routing\Content\ContentUrlResolverInterface;
 use Contao\CoreBundle\Routing\Content\ContentUrlResult;
 use Contao\PageModel;
-use Isotope\Model\ProductCollectionItem;
+use Isotope\CoreBundle\Model\ProductCollectionItem;
 
 class ProductCollectionItemResolver implements ContentUrlResolverInterface
 {

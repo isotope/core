@@ -16,6 +16,8 @@ use Contao\StringUtil;
 use Contao\System;
 use Isotope\CoreBundle\Checkout\Payment\PaymentInterface;
 use Isotope\CoreBundle\Checkout\Shipping\ShippingInterface;
+use Isotope\CoreBundle\Model\ProductCollectionItem;
+use Isotope\CoreBundle\Product\Extension\ShippingExtension;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\StoreManager;
 use Isotope\Interfaces\IsotopeOrderableCollection;
@@ -390,6 +392,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
 
         return $storeManager->runWithCollection($objCollection, function (StoreContext $context) use ($arrTaxes, $objCollection, $arrSurcharges, $arrAddresses) {
             foreach ($objCollection->getItems() as $objItem) {
+                /** @var \Isotope\CoreBundle\Product\Product $objProduct */
                 $objProduct = $objItem->getProduct();
 
                 // This should never happen, but we can't calculate it
@@ -418,7 +421,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
                 if (null === $productAddresses) {
                     $productAddresses = array(
                         'billing' => $objCollection->getBillingAddress(),
-                        'shipping' => $objProduct->isExemptFromShipping() ? $objCollection->getBillingAddress() : $objCollection->getShippingAddress(),
+                        'shipping' => $objProduct->getExtension(ShippingExtension::class)?->isExemptFromShipping() ? $objCollection->getBillingAddress() : $objCollection->getShippingAddress(),
                     );
                 }
 
@@ -434,7 +437,6 @@ abstract class ProductCollectionSurcharge extends TypeAgent
                         $objTaxClass->id.'_'.$objIncludes->id,
                         ($objTaxClass->getLabel() ?: $objIncludes->getLabel()),
                         $objIncludes->getAmount(),
-                        $objIncludes->isPercentage(),
                         $total,
                         $objTaxClass->applyRoundingIncrement,
                         $addToTotal,
@@ -455,7 +457,6 @@ abstract class ProductCollectionSurcharge extends TypeAgent
                                 $objTaxRate->id,
                                 $objTaxRate->getLabel(),
                                 $objTaxRate->getAmount(),
-                                $objTaxRate->isPercentage(),
                                 $total,
                                 $objTaxClass->applyRoundingIncrement,
                                 $addToTotal,
@@ -519,7 +520,6 @@ abstract class ProductCollectionSurcharge extends TypeAgent
                     $objTaxClass->id . '_' . $objIncludes->id,
                     ($objTaxClass->getLabel() ?: $objIncludes->getLabel()),
                     $objIncludes->getAmount(),
-                    $objIncludes->isPercentage(),
                     $fltPrice,
                     $objTaxClass->applyRoundingIncrement,
                     $addToTotal,
@@ -542,7 +542,6 @@ abstract class ProductCollectionSurcharge extends TypeAgent
                             $objTaxRate->id,
                             $objTaxRate->getLabel(),
                             $objTaxRate->getAmount(),
-                            $objTaxRate->isPercentage(),
                             $fltPrice,
                             $objTaxClass->applyRoundingIncrement,
                             $addToTotal,
@@ -573,14 +572,14 @@ abstract class ProductCollectionSurcharge extends TypeAgent
      * @param bool   $notNegative
      * @return int
      */
-    private static function addTax(array &$arrTaxes, $id, $label, $price, $isPercentage, $total, $applyRoundingIncrement, $addToTotal, $notNegative)
+    private static function addTax(array &$arrTaxes, $id, $label, $price, $total, $applyRoundingIncrement, $addToTotal, $notNegative)
     {
         $objTax = $arrTaxes[$id] ?? null;
 
         if (!$objTax instanceof Tax) {
             $objTax                         = new Tax();
             $objTax->label                  = $label;
-            $objTax->price                  = $price . ($isPercentage ? '%' : '');
+            $objTax->price                  = $price . '%';
             $objTax->total_price            = $total;
             $objTax->addToTotal             = $addToTotal;
             $objTax->applyRoundingIncrement = $applyRoundingIncrement;

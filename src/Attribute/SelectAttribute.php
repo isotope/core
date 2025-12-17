@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Attribute;
 
-use Contao\System;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Types\Types;
+use Isotope\CoreBundle\Attribute\Option\OptionsSource;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsAttribute;
-use Isotope\Translation;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[AsAttribute]
@@ -117,7 +116,7 @@ class SelectAttribute extends AbstractOptionsAttribute implements VariantAttribu
             return ['type' => Types::BLOB, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_BLOB];
         }
 
-        if (OptionsSource::Attribute === $this->optionsSource) {
+        if (OptionsSource::Attribute === $this->getOptionsSource()) {
             return ['type' => Types::STRING, 'length' => 64, 'options' => ['default' => '']];
         }
 

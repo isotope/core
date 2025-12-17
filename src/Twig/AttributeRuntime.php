@@ -6,6 +6,7 @@ namespace Isotope\CoreBundle\Twig;
 
 use Codefog\HasteBundle\Formatter;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
+use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\RuntimeExtensionInterface;
 
@@ -32,8 +33,20 @@ class AttributeRuntime implements RuntimeExtensionInterface
         return $this->formatter->dcaLabel('tl_iso_product', $attributeName);
     }
 
-    public function getValue(string $attribute, mixed $value): string
+    public function getValue(string $attributeName, mixed $value): array
     {
-        return $this->formatter->dcaValue('tl_iso_product', $attribute, $value);
+        $attribute = $this->attributeRegistry->get($attributeName);
+        $value = \is_array($value) ? $value : [$value];
+
+        if ($attribute instanceof OptionsAttributeInterface) {
+            $options = $attribute->getOptions();
+
+            return array_map(
+                static fn ($value) => $options->getLabel((string) $value) ?? $value,
+                $value
+            );
+        }
+
+        return $value;
     }
 }

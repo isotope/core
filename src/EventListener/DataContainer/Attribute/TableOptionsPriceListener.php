@@ -7,7 +7,7 @@ namespace Isotope\CoreBundle\EventListener\DataContainer\Attribute;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
 use Isotope\CoreBundle\Attribute\VariantAttributeInterface;
-use Isotope\Model\AttributeOption;
+use Isotope\CoreBundle\Model\AttributeOption;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Terminal42\DcawizardBundle\Widget\DcaWizard;
 
@@ -28,7 +28,7 @@ class TableOptionsPriceListener
         if ('iso_products' === $this->requestStack->getCurrentRequest()?->query->get('do')) {
             $attribute = $this->attributeRegistry->get($widget->name);
         } else {
-            $attribute = $this->attributeRegistry->get($widget->activeRecord->field_name);
+            $attribute = $this->attributeRegistry->get($widget->dataContainer->getCurrentRecord()['field_name']);
         }
 
         if ($attribute instanceof VariantAttributeInterface && !$attribute->isVariantOption()) {

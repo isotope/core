@@ -4,25 +4,31 @@ namespace Isotope\CoreBundle\Product\Action;
 
 use Contao\Input;
 use Isotope\CoreBundle\HttpFoundation\ActionResult;
-use Isotope\CoreBundle\Product\ProductInterface;
+use Isotope\CoreBundle\Model\ProductCollectionItem;
+use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\Render\ViewInterface;
+use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
+use Isotope\CoreBundle\Store\CartManager;
+use Isotope\CoreBundle\Store\StoreManager;
 use Isotope\Haste\Util\Url;
 use Isotope\Isotope;
-use Isotope\Model\ProductCollectionItem;
 use Twig\Environment;
 
 class AddToCartAction implements ProductActionInterface
 {
-    public function __construct(private readonly Environment $twig)
-    {
+    public function __construct(
+        private readonly StoreManager $storeManager,
+        private readonly CartManager $cartManager,
+        private readonly Environment $twig,
+    ) {
     }
 
-    public function supports(ProductInterface $product, ViewInterface $view): bool
+    public function supports(CoreProduct $product, ViewInterface $view): bool
     {
         return true;
     }
 
-    public function render(ProductInterface $product, ViewInterface $view): string
+    public function render(CoreProduct $product, ViewInterface $view): string
     {
         return $this->twig->render('@Contao/isotope/product_action/add_to_cart.html.twig', [
             'disabled' => ($product->hasVariants() && !$product->isVariant()),
@@ -38,7 +44,7 @@ class AddToCartAction implements ProductActionInterface
     //    return $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'];
     //}
 
-    public function handle(ProductInterface $product, array $configuration, ViewInterface $view): ActionResult
+    public function handle(CoreProduct $product, array $configuration, ViewInterface $view): ActionResult
     {
         $item = $this->getCurrentCartItem($product);
 
@@ -61,7 +67,7 @@ class AddToCartAction implements ProductActionInterface
         return $response;
     }
 
-    private function getCurrentCartItem(ProductInterface $product): ProductCollectionItem|null
+    private function getCurrentCartItem(CoreProduct $product): ProductCollectionItem|null
     {
         if (!Input::get('collection_item')) {
             return null;
@@ -73,7 +79,7 @@ class AddToCartAction implements ProductActionInterface
         return $item?->isProduct($product) ? $item : null;
     }
 
-    private function handleAddToCart(ProductInterface $product, array $configuration, ViewInterface $view): ActionResult
+    private function handleAddToCart(CoreProduct $product, array $configuration, ViewInterface $view): ActionResult
     {
         $quantity = 1;
 
@@ -83,15 +89,30 @@ class AddToCartAction implements ProductActionInterface
 
         // Do not add parent of variant product to the cart
         if (($product->hasVariants() && !$product->isVariant())
-            || !Isotope::getCart()->addProduct($product, $quantity, $configuration, $view->toArray($product))
+            //|| !Isotope::getCart()->addProduct($product, $quantity, $configuration, $view->toArray($product))
         ) {
             return new ActionResult('Das Produkt konnte nicht in den Warenkorb gelegt werden', success: false);
         }
 
+        $context = $this->storeManager->getCurrentContext();
+
+        $item = new LineItem(
+            LineItem::TYPE_PRODUCT,
+            $product->getIdentifier(),
+            $quantity,
+        );
+
+        $item->setConfiguration($configuration);
+        $item->setProduct($product);
+        $item->setSku($product->getSku());
+        $item->setLabel($product->getName());
+
+        $this->cartManager->add($context->getCart(), $item, $context);
+
         return new ActionResult($GLOBALS['TL_LANG']['MSC']['addedToCart']);
     }
 
-    private function handleUpdateCart(ProductCollectionItem $item, ProductInterface $product): ActionResult
+    private function handleUpdateCart(ProductCollectionItem $item, CoreProduct $product): ActionResult
     {
         $success = Isotope::getCart()->updateProduct($product, $item);
 

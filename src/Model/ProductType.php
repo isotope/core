@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Model;
 
+use Contao\Controller;
 use Contao\Database;
 use Contao\Model;
 use Contao\Model\Collection;
@@ -70,6 +71,11 @@ class ProductType extends Model
     public function hasVariants(): bool
     {
         return (bool) $this->variants;
+    }
+
+    public function hasVariantPrices(): bool
+    {
+        return $this->hasVariants() && \in_array('price', $this->getVariantAttributes(), true);
     }
 
     /**
@@ -163,6 +169,8 @@ class ProductType extends Model
      */
     private function getEnabledAttributesByPosition(array $config): array
     {
+        Controller::loadDataContainer('tl_iso_product');
+
         $arrFields = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
 
         $config = array_filter($config, static fn ($a) => (($a['enabled'] ?? false)

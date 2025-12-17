@@ -4,8 +4,8 @@ namespace Isotope\CoreBundle\ProductCollection\Action;
 
 use Contao\System;
 use Isotope\CoreBundle\HttpFoundation\ActionResult;
+use Isotope\CoreBundle\ProductCollection\AbstractProductCollection;
 use Isotope\Haste\Util\Url;
-use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Twig\Environment;
 
@@ -16,17 +16,17 @@ class ReorderAction implements ProductCollectionActionInterface
     ) {
     }
 
-    public function supports(IsotopeProductCollection $collection, array $context): bool
+    public function supports(AbstractProductCollection $collection, array $context): bool
     {
         return true;
     }
 
-    public function render(IsotopeProductCollection $collection, array $context): string
+    public function render(AbstractProductCollection $collection, array $context): string
     {
         return $this->twig->render('@Contao/isotope/product_collection_action/reorder.html.twig');
     }
 
-    public function handle(IsotopeProductCollection $collection, array $context): ActionResult
+    public function handle(AbstractProductCollection $collection, array $context): ActionResult
     {
         Isotope::getCart()?->copyItemsFrom($collection);
 

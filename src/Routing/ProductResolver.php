@@ -7,7 +7,11 @@ namespace Isotope\CoreBundle\Routing;
 use Contao\CoreBundle\Routing\Content\ContentUrlResolverInterface;
 use Contao\CoreBundle\Routing\Content\ContentUrlResult;
 use Contao\PageModel;
-use Isotope\CoreBundle\Product\ProductInterface;
+use Isotope\CoreBundle\Model\Product;
+use Isotope\CoreBundle\Product\CoreProduct;
+use Isotope\CoreBundle\Product\DataCollector\ProductDto;
+use Isotope\CoreBundle\Product\ProductBuilder;
+use Isotope\CoreBundle\Store\StoreManager;
 use Isotope\CoreBundle\Util\ProductCategoryUtil;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -16,6 +20,8 @@ class ProductResolver implements ContentUrlResolverInterface
     public function __construct(
         private readonly ProductCategoryUtil $productCategoryUtil,
         private readonly RequestStack $requestStack,
+        private readonly ProductBuilder $productBuilder,
+        private readonly StoreManager $storeManager,
     ) {
     }
 
@@ -77,22 +83,25 @@ class ProductResolver implements ContentUrlResolverInterface
             return [];
         }
 
-        if ($product->isVariant()) {
-            $product = $product->getMainProduct();
-        }
-
         return [
             'parameters' => '/'.$product->getAlias(),
         ];
     }
 
-    private function getProduct(object $content): ProductInterface|null
+    private function getProduct(object $content): CoreProduct|null
     {
         if ($content instanceof ProductReference) {
             return $content->product;
         }
 
-        if ($content instanceof ProductInterface) {
+        if ($content instanceof Product) {
+            $content = $this->productBuilder->buildOne(
+                new ProductDto('tl_iso_product.'.$content->id),
+                $this->storeManager->getCurrentContext(),
+            );
+        }
+
+        if ($content instanceof CoreProduct) {
             return $content;
         }
 

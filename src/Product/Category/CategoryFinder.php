@@ -8,7 +8,7 @@ use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use Contao\Database;
 use Contao\PageModel;
 use Doctrine\DBAL\Connection;
-use Isotope\CoreBundle\Product\ProductInterface;
+use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Util\ProductCategoryUtil;
 use Symfony\Contracts\Service\ResetInterface;
 
@@ -32,7 +32,7 @@ class CategoryFinder implements ResetInterface
     /**
      * @return array<int>
      */
-    public function getIds(CategoryScope|string $scope, PageModel $pageModel, ProductInterface|null $product): array
+    public function getIds(CategoryScope|string $scope, PageModel $pageModel, CoreProduct|null $product): array
     {
         $cacheKey = $scope instanceof CategoryScope ? $scope->value : $scope;
         $cacheKey .= '_'.$pageModel->id.'_'.($product?->getProductId() ?? 0);
@@ -47,7 +47,7 @@ class CategoryFinder implements ResetInterface
     /**
      * @return array<int>|null
      */
-    private function doFind(CategoryScope|string $scope, PageModel $pageModel, ProductInterface|null $product): array
+    private function doFind(CategoryScope|string $scope, PageModel $pageModel, CoreProduct|null $product): array
     {
         $where = "type != 'error_401' AND type != 'error_403' AND type != 'error_404' AND type != 'error_503'";
 

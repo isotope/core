@@ -4,69 +4,80 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Twig;
 
-use Contao\StringUtil;
-use Isotope\CoreBundle\Model\BasePrice;
-use Isotope\CoreBundle\Product\ProductInterface;
+use Isotope\CoreBundle\Product\CoreProduct;
+use Isotope\CoreBundle\Product\Product;
 use Isotope\CoreBundle\Product\Render\ViewInterface;
+use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
+use Isotope\CoreBundle\Store\Context\ProductContext;
+use Isotope\CoreBundle\Store\Price\CalculatedPrice;
+use Isotope\CoreBundle\Store\Price\Currency;
+use Isotope\CoreBundle\Store\Price\MoneyFormat;
 use Isotope\CoreBundle\Store\StoreManager;
 use Isotope\Isotope;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Extension\RuntimeExtensionInterface;
 
 class ProductRuntime implements RuntimeExtensionInterface
 {
-    public function __construct(private readonly StoreManager $storeManager)
-    {
+    public function __construct(
+        private readonly StoreManager $storeManager,
+        private readonly RequestStack $requestStack,
+    ) {
     }
 
-    public function generateProduct(array $context, ProductInterface $product, ViewInterface|null $view = null): string
+    public function generateProduct(CoreProduct $product, ViewInterface $view): string
     {
-        $view = $view ?? $context['view'] ?? null;
-
-        if (!$view instanceof ViewInterface) {
-            throw new \RuntimeException('Cannot render product without a render view.');
-        }
-
-        return $product->getRenderer()->render($product, $view, $context['app']->getRequest());
+        return $product->getRenderer()->render(
+            new ProductContext($product, $this->storeManager->getCurrentContext()),
+            $view,
+            $this->requestStack->getCurrentRequest()
+        );
     }
 
-    public function generatePrice(array $context): string
+    /**
+     * @param array{product?: CoreProduct} $context
+     *
+     * @return array{amount: float, money: MoneyFormat, currency: Currency}|null
+     */
+    public function generatePrice(array $context, Product|LineItem|CalculatedPrice|null $productOrItem = null): array|null
     {
-        $product = $context['product'] ?? null;
+        $productOrItem ??= $context['product'] ?? null;
+        $price = $productOrItem instanceof CalculatedPrice ? $productOrItem : null;
 
-        if (!$product instanceof ProductInterface) {
-            return '';
+        if ($productOrItem instanceof CoreProduct || $productOrItem instanceof LineItem) {
+            $price = $productOrItem->getPrice();
         }
 
-        $price = $product->getPrice($this->storeManager->getCurrentContext());
-        $type = $product->getProductType();
-
-        if (null === $price) {
-            return '';
+        if (!$price instanceof CalculatedPrice) {
+            return null;
         }
 
-        $configuration = array_filter(array_map(static fn ($o) => $o['value'] ?? null, $context['options'] ?? []));
+        $storeContext = $this->storeManager->getCurrentContext();
 
-        return $price->generate($type->showPriceTiers(), 1, $configuration);
+        return [
+            'unitPrice' => $price->unitPrice,
+            'totalPrice' => $price->totalPrice,
+            'isRange' => $price->isRange(),
+            'money' => $storeContext->getMoneyFormat(),
+            'currency' => $storeContext->getCurrency(),
+        ];
     }
 
     public function generateBasePrice(array $context): string
     {
         $product = $context['product'] ?? null;
 
-        if (!$product instanceof ProductInterface) {
+        if (!$product instanceof CoreProduct) {
             return '';
         }
 
-        $data = StringUtil::deserialize($product['baseprice']);
+        $price = $product->getPrice();
+        $basePrice = $price?->getBasePrice();
 
-        if (\is_array($data) && $data['unit'] > 0 && '' !== $data['value']) {
-            $basePrice = BasePrice::findByPk((int) $data['unit']);
-
-            if (null !== $basePrice && null !== $product->getPrice($this->storeManager->getCurrentContext())) {
-                return sprintf($basePrice->label, Isotope::formatPriceWithCurrency($product->getPrice($this->storeManager->getCurrentContext())->getAmount() / $data['value'] * $basePrice->amount), $data['value']);
-            }
+        if (!$price || !$basePrice) {
+            return '';
         }
 
-        return '';
+        return sprintf($basePrice->getLabel(), Isotope::formatPriceWithCurrency($price->unitPrice / $basePrice->getProductAmount() * $basePrice->getBaseAmount()), $basePrice->getProductAmount());
     }
 }

@@ -38,12 +38,6 @@
       <trans-unit id="tl_iso_tax_rate.postalCodes.1">
         <source>Limit the tax rate to postal codes. You can enter a comma separated list and ranges (e.g. 1234,1235,1236-1239,1100-1200).</source>
       </trans-unit>
-      <trans-unit id="tl_iso_tax_rate.amount.0">
-        <source>Subtotal amount restriction</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_tax_rate.amount.1">
-        <source>Optional: Restrict this tax rate to specific subtotal amount (such as for a luxury tax.)</source>
-      </trans-unit>
       <trans-unit id="tl_iso_tax_rate.rate.0">
         <source>Tax rate</source>
       </trans-unit>
@@ -119,14 +113,8 @@
       <trans-unit id="tl_iso_tax_rate.name_legend">
         <source>Name</source>
       </trans-unit>
-      <trans-unit id="tl_iso_tax_rate.rate_legend">
-        <source>Rate</source>
-      </trans-unit>
       <trans-unit id="tl_iso_tax_rate.location_legend">
         <source>Location</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_tax_rate.condition_legend">
-        <source>Conditions</source>
       </trans-unit>
       <trans-unit id="tl_iso_tax_rate.config_legend">
         <source>Configuration</source>

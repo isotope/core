@@ -4,33 +4,29 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Attribute;
 
-use Contao\Widget;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Types\Types;
+use Isotope\CoreBundle\Attribute\Option\OptionsSource;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsAttribute;
 
 #[AsAttribute]
 class CheckboxAttribute extends AbstractOptionsAttribute
 {
-    public function hasMultiple(): bool
-    {
-        return OptionsSource::Name !== $this->optionsSource;
-    }
-
     public function updateDcaField(array &$field, array &$keys): void
     {
         parent::updateDcaField($field, $keys);
 
-        $field['eval']['multiple'] = $this->hasMultiple();
-
-        if (OptionsSource::Name === $this->optionsSource) {
-            unset($field['options']);
+        if (OptionsSource::Name === $this->getOptionsSource()) {
+            $field['eval']['multiple'] = false;
+            unset($field['options'], $field['options_callback'], $field['foreignKey']);
+        } else {
+            $field['eval']['multiple'] = true;
         }
     }
 
     protected function getSqlDefinition(): array|string
     {
-        if (OptionsSource::Name === $this->optionsSource) {
+        if (OptionsSource::Name === $this->getOptionsSource()) {
             return ['type' => Types::BOOLEAN, 'options' => ['default' => false]];
         }
 

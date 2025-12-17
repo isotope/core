@@ -6,7 +6,7 @@ namespace Isotope\CoreBundle\EventListener\DataContainer\Member;
 
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\CoreBundle\Routing\ScopeMatcher;
-use Isotope\CoreBundle\Store\Context\CreateContextEvent;
+use Isotope\CoreBundle\Store\Event\ContextCreatedEvent;
 use Isotope\CoreBundle\Store\StoreManager;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -23,7 +23,7 @@ class CountryLimitListener
     }
 
     #[AsEventListener]
-    public function storeContextConfig(CreateContextEvent $event): void
+    public function storeContextConfig(ContextCreatedEvent $event): void
     {
         $context = $event->getContext();
         $config = $event->getConfig();

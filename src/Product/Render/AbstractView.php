@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Product\Render;
 
 use Contao\StringUtil;
-use Isotope\CoreBundle\Product\ProductInterface;
+use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Routing\ProductReference;
 
 abstract class AbstractView implements ViewInterface
@@ -18,32 +18,32 @@ abstract class AbstractView implements ViewInterface
     ) {
     }
 
-    public function getFormId(ProductInterface $product): string
+    public function getFormId(CoreProduct $product): string
     {
         return $this->prefix.'_product'.$product->getProductId();
     }
 
-    public function getProductReference(ProductInterface $product): ProductReference
+    public function getProductReference(CoreProduct $product): ProductReference
     {
         return new ProductReference($product);
     }
 
-    public function getActions(ProductInterface $product): array
+    public function getActions(CoreProduct $product): array
     {
         return StringUtil::deserialize($this->get('iso_buttons'), true);
     }
 
-    public function useQuantity(ProductInterface $product): bool
+    public function useQuantity(CoreProduct $product): bool
     {
         return (bool) $this->get('iso_use_quantity');
     }
 
-    public function useOptions(ProductInterface $product): bool
+    public function useOptions(CoreProduct $product): bool
     {
         return !$this->get('iso_disable_options');
     }
 
-    public function useFallbackVariant(ProductInterface $product): bool
+    public function useFallbackVariant(CoreProduct $product): bool
     {
         return true;
     }
@@ -53,7 +53,7 @@ abstract class AbstractView implements ViewInterface
         return $this->config[$key] ?? null;
     }
 
-    public function toArray(ProductInterface $product): array
+    public function toArray(CoreProduct $product): array
     {
         return [
             'id' => $this->getFormId($product),

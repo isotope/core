@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Controller\FrontendModule;
 
 use Codefog\HasteBundle\Formatter;
+use Contao\Controller;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsFrontendModule;
 use Contao\CoreBundle\Exception\BadRequestException;
 use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use Contao\CoreBundle\Twig\FragmentTemplate;
-use Contao\Database;
 use Contao\Date;
 use Contao\Input;
 use Contao\ModuleModel;
@@ -17,13 +17,15 @@ use Contao\StringUtil;
 use Contao\Widget;
 use Doctrine\DBAL\Connection;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
+use Isotope\CoreBundle\Attribute\Option\Option;
+use Isotope\CoreBundle\Attribute\Option\OptionCollection;
+use Isotope\CoreBundle\Attribute\Option\OptionsSource;
 use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
-use Isotope\CoreBundle\Model\ProductType;
+use Isotope\CoreBundle\Model\Product;
 use Isotope\CoreBundle\Product\Query\Filter\EqualFilter;
 use Isotope\CoreBundle\Product\Query\ProductQuery;
 use Isotope\CoreBundle\Product\Query\Sorting;
 use Isotope\Interfaces\IsotopeFilterModule;
-use Isotope\Model\Product;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -83,14 +85,34 @@ class ProductFilterController extends AbstractFrontendModuleController implement
         $arrCategories = [$this->getPageModel()->id];
 
         [$attributeTypes, $variantTypes] = $this->getProductTypeIdsByAttribute();
+        Controller::loadDataContainer('tl_iso_product');
 
         foreach ($fields as $fieldName) {
             $widget = Widget::getAttributesFromDca($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$fieldName], $fieldName, $current[$fieldName] ?? null, $fieldName, 'tl_iso_product');
             $values = $this->getUsedValuesForField($fieldName, $arrCategories, $attributeTypes[$fieldName] ?? [], $variantTypes[$fieldName] ?? []);
+
+            if ([] === $values) {
+                continue;
+            }
+
             $attribute = $this->attributeRegistry->get($fieldName);
 
             if ($attribute instanceof OptionsAttributeInterface) {
-                $widget['options'] = $attribute->getOptionsForProductFilter($values);
+                if (OptionsSource::Name === $attribute->getOptionsSource()) {
+                    $options = [];
+
+                    if (\array_key_exists('1', $values)) {
+                        $options['1'] = $GLOBALS['TL_LANG']['MSC']['yes'];
+                    }
+
+                    if (\array_key_exists('', $values)) {
+                        $options[''] = $GLOBALS['TL_LANG']['MSC']['no'];
+                    }
+
+                    $widget['options'] = $options;
+                } elseif (\is_array($widget['options'])) {
+                    $widget['options'] = array_filter($widget['options'], fn (array $option) => empty($option['value']) || \in_array($option['value'], $values, false));
+                }
             }
 
             // Generate options from database values (e.g. for text fields)
@@ -250,10 +272,10 @@ class ProductFilterController extends AbstractFrontendModuleController implement
         ");
 
         $isCsv = true === ($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$field]['eval']['multiple'] ?? null)
-            && ',' === ($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$field]['eval']['csv'] ?? null);
+            && !empty($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$field]['eval']['csv'] ?? null);
 
         return array_unique(array_merge(...array_map(
-            static fn ($v) => $isCsv ? explode(',', $v) : StringUtil::deserialize($v, true),
+            static fn ($v) => $isCsv ? explode($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$field]['eval']['csv'], $v) : StringUtil::deserialize($v, true),
             $options,
         )));
     }

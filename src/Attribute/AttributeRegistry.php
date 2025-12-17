@@ -7,7 +7,9 @@ namespace Isotope\CoreBundle\Attribute;
 use Contao\Controller;
 use Contao\Model;
 use Contao\Model\Collection;
+use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
+use Isotope\CoreBundle\Attribute\Option\OptionsSource;
 use Isotope\CoreBundle\Exception\MissingAttributeClassException;
 use Isotope\CoreBundle\Model\Attribute;
 use Isotope\CoreBundle\ModelType\ContainerAwareInterface;
@@ -126,6 +128,16 @@ class AttributeRegistry implements ResetInterface
         return array_keys($GLOBALS['TL_DCA']['tl_iso_product']['fields']);
     }
 
+    public function getSystemColumns(): array
+    {
+        Controller::loadDataContainer('tl_iso_product');
+
+        return array_keys(array_filter(
+            $GLOBALS['TL_DCA']['tl_iso_product']['fields'],
+            static fn (array $config) => (bool) ($config['attributes']['systemColumn'] ?? false),
+        ));
+    }
+
     /**
      * @return list<string>
      */
@@ -200,41 +212,44 @@ class AttributeRegistry implements ResetInterface
     {
         $this->load();
 
-        return array_keys(array_filter(
+        $attributes = array_keys(array_filter(
             $this->attributes,
             static fn (AttributeInterface $attribute) => $attribute instanceof OptionsAttributeInterface
                 && (OptionsSource::Table === $attribute->getOptionsSource() || OptionsSource::Product === $attribute->getOptionsSource())
                 && $attribute->canHavePrices(),
         ));
 
-        // TODO: is the method really the same as this query?
-        // static $arrFields;
-        //
-        // if (null === $arrFields) {
-        //    $arrFields = Database::getInstance()->query("
-        //        SELECT a.field_name
-        //        FROM tl_iso_attribute a
-        //        JOIN tl_iso_attribute_option o ON a.id=o.pid
-        //        WHERE
-        //          a.optionsSource='table'
-        //          AND o.ptable='tl_iso_attribute'
-        //          AND o.published='1'
-        //          AND o.price!=''
-        //
-        //        UNION
-        //
-        //        SELECT a.field_name
-        //        FROM tl_iso_attribute a
-        //        JOIN tl_iso_attribute_option o ON a.field_name=o.field_name
-        //        WHERE
-        //          a.optionsSource='product'
-        //          AND o.ptable='tl_iso_product'
-        //          AND o.published='1'
-        //          AND o.price!=''
-        //    ")->fetchEach('field_name');
-        // }
-        //
-        // return $arrFields;
+        if ([] === $attributes) {
+            return [];
+        }
+
+        return $this->connection->fetchFirstColumn(
+            <<<SQL
+                SELECT a.field_name
+                FROM tl_iso_attribute a
+                JOIN tl_iso_attribute_option o ON a.id=o.pid
+                WHERE
+                  a.field_name IN (:attributes)
+                  AND a.optionsSource='table'
+                  AND o.ptable='tl_iso_attribute'
+                  AND o.published='1'
+                  AND o.price!=''
+
+                UNION
+
+                SELECT a.field_name
+                FROM tl_iso_attribute a
+                JOIN tl_iso_attribute_option o ON a.field_name=o.field_name
+                WHERE
+                  a.field_name IN (:attributes)
+                  AND a.optionsSource='product'
+                  AND o.ptable='tl_iso_product'
+                  AND o.published='1'
+                  AND o.price!=''
+            SQL,
+            ['attributes' => $attributes],
+            ['attributes' => ArrayParameterType::STRING],
+        );
     }
 
     public function reset(): void

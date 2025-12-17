@@ -147,38 +147,6 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
     }
 
     /**
-     * Merge guest cart if necessary
-     *
-     * @throws \BadMethodCallException if the product collection is locked.
-     */
-    public function mergeGuestCart()
-    {
-        $this->ensureNotLocked();
-
-        $strHash = (string) Input::cookie(static::$strCookie);
-
-        // Temporary cart available, move to this cart. Must be after creating a new cart!
-        if (\Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER') && '' !== $strHash && $this->member > 0) {
-            $blnMerge = $this->countItems() > 0;
-            $objTemp = static::findOneBy(array('uniqid=?', 'store_id=?'), array($strHash, $this->store_id));
-
-            if (null !== $objTemp) {
-                $arrIds = $this->copyItemsFrom($objTemp);
-
-                if ($blnMerge && \count($arrIds) > 0) {
-                    Message::addConfirmation($GLOBALS['TL_LANG']['MSC']['cartMerged']);
-                }
-
-                $objTemp->delete();
-            }
-
-            // Delete cookie
-            System::setCookie(static::$strCookie, '', time() - 3600);
-            Controller::reload();
-        }
-    }
-
-    /**
      * Get and update order draft for current cart or create one if it does not yet exist
      *
      * @return Order
@@ -290,82 +258,5 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
         parent::clearCache();
 
         $this->objDraftOrder = null;
-    }
-
-    /**
-     * Load the current cart
-     *
-     * @return Cart
-     */
-    public static function findForCurrentStore()
-    {
-        /** @var PageModel $objPage */
-        global $objPage;
-
-        if (!CompatibilityHelper::isFrontend() || null === $objPage || 0 === (int) $objPage->rootId) {
-            return null;
-        }
-
-        /** @var PageModel|\stdClass $rootPage */
-        $rootPage = PageModel::findByPk($objPage->rootId);
-
-        $time       = time();
-        $objCart    = null;
-        $cookieHash = null;
-        $storeId    = (int) $rootPage->iso_store_id;
-        $isMember = \Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER');
-
-        if ($isMember) {
-            $objCart = static::findOneBy(
-                array('tl_iso_product_collection.member=?', 'store_id=?'),
-                array(FrontendUser::getInstance()->id, $storeId)
-            );
-        } else {
-            $cookieHash = (string) Input::cookie(static::$strCookie);
-
-            if ('' !== $cookieHash) {
-                $objCart = static::findOneBy(array('uniqid=?', 'store_id=?'), array($cookieHash, $storeId));
-            }
-
-            if (null === $objCart) {
-                $cookieHash = self::generateCookieId();
-            }
-        }
-
-        // Create new cart
-        if ($objCart === null) {
-            $objConfig = Config::findByRootPage((int) $objPage->rootId);
-            $objCart   = new static();
-
-            // Can't call the individual rows here, it would trigger markModified and a save()
-            $objCart->setRow(array_merge($objCart->row(), array(
-                'tstamp'    => $time,
-                'member'    => $isMember ? FrontendUser::getInstance()->id : 0,
-                'uniqid'    => $cookieHash,
-                'config_id' => $objConfig->id,
-                'store_id'  => $storeId,
-                'currency'  => $objConfig->currency,
-            )));
-
-            return $objCart;
-
-        }
-
-        $objCart->tstamp = $time;
-
-        return $objCart;
-    }
-
-    private static function generateCookieId()
-    {
-        if (!function_exists('random_bytes')) {
-            return uniqid('', true);
-        }
-
-        try {
-            return bin2hex(random_bytes(32));
-        } catch (\Exception $e) {
-            return uniqid('', true);
-        }
     }
 }

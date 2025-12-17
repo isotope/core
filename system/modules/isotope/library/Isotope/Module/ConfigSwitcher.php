@@ -14,7 +14,11 @@ namespace Isotope\Module;
 use Contao\Controller;
 use Contao\Environment;
 use Contao\Input;
+use Contao\System;
 use Isotope\CompatibilityHelper;
+use Isotope\CoreBundle\Store\CartManager;
+use Isotope\CoreBundle\Store\Context\StoreContextFactory;
+use Isotope\CoreBundle\Store\StoreManager;
 use Isotope\Isotope;
 use Isotope\Model\Config;
 
@@ -83,12 +87,15 @@ class ConfigSwitcher extends Module
         /** @var Config[] $objConfigs */
         $objConfigs = Config::findMultipleByIds($this->iso_config_ids);
 
+        /** @var StoreManager $storeManager */
+        $storeManager = System::getContainer()->get(StoreManager::class);
+
         if (null !== $objConfigs) {
             foreach ($objConfigs as $objConfig) {
                 $arrConfigs[] = array (
                     'config'    => $objConfig,
                     'label'     => $objConfig->getLabel(),
-                    'active'    => Isotope::getConfig()->id == $objConfig->id ? true : false,
+                    'active'    => $storeManager->getCurrentContext()->getConfigId() === (int) $objConfig->id,
                     'href'      => Environment::get('request') . ((strpos(Environment::get('request'), '?') === false) ? '?' : '&amp;') . 'config=' . $objConfig->id,
                 );
             }
@@ -99,13 +106,23 @@ class ConfigSwitcher extends Module
 
     private function overrideConfig(int $configId, bool $forceReload = false): void
     {
-        if ((int) Isotope::getCart()->config_id === $configId && !$forceReload) {
+        /** @var StoreManager $storeManager */
+        $storeManager = System::getContainer()->get(StoreManager::class);
+        $context = $storeManager->getCurrentContext();
+
+        if (!$forceReload && $context->getConfigId() === $configId) {
             return;
         }
 
-        if (\in_array($configId, $this->iso_config_ids)) {
-            Isotope::getCart()->config_id = $configId;
-            Isotope::getCart()->save();
+        if (\in_array($configId, $this->iso_config_ids) && ($config = Config::findById($configId))) {
+            /** @var StoreContextFactory $storeContextFactory */
+            $storeContextFactory = System::getContainer()->get(StoreContextFactory::class);
+            $newContext = $storeContextFactory->create($context->getStoreId(), $config, $context->getLocale(), $context->getIdentifier(), $context->getMemberId());
+
+            /** @var CartManager $cartManager */
+            $cartManager = System::getContainer()->get(CartManager::class);
+            $cart = $context->getCart();
+            $cartManager->recalculate($cart, $newContext);
         }
 
         Controller::redirect(

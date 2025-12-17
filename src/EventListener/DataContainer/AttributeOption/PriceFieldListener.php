@@ -11,7 +11,7 @@ use Contao\Input;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
 use Isotope\CoreBundle\Attribute\VariantAttributeInterface;
 use Isotope\CoreBundle\Model\Attribute;
-use Isotope\Model\AttributeOption;
+use Isotope\CoreBundle\Model\AttributeOption;
 
 /**
  * Price is not available for an attribute option if the attribute is a variant option attribute.

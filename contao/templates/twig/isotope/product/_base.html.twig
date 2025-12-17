@@ -4,34 +4,40 @@
     .setIfExists('id', product_html_id)
     .addClass(['product', product_css_classes, type.cssClass])
     .addClass('active', isActive)
-    .set('data-controller', 'isotope--product')
-    .set('data-isotope--product-form-id-value', view.formId(product))
-    .set('data-isotope--product-options-value', options|column('name')|json_encode)
     .mergeWith(product_attributes|default)
 %}
+{% if configuration %}
+    {% set product_attributes = attrs()
+        .set('data-controller', 'isotope--product')
+        .set('data-isotope--product-form-id-value', view.formId(product))
+        .set('data-isotope--product-attributes-value', configuration.ajaxAttributes|json_encode)
+        .mergeWith(product_attributes|default)
+    %}
 
-{% set form_attributes = attrs()
-    .set('id', view.formId(product))
-    .set('method', 'post')
-    .set('enctype', 'multipart/form-data', hasUploads)
-    .set('data-isotope--product-target', 'form')
-    .set('data-action', 'isotope--product#submit')
-    .mergeWith(form_attributes|default)
-%}
+    {% set form_attributes = attrs()
+        .set('id', view.formId(product))
+        .set('method', 'post')
+        .set('enctype', 'multipart/form-data', configuration and configuration.hasUploads)
+        .set('data-isotope--product-target', 'form')
+        .set('data-action', 'isotope--product#submit')
+        .mergeWith(form_attributes|default)
+    %}
+{% endif %}
 
 <div{{ product_attributes }}>
+    {% if configuration %}
     <form{{ form_attributes }}>
         <div class="formbody">
             <input type="hidden" name="FORM_SUBMIT" value="{{ view.formId(product) }}">
             <input type="hidden" name="REQUEST_TOKEN" value="{{ request_token }}">
-
+    {% endif %}
             {% block formbody %}
 
                 {% block product_options %}
-                    {% if view.useOptions(product) %}
+                    {% if configuration %}
                         <div class="options">
-                            {% for option in options %}
-                                {{ option.widget.parse|raw }}
+                            {% for widget in configuration.widgets %}
+                                {{ widget.parse|raw }}
                             {% endfor %}
                         </div>
                     {% endif %}
@@ -41,7 +47,7 @@
                     {% set price = isotope_price() %}
                     {% if price %}
                         <div class="offer">
-                            <div class="price">{{ price|raw }}</div>
+                            <div class="price">{{ include('@Contao/component/isotope_price.html.twig', price, with_context: false) }}</div>
                             {#{% if data.baseprice|default %}<div class="baseprice">{{ isotope_attribute('baseprice') }}</div>{% endif %}#}
                         </div>
                     {% endif %}
@@ -56,13 +62,13 @@
                                 {% if view.useQuantity(product) %}
                                     <div class="quantity_container">
                                         <label for="quantity_requested_{{ product.id }}">{{ 'MSC.quantity'|trans }}:</label>
-                                        <input type="number" class="text" id="quantity_requested_{{ product.id }}" name="quantity_requested" placeholder="{{ product.minimumQuantity }}" value="{#<?= \Contao\StringUtil::specialchars(\Contao\Input::post('quantity_requested')); ?>#}" maxlength="10">
+                                        <input type="number" class="text" id="quantity_requested_{{ product.id }}" name="quantity_requested" placeholder="{{ product.extension('Isotope\\CoreBundle\\Product\\Extension\\QuantityExtension').minimum|default(1) }}" value="{#<?= \Contao\StringUtil::specialchars(\Contao\Input::post('quantity_requested')); ?>#}" maxlength="10">
                                     </div>
                                 {% endif %}
                             {% endblock %}
 
                             {% for action in actions %}
-                                {{ isotope_product_action(action) }}
+                                {{ isotope_product_action(action, product, view, configuration) }}
                             {% endfor %}
 
                         </div>
@@ -70,6 +76,8 @@
                 {% endblock %}
 
             {% endblock %}
+    {% if configuration %}
         </div>
     </form>
+    {% endif %}
 </div>
