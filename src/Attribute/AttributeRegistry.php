@@ -86,6 +86,10 @@ class AttributeRegistry implements ResetInterface
 
         // Create non-database attributes
         foreach (array_diff_key($dca['fields'], $this->attributes) as $name => $field) {
+            if ($field['attributes']['systemColumn'] ?? false) {
+                continue;
+            }
+
             $attribute = $this->create($name, $field['attributes'] ?? [], $field);
 
             if (null !== $attribute) {
@@ -125,9 +129,9 @@ class AttributeRegistry implements ResetInterface
 
     public function getNames(): array
     {
-        $this->load();
+        Controller::loadDataContainer('tl_iso_product');
 
-        return array_keys($this->attributes);
+        return array_keys($GLOBALS['TL_DCA']['tl_iso_product']['fields']);
     }
 
     /**

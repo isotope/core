@@ -308,7 +308,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'inputType' => 'mediaManager',
             'explanation' => 'mediaManager',
             'eval' => ['translatableFor' => '*', 'extensions' => '%contao.image.valid_extensions%', 'helpwizard' => true, 'tl_class' => 'clr'],
-            'attributes' => ['legend' => 'media_legend', 'fixed' => true, 'dynamic' => true, 'systemColumn' => true, 'fetch_fallback' => true],
+            'attributes' => ['legend' => 'media_legend', 'fixed' => true, 'dynamic' => true, 'fetch_fallback' => true],
             'sql' => 'blob NULL',
         ],
         'protected' => [
