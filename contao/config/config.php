@@ -28,7 +28,6 @@ use Isotope\CoreBundle\Model\RelatedProduct;
 use Isotope\CoreBundle\Model\Shipping;
 use Isotope\CoreBundle\Widget\InheritCheckBox;
 use Isotope\CoreBundle\Widget\MediaManager;
-use Isotope\EventListener\ChangeLanguageListener;
 use Isotope\EventListener\PostCheckoutUploads;
 use Isotope\Frontend;
 use Isotope\Model\Address;
@@ -260,9 +259,6 @@ if (Contao\Config::getInstance()->isComplete()) {
     $GLOBALS['ISO_HOOKS']['postCheckout'][] = ['Isotope\Analytics', 'trackOrder'];
     $GLOBALS['ISO_HOOKS']['postCheckout'][] = [PostCheckoutUploads::class, 'onPostCheckout'];
     $GLOBALS['ISO_HOOKS']['calculatePrice'][] = [Frontend::class, 'addOptionsPrice'];
-
-    // changelanguage
-    $GLOBALS['TL_HOOKS']['changelanguageNavigation'][] = [ChangeLanguageListener::class, '__invoke'];
 }
 
 /*
