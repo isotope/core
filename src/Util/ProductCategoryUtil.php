@@ -98,7 +98,7 @@ class ProductCategoryUtil implements ResetInterface
     {
         $qb = $this->connection->createQueryBuilder();
         $qb
-            ->select(['c.product_id', 'GROUP_CONCAT(c.pid ORDER BY c.product_sorting, c.id)'])
+            ->select('c.product_id', 'GROUP_CONCAT(c.pid ORDER BY c.product_sorting, c.id)')
             ->from('tl_iso_product_category', 'c')
             ->join('c', 'tl_page', 'p', 'c.pid=p.id')
             ->where("p.type NOT LIKE 'error_401' AND p.type NOT LIKE 'error_403' AND p.type != 'error_404' AND p.type != 'error_503'")

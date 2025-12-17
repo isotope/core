@@ -28,7 +28,7 @@ class NewOrderMessagesListener
 
         $qb = $this->connection->createQueryBuilder();
         $qb
-            ->select(['COUNT(*) AS total', 's.name'])
+            ->select('COUNT(*) AS total', 's.name')
             ->from('tl_iso_product_collection', 'c')
             ->leftJoin('c', 'tl_iso_orderstatus', 's', 'c.order_status=s.id')
             ->where("c.type='order'")
