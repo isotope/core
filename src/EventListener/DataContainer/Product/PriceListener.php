@@ -6,7 +6,7 @@ namespace Isotope\CoreBundle\EventListener\DataContainer\Product;
 
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\StringUtil;
-use Contao\System;
+use Isotope\CoreBundle\Util\PriceUtil;
 
 class PriceListener
 {
@@ -16,7 +16,7 @@ class PriceListener
         $value = StringUtil::deserialize($value, true);
 
         return serialize([
-            'value' => $value['price'] ?? '0.00',
+            'value' => PriceUtil::formatBackendPrice($value['price'] ?? '0.00'),
             'unit' => $value['tax_class'] ?? '',
         ]);
     }
@@ -27,7 +27,7 @@ class PriceListener
         $value = StringUtil::deserialize($value, true);
 
         return serialize([
-            'price' => $this->roundPrice($value['value'] ?? 0),
+            'price' => PriceUtil::roundBackendPrice($value['value'] ?? 0),
             'tax_class' => $value['unit'] ?? '',
         ]);
     }
@@ -49,7 +49,7 @@ class PriceListener
         $tiers = [];
 
         foreach ($price['price_tiers'] as $tier) {
-            $tiers[$tier['min']] = $this->roundPrice($tier['price']);
+            $tiers[$tier['min']] = PriceUtil::roundBackendPrice($tier['price']);
         }
 
         ksort($tiers);
@@ -65,38 +65,12 @@ class PriceListener
         foreach ($price['price_tiers'] as $min => $value) {
             $tiers[] = [
                 'min' => $min,
-                'price' => $this->formatPrice($value),
+                'price' => PriceUtil::formatBackendPrice($value),
             ];
         }
 
         $price['price_tiers'] = $tiers;
 
         return $price;
-    }
-
-    private function roundPrice(string|float $price): string
-    {
-        if (\is_string($price)) {
-            if (1 === substr_count($price, ',') && !str_contains($price, '.')) {
-                $price = str_replace(',', '.', $price);
-            }
-        }
-
-        $price = round((float) $price, 8);
-
-        if (str_contains((string) $price, '.')) {
-            $price = rtrim((string) $price, '0');
-        }
-
-        if ((int) strpos(strrev((string) $price), '.') < 2) {
-            $price = number_format((float) $price, 2, '.', '');
-        }
-
-        return $price;
-    }
-
-    private function formatPrice(string|float $price): string
-    {
-        return System::getFormattedNumber($price, (int) strpos(strrev($price), '.'));
     }
 }

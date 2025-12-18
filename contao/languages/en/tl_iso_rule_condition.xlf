@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="contao/languages/en/tl_iso_rule_condition.xlf" source-language="en">
+    <body>
+      <trans-unit id="tl_iso_rule_condition.type.0">
+        <source>Type</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.type.1">
+        <source>Select the condition type.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.operator.0">
+        <source>Operator</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.operator.1">
+        <source>Select the condition operator.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.amount.0">
+        <source>Amount</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.amount.1">
+        <source>Enter a price amount.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.amount_from.0">
+        <source>Amount from</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.amount_from.1">
+        <source>Enter the minimum amount.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.amount_to.0">
+        <source>Amount to</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.amount_to.1">
+        <source>Enter the maximum amount.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.member_groups.0">
+        <source>Member groups</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.member_groups.1">
+        <source>Choose the member groups.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.config_ids.0">
+        <source>Store configurations</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.config_ids.1">
+        <source>Choose the store configurations.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.currencies.0">
+        <source>Currencies</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.currencies.1">
+        <source>Choose the applicable currencies.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.start.0">
+        <source>From</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.start.1">
+        <source>Enter a date and time or leave blank to only apply an end date.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.stop.0">
+        <source>Until</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.stop.1">
+        <source>Enter a date and time or leave blank to only apply a start date.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.start_time.0">
+        <source>From</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.start_time.1">
+        <source>Enter a start time.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.stop_time.0">
+        <source>Until</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.stop_time.1">
+        <source>Enter an end time.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.condition_legend">
+        <source>Rule condition</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.operator.eq">
+        <source>equals</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.operator.neq">
+        <source>not equals</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.operator.gt">
+        <source>greater then</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.operator.gte">
+        <source>greater or equal to</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.operator.lt">
+        <source>lower then</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.operator.lte">
+        <source>lower or equal to</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.operator.range">
+        <source>between</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.operator.has_all">
+        <source>all of</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.operator.has_one">
+        <source>one of</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.operator.has_none">
+        <source>not in</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.operator.logged_in">
+        <source>Customer is logged in</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.operator.not_logged_in">
+        <source>Customer is not logged in</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

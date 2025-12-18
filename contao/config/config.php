@@ -23,6 +23,8 @@ use Isotope\CoreBundle\Model\ProductCollectionItem;
 use Isotope\CoreBundle\Model\ProductType;
 use Isotope\CoreBundle\Model\RelatedCategory;
 use Isotope\CoreBundle\Model\RelatedProduct;
+use Isotope\CoreBundle\Model\Rule;
+use Isotope\CoreBundle\Model\RuleCondition;
 use Isotope\CoreBundle\Model\Shipping;
 use Isotope\CoreBundle\Widget\InheritCheckBox;
 use Isotope\CoreBundle\Widget\MediaManager;
@@ -63,6 +65,9 @@ ArrayUtil::arrayInsert($GLOBALS['BE_MOD']['isotope'], 0, [
     'iso_orders' => [
         'tables' => ['tl_iso_product_collection', 'tl_iso_product_collection_item', 'tl_iso_product_collection_surcharge', 'tl_iso_product_collection_download', 'tl_iso_address'],
         'print_document' => [Callback::class, 'printDocument'],
+    ],
+    'iso_rules' => [
+        'tables' => ['tl_iso_rule', 'tl_iso_rule_condition'],
     ],
     'iso_setup' => [],
 ]);
@@ -178,6 +183,8 @@ $GLOBALS['TL_MODELS'][RelatedProduct::getTable()] = RelatedProduct::class;
 $GLOBALS['TL_MODELS'][Shipping::getTable()] = Shipping::class;
 $GLOBALS['TL_MODELS'][TaxClass::getTable()] = TaxClass::class;
 $GLOBALS['TL_MODELS'][TaxRate::getTable()] = TaxRate::class;
+$GLOBALS['TL_MODELS'][Rule::getTable()] = Rule::class;
+$GLOBALS['TL_MODELS'][RuleCondition::getTable()] = RuleCondition::class;
 
 /*
  * Checkout steps

@@ -614,6 +614,63 @@
       <trans-unit id="MODEL.tl_iso_product.standard.1">
         <source>A default product. Select this if nothing else matches.</source>
       </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.miscellaneous">
+        <source>Miscellaneous</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.cart">
+        <source>Cart</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.cart_total.0">
+        <source>Cart total</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.cart_total.1">
+        <source>Match on the total amount of the cart.</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.member">
+        <source>Member</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.member_authenticated.0">
+        <source>Login status</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.member_authenticated.1">
+        <source>Checks whether a customer is logged in or not.</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.member_group.0">
+        <source>Member groups (current user)</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.member_group.1">
+        <source>Checks whether the currently logged-in user has or does not have certain member groups.</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.store">
+        <source>Store</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.store_config.0">
+        <source>Store config</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.store_config.1">
+        <source>Checks for the current store configuration.</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.store_currency.0">
+        <source>Currency</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.store_currency.1">
+        <source>Match on the current currency.</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.dates">
+        <source>Date &amp; time</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.store_date.0">
+        <source>Date &amp; time</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.store_date.1">
+        <source>Checks for the current date and time.</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.store_time.0">
+        <source>Time of day</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.store_time.1">
+        <source>Checks the time of the current day.</source>
+      </trans-unit>
       <trans-unit id="ISO_VAT.eu_vies">
         <source>European VAT Number (&lt;a href="http://ec.europa.eu/taxation_customs/vies/vieshome.do" target="_blank"&gt;VIES&lt;/a&gt;)</source>
       </trans-unit>

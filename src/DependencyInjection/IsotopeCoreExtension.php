@@ -17,10 +17,12 @@ use Isotope\CoreBundle\DependencyInjection\Attribute\AsProductAction;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsProductCollectionAction;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsProductCollectionItemAction;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsProductFilter;
+use Isotope\CoreBundle\DependencyInjection\Attribute\AsRuleCondition;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsShipping;
 use Isotope\CoreBundle\ModelType\DocumentRegistry;
 use Isotope\CoreBundle\ModelType\GalleryRegistry;
 use Isotope\CoreBundle\ModelType\PaymentRegistry;
+use Isotope\CoreBundle\ModelType\RuleConditionRegistry;
 use Isotope\CoreBundle\ModelType\ShippingRegistry;
 use Isotope\CoreBundle\Product\Action\ProductActionInterface;
 use Isotope\CoreBundle\Product\Action\ProductActionRegistry;
@@ -92,6 +94,7 @@ class IsotopeCoreExtension extends ConfigurableExtension
             AsProductAction::class => ProductActionRegistry::TAG_NAME,
             AsProductCollectionAction::class => ProductCollectionActionRegistry::TAG_NAME,
             AsProductCollectionItemAction::class => ProductCollectionItemActionRegistry::TAG_NAME,
+            AsRuleCondition::class => RuleConditionRegistry::TAG_NAME,
         ];
 
         foreach ($attributesForAutoconfiguration as $attributeClass => $tag) {

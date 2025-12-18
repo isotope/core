@@ -162,6 +162,20 @@ source_lang = en
 type = XLIFF
 resource_name = v3_0-core-tl_iso_related_product
 
+[o:terminal42:p:isotope:r:v3_0-core-tl_iso_rule]
+file_filter = contao/languages/<lang>/tl_iso_rule.xlf
+source_file = contao/languages/en/tl_iso_rule.xlf
+source_lang = en
+type = XLIFF
+resource_name = v3_0-core-tl_iso_rule
+
+[o:terminal42:p:isotope:r:v3_0-core-tl_iso_rule_condition]
+file_filter = contao/languages/<lang>/tl_iso_rule_condition.xlf
+source_file = contao/languages/en/tl_iso_rule_condition.xlf
+source_lang = en
+type = XLIFF
+resource_name = v3_0-core-tl_iso_rule_condition
+
 [o:terminal42:p:isotope:r:v3_0-core-tl_iso_shipping]
 file_filter = contao/languages/<lang>/tl_iso_shipping.xlf
 source_file = contao/languages/en/tl_iso_shipping.xlf

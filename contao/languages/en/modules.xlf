@@ -17,6 +17,12 @@
       <trans-unit id="MOD.iso_orders.1">
         <source>See and manage orders for your shop</source>
       </trans-unit>
+      <trans-unit id="MOD.iso_rules.0">
+        <source>Rule Builder</source>
+      </trans-unit>
+      <trans-unit id="MOD.iso_rules.1">
+        <source>Create discounts, shipping conditions, tax behaviour or other rules to influence the store frontend.</source>
+      </trans-unit>
       <trans-unit id="MOD.iso_setup.0">
         <source>Store configuration</source>
       </trans-unit>

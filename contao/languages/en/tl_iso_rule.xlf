@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="contao/languages/en/tl_iso_rule.xlf" source-language="en">
+    <body>
+      <trans-unit id="tl_iso_rule.name.0">
+        <source>Name</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.type.1">
+        <source>Enter a name for this condition (only visible in the back end).</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.conditions.0">
+        <source>Rule conditions</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.conditions.1">
+        <source>Configure conditions for this rule.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.conditions.edit">
+        <source>Edit conditions</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.enabled.0">
+        <source>Enable</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.enabled.1">
+        <source>Check here if this rule should be enabled.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.priority.0">
+        <source>Priority</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.priority.1">
+        <source>Enter a numeric priority to sort the rules. The higher the number, the earlier the rule will be matched.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.rule_legend">
+        <source>Rule</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.conditions_legend">
+        <source>Rule conditions</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.application_legend">
+        <source>Rule application</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

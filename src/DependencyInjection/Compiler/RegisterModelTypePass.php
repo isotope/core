@@ -26,6 +26,7 @@ class RegisterModelTypePass implements CompilerPassInterface
         private readonly string $tagName,
         private readonly string $registryId,
         private readonly array $dcaOptions,
+        private readonly bool $withCategory = false,
     ) {
     }
 
@@ -41,7 +42,13 @@ class RegisterModelTypePass implements CompilerPassInterface
 
             foreach ($definition->getTag($this->tagName) as $attributes) {
                 $type = $this->getType($definition, $attributes);
-                $types[] = $type;
+
+                if ($this->withCategory) {
+                    $category = $attributes['category'] ?? 'miscellaneous';
+                    $types[$category][] = $type;
+                } else {
+                    $types[] = $type;
+                }
                 $factories[$type] = new Reference($this->getFactory($definition, $attributes));
             }
 
@@ -76,10 +83,12 @@ class RegisterModelTypePass implements CompilerPassInterface
 
         $className = $definition->getClass();
         $className = ltrim(strrchr((string) $className, '\\'), '\\');
-        [,$suffix] = explode('.', $this->tagName);
+        $suffix = preg_split('/[_.]/', $this->tagName);
 
-        if (str_ends_with($className, ucfirst($suffix))) {
-            $className = substr($className, 0, \strlen($suffix) * -1);
+        foreach ($suffix as $key) {
+            if (str_ends_with($className, ucfirst($key))) {
+                $className = substr($className, 0, \strlen($key) * -1);
+            }
         }
 
         return Container::underscore($className);
