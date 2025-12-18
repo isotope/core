@@ -244,27 +244,11 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
                     'foreignKey' => TaxClass::getTable().'.name',
                     'eval' => ['includeBlankOption' => true, 'blankOptionLabel' => &$GLOBALS['TL_LANG']['MSC']['taxFree'], 'tl_class' => 'clr'],
                 ],
-                'config_id' => [
-                    'label' => &$GLOBALS['TL_LANG']['tl_iso_product']['prices']['config_id'],
+                'rule' => [
+                    'label' => &$GLOBALS['TL_LANG']['tl_iso_product']['prices']['rule'],
                     'inputType' => 'select',
-                    'foreignKey' => 'tl_iso_config.name',
-                    'eval' => ['includeBlankOption' => true],
-                ],
-                'member_group' => [
-                    'label' => &$GLOBALS['TL_LANG']['tl_iso_product']['prices']['member_group'],
-                    'inputType' => 'select',
-                    'foreignKey' => 'tl_member_group.name',
+                    'foreignKey' => 'tl_iso_rule.name',
                     'eval' => ['includeBlankOption' => true, 'chosen' => true],
-                ],
-                'start' => [
-                    'label' => &$GLOBALS['TL_LANG']['tl_iso_product']['prices']['start'],
-                    'inputType' => 'text',
-                    'eval' => ['rgxp' => 'date', 'datepicker' => true, 'cell_style' => 'width:150px'],
-                ],
-                'stop' => [
-                    'label' => &$GLOBALS['TL_LANG']['tl_iso_product']['prices']['stop'],
-                    'inputType' => 'text',
-                    'eval' => ['rgxp' => 'date', 'datepicker' => true, 'cell_style' => 'width:150px'],
                 ],
             ],
             'eval' => ['tl_class' => 'clr'],

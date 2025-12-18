@@ -7,10 +7,16 @@ namespace Isotope\CoreBundle\Product\Price;
 use Contao\StringUtil;
 use Isotope\CoreBundle\Model\ProductType;
 use Isotope\CoreBundle\Product\DataCollector\ProductDto;
+use Isotope\CoreBundle\RuleBuilder\RuleMatcher;
+use Isotope\CoreBundle\Store\Context\StoreContext;
 
 class DefaultPriceFactory
 {
-    public function create(ProductDto $dto, ProductType $type): PriceCollection|null
+    public function __construct(private readonly RuleMatcher $ruleMatcher)
+    {
+    }
+
+    public function create(ProductDto $dto, ProductType $type, StoreContext $context): PriceCollection|null
     {
         if (!\in_array('price', $type->getAttributes(), true) && !$type->hasVariantPrices()) {
             return null;
@@ -20,20 +26,20 @@ class DefaultPriceFactory
             $prices = [];
 
             foreach ($dto['__variants'] as $variant) {
-                $prices[] = $this->createFromArray($variant, $type->hasAdvancedPrices(), (int) $variant['id']);
+                $prices[] = $this->createFromArray($variant, $type->hasAdvancedPrices(), $context, (int) $variant['id']);
             }
 
             /** @noinspection PhpIncompatibleReturnTypeInspection */
             return (new PriceCollection())->merge(...$prices);
         }
 
-        return $this->createFromArray($dto->getArrayCopy(), $type->hasAdvancedPrices());
+        return $this->createFromArray($dto->getArrayCopy(), $type->hasAdvancedPrices(), $context);
     }
 
     /**
      * @internal
      */
-    public function createFromArray(array $data, bool $advancedPrices, int $variantId = 0): PriceCollection
+    public function createFromArray(array $data, bool $advancedPrices, StoreContext|null $context = null, int $variantId = 0): PriceCollection
     {
         $prices = new PriceCollection();
 
@@ -42,9 +48,16 @@ class DefaultPriceFactory
 
             if (\is_array($price)) {
                 foreach ($price as $config) {
+                    if (($config['rule'] ?? null) && !$this->ruleMatcher->isApplicable((int) $config['rule'], $context)) {
+                        continue;
+                    }
+
                     foreach ($config['price_tiers'] as $quantity => $price) {
                         $prices->add($this->createPrice((float) $price, $quantity, $config)->setVariantId($variantId));
                     }
+
+                    // Only add the first advanced price that matches the rules
+                    break;
                 }
             }
         } else {
@@ -69,10 +82,6 @@ class DefaultPriceFactory
             $price,
             $quantity,
             $data['tax_class'] ? ((int) $data['tax_class']) : null,
-            $data['config_id'] ?? null,
-            $data['group_id'] ?? null,
-            ($data['start'] ?? null) ? \DateTimeImmutable::createFromFormat('U', $data['start']) : null,
-            ($data['stop'] ?? null) ? \DateTimeImmutable::createFromFormat('U', $data['stop']) : null,
         );
     }
 }

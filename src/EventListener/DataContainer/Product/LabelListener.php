@@ -163,7 +163,7 @@ class LabelListener
 
             /** @var PriceCollection $prices */
             $prices = array_map(fn (array $variant) => $this->priceFactory->createFromArray($variant, $type->hasAdvancedPrices()), $variants);
-            $prices = (new PriceCollection())->merge(...$prices)->filterDefault();
+            $prices = (new PriceCollection())->merge(...$prices);
 
             $objPrice = $prices->getLowest();
             $fromPrice = $prices->hasRange();
@@ -171,7 +171,8 @@ class LabelListener
 
         if (null === $objPrice) {
             $prices = $this->priceFactory->createFromArray($row, $type?->hasAdvancedPrices() ?? false);
-            $objPrice = $prices->getDefault();
+            $objPrice = $prices->getLowest();
+            $fromPrice = $prices->hasRange();
         }
 
         if (null !== $objPrice) {

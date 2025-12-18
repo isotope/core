@@ -45,7 +45,7 @@ class StandardProductFactory implements ProductFactoryInterface
             ->setVariantIds(array_values(array_map(static fn (array $variant) => $variant['id'], $dto['__variants'] ?? [])))
             ->setVariants(fn () => $this->getVariants($dto, $context))
             ->setDefaultVariant(fn () => $this->getDefaultVariant($dto, $context))
-            ->setPrices(fn () => $this->priceFactory->create($dto, $type)?->filterForContext($context))
+            ->setPrices(fn () => $this->priceFactory->create($dto, $type, $context))
             ->setPrice(fn () => $this->calculator->calculate($product, $dto->getQuantity(), true, $context))
             ->setAvailable(fn () => $this->availabilityChecker->isAvailable($product, $context))
         ;

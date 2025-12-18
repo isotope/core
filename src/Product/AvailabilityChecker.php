@@ -24,7 +24,7 @@ class AvailabilityChecker
         return $this->isPublished($product)
             && $this->hasAccess($product, $context)
             && $this->hasVariantsAvailable($product)
-            && $this->hasValidPrice($product, $context)
+            && $this->hasValidPrice($product)
             && $this->hasCategoriesInCurrentRoot($product);
     }
 
@@ -65,11 +65,11 @@ class AvailabilityChecker
         return !$product->hasVariants() || [] !== $product->getVariantIds();
     }
 
-    private function hasValidPrice(CoreProduct $product, StoreContext $context): bool
+    private function hasValidPrice(CoreProduct $product): bool
     {
         $prices = $product->getPrices();
 
-        return null === $prices || !$prices->filterForContext($context)->isEmpty();
+        return null === $prices || !$prices->isEmpty();
     }
 
     private function hasCategoriesInCurrentRoot(CoreProduct $product): bool
