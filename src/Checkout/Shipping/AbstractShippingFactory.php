@@ -7,6 +7,7 @@ namespace Isotope\CoreBundle\Checkout\Shipping;
 use Contao\Model;
 use Isotope\CoreBundle\Checkout\AbstractCheckoutMethodFactory;
 use Isotope\CoreBundle\Model\Shipping;
+use Isotope\CoreBundle\ModelType\ModelInstanceTrait;
 use Isotope\CoreBundle\ModelType\SerializedPropertyTrait;
 use Isotope\Frontend;
 use Isotope\Haste\Units\Mass\Weight;
@@ -18,7 +19,7 @@ use Isotope\Haste\Units\Mass\Weight;
  */
 abstract class AbstractShippingFactory extends AbstractCheckoutMethodFactory
 {
-    use SerializedPropertyTrait;
+    use SerializedPropertyTrait, ModelInstanceTrait;
 
     /**
      * @param Shipping $model
@@ -27,9 +28,7 @@ abstract class AbstractShippingFactory extends AbstractCheckoutMethodFactory
      */
     public function create(Model $model): AbstractShipping
     {
-        if (!$model instanceof Shipping) {
-            throw new \LogicException(\sprintf('%s should be an instance of %s', $model::class, Shipping::class));
-        }
+        $this->validateInstanceOf($model, Shipping::class);
 
         /** @var AbstractShipping $shipping */
         $shipping = parent::create($model);

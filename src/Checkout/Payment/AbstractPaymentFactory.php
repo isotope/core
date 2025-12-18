@@ -7,6 +7,7 @@ namespace Isotope\CoreBundle\Checkout\Payment;
 use Contao\Model;
 use Isotope\CoreBundle\Checkout\AbstractCheckoutMethodFactory;
 use Isotope\CoreBundle\Model\Payment;
+use Isotope\CoreBundle\ModelType\ModelInstanceTrait;
 use Isotope\CoreBundle\ModelType\SerializedPropertyTrait;
 
 /**
@@ -16,13 +17,14 @@ use Isotope\CoreBundle\ModelType\SerializedPropertyTrait;
  */
 abstract class AbstractPaymentFactory extends AbstractCheckoutMethodFactory
 {
-    use SerializedPropertyTrait;
+    use SerializedPropertyTrait, ModelInstanceTrait;
 
+    /**
+     * @param Payment $model
+     */
     public function create(Model $model): AbstractPayment
     {
-        if (!$model instanceof Payment) {
-            throw new \LogicException(\sprintf('%s should be an instance of %s', $model::class, Payment::class));
-        }
+        $this->validateInstanceOf($model, Payment::class);
 
         /** @var AbstractPayment $payment */
         $payment = parent::create($model);

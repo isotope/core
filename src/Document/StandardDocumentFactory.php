@@ -9,6 +9,7 @@ use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\CoreBundle\InsertTag\InsertTagParser;
 use Contao\Model;
 use Isotope\CoreBundle\Model\Document;
+use Isotope\CoreBundle\ModelType\ModelInstanceTrait;
 use Isotope\CoreBundle\ModelType\ModelTypeFactoryInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
@@ -17,6 +18,8 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
  */
 class StandardDocumentFactory implements ModelTypeFactoryInterface
 {
+    use ModelInstanceTrait;
+
     public function __construct(
         private readonly ContaoFramework $framework,
         private readonly StringParser $stringParser,
@@ -30,9 +33,7 @@ class StandardDocumentFactory implements ModelTypeFactoryInterface
      */
     public function create(Model $model): StandardDocument
     {
-        if (!$model instanceof Document) {
-            throw new \LogicException(\sprintf('%s should be an instance of %s', $model::class, Document::class));
-        }
+        $this->validateInstanceOf($model, Document::class);
 
         $document = new StandardDocument(
             $this->framework,

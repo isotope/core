@@ -6,6 +6,7 @@ namespace Isotope\CoreBundle\Gallery;
 
 use Contao\Model;
 use Isotope\CoreBundle\Model\Gallery;
+use Isotope\CoreBundle\ModelType\ModelInstanceTrait;
 use Isotope\CoreBundle\ModelType\ModelTypeFactoryInterface;
 use Isotope\CoreBundle\ModelType\SerializedPropertyTrait;
 
@@ -16,16 +17,16 @@ use Isotope\CoreBundle\ModelType\SerializedPropertyTrait;
  */
 abstract class AbstractGalleryFactory implements ModelTypeFactoryInterface
 {
-    use SerializedPropertyTrait;
+    use SerializedPropertyTrait, ModelInstanceTrait;
 
     /**
+     * @param Gallery $model
+     *
      * @return TType
      */
     public function create(Model $model): AbstractGallery
     {
-        if (!$model instanceof Gallery) {
-            throw new \LogicException(\sprintf('%s should be an instance of %s', $model::class, Gallery::class));
-        }
+        $this->validateInstanceOf($model, Gallery::class);
 
         $instance = $this->doCreate($model)
             ->setMainSize($this->unserialize($model->main_size))

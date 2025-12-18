@@ -7,6 +7,8 @@ namespace Isotope\CoreBundle\ModelType;
 use Contao\Model;
 use Contao\Model\Collection;
 use Isotope\CoreBundle\Attribute\AttributeInterface;
+use Isotope\CoreBundle\ModelType\Exception\InvalidInstanceException;
+use Isotope\CoreBundle\ModelType\Exception\MissingFactoryException;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Contracts\Service\ServiceProviderInterface;
@@ -47,6 +49,7 @@ class AbstractModelTypeRegistry
             null === $modelOrCollection => null,
             $modelOrCollection instanceof Collection => array_map(fn ($m) => $this->get($m), $modelOrCollection->getModels()),
             \is_array($modelOrCollection) => array_map(fn ($m) => $this->get($m), $modelOrCollection),
+            empty($modelOrCollection->type) => null,
             default => $this->create($modelOrCollection),
         };
     }
@@ -61,13 +64,13 @@ class AbstractModelTypeRegistry
         try {
             $factory = $this->factories->get($model->type);
         } catch (ServiceNotFoundException $e) {
-            throw new \RuntimeException(\sprintf('Missing factory for %s of type "%s"', $model::class, $model->type), previous: $e);
+            throw new MissingFactoryException($model->type, $model::class, previous: $e);
         }
 
         $instance = $factory->create($model);
 
         if (!$instance instanceof $this->interface) {
-            throw new \RuntimeException($instance::class.' is not instanceof '.$this->interface);
+            throw new InvalidInstanceException($instance, $this->interface);
         }
 
         if ($instance instanceof ContainerAwareInterface) {

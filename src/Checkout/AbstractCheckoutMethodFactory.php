@@ -8,18 +8,19 @@ use Contao\Model;
 use Contao\StringUtil;
 use Isotope\CoreBundle\Model\Payment;
 use Isotope\CoreBundle\Model\Shipping;
+use Isotope\CoreBundle\ModelType\ModelInstanceTrait;
 use Isotope\CoreBundle\ModelType\ModelTypeFactoryInterface;
 use Isotope\CoreBundle\ModelType\SerializedPropertyTrait;
 
 /**
  * @template TType of AbstractCheckoutMethod
- * @template TModel of Model
+ * @template TModel of Payment|Shipping
  *
  * @template-implements ModelTypeFactoryInterface<TType, TModel>
  */
 abstract class AbstractCheckoutMethodFactory implements ModelTypeFactoryInterface
 {
-    use SerializedPropertyTrait;
+    use SerializedPropertyTrait, ModelInstanceTrait;
 
     /**
      * @param TModel $model
@@ -28,9 +29,7 @@ abstract class AbstractCheckoutMethodFactory implements ModelTypeFactoryInterfac
      */
     public function create(Model $model): AbstractCheckoutMethod
     {
-        if (!$model instanceof Payment && !$model instanceof Shipping) {
-            throw new \LogicException(\sprintf('%s should be an instance of %s or %s', $model::class, Payment::class, Shipping::class));
-        }
+        $this->validateInstanceOf($model, [Payment::class, Shipping::class]);
 
         $instance = $this->doCreate($model)
             ->setLabel($model->label ?: $model->name)
