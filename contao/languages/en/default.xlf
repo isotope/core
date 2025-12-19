@@ -78,7 +78,7 @@
         <source>Select this page type if your want to display a product list and product reader.</source>
       </trans-unit>
       <trans-unit id="MSC.filterByPages">
-        <source>Pages</source>
+        <source>Products of category</source>
       </trans-unit>
       <trans-unit id="MSC.noVariants">
         <source>There are no variants for this product.</source>

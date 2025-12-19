@@ -1,6 +1,18 @@
 {% trans_default_domain 'contao_default' %}
 
-<div class="iso_filter tl_subpanel">
+<fieldset class="iso_filter tl_panel tl_subpanel">
+    <legend>{{ 'tl_iso_product.filter'|trans([], 'contao_tl_iso_product') }}</legend>
+
+    {% for filter in filters %}
+        <label for="ctrl_{{ filter.name }}">{{ filter.label }}</label>
+        <select id="ctrl_{{ filter.name }}" name="{{ filter.name }}" id="{{ filter.name }}" class="tl_select{% if filter.value is not null %} active{% endif %}">
+            <option value="{{ filter.name }}">-</option>
+            {% for option in filter.options %}
+                <option value="{{ option.value }}"{% if option.value is same as filter.value %} selected{% endif %}>{{ option.label }}</option>
+            {% endfor %}
+        </select>
+    {% endfor %}
+
     <a href="{{ pagePickerUrl }}" class="tl_submit{% if pageValue > 0 %} active{% endif %}" id="pageFilter">{{ 'MSC.filterByPages'|trans }}</a>
     <script>
         document.getElementById('pageFilter').addEventListener('click', function (e) {
@@ -18,18 +30,4 @@
             })
         });
     </script>
-</div>
-
-<div class="tl_advanced_filter iso_filter tl_subpanel">
-    <strong>{{ 'tl_iso_product.filter'|trans([], 'contao_tl_iso_product') }}</strong>
-
-    {% for filter in filters %}
-        <select name="{{ filter.name }}" id="{{ filter.name }}" class="tl_select{% if filter.value is not null %} active{% endif %}">
-            <option value="{{ filter.name }}">{{ filter.label }}</option>
-            <option value="{{ filter.name }}">---</option>
-            {% for option in filter.options %}
-                <option value="{{ option.value }}"{% if option.value is same as filter.value %} selected{% endif %}>{{ option.label }}</option>
-            {% endfor %}
-        </select>
-    {% endfor %}
-</div>
+</fieldset>

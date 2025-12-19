@@ -1,8 +1,9 @@
 {% trans_default_domain 'contao_tl_iso_product' %}
 
 <div class="tl_subpanel tl_iso_category_sorting">
-    <a href="{{ pickerUrl }}" id="tl_iso_category_sorting" title="{{ 'tl_iso_product.sorting'|trans }}">
+    <a href="{{ pickerUrl }}" id="tl_iso_category_sorting" class="tl_submit">
         {{ backend_icon('pagemounts.svg', 'tl_iso_product.sorting'|trans) }}
+        {{ 'tl_iso_product.sorting'|trans }}
     </a>
     <script>
         $("tl_iso_category_sorting").addEvent("click", function(e) {
