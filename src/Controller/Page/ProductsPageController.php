@@ -91,7 +91,6 @@ class ProductsPageController extends AbstractController
         $request->attributes->set('pageModel', $pageModel);
 
         $context = $this->responseContextFactory->createContaoWebpageResponseContext($pageModel);
-        $context->add(new IsotopeBag());
 
         if ($product && $context->has(HtmlHeadBag::class)) {
             $htmlHeadBag = $context->get(HtmlHeadBag::class);
