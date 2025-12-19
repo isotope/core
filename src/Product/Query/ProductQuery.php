@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Product\Query;
 
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Isotope\CoreBundle\Product\Query\Filter\FilterInterface;
 
@@ -24,6 +25,12 @@ class ProductQuery implements \Stringable
      */
     private array $limits = [];
 
+    private string|null $search = null;
+
+    public function __construct(private readonly Connection $connection)
+    {
+    }
+
     public function __toString(): string
     {
         $query = [];
@@ -38,6 +45,10 @@ class ProductQuery implements \Stringable
 
         foreach ($this->limits as $key => $limit) {
             $query['_l'.$key] = $limit;
+        }
+
+        if ($this->search) {
+            $query['_q'] = $this->search;
         }
 
         return http_build_query($query);
@@ -55,6 +66,31 @@ class ProductQuery implements \Stringable
 
         if (null !== ($limit = $this->getLimit($keys))) {
             $queryBuilder->setMaxResults($limit);
+        }
+    }
+
+    public function applySearch(QueryBuilder $queryBuilder, array $fields): void
+    {
+        if (!$this->search) {
+            return;
+        }
+
+        $keywords = explode(' ', $this->search);
+
+        foreach ($keywords as $keyword) {
+            $expr = [];
+            $param = $queryBuilder->createNamedParameter('%'.$keyword.'%');
+
+            foreach ($fields as $field) {
+                $field = $this->connection->quoteSingleIdentifier($field);
+
+                $expr[] = $queryBuilder->expr()->like(
+                    \sprintf('IFNULL(translation.%s, tl_iso_product.%s)', $field, $field),
+                    $param
+                );
+            }
+
+            $queryBuilder->andWhere($queryBuilder->expr()->or(...$expr));
         }
     }
 
@@ -111,5 +147,17 @@ class ProductQuery implements \Stringable
         }
 
         return null;
+    }
+
+    public function setSearch(string|null $search): self
+    {
+        $this->search = $search;
+
+        return $this;
+    }
+
+    public function getSearch(): string|null
+    {
+        return $this->search;
     }
 }

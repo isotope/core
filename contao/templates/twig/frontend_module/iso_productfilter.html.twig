@@ -1,11 +1,13 @@
 {% trans_default_domain 'contao_default' %}
 {% extends '@Contao/frontend_module/_isotope_base.html.twig' %}
 
+{% set filters = ["fmd#{data.id}"] %}
+{% if hasSearch %}{% set filters = filters|merge(['q']) %}{% endif %}
 {% set attributes = attrs()
     .set('data-controller', 'isotope--productquery isotope--fragment')
     .set('data-isotope--productquery-id-value', fragment_id)
     .set('data-isotope--fragment-id-value', fragment_id)
-    .set('data-isotope--fragment-filters-value', ["fmd#{data.id}"]|json_encode)
+    .set('data-isotope--fragment-filters-value', filters|json_encode)
     .mergeWith(attributes|default)
 %}
 
@@ -56,9 +58,11 @@
     {% if hasSearch %}
         {% block search_filter %}
             <div class="search">
-                <label for="ctrl_keywords_{{ fragment_id }}">{{ 'MSC.searchTermsLabel'|trans }}</label>
-                <input type="text" name="keywords" id="ctrl_keywords_{{ fragment_id }}" class="text" value="{{ keywords }}" placeholder="{{ 'MSC.defaultSearchText'|trans }}">
-                <input type="submit" class="submit" value="{{ 'MSC.searchLabel'|trans }}">
+                <form data-action="isotope--productquery#search:prevent">
+                    <label for="ctrl_keywords_{{ fragment_id }}">{{ 'MSC.searchTermsLabel'|trans }}</label>
+                    <input type="text" name="_q" id="ctrl_keywords_{{ fragment_id }}" class="text" value="{{ keywords }}" placeholder="{{ 'MSC.defaultSearchText'|trans }}" data-isotope--productquery-target="search">
+                    <input type="submit" class="submit" value="{{ 'MSC.searchLabel'|trans }}">
+                </form>
             </div>
         {% endblock %}
     {% endif %}

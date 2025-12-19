@@ -37,7 +37,7 @@ class LabelListener
         }
 
         if ('' !== $row['price'] && isset($GLOBALS['TL_DCA'][AttributeOption::getTable()]['fields']['price'])) {
-            $label .= ' <span style="color:#b3b3b3; padding-left:3px;">('.$row['price'].')</span>';
+            $label .= ' <span class="label-info">('.$row['price'].')</span>';
         }
 
         return $label;

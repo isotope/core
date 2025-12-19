@@ -275,23 +275,17 @@
       <trans-unit id="tl_module.iso_filterHideSingle.1">
         <source>Hide filter field if there is just one option.</source>
       </trans-unit>
+      <trans-unit id="tl_module.iso_enableSearch.0">
+        <source>Show search field</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_enableSearch.1">
+        <source>Show the search input field in the filter module.</source>
+      </trans-unit>
       <trans-unit id="tl_module.iso_searchFields.0">
         <source>Enabled search fields</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_searchFields.1">
         <source>Please select search fields to enable.</source>
-      </trans-unit>
-      <trans-unit id="tl_module.iso_searchExact.0">
-        <source>Redirect exact match</source>
-      </trans-unit>
-      <trans-unit id="tl_module.iso_searchExact.1">
-        <source>Redirect to the product details if the keyword search has an exact match in one of these fields (e.g. search by SKU).</source>
-      </trans-unit>
-      <trans-unit id="tl_module.iso_searchAutocomplete.0">
-        <source>Autocomplete search field</source>
-      </trans-unit>
-      <trans-unit id="tl_module.iso_searchAutocomplete.1">
-        <source>If you select a field here, the search will be autocompleted by the values of that field.</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_sortingFields.0">
         <source>Enabled sorting fields</source>

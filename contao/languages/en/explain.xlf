@@ -78,12 +78,15 @@
             <h3 class="tl_help_table">Complex Operators</h3>
             <p class="tl_help_table">
               Since there's only a limited number of characters that can be useful, operators can also have a regular string name. In this case,
-              the operator has to be encapsulated in brackets like this: <code>type(modulo)1</code><br>
+              the operator has to be encapsulated in brackets like this: <code>id(modulo)1</code><br>
               Assuming an imaginary <code>modulo</code> operator, this would probably match product types where the ID matches the modulo of 1.
             <p/>
             <p class="tl_help_table">
               Operators can perform any special query or manual filtering of a product list. Sometimes, this means an operator does not need an attribute
               name, e.g. if the operator already knows which attribute or relational table it needs to operate on.
+            </p>
+            <p class="tl_help_table">
+              Here's a list of Isotope core filters, please consult extension documentation about additional filters provided by extensions.
             </p>
             <table class="tl_help_table">
               <tr>

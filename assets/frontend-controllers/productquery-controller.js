@@ -1,7 +1,8 @@
 import { Controller } from "@hotwired/stimulus";
-import { ProductQuery, Filter, Sorting, Limit } from '../scripts/_productquery';
+import { ProductQuery, Filter, Sorting, Limit, Search } from '../scripts/_productquery';
 
 export default class extends Controller {
+    static targets = ['search'];
     static values = {
         id: {
             type: String,
@@ -102,27 +103,14 @@ export default class extends Controller {
         this.#exec(query, event);
     }
 
-    update (event) {
+    search (event) {
+        if (!this.hasSearchTarget) {
+            throw new Error('No search widget found.');
+        }
+
         const query = ProductQuery.fromLocation();
 
-        if (this.hasFilterTarget) {
-            const filter = new Filter(this.idValue);
-            for (const filterTarget of this.filterTargets) {
-                if (filterTarget.value) {
-                    filter.add(filterTarget.name, ':', filterTarget.value);
-                }
-            }
-            query.apply(filter);
-        }
-
-        if (this.hasSortingTarget) {
-            const [attribute, direction] = this.sortingTarget.value.split(':');
-            query.apply(new Sorting(this.idValue).add(attribute, 'DESC' === direction));
-        }
-
-        if (this.hasLimitTarget) {
-            query.apply(new Limit(this.idValue, this.limitTarget.value));
-        }
+        query.apply(new Search(this.searchTarget.value))
 
         this.#exec(query, event);
     }

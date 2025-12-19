@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Product\Query;
 
+use Doctrine\DBAL\Connection;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
 use Isotope\CoreBundle\Exception\InvalidQueryAttributeException;
 use Isotope\CoreBundle\Exception\InvalidQueryOperatorException;
@@ -22,34 +23,53 @@ class ProductQueryFactory
     public function __construct(
         private readonly array $filters,
         private readonly AttributeRegistry $attributeRegistry,
+        private readonly Connection $connection,
     ) {
     }
 
-    public function parse(Request $request): ProductQuery
+    public function create(): ProductQuery
     {
-        $instance = new ProductQuery();
+        return new ProductQuery($this->connection);
+    }
+
+    public function createFromRequest(Request $request): ProductQuery|null
+    {
+        $instance = new ProductQuery($this->connection);
         $validAttributes = null;
+        $isActive = false;
 
         foreach ($request->query->all() as $k => $v) {
-            if (!\is_string($v) || !preg_match('/^_([fsl])(\w+)$/', $k, $match)) {
+            if (!\is_string($v) || !preg_match('/^_(([fsl])(\w+)|q)$/', $k, $match)) {
                 continue;
             }
 
-            $id = $match[2];
+            $id = $match[2] ?? null;
 
             switch ($match[1]) {
                 case 'f':
                     $instance->setFilters($id, $this->parseFilters($v, $validAttributes ??= $this->attributeRegistry->getNames()));
+                    $isActive = true;
                     break;
 
                 case 's':
                     $instance->setSorting($id, $this->parseSorting($v, $validAttributes ??= $this->attributeRegistry->getNames()));
+                    $isActive = true;
                     break;
 
                 case 'l':
                     // TODO
+                    $isActive = true;
+                    break;
+
+                case 'q':
+                    $instance->setSearch($v);
+                    $isActive = true;
                     break;
             }
+        }
+
+        if (!$isActive) {
+            return null;
         }
 
         return $instance;

@@ -50,11 +50,23 @@ class ProductListController extends AbstractFrontendModuleController
             return new Response();
         }
 
+        if ($model->iso_emptyFilter && null === $this->getProductQuery($request)) {
+            $template->message = $model->iso_noFilter;
+            $template->products = array();
+
+            return $template->getResponse();
+        }
+
         $filterModules = array_map(static fn ($id) => 'fmd'.$id, StringUtil::deserialize($model->iso_filterModules, true));
-        $products = $this->findProducts($model, $request, $filterModules);
+        $searchFields = StringUtil::deserialize($model->iso_searchFields, true);
+        $products = $this->findProducts($model, $request, $filterModules, $searchFields);
 
         if ($model->iso_hide_empty && $products->isEmpty()) {
             return new Response('');
+        }
+
+        if ([] !== $searchFields) {
+            $filterModules[] = 'q';
         }
 
         $template->products = $products;
@@ -67,7 +79,7 @@ class ProductListController extends AbstractFrontendModuleController
     /**
      * @return ProductCollection
      */
-    private function findProducts(ModuleModel $model, Request $request, array $filterModules): CollectionInterface
+    private function findProducts(ModuleModel $model, Request $request, array $filterModules, array $searchFields): CollectionInterface
     {
         $categories = $this->getCategories($model, $request);
 
@@ -81,18 +93,22 @@ class ProductListController extends AbstractFrontendModuleController
         $productQuery = $this->getProductQuery($request);
 
         if ($model->iso_filterQuery) {
-            $productQuery = $productQuery ? clone $productQuery : new ProductQuery();
+            $productQuery = $productQuery ? clone $productQuery : $this->productQueryFactory->create();
             $productQuery->setFilters('fmd'.$model->id, $this->productQueryFactory->parseFilters($model->iso_filterQuery, $this->attributeRegistry->getNames()));
             $filterModules[] = 'fmd'.$model->id;
         }
 
         if ($model->iso_listingSortField) {
-            $productQuery = $productQuery ? clone $productQuery : new ProductQuery();
+            $productQuery = $productQuery ? clone $productQuery : $this->productQueryFactory->create();
             $productQuery->setSorting('fmd'.$model->id, [new Sorting($model->iso_listingSortField, 'DESC' === $model->iso_listingSortDirection)]);
             $filterModules[] = 'fmd'.$model->id;
         }
 
         $productQuery?->apply($qb, $filterModules);
+
+        if ([] !== $searchFields) {
+            $productQuery?->applySearch($qb, $searchFields);
+        }
 
         if ($model->numberOfItems > 0) {
             $qb->setMaxResults((int) $model->numberOfItems);
@@ -118,7 +134,7 @@ class ProductListController extends AbstractFrontendModuleController
             ->leftJoin('tl_iso_product', 'tl_iso_product', 'parent', 'tl_iso_product.pid=parent.id')
             ->leftJoin('parent', 'tl_iso_product', 'parent_translation', "parent.pid=parent_translation.id AND parent_translation.language='$locale'")
             ->leftJoin('tl_iso_product', 'tl_iso_product_category', 'c', 'IFNULL(parent.id, tl_iso_product.id)=c.product_id')
-            ->groupBy(['tl_iso_product.id', 'translation.id'])
+            ->groupBy('tl_iso_product.id', 'translation.id')
         ;
 
         foreach ($this->attributeRegistry->getTranslatableFields() as $attribute) {

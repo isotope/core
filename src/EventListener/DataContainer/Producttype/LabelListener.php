@@ -22,7 +22,7 @@ class LabelListener
         }
 
         $args[0] = \sprintf(
-            '%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>',
+            '%s <span class="label-info">[%s]</span>',
             $args[0],
             $this->formatter->dcaLabel($dc->table, 'fallback'),
         );

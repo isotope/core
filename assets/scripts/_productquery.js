@@ -11,7 +11,7 @@ export class ProductQuery {
         }
 
         for (const [key, value] of new URLSearchParams(window.location.search)) {
-            const match = String(key).match(/^_([fsl])(\w+)$/);
+            const match = String(key).match(/^_(([fsl])(\w+)|q)$/);
 
             if (null === match) {
                 continue;
@@ -27,11 +27,15 @@ export class ProductQuery {
                     break;
 
                 case 's':
-                    instance.apply(Sorting.parse(match[2], value))
+                    instance.apply(Sorting.parse(match[2], value));
                     break;
 
                 case 'l':
-                    instance.apply(new Limit(match[2], value))
+                    instance.apply(new Limit(match[2], value));
+                    break;
+
+                case 'q':
+                    instance.apply(new Search(value));
                     break;
             }
         }
@@ -266,5 +270,20 @@ export class Limit {
 
     value() {
         return `${this.limit}`;
+    }
+}
+
+export class Search {
+    constructor (keywords) {
+        this.id = 'q';
+        this.keywords = keywords;
+    }
+
+    key() {
+        return `_${this.id}`;
+    }
+
+    value() {
+        return `${this.keywords}`;
     }
 }

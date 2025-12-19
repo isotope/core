@@ -83,7 +83,7 @@ class ProductsPageController extends AbstractController
     private function renderPage(PageModel $pageModel, Request $request, CoreProduct|null $product = null): Response
     {
         $request->attributes->set('_content', $product);
-        $request->attributes->set('_product_query', $this->queryFactory->parse($request));
+        $request->attributes->set('_product_query', $this->queryFactory->createFromRequest($request));
         $request->attributes->set('_isotope_fragment', $fragmentId = $request->headers->get('Isotope-Fragment'));
 
         // Override page model in the request

@@ -292,7 +292,7 @@ class AttributeWizardListener
             }
 
             return \sprintf(
-                '<input type="hidden" name="%s[%s][name]" id="ctrl_%s_row%s_name" value="%s"><div style="width:300px%s">%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span></div>',
+                '<input type="hidden" name="%s[%s][name]" id="ctrl_%s_row%s_name" value="%s"><div style="width:300px%s">%s <span class="label-info">[%s]</span></div>',
                 $widgetName,
                 $i,
                 $widgetName,

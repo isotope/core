@@ -70,7 +70,7 @@ class ProductFilterController extends AbstractFrontendModuleController implement
             $template->limitOptions = $this->getLimitOptions($model->iso_perPage, $productQuery, $moduleKey);
         }
 
-        $this->applySearch($template, $model, $request);
+        $this->applySearch($template, $model, $productQuery);
 
         return $template->getResponse();
     }
@@ -186,16 +186,16 @@ class ProductFilterController extends AbstractFrontendModuleController implement
         return $options;
     }
 
-    private function applySearch(FragmentTemplate $template, ModuleModel $model, Request $request): void
+    private function applySearch(FragmentTemplate $template, ModuleModel $model, ProductQuery|null $productQuery): void
     {
-        $fields = StringUtil::deserialize($model->iso_searchFields, true);
-        $template->hasSearch = [] !== $fields;
+        $template->hasSearch = false;
 
-        if (!$template->hasSearch) {
+        if (!$model->iso_enableSearch) {
             return;
         }
 
-        $template->keywords = Input::get('keywords');
+        $template->hasSearch = true;
+        $template->keywords = $productQuery?->getSearch();
     }
 
     /**

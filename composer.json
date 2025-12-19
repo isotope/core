@@ -35,12 +35,12 @@
         "php": "^8.1",
         "composer-runtime-api": "^2",
         "contao/core-bundle": "^5.7",
-        "doctrine/dbal": "^3.7 || ^4.3",
+        "doctrine/dbal": "^4.3",
         "terminal42/contao-conditionalselectmenu":"^4.1",
         "terminal42/dcawizard": "^3.0",
-        "codefog/contao-haste": "^5.3",
-        "terminal42/notification_center": "^2.0",
-        "terminal42/dc_multilingual": "^4.5",
+        "codefog/contao-haste": "dev-fix/dbal as 5.3.9999",
+        "terminal42/notification_center": "dev-fix/dbal4 as 2.6.9999",
+        "terminal42/dc_multilingual": "dev-contao/5.x as 4.7.0",
         "tecnickcom/tcpdf": "^6.2.22",
         "symfony/filesystem": "^7.3",
         "symfony/http-client": "^7.3",
@@ -53,11 +53,9 @@
     "require-dev": {
         "contao/core-bundle": "5.x-dev",
         "contao/manager-plugin": "^2.0",
-        "terminal42/contao-changelanguage": "^3.4",
         "terminal42/contao-build-tools": "dev-main"
     },
     "conflict": {
-        "terminal42/contao-changelanguage": "< 3.4 || >= 4.0",
         "contao/manager-plugin": "<2.0 || >= 3.0"
     },
     "autoload": {
