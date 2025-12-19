@@ -13,15 +13,15 @@ namespace Isotope;
 
 use Contao\StringUtil;
 use Contao\System;
-use Isotope\CoreBundle\ModelType\ProductRegistry;
-use Isotope\CoreBundle\Product\AvailabilityChecker;
-use Isotope\CoreBundle\Product\ProductInterface;
+use Isotope\CoreBundle\Product\CoreProduct;
+use Isotope\CoreBundle\Product\DataCollector\ProductDto;
+use Isotope\CoreBundle\Product\ProductBuilder;
+use Isotope\CoreBundle\Store\Price\CalculatedPrice;
 use Isotope\CoreBundle\Store\StoreManager;
 use Isotope\Haste\Input\Input;
 use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Address;
-use Isotope\Model\Product;
 use Isotope\Model\ProductCollection\Order;
 
 class InsertTag
@@ -49,26 +49,12 @@ class InsertTag
 
                 return $this->getValueForCollectionTag($order, $tokens);
 
-            case 'product':
-                if (($product = $this->findCurrentProduct($tokens[2])) === null) {
-                    return '';
-                }
-
-                return $this->getValueForProductTag($product, $tokens[1]);
-
             case 'isolabel':
                 return System::getContainer()->get('translator')->trans($tokens[1], [], 'isotope', $tokens[2] ?? null);
 
             case 'isotope':
             case 'cache_isotope':
                 return $this->getValueForIsotopeTag($tokens[1]);
-
-            case 'product_price':
-                if (($product = $this->findCurrentProduct($tokens[2])) === null) {
-                    return '';
-                }
-
-                return $this->getPriceForProductTag($product, $tokens[1]);
         }
 
         return false;
@@ -172,22 +158,6 @@ class InsertTag
     }
 
     /**
-     * Replace InsertTag for a product
-     *
-     * 2 possible use cases:
-     * {{product::attribute}}                - gets the data of the current product
-     *                                         (Product::getActive() or GET parameter "product")
-     * {{product::attribute::product_id}}    - gets the data of the specified product ID
-     *
-     * @param string         $attribute
-     * @return string
-     */
-    private function getValueForProductTag(ProductInterface $product, $attribute)
-    {
-        return $product->$attribute;
-    }
-
-    /**
      * Replace {{isotope::}} insert tags.
      *
      * @param string $token
@@ -203,63 +173,5 @@ class InsertTag
         }
 
         return '';
-    }
-
-    /**
-     * Find product based on InsertTag parameter
-     *
-     * @param int $id
-     *
-     * @return ProductInterface|null
-     */
-    private function findCurrentProduct($id = null)
-    {
-        if (null !== $id) {
-            $product = System::getContainer()->get(ProductRegistry::class)->get(Product::findById($id));
-        } else {
-            $product = System::getContainer()->get('request_stack')->getCurrentRequest()->get('_content');
-        }
-
-        if (!$product instanceof ProductInterface || !$product->isAvailable()) {
-            return null;
-        }
-
-        return $product;
-    }
-
-    /**
-     * Replace InsertTag for a product price
-     *
-     * 2 possible use cases:
-     * {{product_price::type}}               - gets the price of the current product
-     *                                         (Product::getActive() or GET parameter "product")
-     * {{productPrice::type::product_id}}    - gets the price of the specified product ID
-     *
-     * @param string         $type
-     * @return string
-     */
-    private function getPriceForProductTag(ProductInterface $product, $type)
-    {
-        /** @var StoreManager $storeManager */
-        $storeManager = System::getContainer()->get(StoreManager::class);
-        $context = $storeManager->getCurrentContext();
-
-        switch ($type) {
-            case 'amount':
-                return Isotope::formatPriceWithCurrency($product->getPrice($context)->getAmount());
-
-            case 'original_amount':
-                return Isotope::formatPriceWithCurrency($product->getPrice($context)->getOriginalAmount());
-
-            case 'net_amount':
-                return Isotope::formatPriceWithCurrency($product->getPrice($context)->getNetAmount());
-
-            case 'gross_amount':
-                return Isotope::formatPriceWithCurrency($product->getPrice($context)->getGrossAmount());
-
-            case 'html':
-            default:
-                return Isotope::formatPriceWithCurrency($product->getPrice($context)->generate());
-        }
     }
 }

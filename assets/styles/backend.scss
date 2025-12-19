@@ -176,6 +176,11 @@ h3.inherit,
     margin-right: 4px;
 }
 
+#picker-menu a.productPicker {
+    background-image: url(../images/picker.svg);
+    background-size: 16px;
+}
+
 // Print styles for the back end order view
 @media print {
     #header,

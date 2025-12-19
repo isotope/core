@@ -2,7 +2,7 @@
   "entrypoints": {
     "backend": {
       "css": [
-        "/bundles/isotopecore/backend.17b14704.css"
+        "/bundles/isotopecore/backend.5b1e32da.css"
       ],
       "js": [
         "/bundles/isotopecore/backend.ca7fb2c0.js"
