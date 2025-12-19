@@ -5,6 +5,7 @@ namespace Isotope\CoreBundle\Store\Tax;
 use Contao\StringUtil;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Price\PriceDisplay;
+use Isotope\CoreBundle\Util\PostalCodeUtil;
 use Isotope\Frontend;
 use Isotope\Model\Address;
 use Isotope\Model\TaxClass;
@@ -146,7 +147,7 @@ class TaxCalculator
 
         // Check if address has a valid postal code
         if (!empty($taxRate->postalCodes)) {
-            $arrCodes = Frontend::parsePostalCodes($taxRate->postalCodes);
+            $arrCodes = PostalCodeUtil::parseRange($taxRate->postalCodes);
 
             if (!\in_array($address->postal, $arrCodes)) {
                 dd('postal code');

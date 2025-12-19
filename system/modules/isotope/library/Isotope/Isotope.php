@@ -31,12 +31,6 @@ use Symfony\Component\Intl\Exception\MissingResourceException;
  */
 class Isotope extends Controller
 {
-
-    /**
-     * Isotope version
-     */
-    public const VERSION = '3.x-dev';
-
     /**
      * True if the system has been initialized
      * @var bool

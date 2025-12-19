@@ -18,7 +18,6 @@ use Contao\FrontendTemplate;
 use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
-use Isotope\CoreBundle\Product\ProductInterface;
 use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\ProductCollection\Cart;
@@ -106,35 +105,6 @@ class Frontend extends \Contao\Frontend
         }
 
         return str_replace('</body>', $template->parse() . '</body>', $buffer);
-    }
-
-    /**
-     * Get postal codes from CSV and ranges
-     *
-     * @param string $strPostalCodes
-     *
-     * @return array
-     */
-    public static function parsePostalCodes($strPostalCodes)
-    {
-        $arrCodes = array();
-
-        foreach (StringUtil::trimsplit(',', $strPostalCodes) as $strCode) {
-            $arrCode = StringUtil::trimsplit('-', $strCode);
-
-            // Ignore codes with more than 1 range
-            switch (\count($arrCode)) {
-                case 1:
-                    $arrCodes[] = $arrCode[0];
-                    break;
-
-                case 2:
-                    $arrCodes = array_merge($arrCodes, range($arrCode[0], $arrCode[1]));
-                    break;
-            }
-        }
-
-        return $arrCodes;
     }
 
     /**

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\EventListener\DataContainer\Download;
 
+use Codefog\HasteBundle\Formatter;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\DataContainer;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
@@ -11,7 +12,6 @@ use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\DataCollector\ProductDto;
 use Isotope\CoreBundle\Product\ProductBuilder;
 use Isotope\CoreBundle\Store\StoreManager;
-use Isotope\Haste\Util\Format;
 
 #[AsCallback('tl_iso_download', 'list.sorting.header')]
 class HeaderFieldsListener
@@ -20,6 +20,7 @@ class HeaderFieldsListener
         private readonly ProductBuilder $productBuilder,
         private readonly StoreManager $storeManager,
         private readonly AttributeRegistry $attributeRegistry,
+        private readonly Formatter $formatter,
     ) {
     }
 
@@ -49,7 +50,7 @@ class HeaderFieldsListener
             $v = $product->$field;
 
             if ($v != '') {
-                $arrNew[Format::dcaLabel('tl_iso_product', $field)] = Format::dcaValue('tl_iso_product', $field, $v);
+                $arrNew[$this->formatter->dcaLabel('tl_iso_product', $field)] = $this->formatter->dcaValue('tl_iso_product', $field, $v);
             }
         }
 

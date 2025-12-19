@@ -15,6 +15,7 @@ use Contao\CoreBundle\Security\ContaoCorePermissions;
 use Contao\Model;
 use Contao\StringUtil;
 use Contao\System;
+use Isotope\CoreBundle\Util\PostalCodeUtil;
 use Isotope\Frontend;
 use Isotope\Interfaces\IsotopeVatNoValidator;
 use Isotope\Isotope;
@@ -96,7 +97,7 @@ class TaxRate extends Model
 
                 // Check if address has a valid postal code
                 if ($this->postalCodes != '') {
-                    $arrCodes = Frontend::parsePostalCodes($this->postalCodes);
+                    $arrCodes = PostalCodeUtil::parseRange($this->postalCodes);
 
                     if (!\in_array($objAddress->postal, $arrCodes)) {
                         continue;

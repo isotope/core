@@ -4,7 +4,6 @@ use Contao\DataContainer;
 use Contao\DC_Table;
 use Contao\System;
 use Isotope\Backend\ProductType\Callback;
-use Isotope\Backend\ProductType\Label;
 
 $GLOBALS['TL_DCA']['tl_iso_producttype'] = [
     'config' => [
@@ -30,7 +29,6 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = [
         'label' => [
             'fields' => ['name', 'variants', 'downloads', 'prices', 'shipping_exempt'],
             'showColumns' => true,
-            'label_callback' => [Label::class, 'generate'],
         ],
     ],
     'palettes' => [

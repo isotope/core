@@ -9,6 +9,7 @@ use Isotope\CoreBundle\Checkout\AbstractCheckoutMethodFactory;
 use Isotope\CoreBundle\Model\Shipping;
 use Isotope\CoreBundle\ModelType\ModelInstanceTrait;
 use Isotope\CoreBundle\ModelType\SerializedPropertyTrait;
+use Isotope\CoreBundle\Util\PostalCodeUtil;
 use Isotope\Frontend;
 use Isotope\Haste\Units\Mass\Weight;
 
@@ -40,7 +41,7 @@ abstract class AbstractShippingFactory extends AbstractCheckoutMethodFactory
             ->setAllowedAddress(
                 $model->countries ? explode(',', $model->countries) : null,
                 $model->subdivisions ? explode(',', $model->subdivisions) : null,
-                Frontend::parsePostalCodes($model->postalCodes) ?: null,
+                PostalCodeUtil::parseRange($model->postalCodes) ?: null,
             )
         ;
 

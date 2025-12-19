@@ -57,19 +57,4 @@ class CompatibilityHelper
     {
         return System::getContainer()->get('assets.packages')->getUrl($path, 'isotope_core');
     }
-
-    public static function isGranted(int|MemberModel|FrontendUser|null $member, array|string $groups): bool
-    {
-        $groups = StringUtil::deserialize($groups, true);
-
-        if (is_int($member) && $member > 0) {
-            $member = MemberModel::findByPk($member);
-        }
-
-        if (!$member) {
-            return \in_array(-1, array_map(\intval(...), $groups), true);
-        }
-
-        return [] !== array_intersect($groups, StringUtil::deserialize($member->groups, true));
-    }
 }

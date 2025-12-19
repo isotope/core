@@ -130,16 +130,4 @@ class Backend extends ContaoBackend
 
         return $arrTemplates;
     }
-
-    /**
-     * Returns an array of all allowed product IDs and variant IDs for the current backend user
-     *
-     * @return array|bool
-     *
-     * @deprecated will be removed in Isotope 3.0
-     */
-    public static function getAllowedProductIds()
-    {
-        return Permission::getAllowedIds();
-    }
 }
