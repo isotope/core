@@ -75,7 +75,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             ],
             'downloads' => [
                 'href' => 'table='.Download::getTable(),
-                'icon' => CompatibilityHelper::asset('images/paper-clip.png'),
+                'icon' => CompatibilityHelper::asset('images/paperclip.svg'),
             ],
         ],
     ],
