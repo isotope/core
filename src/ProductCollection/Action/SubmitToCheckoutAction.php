@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Isotope\CoreBundle\ProductCollection\Action;
 
 use Contao\CoreBundle\Routing\ContentUrlGenerator;

@@ -33,9 +33,10 @@ class ProductConfigurationEvent
         return $this->data;
     }
 
-    public function setData(array $data): ProductConfigurationEvent
+    public function setData(array $data): self
     {
         $this->data = $data;
+
         return $this;
     }
 
@@ -44,9 +45,10 @@ class ProductConfigurationEvent
         return $this->widgets;
     }
 
-    public function setWidgets(array $widgets): ProductConfigurationEvent
+    public function setWidgets(array $widgets): self
     {
         $this->widgets = $widgets;
+
         return $this;
     }
 
@@ -55,9 +57,10 @@ class ProductConfigurationEvent
         return $this->ajaxAttributes;
     }
 
-    public function setAjaxAttributes(array $ajaxAttributes): ProductConfigurationEvent
+    public function setAjaxAttributes(array $ajaxAttributes): self
     {
         $this->ajaxAttributes = $ajaxAttributes;
+
         return $this;
     }
 }

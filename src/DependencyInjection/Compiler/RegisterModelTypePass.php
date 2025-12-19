@@ -19,8 +19,8 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class RegisterModelTypePass implements CompilerPassInterface
 {
-    use PriorityTaggedServiceTrait;
     use ContainerAwareTrait;
+    use PriorityTaggedServiceTrait;
 
     public function __construct(
         private readonly string $tagName,

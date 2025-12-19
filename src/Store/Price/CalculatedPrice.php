@@ -34,17 +34,19 @@ class CalculatedPrice
     public function setRange(bool $isRange): self
     {
         $this->isRange = $isRange;
+
         return $this;
     }
 
-    public function getBasePrice(): ?BasePrice
+    public function getBasePrice(): BasePrice|null
     {
         return $this->basePrice;
     }
 
-    public function setBasePrice(?BasePrice $basePrice): CalculatedPrice
+    public function setBasePrice(BasePrice|null $basePrice): self
     {
         $this->basePrice = $basePrice;
+
         return $this;
     }
 }

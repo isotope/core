@@ -28,7 +28,7 @@ class LineItemCollection extends AbstractCollection
     public function sumQuantity(): int
     {
         return $this->reduce(
-            fn (int $total, LineItem $item) => $total + $item->getQuantity(),
+            static fn (int $total, LineItem $item) => $total + $item->getQuantity(),
             0,
         );
     }

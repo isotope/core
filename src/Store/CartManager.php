@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Store;
 
@@ -19,7 +21,7 @@ use Symfony\Contracts\Service\ResetInterface;
 class CartManager implements ResetInterface
 {
     /**
-     * @var Cart[]
+     * @var array<Cart>
      */
     private array $cart = [];
 
@@ -69,7 +71,7 @@ class CartManager implements ResetInterface
     }
 
     /**
-     * @param LineItem|LineItem[] $items
+     * @param LineItem|array<LineItem> $items
      */
     public function add(Cart $cart, LineItem|array $items, StoreContext $context): Cart
     {
@@ -108,12 +110,12 @@ class CartManager implements ResetInterface
     }
 
     /**
-     * @param int[] $ids
+     * @param array<int> $ids
      */
     public function removeItems(Cart $cart, array $ids, StoreContext $context): Cart
     {
         /** @var LineItemCollection $lineItems */
-        $lineItems = $cart->getLineItems()->filter(static fn (LineItem $item) => !\in_array($item->getId(), $ids));
+        $lineItems = $cart->getLineItems()->filter(static fn (LineItem $item) => !\in_array($item->getId(), $ids, true));
         $cart->setLineItems($lineItems);
 
         return $this->recalculate($cart, $context);

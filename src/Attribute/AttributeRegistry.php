@@ -115,8 +115,8 @@ class AttributeRegistry implements ResetInterface
         return match (true) {
             null === $fieldOrModelOrCollection => null,
             $fieldOrModelOrCollection instanceof Attribute => $this->get($fieldOrModelOrCollection->field_name),
-            $fieldOrModelOrCollection instanceof Collection => array_map(fn ($m) => $this->get($m), $fieldOrModelOrCollection->getModels()),
-            \is_array($fieldOrModelOrCollection) => array_map(fn ($m) => $this->get($m), $fieldOrModelOrCollection),
+            $fieldOrModelOrCollection instanceof Collection => array_map($this->get(...), $fieldOrModelOrCollection->getModels()),
+            \is_array($fieldOrModelOrCollection) => array_map($this->get(...), $fieldOrModelOrCollection),
             default => $this->attributes[$fieldOrModelOrCollection] ?? null,
         };
     }

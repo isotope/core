@@ -32,7 +32,7 @@ class StoreConditionFactory implements ModelTypeFactoryInterface
     {
         $this->validateInstanceOf($model, RuleCondition::class);
 
-        return match($model->type) {
+        return match ($model->type) {
             'store_config' => new StoreConfigCondition(
                 $this->storeManager,
                 $this->translator,

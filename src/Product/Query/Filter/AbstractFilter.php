@@ -11,6 +11,7 @@ use Isotope\CoreBundle\Exception\InvalidQueryAttributeException;
 abstract class AbstractFilter implements FilterInterface
 {
     protected readonly array $queryValues;
+
     protected readonly bool $or;
 
     public function __construct(

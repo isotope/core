@@ -13,7 +13,7 @@ class InvalidQueryAttributeException extends BadRequestException
         int $code = 0,
         \Throwable|null $previous = null,
     ) {
-        $message = sprintf('Invalid product attribute "%s"', $attribute);
+        $message = \sprintf('Invalid product attribute "%s"', $attribute);
 
         parent::__construct($message, $code, $previous);
     }

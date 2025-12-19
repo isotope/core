@@ -20,7 +20,8 @@ use Isotope\CoreBundle\ModelType\SerializedPropertyTrait;
  */
 abstract class AbstractCheckoutMethodFactory implements ModelTypeFactoryInterface
 {
-    use SerializedPropertyTrait, ModelInstanceTrait;
+    use ModelInstanceTrait;
+    use SerializedPropertyTrait;
 
     /**
      * @param TModel $model

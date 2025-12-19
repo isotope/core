@@ -83,7 +83,7 @@ class AttributeWizardListener
                 'eval' => [
                     'includeBlankOption' => true,
                     'blankOptionLabel' => &$GLOBALS['TL_LANG']['tl_iso_producttype']['attributes']['default'],
-                    'cell_style' => 'width:100px'
+                    'cell_style' => 'width:100px',
                 ],
                 'attributes_callback' => [function (array $attributes) use (&$mandatoryConfig) {
                     $config = array_shift($mandatoryConfig);
@@ -99,7 +99,7 @@ class AttributeWizardListener
                     }
 
                     return $attributes;
-                }]
+                }],
             ],
             'edit' => [
                 'input_field_callback' => $this->getEditAttributeClosure($values),

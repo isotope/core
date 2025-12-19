@@ -56,8 +56,8 @@ class ProductCollectionItem extends Model
     public static function findByOneCollection(int $pid, string $identifier, array|null $configuration, array $options = []): self|null
     {
         return self::findOneBy(
-            array('pid=?', 'identifier=?', 'configuration=?'),
-            array($pid, $identifier, serialize($configuration)),
+            ['pid=?', 'identifier=?', 'configuration=?'],
+            [$pid, $identifier, serialize($configuration)],
             $options,
         );
     }
@@ -383,7 +383,7 @@ class ProductCollectionItem extends Model
     public function getDownloads()
     {
         if (null === $this->arrDownloads) {
-            $this->arrDownloads = array();
+            $this->arrDownloads = [];
 
             $objDownloads = ProductCollectionDownload::findBy('pid', $this->id);
 
@@ -485,8 +485,6 @@ class ProductCollectionItem extends Model
 
     /**
      * Return true if the collection item has errors
-     *
-     * @return bool
      */
     public function hasErrors(): bool
     {

@@ -38,7 +38,7 @@ class StoreCurrencyCondition implements RuleConditionInterface
 
     public function getBackendLabel(): string
     {
-        return sprintf('%s "%s"', $this->trans($this->operator), implode('", "', $this->currencies));
+        return \sprintf('%s "%s"', $this->trans($this->operator), implode('", "', $this->currencies));
     }
 
     public function getOperators(): array

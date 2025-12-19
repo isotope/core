@@ -34,17 +34,20 @@ class PriceCalculator
             $prices = new PriceCollection(array_map(static fn (int $variantId) => $prices->where('getVariantId', $variantId)->sort('getQuantity')->first(), $variantIds));
         }
 
-        $price = $prices->reduce(static function (Price|null $price, Price $value) use ($quantity, $showRange): Price|null {
-            if (!$showRange && $quantity < $value->getQuantity()) {
-                return $price;
-            }
+        $price = $prices->reduce(
+            static function (Price|null $price, Price $value) use ($quantity, $showRange): Price|null {
+                if (!$showRange && $quantity < $value->getQuantity()) {
+                    return $price;
+                }
 
-            if (null === $price) {
-                return $value;
-            }
+                if (null === $price) {
+                    return $value;
+                }
 
-            return $value->getPrice() < $price->getPrice() ? $value : $price;
-        }, null);
+                return $value->getPrice() < $price->getPrice() ? $value : $price;
+            },
+            null
+        );
 
         $amount = $price->getPrice();
 
@@ -84,7 +87,7 @@ class PriceCalculator
             return null;
         }
 
-        $basePrice = BasePriceModel::findByPk((int) $data['unit']);
+        $basePrice = BasePriceModel::findById((int) $data['unit']);
 
         if (null === $basePrice) {
             return null;

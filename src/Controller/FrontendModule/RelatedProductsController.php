@@ -54,7 +54,7 @@ class RelatedProductsController extends AbstractFrontendModuleController
     {
         $productIds = [];
 
-        /** @var RelatedProduct[] $relatedProducts */
+        /** @var array<RelatedProduct> $relatedProducts */
         $relatedProducts = RelatedProduct::findByProductAndCategories($product, $categories);
 
         if (null !== $relatedProducts) {
@@ -67,7 +67,7 @@ class RelatedProductsController extends AbstractFrontendModuleController
             }
         }
 
-        $dtoCollection = new ProductDtoCollection(array_map(static fn (string|int $id) => new ProductDto('tl_iso_product.'.$id), $productIds));
+        $dtoCollection = new ProductDtoCollection(array_map(static fn (int|string $id) => new ProductDto('tl_iso_product.'.$id), $productIds));
 
         $products = $this->productBuilder->build($dtoCollection, $this->storeManager->getCurrentContext());
         $products = $products->filter(static fn (CoreProduct $product) => $product->isAvailable());

@@ -16,7 +16,6 @@ use Twig\TwigFunction;
 ])]
 class IsotopeExtension extends AbstractExtension
 {
-
     public function __construct(private readonly Hashids $hashids)
     {
     }
@@ -24,7 +23,7 @@ class IsotopeExtension extends AbstractExtension
     public function getFilters(): array
     {
         return [
-            new TwigFilter('hashid', [$this->hashids, 'encode']),
+            new TwigFilter('hashid', $this->hashids->encode(...)),
             new TwigFilter('isotope_price', static fn (...$args) => Isotope::formatPriceWithCurrency(...$args), ['is_safe' => ['html']]),
         ];
     }

@@ -10,14 +10,14 @@ use Isotope\CoreBundle\Product\Render\ProductRendererInterface;
 use Isotope\CoreBundle\Store\Price\CalculatedPrice;
 
 /**
- * @property int $id
- * @property int $pid
- * @property int $tstamp
+ * @property int    $id
+ * @property int    $pid
+ * @property int    $tstamp
  * @property string $language
- * @property int $dateAdded
- * @property int $type
- * @property array $inherit
- * @property bool $fallback
+ * @property int    $dateAdded
+ * @property int    $type
+ * @property array  $inherit
+ * @property bool   $fallback
  * @property string $alias
  * @property string $sku
  * @property string $name
@@ -27,24 +27,30 @@ use Isotope\CoreBundle\Store\Price\CalculatedPrice;
  * @property string $meta_description
  * @property string $price
  * @property string $prices
- * @property bool $shipping_exempt
- * @property array $images
- * @property bool $protected
- * @property array $groups
- * @property array $cssID
- * @property bool $published
+ * @property bool   $shipping_exempt
+ * @property array  $images
+ * @property bool   $protected
+ * @property array  $groups
+ * @property array  $cssID
+ * @property bool   $published
  * @property string $start
  * @property string $stop
  */
 class CoreProduct extends Product
 {
     private bool $isVariant = false;
+
     private array $variantIds = [];
-    private ProductCollection|\Closure|null $variants = null;
-    private CoreProduct|\Closure|null $defaultVariant = null;
-    private PriceCollection|\Closure|null $prices = null;
+
+    private \Closure|ProductCollection|null $variants = null;
+
+    private \Closure|CoreProduct|null $defaultVariant = null;
+
+    private \Closure|PriceCollection|null $prices = null;
+
     private CalculatedPrice|\Closure|null $price = null;
-    private bool|\Closure $available = true;
+
+    private \Closure|bool $available = true;
 
     public function __construct(
         array $data,
@@ -116,27 +122,28 @@ class CoreProduct extends Product
         return $this->variantIds;
     }
 
-    public function getVariants(): ProductCollection|\Closure|null
+    public function getVariants(): \Closure|ProductCollection|null
     {
         $this->resolveClosure($this->variants);
 
         return $this->variants;
     }
 
-    public function setVariants(ProductCollection|\Closure|null $variants): CoreProduct
+    public function setVariants(\Closure|ProductCollection|null $variants): self
     {
         $this->variants = $variants;
+
         return $this;
     }
 
-    public function getDefaultVariant(): CoreProduct|null
+    public function getDefaultVariant(): self|null
     {
         $this->resolveClosure($this->defaultVariant);
 
         return $this->defaultVariant;
     }
 
-    public function setDefaultVariant(CoreProduct|\Closure|null $defaultVariant): CoreProduct
+    public function setDefaultVariant(\Closure|self|null $defaultVariant): self
     {
         $this->defaultVariant = $defaultVariant;
 
@@ -150,7 +157,7 @@ class CoreProduct extends Product
         return $this->prices;
     }
 
-    public function setPrices(PriceCollection|\Closure|null $prices): CoreProduct
+    public function setPrices(\Closure|PriceCollection|null $prices): self
     {
         $this->prices = $prices;
 
@@ -164,7 +171,7 @@ class CoreProduct extends Product
         return $this->price;
     }
 
-    public function setPrice(CalculatedPrice|\Closure|null $price): CoreProduct
+    public function setPrice(CalculatedPrice|\Closure|null $price): self
     {
         $this->price = $price;
 
@@ -178,7 +185,7 @@ class CoreProduct extends Product
         return $this->available;
     }
 
-    public function setAvailable(bool|\Closure $available): CoreProduct
+    public function setAvailable(\Closure|bool $available): self
     {
         $this->available = $available;
 

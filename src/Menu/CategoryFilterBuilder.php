@@ -17,7 +17,7 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
- * extends Contao\Module to have access to Module::getPublishedSubpagesByPid()
+ * extends Contao\Module to have access to Module::getPublishedSubpagesByPid().
  */
 class CategoryFilterBuilder extends Module
 {
@@ -64,7 +64,8 @@ class CategoryFilterBuilder extends Module
             $subpage->loadDetails();
 
             // Do not show protected pages unless a back end or front end user is logged in
-            if (!$this->showProtected
+            if (
+                !$this->showProtected
                 && $subpage->protected
                 && !$this->security->isGranted(ContaoCorePermissions::MEMBER_IN_GROUPS, $subpage->groups)
             ) {
@@ -78,7 +79,7 @@ class CategoryFilterBuilder extends Module
                 ->setLabel($subpage->title)
                 ->setCurrent(\in_array((int) $subpage->id, $currentIds, true))
                 ->setLinkAttribute('data-isotope--productquery-operator-param', 'cat')
-                ->setAttribute('class', trim(($hasSubpages ? 'submenu' : '').' '.($subpage->protected ? 'protected' : '').' '.$subpage->cssClass));
+                ->setAttribute('class', trim(($hasSubpages ? 'submenu' : '').' '.($subpage->protected ? 'protected' : '').' '.$subpage->cssClass))
             ;
 
             $childIds = [(int) $subpage->id];
@@ -95,6 +96,7 @@ class CategoryFilterBuilder extends Module
                 $item->setLinkAttribute('data-action', 'isotope--productquery#unset:prevent');
             } else {
                 $item->setUri($this->urlParser->addQueryString(http_build_query(['_f'.$this->filterId => (string) (new CategoryFilter(null, $value))])));
+
                 $item
                     ->setLinkAttribute('data-action', 'isotope--productquery#set:prevent')
                     ->setLinkAttribute('data-isotope--productquery-value-param', $value)

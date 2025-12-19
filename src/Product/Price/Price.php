@@ -25,7 +25,7 @@ class Price
         return $this->quantity;
     }
 
-    public function getTaxId(): ?int
+    public function getTaxId(): int|null
     {
         return $this->taxId;
     }

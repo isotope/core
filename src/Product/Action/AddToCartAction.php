@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Isotope\CoreBundle\Product\Action;
 
 use Contao\Input;
@@ -58,9 +60,9 @@ class AddToCartAction implements ProductActionInterface
             return new ActionResult(
                 null,
                 Url::addQueryString(
-                    'continue=' . base64_encode(\Contao\Environment::get('request')),
+                    'continue='.base64_encode(\Contao\Environment::get('request')),
                     $view->get('iso_addProductJumpTo'),
-                )
+                ),
             );
         }
 

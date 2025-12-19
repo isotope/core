@@ -22,11 +22,13 @@ final class StoreContext
     private array $properties = [];
 
     private \DateTimeImmutable $timestamp;
+
     private Address|null $defaultBillingAddress = null;
+
     private Address|null $defaultShippingAddress = null;
 
     /**
-     * @internal Use the StoreContextFactory to create a new instance.
+     * @internal use the StoreContextFactory to create a new instance
      */
     public function __construct(
         private readonly string $identifier,
@@ -34,11 +36,11 @@ final class StoreContext
         private readonly int $configId,
         private readonly int|null $memberId,
         private readonly \Closure $cartGetter,
-        private array|\Closure $memberGroups,
+        private \Closure|array $memberGroups,
         private readonly string $locale,
-        private MoneyFormat|\Closure $moneyFormat,
-        private PriceDisplay|\Closure $priceDisplay,
-        private Currency|\Closure $currency,
+        private \Closure|MoneyFormat $moneyFormat,
+        private \Closure|PriceDisplay $priceDisplay,
+        private \Closure|Currency $currency,
         private readonly float $currencyFactor,
         private AddressConfig|\Closure $billingAddressConfig,
         private AddressConfig|\Closure $shippingAddressConfig,
@@ -79,7 +81,7 @@ final class StoreContext
         return $this->configId;
     }
 
-    public function getMemberId(): ?int
+    public function getMemberId(): int|null
     {
         return $this->memberId;
     }

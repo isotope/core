@@ -23,9 +23,6 @@ abstract class AbstractProductCollectionStorage
      */
     abstract public function load(StoreContext $context): AbstractProductCollection|null;
 
-    /**
-     * @param AbstractProductCollection $collection
-     */
     abstract public function save(AbstractProductCollection $collection, StoreContext $context): void;
 
     public function delete(ProductCollection $collection): bool
@@ -43,13 +40,13 @@ abstract class AbstractProductCollectionStorage
         ', [$pid]);
 
         $this->connection->executeStatement(
-            "DELETE FROM tl_iso_product_collection_item WHERE pid=?",
+            'DELETE FROM tl_iso_product_collection_item WHERE pid=?',
             [$pid],
         );
 
         $this->connection->executeStatement(
             'DELETE FROM tl_iso_product_collection_surcharge WHERE pid=?',
-            [$pid]
+            [$pid],
         );
 
         $this->connection->executeStatement(

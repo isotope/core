@@ -28,7 +28,8 @@ class AttributeRuntime implements RuntimeExtensionInterface
                 // TODO: name only exists in the AbstractAttribute
                 return $this->translator->trans($attribute->getName(), [], 'isotope');
             }
-        } catch (\Exception) {}
+        } catch (\Exception) {
+        }
 
         return $this->formatter->dcaLabel('tl_iso_product', $attributeName);
     }
@@ -43,7 +44,7 @@ class AttributeRuntime implements RuntimeExtensionInterface
 
             return array_map(
                 static fn ($value) => $options->getLabel((string) $value) ?? $value,
-                $value
+                $value,
             );
         }
 

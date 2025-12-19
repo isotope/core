@@ -9,14 +9,10 @@ use Isotope\CoreBundle\Product\CoreProduct;
 
 class ProductReference
 {
-    public CoreProduct $product;
-    public bool $linkToPrimary = false;
-    public PageModel|int|null $referencePage = null;
-
-    public function __construct(CoreProduct $product, PageModel|int|null $referencePage = null, bool $linkToPrimary = false)
-    {
-        $this->product = $product;
-        $this->linkToPrimary = $linkToPrimary;
-        $this->referencePage = $referencePage;
+    public function __construct(
+        public CoreProduct $product,
+        public PageModel|int|null $referencePage = null,
+        public bool $linkToPrimary = false,
+    ) {
     }
 }

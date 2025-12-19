@@ -13,7 +13,7 @@ class InvalidQueryOperatorException extends BadRequestException
         int $code = 0,
         \Throwable|null $previous = null,
     ) {
-        $message = sprintf('Invalid product filter operator "%s"', $operator);
+        $message = \sprintf('Invalid product filter operator "%s"', $operator);
 
         parent::__construct($message, $code, $previous);
     }

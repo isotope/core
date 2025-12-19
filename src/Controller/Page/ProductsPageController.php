@@ -49,7 +49,7 @@ class ProductsPageController extends AbstractController
     {
         Input::setUnusedRouteParameters([]); // Disable check on custom page controller
 
-        $alias = ltrim($request->attributes->get('parameters'), '/');
+        $alias = ltrim($request->attributes->getString('parameters'), '/');
 
         if (!$alias) {
             return $this->renderPage($pageModel, $request);
@@ -124,7 +124,7 @@ class ProductsPageController extends AbstractController
     private function addCanonicalUrls(HtmlHeadBag $htmlHeadBag, PageModel $pageModel, CoreProduct $product): void
     {
         $htmlHeadBag->setKeepParamsForCanonical(
-            array_intersect($product->getProductType()->getVariantAttributes(), $this->attributeRegistry->getVariantOptionFields())
+            array_intersect($product->getProductType()->getVariantAttributes(), $this->attributeRegistry->getVariantOptionFields()),
         );
 
         if ($pageModel->canonicalLink) {
@@ -139,7 +139,7 @@ class ProductsPageController extends AbstractController
                 $this->generateContentUrl(
                     new ProductReference($product, $categories[0]),
                     [],
-                    UrlGeneratorInterface::ABSOLUTE_URL
+                    UrlGeneratorInterface::ABSOLUTE_URL,
                 ),
             );
         }
@@ -160,7 +160,7 @@ class ProductsPageController extends AbstractController
                 $this->generateContentUrl(
                     new ProductReference($product, $objJumpTo),
                     [],
-                    UrlGeneratorInterface::ABSOLUTE_URL
+                    UrlGeneratorInterface::ABSOLUTE_URL,
                 ),
             );
 

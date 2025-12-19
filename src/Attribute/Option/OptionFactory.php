@@ -17,9 +17,7 @@ use Isotope\CoreBundle\Store\Context\ProductContext;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Price\CalculatedPrice;
 use Isotope\CoreBundle\Store\Price\PriceDisplay;
-use Isotope\CoreBundle\Store\StoreManager;
 use Isotope\CoreBundle\Store\Tax\TaxCalculator;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
@@ -90,8 +88,6 @@ class OptionFactory
 
     /**
      * @param Collection<AttributeOption>|null $models
-     * @param bool $canHaveDefault
-     * @return OptionCollection
      */
     private function createFromModels(Collection|null $models, bool $canHaveDefault, ProductContext|null $productContext): OptionCollection
     {
@@ -138,7 +134,7 @@ class OptionFactory
                     'money' => $context->getMoneyFormat(),
                 ]));
             } elseif ($model->price && $this->scopeMatcher->isBackendRequest()) {
-                $option->setLabel(sprintf('%s (%s)', $option->getLabel(), $model->price));
+                $option->setLabel(\sprintf('%s (%s)', $option->getLabel(), $model->price));
             }
 
             $data[] = $option;
@@ -154,6 +150,7 @@ class OptionFactory
         }
 
         $data = [];
+
         try {
             [$table, $field] = $this->parseForeignKey($foreignKey, $context?->getLocale() ?? $GLOBALS['TL_LANGUAGE']);
         } catch (\UnderflowException) {
@@ -186,7 +183,7 @@ class OptionFactory
         // Loop over the lines
         foreach ($lines as $line) {
             // Ignore empty lines and comments
-            if ('' === $line || strpos($line, '#') === 0) {
+            if ('' === $line || str_starts_with($line, '#')) {
                 continue;
             }
 

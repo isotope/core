@@ -17,7 +17,8 @@ use Isotope\CoreBundle\ModelType\SerializedPropertyTrait;
  */
 abstract class AbstractGalleryFactory implements ModelTypeFactoryInterface
 {
-    use SerializedPropertyTrait, ModelInstanceTrait;
+    use ModelInstanceTrait;
+    use SerializedPropertyTrait;
 
     /**
      * @param Gallery $model

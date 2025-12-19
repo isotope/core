@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Isotope\CoreBundle\Model;
 
 use Contao\Database;
@@ -26,7 +28,7 @@ class RelatedProduct extends Model
      *
      * @return Collection<RelatedProduct>|null
      */
-    public static function findByProductAndCategories(CoreProduct $objProduct, array $arrCategories, array $arrOptions = array()): Collection|null
+    public static function findByProductAndCategories(CoreProduct $objProduct, array $arrCategories, array $arrOptions = []): Collection|null
     {
         $t = static::$strTable;
 
@@ -39,13 +41,13 @@ class RelatedProduct extends Model
         }
 
         $arrOptions = array_merge(
-            array(
-                'column'    => [$pid, "$t.category IN (" . implode(',', $arrCategories) . ')'],
-                'value'     => $value,
-                'order'     => Database::getInstance()->findInSet("$t.category", $arrCategories),
-                'return'    => 'Collection'
-            ),
-            $arrOptions
+            [
+                'column' => [$pid, "$t.category IN (".implode(',', $arrCategories).')'],
+                'value' => $value,
+                'order' => Database::getInstance()->findInSet("$t.category", $arrCategories),
+                'return' => 'Collection',
+            ],
+            $arrOptions,
         );
 
         return static::find($arrOptions);

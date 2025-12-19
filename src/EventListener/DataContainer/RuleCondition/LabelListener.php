@@ -27,6 +27,6 @@ class LabelListener
             return $type;
         }
 
-        return sprintf('<strong>%s:</strong> %s', $type, $condition->getBackendLabel());
+        return \sprintf('<strong>%s:</strong> %s', $type, $condition->getBackendLabel());
     }
 }

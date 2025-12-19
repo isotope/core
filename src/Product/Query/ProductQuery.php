@@ -24,6 +24,25 @@ class ProductQuery implements \Stringable
      */
     private array $limits = [];
 
+    public function __toString(): string
+    {
+        $query = [];
+
+        foreach ($this->filters as $key => $filters) {
+            $query['_f'.$key] = implode(';', array_map(strval(...), $filters));
+        }
+
+        foreach ($this->sortings as $key => $sorting) {
+            $query['_s'.$key] = implode(';', array_map(strval(...), $sorting));
+        }
+
+        foreach ($this->limits as $key => $limit) {
+            $query['_l'.$key] = $limit;
+        }
+
+        return http_build_query($query);
+    }
+
     public function apply(QueryBuilder $queryBuilder, array $keys): void
     {
         foreach ($this->getFilters($keys) as $filter) {
@@ -92,24 +111,5 @@ class ProductQuery implements \Stringable
         }
 
         return null;
-    }
-
-    public function __toString(): string
-    {
-        $query = [];
-
-        foreach ($this->filters as $key => $filters) {
-            $query['_f'.$key] = implode(';', array_map(strval(...), $filters));
-        }
-
-        foreach ($this->sortings as $key => $sorting) {
-            $query['_s'.$key] = implode(';', array_map(strval(...), $sorting));
-        }
-
-        foreach ($this->limits as $key => $limit) {
-            $query['_l'.$key] = $limit;
-        }
-
-        return http_build_query($query);
     }
 }

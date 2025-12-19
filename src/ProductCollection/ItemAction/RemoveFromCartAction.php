@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Isotope\CoreBundle\ProductCollection\ItemAction;
 
 use Isotope\CoreBundle\HttpFoundation\ActionResult;
@@ -27,13 +29,10 @@ class RemoveFromCartAction implements ProductCollectionItemActionInterface
 
     public function render(AbstractProductCollection $collection, LineItem $item, array $context): string
     {
-        return $this->twig->render(
-            '@Contao/isotope/product_collection_item_action/remove_from_cart.html.twig',
-            [
-                'item' => $item,
-                'href' => Url::addQueryString('_action=remove_from_cart&_item='.$item->getId()),
-            ],
-        );
+        return $this->twig->render('@Contao/isotope/product_collection_item_action/remove_from_cart.html.twig', [
+            'item' => $item,
+            'href' => Url::addQueryString('_action=remove_from_cart&_item='.$item->getId()),
+        ]);
     }
 
     public function handle(AbstractProductCollection $collection, LineItem $item, array $context, bool $isAjax = true): ActionResult

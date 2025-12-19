@@ -16,8 +16,7 @@ class LabelListener
 {
     public function __construct(
         #[Autowire(param: 'kernel.project_dir')] private readonly string $projectDir,
-    )
-    {
+    ) {
     }
 
     public function __invoke(array $row): string
@@ -32,13 +31,13 @@ class LabelListener
         $path = $filesModel->path;
 
         if ('folder' === $filesModel->type) {
-            $arrDownloads = array();
+            $arrDownloads = [];
 
             foreach (Folder::scan($this->projectDir.'/'.$path) as $file) {
                 if (is_file($this->projectDir.'/'.$path.'/'.$file)) {
                     $objFile = new File($path.'/'.$file);
                     $icon = Image::getHtml($objFile->icon);
-                    $arrDownloads[] = sprintf('<div style="margin-bottom:5px;height:16px;">%s %s/%s</div>', $icon, $path, $file);
+                    $arrDownloads[] = \sprintf('<div style="margin-bottom:5px;height:16px;">%s %s/%s</div>', $icon, $path, $file);
                 }
             }
 
@@ -52,6 +51,6 @@ class LabelListener
         $objFile = new File($path);
         $icon = Image::getHtml($objFile->icon);
 
-        return sprintf('<div style="height: 16px">%s %s</div>', $icon, $path);
+        return \sprintf('<div style="height: 16px">%s %s</div>', $icon, $path);
     }
 }

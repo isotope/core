@@ -33,7 +33,7 @@ class StoreTimeCondition implements RuleConditionInterface
 
     public function getBackendLabel(): string
     {
-        return sprintf('between %s and %s', Date::parse(Config::get('timeFormat'), $this->start), Date::parse(Config::get('timeFormat'), $this->stop));
+        return \sprintf('between %s and %s', Date::parse(Config::get('timeFormat'), $this->start), Date::parse(Config::get('timeFormat'), $this->stop));
     }
 
     public function getOperators(): array

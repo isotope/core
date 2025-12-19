@@ -32,7 +32,7 @@ class CartConditionFactory implements ModelTypeFactoryInterface
     {
         $this->validateInstanceOf($model, RuleCondition::class);
 
-        $class = match($model->type) {
+        $class = match ($model->type) {
             'cart_total' => CartTotalCondition::class,
             default => throw new InvalidTypeException($model->type, self::class),
         };

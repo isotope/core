@@ -7,7 +7,6 @@ namespace Isotope\CoreBundle\Product;
 use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use Contao\MemberModel;
 use Contao\StringUtil;
-use Isotope\CoreBundle\Product\Price\PriceCollection;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Util\ProductCategoryUtil;
 
@@ -35,7 +34,7 @@ class AvailabilityChecker
         return ($product->published
                 && ('' === $product->start || $product->start > $time)
                 && ('' === $product->stop || $product->stop < $time)
-            ) || $this->tokenChecker->isPreviewMode();
+        ) || $this->tokenChecker->isPreviewMode();
     }
 
     private function hasAccess(CoreProduct $product, StoreContext $context): bool

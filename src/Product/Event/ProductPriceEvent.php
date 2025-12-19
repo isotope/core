@@ -34,12 +34,12 @@ class ProductPriceEvent extends Event
         return $this->configuration;
     }
 
-    public function getPrice(): ?CalculatedPrice
+    public function getPrice(): CalculatedPrice|null
     {
         return $this->price;
     }
 
-    public function setPrice(?CalculatedPrice $price): ProductPriceEvent
+    public function setPrice(CalculatedPrice|null $price): self
     {
         $this->price = $price;
 

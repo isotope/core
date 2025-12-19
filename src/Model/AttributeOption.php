@@ -80,16 +80,16 @@ class AttributeOption extends Multilingual
         }
 
         return static::findBy(
-            array(
+            [
                 "$t.pid=?",
                 "$t.ptable='tl_iso_product'",
                 "$t.field_name=?",
                 "$t.published='1'"
-            ),
-            array(
+            ],
+            [
                 $productId,
                 $attribute->getFieldName()
-            ),
+            ],
             array_merge(['order' => "$t.sorting"], $options)
         );
     }
@@ -99,19 +99,19 @@ class AttributeOption extends Multilingual
      *
      * @return Collection<AttributeOption>|null
      */
-    public static function findPublishedByIds(array $arrIds, array $arrOptions = array()): Collection|null
+    public static function findPublishedByIds(array $arrIds, array $arrOptions = []): Collection|null
     {
         $t = static::getTable();
 
         $arrOptions = array_merge(
             $arrOptions,
-            array(
-                'column' => array(
+            [
+                'column' => [
                     "$t.id IN (" . implode(',', array_map(intval(...), $arrIds)) . ")",
                     "$t.published='1'"
-                ),
+                ],
                 'order' => "$t.sorting"
-            )
+            ]
         );
 
         return static::find($arrOptions);

@@ -11,9 +11,9 @@ use Isotope\CoreBundle\Product\CoreProduct;
 final class ProductConfiguration
 {
     /**
-     * @param array<string, mixed> $data
+     * @param array<string, mixed>  $data
      * @param array<string, Widget> $widgets
-     * @param list<string> $ajaxAttributes
+     * @param list<string>          $ajaxAttributes
      */
     public function __construct(
         private CoreProduct $product,
@@ -28,9 +28,10 @@ final class ProductConfiguration
         return $this->product;
     }
 
-    public function setProduct(CoreProduct $product): ProductConfiguration
+    public function setProduct(CoreProduct $product): self
     {
         $this->product = $product;
+
         return $this;
     }
 
@@ -42,9 +43,10 @@ final class ProductConfiguration
         return $this->data;
     }
 
-    public function setData(array $data): ProductConfiguration
+    public function setData(array $data): self
     {
         $this->data = $data;
+
         return $this;
     }
 
@@ -56,9 +58,10 @@ final class ProductConfiguration
         return $this->widgets;
     }
 
-    public function setWidgets(array $widgets): ProductConfiguration
+    public function setWidgets(array $widgets): self
     {
         $this->widgets = $widgets;
+
         return $this;
     }
 
@@ -83,9 +86,10 @@ final class ProductConfiguration
         return $this->ajaxAttributes;
     }
 
-    public function setAjaxAttributes(array $ajaxAttributes): ProductConfiguration
+    public function setAjaxAttributes(array $ajaxAttributes): self
     {
         $this->ajaxAttributes = $ajaxAttributes;
+
         return $this;
     }
 }

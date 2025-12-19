@@ -8,7 +8,7 @@ use Contao\System;
 
 class PriceUtil
 {
-    public static function roundBackendPrice(string|float $price): string
+    public static function roundBackendPrice(float|string $price): string
     {
         if (\is_string($price)) {
             if (1 === substr_count($price, ',') && !str_contains($price, '.')) {
@@ -29,7 +29,7 @@ class PriceUtil
         return $price;
     }
 
-    public static function formatBackendPrice(string|float $price): string
+    public static function formatBackendPrice(float|string $price): string
     {
         return System::getFormattedNumber((float) $price, (int) strpos(strrev($price), '.'));
     }

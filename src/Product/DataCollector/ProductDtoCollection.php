@@ -28,10 +28,7 @@ class ProductDtoCollection extends AbstractMap
     public function offsetSet($offset, $value): void
     {
         if (!$value instanceof ProductDto) {
-            throw new InvalidArgumentException(
-                'Value must be of type ' . $this->getValueType() . '; value is '
-                . $this->toolValueToString($value),
-            );
+            throw new InvalidArgumentException('Value must be of type '.$this->getValueType().'; value is '.$this->toolValueToString($value));
         }
 
         parent::offsetSet($value->getIdentifier(), $value);

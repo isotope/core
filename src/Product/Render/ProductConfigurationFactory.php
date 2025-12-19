@@ -14,7 +14,6 @@ use Isotope\CoreBundle\Model\ProductCollectionItem;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\Event\ProductConfigurationEvent;
 use Isotope\CoreBundle\Store\Context\ProductContext;
-use Isotope\CoreBundle\Store\Context\StoreContext;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -83,8 +82,8 @@ class ProductConfigurationFactory
                     continue;
                 }
 
-                if (is_array($fieldConfig['options'] ?? null)) {
-                    $fieldConfig['options'] = array_filter($fieldConfig['options'], static fn (array $option) => empty($option['value']) || \in_array($option['value'], $values));
+                if (\is_array($fieldConfig['options'] ?? null)) {
+                    $fieldConfig['options'] = array_filter($fieldConfig['options'], static fn (array $option) => empty($option['value']) || \in_array($option['value'], $values, false));
                 }
             } elseif ($attribute instanceof OptionsAttributeInterface && [] === ($fieldConfig['options'] ?? [])) {
                 continue;

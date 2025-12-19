@@ -24,8 +24,8 @@ class ListView extends AbstractView
     {
         return new ProductReference(
             $product,
-            ($this->config['defineRoot'] ?? false) ? (int) $this->config['jumpTo'] : null,
-            (bool) ($this->config['iso_link_primary'] ?? false)
+            $this->config['defineRoot'] ?? false ? (int) $this->config['jumpTo'] : null,
+            (bool) ($this->config['iso_link_primary'] ?? false),
         );
     }
 

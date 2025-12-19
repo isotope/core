@@ -70,7 +70,7 @@ class StandardProductFactory implements ProductFactoryInterface
 
         $data = array_filter(
             $originalData,
-            static fn (string $key) => \in_array($key, $attributes),
+            static fn (string $key) => \in_array($key, $attributes, true),
             ARRAY_FILTER_USE_KEY,
         );
 
@@ -113,7 +113,7 @@ class StandardProductFactory implements ProductFactoryInterface
 
         $inherit = StringUtil::deserialize($originalData['inherit']);
 
-        if (\is_array($inherit) && !empty($inherit)) {
+        if (!empty($inherit) && \is_array($inherit)) {
             $parent = $this->translate($originalData['__parent'], $originalData);
             $fallbackFields = $this->attributeRegistry->getFetchTranslationFallbackFields();
 
@@ -129,7 +129,7 @@ class StandardProductFactory implements ProductFactoryInterface
         return $data;
     }
 
-    private function generatePrices(ProductDto $dto, ProductType $type)
+    private function generatePrices(ProductDto $dto, ProductType $type): void
     {
         $advancedPrices = $type->hasAdvancedPrices();
         $variantPrices = $type->hasVariants() && \in_array('price', $type->getVariantAttributes(), true);

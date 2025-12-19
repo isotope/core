@@ -10,7 +10,6 @@ use Isotope\CoreBundle\Model\Shipping;
 use Isotope\CoreBundle\ModelType\ModelInstanceTrait;
 use Isotope\CoreBundle\ModelType\SerializedPropertyTrait;
 use Isotope\CoreBundle\Util\PostalCodeUtil;
-use Isotope\Frontend;
 use Isotope\Haste\Units\Mass\Weight;
 
 /**
@@ -20,7 +19,8 @@ use Isotope\Haste\Units\Mass\Weight;
  */
 abstract class AbstractShippingFactory extends AbstractCheckoutMethodFactory
 {
-    use SerializedPropertyTrait, ModelInstanceTrait;
+    use ModelInstanceTrait;
+    use SerializedPropertyTrait;
 
     /**
      * @param Shipping $model
@@ -33,7 +33,6 @@ abstract class AbstractShippingFactory extends AbstractCheckoutMethodFactory
 
         /** @var AbstractShipping $shipping */
         $shipping = parent::create($model);
-
         $shipping
             ->setMinMaxWeight((float) $model->minimum_weight, (float) $model->maximum_weight)
             ->setShippingWeight(Weight::createFromTimePeriod($model->shipping_weight))

@@ -19,6 +19,21 @@ abstract class Product
     ) {
     }
 
+    public function __isset(string $key): bool
+    {
+        return $this->has($key);
+    }
+
+    public function __set(string $key, mixed $value): void
+    {
+        $this->set($key, $value);
+    }
+
+    public function __get(string $key): mixed
+    {
+        return $this->get($key);
+    }
+
     public function getIdentifier(): string
     {
         return $this->identifier;
@@ -94,21 +109,6 @@ abstract class Product
     public function get(string $key): mixed
     {
         return $this->data[$key] ?? null;
-    }
-
-    public function __isset(string $key): bool
-    {
-        return $this->has($key);
-    }
-
-    public function __set(string $key, mixed $value): void
-    {
-        $this->set($key, $value);
-    }
-
-    public function __get(string $key): mixed
-    {
-        return $this->get($key);
     }
 
     /**

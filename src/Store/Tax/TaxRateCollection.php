@@ -18,12 +18,12 @@ class TaxRateCollection extends AbstractCollection
         return TaxRate::class;
     }
 
-    public function getIncluded(): ?TaxRate
+    public function getIncluded(): TaxRate|null
     {
         return $this->included;
     }
 
-    public function setIncluded(?TaxRate $included): TaxRateCollection
+    public function setIncluded(TaxRate|null $included): self
     {
         $this->included = $included;
 

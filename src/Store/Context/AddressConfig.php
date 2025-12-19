@@ -23,7 +23,7 @@ final class AddressConfig
     }
 
     /**
-     * @param string[] $addressFields
+     * @param array<string> $addressFields
      */
     public function setAddressFields(array $addressFields): self
     {
@@ -67,7 +67,7 @@ final class AddressConfig
     }
 
     /**
-     * @param string[] $countryCodes
+     * @param array<string> $countryCodes
      */
     public function setCountryCodes(array $countryCodes): self
     {

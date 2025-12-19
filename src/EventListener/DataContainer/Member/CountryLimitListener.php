@@ -47,7 +47,7 @@ class CountryLimitListener
         $countries = array_unique(array_merge($context->getBillingAddressConfig()->getCountryCodes(), $context->getShippingAddressConfig()->getCountryCodes()));
 
         $options = (array) ($attributes['options'] ?? []);
-        $options = array_values(array_filter($options, fn (array $option) => \in_array($option['value'], $countries, true)));
+        $options = array_values(array_filter($options, static fn (array $option) => \in_array($option['value'], $countries, true)));
 
         if (1 === \count($options)) {
             $GLOBALS['TL_DCA']['tl_member']['fields']['country']['default'] = $options[0]['value'];

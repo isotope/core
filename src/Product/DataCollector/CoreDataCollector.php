@@ -25,7 +25,7 @@ class CoreDataCollector implements DataCollectorInterface
             static fn (string $identifier) => substr($identifier, strrpos($identifier, '.') + 1),
             array_filter(
                 $collection->keys(),
-                static fn (string $identifier) => str_starts_with($identifier, 'tl_iso_product.')
+                static fn (string $identifier) => str_starts_with($identifier, 'tl_iso_product.'),
             ),
         );
 
@@ -58,13 +58,14 @@ class CoreDataCollector implements DataCollectorInterface
         ;
 
         foreach ($this->attributeRegistry->getTranslatableFields() as $field) {
-            $qb->addSelect(sprintf('t.%s AS t__%s', $field, $field));
-            $qb->addSelect(sprintf('pt.%s AS pt__%s', $field, $field));
+            $qb->addSelect(\sprintf('t.%s AS t__%s', $field, $field));
+            $qb->addSelect(\sprintf('pt.%s AS pt__%s', $field, $field));
         }
 
         $columns = $this->connection->createSchemaManager()->listTableColumns('tl_iso_product');
+
         foreach ($columns as $column) {
-            $qb->addSelect(sprintf('pp.%s AS pp__%s', $column->getName(), $column->getName()));
+            $qb->addSelect(\sprintf('pp.%s AS pp__%s', $column->getName(), $column->getName()));
         }
 
         $data = $qb->fetchAllAssociativeIndexed();
@@ -77,7 +78,7 @@ class CoreDataCollector implements DataCollectorInterface
             $row = $this->prepare($data[$id]);
             $row['__variants'] = $this->getVariants($data, (int) ($row['pid'] ?: $row['id']));
 
-            $identifier = sprintf('tl_iso_product.%s', $row['id']);
+            $identifier = \sprintf('tl_iso_product.%s', $row['id']);
 
             $collection->get($identifier)->setType($row['__class'] ?? $row['__pclass'])->exchangeArray($row);
         }
@@ -102,7 +103,7 @@ class CoreDataCollector implements DataCollectorInterface
 
         foreach ($data as $key => $v) {
             if (str_starts_with($key, $prefix)) {
-                $extract[substr($key, strlen($prefix))] = $v;
+                $extract[substr($key, \strlen($prefix))] = $v;
                 unset($data[$key]);
             }
         }

@@ -26,7 +26,7 @@ class CategoryFilterController extends AbstractFrontendModuleController
             $level = 0;
         } else {
             $trail = $this->getPageModel()->trail;
-            $level = ($model->levelOffset > 0) ? $model->levelOffset : 0;
+            $level = $model->levelOffset > 0 ? $model->levelOffset : 0;
         }
 
         $template->menuOptions = [

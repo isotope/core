@@ -48,7 +48,7 @@ class CartTotalCondition implements RuleConditionInterface
     public function getBackendLabel(): string
     {
         if ('range' === $this->operator) {
-            return sprintf('between %s and %s', $this->amountFrom, $this->amountTo);
+            return \sprintf('between %s and %s', $this->amountFrom, $this->amountTo);
         }
 
         return $this->trans($this->operator).' '.$this->amount;

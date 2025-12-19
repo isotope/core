@@ -112,7 +112,7 @@ abstract class AbstractProductCollection
     private function filter(string $identifier, array|null $configuration): CollectionInterface
     {
         return $this->lineItems->filter(
-            static fn (LineItem $v) => $v->getIdentifier() === $identifier && $v->getConfiguration() === $configuration
+            static fn (LineItem $v) => $v->getIdentifier() === $identifier && $v->getConfiguration() === $configuration,
         );
     }
 }

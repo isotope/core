@@ -53,7 +53,7 @@ class MemberGroupCondition implements RuleConditionInterface
         $names = MemberGroupModel::findMultipleByIds($this->groups)?->fetchEach('name') ?? [];
         $groups = array_replace(array_combine($this->groups, $this->groups), $names);
 
-        return sprintf('%s "%s"', $this->trans($this->operator), implode('", "', $groups));
+        return \sprintf('%s "%s"', $this->trans($this->operator), implode('", "', $groups));
     }
 
     public function getOperators(): array

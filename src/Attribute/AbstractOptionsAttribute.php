@@ -8,9 +8,7 @@ use Doctrine\DBAL\Connection;
 use Isotope\CoreBundle\Attribute\Option\OptionCollection;
 use Isotope\CoreBundle\Attribute\Option\OptionsSource;
 use Isotope\CoreBundle\ModelType\ContainerAwareInterface;
-use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Store\Context\ProductContext;
-use Isotope\CoreBundle\Store\Context\StoreContext;
 
 abstract class AbstractOptionsAttribute extends AbstractAttribute implements OptionsAttributeInterface, ContainerAwareInterface
 {
@@ -68,8 +66,6 @@ abstract class AbstractOptionsAttribute extends AbstractAttribute implements Opt
     {
         parent::updateDcaField($field, $keys);
 
-        $field['options_callback'] = function (mixed $dc) {
-            return $this->getOptions($dc instanceof ProductContext ? $dc : null)->asDcaArray();
-        };
+        $field['options_callback'] = fn (mixed $dc) => $this->getOptions($dc instanceof ProductContext ? $dc : null)->asDcaArray();
     }
 }

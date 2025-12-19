@@ -92,7 +92,7 @@ class StoreContextFactory
     private function getMoneyFormat(Config $config): MoneyFormat
     {
         if (!isset($GLOBALS['ISO_NUM'][$config->currencyFormat])) {
-            throw new \RuntimeException(sprintf('Unknown currency format "%s" in shop config ID %s', $config->currencyFormat, $config->id));
+            throw new \RuntimeException(\sprintf('Unknown currency format "%s" in shop config ID %s', $config->currencyFormat, $config->id));
         }
 
         $format = $GLOBALS['ISO_NUM'][$config->currencyFormat];
@@ -143,26 +143,26 @@ class StoreContextFactory
     {
         $address = new Address();
 
-        $address->company     = $config->company;
-        $address->firstname   = $config->firstname;
-        $address->lastname    = $config->lastname;
-        $address->street_1    = $config->street_1;
-        $address->street_2    = $config->street_2;
-        $address->street_3    = $config->street_3;
-        $address->postal      = $config->postal;
-        $address->city        = $config->city;
+        $address->company = $config->company;
+        $address->firstname = $config->firstname;
+        $address->lastname = $config->lastname;
+        $address->street_1 = $config->street_1;
+        $address->street_2 = $config->street_2;
+        $address->street_3 = $config->street_3;
+        $address->postal = $config->postal;
+        $address->city = $config->city;
         $address->subdivision = $config->subdivision;
-        $address->country     = $config->country;
-        $address->email       = $config->email;
-        $address->phone       = $config->phone;
-        $address->vat_no      = $config->vat_no;
+        $address->country = $config->country;
+        $address->email = $config->email;
+        $address->phone = $config->phone;
+        $address->vat_no = $config->vat_no;
 
         $address->preventSaving(false);
 
         return $address;
     }
 
-    private function getAddressConfig(string|array $fieldConfig, string $type, string $countries, string $defaultCountry): AddressConfig
+    private function getAddressConfig(array|string $fieldConfig, string $type, string $countries, string $defaultCountry): AddressConfig
     {
         $addressFields = [];
         $addressFieldsConfig = [];
@@ -176,15 +176,15 @@ class StoreContextFactory
                 }
 
                 $addressFieldsConfig[] = [
-                    'value'     => $field['name'],
-                    'enabled'   => 'disabled' !== $field[$type],
+                    'value' => $field['name'],
+                    'enabled' => 'disabled' !== $field[$type],
                     'mandatory' => 'mandatory' === $field[$type],
                 ];
             }
         }
 
         if ('' === $countries) {
-            $countryCodes =  array_keys($this->countries->getCountries());
+            $countryCodes = array_keys($this->countries->getCountries());
         } else {
             $countryCodes = explode(',', $countries);
         }
@@ -197,7 +197,7 @@ class StoreContextFactory
         );
     }
 
-    private function getMemberGroups(int|null $memberId): array|\Closure
+    private function getMemberGroups(int|null $memberId): \Closure|array
     {
         if (!$memberId) {
             return [];
@@ -205,7 +205,7 @@ class StoreContextFactory
 
         return static fn () => array_map(
             intval(...),
-            StringUtil::deserialize(MemberModel::findById($memberId)?->groups ?? [], true)
+            StringUtil::deserialize(MemberModel::findById($memberId)?->groups ?? [], true),
         );
     }
 }

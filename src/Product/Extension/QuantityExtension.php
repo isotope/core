@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Product\Extension;
 
-use Isotope\CoreBundle\Model\ProductType;
 use Isotope\CoreBundle\Product\CoreProduct;
-use Isotope\CoreBundle\Product\DataCollector\ProductDto;
 
 final class QuantityExtension implements ProductExtensionInterface
 {

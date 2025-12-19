@@ -23,7 +23,7 @@ class RegexpListener
     private function validate(string $pattern, string $value, string $errorKey, Widget $widget): bool
     {
         if (!preg_match($pattern, $value)) {
-            $widget->addError(sprintf($GLOBALS['TL_LANG']['ERR'][$errorKey], $widget->label));
+            $widget->addError(\sprintf($GLOBALS['TL_LANG']['ERR'][$errorKey], $widget->label));
         }
 
         // Always return true because we handled the validation

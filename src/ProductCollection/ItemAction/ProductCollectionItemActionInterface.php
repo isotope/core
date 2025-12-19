@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Isotope\CoreBundle\ProductCollection\ItemAction;
 
 use Isotope\CoreBundle\HttpFoundation\ActionResult;

@@ -36,7 +36,7 @@ class ContextCookieListener
         if (null !== $context->getMemberId()) {
             $response->headers->clearCookie(StoreManager::CONTEXT_COOKIE);
         } else {
-            $response->headers->setCookie(new Cookie(StoreManager::CONTEXT_COOKIE, $context->getIdentifier(), $this->cartTimeout));
+            $response->headers->setCookie(Cookie::create(StoreManager::CONTEXT_COOKIE, $context->getIdentifier(), $this->cartTimeout));
         }
     }
 }

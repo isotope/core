@@ -1,14 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Isotope\CoreBundle\ProductCollection\Action;
 
 use Isotope\CoreBundle\HttpFoundation\ActionResult;
 use Isotope\CoreBundle\ProductCollection\AbstractProductCollection;
-use Isotope\Interfaces\IsotopeProductCollection;
 use Symfony\Component\HttpFoundation\Request;
 use Twig\Environment;
 
-class  ContinueShoppingAction implements ProductCollectionActionInterface
+class ContinueShoppingAction implements ProductCollectionActionInterface
 {
     public function __construct(
         private readonly Environment $twig,
@@ -40,6 +41,6 @@ class  ContinueShoppingAction implements ProductCollectionActionInterface
             return null;
         }
 
-        return base64_decode($request->query->get('continue'));
+        return base64_decode($request->query->get('continue'), true);
     }
 }

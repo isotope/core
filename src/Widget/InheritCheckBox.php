@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Isotope\CoreBundle\Widget;
 
 use Contao\CheckBox;
@@ -12,13 +14,13 @@ use Contao\System;
 class InheritCheckBox extends CheckBox
 {
     /**
-     * Disable mandatory validation for inherited attributes
+     * Disable mandatory validation for inherited attributes.
      */
-    public function validate()
+    public function validate(): void
     {
         parent::validate();
 
-        if (\is_array($this->varValue) && !empty($this->varValue)) {
+        if (!empty($this->varValue) && \is_array($this->varValue)) {
             foreach ($this->varValue as $field) {
                 $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$field]['eval']['mandatory'] = false;
             }

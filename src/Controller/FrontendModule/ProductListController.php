@@ -100,7 +100,7 @@ class ProductListController extends AbstractFrontendModuleController
 
         $ids = $qb->fetchFirstColumn();
 
-        $dtoCollection = new ProductDtoCollection(array_map(static fn (string|int $id) => new ProductDto('tl_iso_product.'.$id), $ids));
+        $dtoCollection = new ProductDtoCollection(array_map(static fn (int|string $id) => new ProductDto('tl_iso_product.'.$id), $ids));
 
         $products = $this->productBuilder->build($dtoCollection, $this->storeManager->getCurrentContext());
 

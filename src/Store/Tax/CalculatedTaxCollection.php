@@ -28,10 +28,7 @@ class CalculatedTaxCollection extends AbstractMap
     public function offsetSet($offset, $value): void
     {
         if (!$value instanceof CalculatedTax) {
-            throw new InvalidArgumentException(
-                'Value must be of type ' . $this->getValueType() . '; value is '
-                . $this->toolValueToString($value),
-            );
+            throw new InvalidArgumentException('Value must be of type '.$this->getValueType().'; value is '.$this->toolValueToString($value));
         }
 
         parent::offsetSet($value->getId(), $value);
@@ -42,7 +39,7 @@ class CalculatedTaxCollection extends AbstractMap
         return array_reduce($this->data, static fn (float $total, CalculatedTax $tax) => $total + $tax->getTax(), 0);
     }
 
-    public function merge(CalculatedTaxCollection $taxCollection): self
+    public function merge(self $taxCollection): self
     {
         $new = clone $this;
 

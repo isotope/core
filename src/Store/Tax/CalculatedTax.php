@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Store\Tax;
 
@@ -17,7 +19,7 @@ class CalculatedTax
         float $tax,
         float $taxRate,
         float $price,
-        protected ?string $label = null,
+        protected string|null $label = null,
     ) {
         $this->tax = FloatComparator::cast($tax);
         $this->taxRate = FloatComparator::cast($taxRate);
@@ -49,7 +51,7 @@ class CalculatedTax
         return $this->price;
     }
 
-    public function increment(CalculatedTax $calculatedTax): void
+    public function increment(self $calculatedTax): void
     {
         $this->tax = FloatComparator::cast($this->tax + $calculatedTax->getTax());
         $this->price = FloatComparator::cast($this->price + $calculatedTax->getPrice());
@@ -61,7 +63,7 @@ class CalculatedTax
         $this->price = FloatComparator::cast($price);
     }
 
-    public function getLabel(): ?string
+    public function getLabel(): string|null
     {
         return $this->label;
     }

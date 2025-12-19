@@ -6,7 +6,7 @@ namespace Isotope\CoreBundle\ModelType\Exception;
 
 class InvalidInstanceException extends \LogicException
 {
-    public function __construct(object $instance, string|array $class, int $code = 0, \Throwable|null $previous = null)
+    public function __construct(object $instance, array|string $class, int $code = 0, \Throwable|null $previous = null)
     {
         $class = (array) $class;
 

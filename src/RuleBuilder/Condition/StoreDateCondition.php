@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\RuleBuilder\Condition;
 
+use Contao\Config;
 use Contao\Date;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsRuleCondition;
 use Isotope\CoreBundle\Store\StoreManager;
@@ -45,14 +46,14 @@ class StoreDateCondition implements RuleConditionInterface
         }
 
         if (null === $this->start) {
-            return 'before '.Date::parse(\Contao\Config::get('datimFormat'), $this->stop);
+            return 'before '.Date::parse(Config::get('datimFormat'), $this->stop);
         }
 
         if (null === $this->stop) {
-            return 'later then '.Date::parse(\Contao\Config::get('datimFormat'), $this->start);
+            return 'later then '.Date::parse(Config::get('datimFormat'), $this->start);
         }
 
-        return sprintf('between %s and %s', Date::parse(\Contao\Config::get('datimFormat'), $this->start), Date::parse(\Contao\Config::get('datimFormat'), $this->stop));
+        return \sprintf('between %s and %s', Date::parse(Config::get('datimFormat'), $this->start), Date::parse(Config::get('datimFormat'), $this->stop));
     }
 
     public function getOperators(): array

@@ -7,9 +7,7 @@ namespace Isotope\CoreBundle\Attribute;
 use Contao\StringUtil;
 use Isotope\CoreBundle\Attribute\Option\OptionFactory;
 use Isotope\CoreBundle\Attribute\Option\OptionsSource;
-use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Store\Context\ProductContext;
-use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\Interfaces\IsotopeAttribute;
 
 class CoreAttributeFactory implements AttributeFactoryInterface
@@ -103,7 +101,7 @@ class CoreAttributeFactory implements AttributeFactoryInterface
             default => OptionsSource::Attribute,
         };
 
-        if (\is_a($class, AbstractOptionsAttribute::class, true)) {
+        if (is_a($class, AbstractOptionsAttribute::class, true)) {
             $optionsFactory = fn (AbstractOptionsAttribute $attribute, ProductContext|null $productContext = null) => $this->optionFactory->create(
                 $attribute,
                 $productContext,
@@ -111,7 +109,7 @@ class CoreAttributeFactory implements AttributeFactoryInterface
                 $config['foreignKey'] ?? $dca['foreignKey'] ?? null,
             );
 
-            $instance = (new $class($fieldName, $optionsSource, $optionsFactory));
+            $instance = new $class($fieldName, $optionsSource, $optionsFactory);
 
             if ($instance instanceof SelectAttribute) {
                 $instance->setMultiple((bool) ($config['multiple'] ?? $dca['eval']['multiple'] ?? false));

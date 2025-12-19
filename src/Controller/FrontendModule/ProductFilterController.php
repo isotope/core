@@ -17,8 +17,6 @@ use Contao\StringUtil;
 use Contao\Widget;
 use Doctrine\DBAL\Connection;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
-use Isotope\CoreBundle\Attribute\Option\Option;
-use Isotope\CoreBundle\Attribute\Option\OptionCollection;
 use Isotope\CoreBundle\Attribute\Option\OptionsSource;
 use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
 use Isotope\CoreBundle\Model\Product;
@@ -79,9 +77,9 @@ class ProductFilterController extends AbstractFrontendModuleController implement
 
     private function getFilterWidgets(array $fields, array $current, bool $hideSingle): array
     {
-        $widgets    = [];
+        $widgets = [];
         // TODO: find configured categories
-        //$arrCategories = $this->findCategories();
+        // $arrCategories = $this->findCategories();
         $arrCategories = [$this->getPageModel()->id];
 
         [$attributeTypes, $variantTypes] = $this->getProductTypeIdsByAttribute();
@@ -111,7 +109,7 @@ class ProductFilterController extends AbstractFrontendModuleController implement
 
                     $widget['options'] = $options;
                 } elseif (\is_array($widget['options'])) {
-                    $widget['options'] = array_filter($widget['options'], fn (array $option) => empty($option['value']) || \in_array($option['value'], $values, false));
+                    $widget['options'] = array_filter($widget['options'], static fn (array $option) => empty($option['value']) || \in_array($option['value'], $values, false));
                 }
             }
 
@@ -150,14 +148,14 @@ class ProductFilterController extends AbstractFrontendModuleController implement
             $isDefault = $current?->attribute === $field;
 
             $options[] = [
-                'label'   => $this->formatter->dcaLabel('tl_iso_product', $field) . ', ' . $asc,
-                'value'   => $field . ':ASC',
+                'label' => $this->formatter->dcaLabel('tl_iso_product', $field).', '.$asc,
+                'value' => $field.':ASC',
                 'default' => $isDefault && !$current?->desc,
             ];
 
             $options[] = [
-                'label'   => $this->formatter->dcaLabel('tl_iso_product', $field) . ', ' . $desc,
-                'value'   => $field . ':DESC',
+                'label' => $this->formatter->dcaLabel('tl_iso_product', $field).', '.$desc,
+                'value' => $field.':DESC',
                 'default' => $isDefault && $current?->desc,
             ];
         }
@@ -179,8 +177,8 @@ class ProductFilterController extends AbstractFrontendModuleController implement
 
         foreach ($limits as $limit) {
             $options[] = [
-                'label'   => $limit,
-                'value'   => $limit,
+                'label' => $limit,
+                'value' => $limit,
                 'default' => $limit === $current,
             ];
         }
@@ -201,7 +199,7 @@ class ProductFilterController extends AbstractFrontendModuleController implement
     }
 
     /**
-     * Returns an array of attribute values found in the product table
+     * Returns an array of attribute values found in the product table.
      *
      * @return array<string>
      */
@@ -222,21 +220,21 @@ class ProductFilterController extends AbstractFrontendModuleController implement
             $published = "
                 AND tl_iso_product.published='1'
                 AND (tl_iso_product.start='' OR tl_iso_product.start<'$time')
-                AND (tl_iso_product.stop='' OR tl_iso_product.stop>'" . ($time + 60) . "')
+                AND (tl_iso_product.stop='' OR tl_iso_product.stop>'".($time + 60)."')
             ";
         }
 
         if ([] !== $attributeTypes) {
-            $typeConditions[] = 'tl_iso_product.type IN (' . implode(',', $attributeTypes) . ')';
+            $typeConditions[] = 'tl_iso_product.type IN ('.implode(',', $attributeTypes).')';
         }
 
         if ([] !== $variantTypes) {
-            $typeConditions[] = 'translation.type IN (' . implode(',', $variantTypes) . ')';
-            $join             = 'LEFT OUTER JOIN tl_iso_product translation ON tl_iso_product.pid=translation.id';
-            $categoryWhere    = 'OR tl_iso_product.pid IN (
+            $typeConditions[] = 'translation.type IN ('.implode(',', $variantTypes).')';
+            $join = 'LEFT OUTER JOIN tl_iso_product translation ON tl_iso_product.pid=translation.id';
+            $categoryWhere = 'OR tl_iso_product.pid IN (
                                     SELECT product_id
                                     FROM tl_iso_product_category
-                                    #WHERE pid IN (' . implode(',', $categories) . ')
+                                    #WHERE pid IN ('.implode(',', $categories).')
                                 )';
 
             if (!$isPreviewMode) {
@@ -244,7 +242,7 @@ class ProductFilterController extends AbstractFrontendModuleController implement
                     tl_iso_product.pid=0 OR (
                         translation.published='1'
                         AND (translation.start='' OR translation.start<'$time')
-                        AND (translation.stop='' OR translation.stop>'" . ($time + 60) . "')
+                        AND (translation.stop='' OR translation.stop>'".($time + 60)."')
                     )
                 )";
             }
@@ -257,19 +255,19 @@ class ProductFilterController extends AbstractFrontendModuleController implement
             WHERE
                 tl_iso_product.language=''
                 AND tl_iso_product.$field!=''
-                " . $published . '
+                ".$published.'
                 AND (
                     tl_iso_product.id IN (
                         SELECT product_id
                         FROM tl_iso_product_category
-                        WHERE pid IN (' . implode(',', $categories) . ")
+                        WHERE pid IN ('.implode(',', $categories).")
                     )
                     $categoryWhere
                 )
                 AND (
-                    " . implode(' OR ', $typeConditions) . "
+                    ".implode(' OR ', $typeConditions).'
                 )
-        ");
+        ');
 
         $isCsv = true === ($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$field]['eval']['multiple'] ?? null)
             && !empty($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$field]['eval']['csv'] ?? null);
@@ -281,7 +279,7 @@ class ProductFilterController extends AbstractFrontendModuleController implement
     }
 
     /**
-     * Get product type IDs with attribute enabled
+     * Get product type IDs with attribute enabled.
      *
      * @return array{0: array<string, array<int>>, 1: array<string, array<int>>}
      */
@@ -318,15 +316,15 @@ class ProductFilterController extends AbstractFrontendModuleController implement
         switch ($arrData['eval']['rgxp'] ?? null) {
             case 'price':
             case 'digit':
-                return array($GLOBALS['TL_LANG']['MSC']['low_to_high'], $GLOBALS['TL_LANG']['MSC']['high_to_low']);
+                return [$GLOBALS['TL_LANG']['MSC']['low_to_high'], $GLOBALS['TL_LANG']['MSC']['high_to_low']];
 
             case 'date':
             case 'time':
             case 'datim':
-                return array($GLOBALS['TL_LANG']['MSC']['old_to_new'], $GLOBALS['TL_LANG']['MSC']['new_to_old']);
+                return [$GLOBALS['TL_LANG']['MSC']['old_to_new'], $GLOBALS['TL_LANG']['MSC']['new_to_old']];
         }
 
-        return array($GLOBALS['TL_LANG']['MSC']['a_to_z'], $GLOBALS['TL_LANG']['MSC']['z_to_a']);
+        return [$GLOBALS['TL_LANG']['MSC']['a_to_z'], $GLOBALS['TL_LANG']['MSC']['z_to_a']];
     }
 
     private function getCurrentFilterValues(ProductQuery|null $productQuery, string $key, array $fields): array

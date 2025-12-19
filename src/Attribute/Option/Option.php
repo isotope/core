@@ -24,9 +24,10 @@ final class Option
         return $this->value;
     }
 
-    public function setLabel(?string $label): Option
+    public function setLabel(string|null $label): self
     {
         $this->label = $label;
+
         return $this;
     }
 
@@ -35,9 +36,10 @@ final class Option
         return $this->label ?? $this->value;
     }
 
-    public function setGroup(bool $group): Option
+    public function setGroup(bool $group): self
     {
         $this->group = $group;
+
         return $this;
     }
 
@@ -46,9 +48,10 @@ final class Option
         return $this->group;
     }
 
-    public function setDefault(bool $default): Option
+    public function setDefault(bool $default): self
     {
         $this->default = $default;
+
         return $this;
     }
 
@@ -57,9 +60,10 @@ final class Option
         return $this->default;
     }
 
-    public function setCssClass(string $cssClass): Option
+    public function setCssClass(string $cssClass): self
     {
         $this->cssClass = $cssClass;
+
         return $this;
     }
 
@@ -68,14 +72,15 @@ final class Option
         return $this->cssClass;
     }
 
-    public function getPrice(): ?CalculatedPrice
+    public function getPrice(): CalculatedPrice|null
     {
         return $this->price;
     }
 
-    public function setPrice(?CalculatedPrice $price): Option
+    public function setPrice(CalculatedPrice|null $price): self
     {
         $this->price = $price;
+
         return $this;
     }
 }

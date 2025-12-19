@@ -9,7 +9,7 @@ use Isotope\CoreBundle\ModelType\Exception\InvalidInstanceException;
 
 trait ModelInstanceTrait
 {
-    private function validateInstanceOf(Model $model, string|array $class): void
+    private function validateInstanceOf(Model $model, array|string $class): void
     {
         $class = (array) $class;
 

@@ -42,7 +42,7 @@ final class Currency
     }
 
     /**
-     * Convert amount to minor unit (e.g. 100 EUR = 10000 Euro Cents)
+     * Convert amount to minor unit (e.g. 100 EUR = 10000 Euro Cents).
      */
     public function getAmountInMinorUnits(float $amount): int
     {

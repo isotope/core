@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\ProductCollection\Cart;
 
-
 use Isotope\CoreBundle\Store\Tax\CalculatedTaxCollection;
 use Isotope\CoreBundle\Store\Tax\TaxRateCollection;
 use Isotope\CoreBundle\Util\FloatComparator;

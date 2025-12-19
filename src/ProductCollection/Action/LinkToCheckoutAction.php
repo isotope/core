@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Isotope\CoreBundle\ProductCollection\Action;
 
 use Contao\CoreBundle\Routing\ContentUrlGenerator;
@@ -8,7 +10,7 @@ use Isotope\CoreBundle\HttpFoundation\ActionResult;
 use Isotope\CoreBundle\ProductCollection\AbstractProductCollection;
 use Twig\Environment;
 
-class  LinkToCheckoutAction implements ProductCollectionActionInterface
+class LinkToCheckoutAction implements ProductCollectionActionInterface
 {
     public function __construct(
         private readonly Environment $twig,

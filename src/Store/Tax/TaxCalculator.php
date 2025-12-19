@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Store\Tax;
 
@@ -6,7 +8,6 @@ use Contao\StringUtil;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Price\PriceDisplay;
 use Isotope\CoreBundle\Util\PostalCodeUtil;
-use Isotope\Frontend;
 use Isotope\Model\Address;
 use Isotope\Model\TaxClass;
 use Isotope\Model\TaxRate as TaxRateModel;
@@ -74,7 +75,7 @@ class TaxCalculator
         // calculate percentage value of net price
         $net = $net / 100 * $tax->getPercentage();
 
-        $calculatedTax = $net * ($tax->getTaxRate() / 100);
+        $calculatedTax = $net * $tax->getTaxRate() / 100;
 
         return new CalculatedTax($tax->getId(), $calculatedTax, $tax->getTaxRate(), $net);
     }
@@ -84,7 +85,7 @@ class TaxCalculator
         // calculate percentage value of gross price
         $gross = $gross / 100 * $tax->getPercentage();
 
-        $calculatedTax = $gross / ((100 + $tax->getTaxRate()) / 100) * ($tax->getTaxRate() / 100);
+        $calculatedTax = $gross / ((100 + $tax->getTaxRate()) / 100) * $tax->getTaxRate() / 100;
 
         return new CalculatedTax($tax->getId(), $calculatedTax, $tax->getTaxRate(), $gross);
     }
@@ -126,7 +127,6 @@ class TaxCalculator
             && ($address = $context->getCart()->getShippingAddress())
             && $this->taxRateApplicableToAddress($taxRate, $address)
         ) {
-
             return true;
         }
 

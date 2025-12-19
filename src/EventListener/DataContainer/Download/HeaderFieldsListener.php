@@ -41,8 +41,8 @@ class HeaderFieldsListener
                 array_intersect(
                     array_merge($product->getProductType()->getAttributes(), $product->getProductType()
                         ->getVariantAttributes()),
-                    $this->attributeRegistry->getVariantOptionFields()
-                )
+                    $this->attributeRegistry->getVariantOptionFields(),
+                ),
             );
         }
 

@@ -18,7 +18,7 @@ use Symfony\Contracts\Service\ServiceProviderInterface;
 class ProductBuilder
 {
     /**
-     * @param array<DataCollectorInterface> $dataCollectors
+     * @param array<DataCollectorInterface>                     $dataCollectors
      * @param ServiceProviderInterface<ProductFactoryInterface> $factories
      */
     public function __construct(

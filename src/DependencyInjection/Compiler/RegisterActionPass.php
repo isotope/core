@@ -18,7 +18,6 @@ class RegisterActionPass implements CompilerPassInterface
 {
     use PriorityTaggedServiceTrait;
 
-
     public function __construct(
         private readonly string $tagName,
         private readonly string $registryId,

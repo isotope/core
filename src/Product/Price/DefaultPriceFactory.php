@@ -66,7 +66,7 @@ class DefaultPriceFactory
             if (\is_array($price)) {
                 $prices->add($this
                     ->createPrice((float) ($price['price'] ?? 0), 1, ['tax_class' => $price['tax_class'] ?? ''])
-                    ->setVariantId($variantId)
+                    ->setVariantId($variantId),
                 );
             }
         }

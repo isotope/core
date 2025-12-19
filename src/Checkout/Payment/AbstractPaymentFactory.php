@@ -17,7 +17,8 @@ use Isotope\CoreBundle\ModelType\SerializedPropertyTrait;
  */
 abstract class AbstractPaymentFactory extends AbstractCheckoutMethodFactory
 {
-    use SerializedPropertyTrait, ModelInstanceTrait;
+    use ModelInstanceTrait;
+    use SerializedPropertyTrait;
 
     /**
      * @param Payment $model

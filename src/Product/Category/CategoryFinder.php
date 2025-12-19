@@ -14,7 +14,9 @@ use Symfony\Contracts\Service\ResetInterface;
 
 class CategoryFinder implements ResetInterface
 {
-    /** @var array<string, array<int>> */
+    /**
+     * @var array<string, array<int>>
+     */
     private array $cache = [];
 
     public function __construct(
@@ -24,7 +26,7 @@ class CategoryFinder implements ResetInterface
     ) {
     }
 
-    public function reset()
+    public function reset(): void
     {
         $this->cache = [];
     }
@@ -77,6 +79,7 @@ class CategoryFinder implements ResetInterface
 
             case CategoryScope::All:
                 $pageModel->loadDetails();
+
                 return Database::getInstance()->getChildRecords([$pageModel->rootId], 'tl_page', false, [$pageModel->rootId], $where);
         }
 

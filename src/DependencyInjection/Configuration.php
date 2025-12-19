@@ -13,7 +13,6 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder('isotope');
         $rootNode = $treeBuilder->getRootNode();
-
         $rootNode
             ->children()
                 ->scalarNode('cart_timeout')

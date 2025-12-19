@@ -30,7 +30,7 @@ class ProductRuntime implements RuntimeExtensionInterface
         return $product->getRenderer()->render(
             new ProductContext($product, $this->storeManager->getCurrentContext()),
             $view,
-            $this->requestStack->getCurrentRequest()
+            $this->requestStack->getCurrentRequest(),
         );
     }
 
@@ -39,7 +39,7 @@ class ProductRuntime implements RuntimeExtensionInterface
      *
      * @return array{amount: float, money: MoneyFormat, currency: Currency}|null
      */
-    public function generatePrice(array $context, Product|LineItem|CalculatedPrice|null $productOrItem = null): array|null
+    public function generatePrice(array $context, CalculatedPrice|LineItem|Product|null $productOrItem = null): array|null
     {
         $productOrItem ??= $context['product'] ?? null;
         $price = $productOrItem instanceof CalculatedPrice ? $productOrItem : null;
@@ -78,6 +78,6 @@ class ProductRuntime implements RuntimeExtensionInterface
             return '';
         }
 
-        return sprintf($basePrice->getLabel(), Isotope::formatPriceWithCurrency($price->unitPrice / $basePrice->getProductAmount() * $basePrice->getBaseAmount()), $basePrice->getProductAmount());
+        return \sprintf($basePrice->getLabel(), Isotope::formatPriceWithCurrency($price->unitPrice / $basePrice->getProductAmount() * $basePrice->getBaseAmount()), $basePrice->getProductAmount());
     }
 }

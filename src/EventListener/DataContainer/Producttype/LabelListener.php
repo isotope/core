@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Isotope\CoreBundle\EventListener\DataContainer\Producttype;
 
 use Codefog\HasteBundle\Formatter;
@@ -19,7 +21,7 @@ class LabelListener
             return $args;
         }
 
-        $args[0] = sprintf(
+        $args[0] = \sprintf(
             '%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>',
             $args[0],
             $this->formatter->dcaLabel($dc->table, 'fallback'),

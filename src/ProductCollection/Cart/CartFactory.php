@@ -11,7 +11,6 @@ use Isotope\CoreBundle\Model\ProductCollectionItem;
 use Isotope\CoreBundle\Model\Shipping;
 use Isotope\CoreBundle\ModelType\PaymentRegistry;
 use Isotope\CoreBundle\ModelType\ShippingRegistry;
-use Isotope\CoreBundle\ProductCollection\ItemCollector\ItemCollectorInterface;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Event\CartCreatedEvent;
@@ -21,9 +20,6 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 
 class CartFactory
 {
-    /**
-     * @param iterable<ItemCollectorInterface> $collectors
-     */
     public function __construct(
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly PaymentRegistry $paymentRegistry,

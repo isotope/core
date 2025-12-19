@@ -42,7 +42,7 @@ class StoreConfigCondition implements RuleConditionInterface
         $names = Config::findMultipleByIds($this->configs)?->fetchEach('name') ?? [];
         $names = array_replace(array_combine($this->configs, $this->configs), $names);
 
-        return sprintf('%s "%s"', $this->trans($this->operator), implode('", "', $names));
+        return \sprintf('%s "%s"', $this->trans($this->operator), implode('", "', $names));
     }
 
     public function getOperators(): array

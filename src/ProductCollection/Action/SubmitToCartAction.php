@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Isotope\CoreBundle\ProductCollection\Action;
 
 use Contao\CoreBundle\Routing\ContentUrlGenerator;
@@ -10,7 +12,6 @@ use Twig\Environment;
 
 class SubmitToCartAction implements ProductCollectionActionInterface
 {
-
     public function __construct(
         private readonly Environment $twig,
         private readonly ContentUrlGenerator $urlGenerator,
@@ -31,7 +32,7 @@ class SubmitToCartAction implements ProductCollectionActionInterface
     {
         return new ActionResult(
             null,
-            $this->urlGenerator->generate($this->getPageModel($context))
+            $this->urlGenerator->generate($this->getPageModel($context)),
         );
     }
 

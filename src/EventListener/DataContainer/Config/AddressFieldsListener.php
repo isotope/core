@@ -29,17 +29,17 @@ class AddressFieldsListener extends Backend
         Controller::loadDataContainer(Address::getTable());
 
         $arrDCA = &$GLOBALS['TL_DCA'][Address::getTable()]['fields'];
-        $arrFields = array();
+        $arrFields = [];
         $arrValues = StringUtil::deserialize($varValue);
 
         if (!\is_array($arrValues)) {
-            $arrValues = array();
+            $arrValues = [];
         }
 
         foreach ($arrValues as $arrField) {
             $strName = $arrField['name'];
 
-            if ($strName == '' || !isset($arrDCA[$strName]) || !$arrDCA[$strName]['eval']['feEditable']) {
+            if ('' === $strName || !isset($arrDCA[$strName]) || !$arrDCA[$strName]['eval']['feEditable']) {
                 continue;
             }
 
@@ -53,11 +53,11 @@ class AddressFieldsListener extends Backend
 
             $mandatory = $arrField['eval']['mandatory'] ?? null;
 
-            $arrFields[$strName] = array(
-                'name'      => $strName,
-                'billing'   => $mandatory === true ? 'mandatory' : ($mandatory === false ? 'enabled' : 'disabled'),
-                'shipping'  => $mandatory === true ? 'mandatory' : ($mandatory === false ? 'enabled' : 'disabled'),
-            );
+            $arrFields[$strName] = [
+                'name' => $strName,
+                'billing' => true === $mandatory ? 'mandatory' : (false === $mandatory ? 'enabled' : 'disabled'),
+                'shipping' => true === $mandatory ? 'mandatory' : (false === $mandatory ? 'enabled' : 'disabled'),
+            ];
         }
 
         return array_values($arrFields);
@@ -76,6 +76,7 @@ class AddressFieldsListener extends Backend
         }
 
         $value = [];
+
         foreach (array_values($fields) as $pos => $config) {
             $name = $config['name'] ?? $input[$pos]['name'] ?? null;
 
@@ -88,7 +89,7 @@ class AddressFieldsListener extends Backend
     }
 
     /**
-     * For each call, return the name of the next address field in the wizard (for input_field_callback)
+     * For each call, return the name of the next address field in the wizard (for input_field_callback).
      */
     private function getNameClosure(string $name, array|null $value): \Closure
     {
@@ -100,7 +101,7 @@ class AddressFieldsListener extends Backend
             $arrField = array_shift($value);
             $strName = $arrField['name'];
 
-            return sprintf(
+            return \sprintf(
                 '<input type="hidden" name="%s[%s][name]" id="ctrl_%s_row%s_name" value="%s"><div style="width:344px">%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span></div>',
                 $name,
                 $row,
@@ -108,7 +109,7 @@ class AddressFieldsListener extends Backend
                 $row++,
                 $strName,
                 $GLOBALS['TL_DCA'][Address::getTable()]['fields'][$strName]['label'][0] ?: $strName,
-                $strName
+                $strName,
             );
         };
     }

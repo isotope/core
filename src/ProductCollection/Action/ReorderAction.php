@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Isotope\CoreBundle\ProductCollection\Action;
 
 use Contao\System;
@@ -33,7 +35,7 @@ class ReorderAction implements ProductCollectionActionInterface
         $redirect = null;
 
         if (($context['data']['iso_cart_jumpTo'] ?? null) > 0) {
-            $redirect = Url::addQueryString('continue=' . base64_encode(System::getReferer()), $context['data']['iso_cart_jumpTo']);
+            $redirect = Url::addQueryString('continue='.base64_encode(System::getReferer()), $context['data']['iso_cart_jumpTo']);
         }
 
         return new ActionResult(

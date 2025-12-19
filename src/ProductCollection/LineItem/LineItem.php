@@ -11,16 +11,25 @@ use Symfony\Contracts\Translation\TranslatableInterface;
 class LineItem
 {
     public const string TYPE_PRODUCT = 'product';
+
     public const string TYPE_SHIPPING = 'shipping';
+
     public const string TYPE_PAYMENT = 'payment';
 
     private int $id = 0;
+
     private array|null $configuration = null;
+
     private int $level = 0;
+
     private bool $dynamic = false;
+
     private string|null $sku = null;
+
     private string $label;
+
     private CalculatedPrice|null $price = null;
+
     private Product|null $product = null;
 
     /**
@@ -88,34 +97,36 @@ class LineItem
         return $this;
     }
 
-    public function getProduct(): ?Product
+    public function getProduct(): Product|null
     {
         return $this->product;
     }
 
-    public function setProduct(?Product $product): self
+    public function setProduct(Product|null $product): self
     {
         $this->product = $product;
+
         return $this;
     }
 
-    public function getPrice(): ?CalculatedPrice
+    public function getPrice(): CalculatedPrice|null
     {
         return $this->price;
     }
 
-    public function setPrice(?CalculatedPrice $price): self
+    public function setPrice(CalculatedPrice|null $price): self
     {
         $this->price = $price;
+
         return $this;
     }
 
-    public function getConfiguration(): ?array
+    public function getConfiguration(): array|null
     {
         return $this->configuration;
     }
 
-    public function setConfiguration(?array $configuration): self
+    public function setConfiguration(array|null $configuration): self
     {
         $this->configuration = $configuration;
 
@@ -139,9 +150,10 @@ class LineItem
         return $this->level;
     }
 
-    public function setLevel(int $level): LineItem
+    public function setLevel(int $level): self
     {
         $this->level = $level;
+
         return $this;
     }
 
@@ -150,9 +162,10 @@ class LineItem
         return $this->dynamic;
     }
 
-    public function setDynamic(bool $dynamic): LineItem
+    public function setDynamic(bool $dynamic): self
     {
         $this->dynamic = $dynamic;
+
         return $this;
     }
 
@@ -178,12 +191,10 @@ class LineItem
 
     public function getHashData(): array
     {
-        $data = [
+        return [
             'identifier' => $this->getIdentifier(),
             'quantity' => $this->getQuantity(),
             'price' => $this->getPrice()?->totalPrice,
         ];
-
-        return $data;
     }
 }

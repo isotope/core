@@ -26,7 +26,7 @@ class CartCalculator
     {
         $originalHash = $this->hash($cart);
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $toCalculate = $this->cartFactory->create($context);
             $toCalculate->setBillingAddress($cart->getBillingAddress());
             $toCalculate->setShippingAddress($cart->getShippingAddress());
@@ -68,7 +68,7 @@ class CartCalculator
             $data['items'][] = $item->getHashData();
         }
 
-        return \hash('sha256', \json_encode($data, JSON_THROW_ON_ERROR));
+        return hash('sha256', json_encode($data, JSON_THROW_ON_ERROR));
     }
 
     private function calculateSubtotals(Cart $cart): array

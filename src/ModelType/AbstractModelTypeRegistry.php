@@ -47,8 +47,8 @@ class AbstractModelTypeRegistry
     {
         return match (true) {
             null === $modelOrCollection => null,
-            $modelOrCollection instanceof Collection => array_map(fn ($m) => $this->get($m), $modelOrCollection->getModels()),
-            \is_array($modelOrCollection) => array_map(fn ($m) => $this->get($m), $modelOrCollection),
+            $modelOrCollection instanceof Collection => array_map($this->get(...), $modelOrCollection->getModels()),
+            \is_array($modelOrCollection) => array_map($this->get(...), $modelOrCollection),
             empty($modelOrCollection->type) => null,
             default => $this->create($modelOrCollection),
         };
