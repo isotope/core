@@ -524,15 +524,6 @@
       <trans-unit id="MSC.iso_orderCollectionBy.desc_price">
         <source>by price (descending)</source>
       </trans-unit>
-      <trans-unit id="MSC.billpay_agb_de">
-        <source>Mit der &amp;Uuml;bermittlung der für die Abwicklung des Rechnungskaufs und einer Identitäts und Bonitätsprüfung erforderlichen Daten an die &lt;a href="https://billpay.de/endkunden" target="_blank"&gt;Billpay GmbH&lt;/a&gt; bin ich einverstanden. Es gelten die &lt;a href="https://www.billpay.de/kunden/agb#datenschutz" target="_blank"&gt;Datenschutzbestimmungen&lt;/a&gt; von Billpay.</source>
-      </trans-unit>
-      <trans-unit id="MSC.billpay_agb_ch">
-        <source>Mit der &amp;Uuml;bermittlung der für die Abwicklung des Rechnungskaufs und einer Identitäts und Bonitätsprüfung erforderlichen Daten an die &lt;a href="https://billpay.de/endkunden" target="_blank"&gt;Billpay GmbH&lt;/a&gt; bin ich einverstanden. Es gelten die &lt;a href="https://www.billpay.de/kunden/agb-ch#datenschutz" target="_blank"&gt;Datenschutzbestimmungen&lt;/a&gt; von Billpay.</source>
-      </trans-unit>
-      <trans-unit id="MSC.billpay_agb_at">
-        <source>Mit der &amp;Uuml;bermittlung der für die Abwicklung des Rechnungskaufs und einer Identitäts und Bonitätsprüfung erforderlichen Daten an die &lt;a href="https://billpay.de/endkunden" target="_blank"&gt;Billpay GmbH&lt;/a&gt; bin ich einverstanden. Es gelten die &lt;a href="https://www.billpay.de/kunden/agb-at#datenschutz" target="_blank"&gt;Datenschutzbestimmungen&lt;/a&gt; von Billpay.</source>
-      </trans-unit>
       <trans-unit id="MSC.iso_priceDisplay.net.0">
         <source>Net</source>
       </trans-unit>
@@ -697,42 +688,6 @@
       </trans-unit>
       <trans-unit id="ATTR.mediaManager.1">
         <source>Upload images and other files to the Isotope eCommerce file system. Output is processed trough an IsotopeGallery class.</source>
-      </trans-unit>
-      <trans-unit id="ATTR.conditionalselect.0">
-        <source>Conditional Select-Menu</source>
-      </trans-unit>
-      <trans-unit id="ATTR.conditionalselect.1">
-        <source>show select-options based on another select menu.</source>
-      </trans-unit>
-      <trans-unit id="ATTR.fileTree.0">
-        <source>File tree</source>
-      </trans-unit>
-      <trans-unit id="ATTR.fileTree.1">
-        <source>A file tree for single or multiple files and folders.</source>
-      </trans-unit>
-      <trans-unit id="ATTR.pageTree.0">
-        <source>Page tree</source>
-      </trans-unit>
-      <trans-unit id="ATTR.pageTree.1">
-        <source>Pick one or multiple pages from the site structure.</source>
-      </trans-unit>
-      <trans-unit id="ATTR.downloads.0">
-        <source>Downloads</source>
-      </trans-unit>
-      <trans-unit id="ATTR.downloads.1">
-        <source>Download files from the product, e.g. manuals, data sheets etc.</source>
-      </trans-unit>
-      <trans-unit id="ATTR.upload.0">
-        <source>File upload</source>
-      </trans-unit>
-      <trans-unit id="ATTR.upload.1">
-        <source>A single-line input field to upload a local file to the server.</source>
-      </trans-unit>
-      <trans-unit id="ATTR.media.0">
-        <source>Video/Audio</source>
-      </trans-unit>
-      <trans-unit id="ATTR.media.1">
-        <source>Generates a video or audio player.</source>
       </trans-unit>
       <trans-unit id="CHECKOUT.Isotope\CheckoutStep\BillingAddress">
           <source>Billing address</source>
