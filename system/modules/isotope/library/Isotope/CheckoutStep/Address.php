@@ -273,7 +273,6 @@ abstract class Address extends CheckoutStep
                 if (!\is_array($field['dca'])
                     || !($field['enabled'] ?? null)
                     || !($field['dca']['eval']['feEditable'] ?? null)
-                    || (($field['dca']['eval']['membersOnly'] ?? null) && !\Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER'))
                 ) {
                     continue;
                 }

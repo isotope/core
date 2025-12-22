@@ -353,24 +353,6 @@
       <trans-unit id="tl_module.iso_continueShopping.1">
         <source>Add a link to the currently added product to the cart.</source>
       </trans-unit>
-      <trans-unit id="tl_module.iso_address.0">
-        <source>Address types</source>
-      </trans-unit>
-      <trans-unit id="tl_module.iso_address.1">
-        <source>Please choose the address types.</source>
-      </trans-unit>
-      <trans-unit id="tl_module.iso_address.billing">
-        <source>Billing address</source>
-      </trans-unit>
-      <trans-unit id="tl_module.iso_address.shipping">
-        <source>Shipping address</source>
-      </trans-unit>
-      <trans-unit id="tl_module.iso_addressFields.0">
-        <source>Available address fields</source>
-      </trans-unit>
-      <trans-unit id="tl_module.iso_addressFields.1">
-        <source>Choose the available address fields you would like to display.</source>
-      </trans-unit>
       <trans-unit id="tl_module.iso_orderdetails_module.0">
         <source>Render list with details</source>
       </trans-unit>

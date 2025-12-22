@@ -85,7 +85,6 @@ $GLOBALS['FE_MOD']['isotope'] = [
     'iso_addressbook' => AddressBook::class,
     'iso_messages' => Messages::class,
     'iso_shipping_calculator' => ShippingCalculator::class,
-    'iso_cart_address' => CartAddress::class,
 ];
 
 /*

@@ -33,7 +33,6 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_addressbook'] = '{title_legend}
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_relatedproducts'] = '{title_legend},name,headline,type;{config_legend},iso_related_categories,numberOfItems,perPage,iso_listingSortField,iso_listingSortDirection;{redirect_legend},iso_addProductJumpTo;{template_legend:hide},customTpl,iso_list_layout,iso_gallery,iso_hide_empty,iso_use_quantity,iso_disable_options,iso_includeMessages,iso_emptyMessage,iso_buttons;{protected_legend:hide},protected;{expert_legend:hide},cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_messages'] = '{title_legend},name,headline,type;{template_legend},customTpl;{protected_legend:hide},protected;{expert_legend:hide},cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_shipping_calculator'] = '{title_legend},name,headline,type;{config_legend},iso_shipping_modules;{template_legend:hide},customTpl,iso_emptyMessage;{protected_legend:hide},protected;{expert_legend:hide},cssID,space';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_cart_address'] = '{title_legend},name,headline,type;{config_legend},iso_address,iso_addressFields;{redirect_legend:hide},jumpTo;{template_legend:hide},memberTpl;{protected_legend:hide},protected;{expert_legend:hide},cssID,space';
 
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['iso_enableLimit'] = 'iso_perPage';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['iso_emptyMessage'] = 'iso_noProducts';
@@ -432,37 +431,6 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_continueShopping'] = [
     'inputType' => 'checkbox',
     'eval' => ['tl_class' => 'w50'],
     'sql' => "char(1) NOT NULL default ''",
-];
-
-$GLOBALS['TL_DCA']['tl_module']['fields']['iso_address'] = [
-    'inputType' => 'checkbox',
-    'options' => ['billing', 'shipping'],
-    'reference' => &$GLOBALS['TL_LANG']['tl_module']['iso_address'],
-    'eval' => ['mandatory' => true, 'multiple' => true],
-    'sql' => 'blob NULL',
-];
-
-$GLOBALS['TL_DCA']['tl_module']['fields']['iso_addressFields'] = [
-    'inputType' => 'checkboxWizard',
-    'options_callback' => static function () {
-        Controller::loadDataContainer(Address::getTable());
-        System::loadLanguageFile(Address::getTable());
-
-        $arrOptions = [];
-        $arrDCA = &$GLOBALS['TL_DCA'][Address::getTable()]['fields'];
-
-        foreach ($arrDCA as $k => $arrField) {
-            if (!$arrField['eval']['feEditable']) {
-                continue;
-            }
-
-            $arrOptions[$k] = $arrField['label'][0];
-        }
-
-        return $arrOptions;
-    },
-    'eval' => ['mandatory' => true, 'multiple' => true, 'tl_class' => 'clr'],
-    'sql' => 'blob NULL',
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_notifications'] = [

@@ -533,9 +533,6 @@
       <trans-unit id="MSC.availableShippingMethodsMsg">
         <source>The following shipping methods are available for your current shopping cart and the shipping address details you provided:</source>
       </trans-unit>
-      <trans-unit id="MSC.saveAddressButton">
-        <source>Save address</source>
-      </trans-unit>
       <trans-unit id="MSC.billpay_agb_de">
         <source>Mit der &amp;Uuml;bermittlung der für die Abwicklung des Rechnungskaufs und einer Identitäts und Bonitätsprüfung erforderlichen Daten an die &lt;a href="https://billpay.de/endkunden" target="_blank"&gt;Billpay GmbH&lt;/a&gt; bin ich einverstanden. Es gelten die &lt;a href="https://www.billpay.de/kunden/agb#datenschutz" target="_blank"&gt;Datenschutzbestimmungen&lt;/a&gt; von Billpay.</source>
       </trans-unit>
