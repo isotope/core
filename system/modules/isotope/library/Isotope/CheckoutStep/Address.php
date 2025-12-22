@@ -386,12 +386,7 @@ abstract class Address extends CheckoutStep
      */
     protected function getAddresses()
     {
-        $objAddresses = AddressModel::findForMember(
-            FrontendUser::getInstance()->id,
-            array(
-                'order' => 'isDefaultBilling DESC, isDefaultShipping DESC'
-            )
-        );
+        $objAddresses = AddressModel::findForMember(FrontendUser::getInstance()->id);
 
         return null === $objAddresses ? array() : $objAddresses->getModels();
     }

@@ -76,17 +76,7 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
 
         $objAddress = parent::getBillingAddress();
 
-        // Try to load the default member address
-        if (null === $objAddress && \Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER')) {
-            $objAddress = Address::findDefaultBillingForMember(FrontendUser::getInstance()->id);
-        }
-
-        // Try to load the default collection address
-        if (null === $objAddress) {
-            $objAddress = Address::findDefaultBillingForProductCollection($this->id);
-        }
-
-        // Last option: create a new address, including member data if available
+        // Create a new address, including member data if available
         if (null === $objAddress) {
             /** @var StoreManager $storeManager */
             $storeManager = System::getContainer()->get(StoreManager::class);
@@ -117,17 +107,7 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
 
         $objAddress = parent::getShippingAddress();
 
-        // Try to load the default member address
-        if (null === $objAddress && \Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER')) {
-            $objAddress = Address::findDefaultShippingForMember(FrontendUser::getInstance()->id);
-        }
-
-        // Try to load the default collection address
-        if (null === $objAddress) {
-            $objAddress = Address::findDefaultShippingForProductCollection($this->id);
-        }
-
-        // Last option: create a new address, including member data if available
+        // Create a new address, including member data if available
         if (null === $objAddress) {
             /** @var StoreManager $storeManager */
             $storeManager = System::getContainer()->get(StoreManager::class);

@@ -33,7 +33,7 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = [
         ],
     ],
     'palettes' => [
-        'default' => '{store_legend},label,store_id;{personal_legend},gender,salutation,firstname,lastname,dateOfBirth,company,vat_no;{address_legend},street_1,street_2,street_3,street_number_1,street_number_2,street_number_3,postal,city,subdivision,country;{contact_legend},email,phone;{default_legend:hide},isDefaultBilling,isDefaultShipping',
+        'default' => '{store_legend},label,store_id;{personal_legend},gender,salutation,firstname,lastname,dateOfBirth,company,vat_no;{address_legend},street_1,street_2,street_3,street_number_1,street_number_2,street_number_3,postal,city,subdivision,country;{contact_legend},email,phone',
     ],
     'fields' => [
         'id' => [
@@ -163,24 +163,6 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = [
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'maxlength' => 64, 'rgxp' => 'email', 'feEditable' => true, 'feGroup' => 'contact', 'tl_class' => 'w50'],
             'sql' => "varchar(255) NOT NULL default ''",
-        ],
-        'isDefaultBilling' => [
-            'filter' => true,
-            'inputType' => 'checkbox',
-            'eval' => ['feEditable' => true, 'feGroup' => 'login', 'membersOnly' => true, 'tl_class' => 'w50'],
-            'sql' => "char(1) NOT NULL default ''",
-            'save_callback' => [
-                [Callback::class, 'updateDefault'],
-            ],
-        ],
-        'isDefaultShipping' => [
-            'filter' => true,
-            'inputType' => 'checkbox',
-            'eval' => ['feEditable' => true, 'feGroup' => 'login', 'membersOnly' => true, 'tl_class' => 'w50'],
-            'sql' => "char(1) NOT NULL default ''",
-            'save_callback' => [
-                [Callback::class, 'updateDefault'],
-            ],
         ],
     ],
 ];

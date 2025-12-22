@@ -147,12 +147,9 @@ class AddressBook extends Module
             foreach ($objAddresses as $objAddress) {
                 $arrAddresses[] = array_merge($objAddress->row(), array(
                     'id'                => $objAddress->id,
-                    'class'             => ($objAddress->isDefaultBilling ? 'default_billing' : '') . ($objAddress->isDefaultShipping ? ' default_shipping' : ''),
                     'text'              => $objAddress->generate(),
                     'edit_url'          => \Contao\StringUtil::ampersand($strUrl . '?act=edit&address=' . $objAddress->id),
                     'delete_url'        => \Contao\StringUtil::ampersand($strUrl . '?act=delete&address=' . $objAddress->id),
-                    'default_billing'   => $objAddress->isDefaultBilling ? true : false,
-                    'default_shipping'  => $objAddress->isDefaultShipping ? true : false,
                 ));
             }
         }

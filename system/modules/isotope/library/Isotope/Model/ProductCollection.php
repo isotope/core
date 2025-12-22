@@ -1778,8 +1778,6 @@ abstract class ProductCollection extends TypeAgent
                 $objAddress->ptable = MemberModel::getTable();
                 $objAddress->store_id = $this->store_id;
                 $objAddress->save();
-
-                $this->updateDefaultAddress($objAddress);
             }
 
             if (null !== $objBillingAddress
@@ -1794,8 +1792,6 @@ abstract class ProductCollection extends TypeAgent
                 $objAddress->ptable = MemberModel::getTable();
                 $objAddress->store_id = $this->store_id;
                 $objAddress->save();
-
-                $this->updateDefaultAddress($objAddress);
             }
         }
 
@@ -1853,30 +1849,6 @@ abstract class ProductCollection extends TypeAgent
             // Make sure to set the shipping address to null if collection has no shipping
             // see isotope/core#2014
             $this->setShippingAddress(null);
-        }
-    }
-
-    /**
-     * Mark existing addresses as not default if the new address is default
-     */
-    protected function updateDefaultAddress(Address $objAddress)
-    {
-        $arrSet = array();
-
-        if ($objAddress->isDefaultBilling) {
-            $arrSet['isDefaultBilling'] = '';
-        }
-
-        if ($objAddress->isDefaultShipping) {
-            $arrSet['isDefaultShipping'] = '';
-        }
-
-        if (\count($arrSet) > 0) {
-            Database::getInstance()
-                ->prepare('UPDATE tl_iso_address %s WHERE pid=? AND ptable=? AND store_id=? AND id!=?')
-                ->set($arrSet)
-                ->execute($this->member, MemberModel::getTable(), $this->store_id, $objAddress->id)
-            ;
         }
     }
 

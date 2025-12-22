@@ -153,17 +153,6 @@ class CartStorage extends AbstractProductCollectionStorage
         }
 
         $address->tstamp = time();
-
-        if ($existing = Address::findBillingForProductCollection($collection->id)) {
-            foreach ($address->row() as $k => $v) {
-                $existing->$k = $v;
-            }
-
-            $existing->save();
-
-            return (int) $existing->id;
-        }
-
         $address->ptable = 'tl_iso_product_collection';
         $address->pid = $collection->id;
         $address->store_id = $collection->store_id;

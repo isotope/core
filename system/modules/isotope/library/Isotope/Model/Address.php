@@ -50,8 +50,6 @@ use Isotope\Isotope;
  * @property string $country
  * @property string $phone
  * @property string $email
- * @property bool   $isDefaultShipping
- * @property bool   $isDefaultBilling
  */
 class Address extends Model
 {
@@ -281,48 +279,6 @@ class Address extends Model
         return static::findOneBy(
             array('id=?', 'pid=?', 'ptable=?', 'store_id=?'),
             array($intId, $intMember, 'tl_member', Isotope::getCart()->store_id),
-            $arrOptions
-        );
-    }
-
-    /**
-     * Find default billing adddress for a member, automatically checking the current store ID and tl_member parent table
-     * @param   int
-     * @param   array
-     * @return  static|null
-     */
-    public static function findDefaultBillingForMember($intMember, array $arrOptions = array())
-    {
-        return static::findOneBy(
-            array('pid=?', 'ptable=?', 'store_id=?', 'isDefaultBilling=?'),
-            array($intMember, 'tl_member', Isotope::getCart()->store_id, '1'),
-            $arrOptions
-        );
-    }
-
-    /**
-     * Find default shipping adddress for a member, automatically checking the current store ID and tl_member parent table
-     * @param   int
-     * @param   array
-     * @return  static|null
-     */
-    public static function findDefaultShippingForMember($intMember, array $arrOptions = array())
-    {
-        return static::findOneBy(array('pid=?', 'ptable=?', 'store_id=?', 'isDefaultShipping=?'), array($intMember, 'tl_member', Isotope::getCart()->store_id, '1'), $arrOptions);
-    }
-
-    /**
-     * Find default billing address for a product collection
-     *
-     * @param int   $intCollection
-     *
-     * @return static|null
-     */
-    public static function findBillingForProductCollection($intCollection, array $arrOptions = array())
-    {
-        return static::findOneBy(
-            array('pid=?', 'ptable=?'),
-            array($intCollection, 'tl_iso_product_collection'),
             $arrOptions
         );
     }

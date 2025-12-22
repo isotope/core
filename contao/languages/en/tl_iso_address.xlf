@@ -110,18 +110,6 @@
       <trans-unit id="tl_iso_address.email.1">
         <source>Please enter a valid e-mail address.</source>
       </trans-unit>
-      <trans-unit id="tl_iso_address.isDefaultBilling.0">
-        <source>Default billing address</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_address.isDefaultBilling.1">
-        <source>Is this your default billing address?</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_address.isDefaultShipping.0">
-        <source>Default shipping address</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_address.isDefaultShipping.1">
-        <source>Is this your default shipping address?</source>
-      </trans-unit>
       <trans-unit id="tl_iso_address.store_legend">
         <source>Store</source>
       </trans-unit>
