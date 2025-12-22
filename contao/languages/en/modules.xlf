@@ -104,12 +104,6 @@
       <trans-unit id="FMD.iso_messages.1">
         <source>Displays all Isotope messages if they have not been displayed elsewhere.</source>
       </trans-unit>
-      <trans-unit id="FMD.iso_shipping_calculator.0">
-        <source>Shipping cost calculator</source>
-      </trans-unit>
-      <trans-unit id="FMD.iso_shipping_calculator.1">
-        <source>Displays a module to calculate the shipping costs before going to the checkout page.</source>
-      </trans-unit>
       <trans-unit id="IMD.product">
         <source>Products</source>
       </trans-unit>

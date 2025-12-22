@@ -32,7 +32,6 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_categoryfilter'] = '{title_lege
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_addressbook'] = '{title_legend},name,headline,type;{config_legend},nc_notification;{template_legend},customTpl,memberTpl,iso_includeMessages;{protected_legend:hide},protected;{expert_legend:hide},cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_relatedproducts'] = '{title_legend},name,headline,type;{config_legend},iso_related_categories,numberOfItems,perPage,iso_listingSortField,iso_listingSortDirection;{redirect_legend},iso_addProductJumpTo;{template_legend:hide},customTpl,iso_list_layout,iso_gallery,iso_hide_empty,iso_use_quantity,iso_disable_options,iso_includeMessages,iso_emptyMessage,iso_buttons;{protected_legend:hide},protected;{expert_legend:hide},cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_messages'] = '{title_legend},name,headline,type;{template_legend},customTpl;{protected_legend:hide},protected;{expert_legend:hide},cssID,space';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_shipping_calculator'] = '{title_legend},name,headline,type;{config_legend},iso_shipping_modules;{template_legend:hide},customTpl,iso_emptyMessage;{protected_legend:hide},protected;{expert_legend:hide},cssID,space';
 
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['iso_enableLimit'] = 'iso_perPage';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['iso_emptyMessage'] = 'iso_noProducts';
