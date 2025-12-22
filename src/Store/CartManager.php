@@ -13,8 +13,6 @@ use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItemCollection;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Service\ResetInterface;
 
 #[Autoconfigure(public: true)]
@@ -32,7 +30,6 @@ class CartManager implements ResetInterface
         private readonly CartStorage $storage,
         private readonly CartFactory $cartFactory,
         private readonly CartCalculator $calculator,
-        private readonly EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -83,6 +80,8 @@ class CartManager implements ResetInterface
             $cart->add($item);
         }
 
+        $cart->setModified();
+
         return $this->recalculate($cart, $context);
     }
 
@@ -90,18 +89,9 @@ class CartManager implements ResetInterface
     {
         $item = $cart->getLineItems()->where('getId', $itemId)->first();
         $item->setQuantity($quantity);
+        $cart->setModified();
 
         return $this->recalculate($cart, $context);
-    }
-
-    public function update(Cart $cart, array $items, StoreContext $context): Cart
-    {
-        $request = new Request();
-        $request->request->set('items', $items);
-
-        $cart = $this->itemUpdateRoute->change($request, $cart, $context)->getCart();
-
-        return $this->cart[$cart->getToken()] = $cart;
     }
 
     public function remove(Cart $cart, int $id, StoreContext $context): Cart
@@ -121,31 +111,14 @@ class CartManager implements ResetInterface
         return $this->recalculate($cart, $context);
     }
 
-    /**
-     * @throws InconsistentCriteriaIdsException
-     */
-    public function order(Cart $cart, SalesChannelContext $context, RequestDataBag $data): string
-    {
-        $orderId = $this->orderRoute->order($cart, $context, $data)->getOrder()->getId();
-
-        if (isset($this->cart[$cart->getToken()])) {
-            unset($this->cart[$cart->getToken()]);
-        }
-
-        $cart = $this->createNew($context->getToken());
-
-        $this->eventDispatcher->dispatch(new CartChangedEvent($cart, $context));
-
-        return $orderId;
-    }
-
     public function recalculate(Cart $original, StoreContext $context): Cart
     {
         $cart = $this->calculator->calculate($original, $context);
 
-        // TODO: check if changed
-
-        $this->storage->save($cart, $context);
+        if ($original->isModified()) {
+            $cart->setModified();
+            $this->storage->save($cart, $context);
+        }
 
         return $this->cart[$cart->getIdentifier()] = $cart;
     }

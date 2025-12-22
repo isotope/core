@@ -14,6 +14,8 @@ class Cart extends AbstractProductCollection
 {
     public const string COLLECTION_TYPE = 'cart';
 
+    private bool $isModified = false;
+
     private Address|\Closure|null $billingAddress = null;
 
     private Address|\Closure|null $shippingAddress = null;
@@ -25,6 +27,18 @@ class Cart extends AbstractProductCollection
     private array $subtotals = [];
 
     private CalculatedPrice|null $total = null;
+
+    public function isModified(): bool
+    {
+        return $this->isModified;
+    }
+
+    public function setModified(bool $isModified = true): Cart
+    {
+        $this->isModified = $isModified;
+
+        return $this;
+    }
 
     public function getBillingAddress(): Address|null
     {

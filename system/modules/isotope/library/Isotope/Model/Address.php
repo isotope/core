@@ -318,6 +318,22 @@ class Address extends Model
      *
      * @return static|null
      */
+    public static function findBillingForProductCollection($intCollection, array $arrOptions = array())
+    {
+        return static::findOneBy(
+            array('pid=?', 'ptable=?'),
+            array($intCollection, 'tl_iso_product_collection'),
+            $arrOptions
+        );
+    }
+
+    /**
+     * Find default billing address for a product collection
+     *
+     * @param int   $intCollection
+     *
+     * @return static|null
+     */
     public static function findDefaultBillingForProductCollection($intCollection, array $arrOptions = array())
     {
         return static::findOneBy(
