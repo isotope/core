@@ -84,6 +84,10 @@ class TextAttribute extends AbstractAttribute
 
     protected function getSqlDefinition(): array|string
     {
-        return ['type' => Types::STRING, 'length' => $this->maxlength ?? 255, 'options' => ['default' => '']];
+        return [
+            'type' => Types::STRING,
+            'length' => $this->maxlength > 0 ? $this->maxlength : 255,
+            'options' => ['default' => '']
+        ];
     }
 }

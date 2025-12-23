@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Attribute;
 
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Types\Types;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsAttribute;
 
@@ -42,6 +43,6 @@ class TextareaAttribute extends AbstractAttribute
 
     protected function getSqlDefinition(): array|string
     {
-        return ['type' => Types::TEXT];
+        return ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TEXT];
     }
 }
