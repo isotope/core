@@ -31,6 +31,6 @@ class PriceUtil
 
     public static function formatBackendPrice(float|string $price): string
     {
-        return System::getFormattedNumber((float) $price, (int) strpos(strrev($price), '.'));
+        return System::getFormattedNumber((float) $price, (int) strpos(strrev((string) $price), '.'));
     }
 }
