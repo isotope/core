@@ -44,10 +44,6 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = [
         'id' => [
             'sql' => 'int(10) unsigned NOT NULL auto_increment',
         ],
-        'pid' => [
-            'foreignKey' => TaxClass::getTable().'.name',
-            'relation' => ['type' => 'belongsTo', 'load' => 'lazy'],
-        ],
         'tstamp' => [
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
