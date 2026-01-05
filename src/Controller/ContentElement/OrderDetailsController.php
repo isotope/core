@@ -2,23 +2,23 @@
 
 declare(strict_types=1);
 
-namespace Isotope\CoreBundle\Controller\FrontendModule;
+namespace Isotope\CoreBundle\Controller\ContentElement;
 
-use Contao\CoreBundle\DependencyInjection\Attribute\AsFrontendModule;
+use Contao\ContentModel;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsContentElement;
 use Contao\CoreBundle\Exception\AccessDeniedException;
 use Contao\CoreBundle\Exception\PageNotFoundException;
 use Contao\CoreBundle\Twig\FragmentTemplate;
 use Contao\FrontendUser;
-use Contao\ModuleModel;
 use Contao\StringUtil;
 use Isotope\Model\ProductCollection\Order;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-#[AsFrontendModule('iso_orderdetails')]
-class OrderDetailsController extends AbstractFrontendModuleController
+#[AsContentElement('iso_orderdetails', category: 'isotope')]
+class OrderDetailsController extends AbstractContentElementController
 {
-    protected function getResponse(FragmentTemplate $template, ModuleModel $model, Request $request): Response
+    protected function getResponse(FragmentTemplate $template, ContentModel $model, Request $request): Response
     {
         $collection = Order::findOneBy('uniqid', $request->query->getString('uid'));
 

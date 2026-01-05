@@ -2,15 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Isotope\CoreBundle\EventListener\DataContainer\Module;
+namespace Isotope\CoreBundle\EventListener\DataContainer\Content;
 
 use Contao\Controller;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\System;
 
-#[AsCallback('tl_module', 'fields.iso_sortingFields.options')]
-#[AsCallback('tl_module', 'fields.iso_listingSortField.options')]
-class SortingFieldsOptionsListener
+#[AsCallback('tl_content', 'fields.iso_filterFields.options')]
+class FilterFieldsOptionsListener
 {
     use DcaLabelTrait;
 
@@ -22,7 +21,7 @@ class SortingFieldsOptionsListener
         $options = array();
 
         foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $name => $config) {
-            if ($config['attributes']['fe_sorting'] ?? false) {
+            if ($config['attributes']['fe_filter'] ?? false) {
                 $options[$name] = $this->getDcaLabel($name, $config);
             }
         }

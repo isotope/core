@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Isotope\CoreBundle\EventListener\DataContainer\Module;
+namespace Isotope\CoreBundle\EventListener\DataContainer\Content;
 
 use Contao\Backend;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 
-#[AsCallback('tl_module', 'fields.iso_order_conditions.fields.step.options')]
+#[AsCallback('tl_content', 'fields.iso_order_conditions.fields.step.options')]
 class OrderConditionStepOptionsListener extends Backend
 {
     public function __invoke(): array

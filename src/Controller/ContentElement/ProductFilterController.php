@@ -2,17 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Isotope\CoreBundle\Controller\FrontendModule;
+namespace Isotope\CoreBundle\Controller\ContentElement;
 
 use Codefog\HasteBundle\Formatter;
+use Contao\ContentModel;
 use Contao\Controller;
-use Contao\CoreBundle\DependencyInjection\Attribute\AsFrontendModule;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsContentElement;
 use Contao\CoreBundle\Exception\BadRequestException;
 use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use Contao\CoreBundle\Twig\FragmentTemplate;
 use Contao\Date;
-use Contao\Input;
-use Contao\ModuleModel;
 use Contao\StringUtil;
 use Contao\Widget;
 use Doctrine\DBAL\Connection;
@@ -27,8 +26,8 @@ use Isotope\Interfaces\IsotopeFilterModule;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-#[AsFrontendModule('iso_productfilter', category: 'isotope')]
-class ProductFilterController extends AbstractFrontendModuleController implements IsotopeFilterModule
+#[AsContentElement('iso_productfilter', category: 'isotope')]
+class ProductFilterController extends AbstractContentElementController implements IsotopeFilterModule
 {
     public function __construct(
         private readonly AttributeRegistry $attributeRegistry,
@@ -38,7 +37,7 @@ class ProductFilterController extends AbstractFrontendModuleController implement
     ) {
     }
 
-    protected function getResponse(FragmentTemplate $template, ModuleModel $model, Request $request): Response
+    protected function getResponse(FragmentTemplate $template, ContentModel $model, Request $request): Response
     {
         if ($request->attributes->get('_content') instanceof Product && $model->iso_hide_list) {
             return new Response('');
@@ -48,7 +47,7 @@ class ProductFilterController extends AbstractFrontendModuleController implement
         $template->sortingOptions = [];
         $template->limitOptions = [];
 
-        $moduleKey = 'fmd'.$model->id;
+        $moduleKey = 'cte'.$model->id;
         $productQuery = $this->getProductQuery($request);
 
         if ([] !== ($filterFields = StringUtil::deserialize($model->iso_filterFields, true))) {
@@ -186,7 +185,7 @@ class ProductFilterController extends AbstractFrontendModuleController implement
         return $options;
     }
 
-    private function applySearch(FragmentTemplate $template, ModuleModel $model, ProductQuery|null $productQuery): void
+    private function applySearch(FragmentTemplate $template, ContentModel $model, ProductQuery|null $productQuery): void
     {
         $template->hasSearch = false;
 

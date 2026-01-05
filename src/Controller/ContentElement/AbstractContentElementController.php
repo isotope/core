@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Isotope\CoreBundle\Controller\FrontendModule;
+namespace Isotope\CoreBundle\Controller\ContentElement;
 
-use Contao\CoreBundle\Controller\FrontendModule\AbstractFrontendModuleController as CoreFrontendModuleController;
+use Contao\ContentModel;
+use Contao\CoreBundle\Controller\ContentElement\AbstractContentElementController as CoreContentElementController;
 use Contao\CoreBundle\Exception\ResponseException;
 use Contao\CoreBundle\Twig\FragmentTemplate;
-use Contao\ModuleModel;
 use Isotope\CoreBundle\Product\Query\ProductQuery;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\StoreManager;
@@ -15,17 +15,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * TODO: replace this with an abstract that can be an element or a module
- *
  * @internal
  */
-abstract class AbstractFrontendModuleController extends CoreFrontendModuleController
+abstract class AbstractContentElementController extends CoreContentElementController
 {
-    public function __invoke(Request $request, ModuleModel $model, string $section, ?array $classes = null): Response
+    public function __invoke(Request $request, ContentModel $model, string $section, ?array $classes = null): Response
     {
-        if ($this->isBackendScope($request)) {
-            return $this->getBackendWildcard($model);
-        }
+        //if ($this->isBackendScope($request)) {
+        //    return $this->getBackendWildcard($model);
+        //}
 
         $fragmentId = $this->getFragmentId($model->row());
         $isFragmentRequest = $request->isXmlHttpRequest() && $request->headers->has('Isotope-Fragment');
@@ -46,7 +44,7 @@ abstract class AbstractFrontendModuleController extends CoreFrontendModuleContro
         return $response;
     }
 
-    protected function addDefaultDataToTemplate(FragmentTemplate $template, array $modelData = [], string $section = 'main', array $classes = [], array $properties = [], bool $asEditorView = false): void
+    protected function addDefaultDataToTemplate(FragmentTemplate $template, array $modelData = [], string $section = 'main', array $classes = [], array $properties = [], bool $asEditorView = false, array $nestedFragments = []): void
     {
         parent::addDefaultDataToTemplate($template, $modelData, $section, $classes, $properties, $asEditorView);
 

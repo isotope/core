@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Isotope\CoreBundle\EventListener\DataContainer\Module;
+namespace Isotope\CoreBundle\EventListener\DataContainer\Content;
 
 trait DcaLabelTrait
 {

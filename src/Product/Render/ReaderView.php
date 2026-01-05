@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Product\Render;
 
-use Contao\ModuleModel;
+use Contao\ContentModel;
 use Isotope\CoreBundle\Product\CoreProduct;
 
 class ReaderView extends AbstractView
@@ -19,10 +19,10 @@ class ReaderView extends AbstractView
         return (int) ($this->gallery ?: $product->getProductType()->reader_gallery);
     }
 
-    public static function createFromModule(ModuleModel $model): self
+    public static function createFromContent(ContentModel $model): self
     {
         return new self(
-            'fmd'.$model->id,
+            'cte'.$model->id,
             $model->iso_reader_layout ?: null,
             $model->iso_gallery ?: null,
             $model->row(),

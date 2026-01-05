@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Isotope\CoreBundle\Controller\FrontendModule;
+namespace Isotope\CoreBundle\Controller\ContentElement;
 
-use Contao\CoreBundle\DependencyInjection\Attribute\AsFrontendModule;
+use Contao\ContentModel;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsContentElement;
 use Contao\CoreBundle\Exception\PageNotFoundException;
 use Contao\CoreBundle\Twig\FragmentTemplate;
-use Contao\ModuleModel;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\Render\ReaderView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-#[AsFrontendModule('iso_productreader', category: 'isotope')]
-class ProductReaderController extends AbstractFrontendModuleController
+#[AsContentElement('iso_productreader', category: 'isotope')]
+class ProductReaderController extends AbstractContentElementController
 {
-    protected function getResponse(FragmentTemplate $template, ModuleModel $model, Request $request): Response
+    protected function getResponse(FragmentTemplate $template, ContentModel $model, Request $request): Response
     {
         $product = $request->attributes->get('_content');
 
@@ -29,7 +29,7 @@ class ProductReaderController extends AbstractFrontendModuleController
         }
 
         $template->product = $product;
-        $template->view = ReaderView::createFromModule($model);
+        $template->view = ReaderView::createFromContent($model);
 
         return $template->getResponse();
     }

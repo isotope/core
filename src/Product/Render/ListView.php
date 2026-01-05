@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Product\Render;
 
-use Contao\ModuleModel;
+use Contao\ContentModel;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Routing\ProductReference;
 
@@ -29,10 +29,10 @@ class ListView extends AbstractView
         );
     }
 
-    public static function createFromModule(ModuleModel $model): self
+    public static function createFromContent(ContentModel $model): self
     {
         return new self(
-            'fmd'.$model->id,
+            'cte'.$model->id,
             $model->iso_list_layout ?: null,
             $model->iso_gallery ?: null,
             $model->row(),

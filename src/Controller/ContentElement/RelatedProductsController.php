@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Isotope\CoreBundle\Controller\FrontendModule;
+namespace Isotope\CoreBundle\Controller\ContentElement;
 
-use Contao\CoreBundle\DependencyInjection\Attribute\AsFrontendModule;
+use Contao\ContentModel;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsContentElement;
 use Contao\CoreBundle\Twig\FragmentTemplate;
-use Contao\ModuleModel;
 use Contao\StringUtil;
 use Isotope\CoreBundle\Model\RelatedProduct;
 use Isotope\CoreBundle\Product\CoreProduct;
@@ -20,8 +20,8 @@ use Ramsey\Collection\Sort;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-#[AsFrontendModule('iso_relatedproducts', category: 'isotope', template: 'frontend_module/iso_productlist')]
-class RelatedProductsController extends AbstractFrontendModuleController
+#[AsContentElement('iso_relatedproducts', category: 'isotope', template: 'content_element/iso_productlist')]
+class RelatedProductsController extends AbstractContentElementController
 {
     public function __construct(
         private readonly ProductBuilder $productBuilder,
@@ -29,7 +29,7 @@ class RelatedProductsController extends AbstractFrontendModuleController
     ) {
     }
 
-    protected function getResponse(FragmentTemplate $template, ModuleModel $model, Request $request): Response
+    protected function getResponse(FragmentTemplate $template, ContentModel $model, Request $request): Response
     {
         $categories = StringUtil::deserialize($model->iso_related_categories, true);
         $product = $request->attributes->get('_content');
@@ -45,7 +45,7 @@ class RelatedProductsController extends AbstractFrontendModuleController
         }
 
         $template->products = $products;
-        $template->view = ListView::createFromModule($model);
+        $template->view = ListView::createFromContent($model);
 
         return $template->getResponse();
     }

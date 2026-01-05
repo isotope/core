@@ -36,6 +36,13 @@ source_lang = en
 type = XLIFF
 resource_name = v3_0-core-modules
 
+[o:terminal42:p:isotope:r:v3_0-core-tl_content]
+file_filter = contao/languages/<lang>/tl_content.xlf
+source_file = contao/languages/en/tl_content.xlf
+source_lang = en
+type = XLIFF
+resource_name = v3_0-core-tl_content
+
 [o:terminal42:p:isotope:r:v3_0-core-tl_iso_address]
 file_filter = contao/languages/<lang>/tl_iso_address.xlf
 source_file = contao/languages/en/tl_iso_address.xlf
@@ -217,13 +224,6 @@ source_file = contao/languages/en/tl_member_group.xlf
 source_lang = en
 type = XLIFF
 resource_name = v3_0-core-tl_member_group
-
-[o:terminal42:p:isotope:r:v3_0-core-tl_module]
-file_filter = contao/languages/<lang>/tl_module.xlf
-source_file = contao/languages/en/tl_module.xlf
-source_lang = en
-type = XLIFF
-resource_name = v3_0-core-tl_module
 
 [o:terminal42:p:isotope:r:v3_0-core-tl_nc_notification]
 file_filter = contao/languages/<lang>/tl_nc_notification.xlf

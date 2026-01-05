@@ -2,24 +2,24 @@
 
 declare(strict_types=1);
 
-namespace Isotope\CoreBundle\Controller\FrontendModule;
+namespace Isotope\CoreBundle\Controller\ContentElement;
 
-use Contao\CoreBundle\DependencyInjection\Attribute\AsFrontendModule;
+use Contao\ContentModel;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsContentElement;
 use Contao\CoreBundle\Twig\FragmentTemplate;
-use Contao\ModuleModel;
 use Isotope\CoreBundle\Store\CartManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-#[AsFrontendModule('iso_cart')]
-class CartController extends AbstractFrontendModuleController
+#[AsContentElement('iso_cart', category: 'isotope')]
+class CartController extends AbstractContentElementController
 {
     public function __construct(
         private readonly CartManager $cartManager,
     ) {
     }
 
-    protected function getResponse(FragmentTemplate $template, ModuleModel $model, Request $request): Response
+    protected function getResponse(FragmentTemplate $template, ContentModel $model, Request $request): Response
     {
         $context = $this->getStoreContext();
         $collection = $context->getCart();

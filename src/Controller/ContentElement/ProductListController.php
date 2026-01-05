@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Isotope\CoreBundle\Controller\FrontendModule;
+namespace Isotope\CoreBundle\Controller\ContentElement;
 
-use Contao\CoreBundle\DependencyInjection\Attribute\AsFrontendModule;
+use Contao\ContentModel;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsContentElement;
 use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use Contao\CoreBundle\Twig\FragmentTemplate;
-use Contao\ModuleModel;
 use Contao\PageModel;
 use Contao\StringUtil;
 use Doctrine\DBAL\ArrayParameterType;
@@ -21,7 +21,6 @@ use Isotope\CoreBundle\Product\DataCollector\ProductDto;
 use Isotope\CoreBundle\Product\DataCollector\ProductDtoCollection;
 use Isotope\CoreBundle\Product\ProductBuilder;
 use Isotope\CoreBundle\Product\ProductCollection;
-use Isotope\CoreBundle\Product\Query\ProductQuery;
 use Isotope\CoreBundle\Product\Query\ProductQueryFactory;
 use Isotope\CoreBundle\Product\Query\Sorting;
 use Isotope\CoreBundle\Product\Render\ListView;
@@ -30,8 +29,8 @@ use Ramsey\Collection\CollectionInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-#[AsFrontendModule('iso_productlist', category: 'isotope')]
-class ProductListController extends AbstractFrontendModuleController
+#[AsContentElement('iso_productlist', category: 'isotope')]
+class ProductListController extends AbstractContentElementController
 {
     public function __construct(
         private readonly Connection $connection,
@@ -44,7 +43,7 @@ class ProductListController extends AbstractFrontendModuleController
     ) {
     }
 
-    protected function getResponse(FragmentTemplate $template, ModuleModel $model, Request $request): Response
+    protected function getResponse(FragmentTemplate $template, ContentModel $model, Request $request): Response
     {
         if ($request->attributes->get('_content') instanceof CoreProduct && $model->iso_hide_list) {
             return new Response();
@@ -70,7 +69,7 @@ class ProductListController extends AbstractFrontendModuleController
         }
 
         $template->products = $products;
-        $template->view = ListView::createFromModule($model);
+        $template->view = ListView::createFromContent($model);
         $template->filters = $filterModules;
 
         return $template->getResponse();
@@ -79,7 +78,7 @@ class ProductListController extends AbstractFrontendModuleController
     /**
      * @return ProductCollection
      */
-    private function findProducts(ModuleModel $model, Request $request, array $filterModules, array $searchFields): CollectionInterface
+    private function findProducts(ContentModel $model, Request $request, array $filterModules, array $searchFields): CollectionInterface
     {
         $categories = $this->getCategories($model, $request);
 
@@ -157,13 +156,23 @@ class ProductListController extends AbstractFrontendModuleController
     /**
      * @return array<int>
      */
-    private function getCategories(ModuleModel $model, Request $request): array
+    private function getCategories(ContentModel $model, Request $request): array
     {
         $pageModel = null;
         $product = $request->attributes->get('_content');
 
         if ($model->defineRoot && $model->rootPage > 0) {
             $pageModel = PageModel::findWithDetails($model->rootPage);
+        }
+
+        if (
+            null === $pageModel
+            && $this->isBackendScope($request)
+            && 'article' === $request->query->get('do')
+            && 'tl_content' === $request->query->get('table')
+        ) {
+            $pageId = $this->connection->fetchOne('SELECT pid FROM tl_article WHERE id=?', [$request->query->getInt('id')]);
+            $pageModel = PageModel::findWithDetails($pageId);
         }
 
         return $this->categoryFinder->getIds(

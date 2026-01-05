@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Isotope\CoreBundle\Controller\FrontendModule;
+namespace Isotope\CoreBundle\Controller\ContentElement;
 
+use Contao\ContentModel;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsContentElement;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsFrontendModule;
 use Contao\CoreBundle\Twig\FragmentTemplate;
 use Contao\ModuleModel;
@@ -11,10 +13,10 @@ use Isotope\CoreBundle\Product\CoreProduct;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-#[AsFrontendModule('iso_categoryfilter', category: 'isotope')]
-class CategoryFilterController extends AbstractFrontendModuleController
+#[AsContentElement('iso_categoryfilter', category: 'isotope')]
+class CategoryFilterController extends AbstractContentElementController
 {
-    protected function getResponse(FragmentTemplate $template, ModuleModel $model, Request $request): Response
+    protected function getResponse(FragmentTemplate $template, ContentModel $model, Request $request): Response
     {
         if ($request->attributes->get('_content') instanceof CoreProduct && $model->iso_hide_list) {
             return new Response('');

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Isotope\CoreBundle\EventListener\DataContainer\Module;
+namespace Isotope\CoreBundle\EventListener\DataContainer\Content;
 
 use Contao\Controller;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\System;
 
-#[AsCallback('tl_module', 'fields.iso_searchFields.options')]
+#[AsCallback('tl_content', 'fields.iso_searchFields.options')]
 class SearchFieldsOptionsListener
 {
     use DcaLabelTrait;
