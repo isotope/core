@@ -143,12 +143,19 @@ class AttributeRegistry implements ResetInterface
      */
     public function getTranslatableFields(): array
     {
-        $this->load();
+        Controller::loadDataContainer('tl_iso_product');
 
-        return array_keys(array_filter(
+        $attributes = array_keys(array_filter(
             $this->attributes,
             static fn (AttributeInterface $attribute) => $attribute instanceof TranslatableAttributeInterface && $attribute->isTranslatable(),
         ));
+
+        $translatable = array_keys(array_filter(
+            $GLOBALS['TL_DCA']['tl_iso_product']['fields'],
+            static fn (array $config) => null !== ($config['eval']['translatableFor'] ?? null),
+        ));
+
+        return array_unique(array_merge($translatable, $attributes));
     }
 
     /**
