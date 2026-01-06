@@ -151,11 +151,11 @@ class CategoryListener extends AbstractSubtableListener
             $createNewVersion = true;
         }
 
-        foreach ($value as $sorting => $pid) {
-            if (isset($current[$pid]) && $current[$pid] !== $sorting) {
+        foreach ($value as $sorting => $pageId) {
+            if (isset($current[$pageId]) && $current[$pageId] !== $sorting) {
                 $this->connection->executeStatement(
                     'UPDATE tl_iso_product_category SET product_sorting=? WHERE pid=? AND product_id=?',
-                    [$sorting, $pid, $pid],
+                    [$sorting, $pageId, $pid],
                 );
             }
         }
