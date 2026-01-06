@@ -77,7 +77,7 @@ class MediaManager extends Widget implements UploadableWidgetInterface
             $files[] = [
                 ...$media,
                 'path' => $path,
-                'width' => $file->width,
+                'width' => max($file->width ?: 500, 500),
                 'icon' => 'assets/contao/images/'.$file->icon,
                 'isImage' => $file->isImage,
             ];
