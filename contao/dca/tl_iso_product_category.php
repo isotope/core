@@ -28,6 +28,10 @@ $GLOBALS['TL_DCA']['tl_iso_product_category'] = [
             'panelLayout' => 'limit',
             'headerFields' => ['title', 'type'],
         ],
+        'label' => [
+            'label' => '%s',
+            'fields' => ['title'],
+        ],
     ],
     'fields' => [
         'id' => [

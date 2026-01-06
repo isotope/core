@@ -9,7 +9,7 @@ use Doctrine\DBAL\Connection;
 use Isotope\CoreBundle\EventListener\DataContainer\Product\LabelListener as ProductLabelListener;
 use Symfony\Contracts\Service\ResetInterface;
 
-#[AsCallback('tl_iso_product_category', 'list.sorting.child_record_callback')]
+#[AsCallback('tl_iso_product_category', 'list.label.label')]
 class LabelListener implements ResetInterface
 {
     private int|null $pageId = null;
