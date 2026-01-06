@@ -554,9 +554,9 @@ class ProductData extends Driver
 
 				// Parent view
 				// PATCH: check for parent ID instead of sorting mode
-				elseif ($this->activeRecord->pid > 0)
+				elseif ($this->currentPid > 0)
 				{
-					$strUrl .= Database::getInstance()->fieldExists('sorting', $this->strTable) ? '&amp;act=create&amp;mode=1&amp;pid=' . $this->intId . '&amp;id=' . ($currentRecord['pid'] ?? null) : '&amp;act=create&amp;mode=2&amp;pid=' . ($currentRecord['pid'] ?? null);
+					$strUrl .= Database::getInstance()->fieldExists('sorting', $this->strTable) ? '&amp;act=create&amp;mode=1&amp;pid=' . $this->intId . '&amp;id=' . $this->currentPid : '&amp;act=create&amp;mode=2&amp;pid=' . $this->currentPid;
 				}
 
 				// List view
