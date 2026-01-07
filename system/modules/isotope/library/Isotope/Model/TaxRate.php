@@ -33,11 +33,7 @@ use Isotope\Isotope;
  * @property string $subdivisions
  * @property string $postalCodes
  * @property string $rate
- * @property int    $config
- * @property bool   $exemptOnValidVAT
- * @property bool   $stop
- * @property bool   $protected
- * @property array  $groups
+ * @property int    $rule
  */
 class TaxRate extends Model
 {

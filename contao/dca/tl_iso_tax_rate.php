@@ -34,11 +34,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = [
         ],
     ],
     'palettes' => [
-        '__selector__' => ['protected'],
-        'default' => '{name_legend},name,label,rate;{location_legend},address,countries,subdivisions,postalCodes;{config_legend:hide},config,exemptOnValidVAT,stop,protected',
-    ],
-    'subpalettes' => [
-        'protected' => 'groups',
+        'default' => '{name_legend},name,label,rate;{config_legend:hide},rule',
     ],
     'fields' => [
         'id' => [
@@ -63,62 +59,13 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = [
             'eval' => ['mandatory' => true, 'maxlength' => 32, 'rgxp' => 'digit', 'tl_class' => 'w50'],
             'sql' => "varchar(32) NOT NULL default ''",
         ],
-        'address' => [
-            'filter' => true,
-            'inputType' => 'checkbox',
-            'default' => ['shipping'],
-            'options' => ['billing', 'shipping'],
-            'reference' => &$GLOBALS['TL_LANG']['tl_iso_tax_rate'],
-            'eval' => ['mandatory' => true, 'multiple' => true, 'csv' => ','],
-            'sql' => 'text NULL',
-        ],
-        'countries' => [
+        'rule' => [
             'filter' => true,
             'inputType' => 'select',
-            'eval' => ['multiple' => true, 'size' => 10, 'csv' => ',', 'tl_class' => 'w50', 'chosen' => true],
-            'sql' => 'text NULL',
-        ],
-        'subdivisions' => [
-            'filter' => true,
-            'inputType' => 'conditionalselect',
-            'options_callback' => [Backend::class, 'getSubdivisions'],
-            'eval' => ['conditionField' => 'countries', 'multiple' => true, 'size' => 10, 'csv' => ',', 'tl_class' => 'w50'],
-            'sql' => 'text NULL',
-        ],
-        'postalCodes' => [
-            'inputType' => 'textarea',
-            'eval' => ['style' => 'height:40px', 'tl_class' => 'clr'],
-            'sql' => 'text NULL',
-        ],
-        'config' => [
-            'filter' => true,
-            'inputType' => 'select',
-            'foreignKey' => Config::getTable().'.name',
-            'eval' => ['includeBlankOption' => true, 'submitOnChange' => true, 'tl_class' => 'w50'],
-            'sql' => "int(10) unsigned NOT NULL default '0'",
-            'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
-        ],
-        'exemptOnValidVAT' => [
-            'inputType' => 'checkbox',
-            'eval' => ['tl_class' => 'w50'],
-            'sql' => "char(1) NOT NULL default ''",
-        ],
-        'stop' => [
-            'inputType' => 'checkbox',
-            'eval' => ['tl_class' => 'w50'],
-            'sql' => "char(1) NOT NULL default ''",
-        ],
-        'protected' => [
-            'inputType' => 'checkbox',
-            'eval' => ['submitOnChange' => true, 'tl_class' => 'clr'],
-            'sql' => "char(1) NOT NULL default ''",
-        ],
-        'groups' => [
-            'inputType' => 'checkbox',
-            'foreignKey' => 'tl_member_group.name',
-            'eval' => ['multiple' => true],
-            'sql' => 'blob NULL',
-            'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
+            'foreignKey' => 'tl_iso_rule.name',
+            'eval' => ['includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'],
+            'sql' => 'int(10) unsigned NOT NULL default 0',
+            'relation' => ['type' => 'hasOne']
         ],
     ],
 ];
