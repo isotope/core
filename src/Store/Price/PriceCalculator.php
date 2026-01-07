@@ -44,12 +44,12 @@ class PriceCalculator
                     return $value;
                 }
 
-                return $value->getPrice() < $price->getPrice() ? $value : $price;
+                return $value->getAmount() < $price->getAmount() ? $value : $price;
             },
             null
         );
 
-        $amount = $price->getPrice();
+        $amount = $price->getAmount();
 
         if (1.0 !== $context->getCurrencyFactor()) {
             $amount *= $context->getCurrencyFactor();

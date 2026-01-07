@@ -9,15 +9,15 @@ class Price
     private int $variantId = 0;
 
     public function __construct(
-        private float $price,
+        private float $amount,
         private int $quantity,
         private int|null $taxId,
     ) {
     }
 
-    public function getPrice(): float
+    public function getAmount(): float
     {
-        return $this->price;
+        return $this->amount;
     }
 
     public function getQuantity(): int

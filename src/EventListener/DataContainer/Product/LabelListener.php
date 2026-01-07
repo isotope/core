@@ -176,7 +176,7 @@ class LabelListener
         }
 
         if (null !== $objPrice) {
-            $label = (new MoneyFormat())->format($objPrice->getPrice());
+            $label = (new MoneyFormat())->format($objPrice->getAmount());
 
             if ($fromPrice) {
                 $label = $this->translator->trans('MSC.priceRangeLabel', [$label], 'contao_default');

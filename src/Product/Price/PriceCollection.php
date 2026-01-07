@@ -18,12 +18,12 @@ class PriceCollection extends AbstractCollection
 
     public function hasRange(): bool
     {
-        return \count(array_unique($this->column('getPrice'))) > 1;
+        return \count(array_unique($this->column('getAmount'))) > 1;
     }
 
     public function getLowest(): Price|null
     {
-        $collection = $this->sort('getPrice');
+        $collection = $this->sort('getAmount');
 
         if ($collection->isEmpty()) {
             return null;
