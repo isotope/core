@@ -24,6 +24,10 @@ use Contao\Model\Collection;
  * @property string $stop
  * @property string $start_time
  * @property string $stop_time
+ * @property string $address_type
+ * @property string $countries
+ * @property string $subdivisions
+ * @property string $postalcodes
  */
 class RuleCondition extends Model
 {

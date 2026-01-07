@@ -15,6 +15,7 @@ use Contao\CoreBundle\Intl\Countries;
 #[AsCallback('tl_iso_payment', 'fields.countries.options')]
 #[AsCallback('tl_iso_shipping', 'fields.countries.options')]
 #[AsCallback('tl_iso_tax_rate', 'fields.countries.options')]
+#[AsCallback('tl_iso_rule_condition', 'fields.countries.options')]
 #[AsCallback('tl_iso_address', 'fields.country.options')]
 class CountryOptionsListener
 {

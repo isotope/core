@@ -9,6 +9,7 @@ use Isotope\CoreBundle\Intl\Subdivisions;
 
 #[AsCallback('tl_iso_config', 'fields.subdivision.options')]
 #[AsCallback('tl_iso_shipping', 'fields.subdivisions.options')]
+#[AsCallback('tl_iso_rule_condition', 'fields.subdivisions.options')]
 #[AsCallback('tl_iso_address', 'fields.subdivision.options')]
 class SubdivisionOptionsListener
 {

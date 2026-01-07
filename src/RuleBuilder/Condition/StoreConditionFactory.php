@@ -9,7 +9,6 @@ use Isotope\CoreBundle\Model\RuleCondition;
 use Isotope\CoreBundle\ModelType\ModelInstanceTrait;
 use Isotope\CoreBundle\ModelType\ModelTypeFactoryInterface;
 use Isotope\CoreBundle\RuleBuilder\Exception\InvalidTypeException;
-use Isotope\CoreBundle\Store\StoreManager;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -20,7 +19,6 @@ class StoreConditionFactory implements ModelTypeFactoryInterface
     use ModelInstanceTrait;
 
     public function __construct(
-        private readonly StoreManager $storeManager,
         private readonly TranslatorInterface $translator,
     ) {
     }
@@ -34,27 +32,23 @@ class StoreConditionFactory implements ModelTypeFactoryInterface
 
         return match ($model->type) {
             'store_config' => new StoreConfigCondition(
-                $this->storeManager,
                 $this->translator,
                 $model->operator,
                 array_map(intval(...), explode(',', (string) $model->config_ids)),
             ),
 
             'store_currency' => new StoreCurrencyCondition(
-                $this->storeManager,
                 $this->translator,
                 $model->operator,
                 explode(',', (string) $model->currencies),
             ),
 
             'store_date' => new StoreDateCondition(
-                $this->storeManager,
                 $this->getTimestamp($model->start),
                 $this->getTimestamp($model->stop),
             ),
 
             'store_time' => new StoreTimeCondition(
-                $this->storeManager,
                 (int) $model->start_time,
                 (int) $model->stop_time,
             ),

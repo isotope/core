@@ -74,6 +74,36 @@
       <trans-unit id="tl_iso_rule_condition.stop_time.1">
         <source>Enter an end time.</source>
       </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.address_type.0">
+        <source>Address type</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.address_type.1">
+        <source>Select the cart address type to apply to.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.address_type.billing">
+        <source>Billing address</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.address_type.shipping">
+        <source>Shipping address</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.countries.0">
+        <source>Countries</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.countries.1">
+        <source>Select the countries this condition applies to.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.subdivisions.0">
+        <source>States/Regions</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.subdivisions.1">
+        <source>Select the states or regions this rule applies to.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.postalcodes.0">
+        <source>Postal codes</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.postalcodes.1">
+        <source>Limit the condition to postal codes. You can enter a comma separated list and ranges (e.g. 1234,1235,1236-1239,1100-1200).</source>
+      </trans-unit>
       <trans-unit id="tl_iso_rule_condition.condition_legend">
         <source>Rule condition</source>
       </trans-unit>

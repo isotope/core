@@ -6,6 +6,7 @@ namespace Isotope\CoreBundle\RuleBuilder\Condition;
 
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsRuleCondition;
 use Isotope\CoreBundle\RuleBuilder\Exception\InvalidOperatorException;
+use Isotope\CoreBundle\Store\Context\StoreContext;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -24,7 +25,7 @@ class MemberAuthenticatedCondition implements RuleConditionInterface
         return true;
     }
 
-    public function isApplicable(): bool
+    public function isApplicable(StoreContext $context): bool
     {
         $isGranted = $this->security->isGranted('ROLE_MEMBER');
 
@@ -45,13 +46,9 @@ class MemberAuthenticatedCondition implements RuleConditionInterface
 
     public function getOperators(): array
     {
-        $op = ['logged_in', 'not_logged_in'];
-
-        return array_combine($op, array_map($this->trans(...), $op));
-    }
-
-    private function trans(string $id): string
-    {
-        return $this->translator->trans('tl_iso_rule_condition.operator.'.$id, [], 'contao_tl_rule_condition');
+        return [
+            'logged_in' => $this->translator->trans('tl_iso_rule_condition.operator.logged_in', [], 'contao_tl_iso_rule_condition'),
+            'not_logged_in' => $this->translator->trans('tl_iso_rule_condition.operator.not_logged_in', [], 'contao_tl_iso_rule_condition'),
+        ];
     }
 }

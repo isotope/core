@@ -6,6 +6,7 @@ namespace Isotope\CoreBundle\RuleBuilder\Condition;
 
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsRuleCondition;
 use Isotope\CoreBundle\RuleBuilder\Exception\InvalidOperatorException;
+use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\StoreManager;
 use Isotope\Model\Config;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -14,7 +15,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class StoreConfigCondition implements RuleConditionInterface
 {
     public function __construct(
-        private readonly StoreManager $storeManager,
         private readonly TranslatorInterface $translator,
         private readonly string $operator,
         private readonly array $configs,
@@ -26,9 +26,9 @@ class StoreConfigCondition implements RuleConditionInterface
         return true;
     }
 
-    public function isApplicable(): bool
+    public function isApplicable(StoreContext $context): bool
     {
-        $hasConfig = \in_array($this->storeManager->getCurrentContext()->getConfigId(), $this->configs, true);
+        $hasConfig = \in_array($context->getConfigId(), $this->configs, true);
 
         return match ($this->operator) {
             'has_one' => $hasConfig,

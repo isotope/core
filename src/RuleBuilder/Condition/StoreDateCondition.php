@@ -7,13 +7,13 @@ namespace Isotope\CoreBundle\RuleBuilder\Condition;
 use Contao\Config;
 use Contao\Date;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsRuleCondition;
+use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\StoreManager;
 
 #[AsRuleCondition(category: 'dates', factory: StoreConditionFactory::class)]
 class StoreDateCondition implements RuleConditionInterface
 {
     public function __construct(
-        private readonly StoreManager $storeManager,
         private readonly int|null $start,
         private readonly int|null $stop,
     ) {
@@ -24,9 +24,9 @@ class StoreDateCondition implements RuleConditionInterface
         return null !== $this->start || null !== $this->stop;
     }
 
-    public function isApplicable(): bool
+    public function isApplicable(StoreContext $context): bool
     {
-        $now = $this->storeManager->getCurrentContext()->getTimestamp()->format('YmdHi');
+        $now = $context->getTimestamp()->format('YmdHi');
 
         if (null !== $this->start && $now < date('YmdHi', $this->start)) {
             return false;

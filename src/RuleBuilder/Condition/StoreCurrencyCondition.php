@@ -6,6 +6,7 @@ namespace Isotope\CoreBundle\RuleBuilder\Condition;
 
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsRuleCondition;
 use Isotope\CoreBundle\RuleBuilder\Exception\InvalidOperatorException;
+use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\StoreManager;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -13,7 +14,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class StoreCurrencyCondition implements RuleConditionInterface
 {
     public function __construct(
-        private readonly StoreManager $storeManager,
         private readonly TranslatorInterface $translator,
         private readonly string $operator,
         private readonly array $currencies,
@@ -25,9 +25,9 @@ class StoreCurrencyCondition implements RuleConditionInterface
         return true;
     }
 
-    public function isApplicable(): bool
+    public function isApplicable(StoreContext $context): bool
     {
-        $hasCurrency = \in_array($this->storeManager->getCurrentContext()->getCurrency()->getCode(), $this->currencies, true);
+        $hasCurrency = \in_array($context->getCurrency()->getCode(), $this->currencies, true);
 
         return match ($this->operator) {
             'has_one' => $hasCurrency,

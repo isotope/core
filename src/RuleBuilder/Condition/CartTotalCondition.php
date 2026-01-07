@@ -6,6 +6,7 @@ namespace Isotope\CoreBundle\RuleBuilder\Condition;
 
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsRuleCondition;
 use Isotope\CoreBundle\RuleBuilder\Exception\InvalidOperatorException;
+use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\StoreManager;
 use Isotope\CoreBundle\Util\FloatComparator;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -14,7 +15,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class CartTotalCondition implements RuleConditionInterface
 {
     public function __construct(
-        private readonly StoreManager $storeManager,
         private readonly TranslatorInterface $translator,
         private readonly string $operator,
         private readonly float $amount,
@@ -28,9 +28,9 @@ class CartTotalCondition implements RuleConditionInterface
         return true;
     }
 
-    public function isApplicable(): bool
+    public function isApplicable(StoreContext $context): bool
     {
-        $cart = $this->storeManager->getCurrentContext()->getCart();
+        $cart = $context->getCart();
         $price = (float) $cart->getTotal()?->unitPrice;
 
         return match ($this->operator) {

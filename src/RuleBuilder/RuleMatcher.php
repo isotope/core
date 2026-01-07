@@ -32,17 +32,15 @@ class RuleMatcher
             return true;
         }
 
-        if ($context) {
-            return $this->storeManager->runWithContext($context, fn () => $this->validateConditions($conditions->getModels()));
-        }
+        $context ??= $this->storeManager->getCurrentContext();
 
-        return $this->validateConditions($conditions->getModels());
+        return $this->validateConditions($conditions->getModels(), $context);
     }
 
     /**
      * @param array<RuleCondition> $conditions
      */
-    private function validateConditions(array $conditions): bool
+    private function validateConditions(array $conditions, StoreContext $context): bool
     {
         foreach ($conditions as $model) {
             try {
@@ -53,7 +51,7 @@ class RuleMatcher
                 return false;
             }
 
-            if (!$condition->isValid() || !$condition->isApplicable()) {
+            if (!$condition->isValid() || !$condition->isApplicable($context)) {
                 return false;
             }
         }

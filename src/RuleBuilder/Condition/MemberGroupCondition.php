@@ -8,6 +8,7 @@ use Contao\CoreBundle\Security\ContaoCorePermissions;
 use Contao\MemberGroupModel;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsRuleCondition;
 use Isotope\CoreBundle\RuleBuilder\Exception\InvalidOperatorException;
+use Isotope\CoreBundle\Store\Context\StoreContext;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -27,7 +28,7 @@ class MemberGroupCondition implements RuleConditionInterface
         return true;
     }
 
-    public function isApplicable(): bool
+    public function isApplicable(StoreContext $context): bool
     {
         if ('has_all' === $this->operator) {
             foreach ($this->groups as $group) {

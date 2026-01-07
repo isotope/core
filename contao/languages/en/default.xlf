@@ -605,6 +605,12 @@
       <trans-unit id="MODEL.tl_iso_rule_condition.cart_total.1">
         <source>Match on the total amount of the cart.</source>
       </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.cart_address.0">
+        <source>Cart address</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.cart_address.1">
+        <source>Match on country, subdivision or postal codes of the billing or shipping address.</source>
+      </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.member">
         <source>Member</source>
       </trans-unit>
