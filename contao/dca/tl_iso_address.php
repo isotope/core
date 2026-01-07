@@ -141,7 +141,6 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = [
         'subdivision' => [
             'sorting' => true,
             'inputType' => 'conditionalselect',
-            'options_callback' => [Backend::class, 'getSubdivisions'],
             'eval' => ['feEditable' => true, 'feGroup' => 'address', 'conditionField' => 'country', 'includeBlankOption' => true, 'tl_class' => 'w50'],
             'sql' => "varchar(10) NOT NULL default ''",
         ],

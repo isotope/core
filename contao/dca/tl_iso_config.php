@@ -130,7 +130,6 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
         'subdivision' => [
             'sorting' => true,
             'inputType' => 'conditionalselect',
-            'options_callback' => [Backend::class, 'getSubdivisions'],
             'eval' => ['conditionField' => 'country', 'includeBlankOption' => true, 'tl_class' => 'w50'],
             'sql' => "varchar(10) NOT NULL default ''",
         ],
