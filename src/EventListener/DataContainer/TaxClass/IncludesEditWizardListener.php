@@ -27,7 +27,8 @@ class IncludesEditWizardListener
         $href = null;
 
         if ($dc->value) {
-            $href = $this->urlGenerator->generate(ShopConfigController::class, [
+            $href = $this->urlGenerator->generate('contao_backend', [
+                'do' => 'iso_setup',
                 'table' => 'tl_iso_tax_rate',
                 'act' => 'edit',
                 'id' => $dc->value,

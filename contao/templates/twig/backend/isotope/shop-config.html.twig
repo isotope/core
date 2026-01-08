@@ -1,53 +1,50 @@
 {% trans_default_domain 'contao_default' %}
-{% extends '@Contao/be_main' %}
 
-{% block main_content %}
-    <div class="isotope-shop-config">
-        <div class="intro">
-            <div class="text">
-                <h2>{{ 'MSC.isotopeIntroduction.0'|trans({ '%version%': version }) }}</h2>
-                <p>{{ 'MSC.isotopeIntroduction.1'|trans }}</p>
-                <p>{{ 'MSC.isotopeIntroduction.2'|trans }} <strong>{{ 'MSC.isotopeIntroduction.3'|trans }}</strong></p>
-                <p>{{ 'MSC.isotopeIntroduction.4'|trans }}</p>
-                <p>{{ 'MSC.isotopeIntroduction.5'|trans }}</p>
-            </div>
-            <div>
-                <a href="https://www.isotopeecommerce.org/" target="_blank"><img src="{{ asset('images/isotope-logo.svg', 'isotope_core') }}" alt=""></a>
-                <p>{{ 'MSC.isotopeIntroduction.6'|trans }}</p>
-                <p><a href="https://www.isotopeecommerce.org" target="_blank">www.isotopeecommerce.org</a></p>
-            </div>
+<div class="isotope-shop-config">
+    <div class="intro">
+        <div class="text">
+            <h2>{{ 'MSC.isotopeIntroduction.0'|trans({ '%version%': version }) }}</h2>
+            <p>{{ 'MSC.isotopeIntroduction.1'|trans }}</p>
+            <p>{{ 'MSC.isotopeIntroduction.2'|trans }} <strong>{{ 'MSC.isotopeIntroduction.3'|trans }}</strong></p>
+            <p>{{ 'MSC.isotopeIntroduction.4'|trans }}</p>
+            <p>{{ 'MSC.isotopeIntroduction.5'|trans }}</p>
         </div>
-
-        <div class="tl_listing_container list_view" id="tl_listing">
-            <table class="tl_listing">
-                <tbody>
-                {% for group,modules in links %}
-                    <tr>
-                        <td colspan="3" class="tl_folder_tlist">{{ ('IMD.'~group)|trans([], 'contao_modules') }}</td>
-                    </tr>
-                    {% for link in modules %}
-                        <tr class="click2edit hover-row">
-                            <td class="tl_file_list">
-                                {% if link.icon %}
-                                    <img src="{{ link.icon }}" alt="" width="50">
-                                {% endif %}
-                            </td>
-                            <td class="tl_file_list">
-                                <p>{{ ('IMD.'~link.name~'.0')|trans([], 'contao_modules') }}</p>
-                                <p class="tl_help">{{ ('IMD.'~link.name~'.1')|trans([], 'contao_modules') }}</p>
-                            </td>
-                            <td class="tl_file_list tl_right_nowrap">
-                                {% if link.url %}
-                                    <a href="{{ link.url }}" class="edit">{{ backend_icon('edit.svg', ('IMD.'~link.name~'.1')|trans([], 'contao_modules')) }}</a>
-                                {% else %}
-                                    {{ backend_icon('edit--disabled.svg') }}
-                                {% endif %}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                {% endfor %}
-                </tbody>
-            </table>
+        <div>
+            <a href="https://www.isotopeecommerce.org/" target="_blank"><img src="{{ asset('images/isotope-logo.svg', 'isotope_core') }}" alt=""></a>
+            <p>{{ 'MSC.isotopeIntroduction.6'|trans }}</p>
+            <p><a href="https://www.isotopeecommerce.org" target="_blank">www.isotopeecommerce.org</a></p>
         </div>
     </div>
-{% endblock %}
+
+    <div class="tl_listing_container list_view" id="tl_listing">
+        <table class="tl_listing">
+            <tbody>
+            {% for group,modules in links %}
+                <tr>
+                    <td colspan="3" class="tl_folder_tlist">{{ ('IMD.'~group)|trans([], 'contao_modules') }}</td>
+                </tr>
+                {% for link in modules %}
+                    <tr class="click2edit hover-row">
+                        <td class="tl_file_list">
+                            {% if link.icon %}
+                                <img src="{{ link.icon }}" alt="" width="50">
+                            {% endif %}
+                        </td>
+                        <td class="tl_file_list">
+                            <p>{{ ('IMD.'~link.name~'.0')|trans([], 'contao_modules') }}</p>
+                            <p class="tl_help">{{ ('IMD.'~link.name~'.1')|trans([], 'contao_modules') }}</p>
+                        </td>
+                        <td class="tl_file_list tl_right_nowrap">
+                            {% if link.url %}
+                                <a href="{{ link.url }}" class="edit">{{ backend_icon('edit.svg', ('IMD.'~link.name~'.1')|trans([], 'contao_modules')) }}</a>
+                            {% else %}
+                                {{ backend_icon('edit--disabled.svg') }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
