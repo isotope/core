@@ -34,28 +34,4 @@ class Callback extends Backend
 
         return $strBuffer . '</div>';
     }
-
-
-    /**
-     * Reset all default checkboxes when setting a new address as default
-     * @param mixed
-     * @param object
-     * @return mixed
-     * @link http://www.contao.org/callback.html#save_callback
-     */
-    public function updateDefault($varValue, $dc)
-    {
-        if (!$dc instanceof DataContainer) {
-            return $varValue;
-        }
-
-        if ($varValue == '1' && $dc->activeRecord->{$dc->field} != $varValue) {
-            Database::getInstance()
-                ->prepare("UPDATE tl_iso_address SET {$dc->field}='' WHERE pid=? AND ptable=? AND store_id=?")
-                ->execute($dc->activeRecord->pid, $dc->activeRecord->ptable, $dc->activeRecord->store_id)
-            ;
-        }
-
-        return $varValue;
-    }
 }

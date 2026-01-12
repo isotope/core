@@ -3,9 +3,7 @@
 use Contao\DataContainer;
 use Contao\DC_Table;
 use Contao\Input;
-use Isotope\Backend;
 use Isotope\Backend\Address\Callback;
-use Isotope\CompatibilityHelper;
 
 $GLOBALS['TL_DCA']['tl_iso_address'] = [
     'config' => [
@@ -14,7 +12,6 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = [
         'notSortable' => true,
         'ptable' => '',
         'dynamicPtable' => true,
-        'onload_callback' => [],
         'sql' => [
             'keys' => [
                 'id' => 'primary',
