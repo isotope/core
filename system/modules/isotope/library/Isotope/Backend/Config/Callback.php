@@ -12,57 +12,12 @@
 namespace Isotope\Backend\Config;
 
 use Contao\Backend;
-use Contao\BackendUser;
-use Contao\CoreBundle\Exception\AccessDeniedException;
 use Contao\Database;
-use Contao\DataContainer;
 use Contao\Folder;
-use Contao\Image;
-use Contao\Input;
-use Contao\StringUtil;
 use Contao\System;
-use Isotope\Automator;
-use Isotope\Backend\Permission;
-use Isotope\CompatibilityHelper;
-use Isotope\Model\Config;
-use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 
 class Callback extends Backend
 {
-    /**
-     * Check permissions to edit table tl_iso_config
-     */
-    public function checkPermission()
-    {
-        // Do not run the permission check on other Isotope modules
-        if ('configs' !== Input::get('mod')) {
-            return;
-        }
-
-        // Set fallback if no fallback is available
-        $objConfig = Database::getInstance()->query("SELECT COUNT(*) AS total FROM tl_iso_config WHERE fallback='1'");
-
-        if ($objConfig->total == 0) {
-            $GLOBALS['TL_DCA']['tl_iso_config']['fields']['fallback']['default'] = '1';
-        }
-
-        $user = BackendUser::getInstance();
-
-        // Return if user is admin
-        if ($user->isAdmin) {
-            return;
-        }
-
-        // Set root IDs
-        if (!\is_array($user->iso_configs) || \count($user->iso_configs) < 1) {
-            $root = array(0);
-        } else {
-            $root = $user->iso_configs;
-        }
-
-        $GLOBALS['TL_DCA']['tl_iso_config']['list']['sorting']['root'] = $root;
-    }
-
     /**
      * Return all template folders as array
      *

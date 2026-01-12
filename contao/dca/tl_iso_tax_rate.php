@@ -2,24 +2,17 @@
 
 use Contao\DataContainer;
 use Contao\DC_Table;
-use Isotope\Backend;
-use Isotope\Backend\TaxRate\Callback;
-use Isotope\CompatibilityHelper;
-use Isotope\Model\Config;
-use Isotope\Model\TaxClass;
 
 $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = [
     'config' => [
         'dataContainer' => DC_Table::class,
         'enableVersioning' => true,
-        'onload_callback' => [
-            [Callback::class, 'checkPermission'],
-        ],
         'sql' => [
             'keys' => [
                 'id' => 'primary',
             ],
         ],
+        'userRoot' => 'iso_tax_rates',
     ],
     'list' => [
         'sorting' => [

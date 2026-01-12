@@ -13,6 +13,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_category'] = [
         'notCopyable' => true,
         'notDeletable' => true,
         'backlink' => 'do=iso_products',
+        'permissions' => [],
         'sql' => [
             'keys' => [
                 'id' => 'primary',

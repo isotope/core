@@ -12,14 +12,12 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
     'config' => [
         'dataContainer' => DC_Table::class,
         'enableVersioning' => true,
-        'onload_callback' => [
-            [Callback::class, 'checkPermission'],
-        ],
         'sql' => [
             'keys' => [
                 'id' => 'primary',
             ],
         ],
+        'userRoot' => 'iso_configs',
     ],
     'list' => [
         'sorting' => [

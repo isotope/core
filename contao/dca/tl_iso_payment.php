@@ -16,7 +16,6 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = [
         'dataContainer' => DC_Table::class,
         'enableVersioning' => true,
         'onload_callback' => [
-            [Callback::class, 'checkPermission'],
             [Callback::class, 'loadShippingModules'],
         ],
         'sql' => [
@@ -24,6 +23,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = [
                 'id' => 'primary',
             ],
         ],
+        'userRoot' => 'iso_payments',
     ],
     'list' => [
         'sorting' => [

@@ -5,6 +5,7 @@ use Isotope\Model\ProductCollection;
 $GLOBALS['TL_DCA']['tl_iso_product_collection_log'] = [
     'config' => [
         'ptable' => ProductCollection::getTable(),
+        'permissions' => [],
         'sql' => [
             'keys' => [
                 'id' => 'primary',

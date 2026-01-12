@@ -1,31 +1,19 @@
 <?php
 
 use Contao\CoreBundle\DataContainer\PaletteManipulator;
-use Isotope\CoreBundle\Model\Payment;
-use Isotope\CoreBundle\Model\ProductType;
-use Isotope\CoreBundle\Model\Shipping;
-use Isotope\Model\Config;
-use Isotope\Model\TaxClass;
-use Isotope\Model\TaxRate;
 
 /*
  * Extend a tl_user_group palette
  */
 PaletteManipulator::create()
-    ->addLegend('isotope_legend', 'alexf_legend', PaletteManipulator::POSITION_BEFORE)
+    ->addLegend('isotope_legend', 'cud_legend', PaletteManipulator::POSITION_BEFORE)
     ->addField('iso_modules', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
-    ->addField('iso_product_types', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
-    ->addField('iso_product_typep', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
-    ->addField('iso_payment_modules', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
-    ->addField('iso_payment_modulep', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
-    ->addField('iso_shipping_modules', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
-    ->addField('iso_shipping_modulep', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_producttypes', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_payments', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_shippings', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
     ->addField('iso_tax_classes', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
-    ->addField('iso_tax_classp', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
     ->addField('iso_tax_rates', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
-    ->addField('iso_tax_ratep', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
     ->addField('iso_configs', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
-    ->addField('iso_configp', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
     ->addField('iso_member_groups', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
     ->applyToPalette('default', 'tl_user_group')
 ;
@@ -41,93 +29,45 @@ $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_modules'] = [
     'sql' => 'blob NULL',
 ];
 
-$GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_product_types'] = [
+$GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_producttypes'] = [
     'inputType' => 'checkbox',
-    'foreignKey' => ProductType::getTable().'.name',
+    'foreignKey' => 'tl_iso_producttype.name',
     'eval' => ['multiple' => true, 'tl_class' => 'clr w50'],
     'sql' => 'blob NULL',
 ];
 
-$GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_product_typep'] = [
+$GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_payments'] = [
     'inputType' => 'checkbox',
-    'options' => ['create', 'delete'],
-    'reference' => &$GLOBALS['TL_LANG']['MSC'],
-    'eval' => ['multiple' => true, 'tl_class' => 'w50'],
-    'sql' => 'blob NULL',
-];
-
-$GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_payment_modules'] = [
-    'inputType' => 'checkbox',
-    'foreignKey' => Payment::getTable().'.name',
+    'foreignKey' => 'tl_iso_payment.name',
     'eval' => ['multiple' => true, 'tl_class' => 'clr w50'],
     'sql' => 'blob NULL',
 ];
 
-$GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_payment_modulep'] = [
+$GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_shippings'] = [
     'inputType' => 'checkbox',
-    'options' => ['create', 'delete'],
-    'reference' => &$GLOBALS['TL_LANG']['MSC'],
-    'eval' => ['multiple' => true, 'tl_class' => 'w50'],
-    'sql' => 'blob NULL',
-];
-
-$GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_shipping_modules'] = [
-    'inputType' => 'checkbox',
-    'foreignKey' => Shipping::getTable().'.name',
+    'foreignKey' => 'tl_iso_shipping.name',
     'eval' => ['multiple' => true, 'tl_class' => 'clr w50'],
-    'sql' => 'blob NULL',
-];
-
-$GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_shipping_modulep'] = [
-    'inputType' => 'checkbox',
-    'options' => ['create', 'delete'],
-    'reference' => &$GLOBALS['TL_LANG']['MSC'],
-    'eval' => ['multiple' => true, 'tl_class' => 'w50'],
     'sql' => 'blob NULL',
 ];
 
 $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_tax_classes'] = [
     'inputType' => 'checkbox',
-    'foreignKey' => TaxClass::getTable().'.name',
+    'foreignKey' => 'tl_iso_tax_class.name',
     'eval' => ['multiple' => true, 'tl_class' => 'clr w50'],
-    'sql' => 'blob NULL',
-];
-
-$GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_tax_classp'] = [
-    'inputType' => 'checkbox',
-    'options' => ['create', 'delete'],
-    'reference' => &$GLOBALS['TL_LANG']['MSC'],
-    'eval' => ['multiple' => true, 'tl_class' => 'w50'],
     'sql' => 'blob NULL',
 ];
 
 $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_tax_rates'] = [
     'inputType' => 'checkbox',
-    'foreignKey' => TaxRate::getTable().'.name',
+    'foreignKey' => 'tl_iso_tax_rate.name',
     'eval' => ['multiple' => true, 'tl_class' => 'clr w50'],
-    'sql' => 'blob NULL',
-];
-
-$GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_tax_ratep'] = [
-    'inputType' => 'checkbox',
-    'options' => ['create', 'delete'],
-    'reference' => &$GLOBALS['TL_LANG']['MSC'],
-    'eval' => ['multiple' => true, 'tl_class' => 'w50'],
     'sql' => 'blob NULL',
 ];
 
 $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_configs'] = [
     'inputType' => 'checkbox',
-    'foreignKey' => Config::getTable().'.name',
+    'foreignKey' => 'tl_iso_config.name',
     'eval' => ['multiple' => true, 'tl_class' => 'clr w50'],
-    'sql' => 'blob NULL',
-];
-
-$GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_configp'] = [
-    'inputType' => 'checkbox',
-    'options' => ['create', 'delete'],
-    'reference' => &$GLOBALS['TL_LANG']['MSC'],
-    'eval' => ['multiple' => true, 'tl_class' => 'w50'],
     'sql' => 'blob NULL',
 ];
 

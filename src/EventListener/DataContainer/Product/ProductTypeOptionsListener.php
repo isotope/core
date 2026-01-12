@@ -26,15 +26,15 @@ class ProductTypeOptionsListener
         if (
             $this->security->isGranted('ROLE_ADMIN')
             || !$user instanceof BackendUser
-            || !\is_array($user->iso_product_types)
-            || [] === $user->iso_product_types
+            || !\is_array($user->iso_producttypes)
+            || [] === $user->iso_producttypes
         ) {
             return $this->connection->fetchAllKeyValue('SELECT id, name FROM tl_iso_producttype WHERE tstamp>0');
         }
 
         return $this->connection->fetchAllKeyValue(
             'SELECT id, name FROM tl_iso_producttype WHERE tstamp>0 AND id IN (?)',
-            [$user->iso_product_types],
+            [$user->iso_producttypes],
             [ArrayParameterType::INTEGER],
         );
     }

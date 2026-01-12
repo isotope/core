@@ -19,13 +19,10 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
         'dataContainer' => ProductData::class,
         'enableVersioning' => true,
         'ctable' => ['tl_iso_product', 'tl_iso_download', 'tl_iso_attribute_option'],
-        'onload_callback' => [
-            [Permission::class, 'check'],
-        ],
         'sql' => [
             'keys' => [
                 'id' => 'primary',
-                'pid,language' => 'index',
+                'pid,language,type' => 'index',
                 'language,fallback' => 'index',
                 'language,published,start,stop,pid' => 'index',
                 'start' => 'index',

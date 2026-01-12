@@ -22,6 +22,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
         'notCreatable' => true,
         'notCopyable' => true,
         'notDeletable' => ('select' === Input::get('act')),
+        'permissions' => ['update'],
         'onload_callback' => [
             [Callback::class, 'checkPermission'],
             [Callback::class, 'prepareOrderLog'],

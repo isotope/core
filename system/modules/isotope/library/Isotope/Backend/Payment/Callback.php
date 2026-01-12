@@ -21,36 +21,6 @@ use Isotope\CoreBundle\Model\Shipping;
 
 class Callback extends Backend
 {
-
-    /**
-     * Check permissions to edit table tl_iso_payment
-     */
-    public function checkPermission()
-    {
-        // Do not run the permission check on other Isotope modules
-        if ('payment' !== Input::get('mod')) {
-            return;
-        }
-
-        $user = BackendUser::getInstance();
-
-        // Return if user is admin
-        if ($user->isAdmin) {
-            return;
-        }
-
-        // Set root IDs
-        if (!\is_array($user->iso_payment_modules) || \count($user->iso_payment_modules) < 1) // Can't use empty() because its an object property (using __get)
-        {
-            $root = array(0);
-        } else {
-            $root = $user->iso_payment_modules;
-        }
-
-        $GLOBALS['TL_DCA']['tl_iso_payment']['list']['sorting']['root'] = $root;
-    }
-
-
     /**
      * Load shipping modules into the DCA (options_callback would not work due to numeric array keys)
      *

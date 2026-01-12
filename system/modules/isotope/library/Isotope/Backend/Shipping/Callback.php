@@ -13,42 +13,10 @@ namespace Isotope\Backend\Shipping;
 
 
 use Contao\Backend;
-use Contao\BackendUser;
-use Contao\Input;
 use Isotope\CoreBundle\Model\Shipping;
 
 class Callback extends Backend
 {
-
-    /**
-     * Check permissions to edit table tl_iso_shipping
-     * @return void
-     */
-    public function checkPermission()
-    {
-        // Do not run the permission check on other Isotope modules
-        if ('shipping' !== Input::get('mod')) {
-            return;
-        }
-
-        $user = BackendUser::getInstance();
-
-        if ($user->isAdmin) {
-            return;
-        }
-
-        // Set root IDs
-        if (!\is_array($user->iso_shipping_modules)
-            || 0 === \count($user->iso_shipping_modules)
-        ) {
-            $root = array(0);
-        } else {
-            $root = $user->iso_shipping_modules;
-        }
-
-        $GLOBALS['TL_DCA']['tl_iso_shipping']['list']['sorting']['root'] = $root;
-    }
-
     public function hideLabelAndNotes($dc)
     {
         if ($dc->id) {

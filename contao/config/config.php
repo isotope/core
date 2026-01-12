@@ -203,18 +203,12 @@ $GLOBALS['ISO_VAT']['eu_vies'] = EuViesValidator::class;
  * Permissions are access settings for user and groups (fields in tl_user and tl_user_group)
  */
 $GLOBALS['TL_PERMISSIONS'][] = 'iso_modules';
-$GLOBALS['TL_PERMISSIONS'][] = 'iso_product_types';
-$GLOBALS['TL_PERMISSIONS'][] = 'iso_product_typep';
-$GLOBALS['TL_PERMISSIONS'][] = 'iso_payment_modules';
-$GLOBALS['TL_PERMISSIONS'][] = 'iso_payment_modulep';
-$GLOBALS['TL_PERMISSIONS'][] = 'iso_shipping_modules';
-$GLOBALS['TL_PERMISSIONS'][] = 'iso_shipping_modulep';
+$GLOBALS['TL_PERMISSIONS'][] = 'iso_producttypes';
+$GLOBALS['TL_PERMISSIONS'][] = 'iso_payments';
+$GLOBALS['TL_PERMISSIONS'][] = 'iso_shippings';
 $GLOBALS['TL_PERMISSIONS'][] = 'iso_tax_rates';
-$GLOBALS['TL_PERMISSIONS'][] = 'iso_tax_ratep';
 $GLOBALS['TL_PERMISSIONS'][] = 'iso_tax_classes';
-$GLOBALS['TL_PERMISSIONS'][] = 'iso_tax_classp';
 $GLOBALS['TL_PERMISSIONS'][] = 'iso_configs';
-$GLOBALS['TL_PERMISSIONS'][] = 'iso_configp';
 $GLOBALS['TL_PERMISSIONS'][] = 'iso_member_groups';
 
 /*

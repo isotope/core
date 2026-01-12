@@ -3,9 +3,7 @@
 use Contao\DataContainer;
 use Contao\DC_Table;
 use Contao\System;
-use Isotope\Backend;
 use Isotope\Backend\Shipping\Callback;
-use Isotope\CompatibilityHelper;
 use Isotope\CoreBundle\Checkout\ProductTypeCondition;
 use Isotope\CoreBundle\Checkout\QuantityMode;
 use Isotope\CoreBundle\Checkout\Shipping\AddressType;
@@ -28,7 +26,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
         'dataContainer' => DC_Table::class,
         'enableVersioning' => true,
         'onload_callback' => [
-            [Callback::class, 'checkPermission'],
             [Callback::class, 'hideLabelAndNotes'],
         ],
         'sql' => [
@@ -36,6 +33,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
                 'id' => 'primary',
             ],
         ],
+        'userRoot' => 'iso_shippings',
     ],
     'list' => [
         'sorting' => [

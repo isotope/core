@@ -9,15 +9,13 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = [
     'config' => [
         'dataContainer' => DC_Table::class,
         'enableVersioning' => true,
-        'onload_callback' => [
-            [Callback::class, 'checkPermission'],
-        ],
         'sql' => [
             'keys' => [
                 'id' => 'primary',
                 'variants' => 'index',
             ],
         ],
+        'userRoot' => 'iso_producttypes',
     ],
     'list' => [
         'sorting' => [
