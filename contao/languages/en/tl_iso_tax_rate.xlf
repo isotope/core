@@ -26,30 +26,6 @@
       <trans-unit id="tl_iso_tax_rate.rule.1">
         <source>Apply tax rate if this rule matches.</source>
       </trans-unit>
-      <trans-unit id="tl_iso_tax_rate.new.0">
-        <source>New tax rate</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_tax_rate.new.1">
-        <source>Create a new tax rate</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_tax_rate.edit.0">
-        <source>Edit tax rate</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_tax_rate.edit.1">
-        <source>Edit tax rate ID %s</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_tax_rate.copy.0">
-        <source>Copy tax rate</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_tax_rate.copy.1">
-        <source>Copy tax rate ID %s</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_tax_rate.delete.0">
-        <source>Delete tax rate</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_tax_rate.delete.1">
-        <source>Delete tax rate ID %s</source>
-      </trans-unit>
       <trans-unit id="tl_iso_tax_rate.show.0">
         <source>Tax rate details</source>
       </trans-unit>

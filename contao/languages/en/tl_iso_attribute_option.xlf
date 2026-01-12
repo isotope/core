@@ -47,36 +47,6 @@
       <trans-unit id="tl_iso_attribute_option.published.1">
         <source>Make this option available in the product.</source>
       </trans-unit>
-      <trans-unit id="tl_iso_attribute_option.new.0">
-        <source>New option</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_attribute_option.new.1">
-        <source>Create a new option.</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_attribute_option.edit.0">
-        <source>Edit option</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_attribute_option.edit.1">
-        <source>Edit option ID %s.</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_attribute_option.copy.0">
-        <source>Copy option</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_attribute_option.copy.1">
-        <source>Copy option ID %s.</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_attribute_option.delete.0">
-        <source>Delete option</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_attribute_option.delete.1">
-        <source>Delete option ID %s.</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_attribute_option.show.0">
-        <source>Option details</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_attribute_option.show.1">
-        <source>Show details for option ID %s.</source>
-      </trans-unit>
       <trans-unit id="tl_iso_attribute_option.label_legend">
         <source>Type &amp; Label</source>
       </trans-unit>

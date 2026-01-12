@@ -212,47 +212,14 @@
       <trans-unit id="tl_iso_product.new_variant.1">
         <source>Add new variant to a given product</source>
       </trans-unit>
-      <trans-unit id="tl_iso_product.edit.0">
-        <source>Edit product</source>
-      </trans-unit>
       <trans-unit id="tl_iso_product.edit.1">
         <source>Edit product ID %s</source>
       </trans-unit>
       <trans-unit id="tl_iso_product.children.0">
-        <source>Edit product variants</source>
+        <source>Edit variants</source>
       </trans-unit>
       <trans-unit id="tl_iso_product.children.1">
         <source>Edit variants of product ID %s</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_product.copy.0">
-        <source>Copy product</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_product.copy.1">
-        <source>Copy product ID %s</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_product.cut.0">
-        <source>Move product</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_product.cut.1">
-        <source>Move product ID %s</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_product.delete.0">
-        <source>Delete product</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_product.delete.1">
-        <source>Delete product ID %s</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_product.toggle.0">
-        <source>Publish/unpublish product</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_product.toggle.1">
-        <source>Publish/unpublish product ID %s</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_product.show.0">
-        <source>Product details</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_product.show.1">
-        <source>Show details of product ID %s</source>
       </trans-unit>
       <trans-unit id="tl_iso_product.filter">
         <source>Dynamic filters</source>

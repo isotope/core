@@ -140,42 +140,6 @@
       <trans-unit id="tl_iso_payment.enabled.1">
         <source>Check here if the payment method should be enabled in the store.</source>
       </trans-unit>
-      <trans-unit id="tl_iso_payment.new.0">
-        <source>New payment method</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.new.1">
-        <source>Create a new payment method</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.edit.0">
-        <source>Edit payment method</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.edit.1">
-        <source>Edit payment method ID %s</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.copy.0">
-        <source>Copy payment method</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.copy.1">
-        <source>Copy payment method ID %s</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.delete.0">
-        <source>Delete payment method</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.delete.1">
-        <source>Delete payment method ID %s</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.toggle.0">
-        <source>Enable/disable payment method</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.toggle.1">
-        <source>Enable/disable payment method ID %s</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.show.0">
-        <source>Payment method details</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.show.1">
-        <source>Show details of payment method ID %s</source>
-      </trans-unit>
       <trans-unit id="tl_iso_payment.capture.0">
         <source>Authorize and Capture</source>
       </trans-unit>
@@ -202,36 +166,6 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.oneAvailable">
         <source>Enable if one of these product types is in cart</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.payone.elv">
-        <source>Debit withdrawal</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.payone.cc">
-        <source>Credit card</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.payone.dc">
-        <source>Debit card</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.payone.vor">
-        <source>Prepayment</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.payone.rec">
-        <source>Invoice</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.payone.sb">
-        <source>Online bank transfer (SOFORT/Giropay/PostFinance/iDEAL)</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.payone.wlt">
-        <source>e-Wallet (PayPal)</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.payone.fnc">
-        <source>Financing (BillSAFE Invoice)</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.epay_windowstate_options.3">
-        <source>Full screen</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.epay_windowstate_options.4">
-        <source>Integrated payment form</source>
       </trans-unit>
       <trans-unit id="tl_iso_payment.type_legend">
         <source>Name &amp; Type</source>

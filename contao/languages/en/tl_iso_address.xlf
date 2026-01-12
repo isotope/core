@@ -137,33 +137,6 @@
       <trans-unit id="tl_iso_address.loginDetails">
         <source>Default address</source>
       </trans-unit>
-      <trans-unit id="tl_iso_address.new.0">
-        <source>New address</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_address.new.1">
-        <source>Create a new address</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_address.edit.0">
-        <source>Edit address</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_address.edit.1">
-        <source>Edit address ID %s</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_address.copy.0">
-        <source>Duplicate address</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_address.copy.1">
-        <source>Duplicate address ID %s</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_address.delete.0">
-        <source>Delete address</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_address.delete.1">
-        <source>Delete address ID %s</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_address.show.0">
-        <source>Address details</source>
-      </trans-unit>
       <trans-unit id="tl_iso_address.show.1">
         <source>Show details of address ID %s</source>
       </trans-unit>

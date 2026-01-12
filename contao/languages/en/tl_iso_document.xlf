@@ -56,36 +56,6 @@
       <trans-unit id="tl_iso_document.orderCollectionBy.1">
         <source>Define in what order the collection items should be listed.</source>
       </trans-unit>
-      <trans-unit id="tl_iso_document.new.0">
-        <source>New document</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_document.new.1">
-        <source>Create a new document</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_document.edit.0">
-        <source>Edit document</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_document.edit.1">
-        <source>Edit document ID %s</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_document.copy.0">
-        <source>Copy document</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_document.copy.1">
-        <source>Copy document ID %s</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_document.delete.0">
-        <source>Delete document</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_document.delete.1">
-        <source>Delete document ID %s</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_document.show.0">
-        <source>Document details</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_document.show.1">
-        <source>Show details of document ID %s</source>
-      </trans-unit>
       <trans-unit id="tl_iso_document.type_legend">
         <source>Name &amp; type</source>
       </trans-unit>

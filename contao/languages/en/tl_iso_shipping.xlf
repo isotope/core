@@ -269,42 +269,6 @@
       <trans-unit id="tl_iso_shipping.enabled_legend">
         <source>Approval</source>
       </trans-unit>
-      <trans-unit id="tl_iso_shipping.new.0">
-        <source>New shipping method</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_shipping.new.1">
-        <source>Create a New shipping method</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_shipping.edit.0">
-        <source>Edit shipping method</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_shipping.edit.1">
-        <source>Edit shipping method ID %s</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_shipping.copy.0">
-        <source>Copy shipping method</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_shipping.copy.1">
-        <source>Copy shipping method ID %s</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_shipping.delete.0">
-        <source>Delete shipping method</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_shipping.delete.1">
-        <source>Delete shipping method ID %s</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_shipping.toggle.0">
-        <source>Enable/disable shipping method</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_shipping.toggle.1">
-        <source>Enable/disable shipping method ID %s</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_shipping.show.0">
-        <source>Shipping method details</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_shipping.show.1">
-        <source>Show details of shipping method ID %s</source>
-      </trans-unit>
       <trans-unit id="tl_iso_shipping.flat">
         <source>Flat</source>
       </trans-unit>

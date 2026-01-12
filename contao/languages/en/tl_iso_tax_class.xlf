@@ -44,36 +44,6 @@
       <trans-unit id="tl_iso_tax_class.notNegative.1">
         <source>Prevents negative value for this tax (negative amount will be adjusted to 0.00).</source>
       </trans-unit>
-      <trans-unit id="tl_iso_tax_class.new.0">
-        <source>New tax class</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_tax_class.new.1">
-        <source>Create a new tax class</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_tax_class.edit.0">
-        <source>Edit tax class</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_tax_class.edit.1">
-        <source>Edit tax class ID %s</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_tax_class.copy.0">
-        <source>Copy tax class</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_tax_class.copy.1">
-        <source>Copy tax class ID %s</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_tax_class.delete.0">
-        <source>Delete tax class</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_tax_class.delete.1">
-        <source>Delete tax class ID %s</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_tax_class.show.0">
-        <source>Tax class details</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_tax_class.show.1">
-        <source>Show details of tax class ID %s</source>
-      </trans-unit>
       <trans-unit id="tl_iso_tax_class.name_legend">
         <source>Name</source>
       </trans-unit>

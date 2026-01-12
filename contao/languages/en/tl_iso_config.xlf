@@ -311,36 +311,6 @@
       <trans-unit id="tl_iso_config.admin_ch">
         <source>Swiss Federal Department of Finance</source>
       </trans-unit>
-      <trans-unit id="tl_iso_config.new.0">
-        <source>New configuration</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_config.new.1">
-        <source>Create a new store configuration.</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_config.edit.0">
-        <source>Edit configuration</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_config.edit.1">
-        <source>Edit store configuration ID %s.</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_config.copy.0">
-        <source>Copy configuration</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_config.copy.1">
-        <source>Copy store configuration ID %s.</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_config.delete.0">
-        <source>Delete configuration</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_config.delete.1">
-        <source>Delete store configuration ID %s.</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_config.show.0">
-        <source>Show configuration details</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_config.show.1">
-        <source>Show details for store configuration ID %s.</source>
-      </trans-unit>
       <trans-unit id="tl_iso_config.name_legend">
         <source>Name</source>
       </trans-unit>

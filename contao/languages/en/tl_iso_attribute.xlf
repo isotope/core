@@ -326,54 +326,6 @@
       <trans-unit id="tl_iso_attribute.surcharge.1">
         <source>Checks whether the input is a valid surcharge.&lt;br /&gt;Example: 10.00, 10%</source>
       </trans-unit>
-      <trans-unit id="tl_iso_attribute.custom">
-        <source>Custom order</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_attribute.name_asc">
-        <source>File name (ascending)</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_attribute.name_desc">
-        <source>File name (descending)</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_attribute.date_asc">
-        <source>Date (ascending)</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_attribute.date_desc">
-        <source>Date (descending)</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_attribute.random">
-        <source>Random order</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_attribute.new.0">
-        <source>New attribute</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_attribute.new.1">
-        <source>Create a new attribute.</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_attribute.edit.0">
-        <source>Edit attribute</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_attribute.edit.1">
-        <source>Edit attribute ID %s.</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_attribute.copy.0">
-        <source>Copy attribute</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_attribute.copy.1">
-        <source>Copy attribute ID %s.</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_attribute.delete.0">
-        <source>Delete attribute</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_attribute.delete.1">
-        <source>Delete attribute ID %s. The database column will not be deleted, you need to manually update the database using the Contao Manager.</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_attribute.show.0">
-        <source>Attribute details</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_attribute.show.1">
-        <source>Show details for attribute ID %s.</source>
-      </trans-unit>
       <trans-unit id="tl_iso_attribute.deleteConfirm">
         <source>Do you really want to delete attribute ID %s? The database column will not be deleted, you need to manually update the database using the Contao Manager.</source>
       </trans-unit>
