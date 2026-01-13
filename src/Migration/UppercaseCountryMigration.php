@@ -32,12 +32,9 @@ class UppercaseCountryMigration extends AbstractMigration
                 continue;
             }
 
-            $fields = array_intersect_key($fields, $schemaManager->listTableColumns($table));
+            $schema = $schemaManager->introspectTableByUnquotedName($table);
 
-            if ([] === $fields) {
-                continue;
-            }
-
+            $check = false;
             $qb = $this->connection->createQueryBuilder();
             $qb
                 ->select('COUNT(*)')
@@ -45,10 +42,15 @@ class UppercaseCountryMigration extends AbstractMigration
             ;
 
             foreach ($fields as $field => $isArray) {
+                if (!$schema->hasColumn($field)) {
+                    continue;
+                }
+
+                $check = true;
                 $qb->orWhere("BINARY `$field` != BINARY UPPER(`$field`)");
             }
 
-            if ($qb->fetchOne() > 0) {
+            if ($check && $qb->fetchOne() > 0) {
                 return true;
             }
         }
@@ -65,12 +67,9 @@ class UppercaseCountryMigration extends AbstractMigration
                 continue;
             }
 
-            $fields = array_intersect_key($fields, $schemaManager->listTableColumns($table));
+            $schema = $schemaManager->introspectTableByUnquotedName($table);
 
-            if ([] === $fields) {
-                continue;
-            }
-
+            $update = false;
             $qb = $this->connection->createQueryBuilder();
             $qb
                 ->select('id', ...array_keys($fields))
@@ -78,15 +77,22 @@ class UppercaseCountryMigration extends AbstractMigration
             ;
 
             foreach ($fields as $field => $isArray) {
+                if (!$schema->hasColumn($fields)) {
+                    continue;
+                }
+
+                $update = true;
                 $qb->orWhere("BINARY `$field` != BINARY UPPER(`$field`)");
             }
 
-            foreach ($qb->fetchAllAssociative() as $result) {
-                $this->connection->update(
-                    $table,
-                    $this->getData($result, $fields),
-                    ['id' => $result['id']],
-                );
+            if ($update) {
+                foreach ($qb->fetchAllAssociative() as $result) {
+                    $this->connection->update(
+                        $table,
+                        $this->getData($result, $fields),
+                        ['id' => $result['id']],
+                    );
+                }
             }
         }
 

@@ -22,11 +22,11 @@ class CollectionItemIdentifierMigration extends AbstractMigration
             return false;
         }
 
-        $columns = $schemaManager->listTableColumns('tl_iso_product_collection_item');
+        $table = $schemaManager->introspectTableByUnquotedName('tl_iso_product_collection_item');
 
-        return !\array_key_exists('identifier', $columns)
-            && \array_key_exists('type', $columns)
-            && \array_key_exists('product_id', $columns);
+        return !$table->hasColumn('identifier')
+            && $table->hasColumn('type')
+            && $table->hasColumn('product_id');
     }
 
     public function run(): MigrationResult

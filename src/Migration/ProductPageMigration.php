@@ -20,7 +20,7 @@ class ProductPageMigration extends AbstractMigration
 
         if (
             !$schemaManager->tablesExist(['tl_page', 'tl_iso_product_category'])
-            || !\array_key_exists('product_id', $schemaManager->listTableColumns('tl_iso_product_category'))
+            || !$schemaManager->introspectTableByUnquotedName('tl_iso_product_category')->hasColumn('product_id')
         ) {
             return false;
         }

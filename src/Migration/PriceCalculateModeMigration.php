@@ -22,9 +22,9 @@ class PriceCalculateModeMigration extends AbstractMigration
             return false;
         }
 
-        $columns = $schemaManager->listTableColumns('tl_iso_config');
+        $table = $schemaManager->introspectTableByUnquotedName('tl_iso_config');
 
-        return \array_key_exists('priceCalculateFactor', $columns) && \array_key_exists('priceCalculateMode', $columns);
+        return $table->hasColumn('priceCalculateFactor') && $table->hasColumn('priceCalculateMode');
     }
 
     public function run(): MigrationResult

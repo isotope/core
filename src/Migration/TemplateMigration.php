@@ -34,24 +34,22 @@ class TemplateMigration extends AbstractMigration
                 continue;
             }
 
-            $columns = $schemaManager->listTableColumns($table);
+            $schema = $schemaManager->introspectTableByUnquotedName($table);
 
-            if ([] === array_intersect_key($columns, $fields)) {
-                continue;
-            }
-
+            $check = false;
             $qb = $this->connection->createQueryBuilder();
             $qb->select('COUNT(*)')->from($table);
 
             foreach ($fields as $k => $v) {
-                if (!isset($columns[$k])) {
+                if (!$schema->hasColumn($k)) {
                     continue;
                 }
 
+                $check = true;
                 $qb->orWhere("$k='$v'");
             }
 
-            if ($qb->fetchOne() > 0) {
+            if ($check && $qb->fetchOne() > 0) {
                 return true;
             }
         }
@@ -68,10 +66,10 @@ class TemplateMigration extends AbstractMigration
                 continue;
             }
 
-            $columns = $schemaManager->listTableColumns($table);
+            $schema = $schemaManager->introspectTableByUnquotedName($table);
 
             foreach ($fields as $k => $v) {
-                if (!isset($columns[$k])) {
+                if (!$schema->hasColumn($k)) {
                     continue;
                 }
 

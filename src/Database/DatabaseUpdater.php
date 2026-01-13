@@ -61,10 +61,10 @@ class DatabaseUpdater
             return;
         }
 
-        $columns = $this->connection->createSchemaManager()->listTableColumns($table);
+        $schema = $this->connection->createSchemaManager()->introspectTableByUnquotedName($table);
 
         // Current field type is not string
-        if (!isset($columns[$match[1]]) || !$this->isStringType($columns[$match[1]]->getType())) {
+        if (!$schema->hasColumn($match[1]) || !$this->isStringType($schema->getColumn($match[1])->getType())) {
             return;
         }
 

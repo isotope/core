@@ -23,22 +23,23 @@ class ProductCategoryMigration extends AbstractMigration
             return false;
         }
 
-        $columns = $schemaManager->listTableColumns('tl_iso_product_category');
+        $table = $schemaManager->introspectTableByUnquotedName('tl_iso_product_category');
 
-        return \array_key_exists('pid', $columns)
-            && \array_key_exists('page_id', $columns)
-            && !\array_key_exists('product_id', $columns)
-            && !\array_key_exists('product_sorting', $columns);
+        return $table->hasColumn('pid')
+            && $table->hasColumn('page_id')
+            && !$table->hasColumn('product_id')
+            && !$table->hasColumn('product_sorting');
     }
 
     public function run(): MigrationResult
     {
-        $this->connection->executeStatement('ALTER TABLE tl_iso_product_category ADD COLUMN product_id INT(10) unsigned NOT NULL DEFAULT 0, ADD COLUMN product_sorting INT(10) unsigned NOT NULL DEFAULT 0');
+        $schemaManager = $this->connection->createSchemaManager();
 
+        $this->connection->executeStatement('ALTER TABLE tl_iso_product_category ADD COLUMN product_id INT(10) unsigned NOT NULL DEFAULT 0, ADD COLUMN product_sorting INT(10) unsigned NOT NULL DEFAULT 0');
         $this->connection->executeStatement('UPDATE tl_iso_product_category SET product_id=pid');
         $this->connection->executeStatement('UPDATE tl_iso_product_category SET pid=page_id');
 
-        if (\array_key_exists('orderpages', $this->connection->createSchemaManager()->listTableColumns('tl_iso_product'))) {
+        if ($schemaManager->introspectTableByUnquotedName('tl_iso_product')->hasColumn('orderPages')) {
             $data = $this->connection->fetchAllKeyValue('SELECT id, orderPages FROM tl_iso_product');
 
             foreach ($data as $productId => $order) {
@@ -59,6 +60,10 @@ class ProductCategoryMigration extends AbstractMigration
 
         $this->connection->executeStatement('ALTER TABLE tl_iso_product_category DROP COLUMN page_id');
         $this->connection->executeStatement('ALTER TABLE tl_iso_product DROP COLUMN orderPages');
+
+        if ($schemaManager->tablesExist(['tl_page'])) {
+            $this->connection->executeStatement("UPDATE tl_page SET type='iso_products' WHERE type='regular' AND id IN (SELECT pid FROM tl_iso_product_category)");
+        }
 
         return $this->createResult(true);
     }

@@ -62,7 +62,7 @@ class CoreDataCollector implements DataCollectorInterface
             $qb->addSelect(\sprintf('pt.%s AS pt__%s', $field, $field));
         }
 
-        $columns = $this->connection->createSchemaManager()->listTableColumns('tl_iso_product');
+        $columns = $this->connection->createSchemaManager()->introspectTableColumnsByUnquotedName('tl_iso_product');
 
         foreach ($columns as $column) {
             $qb->addSelect(\sprintf('pp.%s AS pp__%s', $column->getName(), $column->getName()));

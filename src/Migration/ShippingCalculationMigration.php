@@ -20,7 +20,7 @@ class ShippingCalculationMigration extends AbstractMigration
 
         if (
             !$schemaManager->tablesExist(['tl_iso_shipping'])
-            || !\array_key_exists('product_types_condition', $schemaManager->listTableColumns('tl_iso_shipping'))
+            || !$schemaManager->introspectTableByUnquotedName('tl_iso_shipping')->hasColumn('product_types_condition')
         ) {
             return false;
         }
@@ -32,7 +32,7 @@ class ShippingCalculationMigration extends AbstractMigration
     {
         $schemaManager = $this->connection->createSchemaManager();
 
-        if (!\array_key_exists('flatProductTypes', $schemaManager->listTableColumns('tl_iso_shipping'))) {
+        if (!$schemaManager->introspectTableByUnquotedName('tl_iso_shipping')->hasColumn('flatProductTypes')) {
             $this->connection->executeStatement('ALTER TABLE tl_iso_shipping ADD COLUMN `flatProductTypes` blob NULL');
         }
 

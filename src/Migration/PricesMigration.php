@@ -91,14 +91,13 @@ class PricesMigration extends AbstractMigration
 
     private function addPricesFields(): void
     {
-        $schemaManager = $this->connection->createSchemaManager();
-        $columns = $schemaManager->listTableColumns('tl_iso_product');
+        $table = $this->connection->createSchemaManager()->introspectTableByUnquotedName('tl_iso_product');
 
-        if (!\array_key_exists('price', $columns)) {
+        if (!$table->hasColumn('price')) {
             $this->connection->executeStatement('ALTER TABLE tl_iso_product ADD COLUMN `price` text NULL');
         }
 
-        if (!\array_key_exists('prices', $columns)) {
+        if (!$table->hasColumn('prices')) {
             $this->connection->executeStatement('ALTER TABLE tl_iso_product ADD COLUMN `prices` text NULL');
         }
     }

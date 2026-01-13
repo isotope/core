@@ -33,7 +33,7 @@ class ModuleToElementMigration extends AbstractMigration
 
         if (
             !$schemaManager->tablesExist(['tl_module', 'tl_content'])
-            || !$schemaManager->introspectSchema()->getTable('tl_content')->hasColumn('jsonData')
+            || !$schemaManager->introspectTableByUnquotedName('tl_content')->hasColumn('jsonData')
         ) {
             return false;
         }
@@ -49,7 +49,7 @@ class ModuleToElementMigration extends AbstractMigration
 
     public function run(): MigrationResult
     {
-        $table = $this->connection->createSchemaManager()->introspectSchema()->getTable('tl_content');
+        $table = $this->connection->createSchemaManager()->introspectTableByUnquotedName('tl_content');
 
         $modules = $this->connection->fetchAllAssociative(
             'SELECT * FROM tl_module WHERE type IN (?)',

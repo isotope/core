@@ -30,10 +30,10 @@ class FieldPermissionMigration extends AbstractFieldPermissionMigration
                 continue;
             }
 
-            $columns = $schemaManager->listTableColumns($table);
+            $schema = $schemaManager->introspectTableByUnquotedName($table);
 
             foreach (self::RENAME_FIELDS as $old => $new) {
-                if (\array_key_exists($old, $columns) && !\array_key_exists($new, $columns)) {
+                if ($schema->hasColumn($old) && !$schema->hasColumn($new)) {
                     $this->connection->executeStatement("ALTER TABLE $table CHANGE COLUMN $old $new blob NULL");
                 }
             }
