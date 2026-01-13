@@ -61,7 +61,7 @@
                 <form data-action="isotope--productquery#search:prevent">
                     <label for="ctrl_keywords_{{ fragment_id }}">{{ 'MSC.searchTermsLabel'|trans }}</label>
                     <input type="text" name="_q" id="ctrl_keywords_{{ fragment_id }}" class="text" value="{{ keywords }}" placeholder="{{ 'MSC.defaultSearchText'|trans }}" data-isotope--productquery-target="search">
-                    <input type="submit" class="submit" value="{{ 'MSC.searchLabel'|trans }}">
+                    <button type="submit" class="submit">{{ 'MSC.searchLabel'|trans }}</button>
                 </form>
             </div>
         {% endblock %}
