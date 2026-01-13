@@ -21,7 +21,7 @@ $GLOBALS['TL_DCA']['tl_iso_download'] = [
             'fields' => ['sorting'],
             'flag' => DataContainer::SORT_INITIAL_LETTER_ASC,
             'panelLayout' => 'filter;search,limit',
-            'headerFields' => ['name', 'alias', 'sku'],
+            'headerFields' => ['type', 'name', 'alias', 'sku', 'published'],
         ],
         'label' => [
             'fields' => ['title', 'singleSRC'],

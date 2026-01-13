@@ -27,7 +27,7 @@ $GLOBALS['TL_DCA']['tl_iso_related_product'] = [
             'fields' => ['category'],
             'flag' => DataContainer::SORT_INITIAL_LETTER_ASC,
             'panelLayout' => 'filter,limit',
-            'headerFields' => ['type', 'name', 'alias', 'sku'],
+            'headerFields' => ['type', 'name', 'alias', 'sku', 'published'],
             'disableGrouping' => true,
             'child_record_callback' => [Callback::class, 'listRows'],
         ],

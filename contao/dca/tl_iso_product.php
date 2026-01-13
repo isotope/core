@@ -18,7 +18,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
         'label' => &$GLOBALS['TL_LANG']['MOD']['iso_products'][0],
         'dataContainer' => ProductData::class,
         'enableVersioning' => true,
-        'ctable' => ['tl_iso_product', 'tl_iso_download', 'tl_iso_attribute_option'],
+        'ctable' => ['tl_iso_product', 'tl_iso_related_product', 'tl_iso_download', 'tl_iso_attribute_option'],
         'sql' => [
             'keys' => [
                 'id' => 'primary',
@@ -34,7 +34,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
         'sorting' => [
             'mode' => DataContainer::MODE_SORTABLE,
             'fields' => ['name'],
-            'headerFields' => ['name', 'sku', 'price', 'published'],
+            'headerFields' => ['type', 'name', 'alias', 'sku', 'published'],
             'flag' => DataContainer::SORT_INITIAL_LETTER_ASC,
             'panelLayout' => 'search,filter,iso_filter;sort,iso_sorting,limit',
         ],
