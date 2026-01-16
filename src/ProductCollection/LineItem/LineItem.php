@@ -194,7 +194,7 @@ class LineItem
         return [
             'identifier' => $this->getIdentifier(),
             'quantity' => $this->getQuantity(),
-            'price' => $this->getPrice()?->totalPrice,
+            'price' => $this->getPrice()?->getTotalPrice(),
         ];
     }
 }

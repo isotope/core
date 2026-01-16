@@ -16,6 +16,7 @@ use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Store\Context\ProductContext;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Price\CalculatedPrice;
+use Isotope\CoreBundle\Store\Price\PriceCalculator;
 use Isotope\CoreBundle\Store\Price\PriceDisplay;
 use Isotope\CoreBundle\Store\Tax\TaxCalculator;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -27,6 +28,7 @@ class OptionFactory
         private readonly Connection $connection,
         private readonly TranslatorInterface $translator,
         private readonly TaxCalculator $taxCalculator,
+        private readonly PriceCalculator $priceCalculator,
         private readonly Environment $twig,
         private readonly ScopeMatcher $scopeMatcher,
     ) {
@@ -108,28 +110,14 @@ class OptionFactory
             );
 
             if ($model->price && $productContext && ($productPrice = $productContext->getProduct()->getPrice())) {
-                $price = $model->price;
                 $context = $productContext->getContext();
+                $price = $this->priceCalculator->calculateOption($model->price, $productPrice, $context);
 
-                if (str_ends_with($price, '%')) {
-                    $amount = $productPrice->unitPrice / 100 * substr($price, 0, -1);
-                } else {
-                    $amount = (float) $price;
-                }
-
-                $netPrice = $this->taxCalculator->calculateNetPrice($amount, $productPrice->getTaxRates(), $context);
-                $taxes = $this->taxCalculator->calculateTaxes($netPrice, $productPrice->getTaxRates());
-
-                $amount = match ($context->getPriceDisplay()) {
-                    PriceDisplay::Gross => $netPrice + $taxes->sum(),
-                    PriceDisplay::Net => $netPrice,
-                    PriceDisplay::Fixed => $amount,
-                };
-
-                $option->setPrice(new CalculatedPrice($amount, $amount, $taxes, $productPrice->getTaxRates()));
+                $option->setPrice($price);
                 $option->setLabel($this->twig->render('@Contao/component/isotope_option_price.html.twig', [
                     'label' => $option->getLabel(),
-                    'amount' => $amount,
+                    'price' => $model->price,
+                    'amount' => $price->getUnitPrice(),
                     'currency' => $context->getCurrency(),
                     'money' => $context->getMoneyFormat(),
                 ]));

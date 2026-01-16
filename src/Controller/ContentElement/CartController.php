@@ -8,6 +8,8 @@ use Contao\ContentModel;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsContentElement;
 use Contao\CoreBundle\Twig\FragmentTemplate;
 use Isotope\CoreBundle\Store\CartManager;
+use Isotope\CoreBundle\Store\Price\PriceDisplay;
+use Isotope\CoreBundle\Store\Price\TaxCalculation;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -25,6 +27,9 @@ class CartController extends AbstractContentElementController
         $collection = $context->getCart();
 
         $template->collection = $collection;
+        $template->show_taxes = TaxCalculation::Horizontal === $context->getTaxCalculation();
+        $template->multiple_taxes = $collection->getTotal()?->getCalculatedTaxes()->count() > 1;
+        $template->is_gross = PriceDisplay::Net !== $context->getPriceDisplay();
 
         if (
             $request->isMethod(Request::METHOD_POST)

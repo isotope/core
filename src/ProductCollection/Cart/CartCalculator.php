@@ -7,6 +7,9 @@ namespace Isotope\CoreBundle\ProductCollection\Cart;
 use Isotope\CoreBundle\ProductCollection\ItemCollector\ItemCollectorInterface;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Price\CalculatedPrice;
+use Isotope\CoreBundle\Store\Price\PriceCalculator;
+use Isotope\CoreBundle\Store\Price\PriceDisplay;
+use Isotope\CoreBundle\Store\Tax\CalculatedTax;
 use Isotope\CoreBundle\Store\Tax\CalculatedTaxCollection;
 use Isotope\CoreBundle\Store\Tax\TaxRateCollection;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
@@ -19,6 +22,7 @@ class CartCalculator
     public function __construct(
         #[AutowireIterator('isotope.item_collector')] private readonly iterable $collectors,
         private readonly CartFactory $cartFactory,
+        private readonly PriceCalculator $priceCalculator,
     ) {
     }
 
@@ -47,10 +51,21 @@ class CartCalculator
             $cart = $toCalculate;
         }
 
+        $toCalculate->setLineItems($toCalculate->getLineItems()->sort('getLevel'));
+
         $toCalculate->setSubtotals($this->calculateSubtotals($toCalculate, $context));
 
-        // TODO: actually calculate the cart total
-        $toCalculate->setTotal(new CalculatedPrice($toCalculate->getSubtotal(), $toCalculate->getSubtotal(), new CalculatedTaxCollection(), new TaxRateCollection()));
+        $total = clone $toCalculate->getSubtotal();
+
+        if (PriceDisplay::Net === $context->getPriceDisplay()) {
+            // Always round tax here because we display it to the client
+            $tax = array_reduce($total->getCalculatedTaxes()->toArray(), static fn (float $total, CalculatedTax $tax) => $total + $context->getMoneyFormat()->mathRound($tax->getTax()), 0);
+            $amount = $context->getMoneyFormat()->moneyRound($total->getUnitPrice() + $tax);
+
+            $total = new CalculatedPrice($amount, $amount, $total->getCalculatedTaxes(), $total->getTaxRates());
+        }
+
+        $toCalculate->setTotal($total);
 
         return $toCalculate;
     }
@@ -58,7 +73,7 @@ class CartCalculator
     private function hash(Cart $cart): string
     {
         $data = [
-            'price' => $cart->getSubtotal(),
+            'price' => $cart->getSubtotal()->getTotalPrice(),
             'shipping' => $cart->getShippingMethod()?->getId(),
             'payment' => $cart->getPaymentMethod()?->getId(),
             'items' => [],
@@ -73,18 +88,19 @@ class CartCalculator
 
     private function calculateSubtotals(Cart $cart): array
     {
-        $totals = [];
+        $levels = [];
+        $subtotal = new CalculatedPrice(0, 0, new CalculatedTaxCollection(), new TaxRateCollection());
 
-        foreach ($cart->getLineItems() as $item) {
-            if ($price = $item->getPrice()) {
-                if (!isset($totals[$item->getLevel()])) {
-                    $totals[$item->getLevel()] = 0;
+        foreach ($cart->getLineItems()->byLevel() as $level => $items) {
+            foreach ($items as $item) {
+                if ($price = $item->getPrice()) {
+                    $subtotal = $this->priceCalculator->sum($subtotal, $price->reduce());
                 }
-
-                $totals[$item->getLevel()] += $price->totalPrice;
             }
+
+            $levels[$level] = $subtotal;
         }
 
-        return $totals;
+        return $levels;
     }
 }

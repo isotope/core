@@ -44,8 +44,6 @@ final class MoneyFormat
 
     public function format(float $price): string
     {
-        $price = $this->moneyRound($price);
-
         return number_format($price, $this->decimals, $this->decimalSeparator, $this->thousandsSeparator);
     }
 }

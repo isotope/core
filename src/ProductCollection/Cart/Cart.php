@@ -8,6 +8,8 @@ use Isotope\CoreBundle\Checkout\Payment\PaymentInterface;
 use Isotope\CoreBundle\Checkout\Shipping\ShippingInterface;
 use Isotope\CoreBundle\ProductCollection\AbstractProductCollection;
 use Isotope\CoreBundle\Store\Price\CalculatedPrice;
+use Isotope\CoreBundle\Store\Tax\CalculatedTaxCollection;
+use Isotope\CoreBundle\Store\Tax\TaxRateCollection;
 use Isotope\Model\Address;
 
 class Cart extends AbstractProductCollection
@@ -96,7 +98,7 @@ class Cart extends AbstractProductCollection
         return $this;
     }
 
-    public function getSubtotal(int $level = PHP_INT_MAX): float
+    public function getSubtotal(int $level = PHP_INT_MAX): CalculatedPrice
     {
         $totals = array_filter(
             $this->subtotals,
@@ -105,7 +107,7 @@ class Cart extends AbstractProductCollection
         );
 
         if ([] === $totals) {
-            return 0;
+            return new CalculatedPrice(0, 0, new CalculatedTaxCollection(), new TaxRateCollection());
         }
 
         if (\count($totals) < 2) {

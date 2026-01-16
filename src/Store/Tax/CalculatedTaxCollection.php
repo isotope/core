@@ -39,23 +39,15 @@ class CalculatedTaxCollection extends AbstractMap
         return array_reduce($this->data, static fn (float $total, CalculatedTax $tax) => $total + $tax->getTax(), 0);
     }
 
-    public function merge(self $taxCollection): self
+    public function getNumbers(): array
     {
-        $new = clone $this;
+        $numbers = [];
 
-        /** @var CalculatedTax $calculatedTax */
-        foreach ($taxCollection as $calculatedTax) {
-            /** @var CalculatedTax|null $exists */
-            $exists = $new->get($calculatedTax->getId());
-            if (!$exists) {
-                $new->put($calculatedTax->getId(), clone $calculatedTax);
-
-                continue;
-            }
-
-            $exists->increment($calculatedTax);
+        /** @var CalculatedTax $tax */
+        foreach ($this as $tax) {
+            $numbers[] = $tax->getNumber();
         }
 
-        return $new;
+        return array_unique($numbers);
     }
 }

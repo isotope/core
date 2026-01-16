@@ -33,7 +33,7 @@ class ProductCollector implements ItemCollectorInterface
                 continue;
             }
 
-            $price = $this->priceCalculator->calculate($product, $item->getQuantity(), false, $context);
+            $price = $this->priceCalculator->calculateProduct($product, $item->getQuantity(), false, $context);
 
             $event = new ProductPriceEvent($product, $context, $item->getConfiguration() ?? [], $price);
             $this->eventDispatcher->dispatch($event);

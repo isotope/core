@@ -14,19 +14,22 @@ class CalculatedTax
 
     protected float $price = 0;
 
+    protected string|null $label = null;
+
+    protected int $number = 0;
+
     public function __construct(
-        private readonly int $id,
+        private readonly string $id,
         float $tax,
         float $taxRate,
         float $price,
-        protected string|null $label = null,
     ) {
         $this->tax = FloatComparator::cast($tax);
         $this->taxRate = FloatComparator::cast($taxRate);
         $this->price = FloatComparator::cast($price);
     }
 
-    public function getId(): int
+    public function getId(): string
     {
         return $this->id;
     }
@@ -51,13 +54,6 @@ class CalculatedTax
         return $this->price;
     }
 
-    public function increment(self $calculatedTax): void
-    {
-        $this->tax = FloatComparator::cast($this->tax + $calculatedTax->getTax());
-        $this->price = FloatComparator::cast($this->price + $calculatedTax->getPrice());
-        $this->label = implode(' + ', array_filter([$this->getLabel(), $calculatedTax->getLabel()])) ?: null;
-    }
-
     public function setPrice(float $price): void
     {
         $this->price = FloatComparator::cast($price);
@@ -66,5 +62,35 @@ class CalculatedTax
     public function getLabel(): string|null
     {
         return $this->label;
+    }
+
+    public function setLabel(?string $label): CalculatedTax
+    {
+        $this->label = $label;
+
+        return $this;
+    }
+
+    public function getNumber(): int
+    {
+        return $this->number;
+    }
+
+    public function setNumber(int $number): CalculatedTax
+    {
+        $this->number = $number;
+        return $this;
+    }
+
+    public function multiply(int $quantity): void
+    {
+        $this->tax = FloatComparator::cast($this->tax * $quantity);
+        $this->price = FloatComparator::cast($this->price * $quantity);
+    }
+
+    public function increment(self $calculatedTax): void
+    {
+        $this->tax = FloatComparator::cast($this->tax + $calculatedTax->getTax());
+        $this->price = FloatComparator::cast($this->price + $calculatedTax->getPrice());
     }
 }

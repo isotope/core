@@ -107,6 +107,7 @@ class CartManager implements ResetInterface
         /** @var LineItemCollection $lineItems */
         $lineItems = $cart->getLineItems()->filter(static fn (LineItem $item) => !\in_array($item->getId(), $ids, true));
         $cart->setLineItems($lineItems);
+        $cart->setModified();
 
         return $this->recalculate($cart, $context);
     }

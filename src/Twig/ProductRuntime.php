@@ -12,6 +12,7 @@ use Isotope\CoreBundle\Store\Context\ProductContext;
 use Isotope\CoreBundle\Store\Price\CalculatedPrice;
 use Isotope\CoreBundle\Store\Price\Currency;
 use Isotope\CoreBundle\Store\Price\MoneyFormat;
+use Isotope\CoreBundle\Store\Price\PriceDisplay;
 use Isotope\CoreBundle\Store\StoreManager;
 use Isotope\Isotope;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -53,14 +54,35 @@ class ProductRuntime implements RuntimeExtensionInterface
         }
 
         $storeContext = $this->storeManager->getCurrentContext();
+        $format = $storeContext->getMoneyFormat();
 
-        return [
-            'unitPrice' => $price->unitPrice,
-            'totalPrice' => $price->totalPrice,
-            'isRange' => $price->isRange(),
+        $data =  [
+            'unit_price' => $price->getUnitPrice(),
+            'unit_tax' => $format->mathRound($price->getCalculatedTaxes()->sum()),
+            'total_price' => $price->getTotalPrice(),
+            'is_range' => $price->isRange(),
+            'tax_ids' => $price->getCalculatedTaxes()->getNumbers(),
             'money' => $storeContext->getMoneyFormat(),
             'currency' => $storeContext->getCurrency(),
+            'tax_calculation' => $storeContext->getTaxCalculation()->value,
+            'price_display' => $storeContext->getPriceDisplay()->value,
+            'is_gross' => PriceDisplay::Net !== $storeContext->getPriceDisplay(),
         ];
+
+        if (PriceDisplay::Net === $storeContext->getPriceDisplay()) {
+            $data['net_unit_price'] = $price->getUnitPrice();
+            $data['gross_unit_price'] = $price->getUnitPrice() + $data['unit_tax'];
+        } else {
+            $data['gross_unit_price'] = $price->getUnitPrice();
+            $data['net_unit_price'] = $price->getUnitPrice() - $data['unit_tax'];
+        }
+
+        $data['quantity'] = $price->getQuantity();
+        $data['total_tax'] = $data['unit_tax'] * $price->getQuantity();
+        $data['net_total_price'] = $data['net_unit_price'] * $price->getQuantity();
+        $data['gross_total_price'] = $data['gross_unit_price'] * $price->getQuantity();
+
+        return $data;
     }
 
     public function generateBasePrice(array $context): string
@@ -78,6 +100,6 @@ class ProductRuntime implements RuntimeExtensionInterface
             return '';
         }
 
-        return \sprintf($basePrice->getLabel(), Isotope::formatPriceWithCurrency($price->unitPrice / $basePrice->getProductAmount() * $basePrice->getBaseAmount()), $basePrice->getProductAmount());
+        return \sprintf($basePrice->getLabel(), Isotope::formatPriceWithCurrency($price->getUnitPrice() / $basePrice->getProductAmount() * $basePrice->getBaseAmount()), $basePrice->getProductAmount());
     }
 }

@@ -8,6 +8,7 @@ use Isotope\CoreBundle\ProductCollection\Cart\Cart;
 use Isotope\CoreBundle\Store\Price\Currency;
 use Isotope\CoreBundle\Store\Price\MoneyFormat;
 use Isotope\CoreBundle\Store\Price\PriceDisplay;
+use Isotope\CoreBundle\Store\Price\TaxCalculation;
 use Isotope\Model\Address;
 
 /**
@@ -40,6 +41,7 @@ final class StoreContext
         private readonly string $locale,
         private \Closure|MoneyFormat $moneyFormat,
         private \Closure|PriceDisplay $priceDisplay,
+        private \Closure|TaxCalculation $taxCalculation,
         private \Closure|Currency $currency,
         private readonly float $currencyFactor,
         private AddressConfig|\Closure $billingAddressConfig,
@@ -125,6 +127,13 @@ final class StoreContext
         $this->resolveClosure($this->priceDisplay);
 
         return $this->priceDisplay;
+    }
+
+    public function getTaxCalculation(): TaxCalculation
+    {
+        $this->resolveClosure($this->taxCalculation);
+
+        return $this->taxCalculation;
     }
 
     public function getCurrency(): Currency

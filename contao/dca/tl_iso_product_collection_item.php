@@ -1,5 +1,7 @@
 <?php
 
+use Doctrine\DBAL\Types\Types;
+
 $GLOBALS['TL_DCA']['tl_iso_product_collection_item'] = [
     'config' => [
         'ptable' => 'tl_iso_product_collection',
@@ -24,8 +26,14 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_item'] = [
         'tstamp' => [
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
+        'type' => [
+            'sql' => 'varchar(32) NOT NULL',
+        ],
         'identifier' => [
             'sql' => 'varchar(64) NOT NULL',
+        ],
+        'configuration' => [
+            'sql' => 'blob NULL',
         ],
         'sku' => [
             'sql' => 'varchar(128) NULL',
@@ -33,17 +41,17 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_item'] = [
         'name' => [
             'sql' => "varchar(255) NOT NULL default ''",
         ],
-        'configuration' => [
-            'sql' => 'blob NULL',
-        ],
         'quantity' => [
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => 'int(10) unsigned NOT NULL default 0',
+        ],
+        'level' => [
+            'sql' => ['type' => Types::SMALLINT, 'unsigned' => true, 'default' => 0],
         ],
         'price' => [
-            'sql' => "decimal(12,2) NOT NULL default '0.00'",
+            'sql' => 'decimal(12,2) NOT NULL default 0.00',
         ],
         'tax_free_price' => [
-            'sql' => "decimal(12,2) NOT NULL default '0.00'",
+            'sql' => 'decimal(12,2) NOT NULL default 0.00',
         ],
         'tax_id' => [
             // Not the ID of a tax class or rate, this is the CSV list of applicable taxes (incremental numeric)

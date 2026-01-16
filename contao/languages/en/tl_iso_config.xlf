@@ -179,6 +179,12 @@
       <trans-unit id="tl_iso_config.priceDisplay.1">
         <source>Select if you want to display net or gross prices in your shop. See the help wizard for more information.</source>
       </trans-unit>
+      <trans-unit id="tl_iso_config.taxCalculation.0">
+        <source>Tax calculation</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.taxCalculation.1">
+        <source>Select the tax calculation mode.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_config.currencyFormat.0">
         <source>Price formatting</source>
       </trans-unit>

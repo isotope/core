@@ -46,7 +46,7 @@ class StandardProductFactory implements ProductFactoryInterface
             ->setVariants(fn () => $this->getVariants($dto, $context))
             ->setDefaultVariant(fn () => $this->getDefaultVariant($dto, $context))
             ->setPrices(fn () => $this->priceFactory->create($dto, $type, $context))
-            ->setPrice(fn () => $this->calculator->calculate($product, $dto->getQuantity(), true, $context))
+            ->setPrice(fn () => $this->calculator->calculateProduct($product, $dto->getQuantity(), true, $context))
             ->setAvailable(fn () => $this->availabilityChecker->isAvailable($product, $context))
         ;
 

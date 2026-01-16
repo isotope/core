@@ -32,7 +32,7 @@ class CollectionItemIdentifierMigration extends AbstractMigration
     public function run(): MigrationResult
     {
         $this->connection->executeStatement('ALTER TABLE tl_iso_product_collection_item ADD COLUMN `identifier` varchar(64) NOT NULL');
-        $this->connection->executeStatement("UPDATE tl_iso_product_collection_item SET identifier=CONCAT(type, '.', product_id)");
+        $this->connection->executeStatement("UPDATE tl_iso_product_collection_item SET type='product', identifier=CONCAT(type, '.', product_id)");
 
         return $this->createResult(true);
     }

@@ -1,6 +1,7 @@
 {% trans_default_domain 'contao_default' %}
 {% extends '@Contao/content_element/iso_cart.html.twig' %}
 {% use '@Contao/component/isotope_collection_item.html.twig' %}
+{% use '@Contao/component/isotope_price.html.twig' %}
 
 {% block product_collection %}
     {% for item in collection.lineItems %}
@@ -19,18 +20,18 @@
                     {% set price = isotope_price(item) %}
                     {% if price %}
                         <div class="price">{{ item.quantity }} x
-                            {{ include('@Contao/component/isotope_price.html.twig', price, with_context: false) }}
-                            = <span class="total">{{ include('@Contao/component/isotope_price.html.twig', price|merge({ amount: price.totalPrice }), with_context: false) }}</span>
+                            {% with price only %}{{ block('unit_price_component') }}{% endwith %}
+                            = <span class="total">{% with price only %}{{ block('total_price_component') }}{% endwith %}</span>
                         </div>
                     {% endif %}
                 </div>
             </div>
         {% endblock %}
     {% endfor %}
-        <div class="subtotal">
-            <span class="label">{{ 'MSC.subTotalLabel'|trans }}</span>
-            {{ include('@Contao/component/isotope_price.html.twig', isotope_price(collection.lineItems|first)|merge({ amount: collection.subtotal }), with_context: false) }}
-        </div>
+    <div class="subtotal">
+        <span class="label">{{ 'MSC.subTotalLabel'|trans }}</span>
+        {% with isotope_price(collection.subtotal) only %}{{ block('unit_price_component') }}{% endwith %}
+    </div>
     {% block product_collection_actions %}
         <div class="cart">{{ isotope_product_collection_action('link_to_cart') }}</div>
         <div class="checkout">{{ isotope_product_collection_action('link_to_checkout') }}</div>

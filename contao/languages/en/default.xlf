@@ -542,6 +542,18 @@
       <trans-unit id="MSC.iso_priceDisplay.fixed.1">
         <source>The product price will always be shown as in the product setting. Taxes are always calculated as "included". This means the shop owner's profit varies depending on the applicable taxes.</source>
       </trans-unit>
+      <trans-unit id="MSC.iso_taxCalculation.horizontal.0">
+        <source>horizontal</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_taxCalculation.horizontal.1">
+        <source>VAT is calculated individually for each line item – that is, item price × quantity, then the tax is calculated and rounded per item. At the end, all tax amounts are summed.</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_taxCalculation.vertical.0">
+        <source>vertical</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_taxCalculation.vertical.1">
+        <source>VAT is calculated only after summing all net amounts. Then the tax is applied to the total net amount and rounded once.</source>
+      </trans-unit>
       <trans-unit id="CTE.isotope">
         <source>Isotope eCommerce</source>
       </trans-unit>

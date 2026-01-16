@@ -1,4 +1,5 @@
 {% trans_default_domain 'contao_default' %}
+{% use '@Contao/component/isotope_price.html.twig' %}
 
 {% set product_attributes = attrs()
     .setIfExists('id', product_html_id)
@@ -47,7 +48,7 @@
                     {% set price = isotope_price() %}
                     {% if price %}
                         <div class="offer">
-                            <div class="price">{{ include('@Contao/component/isotope_price.html.twig', price, with_context: false) }}</div>
+                            <div class="price">{% with price only %}{{ block('unit_price_component') }}{% endwith %}</div>
                             {#{% if data.baseprice|default %}<div class="baseprice">{{ isotope_attribute('baseprice') }}</div>{% endif %}#}
                         </div>
                     {% endif %}

@@ -13,6 +13,8 @@ use Doctrine\DBAL\Connection;
 use Isotope\CoreBundle\Model\ProductType;
 use Isotope\CoreBundle\Product\Price\DefaultPriceFactory;
 use Isotope\CoreBundle\Product\Price\PriceCollection;
+use Isotope\CoreBundle\Store\Context\StoreContext;
+use Isotope\CoreBundle\Store\Context\StoreContextFactory;
 use Isotope\CoreBundle\Store\Price\MoneyFormat;
 use Isotope\Model\TaxClass;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -28,6 +30,7 @@ class LabelListener
         private readonly UrlGeneratorInterface $urlGenerator,
         private readonly TranslatorInterface $translator,
         private readonly DefaultPriceFactory $priceFactory,
+        private readonly StoreContextFactory $storeContextFactory,
     ) {
     }
 
@@ -139,6 +142,7 @@ class LabelListener
     {
         $objPrice = null;
         $fromPrice = false;
+        $context = $this->storeContextFactory->createBackend();
 
         if (0 === $row['pid']) {
             $type = ProductType::findById($row['type']);
@@ -162,7 +166,7 @@ class LabelListener
             }
 
             /** @var PriceCollection $prices */
-            $prices = array_map(fn (array $variant) => $this->priceFactory->createFromArray($variant, $type->hasAdvancedPrices()), $variants);
+            $prices = array_map(fn (array $variant) => $this->priceFactory->createFromArray($variant, $type->hasAdvancedPrices(), $context), $variants);
             $prices = (new PriceCollection())->merge(...$prices);
 
             $objPrice = $prices->getLowest();
@@ -170,7 +174,7 @@ class LabelListener
         }
 
         if (null === $objPrice) {
-            $prices = $this->priceFactory->createFromArray($row, $type?->hasAdvancedPrices() ?? false);
+            $prices = $this->priceFactory->createFromArray($row, $type?->hasAdvancedPrices() ?? false, $context);
             $objPrice = $prices->getLowest();
             $fromPrice = $prices->hasRange();
         }

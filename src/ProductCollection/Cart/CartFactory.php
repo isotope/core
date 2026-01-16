@@ -87,6 +87,7 @@ class CartFactory
             $item->setId($model->id);
             $item->setSku($model->sku);
             $item->setLabel($model->name);
+            $item->setLevel((int) $model->level);
 
             if (\is_array($configuration = StringUtil::deserialize($model->configuration))) {
                 $item->setConfiguration($configuration);

@@ -15,6 +15,7 @@ use Isotope\CoreBundle\Store\Event\ContextCreatedEvent;
 use Isotope\CoreBundle\Store\Price\Currency;
 use Isotope\CoreBundle\Store\Price\MoneyFormat;
 use Isotope\CoreBundle\Store\Price\PriceDisplay;
+use Isotope\CoreBundle\Store\Price\TaxCalculation;
 use Isotope\Model\Address;
 use Isotope\Model\Config;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -58,6 +59,7 @@ class StoreContextFactory
             locale: $locale,
             moneyFormat: fn () => $this->getMoneyFormat($config),
             priceDisplay: fn () => $this->getPriceDisplay($config, $memberId),
+            taxCalculation: fn () => TaxCalculation::from($config->taxCalculation),
             currency: fn () => $this->getCurrency($config),
             currencyFactor: (float) $config->priceCalculateFactor,
             billingAddressConfig: fn () => $this->getAddressConfig($config->address_fields, 'billing', (string) $config->billing_countries, $config->billing_country),

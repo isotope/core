@@ -53,7 +53,9 @@
     "require-dev": {
         "contao/core-bundle": "5.x-dev",
         "contao/manager-plugin": "^2.0",
-        "terminal42/contao-build-tools": "dev-main"
+        "terminal42/contao-build-tools": "dev-main",
+        "phpunit/phpunit": "^12.4",
+        "contao/test-case": "^5.x-dev"
     },
     "conflict": {
         "contao/manager-plugin": "<2.0 || >= 3.0"
@@ -68,6 +70,11 @@
             ]
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Isotope\\CoreBundle\\Test\\": "tests/"
+        }
+    },
     "config": {
         "allow-plugins": {
             "terminal42/contao-build-tools": true,
@@ -76,6 +83,9 @@
             "contao-components/installer": false,
             "php-http/discovery": false
         }
+    },
+    "scripts": {
+        "unit-tests": "@php vendor/bin/phpunit"
     },
     "extra": {
         "contao-manager-plugin": "Isotope\\CoreBundle\\ContaoManager\\Plugin"

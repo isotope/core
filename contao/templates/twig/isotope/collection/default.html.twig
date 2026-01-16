@@ -1,5 +1,6 @@
 {% trans_default_domain 'contao_default' %}
 {% use '@Contao/component/isotope_collection_item.html.twig' %}
+{% use '@Contao/component/isotope_price.html.twig' %}
 
 {% block product_collection %}
     {% if block("product_collection_actions") is defined %}
@@ -14,100 +15,126 @@
                 <?php endif; ?>#}
 
                 <table>
+                    <thead>
+                        <tr>
+                            <td class="name"></td>
+                            <td class="quantity">Quantity</td>
+                            <td class="price">Price</td>
+                            <td class="total">Total</td>
+                            {% if multiple_taxes|default %}
+                                <td class="tax_id"></td>
+                            {% endif %}
+                            {% if block("product_collection_item_actions") is defined %}
+                                <td class="actions"></td>
+                            {% endif %}
+                        </tr>
+                    </thead>
                     <tbody>
-                    {% for item in collection.lineItems %}
-                        {% block product_collection_item %}
-                            <tr>
-                                {#<?php if(!$this->isNotification): ?>
-                                <td class="image"><?= $this->getGallery('images', $item['item'])->generateMainImage() ?></td>
-                                <?php endif; ?>#}
-                                <td class="name">
-                                    {{ block('item_name') }}
-                                    {{ block('item_attributes') }}
-                                </td>
-                                <td class="quantity">
-                                    {% if editable|default %}
-                                        <input name="quantity[{{ item.id }}]" type="number" class="text" value="{{ item.quantity }}" maxlength="10">
-                                    {% else %}
-                                        {{ item.quantity }} x
+                        {% for level,items in collection.lineItems.byLevel %}
+                            {% for item in items %}
+                                {% block product_collection_item %}
+                                    <tr>
+                                        {#<?php if(!$this->isNotification): ?>
+                                        <td class="image"><?= $this->getGallery('images', $item['item'])->generateMainImage() ?></td>
+                                        <?php endif; ?>#}
+                                        <td class="name">
+                                            {{ block('item_name') }}
+                                            {{ block('item_attributes') }}
+                                        </td>
+                                        <td class="quantity">
+                                            {% if editable|default %}
+                                                <input name="quantity[{{ item.id }}]" type="number" class="text" value="{{ item.quantity }}" maxlength="10">
+                                            {% else %}
+                                                {{ item.quantity }} x
+                                            {% endif %}
+                                        </td>
+                                        {% set price = isotope_price(item) %}
+                                        <td class="price">
+                                            {% with price only %}{{ block('unit_price_component') }}{% endwith %}
+                                            {% if show_taxes|default %}
+                                                <div class="tax">
+                                                    {% if price.is_gross|default %}incl.{% else %}.excl{% endif %}
+                                                    {% with price only %}{{ block('unit_tax_component') }}{% endwith %}
+                                                    VAT
+                                                </div>
+                                            {% endif %}
+                                        </td>
+                                        <td class="total">
+                                            {% with price only %}{{ block('total_price_component') }}{% endwith %}
+                                        </td>
+                                        {% if multiple_taxes|default %}
+                                            <td class="tax_id">{{ price.tax_ids|default([])|join(',') }}</td>
+                                        {% endif %}
+                                        {% if block("product_collection_item_actions") is defined %}
+                                            <td class="actions">
+                                                {#<?php if ($item['edit_href'] ?? null): ?><a href="<?= $item['edit_href'] ?>" class="edit" title="<?= $item['edit_title'] ?>"><?= $item['edit_link'] ?></a><?php endif; ?>#}
+                                                {% block product_collection_item_actions %}{% endblock %}
+                                            </td>
+                                        {% endif %}
+                                    </tr>
+                                    {% if item.hasErrors %}
+                                        <tr>
+                                            <td colspan="5">
+                                                {% for error in item.errors %}
+                                                    <p class="error">{{ error|trans }}</p>
+                                                {% endfor %}
+                                            </td>
+                                        </tr>
                                     {% endif %}
-                                </td>
-                                {% set price = isotope_price(item) %}
-                                <td class="price">
-                                    {% if price %}
-                                        {{ include('@Contao/component/isotope_price.html.twig', price, with_context: false) }}
-                                    {% endif %}
-                                </td>
-                                <td class="price total">
-                                    {% if price %}
-                                        {{ include('@Contao/component/isotope_price.html.twig', price|merge({ amount: price.totalPrice }), with_context: false) }}
-                                    {% endif %}
-                                </td>{# <?php if ($this->total_tax_ids > 1): ?>
-                                <td class="tax"><?= $item['tax_id'] ?></td>#}
-                                {% if block("product_collection_item_actions") is defined %}
-                                    <td class="actions">
-                                        {#<?php if ($item['edit_href'] ?? null): ?><a href="<?= $item['edit_href'] ?>" class="edit" title="<?= $item['edit_title'] ?>"><?= $item['edit_link'] ?></a><?php endif; ?>#}
-                                        {% block product_collection_item_actions %}{% endblock %}
+                                {% endblock %}
+                            {% endfor %}
+                            {% if not loop.last %}
+                                {% block product_collection_subtotal %}
+                                    <tr class="subtotal">
+                                        <td class="name" colspan="2">{{ 'MSC.subTotalLabel'|trans }}</td>
+                                        <td class="price">&nbsp;</td>
+                                        <td class="price total">
+                                            {% with isotope_price(collection.subtotal(level)) only %}{{ block('total_price_component') }}{% endwith %}
+                                        </td>
+                                        {% if multiple_taxes|default %}
+                                            <td class="tax_id">&nbsp;</td>
+                                        {% endif %}
+                                        {% if block("product_collection_item_actions") is defined %}
+                                            <td class="actions">&nbsp;</td>
+                                        {% endif %}
+                                    </tr>
+                                {% endblock %}
+                            {% endif %}
+                        {% endfor %}
+                        {% set total_price = isotope_price(collection.total) %}
+                        {% block product_collection_taxes %}
+                            {% for tax in collection.total.calculatedTaxes %}
+                                <tr class="tax">
+                                    <td class="name" colspan="2">{{ tax.label }}</td>
+                                    <td class="price">{{ tax.taxRate }}%</td>
+                                    <td class="price total">
+                                        {% with total_price|merge({ amount: tax.tax }) only %}{{ block('isotope_price_component') }}{% endwith %}
                                     </td>
+                                    {% if multiple_taxes|default %}
+                                        <td class="tax_id">{{ tax.number }}</td>
+                                    {% endif %}
+                                    {% if block("product_collection_item_actions") is defined %}
+                                        <td class="actions">&nbsp;</td>
+                                    {% endif %}
+                                </tr>
+                            {% endfor %}
+                        {% endblock %}
+                        {% block product_collection_total %}
+                            <tr class="total">
+                                <td class="name" colspan="2">{{ 'MSC.grandTotalLabel'|trans }}</td>
+                                <td class="price">&nbsp;</td>
+                                <td class="price total">
+                                    {% with total_price only %}{{ block('isotope_price_component') }}{% endwith %}
+                                </td>
+                                {% if multiple_taxes|default %}
+                                    <td class="tax_id">&nbsp;</td>
+                                {% endif %}
+                                {% if block("product_collection_item_actions") is defined %}
+                                    <td class="actions">&nbsp;</td>
                                 {% endif %}
                             </tr>
-                            {% if item.hasErrors %}
-                                <tr>
-                                    <td colspan="5">
-                                        {% for error in item.errors %}
-                                            <p class="error">{{ error|trans }}</p>
-                                        {% endfor %}
-                                    </td>
-                                </tr>
-                            {% endif %}
                         {% endblock %}
-                    {% endfor %}
                     </tbody>
-                    <tfoot>
-                    {% block product_collection_subtotal %}
-                        <tr class="subtotal">
-                            <td class="name" colspan="2">{{ 'MSC.subTotalLabel'|trans }}</td>
-                            <td class="price">&nbsp;</td>
-                            <td class="price total">
-                                {{ include('@Contao/component/isotope_price.html.twig', isotope_price(collection.lineItems|first)|merge({ amount: collection.subtotal }), with_context: false) }}
-                            </td>
-                            {#<?php if ($this->total_tax_ids > 1): ?>
-                            <td class="tax">&nbsp;</td><?php endif; ?>#}
-                            {% if block("product_collection_item_actions") is defined %}
-                                <td class="actions">&nbsp;</td>
-                            {% endif %}
-                        </tr>
-                    {% endblock %}
-                    {% block product_collection_surcharges %}
-                        {#<?php foreach ($this->surcharges as $surcharge): $i=0; ?>
-                        <tr class="<?= $surcharge['rowClass'] ?>">
-                            <?php if(!$this->isNotification): ?>
-                            <td>&nbsp;</td><?php endif; ?>
-                            <td class="name" colspan="2"><?= $surcharge['label'] ?></td>
-                            <td class="price"><?= $surcharge['price'] ?></td>
-                            <td class="price total"><?= $surcharge['total_price'] ?></td><?php if ($this->total_tax_ids > 1): ?>
-                            <td class="tax"><?= $surcharge['tax_id'] ?></td><?php endif; ?>
-                            {% if block("product_collection_item_actions") is defined %}
-                                <td class="actions">&nbsp;</td>
-                            {% endif %}
-                        </tr>
-                        <?php endforeach; ?>#}
-                    {% endblock %}
-                    {% block product_collection_total %}
-                        <tr class="total">
-                            <td class="name" colspan="2">{{ 'MSC.grandTotalLabel'|trans }}</td>
-                            <td class="price">&nbsp;</td>
-                            <td class="price total">
-                                {{ include('@Contao/component/isotope_price.html.twig', isotope_price(collection.total), with_context: false) }}
-                            </td>
-                            {#<?php if ($this->total_tax_ids > 1): ?>
-                            <td class="tax">&nbsp;</td>#}
-                            {% if block("product_collection_item_actions") is defined %}
-                                <td class="actions">&nbsp;</td>
-                            {% endif %}
-                        </tr>
-                    {% endblock %}
-                    </tfoot>
                 </table>
 
     {% if block("product_collection_actions") is defined %}

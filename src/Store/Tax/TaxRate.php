@@ -9,15 +9,16 @@ use Isotope\CoreBundle\Util\FloatComparator;
 class TaxRate
 {
     public function __construct(
-        private readonly int $id,
+        private readonly string $id,
         private float $taxRate,
         private float $percentage = 100.0,
+        private string|null $label = null,
     ) {
         $this->taxRate = FloatComparator::cast($taxRate);
         $this->percentage = FloatComparator::cast($percentage);
     }
 
-    public function getId(): int
+    public function getId(): string
     {
         return $this->id;
     }
@@ -30,5 +31,10 @@ class TaxRate
     public function getPercentage(): float
     {
         return FloatComparator::cast($this->percentage);
+    }
+
+    public function getLabel(): ?string
+    {
+        return $this->label;
     }
 }

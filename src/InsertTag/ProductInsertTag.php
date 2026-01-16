@@ -92,7 +92,7 @@ class ProductInsertTag implements InsertTagResolverNestedResolvedInterface
 
         // TODO: previously supported net or gross amount through $attribute and returned a formatted price
 
-        return new InsertTagResult((string) $price->unitPrice);
+        return new InsertTagResult((string) $price->getUnitPrice());
     }
 
     private function resolveAttribute(string $attribute, int|null $id): InsertTagResult

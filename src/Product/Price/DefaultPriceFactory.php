@@ -39,7 +39,7 @@ class DefaultPriceFactory
     /**
      * @internal
      */
-    public function createFromArray(array $data, bool $advancedPrices, StoreContext|null $context = null, int $variantId = 0): PriceCollection
+    public function createFromArray(array $data, bool $advancedPrices, StoreContext $context, int $variantId = 0): PriceCollection
     {
         $prices = new PriceCollection();
 

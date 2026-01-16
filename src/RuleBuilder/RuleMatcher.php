@@ -14,11 +14,10 @@ class RuleMatcher
 {
     public function __construct(
         private readonly RuleConditionRegistry $conditionRegistry,
-        private readonly StoreManager $storeManager,
     ) {
     }
 
-    public function isApplicable(int $ruleId, StoreContext|null $context = null): bool
+    public function isApplicable(int $ruleId, StoreContext $context): bool
     {
         $rule = Rule::findById($ruleId);
 
@@ -31,8 +30,6 @@ class RuleMatcher
         if (null === $conditions) {
             return true;
         }
-
-        $context ??= $this->storeManager->getCurrentContext();
 
         return $this->validateConditions($conditions->getModels(), $context);
     }

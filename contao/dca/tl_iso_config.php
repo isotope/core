@@ -7,6 +7,7 @@ use Isotope\Backend;
 use Isotope\Backend\Config\Callback;
 use Isotope\CoreBundle\Model\OrderStatus;
 use Isotope\CoreBundle\Store\Price\PriceDisplay;
+use Isotope\CoreBundle\Store\Price\TaxCalculation;
 
 $GLOBALS['TL_DCA']['tl_iso_config'] = [
     'config' => [
@@ -37,7 +38,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
             {address_legend:hide},firstname,lastname,company,vat_no,street_1,street_2,street_3,postal,city,country,subdivision,email,phone;
             {bank_legend:hide},bankName,bankAccount,bankCode,taxNumber;
             {checkout_legend},address_fields,billing_country,shipping_country,billing_countries,shipping_countries,limitMemberCountries,vatNoValidators;
-            {pricing_legend},priceDisplay,currencyFormat,priceRoundPrecision,priceRoundIncrement;
+            {pricing_legend},priceDisplay,taxCalculation,currencyFormat,priceRoundPrecision,priceRoundIncrement;
             {currency_legend},currency,currencyPosition,currencySymbol;
             {converter_legend:hide},priceCalculateFactor;
             {order_legend:hide},orderPrefix,orderDigits,orderstatus_new,orderstatus_error,orderDetailsModule;
@@ -237,24 +238,32 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
             'enum' => PriceDisplay::class,
             'reference' => &$GLOBALS['TL_LANG']['MSC']['iso_priceDisplay'],
             'eval' => ['mandatory' => true, 'tl_class' => 'w50', 'helpwizard' => true],
-            'sql' => "varchar(8) NOT NULL default ''",
+            'sql' => "varchar(8) NOT NULL default 'gross'",
+        ],
+        'taxCalculation' => [
+            'default' => 'vertical',
+            'inputType' => 'select',
+            'enum' => TaxCalculation::class,
+            'reference' => &$GLOBALS['TL_LANG']['MSC']['iso_taxCalculation'],
+            'eval' => ['mandatory' => true, 'tl_class' => 'w50', 'helpwizard' => true],
+            'sql' => "varchar(16) NOT NULL default 'vertical'",
         ],
         'currencyFormat' => [
             'inputType' => 'select',
             'options' => \array_keys($GLOBALS['ISO_NUM']),
-            'eval' => ['includeBlankOption' => true, 'decodeEntities' => true, 'mandatory' => true, 'tl_class' => 'w50'],
+            'eval' => ['includeBlankOption' => true, 'decodeEntities' => true, 'mandatory' => true, 'tl_class' => 'w33'],
             'sql' => "varchar(20) NOT NULL default ''",
         ],
         'priceRoundPrecision' => [
             'default' => '2',
             'inputType' => 'text',
-            'eval' => ['mandatory' => true, 'maxlength' => 1, 'rgpx' => 'digit', 'tl_class' => 'w50'],
+            'eval' => ['mandatory' => true, 'maxlength' => 1, 'rgpx' => 'digit', 'tl_class' => 'w33'],
             'sql' => "int(1) unsigned NOT NULL default '2'",
         ],
         'priceRoundIncrement' => [
             'inputType' => 'select',
             'options' => ['0.01', '0.05'],
-            'eval' => ['mandatory' => true, 'tl_class' => 'w50'],
+            'eval' => ['mandatory' => true, 'tl_class' => 'w33'],
             'sql' => "varchar(4) NOT NULL default ''",
         ],
         'cartMinSubtotal' => [

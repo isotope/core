@@ -49,6 +49,7 @@ use Contao\System;
  * @property string $bankCode
  * @property string $taxNumber
  * @property string $priceDisplay
+ * @property string $taxCalculation
  * @property string $currencyFormat
  * @property int    $priceRoundPrecision
  * @property string $priceRoundIncrement
