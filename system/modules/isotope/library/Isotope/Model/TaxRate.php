@@ -16,8 +16,6 @@ use Contao\Model;
 use Contao\StringUtil;
 use Contao\System;
 use Isotope\CoreBundle\Util\PostalCodeUtil;
-use Isotope\Frontend;
-use Isotope\Interfaces\IsotopeVatNoValidator;
 use Isotope\Isotope;
 
 /**
@@ -110,21 +108,6 @@ class TaxRate extends Model
                     } else {
                         if ($arrPrice[0] != $fltPrice) {
                             continue;
-                        }
-                    }
-                }
-
-                if ($this->exemptOnValidVAT) {
-                    $validators = StringUtil::deserialize(Isotope::getConfig()->vatNoValidators);
-                    if (!empty($validators) && \is_array($validators)) {
-                        foreach ($validators as $type) {
-
-                            /** @var IsotopeVatNoValidator $service */
-                            $service = new $GLOBALS['ISO_VAT'][$type]();
-
-                            if ($service->exemptTax($objAddress, $this)) {
-                                continue 2;
-                            }
                         }
                     }
                 }

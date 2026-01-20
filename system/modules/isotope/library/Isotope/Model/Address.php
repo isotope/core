@@ -16,13 +16,11 @@ use Contao\Database\Result;
 use Contao\MemberModel;
 use Contao\Model;
 use Contao\Model\Collection;
-use Contao\StringUtil;
 use Contao\System;
 use Isotope\Backend;
 use Isotope\CoreBundle\Store\StoreManager;
 use Isotope\Haste\Util\Format;
 use Isotope\Interfaces\IsotopeProductCollection;
-use Isotope\Interfaces\IsotopeVatNoValidator;
 use Isotope\Isotope;
 
 
@@ -83,45 +81,6 @@ class Address extends Model
         } catch (\Exception $e) {
             return '';
         }
-    }
-
-    /**
-     * Check if the address has a valid VAT number
-     *
-     *
-     * @return bool
-     *
-     * @throws \LogicException if a validator does not implement the correct interface
-     * @throws \RuntimeException if a validators reports an error about the VAT number
-     */
-    public function hasValidVatNo(Config $config = null)
-    {
-        if (null === $config) {
-            $config = Isotope::getConfig();
-        }
-
-        $validators = StringUtil::deserialize($config->vatNoValidators);
-
-        // if no validators are enabled, the VAT No is always valid
-        if (!\is_array($validators) || 0 === \count($validators)) {
-            return true;
-        }
-
-        foreach ($validators as $class) {
-            $service = new $class();
-
-            if (!($service instanceof IsotopeVatNoValidator)) {
-                throw new \LogicException($class . ' does not implement IsotopeVatNoValidator interface');
-            }
-
-            $result = $service->validate($this);
-
-            if (true === $result) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**

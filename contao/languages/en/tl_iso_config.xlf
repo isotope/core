@@ -167,12 +167,6 @@
       <trans-unit id="tl_iso_config.limitMemberCountries.1">
         <source>Limit member countries (Registration, Personal Data) to the combined list of billing and shipping countries.</source>
       </trans-unit>
-      <trans-unit id="tl_iso_config.vatNoValidators.0">
-        <source>VAT No. validation</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_config.vatNoValidators.1">
-        <source>If you enable one or multiple services, the VAT No. address field will be validated.</source>
-      </trans-unit>
       <trans-unit id="tl_iso_config.priceDisplay.0">
         <source>Price display</source>
       </trans-unit>
