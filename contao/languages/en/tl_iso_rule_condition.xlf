@@ -14,23 +14,41 @@
       <trans-unit id="tl_iso_rule_condition.operator.1">
         <source>Select the condition operator.</source>
       </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.quantity.0">
+        <source>Quantity</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.quantity.1">
+        <source>Please enter a number.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.quantity_from.0">
+        <source>Quantity from</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.quantity_from.1">
+        <source>Please enter the minimum number.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.quantity_to.0">
+        <source>Quantity to</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.quantity_to.1">
+        <source>Please enter the maximum number.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_rule_condition.amount.0">
         <source>Amount</source>
       </trans-unit>
       <trans-unit id="tl_iso_rule_condition.amount.1">
-        <source>Enter a price amount.</source>
+        <source>Please enter the amount.</source>
       </trans-unit>
       <trans-unit id="tl_iso_rule_condition.amount_from.0">
         <source>Amount from</source>
       </trans-unit>
       <trans-unit id="tl_iso_rule_condition.amount_from.1">
-        <source>Enter the minimum amount.</source>
+        <source>Please enter the minimum amount.</source>
       </trans-unit>
       <trans-unit id="tl_iso_rule_condition.amount_to.0">
         <source>Amount to</source>
       </trans-unit>
       <trans-unit id="tl_iso_rule_condition.amount_to.1">
-        <source>Enter the maximum amount.</source>
+        <source>Please enter the maximum amount.</source>
       </trans-unit>
       <trans-unit id="tl_iso_rule_condition.member_groups.0">
         <source>Member groups</source>

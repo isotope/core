@@ -35,6 +35,10 @@ $GLOBALS['TL_DCA']['tl_iso_rule_condition'] = [
         'cart_total' => '{condition_legend},type,operator,amount',
         'cart_totalrange' => '{condition_legend},type,operator,amount_from,amount_to',
         'cart_address' => '{condition_legend},type,address_type,countries,subdivisions,postalcodes',
+        'cart_quantity' => '{condition_legend},type,operator,quantity',
+        'cart_quantityrange' => '{condition_legend},type,operator,quantity_from,quantity_to',
+        'cart_products' => '{condition_legend},type,operator,quantity',
+        'cart_productsrange' => '{condition_legend},type,operator,quantity_from,quantity_to',
         'member_group' => '{condition_legend},type,operator,member_groups',
         'member_authenticated' => '{condition_legend},type,operator',
         'store_config' => '{condition_legend},type,operator,config_ids',
@@ -65,6 +69,21 @@ $GLOBALS['TL_DCA']['tl_iso_rule_condition'] = [
             'inputType' => 'select',
             'eval' => ['mandatory' => true, 'submitOnChange' => true, 'chosen' => true, 'tl_class' => 'w50'],
             'sql' => "varchar(64) NOT NULL default ''",
+        ],
+        'quantity' => [
+            'inputType' => 'text',
+            'eval' => ['mandatory' => true, 'rgxp' => 'digit', 'tl_class' => 'w50'],
+            'sql' => ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TINYTEXT, 'notnull' => false],
+        ],
+        'quantity_from' => [
+            'inputType' => 'text',
+            'eval' => ['mandatory' => true, 'rgxp' => 'digit', 'tl_class' => 'w50'],
+            'sql' => ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TINYTEXT, 'notnull' => false],
+        ],
+        'quantity_to' => [
+            'inputType' => 'text',
+            'eval' => ['mandatory' => true, 'rgxp' => 'price', 'tl_class' => 'w50'],
+            'sql' => ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TINYTEXT, 'notnull' => false],
         ],
         'amount' => [
             'inputType' => 'text',

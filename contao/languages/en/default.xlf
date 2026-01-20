@@ -695,6 +695,18 @@
       <trans-unit id="MODEL.tl_iso_rule_condition.cart_address.1">
         <source>Match on country, subdivision or postal codes of the billing or shipping address.</source>
       </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.cart_quantity.0">
+        <source>Total quantity in cart</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.cart_quantity.1">
+        <source>Compares the given value to the sum of all quantities of all products.</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.cart_products.0">
+        <source>Total products in cart</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.cart_products.1">
+        <source>Compares the given value to the total products in the cart (regardless of their quantity).</source>
+      </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.member">
         <source>Member</source>
       </trans-unit>

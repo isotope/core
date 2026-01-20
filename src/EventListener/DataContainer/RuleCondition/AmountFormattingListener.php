@@ -12,8 +12,12 @@ class AmountFormattingListener
     #[AsCallback('tl_iso_rule_condition', 'fields.amount.load')]
     #[AsCallback('tl_iso_rule_condition', 'fields.amount_from.load')]
     #[AsCallback('tl_iso_rule_condition', 'fields.amount_to.load')]
-    public function load(string $value): string
+    public function load(string|null $value): string
     {
+        if (null === $value) {
+            return '';
+        }
+
         return PriceUtil::formatBackendPrice($value);
     }
 

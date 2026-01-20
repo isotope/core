@@ -36,13 +36,6 @@ class CartConditionFactory implements ModelTypeFactoryInterface
         $this->validateInstanceOf($model, RuleCondition::class);
 
         return match ($model->type) {
-            'cart_total' => new CartTotalCondition(
-                $this->translator,
-                $model->operator,
-                (float) $model->amount,
-                (float) $model->amount_from,
-                (float) $model->amount_to,
-            ),
             'cart_address' => new CartAddressCondition(
                 $this->translator,
                 $this->countries,
@@ -53,6 +46,9 @@ class CartConditionFactory implements ModelTypeFactoryInterface
                 !empty($model->postalcodes) ? PostalCodeUtil::parseRange($model->postalcodes) : null,
                 (string) $model->postalcodes,
             ),
+            'cart_total' => new CartTotalCondition($this->translator, $model->operator, (float) $model->amount, (float) $model->amount_from, (float) $model->amount_to),
+            'cart_quantity' => new CartQuantityCondition($this->translator, $model->operator, (int) $model->quantity, (int) $model->quantity_from, (int) $model->quantity_to),
+            'cart_products' => new CartProductsCondition($this->translator, $model->operator, (int) $model->quantity, (int) $model->quantity_from, (int) $model->quantity_to),
             default => throw new InvalidTypeException($model->type, self::class),
         };
     }
