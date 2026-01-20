@@ -7,7 +7,7 @@ namespace Isotope\CoreBundle\Checkout\Payment;
 use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use Contao\Model;
 use Isotope\CoreBundle\Model\Payment;
-use Symfony\Bundle\SecurityBundle\Security;
+use Isotope\CoreBundle\RuleBuilder\RuleMatcher;
 
 /**
  * @extends AbstractPaymentFactory<CashPayment>
@@ -15,8 +15,8 @@ use Symfony\Bundle\SecurityBundle\Security;
 class CashPaymentFactory extends AbstractPaymentFactory
 {
     public function __construct(
-        private readonly Security $security,
         private readonly TokenChecker $tokenChecker,
+        private readonly RuleMatcher $ruleMatcher,
     ) {
     }
 
@@ -25,6 +25,6 @@ class CashPaymentFactory extends AbstractPaymentFactory
      */
     public function doCreate(Model $model): AbstractPayment
     {
-        return new CashPayment($model->id, $model->new_order_status, $this->security, $this->tokenChecker);
+        return new CashPayment($model->id, $model->new_order_status, $this->tokenChecker, $this->ruleMatcher);
     }
 }

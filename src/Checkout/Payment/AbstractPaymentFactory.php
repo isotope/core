@@ -30,7 +30,6 @@ abstract class AbstractPaymentFactory extends AbstractCheckoutMethodFactory
         /** @var AbstractPayment $payment */
         $payment = parent::create($model);
         $payment
-            ->setAllowedCountries($model->countries ? explode(',', $model->countries) : null)
             ->setAllowedShippings($this->unserialize($model->shipping_modules, intval(...)))
         ;
 

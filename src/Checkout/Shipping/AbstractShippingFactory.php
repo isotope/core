@@ -9,7 +9,6 @@ use Isotope\CoreBundle\Checkout\AbstractCheckoutMethodFactory;
 use Isotope\CoreBundle\Model\Shipping;
 use Isotope\CoreBundle\ModelType\ModelInstanceTrait;
 use Isotope\CoreBundle\ModelType\SerializedPropertyTrait;
-use Isotope\CoreBundle\Util\PostalCodeUtil;
 use Isotope\Haste\Units\Mass\Weight;
 
 /**
@@ -36,12 +35,6 @@ abstract class AbstractShippingFactory extends AbstractCheckoutMethodFactory
         $shipping
             ->setMinMaxWeight((float) $model->minimum_weight, (float) $model->maximum_weight)
             ->setShippingWeight(Weight::createFromTimePeriod($model->shipping_weight))
-            ->setAddressType(AddressType::tryFrom($model->address_type))
-            ->setAllowedAddress(
-                $model->countries ? explode(',', $model->countries) : null,
-                $model->subdivisions ? explode(',', $model->subdivisions) : null,
-                PostalCodeUtil::parseRange($model->postalCodes) ?: null,
-            )
         ;
 
         return $shipping;

@@ -5,14 +5,11 @@ use Contao\DC_Table;
 use Contao\System;
 use Isotope\Backend\Shipping\Callback;
 use Isotope\CoreBundle\Checkout\ProductTypeCondition;
-use Isotope\CoreBundle\Checkout\QuantityMode;
-use Isotope\CoreBundle\Checkout\Shipping\AddressType;
 use Isotope\CoreBundle\Checkout\Shipping\FlatCalculation;
 use Isotope\CoreBundle\Checkout\Shipping\GroupCalculation;
 use Isotope\CoreBundle\Checkout\Shipping\ProductCalculation;
 use Isotope\CoreBundle\Model\ProductType;
 use Isotope\CoreBundle\Model\Shipping;
-use Isotope\Model\Config;
 use Isotope\Model\TaxClass;
 
 /*
@@ -48,17 +45,16 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
         ],
     ],
     'palettes' => [
-        '__selector__' => ['type', 'flatCalculation', 'protected'],
+        '__selector__' => ['type', 'flatCalculation'],
         'default' => '{title_legend},name,label,type',
-        'flat' => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},price,tax_class,shipping_weight,flatCalculation;{config_legend},countries,subdivisions,postalCodes,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,minimum_weight,maximum_weight,product_types,product_types_condition,config_ids,address_type;{expert_legend:hide},protected;{enabled_legend},enabled',
-        'product_price' => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},tax_class,shipping_weight,productCalculation;{config_legend},countries,subdivisions,postalCodes,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,minimum_weight,maximum_weight,product_types,product_types_condition,config_ids,address_type;{expert_legend:hide},protected;{enabled_legend},enabled',
-        'group' => '{title_legend},name,label,type,inherit;{note_legend:hide},note;{config_legend},group_methods;{price_legend},group_calculation,tax_class;{expert_legend:hide},protected;{enabled_legend},enabled',
+        'flat' => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},price,tax_class,shipping_weight,flatCalculation;{config_legend},minimum_weight,maximum_weight,product_types,product_types_condition,rule;{enabled_legend},enabled',
+        'product_price' => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},tax_class,shipping_weight,productCalculation;{config_legend},minimum_weight,maximum_weight,product_types,product_types_condition,rule;{enabled_legend},enabled',
+        'group' => '{title_legend},name,label,type,inherit;{note_legend:hide},note;{config_legend},group_methods,rule;{price_legend},group_calculation,tax_class;{enabled_legend},enabled',
     ],
     'subpalettes' => [
         'flatCalculation_perProduct' => 'flatProductTypes',
         'flatCalculation_perItem' => 'flatProductTypes',
         'flatCalculation_perWeight' => 'flatWeight',
-        'protected' => 'groups',
     ],
     'fields' => [
         'id' => [
@@ -96,31 +92,13 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
             'eval' => ['rte' => 'tinyMCE', 'decodeEntities' => true],
             'sql' => 'text NULL',
         ],
-        'countries' => [
-            'inputType' => 'select',
-            'eval' => ['multiple' => true, 'size' => 8, 'csv' => ',', 'tl_class' => 'w50', 'chosen' => true],
-            'sql' => 'text NULL',
-        ],
-        'subdivisions' => [
-            'sorting' => true,
-            'inputType' => 'conditionalselect',
-            'eval' => ['multiple' => true, 'size' => 8, 'csv' => ',', 'conditionField' => 'countries', 'tl_class' => 'w50'],
-            'sql' => 'longblob NULL',
-        ],
-        'postalCodes' => [
-            'inputType' => 'textarea',
-            'eval' => ['style' => 'height:40px', 'tl_class' => 'clr'],
-            'sql' => 'text NULL',
-        ],
-        'minimum_total' => [
-            'inputType' => 'text',
-            'eval' => ['maxlength' => 13, 'rgxp' => 'digit', 'tl_class' => 'w50'],
-            'sql' => "decimal(12,2) NOT NULL default '0.00'",
-        ],
-        'maximum_total' => [
-            'inputType' => 'text',
-            'eval' => ['maxlength' => 13, 'rgxp' => 'digit', 'tl_class' => 'w50'],
-            'sql' => "decimal(12,2) NOT NULL default '0.00'",
+        'rule' => [
+            'filter' => true,
+            'inputType' => 'picker',
+            'foreignKey' => 'tl_iso_rule.name',
+            'eval' => ['tl_class' => 'clr'],
+            'sql' => 'int(10) unsigned NOT NULL default 0',
+            'relation' => ['type' => 'hasOne']
         ],
         'minimum_weight' => [
             'default' => ['unit' => 'kg'],
@@ -138,22 +116,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
             'eval' => ['rgxp' => 'digit', 'tl_class' => 'w50'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
-        'quantity_mode' => [
-            'inputType' => 'select',
-            'enum' => QuantityMode::class,
-            'eval' => ['mandatory' => true, 'tl_class' => 'w50'],
-            'sql' => "varchar(16) NOT NULL default ''",
-        ],
-        'minimum_quantity' => [
-            'inputType' => 'text',
-            'eval' => ['maxlength' => 10, 'rgxp' => 'digit', 'tl_class' => 'clr w50'],
-            'sql' => "int(10) unsigned NOT NULL default '0'",
-        ],
-        'maximum_quantity' => [
-            'inputType' => 'text',
-            'eval' => ['maxlength' => 10, 'rgxp' => 'digit', 'tl_class' => 'w50'],
-            'sql' => "int(10) unsigned NOT NULL default '0'",
-        ],
         'product_types' => [
             'inputType' => 'select',
             'foreignKey' => ProductType::getTable().'.name',
@@ -166,19 +128,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
             'enum' => ProductTypeCondition::class,
             'eval' => ['tl_class' => 'w50'],
             'sql' => "varchar(16) NOT NULL default ''",
-        ],
-        'config_ids' => [
-            'inputType' => 'select',
-            'foreignKey' => Config::getTable().'.name',
-            'eval' => ['multiple' => true, 'size' => 8, 'tl_class' => 'clr w50', 'chosen' => true],
-            'sql' => 'blob NULL',
-            'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
-        ],
-        'address_type' => [
-            'inputType' => 'select',
-            'enum' => AddressType::class,
-            'eval' => ['includeBlankOption' => true, 'tl_class' => 'w50'],
-            'sql' => "varchar(8) NOT NULL default ''",
         ],
         'price' => [
             'inputType' => 'text',
@@ -245,18 +194,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
             'enum' => GroupCalculation::class,
             'eval' => ['tl_class' => 'w50'],
             'sql' => "varchar(10) NOT NULL default ''",
-        ],
-        'protected' => [
-            'inputType' => 'checkbox',
-            'eval' => ['submitOnChange' => true],
-            'sql' => "char(1) NOT NULL default ''",
-        ],
-        'groups' => [
-            'inputType' => 'checkbox',
-            'foreignKey' => 'tl_member_group.name',
-            'eval' => ['multiple' => true],
-            'sql' => 'blob NULL',
-            'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
         ],
         'debug' => [
             'inputType' => 'checkbox',

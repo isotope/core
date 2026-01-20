@@ -7,7 +7,7 @@ namespace Isotope\CoreBundle\Checkout\Shipping;
 use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use Contao\Model;
 use Isotope\CoreBundle\Model\Shipping;
-use Symfony\Bundle\SecurityBundle\Security;
+use Isotope\CoreBundle\RuleBuilder\RuleMatcher;
 
 /**
  * @extends AbstractShippingFactory<ProductPriceShipping>
@@ -15,8 +15,8 @@ use Symfony\Bundle\SecurityBundle\Security;
 class ProductPriceShippingFactory extends AbstractShippingFactory
 {
     public function __construct(
-        private readonly Security $security,
         private readonly TokenChecker $tokenChecker,
+        private readonly RuleMatcher $ruleMatcher,
     ) {
     }
 
@@ -28,8 +28,8 @@ class ProductPriceShippingFactory extends AbstractShippingFactory
         return new ProductPriceShipping(
             $model->id,
             ProductCalculation::from($model->productCalculation),
-            $this->security,
             $this->tokenChecker,
+            $this->ruleMatcher,
         );
     }
 }

@@ -7,10 +7,12 @@ namespace Isotope\CoreBundle\Checkout\Shipping;
 use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsShipping;
 use Isotope\CoreBundle\Model\ProductCollectionItem;
+use Isotope\CoreBundle\Product\CoreProduct;
+use Isotope\CoreBundle\Product\Extension\ShippingExtension;
+use Isotope\CoreBundle\RuleBuilder\RuleMatcher;
 use Isotope\Haste\Units\Mass\Weighable;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
-use Symfony\Bundle\SecurityBundle\Security;
 
 #[AsShipping]
 class FlatShipping extends AbstractShipping
@@ -25,10 +27,10 @@ class FlatShipping extends AbstractShipping
     public function __construct(
         int $id,
         private FlatCalculation|null $flatCalculation,
-        Security $security,
         TokenChecker $tokenChecker,
+        RuleMatcher $ruleMatcher,
     ) {
-        parent::__construct($id, $security, $tokenChecker);
+        parent::__construct($id, $tokenChecker, $ruleMatcher);
     }
 
     public function getFlatCalculation(): FlatCalculation|null

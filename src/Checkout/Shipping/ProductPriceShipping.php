@@ -6,11 +6,13 @@ namespace Isotope\CoreBundle\Checkout\Shipping;
 
 use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsShipping;
-use Isotope\CoreBundle\Product\ProductInterface;
-use Isotope\Interfaces\IsotopeOrderableCollection;
+use Isotope\CoreBundle\Product\CoreProduct;
+use Isotope\CoreBundle\Product\Extension\ShippingExtension;
+use Isotope\CoreBundle\Product\Product;
+use Isotope\CoreBundle\RuleBuilder\RuleMatcher;
+use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
-use Symfony\Bundle\SecurityBundle\Security;
 
 #[AsShipping]
 class ProductPriceShipping extends AbstractShipping
@@ -20,22 +22,24 @@ class ProductPriceShipping extends AbstractShipping
     public function __construct(
         int $id,
         private readonly ProductCalculation $calculation,
-        Security $security,
         TokenChecker $tokenChecker,
+        RuleMatcher $ruleMatcher,
     ) {
-        parent::__construct($id, $security, $tokenChecker);
+        parent::__construct($id, $tokenChecker, $ruleMatcher);
     }
 
-    public function isAvailable(IsotopeOrderableCollection $collection): bool
+    public function isAvailable(StoreContext $context): bool
     {
-        if (!parent::isAvailable($collection)) {
+        if (!parent::isAvailable($context)) {
             return false;
         }
 
-        foreach ($collection->getItems() as $item) {
-            if ($item->hasProduct() && $this->hasShippingPrice($item->getProduct())) {
-                return true;
-            }
+        $cart = $context->getCart();
+
+        foreach ($cart->getLineItems() as $item) {
+            //if ($item->hasProduct() && $this->hasShippingPrice($item->getProduct())) {
+            //    return true;
+            //}
         }
 
         return false;

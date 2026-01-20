@@ -32,47 +32,11 @@
       <trans-unit id="tl_iso_payment.new_order_status.1">
         <source>Choose a matching status for new orders.</source>
       </trans-unit>
-      <trans-unit id="tl_iso_payment.minimum_total.0">
-        <source>Minimum total</source>
+      <trans-unit id="tl_iso_payment.rule.0">
+        <source>Rule condition</source>
       </trans-unit>
-      <trans-unit id="tl_iso_payment.minimum_total.1">
-        <source>Enter a number greater zero to exclude this payment method for lower priced orders.</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.maximum_total.0">
-        <source>Maximum total</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.maximum_total.1">
-        <source>Enter a number greater zero to exclude this payment method for higher priced orders.</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.minimum_quantity.0">
-        <source>Minimum quantity</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.minimum_quantity.1">
-        <source>Enter a number greater zero to exclude this payment method for orders with lower quantity.</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.maximum_quantity.0">
-        <source>Maximum quantity</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.maximum_quantity.1">
-        <source>Enter a number greater zero to exclude this payment method for orders with higher quantity.</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.quantity_mode.0">
-        <source>Quantity calculation mode</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.quantity_mode.1">
-        <source>Select a calculation mode for min/max quantity.</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.quantity_mode.cart_items">
-        <source>Total quantity in cart</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.quantity_mode.cart_products">
-        <source>Total products in cart</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.countries.0">
-        <source>Available countries</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.countries.1">
-        <source>Select the countries where this payment method may be used (customer's billing address).</source>
+      <trans-unit id="tl_iso_payment.rule.1">
+        <source>Allow payment method if this rule matches.</source>
       </trans-unit>
       <trans-unit id="tl_iso_payment.shipping_modules.0">
         <source>Shipping methods</source>
@@ -92,12 +56,6 @@
       <trans-unit id="tl_iso_payment.product_types_condition.1">
         <source>Select how the product type filter should be applied.</source>
       </trans-unit>
-      <trans-unit id="tl_iso_payment.config_ids.0">
-        <source>Store configurations</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.config_ids.1">
-        <source>You can restrict this payment method to certain shop configurations.</source>
-      </trans-unit>
       <trans-unit id="tl_iso_payment.price.0">
         <source>Price</source>
       </trans-unit>
@@ -109,18 +67,6 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.tax_class.1">
         <source>Please select a tax class for the price.</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.protected.0">
-        <source>Protect payment method</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.protected.1">
-        <source>Show the payment method to certain member groups only.</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.groups.0">
-        <source>Allowed member groups</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.groups.1">
-        <source>These groups will be able to see the payment method.</source>
       </trans-unit>
       <trans-unit id="tl_iso_payment.debug.0">
         <source>Debug mode</source>
@@ -139,18 +85,6 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.enabled.1">
         <source>Check here if the payment method should be enabled in the store.</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.capture.0">
-        <source>Authorize and Capture</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.capture.1">
-        <source>Transactions of this type will be sent for authorization. The transaction will be automatically picked up for settlement if approved.</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.auth.0">
-        <source>Authorize Only</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.auth.1">
-        <source>Transactions of this type are submitted if the merchant wishes to validate the credit card for the amount of the goods sold. If the merchant does not have goods in stock or wishes to review orders before shipping the goods, this transaction type should be submitted.</source>
       </trans-unit>
       <trans-unit id="tl_iso_payment.no_shipping">
         <source>Orders without shipping</source>
@@ -176,17 +110,8 @@
       <trans-unit id="tl_iso_payment.config_legend">
         <source>General configuration</source>
       </trans-unit>
-      <trans-unit id="tl_iso_payment.gateway_legend">
-        <source>Payment gateway configuration</source>
-      </trans-unit>
       <trans-unit id="tl_iso_payment.price_legend">
         <source>Price</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.template_legend">
-        <source>Template</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.expert_legend">
-        <source>Expert settings</source>
       </trans-unit>
       <trans-unit id="tl_iso_payment.enabled_legend">
         <source>Approval</source>

@@ -23,24 +23,7 @@ abstract class AbstractCheckoutMethod
 
     protected bool $percentage = false;
 
-    protected bool $protected = false;
-
-    protected array $groups = [];
-
-    protected int $minQuantity = 0;
-
-    protected int $maxQuantity = 0;
-
-    protected QuantityMode $quantityMode = QuantityMode::cartItems;
-
-    protected float $minTotal = 0;
-
-    protected float $maxTotal = 0;
-
-    /**
-     * @var array<int>|null
-     */
-    protected array|null $allowedConfigs = null;
+    protected int $rule = 0;
 
     /**
      * @var array<int>|null
@@ -57,8 +40,8 @@ abstract class AbstractCheckoutMethod
 
     public function __construct(
         private readonly int $id,
-        private readonly Security $security,
         private readonly TokenChecker $tokenChecker,
+        private readonly RuleMatcher $ruleMatcher,
     ) {
         $this->label = static::class;
     }
@@ -92,34 +75,14 @@ abstract class AbstractCheckoutMethod
         return $this;
     }
 
-    public function setProtected(bool $protected, array $groups): static
+    public function getRule(): int
     {
-        $this->protected = $protected;
-        $this->groups = $groups;
-
-        return $this;
+        return $this->rule;
     }
 
-    public function setMinMaxQuantity(int $min, int $max, QuantityMode $mode): static
+    public function setRule(int $rule): static
     {
-        $this->minQuantity = $min;
-        $this->maxQuantity = $max;
-        $this->quantityMode = $mode;
-
-        return $this;
-    }
-
-    public function setMinMaxTotal(float $min, float $max): static
-    {
-        $this->minTotal = $min;
-        $this->maxTotal = $max;
-
-        return $this;
-    }
-
-    public function setAllowedConfigs(array|null $ids): static
-    {
-        $this->allowedConfigs = $ids;
+        $this->rule = $rule;
 
         return $this;
     }
@@ -224,15 +187,8 @@ abstract class AbstractCheckoutMethod
             return false;
         }
 
-        if ($this->protected && !$this->security->isGranted(ContaoCorePermissions::MEMBER_IN_GROUPS, $this->groups)) {
-            return false;
-        }
-
-        if (
-            ($this->minTotal > 0 && $this->minTotal > $collection->getSubtotal())
-            || ($this->maxTotal > 0 && $this->maxTotal < $collection->getSubtotal())
-        ) {
-            return false;
+        if ($this->rule) {
+            return $this->ruleMatcher->isApplicable($this->rule, $context);
         }
 
         if ($this->minQuantity > 0 || $this->maxQuantity > 0) {

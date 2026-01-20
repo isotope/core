@@ -6,8 +6,9 @@ namespace Isotope\CoreBundle\Checkout\Shipping;
 
 use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsShipping;
+use Isotope\CoreBundle\RuleBuilder\RuleMatcher;
+use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\Interfaces\IsotopeOrderableCollection;
-use Symfony\Bundle\SecurityBundle\Security;
 
 #[AsShipping]
 class GroupShipping extends AbstractShipping
@@ -30,10 +31,10 @@ class GroupShipping extends AbstractShipping
         array $methods,
         private readonly GroupCalculation $groupCalculation,
         private readonly bool $inherit,
-        Security $security,
         TokenChecker $tokenChecker,
+        RuleMatcher $ruleMatcher,
     ) {
-        parent::__construct($id, $security, $tokenChecker);
+        parent::__construct($id, $tokenChecker, $ruleMatcher);
 
         $inner = [];
 
@@ -48,15 +49,15 @@ class GroupShipping extends AbstractShipping
         $this->inner = $inner;
     }
 
-    public function isAvailable(IsotopeOrderableCollection $collection): bool
+    public function isAvailable(StoreContext $context): bool
     {
-        if (!parent::isAvailable($collection)) {
+        if (!parent::isAvailable($context)) {
             return false;
         }
 
         // Group is available if at least one shipping method is available.
         foreach ($this->inner as $shipping) {
-            if ($shipping->isAvailable($collection)) {
+            if ($shipping->isAvailable($context)) {
                 return true;
             }
         }

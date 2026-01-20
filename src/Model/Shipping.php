@@ -15,27 +15,22 @@ use Contao\Model;
  * @property string $note
  * @property string $price
  * @property int    $tax_class
- * @property string $quantity_mode
- * @property int    $minimum_quantity
- * @property int    $maximum_quantity
- * @property float  $minimum_total
- * @property float  $maximum_total
+ * @property int    $rule
+ * @property string $shipping_weight
+ * @property float  $minimum_weight
+ * @property float  $maximum_weight
  * @property string $product_types
  * @property string $product_types_condition
- * @property string $config_ids
- * @property string $countries
- * @property bool   $protected
- * @property array  $groups
  * @property bool   $debug
  * @property bool   $logging
  * @property bool   $enabled
  * @property bool   $inherit
- * @property string $address_type
- * @property string $shipping_weight
- * @property string $subdivisions
- * @property string $postalCodes
- * @property float  $minimum_weight
- * @property float  $maximum_weight
+ * @property string $group_methods
+ * @property string $group_calculation
+ * @property string $flatCalculation
+ * @property string $flatProductTypes
+ * @property string $flatWeight
+ * @property string $productCalculation
  */
 class Shipping extends Model
 {

@@ -37,18 +37,12 @@ abstract class AbstractCheckoutMethodFactory implements ModelTypeFactoryInterfac
             ->setNote((string) $model->note)
             ->setPrice(...$this->getPrice((string) $model->price))
             ->setTaxClass((int) $model->tax_class)
-            ->setProtected((bool) $model->protected, StringUtil::deserialize($model->groups, true))
-            ->setMinMaxTotal((float) $model->minimum_total, (float) $model->maximum_total)
-            ->setAllowedConfigs($this->unserialize($model->config_ids, intval(...)))
+            ->setRule((int) $model->rule)
             ->setAllowedProductTypes($this->unserialize($model->product_types, intval(...)), ProductTypeCondition::from($model->product_types_condition))
             ->setDebug((bool) $model->debug)
             ->setLogging((bool) $model->logging)
             ->setEnabled((bool) $model->enabled)
         ;
-
-        if (null !== ($quantityMode = QuantityMode::tryFrom($model->quantity_mode))) {
-            $instance->setMinMaxQuantity((int) $model->minimum_quantity, (int) $model->maximum_quantity, $quantityMode);
-        }
 
         return $instance;
     }

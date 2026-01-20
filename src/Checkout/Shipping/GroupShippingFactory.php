@@ -9,7 +9,7 @@ use Contao\Model;
 use Contao\StringUtil;
 use Isotope\CoreBundle\Model\Shipping;
 use Isotope\CoreBundle\ModelType\ShippingRegistry;
-use Symfony\Bundle\SecurityBundle\Security;
+use Isotope\CoreBundle\RuleBuilder\RuleMatcher;
 
 /**
  * @extends AbstractShippingFactory<GroupShipping>
@@ -18,8 +18,8 @@ class GroupShippingFactory extends AbstractShippingFactory
 {
     public function __construct(
         private readonly ShippingRegistry $shippingRegistry,
-        private readonly Security $security,
         private readonly TokenChecker $tokenChecker,
+        private readonly RuleMatcher $ruleMatcher,
     ) {
     }
 
@@ -40,8 +40,8 @@ class GroupShippingFactory extends AbstractShippingFactory
             $this->shippingRegistry->get(Shipping::findMultipleByIds($ids)) ?? [],
             GroupCalculation::from($model->group_calculation),
             (bool) $model->inherit,
-            $this->security,
             $this->tokenChecker,
+            $this->ruleMatcher,
         );
     }
 }

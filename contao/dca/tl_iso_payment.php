@@ -38,12 +38,9 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = [
         ],
     ],
     'palettes' => [
-        '__selector__' => ['type', 'protected'],
+        '__selector__' => ['type'],
         'default' => '{type_legend},name,label,type',
-        'cash' => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{price_legend:hide},price,tax_class;{expert_legend:hide},protected;{enabled_legend},enabled',
-    ],
-    'subpalettes' => [
-        'protected' => 'groups',
+        'cash' => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,shipping_modules,product_types,product_types_condition,rule;{price_legend:hide},price,tax_class;{enabled_legend},enabled',
     ],
     'fields' => [
         'id' => [
@@ -83,57 +80,18 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = [
             'sql' => "int(10) NOT NULL default '0'",
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
         ],
-        'price' => [
-            'inputType' => 'text',
-            'eval' => ['maxlength' => 16, 'rgxp' => 'surcharge', 'nullIfEmpty' => true, 'tl_class' => 'w50'],
-            'sql' => 'varchar(16) NULL',
-        ],
-        'tax_class' => [
-            'filter' => true,
-            'inputType' => 'select',
-            'foreignKey' => TaxClass::getTable().'.name',
-            'options_callback' => [TaxClass::class, 'getOptionsWithSplit'],
-            'eval' => ['includeBlankOption' => true, 'blankOptionLabel' => &$GLOBALS['TL_LANG']['MSC']['taxFree'], 'tl_class' => 'w50'],
-            'sql' => "int(10) NOT NULL default '0'",
-            'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
-        ],
-        'minimum_total' => [
-            'inputType' => 'text',
-            'default' => 0,
-            'eval' => ['maxlength' => 255, 'rgxp' => 'digit', 'tl_class' => 'clr w50'],
-            'sql' => "decimal(12,2) NOT NULL default '0.00'",
-        ],
-        'maximum_total' => [
-            'inputType' => 'text',
-            'default' => 0,
-            'eval' => ['maxlength' => 255, 'rgxp' => 'digit', 'tl_class' => 'w50'],
-            'sql' => "decimal(12,2) NOT NULL default '0.00'",
-        ],
-        'quantity_mode' => [
-            'inputType' => 'select',
-            'enum' => QuantityMode::class,
-            'eval' => ['mandatory' => true, 'tl_class' => 'w50'],
-            'sql' => "varchar(16) NOT NULL default ''",
-        ],
-        'minimum_quantity' => [
-            'inputType' => 'text',
-            'eval' => ['maxlength' => 10, 'rgxp' => 'digit', 'tl_class' => 'clr w50'],
-            'sql' => "int(10) unsigned NOT NULL default '0'",
-        ],
-        'maximum_quantity' => [
-            'inputType' => 'text',
-            'eval' => ['maxlength' => 10, 'rgxp' => 'digit', 'tl_class' => 'w50'],
-            'sql' => "int(10) unsigned NOT NULL default '0'",
-        ],
-        'countries' => [
-            'inputType' => 'select',
-            'eval' => ['multiple' => true, 'size' => 8, 'csv' => ',', 'tl_class' => 'w50', 'chosen' => true],
-            'sql' => 'text NULL',
-        ],
         'shipping_modules' => [
             'inputType' => 'select',
-            'eval' => ['multiple' => true, 'size' => 8, 'tl_class' => 'w50', 'chosen' => true],
+            'eval' => ['multiple' => true, 'size' => 8, 'tl_class' => 'clr w50', 'chosen' => true],
             'sql' => 'blob NULL',
+        ],
+        'rule' => [
+            'filter' => true,
+            'inputType' => 'picker',
+            'foreignKey' => 'tl_iso_rule.name',
+            'eval' => ['tl_class' => 'clr'],
+            'sql' => 'int(10) unsigned NOT NULL default 0',
+            'relation' => ['type' => 'hasOne']
         ],
         'product_types' => [
             'inputType' => 'select',
@@ -148,24 +106,19 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = [
             'eval' => ['tl_class' => 'w50'],
             'sql' => "varchar(16) NOT NULL default ''",
         ],
-        'config_ids' => [
+        'price' => [
+            'inputType' => 'text',
+            'eval' => ['maxlength' => 16, 'rgxp' => 'surcharge', 'nullIfEmpty' => true, 'tl_class' => 'w50'],
+            'sql' => 'varchar(16) NULL',
+        ],
+        'tax_class' => [
+            'filter' => true,
             'inputType' => 'select',
-            'foreignKey' => Config::getTable().'.name',
-            'eval' => ['multiple' => true, 'size' => 8, 'tl_class' => 'clr w50', 'chosen' => true],
-            'sql' => 'blob NULL',
-            'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
-        ],
-        'protected' => [
-            'inputType' => 'checkbox',
-            'eval' => ['submitOnChange' => true],
-            'sql' => "char(1) NOT NULL default ''",
-        ],
-        'groups' => [
-            'inputType' => 'checkbox',
-            'foreignKey' => 'tl_member_group.name',
-            'eval' => ['multiple' => true],
-            'sql' => 'blob NULL',
-            'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
+            'foreignKey' => TaxClass::getTable().'.name',
+            'options_callback' => [TaxClass::class, 'getOptionsWithSplit'],
+            'eval' => ['includeBlankOption' => true, 'blankOptionLabel' => &$GLOBALS['TL_LANG']['MSC']['taxFree'], 'tl_class' => 'w50'],
+            'sql' => "int(10) NOT NULL default '0'",
+            'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
         ],
         'debug' => [
             'inputType' => 'checkbox',
