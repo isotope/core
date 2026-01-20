@@ -22,8 +22,7 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = [
             'panelLayout' => 'filter;sort,search,limit',
         ],
         'label' => [
-            'fields' => ['name', 'priority'],
-            'showColumns' => true,
+            'fields' => ['name'],
         ],
     ],
     'palettes' => [

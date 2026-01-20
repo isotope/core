@@ -177,3 +177,18 @@ h3.inherit,
         border: 0;
     }
 }
+
+.iso_rule_conditions {
+    padding: 0;
+    margin: 0;
+
+    li {
+        display: block;
+        list-style: none;
+
+        &:before {
+            content: "-";
+            margin-right: 5px;
+        }
+    }
+}
