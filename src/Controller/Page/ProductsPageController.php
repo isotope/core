@@ -24,7 +24,6 @@ use Isotope\CoreBundle\Product\Extension\MetadataExtension;
 use Isotope\CoreBundle\Product\ProductBuilder;
 use Isotope\CoreBundle\Product\Query\ProductQueryFactory;
 use Isotope\CoreBundle\Routing\ProductReference;
-use Isotope\CoreBundle\Routing\ResponseContext\IsotopeBag;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Util\ProductCategoryUtil;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,13 +54,13 @@ class ProductsPageController extends AbstractController
             return $this->renderPage($pageModel, $request);
         }
 
-        $product = Product::findByIdOrAlias($alias);
+        $product = Product::findByMultilingualAliasOrId($alias);
 
         if (!$product) {
             throw new PageNotFoundException();
         }
 
-        $product = $this->productBuilder->buildOne(new ProductDto('tl_iso_product.'.$product->id), $context);
+        $product = $this->productBuilder->buildOne(new ProductDto('tl_iso_product.'.$product->getLanguageId()), $context);
 
         if (!$product instanceof CoreProduct || !$product->isAvailable()) {
             throw new PageNotFoundException();

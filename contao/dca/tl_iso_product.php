@@ -149,7 +149,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'search' => true,
             'sorting' => true,
             'inputType' => 'text',
-            'eval' => ['rgxp' => 'alnum', 'doNotCopy' => true, 'spaceToUnderscore' => true, 'maxlength' => 128, 'tl_class' => 'w50'],
+            'eval' => ['rgxp' => 'alnum', 'doNotCopy' => true, 'spaceToUnderscore' => true, 'isMultilingualAlias' => true, 'generateAliasFromField' => 'name', 'translatableFor' => '*', 'maxlength' => 128, 'tl_class' => 'w50'],
             'attributes' => ['legend' => 'general_legend', 'fixed' => true, 'inherit' => true],
             'sql' => "varchar(128) NOT NULL default ''",
         ],
