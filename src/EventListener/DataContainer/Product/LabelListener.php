@@ -11,11 +11,10 @@ use Contao\DataContainer;
 use Contao\StringUtil;
 use Doctrine\DBAL\Connection;
 use Isotope\CoreBundle\Model\ProductType;
-use Isotope\CoreBundle\Product\Price\DefaultPriceFactory;
-use Isotope\CoreBundle\Product\Price\PriceCollection;
-use Isotope\CoreBundle\Store\Context\StoreContext;
+use Isotope\CoreBundle\Product\DefaultPriceFactory;
 use Isotope\CoreBundle\Store\Context\StoreContextFactory;
 use Isotope\CoreBundle\Store\Price\MoneyFormat;
+use Isotope\CoreBundle\Store\Price\PriceDefinitionCollection;
 use Isotope\Model\TaxClass;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -165,9 +164,9 @@ class LabelListener
                 return '';
             }
 
-            /** @var PriceCollection $prices */
+            /** @var PriceDefinitionCollection $prices */
             $prices = array_map(fn (array $variant) => $this->priceFactory->createFromArray($variant, $type->hasAdvancedPrices(), $context), $variants);
-            $prices = (new PriceCollection())->merge(...$prices);
+            $prices = (new PriceDefinitionCollection())->merge(...$prices);
 
             $objPrice = $prices->getLowest();
             $fromPrice = $prices->hasRange();

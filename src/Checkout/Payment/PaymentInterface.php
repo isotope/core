@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Checkout\Payment;
 
 use Contao\Module;
+use Isotope\CoreBundle\Store\Context\StoreContext;
+use Isotope\CoreBundle\Store\Price\PriceDefinition;
 use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Model\ProductCollectionSurcharge\Payment;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,7 +24,7 @@ interface PaymentInterface
     /**
      * Returns whether the payment method is available.
      */
-    public function isAvailable(IsotopeOrderableCollection $collection): bool;
+    public function isAvailable(StoreContext $context): bool;
 
     /**
      * Return true if payment price is not a fixed amount.
@@ -37,12 +39,16 @@ interface PaymentInterface
     /**
      * Return label for the payment method.
      */
-    public function getLabel(IsotopeOrderableCollection $collection): string;
+    public function getLabel(): string;
 
     /**
      * Returns the payment note.
      */
-    public function getNote(IsotopeOrderableCollection $collection): string;
+    public function getNote(): string;
+
+    public function getLevel(): int;
+
+    public function getPriceDefinition(): PriceDefinition|null;
 
     /**
      * Return the calculated total price for payment.

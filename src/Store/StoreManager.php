@@ -25,8 +25,6 @@ class StoreManager
 
     public const string CONTEXT_ATTRIBUTE = '_isotope_store_context';
 
-    public const string CART_ATTRIBUTE = '_isotope_cart';
-
     private StoreContext|null $runWithContext = null;
 
     public function __construct(

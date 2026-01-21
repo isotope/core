@@ -58,6 +58,7 @@ class ProductRuntime implements RuntimeExtensionInterface
 
         $data =  [
             'unit_price' => $price->getUnitPrice(),
+            'unit_label' => $price->getUnitLabel(),
             'unit_tax' => $format->mathRound($price->getCalculatedTaxes()->sum()),
             'total_price' => $price->getTotalPrice(),
             'is_range' => $price->isRange(),

@@ -2,13 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Isotope\CoreBundle\Product\Price;
+namespace Isotope\CoreBundle\Product;
 
 use Contao\StringUtil;
 use Isotope\CoreBundle\Model\ProductType;
 use Isotope\CoreBundle\Product\DataCollector\ProductDto;
 use Isotope\CoreBundle\RuleBuilder\RuleMatcher;
 use Isotope\CoreBundle\Store\Context\StoreContext;
+use Isotope\CoreBundle\Store\Price\PriceDefinition;
+use Isotope\CoreBundle\Store\Price\PriceDefinitionCollection;
 
 class DefaultPriceFactory
 {
@@ -16,7 +18,7 @@ class DefaultPriceFactory
     {
     }
 
-    public function create(ProductDto $dto, ProductType $type, StoreContext $context): PriceCollection|null
+    public function create(ProductDto $dto, ProductType $type, StoreContext $context): PriceDefinitionCollection|null
     {
         if (!\in_array('price', $type->getAttributes(), true) && !$type->hasVariantPrices()) {
             return null;
@@ -26,11 +28,11 @@ class DefaultPriceFactory
             $prices = [];
 
             foreach ($dto['__variants'] as $variant) {
-                $prices[] = $this->createFromArray($variant, $type->hasAdvancedPrices(), $context, (int) $variant['id']);
+                $prices[] = $this->createFromArray($variant, $type->hasAdvancedPrices(), $context, (string) $variant['id']);
             }
 
             /** @noinspection PhpIncompatibleReturnTypeInspection */
-            return (new PriceCollection())->merge(...$prices);
+            return (new PriceDefinitionCollection())->merge(...$prices);
         }
 
         return $this->createFromArray($dto->getArrayCopy(), $type->hasAdvancedPrices(), $context);
@@ -39,9 +41,9 @@ class DefaultPriceFactory
     /**
      * @internal
      */
-    public function createFromArray(array $data, bool $advancedPrices, StoreContext $context, int $variantId = 0): PriceCollection
+    public function createFromArray(array $data, bool $advancedPrices, StoreContext $context, string|null $variantId = null): PriceDefinitionCollection
     {
-        $prices = new PriceCollection();
+        $prices = new PriceDefinitionCollection();
 
         if ($advancedPrices) {
             $price = StringUtil::deserialize($data['prices']);
@@ -53,7 +55,7 @@ class DefaultPriceFactory
                     }
 
                     foreach ($config['price_tiers'] as $quantity => $price) {
-                        $prices->add($this->createPrice((float) $price, $quantity, $config)->setVariantId($variantId));
+                        $prices->add($this->createPrice((float) $price, $quantity, $config)->setReference($variantId));
                     }
 
                     // Only add the first advanced price that matches the rules
@@ -66,7 +68,7 @@ class DefaultPriceFactory
             if (\is_array($price)) {
                 $prices->add($this
                     ->createPrice((float) ($price['price'] ?? 0), 1, ['tax_class' => $price['tax_class'] ?? ''])
-                    ->setVariantId($variantId),
+                    ->setReference($variantId),
                 );
             }
         }
@@ -74,14 +76,14 @@ class DefaultPriceFactory
         return $prices;
     }
 
-    private function createPrice(float $price, int $quantity = 1, array $data = []): Price
+    private function createPrice(float $price, int $quantity = 1, array $data = []): PriceDefinition
     {
         // TODO: resolve tax_class to TaxCollection
 
-        return new Price(
+        return new PriceDefinition(
             $price,
-            $quantity,
             $data['tax_class'] ? ((int) $data['tax_class']) : null,
+            $quantity,
         );
     }
 }

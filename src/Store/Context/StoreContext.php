@@ -28,6 +28,10 @@ final class StoreContext
 
     private Address|null $defaultShippingAddress = null;
 
+    private int|null $defaultShippingMethod = null;
+
+    private int|null $defaultPaymentMethod = null;
+
     /**
      * @internal use the StoreContextFactory to create a new instance
      */
@@ -199,6 +203,30 @@ final class StoreContext
     public function setDefaultShippingAddress(Address|null $defaultShippingAddress): self
     {
         $this->defaultShippingAddress = $defaultShippingAddress;
+
+        return $this;
+    }
+
+    public function getDefaultShippingMethod(): ?int
+    {
+        return $this->defaultShippingMethod;
+    }
+
+    public function setDefaultShippingMethod(?int $defaultShippingMethod): self
+    {
+        $this->defaultShippingMethod = $defaultShippingMethod;
+
+        return $this;
+    }
+
+    public function getDefaultPaymentMethod(): ?int
+    {
+        return $this->defaultPaymentMethod;
+    }
+
+    public function setDefaultPaymentMethod(?int $defaultPaymentMethod): self
+    {
+        $this->defaultPaymentMethod = $defaultPaymentMethod;
 
         return $this;
     }

@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Checkout;
 
 use Contao\Model;
-use Contao\StringUtil;
 use Isotope\CoreBundle\Model\Payment;
 use Isotope\CoreBundle\Model\Shipping;
 use Isotope\CoreBundle\ModelType\ModelInstanceTrait;
 use Isotope\CoreBundle\ModelType\ModelTypeFactoryInterface;
 use Isotope\CoreBundle\ModelType\SerializedPropertyTrait;
+use Isotope\CoreBundle\Store\Price\PriceDefinition;
 
 /**
  * @template TType of AbstractCheckoutMethod
@@ -35,8 +35,7 @@ abstract class AbstractCheckoutMethodFactory implements ModelTypeFactoryInterfac
         $instance = $this->doCreate($model)
             ->setLabel($model->label ?: $model->name)
             ->setNote((string) $model->note)
-            ->setPrice(...$this->getPrice((string) $model->price))
-            ->setTaxClass((int) $model->tax_class)
+            ->setPriceDefinition(PriceDefinition::fromString((string) $model->price, (int) $model->tax_class))
             ->setRule((int) $model->rule)
             ->setAllowedProductTypes($this->unserialize($model->product_types, intval(...)), ProductTypeCondition::from($model->product_types_condition))
             ->setDebug((bool) $model->debug)
@@ -51,19 +50,4 @@ abstract class AbstractCheckoutMethodFactory implements ModelTypeFactoryInterfac
      * @return TType
      */
     abstract protected function doCreate(Model $model): AbstractCheckoutMethod;
-
-    /**
-     * @return array{0: float|null, 1: bool}
-     */
-    private function getPrice(string $price): array
-    {
-        if ('' === $price) {
-            return [null, false];
-        }
-
-        $isPercentage = str_ends_with($price, '%');
-        $price = $isPercentage ? substr($price, -1) : $price;
-
-        return [(float) $price, $isPercentage];
-    }
 }

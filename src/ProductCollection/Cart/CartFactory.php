@@ -52,14 +52,8 @@ class CartFactory
     {
         $cart->setBillingAddress(fn () => $this->loadAddress((int) $cartModel?->billing_address_id, $context->getDefaultBillingAddress()));
         $cart->setShippingAddress(fn () => $this->loadAddress((int) $cartModel?->shipping_address_id, $context->getDefaultShippingAddress()));
-
-        if ($cartModel?->payment_id) {
-            $cart->setPaymentMethod(fn () => $this->paymentRegistry->get(Payment::findById($cartModel->payment_id)));
-        }
-
-        if ($cartModel?->shipping_id) {
-            $cart->setShippingMethod(fn () => $this->shippingRegistry->get(Shipping::findById($cartModel->shipping_id)));
-        }
+        $cart->setPaymentMethod(fn () => $this->paymentRegistry->get(Payment::findById($cartModel?->payment_id ?: $context->getDefaultPaymentMethod())));
+        $cart->setShippingMethod(fn () => $this->shippingRegistry->get(Shipping::findById($cartModel?->shipping_id ?: $context->getDefaultShippingMethod())));
 
         // TODO: more?
     }

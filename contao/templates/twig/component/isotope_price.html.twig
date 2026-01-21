@@ -16,57 +16,45 @@
 {% endblock %}
 
 {% block unit_price_component %}
-    {% if unit_price|default %}
-        {% set amount = unit_price %}
+    {% if unit_label|default %}
+        {{ unit_label }}
+    {% else %}
+        {% set amount = unit_price|default(0) %}
         {{ block('isotope_price_component') }}
     {% endif %}
 {% endblock %}
 
 {% block unit_tax_component %}
-    {% if unit_tax|default %}
-        {% set amount = unit_tax %}
-        {{ block('isotope_price_component') }}
-    {% endif %}
+    {% set amount = unit_tax|default(0) %}
+    {{ block('isotope_price_component') }}
 {% endblock %}
 
 {% block net_price_component %}
-    {% if net_unit_price|default %}
-        {% set amount = net_unit_price %}
-        {{ block('isotope_price_component') }}
-    {% endif %}
+    {% set amount = net_unit_price|default(0) %}
+    {{ block('isotope_price_component') }}
 {% endblock %}
 
 {% block gross_price_component %}
-    {% if gross_unit_price|default %}
-        {% set amount = gross_unit_price %}
-        {{ block('isotope_price_component') }}
-    {% endif %}
+    {% set amount = gross_unit_price|default(0) %}
+    {{ block('isotope_price_component') }}
 {% endblock %}
 
 {% block total_price_component %}
-    {% if total_price|default %}
-        {% set amount = total_price %}
-        {{ block('isotope_price_component') }}
-    {% endif %}
+    {% set amount = total_price|default(0) %}
+    {{ block('isotope_price_component') }}
 {% endblock %}
 
 {% block total_tax_component %}
-    {% if total_tax|default %}
-        {% set amount = total_tax %}
-        {{ block('isotope_price_component') }}
-    {% endif %}
+    {% set amount = total_tax|default(0) %}
+    {{ block('isotope_price_component') }}
 {% endblock %}
 
 {% block net_total_price_component %}
-    {% if net_total_price|default %}
-        {% set amount = net_total_price %}
-        {{ block('isotope_price_component') }}
-    {% endif %}
+    {% set amount = net_total_price|default(0) %}
+    {{ block('isotope_price_component') }}
 {% endblock %}
 
 {% block gross_total_price_component %}
-    {% if gross_total_price|default %}
-        {% set amount = gross_total_price %}
-        {{ block('isotope_price_component') }}
-    {% endif %}
+    {% set amount = gross_total_price|default(0) %}
+    {{ block('isotope_price_component') }}
 {% endblock %}

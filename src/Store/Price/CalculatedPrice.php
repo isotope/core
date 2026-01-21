@@ -10,6 +10,10 @@ use Isotope\CoreBundle\Store\Tax\TaxRateCollection;
 
 class CalculatedPrice
 {
+    private bool $isRange = false;
+
+    private string|null $unitLabel = null;
+
     private BasePrice|null $basePrice = null;
 
     public function __construct(
@@ -18,7 +22,6 @@ class CalculatedPrice
         private readonly CalculatedTaxCollection $calculatedTaxes,
         private readonly TaxRateCollection $taxRates,
         private readonly int $quantity = 1,
-        private bool $isRange = false,
     ) {
     }
 
@@ -59,6 +62,18 @@ class CalculatedPrice
         return $this;
     }
 
+    public function getUnitLabel(): ?string
+    {
+        return $this->unitLabel;
+    }
+
+    public function setUnitLabel(?string $unitLabel): self
+    {
+        $this->unitLabel = $unitLabel;
+
+        return $this;
+    }
+
     public function getBasePrice(): BasePrice|null
     {
         return $this->basePrice;
@@ -71,7 +86,7 @@ class CalculatedPrice
         return $this;
     }
 
-    public function reduce(): CalculatedPrice
+    public function reduce(): self
     {
         if (1 === $this->quantity) {
             return $this;
@@ -86,6 +101,10 @@ class CalculatedPrice
             $calculatedTaxes->put($new->getId(), $new);
         }
 
-        return new CalculatedPrice($this->totalPrice, $this->totalPrice, $calculatedTaxes, $this->taxRates, 1, $this->isRange);
+        return (new CalculatedPrice($this->totalPrice, $this->totalPrice, $calculatedTaxes, $this->taxRates, 1))
+            ->setRange($this->isRange)
+            ->setUnitLabel($this->unitLabel)
+            ->setBasePrice($this->basePrice)
+        ;
     }
 }

@@ -24,7 +24,7 @@ class RemoveFromCartAction implements ProductCollectionItemActionInterface
 
     public function supports(AbstractProductCollection $collection, LineItem $item, array $context): bool
     {
-        return $collection instanceof Cart;
+        return $collection instanceof Cart && !$item->isDynamic() && $item->getId() > 0;
     }
 
     public function render(AbstractProductCollection $collection, LineItem $item, array $context): string

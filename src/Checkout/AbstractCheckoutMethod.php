@@ -5,17 +5,21 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Checkout;
 
 use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
-use Contao\CoreBundle\Security\ContaoCorePermissions;
+use Isotope\CoreBundle\Product\CoreProduct;
+use Isotope\CoreBundle\RuleBuilder\RuleMatcher;
+use Isotope\CoreBundle\Store\Context\StoreContext;
+use Isotope\CoreBundle\Store\Price\PriceDefinition;
 use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
-use Symfony\Bundle\SecurityBundle\Security;
 
 abstract class AbstractCheckoutMethod
 {
     protected string $label;
 
     protected string $note = '';
+
+    protected PriceDefinition|null $priceDefinition;
 
     protected float|null $price = null;
 
@@ -51,7 +55,7 @@ abstract class AbstractCheckoutMethod
         return $this->id;
     }
 
-    public function getLabel(IsotopeOrderableCollection $collection): string
+    public function getLabel(): string
     {
         return $this->label;
     }
@@ -63,7 +67,7 @@ abstract class AbstractCheckoutMethod
         return $this;
     }
 
-    public function getNote(IsotopeOrderableCollection $collection): string
+    public function getNote(): string
     {
         return $this->note;
     }
@@ -131,11 +135,19 @@ abstract class AbstractCheckoutMethod
         return $this;
     }
 
+    /**
+     * TODO: remove this
+     * @deprecated
+     */
     public function isPercentage(): bool
     {
         return $this->percentage;
     }
 
+    /**
+     * TODO: remove this
+     * @deprecated
+     */
     public function getPercentage(): float
     {
         if (!$this->percentage) {
@@ -145,11 +157,37 @@ abstract class AbstractCheckoutMethod
         return $this->price;
     }
 
+    /**
+     * TODO: remove this
+     * @deprecated
+     */
     public function getPercentageLabel(): string
     {
         return $this->isPercentage() ? $this->price.'%' : '';
     }
 
+    public function getLevel(): int
+    {
+        // TODO: allow to configure the level
+        return 1;
+    }
+
+    public function setPriceDefinition(PriceDefinition|null $priceDefinition): self
+    {
+        $this->priceDefinition = $priceDefinition;
+
+        return $this;
+    }
+
+    public function getPriceDefinition(): PriceDefinition|null
+    {
+        return $this->priceDefinition;
+    }
+
+    /**
+     * TODO: remove this
+     * @deprecated
+     */
     public function getPrice(IsotopeOrderableCollection $collection): float|null
     {
         $price = $this->calculatePrice($collection);
@@ -161,6 +199,10 @@ abstract class AbstractCheckoutMethod
         return Isotope::calculatePrice($price, $this, 'price', $this->taxClass);
     }
 
+    /**
+     * TODO: remove this
+     * @deprecated
+     */
     public function setPrice(float|null $price, bool $isPercentage): static
     {
         $this->price = $price;
@@ -169,11 +211,19 @@ abstract class AbstractCheckoutMethod
         return $this;
     }
 
+    /**
+     * TODO: remove this
+     * @deprecated
+     */
     public function getTaxClass(IsotopeOrderableCollection $collection): int
     {
         return $this->taxClass;
     }
 
+    /**
+     * TODO: remove this
+     * @deprecated
+     */
     public function setTaxClass(int $taxClass): static
     {
         $this->taxClass = $taxClass;
@@ -181,7 +231,7 @@ abstract class AbstractCheckoutMethod
         return $this;
     }
 
-    public function isAvailable(IsotopeOrderableCollection $collection): bool
+    public function isAvailable(StoreContext $context): bool
     {
         if (!$this->enabled && !$this->tokenChecker->isPreviewMode()) {
             return false;
@@ -191,34 +241,17 @@ abstract class AbstractCheckoutMethod
             return $this->ruleMatcher->isApplicable($this->rule, $context);
         }
 
-        if ($this->minQuantity > 0 || $this->maxQuantity > 0) {
-            $quantity = match ($this->quantityMode) {
-                QuantityMode::cartItems => $collection->sumItemsQuantity(),
-                QuantityMode::cartProducts => $collection->countItems(),
-            };
-
-            if (
-                ($this->minQuantity > 0 && $this->minQuantity > $quantity)
-                || ($this->maxQuantity > 0 && $this->maxQuantity < $quantity)
-            ) {
-                return false;
-            }
-        }
-
-        if (
-            null !== $this->allowedConfigs
-            && !\in_array($collection->getConfig()->id, $this->allowedConfigs, true)
-        ) {
-            return false;
-        }
+        $cart = $context->getCart();
 
         if (null !== $this->allowedProductTypes) {
-            $items = $collection->getItems();
+            $items = $cart->getLineItems();
             $types = [];
 
             foreach ($items as $item) {
-                if ($item->hasProduct()) {
-                    $types[] = (int) $item->getProduct()?->getProductType()?->id;
+                $product = $item->getProduct();
+
+                if ($product instanceof CoreProduct) {
+                    $types[] = (int) $product->getProductType()?->id;
                 } elseif (ProductTypeCondition::onlyAvailable === $this->productTypesCondition) {
                     // If one product in collection is not of given type, shipping method is not available
                     return false;

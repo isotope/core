@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Isotope\CoreBundle\Product\Price;
+namespace Isotope\CoreBundle\Store\Price;
 
 use Ramsey\Collection\AbstractCollection;
 
 /**
- * @extends AbstractCollection<Price>
+ * @extends AbstractCollection<PriceDefinition>
  */
-class PriceCollection extends AbstractCollection
+class PriceDefinitionCollection extends AbstractCollection
 {
     public function getType(): string
     {
-        return Price::class;
+        return PriceDefinition::class;
     }
 
     public function hasRange(): bool
@@ -21,7 +21,7 @@ class PriceCollection extends AbstractCollection
         return \count(array_unique($this->column('getAmount'))) > 1;
     }
 
-    public function getLowest(): Price|null
+    public function getLowest(): PriceDefinition|null
     {
         $collection = $this->sort('getAmount');
 

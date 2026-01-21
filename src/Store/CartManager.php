@@ -114,7 +114,7 @@ class CartManager implements ResetInterface
 
     public function recalculate(Cart $original, StoreContext $context): Cart
     {
-        $cart = $this->calculator->calculate($original, $context);
+        $cart = $this->calculator->calculate($original, $context, $this->setCart(...));
 
         if ($original->isModified()) {
             $cart->setModified();

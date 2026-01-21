@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Product;
 
 use Isotope\CoreBundle\Model\ProductType;
-use Isotope\CoreBundle\Product\Price\PriceCollection;
 use Isotope\CoreBundle\Product\Render\ProductRendererInterface;
 use Isotope\CoreBundle\Store\Price\CalculatedPrice;
+use Isotope\CoreBundle\Store\Price\PriceDefinitionCollection;
 
 /**
  * @property int    $id
@@ -46,7 +46,7 @@ class CoreProduct extends Product
 
     private \Closure|CoreProduct|null $defaultVariant = null;
 
-    private \Closure|PriceCollection|null $prices = null;
+    private \Closure|PriceDefinitionCollection|null $prices = null;
 
     private CalculatedPrice|\Closure|null $price = null;
 
@@ -150,14 +150,14 @@ class CoreProduct extends Product
         return $this;
     }
 
-    public function getPrices(): PriceCollection|null
+    public function getPrices(): PriceDefinitionCollection|null
     {
         $this->resolveClosure($this->prices);
 
         return $this->prices;
     }
 
-    public function setPrices(\Closure|PriceCollection|null $prices): self
+    public function setPrices(\Closure|PriceDefinitionCollection|null $prices): self
     {
         $this->prices = $prices;
 

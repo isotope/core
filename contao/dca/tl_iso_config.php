@@ -37,7 +37,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
             {name_legend},name,label;
             {address_legend:hide},firstname,lastname,company,vat_no,street_1,street_2,street_3,postal,city,country,subdivision,email,phone;
             {bank_legend:hide},bankName,bankAccount,bankCode,taxNumber;
-            {checkout_legend},address_fields,billing_country,shipping_country,billing_countries,shipping_countries,limitMemberCountries;
+            {checkout_legend},address_fields,billing_country,shipping_country,billing_countries,shipping_countries,limitMemberCountries,default_shipping,default_payment;
             {pricing_legend},priceDisplay,taxCalculation,currencyFormat,priceRoundPrecision,priceRoundIncrement;
             {currency_legend},currency,currencyPosition,currencySymbol;
             {converter_legend:hide},priceCalculateFactor;
@@ -224,6 +224,16 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
             'sql' => "char(1) NOT NULL default ''",
+        ],
+        'default_shipping' => [
+            'inputType' => 'select',
+            'foreignKey' => 'tl_iso_shipping.name',
+            'eval' => ['includeBlankOption' => true, 'tl_class' => 'clr w50'],
+        ],
+        'default_payment' => [
+            'inputType' => 'select',
+            'foreignKey' => 'tl_iso_payment.name',
+            'eval' => ['includeBlankOption' => true, 'tl_class' => 'w50'],
         ],
         'priceDisplay' => [
             'default' => 'gross',

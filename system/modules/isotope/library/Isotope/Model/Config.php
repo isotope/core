@@ -43,6 +43,8 @@ use Contao\System;
  * @property string|null $billing_countries
  * @property string|null $shipping_countries
  * @property bool   $limitMemberCountries
+ * @property int    $default_shipping
+ * @property int    $default_payment
  * @property string $bankName
  * @property string $bankAccount
  * @property string $bankCode

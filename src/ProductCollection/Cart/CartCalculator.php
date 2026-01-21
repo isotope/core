@@ -26,20 +26,18 @@ class CartCalculator
     ) {
     }
 
-    public function calculate(Cart $cart, StoreContext $context): Cart
+    public function calculate(Cart $cart, StoreContext $context, \Closure|null $setter = null): Cart
     {
         $originalHash = $this->hash($cart);
 
         for ($i = 0; $i < 10; ++$i) {
-            $toCalculate = $this->cartFactory->create($context);
-            $toCalculate->setBillingAddress($cart->getBillingAddress());
-            $toCalculate->setShippingAddress($cart->getShippingAddress());
-            $toCalculate->setShippingMethod($cart->getShippingMethod());
-            $toCalculate->setPaymentMethod($cart->getPaymentMethod());
+            $toCalculate = $this->prepare($cart, $context);
 
             foreach ($this->collectors as $collector) {
                 $collector->process($toCalculate, $cart, $context);
             }
+
+            $this->finalize($toCalculate, $context);
 
             $calculatedHash = $this->hash($toCalculate);
 
@@ -49,13 +47,33 @@ class CartCalculator
 
             $originalHash = $calculatedHash;
             $cart = $toCalculate;
+
+            if ($setter) {
+                $setter($cart);
+            }
         }
 
-        $toCalculate->setLineItems($toCalculate->getLineItems()->sort('getLevel'));
+        return $toCalculate;
+    }
 
-        $toCalculate->setSubtotals($this->calculateSubtotals($toCalculate, $context));
+    private function prepare(Cart $cart, StoreContext $context): Cart
+    {
+        $toCalculate = $this->cartFactory->create($context);
 
-        $total = clone $toCalculate->getSubtotal();
+        $toCalculate->setBillingAddress($cart->getBillingAddress());
+        $toCalculate->setShippingAddress($cart->getShippingAddress());
+        $toCalculate->setShippingMethod($cart->getShippingMethod());
+        $toCalculate->setPaymentMethod($cart->getPaymentMethod());
+
+        return $toCalculate;
+    }
+
+    private function finalize(Cart $cart, StoreContext $context): void
+    {
+        $cart->setLineItems($cart->getLineItems()->sort('getLevel'));
+        $cart->setSubtotals($this->calculateSubtotals($cart));
+
+        $total = clone $cart->getSubtotal();
 
         if (PriceDisplay::Net === $context->getPriceDisplay()) {
             // Always round tax here because we display it to the client
@@ -65,9 +83,7 @@ class CartCalculator
             $total = new CalculatedPrice($amount, $amount, $total->getCalculatedTaxes(), $total->getTaxRates());
         }
 
-        $toCalculate->setTotal($total);
-
-        return $toCalculate;
+        $cart->setTotal($total);
     }
 
     private function hash(Cart $cart): string

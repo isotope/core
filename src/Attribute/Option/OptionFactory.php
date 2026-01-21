@@ -17,6 +17,7 @@ use Isotope\CoreBundle\Store\Context\ProductContext;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Price\CalculatedPrice;
 use Isotope\CoreBundle\Store\Price\PriceCalculator;
+use Isotope\CoreBundle\Store\Price\PriceDefinition;
 use Isotope\CoreBundle\Store\Price\PriceDisplay;
 use Isotope\CoreBundle\Store\Tax\TaxCalculator;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -109,9 +110,13 @@ class OptionFactory
                 $model->cssClass,
             );
 
-            if ($model->price && $productContext && ($productPrice = $productContext->getProduct()->getPrice())) {
+            if (
+                $productContext
+                && ($priceDefinition = PriceDefinition::fromString($model->price, PriceDefinition::SPLIT_TAX))
+                && ($productPrice = $productContext->getProduct()->getPrice())
+            ) {
                 $context = $productContext->getContext();
-                $price = $this->priceCalculator->calculateOption($model->price, $productPrice, $context);
+                $price = $this->priceCalculator->calculatePriceDefinition($priceDefinition, $productPrice, $context);
 
                 $option->setPrice($price);
                 $option->setLabel($this->twig->render('@Contao/component/isotope_option_price.html.twig', [

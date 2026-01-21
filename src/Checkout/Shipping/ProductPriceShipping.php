@@ -103,14 +103,15 @@ class ProductPriceShipping extends AbstractShipping
         return Isotope::calculatePrice($price, $this, 'price', $this->taxClass);
     }
 
-    private function hasShippingPrice(ProductInterface $product): bool
+    private function hasShippingPrice(Product $product): bool
     {
-        $attributes = array_merge($product->getProductType()->getAttributes(), $product->getProductType()->getVariantAttributes());
-
-        if (!$product->isExemptFromShipping() && \in_array(self::ATTRIBUTE_NAME, $attributes, true)) {
-            return true;
+        if (!$product instanceof CoreProduct) {
+            return false;
         }
 
-        return false;
+        $attributes = array_merge($product->getProductType()->getAttributes(), $product->getProductType()->getVariantAttributes());
+
+        return \in_array(self::ATTRIBUTE_NAME, $attributes, true)
+            && !$product->getExtension(ShippingExtension::class)?->isExemptFromShipping();
     }
 }

@@ -65,7 +65,7 @@ class GroupShipping extends AbstractShipping
         return false;
     }
 
-    public function getLabel(IsotopeOrderableCollection $collection): string
+    public function getLabel(): string
     {
         if ($this->inherit) {
             try {
@@ -77,7 +77,7 @@ class GroupShipping extends AbstractShipping
         return parent::getLabel($collection);
     }
 
-    public function getNote(IsotopeOrderableCollection $collection): string
+    public function getNote(): string
     {
         if ($this->inherit) {
             try {

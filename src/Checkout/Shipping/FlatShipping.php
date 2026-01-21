@@ -87,7 +87,8 @@ class FlatShipping extends AbstractShipping
         $multiply = 0;
 
         foreach ($items as $objItem) {
-            if (!($product = $objItem->getProduct()) || $product->isExemptFromShipping()) {
+            /** @var CoreProduct $product */
+            if (!($product = $objItem->getProduct()) || $product->getExtension(ShippingExtension::class)?->isExemptFromShipping()) {
                 continue;
             }
 

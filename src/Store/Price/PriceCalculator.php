@@ -7,8 +7,6 @@ namespace Isotope\CoreBundle\Store\Price;
 use Contao\StringUtil;
 use Isotope\CoreBundle\Model\BasePrice as BasePriceModel;
 use Isotope\CoreBundle\Product\CoreProduct;
-use Isotope\CoreBundle\Product\Price\Price;
-use Isotope\CoreBundle\Product\Price\PriceCollection;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Tax\TaxCalculator;
 use Isotope\CoreBundle\Store\Tax\TaxRateCollection;
@@ -32,12 +30,12 @@ class PriceCalculator
 
         // Filter for one price per product variant with lowest quantity
         if ($showRange && $type->hasAdvancedPrices() && !$type->showPriceTiers() && $type->hasVariantPrices()) {
-            $variantIds = array_unique($prices->column('getVariantId'));
-            $prices = new PriceCollection(array_map(static fn (int $variantId) => $prices->where('getVariantId', $variantId)->sort('getQuantity')->first(), $variantIds));
+            $variantIds = array_unique($prices->column('getReference'));
+            $prices = new PriceDefinitionCollection(array_map(static fn (int $variantId) => $prices->where('getReference', (string) $variantId)->sort('getQuantity')->first(), $variantIds));
         }
 
         $price = $prices->reduce(
-            static function (Price|null $price, Price $value) use ($quantity, $showRange): Price|null {
+            static function (PriceDefinition|null $price, PriceDefinition $value) use ($quantity, $showRange): PriceDefinition|null {
                 if (!$showRange && $quantity < $value->getQuantity()) {
                     return $price;
                 }
@@ -65,11 +63,29 @@ class PriceCalculator
         return $calculated;
     }
 
-    public function calculateOption(string $price, CalculatedPrice $base, StoreContext $context): CalculatedPrice
+    public function calculatePriceDefinition(PriceDefinition $priceDefinition, CalculatedPrice $base, StoreContext $context): CalculatedPrice
     {
-        $amount = $this->amountFromPriceString($price, $base);
+        if ($priceDefinition->isPercentage()) {
+            $amount = $base->getUnitPrice();
 
-        return $this->calculate($amount, $base->getTaxRates(), $context);
+            if (PriceDisplay::Net !== $context->getPriceDisplay()) {
+                $amount -= $base->getCalculatedTaxes()->sum();
+            }
+
+            $amount = $amount / 100 * $priceDefinition->getAmount();
+        } else {
+            $amount = $priceDefinition->getAmount();
+        }
+
+        if (PriceDefinition::SPLIT_TAX === $priceDefinition->getTaxId()) {
+            $taxRates = $base->getTaxRates();
+        } elseif ($priceDefinition->getTaxId() > 0) {
+            $taxRates = $this->taxCalculator->getTaxRates($priceDefinition->getTaxId(), $context);
+        } else {
+            $taxRates = new TaxRateCollection();
+        }
+
+        return $this->calculate($amount, $taxRates, $context)->setUnitLabel($priceDefinition->getUnitLabel());
     }
 
     public function sum(CalculatedPrice $basePrice, CalculatedPrice $addedPrice): CalculatedPrice
@@ -136,13 +152,7 @@ class PriceCalculator
             $taxes = $this->taxCalculator->calculateTaxes($netPrice, $taxRates, $context);
         }
 
-        return new CalculatedPrice(
-            $amount,
-            $amount * $quantity,
-            $taxes,
-            $taxRates,
-            $quantity,
-            $isRange,
-        );
+        return (new CalculatedPrice($amount, $amount * $quantity, $taxes, $taxRates, $quantity))
+            ->setRange($isRange);
     }
 }
