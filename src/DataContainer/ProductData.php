@@ -7,6 +7,7 @@ use Contao\Backend;
 use Contao\BackendTemplate;
 use Contao\BackendUser;
 use Contao\Config;
+use Contao\CoreBundle\DataContainer\DataContainerGlobalOperationsBuilder;
 use Contao\CoreBundle\Exception\AccessDeniedException;
 use Contao\CoreBundle\Exception\InternalServerErrorException;
 use Contao\CoreBundle\Exception\NotFoundException;
@@ -16,6 +17,7 @@ use Contao\CoreBundle\Security\DataContainer\CreateAction;
 use Contao\CoreBundle\Security\DataContainer\ReadAction;
 use Contao\CoreBundle\Security\DataContainer\UpdateAction;
 use Contao\CoreBundle\String\HtmlAttributes;
+use Contao\CoreBundle\Util\ArrayTree;
 use Contao\Database;
 use Contao\DataContainer;
 use Contao\Date;
@@ -52,16 +54,16 @@ class ProductData extends Driver
 		if (null !== $this->currentPid)
 		{
 			$GLOBALS['TL_DCA'][$strTable]['config']['ptable'] = $strTable;
-            $GLOBALS['TL_DCA'][$strTable]['list']['sorting']['mode'] = DataContainer::MODE_PARENT;
+			$GLOBALS['TL_DCA'][$strTable]['list']['sorting']['mode'] = DataContainer::MODE_PARENT;
 		}
 		else
 		{
 			$GLOBALS['TL_DCA'][$strTable]['config']['notSortable'] = true;
 
-            if (\in_array(Input::get('act'), ['copy', 'copyAll']))
-            {
-                Input::setGet('children', '1');
-            }
+			if (\in_array(Input::get('act'), ['copy', 'copyAll']))
+			{
+				Input::setGet('children', '1');
+			}
 		}
 	}
 
@@ -123,9 +125,9 @@ class ProductData extends Driver
 		}
 
 		$parameters = array(
-            'panel' => $this->panel(),
-            'view' => ($this->intId && (Input::get('pid') === null || (Input::get('pid') != '' && (int) Input::get('pid') != 0))) ? $this->parentView() : $this->listView(),
-        );
+			'panel' => $this->panel(),
+			'view' => ($this->intId && (Input::get('pid') === null || (Input::get('pid') != '' && (int) Input::get('pid') != 0))) ? $this->parentView() : $this->listView(),
+		);
 
 		return $this->render('show_all', $parameters);
 	}
@@ -314,9 +316,8 @@ class ProductData extends Driver
 		// Access to a translation detected, redirect with main language id and request translated version
 		if ($currentRecord[$this->pidColumnName] > 0 && $currentRecord['language'] !== '')
 		{
-            /** @var AttributeBagInterface $objSessionBag */
-            $objSessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
 			$this->sessionKey = 'dc_multilingual:' . $this->strTable . ':' . $currentRecord[$this->pidColumnName];
+			$objSessionBag = System::getContainer()->get('request_stack')->getSession()->getBag('contao_backend');
 			$objSessionBag->set($this->sessionKey, $currentRecord[$this->langColumnName]);
 			$this->redirect($this->addToUrl('id=' . $currentRecord[$this->pidColumnName]));
 		}
@@ -332,7 +333,6 @@ class ProductData extends Driver
 		// Store the active record (backwards compatibility)
 		$this->objActiveRecord = (object) $currentRecord;
 
-		$return = '';
 		$this->values[] = $this->intId;
 		$this->procedure[] = 'id=?';
 		$this->arrSubmit = array();
@@ -356,7 +356,7 @@ class ProductData extends Driver
 			}
 
 			// Restore a version
-			if (Input::post('FORM_SUBMIT') === 'tl_version' && Input::post('version'))
+			if (Input::post('FORM_SUBMIT') == 'tl_version' && Input::post('version'))
 			{
 				$objVersions->restore((int) Input::post('version'));
 
@@ -372,59 +372,35 @@ class ProductData extends Driver
 		$this->strPalette = $this->getPalette();
 		$boxes = System::getContainer()->get('contao.data_container.palette_builder')->getBoxes($this->strPalette, $this->strTable);
 
+		$parameters = array(
+			'version_number' => $intLatestVersion,
+			'boxes' => array(),
+		);
+
 		if (!empty($boxes))
 		{
-			$class = 'tl_tbox';
-
-			// Render boxes
 			foreach ($boxes as $box)
 			{
-				$arrAjax = array();
-				$blnAjax = false;
-				$key = $box['key'];
-				$legend = '';
-
-				if ($key)
-				{
-					$legend = "\n" . '<legend><button type="button" data-action="contao--toggle-fieldset#toggle">' . ($GLOBALS['TL_LANG'][$this->strTable][$key] ?? $key) . '</button></legend>';
-
-					if ($box['class'])
-					{
-						$class .= ' ' . $box['class'];
-					}
-				}
-
-				$return .= "\n\n" . '<fieldset id="pal_' . $key . '" class="' . $class . ($legend ? '' : ' nolegend') . '" data-controller="contao--toggle-fieldset" data-contao--toggle-fieldset-id-value="' . $key . '" data-contao--toggle-fieldset-table-value="' . $this->strTable . '" data-contao--toggle-fieldset-collapsed-class="collapsed" data-contao--jump-targets-target="section" data-contao--jump-targets-label-value="' . ($GLOBALS['TL_LANG'][$this->strTable][$key] ?? $key) . '" data-action="contao--jump-targets:scrollto->contao--toggle-fieldset#open">' . $legend . "\n" . '<div class="widget-group">';
 				$thisId = '';
 
-				// Build rows of the current box
+				// Generate the box's tree of widget groups. When edit() was called in
+				// AJAX mode, we return early and only render the matching subtree.
+				$widgetGroupTree = new ArrayTree();
+				$ajaxWidgetGroupTree = null;
+
 				foreach ($box['fields'] as $vv)
 				{
 					if ($vv == '[EOF]')
 					{
-						if ($blnAjax && Environment::get('isAjaxRequest'))
+						if ($ajaxWidgetGroupTree && $ajaxId == $thisId)
 						{
-							if ($ajaxId == $thisId)
-							{
-								if (($intLatestVersion = $objVersions->getLatestVersion()) !== null)
-								{
-									$arrAjax[$thisId] .= '<input type="hidden" name="VERSION_NUMBER" value="' . $intLatestVersion . '">';
-								}
-
-								return $arrAjax[$thisId];
-							}
-
-							if (\count($arrAjax) > 1)
-							{
-								$current = "\n" . '<div id="' . $thisId . '" class="subpal widget-group">' . $arrAjax[$thisId] . '</div>';
-								unset($arrAjax[$thisId]);
-								end($arrAjax);
-								$thisId = key($arrAjax);
-								$arrAjax[$thisId] .= $current;
-							}
+							return $this->render('edit/ajax', array(
+								'version_number' => $intLatestVersion,
+								'widget_groups_tree' => $ajaxWidgetGroupTree,
+							));
 						}
 
-						$return .= "\n" . '</div>';
+						$widgetGroupTree->up();
 
 						continue;
 					}
@@ -432,9 +408,14 @@ class ProductData extends Driver
 					if (preg_match('/^\[.*]$/', $vv))
 					{
 						$thisId = 'sub_' . substr($vv, 1, -1);
-						$arrAjax[$thisId] = '';
-						$blnAjax = ($ajaxId == $thisId && Environment::get('isAjaxRequest')) ? true : $blnAjax;
-						$return .= "\n" . '<div id="' . $thisId . '" class="subpal widget-group">';
+
+						$widgetGroupTree->enterChildNode($thisId);
+
+						if ($ajaxId == $thisId && Environment::get('isAjaxRequest'))
+						{
+							// We only need to output the current subtree in AJAX mode, so we store a reference here
+							$ajaxWidgetGroupTree = $widgetGroupTree->current();
+						}
 
 						continue;
 					}
@@ -468,12 +449,15 @@ class ProductData extends Driver
 					// Re-set the current value
 					$this->objActiveRecord->{$this->strField} = $this->varValue;
 
-					// Build the row and pass the current palette string (thanks to Tristan Lins)
-					$blnAjax ? $arrAjax[$thisId] .= $this->row() : $return .= $this->row();
+					$widgetGroupTree->addContentNode($this->row());
 				}
 
-				$class = 'tl_box';
-				$return .= "\n</div>\n</fieldset>";
+				$parameters['boxes'][] = array(
+					'id' => $box['key'],
+					'class' => $box['class'],
+					'label' => $GLOBALS['TL_LANG'][$this->strTable][$box['key']] ??  $box['key'],
+					'widget_groups_tree' => $widgetGroupTree,
+				);
 			}
 
 			$this->submit();
@@ -488,6 +472,7 @@ class ProductData extends Driver
 				$objTemplate = new BackendTemplate('be_conflict');
 				$objTemplate->language = $GLOBALS['TL_LANGUAGE'];
 				$objTemplate->title = StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['versionConflict']);
+				$objTemplate->host = Backend::getDecodedHostname();
 				$objTemplate->theme = Backend::getTheme();
 				$objTemplate->charset = System::getContainer()->getParameter('kernel.charset');
 				$objTemplate->h1 = $GLOBALS['TL_LANG']['MSC']['versionConflict'];
@@ -516,24 +501,6 @@ class ProductData extends Driver
 				Message::reset();
 
 				$this->redirect($this->addToUrl($GLOBALS['TL_DCA'][$this->strTable]['list']['operations']['children']['href'] ?? '', false, array('s2e', 'act', 'mode', 'pid')));
-			}
-			elseif (Input::post('saveNback') !== null)
-			{
-				Message::reset();
-
-				if (!$this->ptable)
-				{
-					$this->redirect(System::getContainer()->get('router')->generate('contao_backend') . '?do=' . Input::get('do'));
-				}
-				// TODO: try to abstract this
-				elseif ($this->ptable == 'tl_page' && $this->strTable == 'tl_article')
-				{
-					$this->redirect($this->getReferer(false, $this->strTable));
-				}
-				else
-				{
-					$this->redirect($this->getReferer(false, $this->ptable));
-				}
 			}
 			elseif (Input::post('saveNcreate') !== null)
 			{
@@ -610,43 +577,31 @@ class ProductData extends Driver
 		// Versions overview
 		if (($GLOBALS['TL_DCA'][$this->strTable]['config']['enableVersioning'] ?? null) && !($GLOBALS['TL_DCA'][$this->strTable]['config']['hideVersionMenu'] ?? null))
 		{
-			$version = $objVersions->renderDropdown();
+			$parameters['version_dropdown'] = $objVersions->renderDropdown();
 		}
 		else
 		{
-			$version = '';
+			$parameters['version_dropdown'] = '';
 		}
 
 		// Add language switch panel
-		$version = $this->addLanguageSwitchPanel($version);
+		$parameters['version_dropdown'] = $this->addLanguageSwitchPanel($parameters['version_dropdown']);
 
 		$security = System::getContainer()->get('security.helper');
 
-		$strButtons = System::getContainer()
+		// Form settings and buttons
+		$parameters['form_buttons'] = System::getContainer()
 			->get('contao.data_container.buttons_builder')
 			->generateEditButtons(
 				$this->strTable,
 				(bool) $this->ptable,
-				$security->isGranted(ContaoCorePermissions::DC_PREFIX . $this->strTable, new CreateAction($this->strTable, array('pid' => $this->intCurrentPid))),
+				$security->isGranted(ContaoCorePermissions::DC_PREFIX . $this->strTable, new CreateAction($this->strTable, $this->addDynamicPtable(array('pid' => $this->intCurrentPid)))),
 				$security->isGranted(ContaoCorePermissions::DC_PREFIX . $this->strTable, new CreateAction($this->strTable, array_replace($currentRecord, array('id' => null, 'sorting' => null)))),
 				$this
-			);
+			)
+		;
 
-		// Add the buttons and end the form
-		$return .= '
-</div>
-  ' . $strButtons . '
-</form>';
-
-		$strVersionField = '';
-
-		// Store the current version number (see #8412)
-		if ($intLatestVersion !== null)
-		{
-			$strVersionField = '
-<input type="hidden" name="VERSION_NUMBER" value="' . $intLatestVersion . '">';
-		}
-
+		// Back button
 		$strBackUrl = $this->getReferer(true);
 
 		if ((string) $currentRecord['tstamp'] === '0')
@@ -654,7 +609,11 @@ class ProductData extends Driver
 			$strBackUrl = preg_replace('/&(?:amp;)?revise=[^&]+|$/', '&amp;revise=' . $this->strTable . '.' . ((int) $this->intId), $strBackUrl, 1);
 		}
 
-		$operations = System::getContainer()->get('contao.data_container.global_operations_builder')->initialize($this->strTable);
+		/** @var DataContainerGlobalOperationsBuilder $operations */
+		$operations = System::getContainer()
+				->get('contao.data_container.global_operations_builder')
+				->initialize($this->strTable)
+		;
 
 		if (!Input::get('nb'))
 		{
@@ -672,374 +631,13 @@ class ProductData extends Driver
 			]);
 		}
 
-		// Begin the form (-> DO NOT CHANGE THIS ORDER -> this way the onsubmit attribute of the form can be changed by a field)
-		$return = $version . Message::generate() . ($this->noReload ? '
-<p class="tl_error">' . $GLOBALS['TL_LANG']['ERR']['submit'] . '</p>' : '') . $operations . '
-<form id="' . $this->strTable . '" class="tl_form tl_edit_form" method="post" enctype="' . ($this->blnUploadable ? 'multipart/form-data' : 'application/x-www-form-urlencoded') . '"' . (!empty($this->onsubmit) ? ' onsubmit="' . implode(' ', $this->onsubmit) . '"' : '') . '>
-<div class="tl_formbody_edit">
-<input type="hidden" name="FORM_SUBMIT" value="' . $this->strTable . '">
-<input type="hidden" name="REQUEST_TOKEN" value="' . htmlspecialchars(System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue(), ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5) . '">' . $strVersionField . $return;
+		$parameters['global_operations'] = $operations;
 
-		$return = '
-<div data-controller="contao--jump-targets isotope--inherit-checkbox" data-isotope--inherit-checkbox-label-value="'.StringUtil::specialcharsAttribute($GLOBALS['TL_LANG']['MSC']['useDefault']).'">
-	<div class="jump-targets"><div class="inner" data-contao--jump-targets-target="navigation"></div></div>
-	' . $return . '
-</div>';
+		// Messages
+		$parameters['message'] = Message::generate();
 
-		return $return;
+		return $this->render('edit/single', $parameters);
 	}
-
-    /**
-     * Auto-generate a form to edit all records that are currently shown
-     *
-     * @param integer $intId
-     * @param integer $ajaxId
-     *
-     * @return string
-     *
-     * @throws AccessDeniedException
-     */
-    public function editAll($intId=null, $ajaxId=null)
-    {
-        if ($GLOBALS['TL_DCA'][$this->strTable]['config']['notEditable'] ?? null)
-        {
-            throw new AccessDeniedException('Table "' . $this->strTable . '" is not editable.');
-        }
-
-        $return = '';
-
-        $objSession = System::getContainer()->get('request_stack')->getSession();
-
-        // Get current IDs from session
-        $session = $objSession->all();
-        $ids = $session['CURRENT']['IDS'] ?? array();
-
-        if ($intId && Environment::get('isAjaxRequest'))
-        {
-            $ids = array($intId);
-        }
-
-        // Save field selection in session
-        if (Input::post('FORM_SUBMIT') == $this->strTable . '_all' && Input::get('fields'))
-        {
-            $session['CURRENT'][$this->strTable] = Input::post('all_fields');
-            $objSession->replace($session);
-        }
-
-        $db = Database::getInstance();
-        $security = System::getContainer()->get('security.helper');
-        $user = BackendUser::getInstance();
-
-        $this->configurePidAndSortingFields();
-
-        // Add fields
-        $fields = $session['CURRENT'][$this->strTable] ?? array();
-
-        $blnAddJumpTarget = \count($ids) < min(Config::get('resultsPerPage') ?? 30, 50);
-
-        if (!empty($fields) && \is_array($fields) && Input::get('fields'))
-        {
-            $class = 'tl_tbox';
-
-            if (Input::post('FORM_SUBMIT') == $this->strTable)
-            {
-                $db->beginTransaction();
-            }
-
-            try
-            {
-                $blnNoReload = false;
-
-                static::preloadCurrentRecords($ids, $this->strTable);
-
-                // Walk through each record
-                foreach ($ids as $id)
-                {
-                    try
-                    {
-                        $currentRecord = $this->getCurrentRecord($id);
-
-                        if (null === $currentRecord)
-                        {
-                            continue;
-                        }
-
-                        $this->denyAccessUnlessGranted(ContaoCorePermissions::DC_PREFIX . $this->strTable, new UpdateAction($this->strTable, $currentRecord));
-                    }
-                    catch (AccessDeniedException)
-                    {
-                        continue;
-                    }
-
-                    $this->intId = $id;
-                    $this->procedure = array('id=?');
-                    $this->values = array($this->intId);
-                    $this->arrSubmit = array();
-                    $this->blnCreateNewVersion = false;
-                    $this->strPalette = $this->getPalette();
-
-                    $boxes = System::getContainer()->get('contao.data_container.palette_builder')->getBoxes($this->strPalette, $this->strTable, true);
-                    $paletteFields = array_merge(...array_column($boxes, 'fields'));
-
-                    // Reset the "noReload" state but remember it for the final handling
-                    $blnNoReload = $blnNoReload || $this->noReload;
-                    $this->noReload = false;
-
-                    $objVersions = new Versions($this->strTable, $this->intId);
-                    $objVersions->initialize();
-
-                    // Begin current row
-                    $arrAjax = array();
-                    $blnAjax = false;
-                    $thisId = '';
-                    $box = '';
-
-                    // Store the active record (backwards compatibility)
-                    $this->objActiveRecord = (object) $currentRecord;
-
-                    foreach ($paletteFields as $v)
-                    {
-                        if ($v == '[EOF]')
-                        {
-                            if ($blnAjax && Environment::get('isAjaxRequest'))
-                            {
-                                if ($ajaxId == $thisId)
-                                {
-                                    if (($intLatestVersion = $objVersions->getLatestVersion()) !== null)
-                                    {
-                                        $arrAjax[$thisId] .= '<input type="hidden" name="VERSION_NUMBER" value="' . $intLatestVersion . '">';
-                                    }
-
-                                    return $arrAjax[$thisId];
-                                }
-
-                                if (\count($arrAjax) > 1)
-                                {
-                                    $current = "\n" . '<div id="' . $thisId . '" class="subpal widget-group">' . $arrAjax[$thisId] . '</div>';
-                                    unset($arrAjax[$thisId]);
-                                    end($arrAjax);
-                                    $thisId = key($arrAjax);
-                                    $arrAjax[$thisId] .= $current;
-                                }
-                            }
-
-                            $box .= "\n  " . '</div>';
-
-                            continue;
-                        }
-
-                        if (preg_match('/^\[.*]$/', $v))
-                        {
-                            $thisId = 'sub_' . substr($v, 1, -1) . '_' . $id;
-                            $arrAjax[$thisId] = '';
-                            $blnAjax = ($ajaxId == $thisId && Environment::get('isAjaxRequest')) ? true : $blnAjax;
-                            $box .= "\n  " . '<div id="' . $thisId . '" class="subpal widget-group">';
-
-                            continue;
-                        }
-
-                        if (!\in_array($v, $fields))
-                        {
-                            continue;
-                        }
-
-                        $this->strField = $v;
-                        $this->strInputName = $v . '_' . $this->intId;
-
-                        // Set the default value and try to load the current value from DB (see #5252)
-                        if (\array_key_exists('default', $GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField] ?? array()))
-                        {
-                            $default = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['default'];
-
-                            if ($default instanceof \Closure)
-                            {
-                                $default = $default($this);
-                            }
-
-                            $this->varValue = \is_array($default) ? serialize($default) : $default;
-                        }
-
-                        if (($currentRecord[$v] ?? null) !== false)
-                        {
-                            $this->varValue = $currentRecord[$v] ?? null;
-                        }
-
-                        // Convert CSV fields (see #2890)
-                        if (($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['multiple'] ?? null) && isset($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['csv']))
-                        {
-                            $this->varValue = StringUtil::trimsplit($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['csv'], $this->varValue);
-                        }
-
-                        // Call load_callback
-                        if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['load_callback'] ?? null))
-                        {
-                            foreach ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['load_callback'] as $callback)
-                            {
-                                if (\is_array($callback))
-                                {
-                                    $this->varValue = System::importStatic($callback[0])->{$callback[1]}($this->varValue, $this);
-                                }
-                                elseif (\is_callable($callback))
-                                {
-                                    $this->varValue = $callback($this->varValue, $this);
-                                }
-                            }
-                        }
-
-                        // Re-set the current value
-                        $this->objActiveRecord->{$this->strField} = $this->varValue;
-
-                        // Build the row and pass the current palette string (thanks to Tristan Lins)
-                        $blnAjax ? $arrAjax[$thisId] .= $this->row() : $box .= $this->row();
-                    }
-
-                    // Save record
-                    try
-                    {
-                        $this->submit();
-                    }
-                    catch (AccessDeniedException)
-                    {
-                        continue;
-                    }
-
-                    $label = StringUtil::specialchars(System::getContainer()->get('contao.data_container.record_labeler')->getLabel('contao.db.' . $this->strTable . '.' . $currentRecord['id'], $currentRecord));
-
-                    $return .= Message::generateUnwrapped() . \sprintf(
-                            '<fieldset data-controller="contao--toggle-fieldset isotope--inherit-checkbox" data-isotope--inherit-checkbox-suffix-value="%s" data-isotope--inherit-checkbox-label-value="%s" data-contao--toggle-fieldset-collapsed-class="collapsed"%s class="%s cf"><legend><button type="button" data-action="contao--toggle-fieldset#toggle">%s</button></legend>%s</fieldset>',
-                            '_'.$id,
-                            $GLOBALS['TL_LANG']['MSC']['useDefault'],
-                            $blnAddJumpTarget ? ('data-contao--jump-targets-target="section" data-contao--jump-targets-label-value="' . $label . '" data-action="contao--jump-targets:scrollto->contao--toggle-fieldset#open"') : '',
-                            $class,
-                            $label,
-                            $box
-                        );
-
-                    $class = 'tl_box';
-                }
-
-                $this->noReload = $blnNoReload || $this->noReload;
-            }
-            catch (\Throwable $e)
-            {
-                if (Input::post('FORM_SUBMIT') == $this->strTable)
-                {
-                    $db->rollbackTransaction();
-                }
-
-                throw $e;
-            }
-
-            // Reload the page to prevent _POST variables from being sent twice
-            if (Input::post('FORM_SUBMIT') == $this->strTable)
-            {
-                if ($this->noReload)
-                {
-                    $db->rollbackTransaction();
-                }
-                else
-                {
-                    $db->commitTransaction();
-
-                    if (Input::post('saveNclose') !== null)
-                    {
-                        $this->redirect($this->getReferer());
-                    }
-
-                    $this->reload();
-                }
-            }
-
-            $strButtons = System::getContainer()->get('contao.data_container.buttons_builder')->generateEditAllButtons($this->strTable, $this);
-
-            // Add the form
-            $return = '
-
-<form id="' . $this->strTable . '" class="tl_form tl_edit_form" method="post" enctype="' . ($this->blnUploadable ? 'multipart/form-data' : 'application/x-www-form-urlencoded') . '">
-<div class="tl_formbody_edit nogrid">
-<input type="hidden" name="FORM_SUBMIT" value="' . $this->strTable . '">
-<input type="hidden" name="REQUEST_TOKEN" value="' . htmlspecialchars(System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue(), ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5) . '">
-<input type="hidden" name="IDS[]" value="' . implode('"><input type="hidden" name="IDS[]" value="', $ids) . '">' . ($this->noReload ? '
-<p class="tl_error">' . $GLOBALS['TL_LANG']['ERR']['submit'] . '</p>' : '') . $return . '
-</div>
-  ' . $strButtons . '
-</form>';
-        }
-
-        // Else show a form to select the fields
-        else
-        {
-            $options = '';
-            $fields = array();
-
-            // Add fields of the current table
-            $fields = array_merge($fields, array_keys($GLOBALS['TL_DCA'][$this->strTable]['fields'] ?? array()));
-
-            // Add meta fields if the current user is an administrator
-            if ($user->isAdmin)
-            {
-                if ($db->fieldExists('sorting', $this->strTable) && !\in_array('sorting', $fields))
-                {
-                    array_unshift($fields, 'sorting');
-                }
-
-                if ($db->fieldExists('pid', $this->strTable) && !\in_array('pid', $fields))
-                {
-                    array_unshift($fields, 'pid');
-                }
-            }
-
-            // Show all non-excluded fields
-            foreach ($fields as $field)
-            {
-                if ((!DataContainer::isFieldExcluded($this->strTable, $field) || $security->isGranted(ContaoCorePermissions::USER_CAN_EDIT_FIELD_OF_TABLE, $this->strTable . '::' . $field)) && !($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['eval']['doNotShow'] ?? null) && (isset($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['inputType']) || \is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['input_field_callback'] ?? null) || \is_callable($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['input_field_callback'] ?? null)))
-                {
-                    $options .= '
-  <input type="checkbox" name="all_fields[]" id="all_' . $field . '" class="tl_checkbox" value="' . StringUtil::specialchars($field) . '"> <label for="all_' . $field . '" class="tl_checkbox_label">' . (($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'][0] ?? (\is_array($GLOBALS['TL_LANG']['MSC'][$field] ?? null) ? $GLOBALS['TL_LANG']['MSC'][$field][0] : ($GLOBALS['TL_LANG']['MSC'][$field] ?? null)) ?? $field) . ' <span class="label-info">[' . $field . ']</span>') . '</label><br>';
-                }
-            }
-
-            $blnIsError = Input::isPost() && !Input::post('all_fields');
-
-            // Return the select menu
-            $return .= '
-
-<form action="' . StringUtil::ampersand(Environment::get('requestUri')) . '&amp;fields=1" id="' . $this->strTable . '_all" class="tl_form tl_edit_form" method="post" data-turbo="false">
-<div class="tl_formbody_edit">
-<input type="hidden" name="FORM_SUBMIT" value="' . $this->strTable . '_all">
-<input type="hidden" name="REQUEST_TOKEN" value="' . htmlspecialchars(System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue(), ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5) . '">
-<input type="hidden" name="IDS[]" value="' . implode('"><input type="hidden" name="IDS[]" value="', $ids) . '">' . ($blnIsError ? '
-<p class="tl_error">' . $GLOBALS['TL_LANG']['ERR']['submit'] . '</p>' : '') . '
-<div class="tl_tbox">
-<div class="widget">
-<fieldset class="tl_checkbox_container">
-  <legend' . ($blnIsError ? ' class="error"' : '') . '>' . $GLOBALS['TL_LANG']['MSC']['all_fields'][0] . '<span class="mandatory">*</span></legend>
-  <input type="checkbox" id="check_all" class="tl_checkbox" data-action="contao--check-all#toggleAll"> <label for="check_all" class="check-all"><em>' . $GLOBALS['TL_LANG']['MSC']['selectAll'] . '</em></label><br>' . $options . '
-</fieldset>' . ($blnIsError ? '
-<p class="tl_error">' . $GLOBALS['TL_LANG']['ERR']['all_fields'] . '</p>' : ((Config::get('showHelp') && isset($GLOBALS['TL_LANG']['MSC']['all_fields'][1])) ? '
-<p class="tl_help tl_tip">' . $GLOBALS['TL_LANG']['MSC']['all_fields'][1] . '</p>' : '')) . '
-</div>
-</div>
-</div>
-<div class="tl_formbody_submit">
-<div class="tl_submit_container">
-  <button type="submit" name="save" id="save" class="tl_submit" accesskey="s">' . $GLOBALS['TL_LANG']['MSC']['continue'] . '</button>
-</div>
-</div>
-</form>';
-        }
-
-        // Return
-        $return = ($this->noReload ? '
-<p class="tl_error">' . $GLOBALS['TL_LANG']['ERR']['submit'] . '</p>' : '') .
-            System::getContainer()->get('contao.data_container.global_operations_builder')->initialize($this->strTable)->addBackButton() . $return;
-
-        return $blnAddJumpTarget ? '
-<div data-controller="contao--jump-targets">
-	<div class="jump-targets"><div class="inner" data-contao--jump-targets-target="navigation"></div></div>
-	' . $return . '
-</div>' : $return;
-    }
 
 	/**
 	 * Auto-generate a form to override all records that are currently shown
@@ -1074,8 +672,8 @@ class ProductData extends Driver
 		$security = System::getContainer()->get('security.helper');
 		$user = BackendUser::getInstance();
 
-        // $this->configurePidAndSortingFields(); is private
-        (new \ReflectionClass($this))->getMethod('configurePidAndSortingFields')->invoke($this);
+		// $this->configurePidAndSortingFields(); is private
+		(new \ReflectionClass($this))->getMethod('configurePidAndSortingFields')->invoke($this);
 
 		// Add fields
 		$fields = $session['CURRENT'][$this->strTable] ?? array();
@@ -2100,7 +1698,7 @@ System::getContainer()->get('contao.data_container.global_operations_builder')->
 		return $return;
 	}
 
-    /**
+	/**
 	 * Set ptable to current table so reviseTable works like in tree mode (delete variants and translations).
 	 */
 	protected function reviseTable()
@@ -2837,9 +2435,9 @@ System::getContainer()->get('contao.data_container.global_operations_builder')->
 		;
 	}
 
-    /**
-     * Override to reset search and sorting on product variant view.
-     */
+	/**
+	 * Override to reset search and sorting on product variant view.
+	 */
 	protected function panel()
 	{
 		// Reset all filters
@@ -2863,5 +2461,39 @@ System::getContainer()->get('contao.data_container.global_operations_builder')->
 		}
 
 		return parent::panel(); // TODO: Change the autogenerated stub
+	}
+
+	protected function render(string $component, array $parameters): string
+	{
+		$defaultParameters = array(
+			'table' => $this->table,
+			'pid' => $this->intCurrentPid,
+			'sorting_mode' => (int) ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] ?? 0),
+			'display_grid' => (int) ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['renderAsGrid'] ?? false),
+			'limit_height' => BackendUser::getInstance()->doNotCollapse ? false : (int) ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['limitHeight'] ?? 0),
+			'is_upload_form' => $this->blnUploadable,
+			'form_onsubmit' => $this->onsubmit,
+			'error' => $this->noReload,
+			'as_select' => Input::get('act') === 'select',
+			'as_picker' => (bool) $this->strPickerFieldType,
+		);
+
+		if ($defaultParameters['as_picker'])
+		{
+			$defaultParameters['picker'] = array(
+				'value' => (new HtmlAttributes($this->getPickerValueAttribute()))['data-picker-value'] ?? '',
+				'type' => $this->strPickerFieldType,
+			);
+		}
+
+        $namespace = str_starts_with($component, 'edit/') ? 'productdata' : 'table';
+
+		return System::getContainer()
+			->get('twig')
+			->render(
+                "@Contao/backend/data_container/$namespace/$component.html.twig",
+				array(...$defaultParameters, ...$parameters),
+			)
+		;
 	}
 }
