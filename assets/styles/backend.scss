@@ -192,3 +192,16 @@ h3.inherit,
         }
     }
 }
+
+.iso_product_category_list > div {
+    display: flex;
+
+    > *:first-child {
+        width:50px;
+    }
+
+    > *:last-child {
+        margin: 0 0 0 10px;
+        padding: 18px 0;
+    }
+}

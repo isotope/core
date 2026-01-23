@@ -8,8 +8,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_category'] = [
     'config' => [
         'dataContainer' => DC_Table::class,
         'ptable' => 'tl_page',
-        'closed' => true,
-        'notEditable' => true,
+        'notCreatable' => true,
         'notCopyable' => true,
         'notDeletable' => true,
         'backlink' => 'do=iso_products',
@@ -32,6 +31,9 @@ $GLOBALS['TL_DCA']['tl_iso_product_category'] = [
         'label' => [
             'label' => '%s',
             'fields' => ['title'],
+        ],
+        'operations' => [
+            '!cut',
         ],
     ],
     'fields' => [

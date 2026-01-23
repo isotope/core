@@ -22,7 +22,7 @@ class LabelListener implements ResetInterface
     ) {
     }
 
-    public function __invoke(array $row): string
+    public function __invoke(array $row): array
     {
         if ($this->pageId !== $row['pid']) {
             $this->pageId = $row['pid'];
@@ -34,11 +34,11 @@ class LabelListener implements ResetInterface
 
         $product = $this->cache[$row['product_id']];
 
-        return \sprintf(
-            '<div style="display:flex"><div style="width:50px;">%s</div><div style="margin: 0 0 0 10px;padding: 18px 0;">%s</div></div>',
+        return [\sprintf(
+            '%s<div>%s</div>',
             $this->productLabelListener->generateImage($product),
             $product['name'],
-        );
+        ), null, 'iso_product_category_list'];
     }
 
     public function reset(): void
