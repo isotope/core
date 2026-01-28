@@ -9,11 +9,11 @@ use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 use Contao\DataContainer;
 use Isotope\CoreBundle\Model\ProductCollection;
 use Isotope\CoreBundle\ProductCollection\Cart\Cart;
-use Isotope\CoreBundle\ProductCollection\Cart\CartStorage;
+use Isotope\CoreBundle\ProductCollection\ProductCollectionStorage;
 
 class DeleteCartListener
 {
-    public function __construct(private readonly CartStorage $storage)
+    public function __construct(private readonly ProductCollectionStorage $storage)
     {
     }
 
@@ -31,7 +31,7 @@ class DeleteCartListener
 
     private function deleteCarts(int $memberId): void
     {
-        $carts = ProductCollection::findByMember($memberId, Cart::COLLECTION_TYPE);
+        $carts = ProductCollection::findByMember($memberId, Cart::getType());
 
         if (null !== $carts) {
             foreach ($carts as $cart) {

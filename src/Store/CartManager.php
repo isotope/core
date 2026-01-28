@@ -8,9 +8,9 @@ use Isotope\CoreBundle\Model\ProductCollection;
 use Isotope\CoreBundle\ProductCollection\Cart\Cart;
 use Isotope\CoreBundle\ProductCollection\Cart\CartCalculator;
 use Isotope\CoreBundle\ProductCollection\Cart\CartFactory;
-use Isotope\CoreBundle\ProductCollection\Cart\CartStorage;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItemCollection;
+use Isotope\CoreBundle\ProductCollection\ProductCollectionStorage;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Contracts\Service\ResetInterface;
@@ -27,8 +27,8 @@ class CartManager implements ResetInterface
      * @internal
      */
     public function __construct(
-        private readonly CartStorage $storage,
         private readonly CartFactory $cartFactory,
+        private readonly ProductCollectionStorage $storage,
         private readonly CartCalculator $calculator,
     ) {
     }
@@ -56,7 +56,7 @@ class CartManager implements ResetInterface
             return $this->cart[$context->getIdentifier()];
         }
 
-        $cart = $this->storage->load($context);
+        $cart = $this->cartFactory->load($context);
 
         if (!$cart) {
             $cart = $this->cartFactory->create($context);

@@ -30,6 +30,11 @@ class Cart extends AbstractProductCollection
 
     private CalculatedPrice|null $total = null;
 
+    public static function getType(): string
+    {
+        return self::COLLECTION_TYPE;
+    }
+
     public function isModified(): bool
     {
         return $this->isModified;

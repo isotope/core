@@ -9,6 +9,9 @@ use Isotope\CoreBundle\ProductCollection\LineItem\LineItemCollection;
 use Ramsey\Collection\CollectionInterface;
 use Symfony\Contracts\Translation\TranslatableInterface;
 
+/**
+ * @template TType
+ */
 abstract class AbstractProductCollection
 {
     protected LineItemCollection $lineItems;
@@ -28,6 +31,8 @@ abstract class AbstractProductCollection
     {
         return $this->identifier;
     }
+
+    abstract public static function getType(): string;
 
     public function isEmpty(): bool
     {

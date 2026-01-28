@@ -7,11 +7,12 @@ namespace Isotope\CoreBundle\ProductCollection\EventListener;
 use Isotope\CoreBundle\Product\DataCollector\ProductDto;
 use Isotope\CoreBundle\Product\DataCollector\ProductDtoCollection;
 use Isotope\CoreBundle\Product\ProductBuilder;
+use Isotope\CoreBundle\ProductCollection\Event\LoadCollectionTransaction;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
-use Isotope\CoreBundle\Store\Event\CartCreatedEvent;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
+use Symfony\Component\Translation\TranslatableMessage;
 
-#[AsEventListener]
+#[AsEventListener(LoadCollectionTransaction::NAME.'.post')]
 class LoadProductsListener
 {
     public function __construct(
@@ -19,12 +20,12 @@ class LoadProductsListener
     ) {
     }
 
-    public function __invoke(CartCreatedEvent $event): void
+    public function __invoke(LoadCollectionTransaction $event): void
     {
-        $lineItems = $event->getCart()->getLineItems()->whereType(LineItem::TYPE_PRODUCT);
+        $lineItems = $event->collection->getLineItems()->whereType(LineItem::TYPE_PRODUCT);
         $identifiers = array_unique($lineItems->column('getIdentifier'));
         $dtoCollection = new ProductDtoCollection(array_map(static fn (string $identifier) => new ProductDto($identifier), $identifiers));
-        $products = $this->productBuilder->build($dtoCollection, $event->getContext());
+        $products = $this->productBuilder->build($dtoCollection, $event->context);
 
         foreach ($lineItems as $item) {
             $product = $products->findByIdentifier($item->getIdentifier());

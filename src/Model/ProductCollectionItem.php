@@ -54,7 +54,7 @@ class ProductCollectionItem extends Model
     /**
      * @return self|null
      */
-    public static function findByOneCollection(int $pid, string $identifier, array|null $configuration, array $options = []): self|null
+    public static function findOneByCollection(int $pid, string $identifier, array|null $configuration, array $options = []): self|null
     {
         return self::findOneBy(
             ['pid=?', 'identifier=?', 'configuration=?'],
