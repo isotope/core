@@ -8,7 +8,6 @@ use Contao\Module;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Price\PriceDefinition;
 use Isotope\Interfaces\IsotopeOrderableCollection;
-use Isotope\Model\ProductCollectionSurcharge\Payment;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -71,11 +70,6 @@ interface PaymentInterface
      * Example: parial information about the used credit card.
      */
     public function checkoutReview(IsotopeOrderableCollection $collection): string;
-
-    /**
-     * Get the checkout surcharge for this shipping method.
-     */
-    public function getSurcharge(IsotopeOrderableCollection $collection): Payment|null;
 
     /**
      * Process payment on checkout confirmation page.

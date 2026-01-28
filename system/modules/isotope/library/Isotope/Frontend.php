@@ -18,11 +18,8 @@ use Contao\FrontendTemplate;
 use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
-use Isotope\Interfaces\IsotopeOrderableCollection;
-use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\ProductCollection\Cart;
 use Isotope\Model\ProductCollection\Order;
-use Isotope\Model\ProductCollectionSurcharge;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -30,38 +27,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class Frontend extends \Contao\Frontend
 {
-    /**
-     * Get shipping and payment surcharges for given collection
-     *
-     *
-     * @return ProductCollectionSurcharge[]
-     */
-    public function findShippingAndPaymentSurcharges(IsotopeProductCollection $objCollection)
-    {
-        if (!$objCollection instanceof IsotopeOrderableCollection) {
-            \Contao\System::getContainer()->get('monolog.logger.contao')->log(\Psr\Log\LogLevel::ERROR, 'Product collection ID "' . $objCollection->getId() . '" is not orderable', ['contao' => new \Contao\CoreBundle\Monolog\ContaoContext(__METHOD__, \Contao\CoreBundle\Monolog\ContaoContext::ERROR)]);
-            return false;
-        }
-
-        // Do not add shipping and payment surcharge to cart,
-        // they should only appear in the order review
-        if ($objCollection instanceof Cart) {
-            return array();
-        }
-
-        $arrSurcharges = array();
-
-        if (($objSurcharge = $objCollection->getShippingSurcharge()) !== null) {
-            $arrSurcharges[] = $objSurcharge;
-        }
-
-        if (($objSurcharge = $objCollection->getPaymentSurcharge()) !== null) {
-            $arrSurcharges[] = $objSurcharge;
-        }
-
-        return $arrSurcharges;
-    }
-
     /**
      * Inject the necessary scripts here upon the "modifyFrontendPage" hook.
      * We don't use the generatePage hook here anymore as modules added via

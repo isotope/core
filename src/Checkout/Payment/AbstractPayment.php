@@ -8,8 +8,6 @@ use Isotope\CoreBundle\Checkout\AbstractCheckoutMethod;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Isotope;
-use Isotope\Model\ProductCollectionSurcharge;
-use Isotope\Model\ProductCollectionSurcharge\Payment;
 
 abstract class AbstractPayment extends AbstractCheckoutMethod implements PaymentInterface
 {
@@ -58,14 +56,5 @@ abstract class AbstractPayment extends AbstractCheckoutMethod implements Payment
         }
 
         return Isotope::calculatePrice($price, $this, 'price', $this->taxClass);
-    }
-
-    public function getSurcharge(IsotopeOrderableCollection $collection): Payment|null
-    {
-        if (null === $this->price) {
-            return null;
-        }
-
-        return ProductCollectionSurcharge::createForPaymentInCollection($this, $collection);
     }
 }

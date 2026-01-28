@@ -28,27 +28,14 @@ use Isotope\CoreBundle\Model\RuleCondition;
 use Isotope\CoreBundle\Model\Shipping;
 use Isotope\CoreBundle\Widget\InheritCheckBox;
 use Isotope\CoreBundle\Widget\MediaManager;
-use Isotope\EventListener\PostCheckoutUploads;
 use Isotope\Frontend;
 use Isotope\Model\Address;
 use Isotope\Model\Config;
 use Isotope\Model\Download;
 use Isotope\Model\ProductCollectionDownload;
 use Isotope\Model\ProductCollectionLog;
-use Isotope\Model\ProductCollectionSurcharge;
-use Isotope\Model\ProductCollectionSurcharge\Payment as PaymentSurcharge;
-use Isotope\Model\ProductCollectionSurcharge\Shipping as ShippingSurcharge;
-use Isotope\Model\ProductCollectionSurcharge\Tax;
 use Isotope\Model\TaxClass;
 use Isotope\Model\TaxRate;
-use Isotope\Module\AddressBook;
-use Isotope\Module\Cart;
-use Isotope\Module\CartAddress;
-use Isotope\Module\Checkout;
-use Isotope\Module\ConfigSwitcher;
-use Isotope\Module\Messages;
-use Isotope\Module\OrderHistory;
-use Isotope\Module\ShippingCalculator;
 use Isotope\VatNoValidator\EuViesValidator;
 
 /*
@@ -63,7 +50,7 @@ ArrayUtil::arrayInsert($GLOBALS['BE_MOD']['isotope'], 0, [
         'tables' => ['tl_iso_product', 'tl_iso_product_category', 'tl_iso_download', 'tl_iso_related_product', 'tl_iso_attribute_option'],
     ],
     'iso_orders' => [
-        'tables' => ['tl_iso_product_collection', 'tl_iso_product_collection_item', 'tl_iso_product_collection_surcharge', 'tl_iso_product_collection_download', 'tl_iso_address'],
+        'tables' => ['tl_iso_product_collection', 'tl_iso_product_collection_item', 'tl_iso_product_collection_download', 'tl_iso_address'],
         'print_document' => [Callback::class, 'printDocument'],
     ],
     'iso_rules' => [
@@ -174,7 +161,6 @@ $GLOBALS['TL_MODELS'][ProductCollection::getTable()] = ProductCollection::class;
 $GLOBALS['TL_MODELS'][ProductCollectionDownload::getTable()] = ProductCollectionDownload::class;
 $GLOBALS['TL_MODELS'][ProductCollectionItem::getTable()] = ProductCollectionItem::class;
 $GLOBALS['TL_MODELS'][ProductCollectionLog::getTable()] = ProductCollectionLog::class;
-$GLOBALS['TL_MODELS'][ProductCollectionSurcharge::getTable()] = ProductCollectionSurcharge::class;
 $GLOBALS['TL_MODELS'][ProductType::getTable()] = ProductType::class;
 $GLOBALS['TL_MODELS'][RelatedCategory::getTable()] = RelatedCategory::class;
 $GLOBALS['TL_MODELS'][RelatedProduct::getTable()] = RelatedProduct::class;
@@ -224,9 +210,6 @@ $GLOBALS['ISO_NUM']["10'000.00"] = [2, '.', "'"];
  */
 $GLOBALS['TL_HOOKS']['replaceInsertTags'][] = [Frontend::class, 'replaceIsotopeTags'];
 $GLOBALS['TL_HOOKS']['modifyFrontendPage'][] = [Frontend::class, 'injectScripts'];
-
-$GLOBALS['ISO_HOOKS']['findSurchargesForCollection'][] = [Frontend::class, 'findShippingAndPaymentSurcharges'];
-$GLOBALS['ISO_HOOKS']['postCheckout'][] = ['Isotope\Analytics', 'trackOrder'];
 
 /*
  * Cron Jobs

@@ -17,7 +17,6 @@ use Isotope\CoreBundle\Model\ProductCollectionItem;
 use Isotope\CoreBundle\Product\Product;
 use Isotope\Haste\Units\Mass\Scale;
 use Isotope\Model\Config;
-use Isotope\Model\ProductCollectionSurcharge;
 
 
 /**
@@ -126,14 +125,14 @@ interface IsotopeProductCollection
     public function getTaxFreeSubtotal();
 
     /**
-     * Sum total price of items and surcharges
+     * Sum total price of items
      *
      * @return float
      */
     public function getTotal();
 
     /**
-     * Sum tax free total of items and surcharges
+     * Sum tax free total of items
      *
      * @return float
      */
@@ -209,13 +208,6 @@ interface IsotopeProductCollection
      * @return bool
      */
     public function deleteItemById($intId);
-
-    /**
-     * Find surcharges for the current collection
-     *
-     * @return ProductCollectionSurcharge[]
-     */
-    public function getSurcharges();
 
     /**
      * Add all products in the collection to the given scale

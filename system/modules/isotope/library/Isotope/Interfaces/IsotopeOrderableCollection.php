@@ -16,7 +16,6 @@ use Isotope\CoreBundle\Checkout\Shipping\ShippingInterface;
 use Isotope\CoreBundle\Model\Payment;
 use Isotope\CoreBundle\Model\Shipping;
 use Isotope\Model\Address;
-use Isotope\Model\ProductCollectionSurcharge;
 
 /**
  * IsotopeOrderableCollection describes a product collection that can have order information.
@@ -48,13 +47,6 @@ interface IsotopeOrderableCollection extends IsotopeProductCollection
      * Set payment method for this collection
      */
     public function setPaymentMethod(PaymentInterface $objPayment = null);
-
-    /**
-     * Return surcharge for current payment method
-     *
-     * @return ProductCollectionSurcharge|null
-     */
-    public function getPaymentSurcharge();
 
     /**
      * Get billing address for collection
@@ -93,13 +85,6 @@ interface IsotopeOrderableCollection extends IsotopeProductCollection
      * Set shipping method for this collection
      */
     public function setShippingMethod(ShippingInterface $objShipping = null);
-
-    /**
-     * Return surcharge for current shipping method
-     *
-     * @return ProductCollectionSurcharge|null
-     */
-    public function getShippingSurcharge();
 
     /**
      * Get shipping address for collection

@@ -7,9 +7,6 @@ namespace Isotope\CoreBundle\Checkout\Shipping;
 use Isotope\CoreBundle\Checkout\AbstractCheckoutMethod;
 use Isotope\Haste\Units\Mass\Weighable;
 use Isotope\Haste\Units\Mass\WeightAggregate;
-use Isotope\Interfaces\IsotopeOrderableCollection;
-use Isotope\Model\ProductCollectionSurcharge;
-use Isotope\Model\ProductCollectionSurcharge\Shipping;
 
 abstract class AbstractShipping extends AbstractCheckoutMethod implements ShippingInterface, WeightAggregate
 {
@@ -32,15 +29,6 @@ abstract class AbstractShipping extends AbstractCheckoutMethod implements Shippi
         $this->shippingWeight = $shippingWeight;
 
         return $this;
-    }
-
-    public function getSurcharge(IsotopeOrderableCollection $collection): Shipping|null
-    {
-        if (null === $this->getPrice($collection)) {
-            return null;
-        }
-
-        return ProductCollectionSurcharge::createForShippingInCollection($this, $collection);
     }
 
     public function getWeight(): Weighable|null

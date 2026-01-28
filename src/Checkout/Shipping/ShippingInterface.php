@@ -7,7 +7,6 @@ namespace Isotope\CoreBundle\Checkout\Shipping;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Price\PriceDefinition;
 use Isotope\Interfaces\IsotopeOrderableCollection;
-use Isotope\Model\ProductCollectionSurcharge\Shipping;
 
 /**
  * Interface for an Isotope shipping method.
@@ -84,9 +83,4 @@ interface ShippingInterface
      * Example: Information about tracking codes.
      */
     public function checkoutReview(IsotopeOrderableCollection $collection): string;
-
-    /**
-     * Get the checkout surcharge for this shipping method.
-     */
-    public function getSurcharge(IsotopeOrderableCollection $collection): Shipping|null;
 }

@@ -42,7 +42,6 @@ use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Message;
-use Isotope\Model\ProductCollectionSurcharge\Tax;
 
 /**
  * Class ProductCollection
@@ -106,12 +105,6 @@ abstract class ProductCollection extends TypeAgent
      * @var ProductCollectionItem[]
      */
     protected $arrItems;
-
-    /**
-     * Cache surcharges in this collection
-     * @var array
-     */
-    protected $arrSurcharges;
 
     /**
      * Errors
@@ -320,16 +313,6 @@ abstract class ProductCollection extends TypeAgent
     }
 
     /**
-     * Return surcharge for current payment method
-     *
-     * @return ProductCollectionSurcharge|null
-     */
-    public function getPaymentSurcharge()
-    {
-        return $this->hasPayment() ? $this->getPaymentMethod()->getSurcharge($this) : null;
-    }
-
-    /**
      * Return boolean whether collection has payment
      *
      * @return bool
@@ -374,16 +357,6 @@ abstract class ProductCollection extends TypeAgent
     {
         $this->shipping_id = (null === $objShipping ? 0 : $objShipping->getId());
         $this->objShipping = $objShipping;
-    }
-
-    /**
-     * Return surcharge for current shipping method
-     *
-     * @return ProductCollectionSurcharge|null
-     */
-    public function getShippingSurcharge()
-    {
-        return $this->hasShipping() ? $this->getShippingMethod()->getSurcharge($this) : null;
     }
 
     /**
@@ -670,16 +643,12 @@ abstract class ProductCollection extends TypeAgent
                 "DELETE FROM tl_iso_product_collection_item WHERE pid=$intPid"
             );
             Database::getInstance()->query(
-                "DELETE FROM tl_iso_product_collection_surcharge WHERE pid=$intPid"
-            );
-            Database::getInstance()->query(
                 "DELETE FROM tl_iso_address WHERE ptable='" . static::$strTable . "' AND pid=$intPid"
             );
         }
 
         $this->arrCache = [];
         $this->arrItems = null;
-        $this->arrSurcharges = null;
 
         // !HOOK: additional functionality when deleting a collection
         if (isset($GLOBALS['ISO_HOOKS']['postDeleteCollection'])
@@ -706,12 +675,6 @@ abstract class ProductCollection extends TypeAgent
             $this->deleteItem($objItem);
         }
 
-        foreach ($this->getSurcharges() as $objSurcharge) {
-            if ($objSurcharge->id) {
-                $objSurcharge->delete();
-            }
-        }
-
         $this->clearCache();
     }
 
@@ -732,17 +695,6 @@ abstract class ProductCollection extends TypeAgent
 
         $this->createPrivateAddresses();
         $this->updateDatabase();
-
-        // Add surcharges to the collection
-        $sorting = 128;
-        foreach ($this->getSurcharges() as $objSurcharge) {
-            $objSurcharge->pid     = $this->id;
-            $objSurcharge->tstamp  = $time;
-            $objSurcharge->sorting = $sorting;
-            $objSurcharge->save();
-
-            $sorting += 128;
-        }
 
         // Add downloads from products to the collection
         foreach (ProductCollectionDownload::createForProductsInCollection($this) as $objDownload) {
@@ -824,7 +776,7 @@ abstract class ProductCollection extends TypeAgent
     }
 
     /**
-     * Sum total price of items and surcharges
+     * Sum total price of items
      *
      * @return float
      */
@@ -836,13 +788,6 @@ abstract class ProductCollection extends TypeAgent
 
         if (!isset($this->arrCache['total'])) {
             $fltAmount     = $this->getSubtotal();
-            $arrSurcharges = $this->getSurcharges();
-
-            foreach ($arrSurcharges as $objSurcharge) {
-                if ($objSurcharge->addToTotal) {
-                    $fltAmount += $objSurcharge->total_price;
-                }
-            }
 
             $this->arrCache['total'] = $fltAmount > 0 ? $fltAmount : 0;
         }
@@ -851,7 +796,7 @@ abstract class ProductCollection extends TypeAgent
     }
 
     /**
-     * Sum tax free total of items and surcharges
+     * Sum tax free total of items
      *
      * @return float
      */
@@ -862,24 +807,10 @@ abstract class ProductCollection extends TypeAgent
         }
 
         if (!isset($this->arrCache['taxFreeTotal'])) {
-            $arrSurcharges = $this->getSurcharges();
-
             if (\in_array($this->getConfig()->getPriceDisplay(), [Config::PRICE_DISPLAY_GROSS, Config::PRICE_DISPLAY_FIXED], true)) {
                 $fltAmount = $this->getTotal();
-
-                foreach ($arrSurcharges as $objSurcharge) {
-                    if ($objSurcharge instanceof Tax) {
-                        $fltAmount -= $objSurcharge->total_price;
-                    }
-                }
             } else {
                 $fltAmount = $this->getTaxFreeSubtotal();
-
-                foreach ($arrSurcharges as $objSurcharge) {
-                    if ($objSurcharge->addToTotal) {
-                        $fltAmount += $objSurcharge->tax_free_total_price;
-                    }
-                }
             }
 
             $this->arrCache['taxFreeTotal'] = $fltAmount > 0 ? Isotope::roundPrice($fltAmount) : 0;
@@ -1254,28 +1185,6 @@ abstract class ProductCollection extends TypeAgent
     }
 
     /**
-     * Find surcharges for the current collection
-     *
-     * @return ProductCollectionSurcharge[]
-     */
-    public function getSurcharges()
-    {
-        if (null === $this->arrSurcharges) {
-            if ($this->isLocked()) {
-                $this->arrSurcharges = [];
-
-                if (($objSurcharges = ProductCollectionSurcharge::findBy('pid', $this->id)) !== null) {
-                    $this->arrSurcharges = $objSurcharges->getModels();
-                }
-            } else {
-                $this->arrSurcharges = ProductCollectionSurcharge::findForCollection($this);
-            }
-        }
-
-        return $this->arrSurcharges;
-    }
-
-    /**
      * Copy product collection items from another collection to this one (e.g. Cart to Order)
      *
      *
@@ -1339,48 +1248,6 @@ abstract class ProductCollection extends TypeAgent
     }
 
     /**
-     * Copy product collection surcharges from another collection to this one (e.g. Cart to Order)
-     *
-     *
-     * @return int[]
-     *
-     * @deprecated Deprecated since version 2.2, to be removed in 3.0.
-     *             Surcharges are calculated on the fly, so it does not make sense to copy them from another one.
-     *
-     * @throws \BadMethodCallException if the product collection is locked.
-     */
-    public function copySurchargesFrom(IsotopeProductCollection $objSource, array $arrItemMap = array())
-    {
-        $this->ensureNotLocked();
-
-        $arrIds  = array();
-        $time    = time();
-        $sorting = 128;
-
-        foreach ($objSource->getSurcharges() as $objSourceSurcharge) {
-            $objSurcharge          = clone $objSourceSurcharge;
-            $objSurcharge->pid     = $this->id;
-            $objSurcharge->tstamp  = $time;
-            $objSurcharge->sorting = $sorting;
-
-            // Convert surcharge amount for individual product IDs
-            $objSurcharge->convertCollectionItemIds($arrItemMap);
-
-            $objSurcharge->save();
-
-            $arrIds[$sorting] = $objSurcharge->id;
-
-            $sorting += 128;
-        }
-
-        // Empty cache
-        $this->arrSurcharges = null;
-        $this->arrCache = [];
-
-        return $arrIds;
-    }
-
-    /**
      * @inheritdoc
      */
     public function addToScale(Scale $objScale = null)
@@ -1427,7 +1294,6 @@ abstract class ProductCollection extends TypeAgent
         $objTemplate->id                = $this->id;
         $objTemplate->collection        = $this;
         $objTemplate->config            = $objConfig;
-        $objTemplate->surcharges        = $this->formatSurcharges($this->getSurcharges(), $objConfig->currency);
         $objTemplate->subtotal          = Isotope::formatPriceWithCurrency($this->getSubtotal(), true, $objConfig->currency);
         $objTemplate->total             = Isotope::formatPriceWithCurrency($this->getTotal(), true, $objConfig->currency);
         $objTemplate->tax_free_subtotal = Isotope::formatPriceWithCurrency($this->getTaxFreeSubtotal(), true, $objConfig->currency);
@@ -1858,7 +1724,6 @@ abstract class ProductCollection extends TypeAgent
     protected function clearCache()
     {
         $this->arrItems = null;
-        $this->arrSurcharges = null;
         $this->arrCache = [];
         $this->arrErrors = [];
         $this->objPayment = false;
@@ -1969,48 +1834,5 @@ abstract class ProductCollection extends TypeAgent
             $item->price          = (float) ($product->getPrice($context) ? $product->getPrice($context)->getAmount($quantity) : 0);
             $item->tax_free_price = (float) ($product->getPrice($context) ? $product->getPrice($context)->getNetAmount($quantity) : 0);
         });
-    }
-
-    /**
-     * Check if product collection has tax
-     *
-     * @return bool
-     */
-    public function hasTax()
-    {
-        foreach ($this->getSurcharges() as $surcharge) {
-            if ($surcharge instanceof Tax) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Format surcharge prices
-     *
-     * @param ProductCollectionSurcharge[] $arrSurcharges
-     * @param string|null                  $currencyCode
-     *
-     * @return array
-     */
-    private function formatSurcharges($arrSurcharges, $currencyCode = null)
-    {
-        $i         = 0;
-        $arrReturn = array();
-
-        foreach ($arrSurcharges as $k => $objSurcharge) {
-            $arrReturn[$k]                = $objSurcharge->row();
-            $arrReturn[$k]['price']       = Isotope::formatPriceWithCurrency($objSurcharge->price, true, $currencyCode, $objSurcharge->applyRoundingIncrement);
-            $arrReturn[$k]['total_price'] = Isotope::formatPriceWithCurrency($objSurcharge->total_price, true, $currencyCode, $objSurcharge->applyRoundingIncrement);
-            $arrReturn[$k]['tax_free_total_price'] = Isotope::formatPriceWithCurrency($objSurcharge->tax_free_total_price, true, $currencyCode, $objSurcharge->applyRoundingIncrement);
-            $arrReturn[$k]['rowClass']    = trim('foot_' . (++$i) . ' ' . $objSurcharge->rowClass);
-            $arrReturn[$k]['tax_id']      = $objSurcharge->getTaxNumbers();
-            $arrReturn[$k]['raw']         = $objSurcharge->row();
-            $arrReturn[$k]['surcharge']   = $objSurcharge;
-        }
-
-        return $arrReturn;
     }
 }

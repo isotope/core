@@ -100,11 +100,6 @@ class ProductCollectionStorage
             );
 
             $this->connection->executeStatement(
-                'DELETE FROM tl_iso_product_collection_surcharge WHERE pid=?',
-                [$pid],
-            );
-
-            $this->connection->executeStatement(
                 "DELETE FROM tl_iso_address WHERE ptable='tl_iso_product_collection' AND pid=?",
                 [$pid],
             );
