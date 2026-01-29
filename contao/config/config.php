@@ -27,6 +27,8 @@ use Isotope\CoreBundle\Model\RelatedProduct;
 use Isotope\CoreBundle\Model\Rule;
 use Isotope\CoreBundle\Model\RuleCondition;
 use Isotope\CoreBundle\Model\Shipping;
+use Isotope\CoreBundle\Model\TaxClass;
+use Isotope\CoreBundle\Model\TaxRate;
 use Isotope\CoreBundle\Widget\InheritCheckBox;
 use Isotope\CoreBundle\Widget\MediaManager;
 use Isotope\Frontend;
@@ -34,8 +36,6 @@ use Isotope\Model\Address;
 use Isotope\Model\Download;
 use Isotope\Model\ProductCollectionDownload;
 use Isotope\Model\ProductCollectionLog;
-use Isotope\Model\TaxClass;
-use Isotope\Model\TaxRate;
 use Isotope\VatNoValidator\EuViesValidator;
 
 /*

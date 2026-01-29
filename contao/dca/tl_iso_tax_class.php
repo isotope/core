@@ -27,7 +27,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_class'] = [
         ],
     ],
     'palettes' => [
-        'default' => '{name_legend},name,fallback;{rate_legend},includes,label,rates,applyRoundingIncrement,notNegative',
+        'default' => '{name_legend},name,fallback;{rate_legend},includes,label,rates',
     ],
     'fields' => [
         'id' => [
@@ -66,16 +66,6 @@ $GLOBALS['TL_DCA']['tl_iso_tax_class'] = [
             'eval' => ['multiple' => true, 'csv' => ',', 'tl_class' => 'clr w50'],
             'sql' => 'text NULL',
             'relation' => ['type' => 'hasMany'],
-        ],
-        'applyRoundingIncrement' => [
-            'inputType' => 'checkbox',
-            'eval' => ['tl_class' => 'w50'],
-            'sql' => "char(1) NOT NULL default ''",
-        ],
-        'notNegative' => [
-            'inputType' => 'checkbox',
-            'eval' => ['tl_class' => 'w50'],
-            'sql' => "char(1) NOT NULL default ''",
         ],
     ],
 ];

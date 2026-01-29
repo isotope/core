@@ -9,7 +9,6 @@ use Isotope\CoreBundle\Checkout\Shipping\FlatCalculation;
 use Isotope\CoreBundle\Checkout\Shipping\GroupCalculation;
 use Isotope\CoreBundle\Checkout\Shipping\ProductCalculation;
 use Isotope\CoreBundle\Model\Shipping;
-use Isotope\Model\TaxClass;
 
 /*
  * Load tl_iso_product data container and language files
@@ -137,7 +136,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
             'filter' => true,
             'inputType' => 'select',
             'foreignKey' => 'tl_iso_tax_class.name',
-            'options_callback' => [TaxClass::class, 'getOptionsWithSplit'],
             'eval' => ['includeBlankOption' => true, 'blankOptionLabel' => &$GLOBALS['TL_LANG']['MSC']['taxFree'], 'tl_class' => 'w50'],
             'sql' => "int(10) NOT NULL default '0'",
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],

@@ -4,7 +4,6 @@ use Contao\DataContainer;
 use Contao\DC_Table;
 use Isotope\Backend\Payment\Callback;
 use Isotope\CoreBundle\Checkout\ProductTypeCondition;
-use Isotope\Model\TaxClass;
 
 $GLOBALS['TL_DCA']['tl_iso_payment'] = [
     'config' => [
@@ -110,7 +109,6 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = [
             'filter' => true,
             'inputType' => 'select',
             'foreignKey' => 'tl_iso_tax_class.name',
-            'options_callback' => [TaxClass::class, 'getOptionsWithSplit'],
             'eval' => ['includeBlankOption' => true, 'blankOptionLabel' => &$GLOBALS['TL_LANG']['MSC']['taxFree'], 'tl_class' => 'w50'],
             'sql' => "int(10) NOT NULL default '0'",
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],

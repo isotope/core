@@ -21,7 +21,6 @@ use Isotope\CoreBundle\Product\ProductBuilder;
 use Isotope\CoreBundle\Store\StoreManager;
 use Isotope\Model\ProductCollection\Cart;
 use Isotope\Model\ProductPrice;
-use Isotope\Model\TaxClass;
 use Symfony\Component\Intl\Currencies;
 use Symfony\Component\Intl\Exception\MissingResourceException;
 
@@ -170,12 +169,6 @@ class Isotope extends Controller
                 'billing'  => Isotope::getCart()->getBillingAddress(),
                 'shipping' => $product->getExtension(ShippingExtension::class)?->isExemptFromShipping() ? Isotope::getCart()->getBillingAddress() : Isotope::getCart()->getShippingAddress(),
             );
-        }
-
-        // Possibly add/subtract tax
-        /** @var TaxClass $objTaxClass */
-        if ($intTaxClass > 0 && ($objTaxClass = TaxClass::findByPk($intTaxClass)) !== null) {
-            $fltPrice = $objTaxClass->calculatePrice($fltPrice, $arrAddresses);
         }
 
         return static::roundPrice($fltPrice);

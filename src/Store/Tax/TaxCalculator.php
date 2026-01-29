@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Store\Tax;
 
+use Isotope\CoreBundle\Model\TaxClass;
+use Isotope\CoreBundle\Model\TaxRate as TaxRateModel;
 use Isotope\CoreBundle\RuleBuilder\RuleMatcher;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Price\PriceDisplay;
 use Isotope\CoreBundle\Store\Price\TaxCalculation;
 use Isotope\CoreBundle\Util\FloatComparator;
-use Isotope\Model\TaxClass;
-use Isotope\Model\TaxRate as TaxRateModel;
 
 class TaxCalculator
 {

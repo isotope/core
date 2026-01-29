@@ -11,11 +11,11 @@ use Contao\DataContainer;
 use Contao\StringUtil;
 use Doctrine\DBAL\Connection;
 use Isotope\CoreBundle\Model\ProductType;
+use Isotope\CoreBundle\Model\TaxClass;
 use Isotope\CoreBundle\Product\DefaultPriceFactory;
 use Isotope\CoreBundle\Store\Context\StoreContextFactory;
 use Isotope\CoreBundle\Store\Price\MoneyFormat;
 use Isotope\CoreBundle\Store\Price\PriceDefinitionCollection;
-use Isotope\Model\TaxClass;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -139,7 +139,7 @@ class LabelListener
      */
     private function generatePrice(array $row): string
     {
-        $objPrice = null;
+        $priceDefinition = null;
         $fromPrice = false;
         $context = $this->storeContextFactory->createBackend();
 
@@ -168,26 +168,25 @@ class LabelListener
             $prices = array_map(fn (array $variant) => $this->priceFactory->createFromArray($variant, $type->hasAdvancedPrices(), $context), $variants);
             $prices = (new PriceDefinitionCollection())->merge(...$prices);
 
-            $objPrice = $prices->getLowest();
+            $priceDefinition = $prices->getLowest();
             $fromPrice = $prices->hasRange();
         }
 
-        if (null === $objPrice) {
+        if (null === $priceDefinition) {
             $prices = $this->priceFactory->createFromArray($row, $type?->hasAdvancedPrices() ?? false, $context);
-            $objPrice = $prices->getLowest();
+            $priceDefinition = $prices->getLowest();
             $fromPrice = $prices->hasRange();
         }
 
-        if (null !== $objPrice) {
-            $label = (new MoneyFormat())->format($objPrice->getAmount());
+        if (null !== $priceDefinition) {
+            $label = (new MoneyFormat())->format($priceDefinition->getAmount());
 
             if ($fromPrice) {
                 $label = $this->translator->trans('MSC.priceRangeLabel', [$label], 'contao_default');
             }
 
-            /** @var TaxClass $objTax */
-            $objTax = $objPrice->getTaxId() ? TaxClass::findById($objPrice->getTaxId()) : null;
-            $label .= sprintf(' <span style="color:#999">[%s]</span>', $objTax ? $objTax->getName() : $this->translator->trans('MSC.taxFree', [], 'contao_default'));
+            $taxClass = $priceDefinition->getTaxId() ? TaxClass::findById($priceDefinition->getTaxId()) : null;
+            $label .= sprintf(' <span style="color:#999">[%s]</span>', $taxClass?->name ?? $this->translator->trans('MSC.taxFree', [], 'contao_default'));
 
             return $label;
         }
