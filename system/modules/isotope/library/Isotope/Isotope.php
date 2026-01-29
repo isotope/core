@@ -13,12 +13,12 @@ namespace Isotope;
 
 use Contao\Controller;
 use Contao\System;
+use Isotope\CoreBundle\Model\Config;
 use Isotope\CoreBundle\Product\DataCollector\ProductDto;
 use Isotope\CoreBundle\Product\Extension\ShippingExtension;
 use Isotope\CoreBundle\Product\Product;
 use Isotope\CoreBundle\Product\ProductBuilder;
 use Isotope\CoreBundle\Store\StoreManager;
-use Isotope\Model\Config;
 use Isotope\Model\ProductCollection\Cart;
 use Isotope\Model\ProductPrice;
 use Isotope\Model\TaxClass;

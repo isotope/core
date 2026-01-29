@@ -8,7 +8,6 @@ use Isotope\CoreBundle\Model\Payment;
 use Isotope\CoreBundle\Model\RelatedCategory;
 use Isotope\CoreBundle\Model\Shipping;
 use Isotope\CoreBundle\Product\Category\CategoryScope;
-use Isotope\Model\Config;
 
 $GLOBALS['TL_DCA']['tl_content']['palettes']['__selector__'][] = 'iso_checkout_method';
 $GLOBALS['TL_DCA']['tl_content']['palettes']['__selector__'][] = 'iso_enableLimit';
@@ -125,7 +124,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['iso_addProductJumpTo'] = [
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['iso_config_id'] = [
     'inputType' => 'select',
-    'foreignKey' => Config::getTable().'.name',
+    'foreignKey' => 'tl_iso_config.name',
     'eval' => ['includeBlankOption' => true, 'mandatory' => true, 'tl_class' => 'w50'],
     'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
 ];

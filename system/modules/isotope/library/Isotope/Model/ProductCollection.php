@@ -24,6 +24,7 @@ use Isotope\CoreBundle\Checkout\Payment\PaymentInterface;
 use Isotope\CoreBundle\Checkout\Shipping\ShippingInterface;
 use Isotope\CoreBundle\Gallery\StandardGallery;
 use Isotope\CoreBundle\Model\Attribute;
+use Isotope\CoreBundle\Model\Config;
 use Isotope\CoreBundle\Model\ProductCollectionItem;
 use Isotope\CoreBundle\ModelType\GalleryRegistry;
 use Isotope\CoreBundle\ModelType\PaymentRegistry;

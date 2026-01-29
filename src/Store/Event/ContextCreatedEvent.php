@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Store\Event;
 
+use Isotope\CoreBundle\Model\Config;
 use Isotope\CoreBundle\Store\Context\StoreContext;
-use Isotope\Model\Config;
 use Symfony\Contracts\EventDispatcher\Event;
 
 class ContextCreatedEvent extends Event

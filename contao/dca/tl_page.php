@@ -5,7 +5,6 @@ use Contao\DataContainer;
 use Contao\Input;
 use Contao\PageModel;
 use Isotope\CoreBundle\Model\ProductCategory;
-use Isotope\Model\Config;
 
 $GLOBALS['TL_DCA']['tl_page']['config']['ctable'][] = ProductCategory::getTable();
 
@@ -55,7 +54,7 @@ $GLOBALS['TL_DCA']['tl_page']['subpalettes']['iso_readerMode_page'] = 'iso_reade
  */
 $GLOBALS['TL_DCA']['tl_page']['fields']['iso_config'] = [
     'inputType' => 'select',
-    'foreignKey' => Config::getTable().'.name',
+    'foreignKey' => 'tl_iso_config.name',
     'eval' => ['includeBlankOption' => true, 'tl_class' => 'w50'],
     'sql' => "int(10) unsigned NOT NULL default '0'",
     'relation' => ['type' => 'hasOne', 'load' => 'lazy'],

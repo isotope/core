@@ -38,8 +38,8 @@ final class StoreContext
     public function __construct(
         private readonly string $identifier,
         private readonly int $storeId,
-        private readonly int $configId,
-        private readonly int|null $memberId,
+        private int $configId,
+        private int|null $memberId,
         private readonly \Closure $cartGetter,
         private \Closure|array $memberGroups,
         private readonly string $locale,
@@ -87,9 +87,23 @@ final class StoreContext
         return $this->configId;
     }
 
+    public function setConfigId(int $configId): self
+    {
+        $this->configId = $configId;
+
+        return $this;
+    }
+
     public function getMemberId(): int|null
     {
         return $this->memberId;
+    }
+
+    public function setMemberId(int|null $memberId): self
+    {
+        $this->memberId = $memberId;
+
+        return $this;
     }
 
     /**

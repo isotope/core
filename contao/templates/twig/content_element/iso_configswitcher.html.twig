@@ -1,0 +1,20 @@
+{% extends '@Contao/content_element/_base.html.twig' %}
+
+{% block content %}
+    <ul>
+        {% for config in configs %}
+            {% if config.active %}
+                <li class="active"><span class="active">{{ config.label }}</span></li>
+            {% else %}
+                <li>
+                    <form method="POST">
+                        <input type="hidden" name="FORM_SUBMIT" value="{{ form_id }}">
+                        <input type="hidden" name="REQUEST_TOKEN" value="{{ contao.request_token }}">
+                        <input type="hidden" name="config_id" value="{{ config.id }}">
+                        <button type="submit">{{ config.label }}</button>
+                    </form>
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+{% endblock %}

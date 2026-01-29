@@ -13,11 +13,8 @@ namespace Isotope;
 
 use Contao\Backend as ContaoBackend;
 use Contao\Controller;
-use Contao\Input;
 use Contao\System;
-use Contao\Widget;
-use Isotope\Backend\Product\Permission;
-use Isotope\Model\Config;
+use Isotope\CoreBundle\Model\Config;
 
 /**
  * Provide methods to handle Isotope back end components.

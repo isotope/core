@@ -11,18 +11,11 @@
 
 namespace Isotope\Model\ProductCollection;
 
-use Contao\Controller;
-use Contao\FrontendUser;
-use Contao\Input;
-use Contao\PageModel;
 use Contao\System;
-use Isotope\CompatibilityHelper;
 use Isotope\CoreBundle\Store\StoreManager;
 use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Isotope;
-use Isotope\Message;
 use Isotope\Model\Address;
-use Isotope\Model\Config;
 use Isotope\Model\ProductCollection;
 
 /**

@@ -22,10 +22,10 @@ use Contao\StringUtil;
 use Contao\System;
 use Contao\User;
 use Isotope\CompatibilityHelper;
+use Isotope\CoreBundle\Model\Config;
 use Isotope\CoreBundle\Store\StoreManager;
 use Isotope\Isotope;
 use Isotope\Model\Address;
-use Isotope\Model\Config;
 use Isotope\Template;
 use NotificationCenter\Model\Notification;
 

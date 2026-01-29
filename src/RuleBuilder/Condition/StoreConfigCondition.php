@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\RuleBuilder\Condition;
 
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsRuleCondition;
+use Isotope\CoreBundle\Model\Config;
 use Isotope\CoreBundle\RuleBuilder\Exception\InvalidOperatorException;
 use Isotope\CoreBundle\Store\Context\StoreContext;
-use Isotope\CoreBundle\Store\StoreManager;
-use Isotope\Model\Config;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[AsRuleCondition(category: 'store', factory: StoreConditionFactory::class)]

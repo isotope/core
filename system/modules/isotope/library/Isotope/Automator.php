@@ -12,9 +12,7 @@
 namespace Isotope;
 
 use Contao\Controller;
-use Contao\Request;
 use Contao\System;
-use Isotope\Model\Config;
 use Isotope\Model\ProductCollection;
 use Isotope\Model\ProductCollection\Cart;
 use Isotope\Model\ProductCollection\Order;

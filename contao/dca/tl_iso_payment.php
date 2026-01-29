@@ -3,12 +3,10 @@
 use Contao\DataContainer;
 use Contao\DC_Table;
 use Isotope\Backend\Payment\Callback;
-use Isotope\CompatibilityHelper;
 use Isotope\CoreBundle\Checkout\ProductTypeCondition;
 use Isotope\CoreBundle\Checkout\QuantityMode;
 use Isotope\CoreBundle\Model\OrderStatus;
 use Isotope\CoreBundle\Model\ProductType;
-use Isotope\Model\Config;
 use Isotope\Model\TaxClass;
 
 $GLOBALS['TL_DCA']['tl_iso_payment'] = [
