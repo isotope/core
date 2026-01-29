@@ -3,7 +3,6 @@
 use Isotope\Backend;
 use Isotope\Backend\Config\Callback as ConfigCallback;
 use Isotope\Backend\Module\Callback;
-use Isotope\CoreBundle\Checkout\Step\LoginStep;
 use Isotope\CoreBundle\Product\Category\CategoryScope;
 
 $GLOBALS['TL_DCA']['tl_content']['palettes']['__selector__'][] = 'iso_checkout_method';
