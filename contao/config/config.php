@@ -201,12 +201,6 @@ $GLOBALS['ISO_NUM']['10.000,00'] = [2, ',', '.'];
 $GLOBALS['ISO_NUM']["10'000.00"] = [2, '.', "'"];
 
 /*
- * Hooks
- */
-$GLOBALS['TL_HOOKS']['replaceInsertTags'][] = [Frontend::class, 'replaceIsotopeTags'];
-$GLOBALS['TL_HOOKS']['modifyFrontendPage'][] = [Frontend::class, 'injectScripts'];
-
-/*
  * Cron Jobs
  */
 $GLOBALS['TL_CRON']['daily'][] = [Automator::class, 'deleteOldCarts'];

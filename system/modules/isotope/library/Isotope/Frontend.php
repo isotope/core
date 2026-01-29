@@ -14,7 +14,6 @@ namespace Isotope;
 use Contao\CoreBundle\ContaoCoreBundle;
 use Contao\Database;
 use Contao\Database\Result;
-use Contao\FrontendTemplate;
 use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
@@ -27,51 +26,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class Frontend extends \Contao\Frontend
 {
-    /**
-     * Inject the necessary scripts here upon the "modifyFrontendPage" hook.
-     * We don't use the generatePage hook here anymore as modules added via
-     * InsertTags will not get those scripts added. We also don't use a combination
-     * of both (e.g. use generatePage hook by default and use the modifyFrontendPage
-     * hook only if there are still $GLOBALS['AJAX_PRODUCTS'] because a simple
-     * str_replace on </body> is really not a performance issue. So we chose
-     * simplicity here.
-     *
-     * @param string $buffer
-     * @param string $templateName
-     *
-     * @return string
-     */
-    public function injectScripts($buffer, $templateName)
-    {
-        // Only add messages to the fe_page template (see isotope/core#2255)
-        if (!empty($templateName) && 0 !== strncmp($templateName, 'fe_', 3)) {
-            return $buffer;
-        }
-
-        $messages = Message::generate();
-        $hasProducts = !empty($GLOBALS['AJAX_PRODUCTS']) && \is_array($GLOBALS['AJAX_PRODUCTS']);
-
-        if ($messages === '' && !$hasProducts) {
-
-            return $buffer;
-        }
-
-        $template = new FrontendTemplate('iso_scripts');
-
-        if ($hasProducts) {
-            $template->hasProducts = true;
-            $template->loadMessage = StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['loadingProductData']);
-            $template->products    = json_encode($GLOBALS['AJAX_PRODUCTS']);
-        }
-
-        if ($messages !== '') {
-            $template->hasMessages = true;
-            $template->messages = str_replace(array("\n", "\r", "'"), array('', '', '\''), $messages);
-        }
-
-        return str_replace('</body>', $template->parse() . '</body>', $buffer);
-    }
-
     /**
      * Initialize environment (language, objPage) for a given order
      *
@@ -158,20 +112,6 @@ class Frontend extends \Contao\Frontend
         self::setLanguage($objPage->language);
 
         return $objPage;
-    }
-
-    /**
-     * Replaces Isotope specific InsertTags in Frontend
-     *
-     * @param string $strTag
-     *
-     * @return mixed
-     *
-     * @deprecated Deprecated since version 2.3, to be removed in 3.0. Use InsertTag::replace() instead.
-     */
-    public function replaceIsotopeTags($strTag)
-    {
-        return (new InsertTag())->replace($strTag);
     }
 
     /**

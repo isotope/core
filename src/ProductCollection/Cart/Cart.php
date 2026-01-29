@@ -26,10 +26,6 @@ class Cart extends AbstractProductCollection
 
     private \Closure|ShippingInterface|null $shippingMethod = null;
 
-    private array $subtotals = [];
-
-    private CalculatedPrice|null $total = null;
-
     public static function getType(): string
     {
         return self::COLLECTION_TYPE;
@@ -99,48 +95,6 @@ class Cart extends AbstractProductCollection
     public function setShippingMethod(\Closure|ShippingInterface|null $shippingMethod): self
     {
         $this->shippingMethod = $shippingMethod;
-
-        return $this;
-    }
-
-    public function getSubtotal(int $level = PHP_INT_MAX): CalculatedPrice
-    {
-        $totals = array_filter(
-            $this->subtotals,
-            static fn (int $key) => $key <= $level,
-            ARRAY_FILTER_USE_KEY,
-        );
-
-        if ([] === $totals) {
-            return new CalculatedPrice(0, 0, new CalculatedTaxCollection(), new TaxRateCollection());
-        }
-
-        if (\count($totals) < 2) {
-            return array_first($totals);
-        }
-
-        $key = max(array_keys($totals));
-
-        return $totals[$key];
-    }
-
-    public function setSubtotals(array $subtotals): self
-    {
-        ksort($subtotals);
-
-        $this->subtotals = $subtotals;
-
-        return $this;
-    }
-
-    public function getTotal(): CalculatedPrice|null
-    {
-        return $this->total;
-    }
-
-    public function setTotal(CalculatedPrice|null $total): self
-    {
-        $this->total = $total;
 
         return $this;
     }

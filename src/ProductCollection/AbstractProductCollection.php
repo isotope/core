@@ -6,6 +6,9 @@ namespace Isotope\CoreBundle\ProductCollection;
 
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItemCollection;
+use Isotope\CoreBundle\Store\Price\CalculatedPrice;
+use Isotope\CoreBundle\Store\Tax\CalculatedTaxCollection;
+use Isotope\CoreBundle\Store\Tax\TaxRateCollection;
 use Ramsey\Collection\CollectionInterface;
 use Symfony\Contracts\Translation\TranslatableInterface;
 
@@ -15,6 +18,11 @@ use Symfony\Contracts\Translation\TranslatableInterface;
 abstract class AbstractProductCollection
 {
     protected LineItemCollection $lineItems;
+
+    private array $subtotals = [];
+
+    private CalculatedPrice|null $total = null;
+
 
     /**
      * @var array<TranslatableInterface>
@@ -89,6 +97,48 @@ abstract class AbstractProductCollection
     public function getItem(LineItem $item): LineItem|null
     {
         return $this->get($item->getIdentifier(), $item->getConfiguration());
+    }
+
+    public function getSubtotal(int $level = PHP_INT_MAX): CalculatedPrice
+    {
+        $totals = array_filter(
+            $this->subtotals,
+            static fn (int $key) => $key <= $level,
+            ARRAY_FILTER_USE_KEY,
+        );
+
+        if ([] === $totals) {
+            return new CalculatedPrice(0, 0, new CalculatedTaxCollection(), new TaxRateCollection());
+        }
+
+        if (\count($totals) < 2) {
+            return array_first($totals);
+        }
+
+        $key = max(array_keys($totals));
+
+        return $totals[$key];
+    }
+
+    public function setSubtotals(array $subtotals): self
+    {
+        ksort($subtotals);
+
+        $this->subtotals = $subtotals;
+
+        return $this;
+    }
+
+    public function getTotal(): CalculatedPrice|null
+    {
+        return $this->total;
+    }
+
+    public function setTotal(CalculatedPrice|null $total): self
+    {
+        $this->total = $total;
+
+        return $this;
     }
 
     public function hasErrors(): bool
