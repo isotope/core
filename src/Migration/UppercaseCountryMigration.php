@@ -13,7 +13,7 @@ class UppercaseCountryMigration extends AbstractMigration
 {
     private const FIELD_MAP = [
         'tl_iso_config' => ['country' => false, 'billing_country' => false, 'shipping_country' => false, 'billing_countries' => true, 'shipping_countries' => true],
-        'tl_iso_payment' => ['countries' => true, 'subdivisions' => true],
+        'tl_iso_payment' => ['countries' => true],
         'tl_iso_shipping' => ['countries' => true, 'subdivisions' => true],
         'tl_iso_tax_rate' => ['countries' => true],
         'tl_iso_address' => ['country' => false],
@@ -77,7 +77,7 @@ class UppercaseCountryMigration extends AbstractMigration
             ;
 
             foreach ($fields as $field => $isArray) {
-                if (!$schema->hasColumn($fields)) {
+                if (!$schema->hasColumn($field)) {
                     continue;
                 }
 
