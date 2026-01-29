@@ -27,13 +27,15 @@ use Isotope\Model\ProductCollectionDownload;
  * @property string $identifier
  * @property mixed  $configuration
  * @property string $sku
- * @property string $name
+ * @property string $label
  * @property int    $quantity
  * @property int    $level
  * @property float  $price
  * @property float  $tax_free_price
  * @property string $tax_id
  * @property int    $jumpTo
+ *
+ * @property string|null $unit_label
 */
 class ProductCollectionItem extends Model
 {

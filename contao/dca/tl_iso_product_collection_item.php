@@ -38,7 +38,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_item'] = [
         'sku' => [
             'sql' => 'varchar(128) NULL',
         ],
-        'name' => [
+        'label' => [
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'quantity' => [
@@ -46,6 +46,9 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_item'] = [
         ],
         'level' => [
             'sql' => ['type' => Types::SMALLINT, 'unsigned' => true, 'default' => 0],
+        ],
+        'unit_label' => [
+            'sql' => 'varchar(128) NULL',
         ],
         'price' => [
             'sql' => 'decimal(12,2) NOT NULL default 0.00',

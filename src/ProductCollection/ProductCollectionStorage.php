@@ -121,7 +121,7 @@ class ProductCollectionStorage
 
             $item->setId($itemModel->id);
             $item->setSku($itemModel->sku);
-            $item->setLabel($itemModel->name);
+            $item->setLabel($itemModel->label);
             $item->setLevel((int) $itemModel->level);
 
             if (\is_array($configuration = StringUtil::deserialize($itemModel->configuration))) {
@@ -158,13 +158,13 @@ class ProductCollectionStorage
             $itemModel->identifier = $lineItem->getIdentifier();
             $itemModel->configuration = $lineItem->getConfiguration();
             $itemModel->quantity = $lineItem->getQuantity();
-            $itemModel->name = $lineItem->getLabel();
+            $itemModel->label = $lineItem->getLabel();
             $itemModel->sku = $lineItem->getSku();
 
             if ($product = $lineItem->getProduct()) {
                 //$itemModel->product_id = $product->getId();
                 //$itemModel->type = $product->getType();
-                $itemModel->name = $product->getName();
+                $itemModel->label = $product->getName();
                 $itemModel->sku = $product->getSku();
                 // TODO: save price etc.
             }
