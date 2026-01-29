@@ -19,6 +19,7 @@ use Isotope\CoreBundle\Product\ProductCollection;
 use Isotope\CoreBundle\Product\Render\DefaultProductRenderer;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Price\PriceCalculator;
+use Isotope\CoreBundle\Weight\Weight;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
 #[AsProductFactory('standard')]
@@ -50,8 +51,13 @@ class StandardProductFactory implements ProductFactoryInterface
             ->setAvailable(fn () => $this->availabilityChecker->isAvailable($product, $context))
         ;
 
-        $product->addExtension(new ShippingExtension($product));
-        $product->addExtension(new QuantityExtension($product));
+        $product->addExtension(new QuantityExtension(static fn () => $product->getPrices()?->sort('getQuantity')->first()->getQuantity() ?? 1));
+        $product->addExtension(new ShippingExtension(
+            $product->shipping_exempt || '1' === $product->getProductType()->shipping_exempt,
+            $product->shipping_pickup || '2' === $product->getProductType()->shipping_exempt,
+            $product->shipping_weight ? Weight::createFromTimePeriod($product->shipping_weight) : null,
+            $product->shipping_price,
+        ));
 
         $this->eventDispatcher->dispatch(new ProductCreatedEvent($product, $dto, $context));
 

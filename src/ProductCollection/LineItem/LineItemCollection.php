@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\ProductCollection\LineItem;
 
+use Isotope\CoreBundle\Product\Extension\ShippingExtension;
 use Isotope\CoreBundle\Util\FloatComparator;
+use Isotope\CoreBundle\Weight\Scale;
+use Isotope\CoreBundle\Weight\Weight;
+use Isotope\CoreBundle\Weight\WeightUnit;
 use Ramsey\Collection\AbstractCollection;
 use Ramsey\Collection\CollectionInterface;
 
@@ -26,12 +30,30 @@ class LineItemCollection extends AbstractCollection
         return $this->where('getType', $type);
     }
 
+    public function products(): self
+    {
+        return $this->where('getType', LineItem::TYPE_PRODUCT);
+    }
+
     public function sumQuantity(): int
     {
         return $this->reduce(
             static fn (int $total, LineItem $item) => $total + $item->getQuantity(),
             0,
         );
+    }
+
+    public function calculateWeight(WeightUnit $unit): Weight
+    {
+        $scale = new Scale();
+
+        foreach ($this as $item) {
+            if ($weight = $item->getWeight()) {
+                $scale->add($weight);
+            }
+        }
+
+        return $scale->amountIn($unit);
     }
 
     /**

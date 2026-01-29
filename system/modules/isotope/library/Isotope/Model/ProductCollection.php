@@ -35,9 +35,7 @@ use Isotope\CoreBundle\Product\Product;
 use Isotope\CoreBundle\Routing\ProductReference;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\StoreManager;
-use Isotope\Haste\Units\Mass\Scale;
-use Isotope\Haste\Units\Mass\Weighable;
-use Isotope\Haste\Units\Mass\WeightAggregate;
+use Isotope\CoreBundle\Weight\Scale;
 use Isotope\Haste\Util\Format;
 use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Interfaces\IsotopeProductCollection;
@@ -1262,21 +1260,10 @@ abstract class ProductCollection extends TypeAgent
                 continue;
             }
 
-            $objProduct = $objItem->getProduct();
+            $objWeight = $objItem->getProduct()?->getExtension(ShippingExtension::class)?->getWeight();
 
-            if ($objProduct instanceof WeightAggregate) {
-                $objWeight = $objProduct->getWeight();
-
-                if (null !== $objWeight) {
-                    for ($i = 0; $i < $objItem->quantity; $i++) {
-                        $objScale->add($objWeight);
-                    }
-                }
-
-            } elseif ($objProduct instanceof Weighable) {
-                for ($i = 0; $i < $objItem->quantity; $i++) {
-                    $objScale->add($objProduct);
-                }
+            if ($objWeight) {
+                $objScale->add($objWeight);
             }
         }
 

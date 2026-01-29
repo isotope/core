@@ -27,7 +27,10 @@ use Isotope\CoreBundle\Store\Price\PriceDefinitionCollection;
  * @property string $meta_description
  * @property string $price
  * @property string $prices
+ * @property string $shipping_weight
  * @property bool   $shipping_exempt
+ * @property bool   $shipping_pickup
+ * @property float  $shipping_price
  * @property array  $images
  * @property bool   $protected
  * @property array  $groups

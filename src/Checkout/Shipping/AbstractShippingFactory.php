@@ -9,7 +9,7 @@ use Isotope\CoreBundle\Checkout\AbstractCheckoutMethodFactory;
 use Isotope\CoreBundle\Model\Shipping;
 use Isotope\CoreBundle\ModelType\ModelInstanceTrait;
 use Isotope\CoreBundle\ModelType\SerializedPropertyTrait;
-use Isotope\Haste\Units\Mass\Weight;
+use Isotope\CoreBundle\Weight\Weight;
 
 /**
  * @template TType of AbstractShipping

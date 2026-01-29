@@ -6,6 +6,7 @@ namespace Isotope\CoreBundle\ProductCollection\EventListener;
 
 use Isotope\CoreBundle\Product\DataCollector\ProductDto;
 use Isotope\CoreBundle\Product\DataCollector\ProductDtoCollection;
+use Isotope\CoreBundle\Product\Extension\ShippingExtension;
 use Isotope\CoreBundle\Product\ProductBuilder;
 use Isotope\CoreBundle\ProductCollection\Event\LoadCollectionTransaction;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
@@ -38,6 +39,7 @@ class LoadProductsListener
             $item->setProduct($product);
             $item->setSku($product->getSku());
             $item->setLabel($product->getName());
+            $item->setWeight($product->getExtension(ShippingExtension::class)?->getWeight());
         }
     }
 }

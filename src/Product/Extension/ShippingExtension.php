@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Product\Extension;
 
-use Isotope\CoreBundle\Product\CoreProduct;
+use Isotope\CoreBundle\Weight\Weight;
 
 final class ShippingExtension implements ProductExtensionInterface
 {
@@ -12,25 +12,30 @@ final class ShippingExtension implements ProductExtensionInterface
      * @internal
      */
     public function __construct(
-        private readonly CoreProduct $product,
+        private readonly bool $exemptFromShipping,
+        private readonly bool $pickupOnly,
+        private readonly Weight|null $weight,
+        private readonly float|null $price,
     ) {
     }
 
     public function isExemptFromShipping(): bool
     {
-        if ($this->product->shipping_exempt) {
-            return true;
-        }
-
-        return '1' === $this->product->getProductType()->shipping_exempt;
+        return $this->exemptFromShipping;
     }
 
     public function isPickupOnly(): bool
     {
-        if ($this->product->shipping_pickup) {
-            return true;
-        }
+        return $this->pickupOnly;
+    }
 
-        return '2' === $this->product->getProductType()->shipping_exempt;
+    public function getWeight(): Weight|null
+    {
+        return $this->weight;
+    }
+
+    public function getPrice(): ?float
+    {
+        return $this->price;
     }
 }

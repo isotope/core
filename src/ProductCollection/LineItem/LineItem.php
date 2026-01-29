@@ -6,6 +6,7 @@ namespace Isotope\CoreBundle\ProductCollection\LineItem;
 
 use Isotope\CoreBundle\Product\Product;
 use Isotope\CoreBundle\Store\Price\CalculatedPrice;
+use Isotope\CoreBundle\Weight\Weight;
 use Symfony\Contracts\Translation\TranslatableInterface;
 
 class LineItem
@@ -31,6 +32,8 @@ class LineItem
     private CalculatedPrice|null $price = null;
 
     private Product|null $product = null;
+
+    private Weight|null $weight = null;
 
     /**
      * @var list<TranslatableInterface>
@@ -105,6 +108,18 @@ class LineItem
     public function setProduct(Product|null $product): self
     {
         $this->product = $product;
+
+        return $this;
+    }
+
+    public function getWeight(): Weight|null
+    {
+        return $this->weight;
+    }
+
+    public function setWeight(Weight|null $weight): self
+    {
+        $this->weight = $weight;
 
         return $this;
     }

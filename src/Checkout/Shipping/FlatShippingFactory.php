@@ -9,7 +9,7 @@ use Contao\Model;
 use Isotope\CoreBundle\Model\Shipping;
 use Isotope\CoreBundle\ModelType\SerializedPropertyTrait;
 use Isotope\CoreBundle\RuleBuilder\RuleMatcher;
-use Isotope\Haste\Units\Mass\Weight;
+use Isotope\CoreBundle\Weight\Weight;
 
 /**
  * @extends AbstractShippingFactory<FlatShipping>

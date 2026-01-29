@@ -4,25 +4,23 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Product\Extension;
 
-use Isotope\CoreBundle\Product\CoreProduct;
+use Isotope\CoreBundle\Util\ClosureTrait;
 
 final class QuantityExtension implements ProductExtensionInterface
 {
-    private int|null $minimum = null;
+    use ClosureTrait;
 
     /**
      * @internal
      */
     public function __construct(
-        private readonly CoreProduct $product,
+        private readonly \Closure|int $minimum,
     ) {
     }
 
     public function getMinimum(): int
     {
-        if (null === $this->minimum) {
-            $this->minimum = $this->product->getPrices()?->sort('getQuantity')->first()->getQuantity() ?? 1;
-        }
+        $this->resolveClosure($this->minimum);
 
         return $this->minimum;
     }
@@ -30,4 +28,6 @@ final class QuantityExtension implements ProductExtensionInterface
     // TODO: add maximum quantity
     // TODO: add purchase unit (e.g. price is per packs of 6)
     // TODO: add purchase steps (e.g. can only be sold in multiple of 6)
+
+
 }

@@ -10,7 +10,7 @@ use Isotope\CoreBundle\Model\ProductCollectionItem;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\Extension\ShippingExtension;
 use Isotope\CoreBundle\RuleBuilder\RuleMatcher;
-use Isotope\Haste\Units\Mass\Weighable;
+use Isotope\CoreBundle\Weight\Weight;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 
@@ -22,7 +22,7 @@ class FlatShipping extends AbstractShipping
      */
     private array|null $flatProductTypes = null;
 
-    private Weighable|null $flatWeight = null;
+    private Weight|null $flatWeight = null;
 
     public function __construct(
         int $id,
@@ -52,7 +52,7 @@ class FlatShipping extends AbstractShipping
         return $this;
     }
 
-    public function setFlatWeight(Weighable|null $flatWeight): static
+    public function setFlatWeight(Weight|null $flatWeight): static
     {
         $this->flatWeight = $flatWeight;
 
@@ -108,13 +108,13 @@ class FlatShipping extends AbstractShipping
 
     private function weightMultiplier(IsotopeProductCollection $collection): float
     {
-        $multiply = floor($this->flatWeight->getWeightValue());
+        $multiply = floor($this->flatWeight->getAmount());
 
         if ($multiply <= 1) {
             return 1;
         }
 
-        $cartWeight = floor($collection->addToScale()->amountIn($this->flatWeight->getWeightUnit()));
+        $cartWeight = floor($collection->addToScale()->amountIn($this->flatWeight->getUnit()));
 
         return $cartWeight / $multiply;
     }
