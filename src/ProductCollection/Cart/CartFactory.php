@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\ProductCollection\Cart;
 
 use Isotope\CoreBundle\Model\ProductCollection;
+use Isotope\CoreBundle\ProductCollection\Event\CartCreatedEvent;
+use Isotope\CoreBundle\ProductCollection\Event\MergeGuestCartEvent;
 use Isotope\CoreBundle\ProductCollection\ProductCollectionStorage;
 use Isotope\CoreBundle\Store\Context\StoreContext;
-use Isotope\CoreBundle\Store\Event\CartCreatedEvent;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
 class CartFactory
@@ -20,47 +21,30 @@ class CartFactory
 
     public function load(StoreContext $context): Cart|null
     {
-        $memberCart = $context->getMemberId() ? ProductCollection::findByMember($context->getMemberId(), Cart::COLLECTION_TYPE, $context->getStoreId()) : null;
-        $guestCart = ProductCollection::findByIdentifier($context->getIdentifier(), Cart::COLLECTION_TYPE, $context->getStoreId());
+        $cartModel = $context->getMemberId() ? ProductCollection::findByMember($context->getMemberId(), Cart::COLLECTION_TYPE, $context->getStoreId()) : null;
+        $guestCartModel = ProductCollection::findByIdentifier($context->getIdentifier(), Cart::COLLECTION_TYPE, $context->getStoreId());
 
-        if ($memberCart) {
-            $model = $memberCart;
+        if (!$cartModel && $guestCartModel) {
+            $cartModel = $guestCartModel;
+            $guestCartModel = null;
+        }
 
-            if ($guestCart) {
-                // TODO: merge guest cart
-            }
-        } elseif ($guestCart) {
-            $model = $guestCart;
-        } else {
+        if (!$cartModel) {
             return null;
         }
 
-        // TODO: merge guest cart
-        //$strHash = (string) Input::cookie(static::$strCookie);
-        //
-        //// Temporary cart available, move to this cart. Must be after creating a new cart!
-        //if (\Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER') && '' !== $strHash && $this->member > 0) {
-        //    $blnMerge = $this->countItems() > 0;
-        //    $objTemp = static::findOneBy(array('uniqid=?', 'store_id=?'), array($strHash, $this->store_id));
-        //
-        //    if (null !== $objTemp) {
-        //        $arrIds = $this->copyItemsFrom($objTemp);
-        //
-        //        if ($blnMerge && \count($arrIds) > 0) {
-        //            Message::addConfirmation($GLOBALS['TL_LANG']['MSC']['cartMerged']);
-        //        }
-        //
-        //        $objTemp->delete();
-        //    }
-        //
-        //    // Delete cookie
-        //    System::setCookie(static::$strCookie, '', time() - 3600);
-        //    Controller::reload();
-        //}
+        $cart = $this->storage->load($this->create($context), $cartModel, $context);
 
-        $cart = $this->create($context);
+        if ($guestCartModel) {
+            $guestCart = $this->storage->load($this->create($context), $guestCartModel, $context);
 
-        return $this->storage->load($cart, $model, $context);
+            $cart->getLineItems()->merge($guestCart->getLineItems());
+            $cart->setModified();
+
+            $this->eventDispatcher->dispatch(new MergeGuestCartEvent($cart, $guestCart, $context));
+        }
+
+        return $cart;
     }
 
     public function create(StoreContext $context): Cart
