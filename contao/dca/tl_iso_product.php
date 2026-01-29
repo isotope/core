@@ -3,15 +3,11 @@
 use Contao\DataContainer;
 use Contao\Input;
 use Contao\System;
-use Isotope\Backend\Product\Permission;
 use Isotope\CompatibilityHelper;
 use Isotope\CoreBundle\DataContainer\ProductData;
-use Isotope\CoreBundle\Model\ProductType;
-use Isotope\CoreBundle\Model\RelatedProduct;
-use Isotope\Model\Download;
-use Isotope\Model\TaxClass;
+use Isotope\CoreBundle\Model\TaxClass;
 
-System::loadLanguageFile(ProductType::getTable());
+System::loadLanguageFile('tl_iso_producttype');
 
 $GLOBALS['TL_DCA']['tl_iso_product'] = [
     'config' => [
@@ -67,11 +63,11 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'show',
             '-',
             'related' => [
-                'href' => 'table='.RelatedProduct::getTable(),
+                'href' => 'table=tl_iso_related_product',
                 'icon' => CompatibilityHelper::asset('images/related.svg'),
             ],
             'downloads' => [
-                'href' => 'table='.Download::getTable(),
+                'href' => 'table=tl_iso_download',
                 'icon' => CompatibilityHelper::asset('images/paperclip.svg'),
             ],
         ],
@@ -207,7 +203,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
         ],
         'price' => [
             'inputType' => 'timePeriod',
-            'foreignKey' => TaxClass::getTable().'.name',
+            'foreignKey' => 'tl_iso_tax_class.name',
             'eval' => ['mandatory' => true, 'maxlength' => 13, 'rgxp' => 'digit', 'includeBlankOption' => true, 'blankOptionLabel' => &$GLOBALS['TL_LANG']['MSC']['taxFree'], 'doNotSaveEmpty' => true, 'tl_class' => 'w50'],
             'attributes' => ['legend' => 'pricing_legend', 'fe_sorting' => true, 'dynamic' => true, 'singular' => true, 'systemColumn' => true],
             'sql' => 'text NULL',
@@ -238,7 +234,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
                     'label' => &$GLOBALS['TL_LANG']['tl_iso_product']['prices']['tax_class'],
                     'default' => static fn () => TaxClass::findFallback()?->id,
                     'inputType' => 'select',
-                    'foreignKey' => TaxClass::getTable().'.name',
+                    'foreignKey' => 'tl_iso_tax_class.name',
                     'eval' => ['includeBlankOption' => true, 'blankOptionLabel' => &$GLOBALS['TL_LANG']['MSC']['taxFree'], 'tl_class' => 'clr'],
                 ],
                 'rule' => [
@@ -334,7 +330,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'sql' => "varchar(10) NOT NULL default ''",
         ],
         'variantFields' => [
-            'label' => &$GLOBALS['TL_LANG'][ProductType::getTable()]['variant_attributes'],
+            'label' => &$GLOBALS['TL_LANG']['tl_iso_producttype']['variant_attributes'],
         ],
         'source' => [
             'eval' => ['mandatory' => true, 'required' => true, 'fieldType' => 'radio'],

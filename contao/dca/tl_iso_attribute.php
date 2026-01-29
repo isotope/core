@@ -5,7 +5,6 @@ use Contao\DC_Table;
 use Contao\System;
 use Doctrine\DBAL\Types\Types;
 use Isotope\CoreBundle\Attribute\Option\OptionsSource;
-use Isotope\CoreBundle\Model\AttributeOption;
 
 /*
  * Load tl_iso_product language file for field legends
@@ -16,7 +15,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
     'config' => [
         'dataContainer' => DC_Table::class,
         'enableVersioning' => true,
-        'ctable' => [AttributeOption::getTable()],
+        'ctable' => ['tl_iso_attribute_option'],
         'sql' => [
             'keys' => [
                 'id' => 'primary',

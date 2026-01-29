@@ -3,7 +3,6 @@
 use Contao\DataContainer;
 use Contao\DC_Table;
 use Isotope\Backend\RelatedProduct\Callback;
-use Isotope\CoreBundle\Model\RelatedCategory;
 
 $GLOBALS['TL_DCA']['tl_iso_related_product'] = [
     'config' => [
@@ -53,10 +52,10 @@ $GLOBALS['TL_DCA']['tl_iso_related_product'] = [
         'category' => [
             'filter' => true,
             'inputType' => 'select',
-            'foreignKey' => RelatedCategory::getTable().'.name',
+            'foreignKey' => 'tl_iso_related_category.name',
             'eval' => ['mandatory' => true, 'includeBlankOption' => true],
             'sql' => "int(10) unsigned NOT NULL default '0'",
-            'relation' => ['table' => RelatedCategory::getTable(), 'type' => 'hasOne', 'load' => 'lazy'],
+            'relation' => ['table' => 'tl_iso_related_category', 'type' => 'hasOne', 'load' => 'lazy'],
         ],
         'products' => [
             'inputType' => 'picker',

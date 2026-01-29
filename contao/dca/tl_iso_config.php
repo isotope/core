@@ -3,9 +3,7 @@
 use Contao\BackendUser;
 use Contao\DataContainer;
 use Contao\DC_Table;
-use Isotope\Backend;
 use Isotope\Backend\Config\Callback;
-use Isotope\CoreBundle\Model\OrderStatus;
 use Isotope\CoreBundle\Store\Price\PriceDisplay;
 use Isotope\CoreBundle\Store\Price\TaxCalculation;
 
@@ -319,7 +317,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
         'orderstatus_new' => [
             'filter' => true,
             'inputType' => 'select',
-            'foreignKey' => OrderStatus::getTable().'.name',
+            'foreignKey' => 'tl_iso_orderstatus.name',
             'eval' => ['mandatory' => true, 'includeBlankOption' => true, 'tl_class' => 'w50'],
             'sql' => "int(10) unsigned NOT NULL default '0'",
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
@@ -327,7 +325,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
         'orderstatus_error' => [
             'filter' => true,
             'inputType' => 'select',
-            'foreignKey' => OrderStatus::getTable().'.name',
+            'foreignKey' => 'tl_iso_orderstatus.name',
             'eval' => ['mandatory' => true, 'includeBlankOption' => true, 'tl_class' => 'w50'],
             'sql' => "int(10) unsigned NOT NULL default '0'",
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],

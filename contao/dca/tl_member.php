@@ -1,19 +1,17 @@
 <?php
 
-use Isotope\Backend\Member\Callback;
 use Isotope\CompatibilityHelper;
-use Isotope\Model\Address;
 
 /*
  * Add a child table to tl_member
  */
-$GLOBALS['TL_DCA']['tl_member']['config']['ctable'][] = Address::getTable();
+$GLOBALS['TL_DCA']['tl_member']['config']['ctable'][] = 'tl_iso_address';
 
 /*
  * Add a global operation to tl_member
  */
 $GLOBALS['TL_DCA']['tl_member']['list']['operations']['address_book'] = [
-    'href' => 'table='.Address::getTable(),
+    'href' => 'table=tl_iso_address',
     'icon' => CompatibilityHelper::asset('images/cards-address.png'),
 ];
 

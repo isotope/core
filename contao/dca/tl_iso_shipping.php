@@ -8,7 +8,6 @@ use Isotope\CoreBundle\Checkout\ProductTypeCondition;
 use Isotope\CoreBundle\Checkout\Shipping\FlatCalculation;
 use Isotope\CoreBundle\Checkout\Shipping\GroupCalculation;
 use Isotope\CoreBundle\Checkout\Shipping\ProductCalculation;
-use Isotope\CoreBundle\Model\ProductType;
 use Isotope\CoreBundle\Model\Shipping;
 use Isotope\Model\TaxClass;
 
@@ -118,7 +117,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
         ],
         'product_types' => [
             'inputType' => 'select',
-            'foreignKey' => ProductType::getTable().'.name',
+            'foreignKey' => 'tl_iso_producttype.name',
             'eval' => ['multiple' => true, 'size' => 8, 'chosen' => true, 'tl_class' => 'clr w50'],
             'sql' => 'blob NULL',
             'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
@@ -137,7 +136,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
         'tax_class' => [
             'filter' => true,
             'inputType' => 'select',
-            'foreignKey' => TaxClass::getTable().'.name',
+            'foreignKey' => 'tl_iso_tax_class.name',
             'options_callback' => [TaxClass::class, 'getOptionsWithSplit'],
             'eval' => ['includeBlankOption' => true, 'blankOptionLabel' => &$GLOBALS['TL_LANG']['MSC']['taxFree'], 'tl_class' => 'w50'],
             'sql' => "int(10) NOT NULL default '0'",
@@ -159,7 +158,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
         ],
         'flatProductTypes' => [
             'inputType' => 'select',
-            'foreignKey' => ProductType::getTable().'.name',
+            'foreignKey' => 'tl_iso_producttype.name',
             'eval' => ['multiple' => true, 'size' => 8, 'chosen' => true, 'tl_class' => 'w50'],
             'sql' => 'blob NULL',
             'relation' => ['type' => 'hasMany', 'load' => 'lazy'],

@@ -4,9 +4,8 @@ use Contao\CoreBundle\DataContainer\PaletteManipulator;
 use Contao\DataContainer;
 use Contao\Input;
 use Contao\PageModel;
-use Isotope\CoreBundle\Model\ProductCategory;
 
-$GLOBALS['TL_DCA']['tl_page']['config']['ctable'][] = ProductCategory::getTable();
+$GLOBALS['TL_DCA']['tl_page']['config']['ctable'][] = 'tl_iso_product_category';
 
 /*
  * Callbacks
@@ -92,6 +91,6 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['iso_sitemapVariants'] = [
 /*
  * Disable header edit button
  */
-if (($_GET['table'] ?? null) === ProductCategory::getTable()) {
+if ('tl_iso_product_category' === ($_GET['table'] ?? null)) {
     $GLOBALS['TL_DCA']['tl_page']['config']['notEditable'] = true;
 }

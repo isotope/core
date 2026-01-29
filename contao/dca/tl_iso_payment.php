@@ -4,9 +4,6 @@ use Contao\DataContainer;
 use Contao\DC_Table;
 use Isotope\Backend\Payment\Callback;
 use Isotope\CoreBundle\Checkout\ProductTypeCondition;
-use Isotope\CoreBundle\Checkout\QuantityMode;
-use Isotope\CoreBundle\Model\OrderStatus;
-use Isotope\CoreBundle\Model\ProductType;
 use Isotope\Model\TaxClass;
 
 $GLOBALS['TL_DCA']['tl_iso_payment'] = [
@@ -73,7 +70,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = [
         ],
         'new_order_status' => [
             'inputType' => 'select',
-            'foreignKey' => OrderStatus::getTable().'.name',
+            'foreignKey' => 'tl_iso_orderstatus.name',
             'eval' => ['mandatory' => true, 'includeBlankOption' => true, 'tl_class' => 'w50'],
             'sql' => "int(10) NOT NULL default '0'",
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
@@ -93,7 +90,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = [
         ],
         'product_types' => [
             'inputType' => 'select',
-            'foreignKey' => ProductType::getTable().'.name',
+            'foreignKey' => 'tl_iso_producttype.name',
             'eval' => ['multiple' => true, 'size' => 8, 'tl_class' => 'clr w50', 'chosen' => true],
             'sql' => 'blob NULL',
             'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
@@ -112,7 +109,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = [
         'tax_class' => [
             'filter' => true,
             'inputType' => 'select',
-            'foreignKey' => TaxClass::getTable().'.name',
+            'foreignKey' => 'tl_iso_tax_class.name',
             'options_callback' => [TaxClass::class, 'getOptionsWithSplit'],
             'eval' => ['includeBlankOption' => true, 'blankOptionLabel' => &$GLOBALS['TL_LANG']['MSC']['taxFree'], 'tl_class' => 'w50'],
             'sql' => "int(10) NOT NULL default '0'",

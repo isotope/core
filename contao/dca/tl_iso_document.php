@@ -3,7 +3,6 @@
 use Contao\DataContainer;
 use Contao\DC_Table;
 use Isotope\Backend;
-use Isotope\CoreBundle\Model\Gallery;
 
 $GLOBALS['TL_DCA']['tl_iso_document'] = [
     'config' => [
@@ -84,7 +83,7 @@ $GLOBALS['TL_DCA']['tl_iso_document'] = [
         ],
         'gallery' => [
             'inputType' => 'select',
-            'foreignKey' => Gallery::getTable().'.name',
+            'foreignKey' => 'tl_iso_gallery.name',
             'eval' => ['includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'],
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],

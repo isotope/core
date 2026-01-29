@@ -1,10 +1,8 @@
 <?php
 
-use Isotope\Model\ProductCollection;
-
 $GLOBALS['TL_DCA']['tl_iso_product_collection_log'] = [
     'config' => [
-        'ptable' => ProductCollection::getTable(),
+        'ptable' => 'tl_iso_product_collection',
         'permissions' => [],
         'sql' => [
             'keys' => [

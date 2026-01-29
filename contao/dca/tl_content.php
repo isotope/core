@@ -3,10 +3,7 @@
 use Isotope\Backend;
 use Isotope\Backend\Config\Callback as ConfigCallback;
 use Isotope\Backend\Module\Callback;
-use Isotope\CoreBundle\Model\Gallery;
-use Isotope\CoreBundle\Model\Payment;
-use Isotope\CoreBundle\Model\RelatedCategory;
-use Isotope\CoreBundle\Model\Shipping;
+use Isotope\CoreBundle\Checkout\Step\LoginStep;
 use Isotope\CoreBundle\Product\Category\CategoryScope;
 
 $GLOBALS['TL_DCA']['tl_content']['palettes']['__selector__'][] = 'iso_checkout_method';
@@ -47,7 +44,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['iso_reader_layout'] = [
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['iso_gallery'] = [
     'inputType' => 'select',
-    'foreignKey' => Gallery::getTable().'.name',
+    'foreignKey' => 'tl_iso_gallery.name',
     'eval' => ['includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'],
 ];
 
@@ -131,14 +128,14 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['iso_config_id'] = [
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['iso_config_ids'] = [
     'inputType' => 'checkboxWizard',
-    'foreignKey' => Config::getTable().'.name',
+    'foreignKey' => 'tl_iso_config.name',
     'eval' => ['multiple' => true, 'mandatory' => true, 'tl_class' => 'clr'],
     'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['iso_payment_modules'] = [
     'inputType' => 'checkboxWizard',
-    'foreignKey' => Payment::getTable().'.name',
+    'foreignKey' => 'tl_iso_payment.name',
     'options_callback' => [Callback::class, 'getPaymentModules'],
     'eval' => ['multiple' => true],
     'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
@@ -146,7 +143,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['iso_payment_modules'] = [
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['iso_shipping_modules'] = [
     'inputType' => 'checkboxWizard',
-    'foreignKey' => Shipping::getTable().'.name',
+    'foreignKey' => 'tl_iso_shipping.name',
     'options_callback' => [Callback::class, 'getShippingModules'],
     'eval' => ['multiple' => true],
     'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
@@ -365,7 +362,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['iso_buttons'] = [
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['iso_related_categories'] = [
     'inputType' => 'checkboxWizard',
-    'foreignKey' => RelatedCategory::getTable().'.name',
+    'foreignKey' => 'tl_iso_related_category.name',
     'eval' => ['mandatory' => true, 'multiple' => true, 'tl_class' => 'clr'],
     'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
 ];
