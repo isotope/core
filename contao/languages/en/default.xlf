@@ -752,9 +752,6 @@
       <trans-unit id="MODEL.tl_iso_rule_condition.store_time.1">
         <source>Checks the time of the current day.</source>
       </trans-unit>
-      <trans-unit id="ISO_VAT.eu_vies">
-        <source>European VAT Number (&lt;a href="http://ec.europa.eu/taxation_customs/vies/vieshome.do" target="_blank"&gt;VIES&lt;/a&gt;)</source>
-      </trans-unit>
       <trans-unit id="ATTR.text.0">
         <source>Text field</source>
       </trans-unit>

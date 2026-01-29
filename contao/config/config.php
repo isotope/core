@@ -181,11 +181,6 @@ $GLOBALS['ISO_CHECKOUTSTEP'] = [
 ];
 
 /*
- * Vat No Validation
- */
-$GLOBALS['ISO_VAT']['eu_vies'] = EuViesValidator::class;
-
-/*
  * Permissions are access settings for user and groups (fields in tl_user and tl_user_group)
  */
 $GLOBALS['TL_PERMISSIONS'][] = 'iso_modules';
