@@ -14,7 +14,7 @@ final class QuantityExtension implements ProductExtensionInterface
      * @internal
      */
     public function __construct(
-        private readonly \Closure|int $minimum,
+        private \Closure|int $minimum,
     ) {
     }
 

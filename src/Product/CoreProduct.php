@@ -8,6 +8,7 @@ use Isotope\CoreBundle\Model\ProductType;
 use Isotope\CoreBundle\Product\Render\ProductRendererInterface;
 use Isotope\CoreBundle\Store\Price\CalculatedPrice;
 use Isotope\CoreBundle\Store\Price\PriceDefinitionCollection;
+use Isotope\CoreBundle\Util\ClosureTrait;
 
 /**
  * @property int    $id
@@ -41,6 +42,8 @@ use Isotope\CoreBundle\Store\Price\PriceDefinitionCollection;
  */
 class CoreProduct extends Product
 {
+    use ClosureTrait;
+
     private bool $isVariant = false;
 
     private array $variantIds = [];

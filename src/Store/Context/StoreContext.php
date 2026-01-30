@@ -9,6 +9,7 @@ use Isotope\CoreBundle\Store\Price\Currency;
 use Isotope\CoreBundle\Store\Price\MoneyFormat;
 use Isotope\CoreBundle\Store\Price\PriceDisplay;
 use Isotope\CoreBundle\Store\Price\TaxCalculation;
+use Isotope\CoreBundle\Util\ClosureTrait;
 use Isotope\Model\Address;
 
 /**
@@ -17,6 +18,8 @@ use Isotope\Model\Address;
  */
 final class StoreContext
 {
+    use ClosureTrait;
+
     /**
      * @var array<string, mixed>
      */
@@ -250,15 +253,5 @@ final class StoreContext
         $getter = $this->cartGetter;
 
         return $getter($this);
-    }
-
-    /**
-     * Evaluates closures to retrieve the value.
-     */
-    private function resolveClosure(mixed &$property): void
-    {
-        if ($property instanceof \Closure) {
-            $property = $property($this);
-        }
     }
 }

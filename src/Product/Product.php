@@ -110,14 +110,4 @@ abstract class Product
     {
         return $this->data[$key] ?? null;
     }
-
-    /**
-     * Evaluates closures to retrieve the value.
-     */
-    protected function resolveClosure(mixed &$property): void
-    {
-        if ($property instanceof \Closure) {
-            $property = $property($this);
-        }
-    }
 }

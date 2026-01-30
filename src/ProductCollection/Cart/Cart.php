@@ -10,10 +10,13 @@ use Isotope\CoreBundle\ProductCollection\AbstractProductCollection;
 use Isotope\CoreBundle\Store\Price\CalculatedPrice;
 use Isotope\CoreBundle\Store\Tax\CalculatedTaxCollection;
 use Isotope\CoreBundle\Store\Tax\TaxRateCollection;
+use Isotope\CoreBundle\Util\ClosureTrait;
 use Isotope\Model\Address;
 
 class Cart extends AbstractProductCollection
 {
+    use ClosureTrait;
+
     public const string COLLECTION_TYPE = 'cart';
 
     private bool $isModified = false;
@@ -97,15 +100,5 @@ class Cart extends AbstractProductCollection
         $this->shippingMethod = $shippingMethod;
 
         return $this;
-    }
-
-    /**
-     * Evaluates closures to retrieve the value.
-     */
-    protected function resolveClosure(mixed &$property): void
-    {
-        if ($property instanceof \Closure) {
-            $property = $property($this);
-        }
     }
 }
