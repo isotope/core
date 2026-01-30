@@ -63,14 +63,14 @@ $GLOBALS['TL_DCA']['tl_iso_document'] = [
         ],
         'documentTpl' => [
             'inputType' => 'select',
-            'options_callback' => static fn () => Backend::getTemplates('iso_document_'),
+            'options_callback' => static fn () => \Contao\Controller::getTemplateGroup('iso_document_'),
             'eval' => ['includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50', 'mandatory' => true],
             'sql' => "varchar(64) NOT NULL default ''",
         ],
         'collectionTpl' => [
             'default' => 'iso_collection_invoice',
             'inputType' => 'select',
-            'options_callback' => static fn () => Backend::getTemplates('iso_collection_'),
+            'options_callback' => static fn () => \Contao\Controller::getTemplateGroup('iso_collection_'),
             'eval' => ['includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50', 'mandatory' => true],
             'sql' => "varchar(64) NOT NULL default ''",
         ],

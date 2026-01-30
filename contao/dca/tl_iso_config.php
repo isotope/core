@@ -40,7 +40,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
             {currency_legend},currency,currencyPosition,currencySymbol;
             {converter_legend:hide},priceCalculateFactor;
             {order_legend:hide},orderPrefix,orderDigits,orderstatus_new,orderstatus_error,orderDetailsModule;
-            {config_legend},templateGroup,cartMinSubtotal',
+            {config_legend},cartMinSubtotal',
     ],
     'subpalettes' => [
         'currencySymbol' => 'currencySpace',
@@ -336,12 +336,6 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
             'eval' => ['includeBlankOption' => true, 'tl_class' => 'w50'],
             'sql' => "int(10) unsigned NOT NULL default '0'",
             'relation' => ['type' => 'hasOne', 'table' => 'tl_module'],
-        ],
-        'templateGroup' => [
-            'inputType' => 'select',
-            'options_callback' => [Callback::class, 'getTemplateFolders'],
-            'eval' => ['includeBlankOption' => true, 'tl_class' => 'w50'],
-            'sql' => "varchar(255) NOT NULL default ''",
         ],
     ],
 ];

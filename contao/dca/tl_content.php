@@ -1,5 +1,6 @@
 <?php
 
+use Contao\Controller;
 use Isotope\Backend;
 use Isotope\Backend\Config\Callback as ConfigCallback;
 use Isotope\Backend\Module\Callback;
@@ -50,7 +51,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['iso_gallery'] = [
 $GLOBALS['TL_DCA']['tl_content']['fields']['iso_collectionTpl'] = [
     'default' => 'iso_collection_default',
     'inputType' => 'select',
-    'options_callback' => static fn () => Backend::getTemplates('iso_collection_'),
+    'options_callback' => static fn () => Controller::getTemplateGroup('iso_collection_'),
     'eval' => ['mandatory' => true, 'chosen' => true, 'tl_class' => 'w50'],
 ];
 

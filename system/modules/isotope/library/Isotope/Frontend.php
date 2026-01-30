@@ -101,7 +101,6 @@ class Frontend extends \Contao\Frontend
         if ($objLayout->numRows) {
             // Get the page layout
             $objPage->template      = \strlen($objLayout->template) ? $objLayout->template : 'fe_page';
-            $objPage->templateGroup = $objLayout->templates;
 
             // Store the output format
             [$strFormat, $strVariant] = explode('_', $objLayout->doctype) + [null, null];

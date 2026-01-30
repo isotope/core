@@ -275,12 +275,6 @@
       <trans-unit id="tl_iso_config.invoiceLogo.1">
         <source>Select a logo to show up on the invoices for this store.</source>
       </trans-unit>
-      <trans-unit id="tl_iso_config.templateGroup.0">
-        <source>Templates folder</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_config.templateGroup.1">
-        <source>Here you can select a templates folder to search before every other template folder.</source>
-      </trans-unit>
       <trans-unit id="tl_iso_config.cartMinSubtotal.0">
         <source>Minimum subtotal</source>
       </trans-unit>

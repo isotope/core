@@ -6,7 +6,7 @@ $GLOBALS['TL_DCA']['tl_nc_notification']['palettes']['iso_order_status_change'] 
 
 $GLOBALS['TL_DCA']['tl_nc_notification']['fields']['iso_collectionTpl'] = [
     'inputType' => 'select',
-    'options_callback' => static fn () => Backend::getTemplates('iso_collection_'),
+    'options_callback' => static fn () => \Contao\Controller::getTemplateGroup('iso_collection_'),
     'eval' => ['mandatory' => true, 'chosen' => true, 'tl_class' => 'w50'],
     'sql' => "varchar(64) NOT NULL default ''",
 ];

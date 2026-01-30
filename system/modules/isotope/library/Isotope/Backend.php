@@ -84,47 +84,4 @@ class Backend extends ContaoBackend
 
         return '';
     }
-
-    /**
-     * List template from all themes, show theme name
-     *
-     * @param string $strPrefix
-     *
-     * @return array
-     */
-    public static function getTemplates($strPrefix)
-    {
-        $arrTemplates = Controller::getTemplateGroup($strPrefix);
-
-        // Try to select the shop configs
-        try {
-            $objConfig = Config::findAll(array('order' => 'name'));
-        } catch (\Exception $e) {
-            $objConfig = null;
-        }
-
-        // Add the shop config templates
-        if (null !== $objConfig) {
-            while ($objConfig->next()) {
-                if ($objConfig->templateGroup != '') {
-                    $arrConfigTemplates = glob(\Contao\System::getContainer()->getParameter('kernel.project_dir') . '/' . $objConfig->templateGroup . '/' . $strPrefix . '*');
-
-                    if (\is_array($arrConfigTemplates)) {
-                        foreach ($arrConfigTemplates as $strFile) {
-
-                            $strTemplate = basename($strFile, strrchr($strFile, '.'));
-
-                            if (!isset($arrTemplates[$strTemplate])) {
-                                $arrTemplates[$strTemplate] = $strTemplate;
-                            } else {
-                                $arrTemplates[$strTemplate] = substr($arrTemplates[$strTemplate], 0, -1) . ', ' . sprintf($GLOBALS['TL_LANG']['MSC']['templatesConfig'], $objConfig->name) . ')';
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return $arrTemplates;
-    }
 }
