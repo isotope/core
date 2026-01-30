@@ -33,11 +33,13 @@ $GLOBALS['TL_DCA']['tl_content']['subpalettes']['iso_emptyFilter'] = 'iso_noFilt
 $GLOBALS['TL_DCA']['tl_content']['fields']['navigationTpl']['eval']['includeBlankOption'] = true;
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['iso_list_layout'] = [
+    'default' => 'isotope/product/list',
     'inputType' => 'select',
     'eval' => ['includeBlankOption' => true, 'tl_class' => 'w50', 'chosen' => true],
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['iso_reader_layout'] = [
+    'default' => 'isotope/product/reader',
     'inputType' => 'select',
     'eval' => ['includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'],
 ];

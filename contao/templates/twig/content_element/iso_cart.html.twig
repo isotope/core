@@ -1,6 +1,6 @@
 {% trans_default_domain 'contao_default' %}
 {% extends '@Contao/content_element/_isotope_base.html.twig' %}
-{% use '@Contao/isotope/collection/default.html.twig' %}
+{% use '@Contao/isotope/product_collection.html.twig' %}
 
 {% set attributes = attrs()
     .set('data-controller', 'isotope--collection isotope--fragment')
@@ -13,7 +13,7 @@
 
 {% block content %}
     {% if collection.isEmpty %}
-        {% include('@Contao/component/isotope_empty.html.twig') %}
+        <p class="message empty">{{ data.iso_emptyMessage ? data.iso_noProducts : 'MSC.noItemsInCart'|trans }}</p>
     {% else %}
         {% with { editable: true } %}
             {{ block('product_collection') }}

@@ -20,27 +20,12 @@ class TemplateOptionsListener
     }
 
     #[AsCallback('tl_iso_producttype', 'fields.list_template.options')]
-    public function productTypeList(): array
-    {
-        return $this->getOptions('product/list');
-    }
-
     #[AsCallback('tl_iso_producttype', 'fields.reader_template.options')]
-    public function productTypeReader(): array
+    #[AsCallback('tl_content', 'fields.iso_list_layout.options')]
+    #[AsCallback('tl_content', 'fields.iso_reader_layout.options')]
+    public function getProductTemplates(): array
     {
-        return $this->getOptions('product/reader');
-    }
-
-    #[AsCallback('tl_module', 'fields.iso_list_layout.options')]
-    public function moduleList(): array
-    {
-        return $this->getOptions('product/list', true);
-    }
-
-    #[AsCallback('tl_module', 'fields.iso_reader_layout.options')]
-    public function moduleReader(): array
-    {
-        return $this->getOptions('product/reader', true);
+        return $this->getOptions('product', true);
     }
 
     private function getOptions(string $type, bool $variantsExclusive = false): array

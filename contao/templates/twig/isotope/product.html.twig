@@ -1,5 +1,5 @@
 {% trans_default_domain 'contao_default' %}
-{% use '@Contao/component/isotope_price.html.twig' %}
+{% from '@Contao/isotope/price_macros.html.twig' import format_price %}
 
 {% set product_attributes = attrs()
     .setIfExists('id', product_html_id)
@@ -33,6 +33,7 @@
             <input type="hidden" name="REQUEST_TOKEN" value="{{ request_token }}">
     {% endif %}
             {% block formbody %}
+                <h2>{{ product.name }}</h2>
 
                 {% block product_options %}
                     {% if configuration %}
@@ -48,7 +49,7 @@
                     {% set price = isotope_price() %}
                     {% if price %}
                         <div class="offer">
-                            <div class="price">{% with price only %}{{ block('unit_price_component') }}{% endwith %}</div>
+                            <div class="price">{{ format_price(price) }}</div>
                             {#{% if data.baseprice|default %}<div class="baseprice">{{ isotope_attribute('baseprice') }}</div>{% endif %}#}
                         </div>
                     {% endif %}

@@ -83,12 +83,12 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = [
         'list_template' => [
             'inputType' => 'select',
             'eval' => ['tl_class' => 'w50', 'chosen' => true],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => "varchar(255) NOT NULL default 'isotope/product/list'",
         ],
         'reader_template' => [
             'inputType' => 'select',
             'eval' => ['tl_class' => 'w50', 'chosen' => true],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => "varchar(255) NOT NULL default 'isotope/product/reader'",
         ],
         'list_gallery' => [
             'inputType' => 'select',

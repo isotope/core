@@ -1,0 +1,67 @@
+{% use '@Contao/component/_isotope_price.html.twig' %}
+
+{% macro format_price(price, amount, html = true) %}
+    {% with price|merge({ html, amount: amount|default(price.unit_price|default(0))}) only %}
+        {{ block('isotope_price_component') }}
+    {% endwith %}
+{% endmacro %}
+
+{% macro format_unit_price(price) %}
+    {% if price.unit_label|default %}
+        {{ price.unit_label }}
+    {% else %}
+        {% with price only %}
+            {% set amount = unit_price|default(0) %}
+            {{ block('isotope_price_component') }}
+        {% endwith %}
+    {% endif %}
+{% endmacro %}
+
+{% macro format_unit_tax(price) %}
+    {% with price only %}
+        {% set amount = unit_tax|default(0) %}
+        {{ block('isotope_price_component') }}
+    {% endwith %}
+{% endmacro %}
+
+{% macro format_net_price(price) %}
+    {% with price only %}
+        {% set amount = net_unit_price|default(0) %}
+        {{ block('isotope_price_component') }}
+    {% endwith %}
+{% endmacro %}
+
+{% macro format_gross_price(price) %}
+    {% with price only %}
+        {% set amount = gross_unit_price|default(0) %}
+        {{ block('isotope_price_component') }}
+    {% endwith %}
+{% endmacro %}
+
+{% macro format_total_price(price) %}
+    {% with price only %}
+        {% set amount = total_price|default(0) %}
+        {{ block('isotope_price_component') }}
+    {% endwith %}
+{% endmacro %}
+
+{% macro format_total_tax(price) %}
+    {% with price only %}
+        {% set amount = total_tax|default(0) %}
+        {{ block('isotope_price_component') }}
+    {% endwith %}
+{% endmacro %}
+
+{% macro format_net_total_price(price) %}
+    {% with price only %}
+        {% set amount = net_total_price|default(0) %}
+        {{ block('isotope_price_component') }}
+    {% endwith %}
+{% endmacro %}
+
+{% macro format_gross_total_price(price) %}
+    {% with price only %}
+        {% set amount = gross_total_price|default(0) %}
+        {{ block('isotope_price_component') }}
+    {% endwith %}
+{% endmacro %}

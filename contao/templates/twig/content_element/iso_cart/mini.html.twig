@@ -1,11 +1,14 @@
 {% trans_default_domain 'contao_default' %}
 {% extends '@Contao/content_element/iso_cart.html.twig' %}
-{% use '@Contao/component/isotope_collection_item.html.twig' %}
-{% use '@Contao/component/isotope_price.html.twig' %}
+{% use '@Contao/isotope/product_collection.html.twig' %}
 
 {% block product_collection %}
+    {% from '@Contao/isotope/price_macros.html.twig' import format_price %}
+
     {% for item in collection.lineItems %}
         {% block product_collection_item %}
+            {% from '@Contao/isotope/price_macros.html.twig' import format_unit_price, format_total_price %}
+
             <div class="product">
                 {% if block("product_collection_item_actions") is defined %}
                     <div class="actions">
@@ -19,10 +22,7 @@
                     {{ block('item_attributes') }}
                     {% set price = isotope_price(item) %}
                     {% if price %}
-                        <div class="price">{{ item.quantity }} x
-                            {% with price only %}{{ block('unit_price_component') }}{% endwith %}
-                            = <span class="total">{% with price only %}{{ block('total_price_component') }}{% endwith %}</span>
-                        </div>
+                        <div class="price">{{ item.quantity }} x {{ format_unit_price(price) }}= <span class="total">{{ format_total_price(price) }}</span></div>
                     {% endif %}
                 </div>
             </div>
@@ -30,7 +30,7 @@
     {% endfor %}
     <div class="subtotal">
         <span class="label">{{ 'MSC.subTotalLabel'|trans }}</span>
-        {% with isotope_price(collection.subtotal) only %}{{ block('unit_price_component') }}{% endwith %}
+        {{ format_price(isotope_price(collection.subtotal)) }}
     </div>
     {% block product_collection_actions %}
         <div class="cart">{{ isotope_product_collection_action('link_to_cart') }}</div>

@@ -1,4 +1,4 @@
-{% extends '@Contao/isotope/product/_base.html.twig' %}
+{% extends '@Contao/isotope/product.html.twig' %}
 
 {% set gallery = isotope_gallery('images') %}
 
@@ -18,7 +18,6 @@
     {% if product.description|default %}<div class="description">{{ product.description|csp_inline_styles|insert_tag|encode_email|raw }}</div>{% endif %}
 
     {{ block('product_price') }}
-
     {{ block('product_actions') }}
 
 {% endblock %}
