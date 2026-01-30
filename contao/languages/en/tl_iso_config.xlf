@@ -269,30 +269,6 @@
       <trans-unit id="tl_iso_config.orderDetailsModule.1">
         <source>Select a order details module that is used to show the order in the backend.</source>
       </trans-unit>
-      <trans-unit id="tl_iso_config.invoiceLogo.0">
-        <source>Invoice Logo</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_config.invoiceLogo.1">
-        <source>Select a logo to show up on the invoices for this store.</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_config.cartMinSubtotal.0">
-        <source>Minimum subtotal</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_config.cartMinSubtotal.1">
-        <source>The minimum cart subtotal required to order. Enter 0 to disable.</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_config.ga_account.0">
-        <source>Account</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_config.ga_account.1">
-        <source>Please provde the account key (UA-XXXXXXX-X).</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_config.ga_member.0">
-        <source>Track member</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_config.ga_member.1">
-        <source>Enter simple tokens to track a member (e.g. ##firstname## ##lastname##). ATTENTION: make sure you're allowed to do this!</source>
-      </trans-unit>
       <trans-unit id="tl_iso_config.left">
         <source>To the left of price</source>
       </trans-unit>

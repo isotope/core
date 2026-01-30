@@ -38,9 +38,6 @@
       <trans-unit id="ERR.noAddressBookEntries">
         <source>You have no address book entries.</source>
       </trans-unit>
-      <trans-unit id="ERR.cartMinSubtotal">
-        <source>The minimum order amount is %s. Please add more products before checkout.</source>
-      </trans-unit>
       <trans-unit id="ERR.productMinimumQuantity">
         <source>The minimum quantity for "%s" is %s items. Please check your shopping cart.</source>
       </trans-unit>

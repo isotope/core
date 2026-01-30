@@ -39,7 +39,6 @@ use Contao\Model;
  * @property string $currencyFormat
  * @property int    $priceRoundPrecision
  * @property string $priceRoundIncrement
- * @property float  $cartMinSubtotal
  * @property string $currency
  * @property bool   $currencySymbol
  * @property bool   $currencySpace

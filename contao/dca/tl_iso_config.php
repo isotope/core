@@ -39,8 +39,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
             {pricing_legend},priceDisplay,taxCalculation,currencyFormat,priceRoundPrecision,priceRoundIncrement;
             {currency_legend},currency,currencyPosition,currencySymbol;
             {converter_legend:hide},priceCalculateFactor;
-            {order_legend:hide},orderPrefix,orderDigits,orderstatus_new,orderstatus_error,orderDetailsModule;
-            {config_legend},cartMinSubtotal',
+            {order_legend:hide},orderPrefix,orderDigits,orderstatus_new,orderstatus_error,orderDetailsModule',
     ],
     'subpalettes' => [
         'currencySymbol' => 'currencySpace',
@@ -266,12 +265,6 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
             'options' => ['0.01', '0.05'],
             'eval' => ['mandatory' => true, 'tl_class' => 'w33'],
             'sql' => "varchar(4) NOT NULL default ''",
-        ],
-        'cartMinSubtotal' => [
-            'default' => '0.00',
-            'inputType' => 'text',
-            'eval' => ['mandatory' => true, 'maxlength' => 13, 'rgpx' => 'price', 'tl_class' => 'w50'],
-            'sql' => "decimal(12,2) NOT NULL default '0.00'",
         ],
         'currency' => [
             'inputType' => 'select',
