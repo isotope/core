@@ -107,26 +107,11 @@
       <trans-unit id="IMD.orderstatus.1">
         <source>Define order status.</source>
       </trans-unit>
-      <trans-unit id="IMD.notifications.0">
-        <source>Notifications</source>
-      </trans-unit>
-      <trans-unit id="IMD.notifications.1">
-        <source>Use the Notification Center to manage emails etc. for Isotope eCommerce.</source>
-      </trans-unit>
       <trans-unit id="IMD.documents.0">
         <source>Documents</source>
       </trans-unit>
       <trans-unit id="IMD.documents.1">
         <source>Define documents.</source>
-      </trans-unit>
-      <trans-unit id="IMD.miscellaneous">
-        <source>Miscellaneous</source>
-      </trans-unit>
-      <trans-unit id="IMD.labels.0">
-        <source>Translations</source>
-      </trans-unit>
-      <trans-unit id="IMD.labels.1">
-        <source>Replace given labels for certain languages.</source>
       </trans-unit>
     </body>
   </file>

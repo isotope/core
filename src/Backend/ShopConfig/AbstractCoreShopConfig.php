@@ -11,12 +11,12 @@ use Symfony\Component\Asset\Packages;
  */
 abstract class AbstractCoreShopConfig extends AbstractTableShopConfig
 {
-    public function __construct(private readonly Packages $assets)
+    public function __construct(protected readonly Packages $assets)
     {
     }
 
     public function getIcon(): string|null
     {
-        return $this->assets->getUrl('images/setup-'.$this->getName().'.png', 'isotope_core');
+        return $this->assets->getUrl('images/setup-'.$this->getName().'.svg', 'isotope_core');
     }
 }
