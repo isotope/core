@@ -6,6 +6,7 @@ namespace Isotope\CoreBundle\Twig;
 
 use Contao\Controller;
 use Contao\CoreBundle\Exception\ResponseException;
+use Isotope\CoreBundle\Exception\ActionException;
 use Isotope\CoreBundle\HttpFoundation\ActionResult;
 use Isotope\CoreBundle\Product\Action\ProductActionRegistry;
 use Isotope\CoreBundle\Product\CoreProduct;
@@ -36,11 +37,11 @@ class ActionRuntime implements RuntimeExtensionInterface
         $action = $this->productActionRegistry->get($name);
 
         if (null === $action) {
-            throw new \RuntimeException('Unknown product action "'.$name.'"');
+            throw ActionException::unknownProductAction($name);
         }
 
         if (!$request instanceof Request) {
-            throw new \RuntimeException('A request is required to render a product action.');
+            throw ActionException::missingRequest();
         }
 
         if (!$action->supports($product, $view)) {
@@ -66,7 +67,7 @@ class ActionRuntime implements RuntimeExtensionInterface
         $action = $this->collectionActionRegistry->get($name);
 
         if (null === $action) {
-            throw new \RuntimeException('Unknown product collection action "'.$name.'"');
+            throw ActionException::unknownCollectionAction($name);
         }
 
         if (
@@ -95,7 +96,7 @@ class ActionRuntime implements RuntimeExtensionInterface
         $action = $this->itemActionRegistry->get($name);
 
         if (null === $action) {
-            throw new \RuntimeException('Unknown product collection item action "'.$name.'"');
+            throw ActionException::unknownItemAction($name);
         }
 
         if (

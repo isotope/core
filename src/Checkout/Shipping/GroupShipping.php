@@ -6,6 +6,8 @@ namespace Isotope\CoreBundle\Checkout\Shipping;
 
 use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsShipping;
+use Isotope\CoreBundle\Exception\UnderflowException;
+use Isotope\CoreBundle\Exception\UnexpectedValueException;
 use Isotope\CoreBundle\RuleBuilder\RuleMatcher;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\Interfaces\IsotopeOrderableCollection;
@@ -40,7 +42,7 @@ class GroupShipping extends AbstractShipping
 
         foreach ($methods as $shipping) {
             if (!$shipping instanceof ShippingInterface) {
-                throw new \UnexpectedValueException(\sprintf('%s is not an instance of %s', $shipping::class, ShippingInterface::class));
+                throw new UnexpectedValueException(\sprintf('%s is not an instance of %s', $shipping::class, ShippingInterface::class));
             }
 
             $inner[$shipping->getId()] = $shipping;
@@ -166,7 +168,7 @@ class GroupShipping extends AbstractShipping
         $method = reset($methods) ?: null;
 
         if (null === $method) {
-            throw new \UnderflowException('No shipping method available in group ID '.$this->getId());
+            throw new UnderflowException('No shipping method available in group ID '.$this->getId());
         }
 
         return $method;

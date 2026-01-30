@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\ProductCollection\ItemAction;
 
+use Isotope\CoreBundle\Exception\RuntimeException;
 use Isotope\CoreBundle\HttpFoundation\ActionResult;
 use Isotope\CoreBundle\ProductCollection\AbstractProductCollection;
 use Isotope\CoreBundle\ProductCollection\Cart\Cart;
@@ -38,7 +39,7 @@ class RemoveFromCartAction implements ProductCollectionItemActionInterface
     public function handle(AbstractProductCollection $collection, LineItem $item, array $context, bool $isAjax = true): ActionResult
     {
         if (!$collection instanceof Cart) {
-            throw new \RuntimeException(__METHOD__.' expects a Cart');
+            throw new RuntimeException(__METHOD__.' expects a Cart');
         }
 
         $this->cartManager->remove($collection, $item->getId(), $this->storeManager->getCurrentContext());

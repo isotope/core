@@ -6,8 +6,8 @@ namespace Isotope\CoreBundle\Product\Query;
 
 use Doctrine\DBAL\Connection;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
-use Isotope\CoreBundle\Exception\InvalidQueryAttributeException;
-use Isotope\CoreBundle\Exception\InvalidQueryOperatorException;
+use Isotope\CoreBundle\Product\Exception\InvalidQueryAttributeException;
+use Isotope\CoreBundle\Product\Exception\InvalidQueryOperatorException;
 use Isotope\CoreBundle\Product\Query\Filter\FilterInterface;
 use Symfony\Component\HttpFoundation\Request;
 

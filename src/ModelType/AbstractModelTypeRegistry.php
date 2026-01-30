@@ -7,8 +7,9 @@ namespace Isotope\CoreBundle\ModelType;
 use Contao\Model;
 use Contao\Model\Collection;
 use Isotope\CoreBundle\Attribute\AttributeInterface;
+use Isotope\CoreBundle\ModelType\Exception\ContainerNotFoundException;
 use Isotope\CoreBundle\ModelType\Exception\InvalidInstanceException;
-use Isotope\CoreBundle\ModelType\Exception\MissingFactoryException;
+use Isotope\CoreBundle\ModelType\Exception\FactoryNotFoundException;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Contracts\Service\ServiceProviderInterface;
@@ -64,7 +65,7 @@ class AbstractModelTypeRegistry
         try {
             $factory = $this->factories->get($model->type);
         } catch (ServiceNotFoundException $e) {
-            throw new MissingFactoryException($model->type, $model::class, previous: $e);
+            throw new FactoryNotFoundException($model->type, $model::class, previous: $e);
         }
 
         $instance = $factory->create($model);
@@ -75,7 +76,7 @@ class AbstractModelTypeRegistry
 
         if ($instance instanceof ContainerAwareInterface) {
             if (!isset($this->subscribedServices[$instance::class])) {
-                throw new \RuntimeException($instance::class.' requires a service container but the registry does not have one');
+                throw new ContainerNotFoundException($instance::class);
             }
 
             $instance->setContainer($this->subscribedServices[$instance::class]);

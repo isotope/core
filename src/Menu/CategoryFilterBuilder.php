@@ -8,6 +8,7 @@ use Codefog\HasteBundle\UrlParser;
 use Contao\CoreBundle\Security\ContaoCorePermissions;
 use Contao\Database;
 use Contao\Module;
+use Isotope\CoreBundle\Exception\RuntimeException;
 use Isotope\CoreBundle\Product\Query\Filter\CategoryFilter;
 use Isotope\CoreBundle\Product\Query\ProductQuery;
 use Knp\Menu\Attribute\AsMenuBuilder;
@@ -48,7 +49,7 @@ class CategoryFilterBuilder extends Module
 
     protected function compile(): never
     {
-        throw new \RuntimeException('Invalid call to '.__METHOD__);
+        throw new RuntimeException('Invalid call to '.__METHOD__);
     }
 
     private function renderTree(ItemInterface $menu, $pid, $level, ProductQuery|null $productQuery, array $currentIds): void

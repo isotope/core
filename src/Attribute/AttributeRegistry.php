@@ -9,10 +9,11 @@ use Contao\Model;
 use Contao\Model\Collection;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
+use Isotope\CoreBundle\Attribute\Exception\MissingAttributeClassException;
 use Isotope\CoreBundle\Attribute\Option\OptionsSource;
-use Isotope\CoreBundle\Exception\MissingAttributeClassException;
 use Isotope\CoreBundle\Model\Attribute;
 use Isotope\CoreBundle\ModelType\ContainerAwareInterface;
+use Isotope\CoreBundle\ModelType\Exception\ContainerNotFoundException;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
@@ -279,7 +280,7 @@ class AttributeRegistry implements ResetInterface
     {
         if ($attribute instanceof ContainerAwareInterface) {
             if (!isset($this->subscribedServices[$attribute::class])) {
-                throw new \RuntimeException($attribute::class.' requires a service container but the registry does not have one');
+                throw new ContainerNotFoundException($attribute::class);
             }
 
             $attribute->setContainer($this->subscribedServices[$attribute::class]);

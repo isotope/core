@@ -10,6 +10,7 @@ use Contao\MemberModel;
 use Contao\StringUtil;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
+use Isotope\CoreBundle\Exception\RuntimeException;
 use Isotope\CoreBundle\Model\Config;
 use Isotope\CoreBundle\Store\CartManager;
 use Isotope\CoreBundle\Store\Event\ContextCreatedEvent;
@@ -96,7 +97,7 @@ class StoreContextFactory
     private function getMoneyFormat(Config $config): MoneyFormat
     {
         if (!isset($GLOBALS['ISO_NUM'][$config->currencyFormat])) {
-            throw new \RuntimeException(\sprintf('Unknown currency format "%s" in shop config ID %s', $config->currencyFormat, $config->id));
+            throw new RuntimeException(\sprintf('Unknown currency format "%s" in shop config ID %s', $config->currencyFormat, $config->id));
         }
 
         $format = $GLOBALS['ISO_NUM'][$config->currencyFormat];

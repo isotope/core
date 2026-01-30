@@ -7,6 +7,7 @@ use Contao\Model;
 use Contao\Model\Collection;
 use Contao\StringUtil;
 use Contao\System;
+use Isotope\CoreBundle\Exception\UnderflowException;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\DataCollector\ProductDto;
 use Isotope\CoreBundle\Product\Product;
@@ -436,7 +437,7 @@ class ProductCollectionItem extends Model
     public function decreaseQuantityBy($intQuantity)
     {
         if (($this->quantity - $intQuantity) < 1) {
-            throw new \UnderflowException('Quantity of product collection item cannot be less than 1.');
+            throw new UnderflowException('Quantity of product collection item cannot be less than 1.');
         }
 
         $time = time();

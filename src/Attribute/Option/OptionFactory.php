@@ -11,6 +11,10 @@ use Contao\Widget;
 use Doctrine\DBAL\Connection;
 use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
 use Isotope\CoreBundle\Attribute\VariantAttributeInterface;
+use Isotope\CoreBundle\Exception\InvalidArgumentException;
+use Isotope\CoreBundle\Exception\LogicException;
+use Isotope\CoreBundle\Exception\UnderflowException;
+use Isotope\CoreBundle\Exception\UnexpectedValueException;
 use Isotope\CoreBundle\Model\AttributeOption;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Store\Context\ProductContext;
@@ -57,7 +61,7 @@ class OptionFactory
                 $product = $productContext?->getProduct();
 
                 if (!$product instanceof CoreProduct) {
-                    throw new \InvalidArgumentException('Must pass product to '.__METHOD__.' if optionsSource is "product"');
+                    throw new LogicException('Must pass product to '.__METHOD__.' if optionsSource is "product"');
                 }
 
                 return $this->createFromModels(AttributeOption::findByProductAndAttribute($product, $attribute), !$isVariant, $productContext);
@@ -66,7 +70,7 @@ class OptionFactory
                 $config = Widget::getAttributesFromDca($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute->getFieldName()], $attribute->getFieldName());
 
                 if (!isset($config['options']) || !\is_array($config['options'])) {
-                    throw new \UnexpectedValueException('Invalid options source "'.$source?->value.'" for tl_iso_attribute.'.$attribute->getFieldName());
+                    throw new UnexpectedValueException('Invalid options source "'.$source?->value.'" for tl_iso_attribute.'.$attribute->getFieldName());
                 }
 
                 return $this->createFromArray($config['options'], !$isVariant);
@@ -170,7 +174,7 @@ class OptionFactory
         $lines = StringUtil::trimsplit('@\r\n|\n|\r@', $config);
 
         if ('' === $config || !\is_array($lines) || empty($lines)) {
-            throw new \UnderflowException('foreignKey is empty');
+            throw new UnderflowException('foreignKey is empty');
         }
 
         // Loop over the lines

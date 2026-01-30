@@ -11,6 +11,7 @@ use Contao\CoreBundle\Security\ContaoCorePermissions;
 use Contao\System;
 use Isotope\CoreBundle\Backend\ShopConfig\ShopConfigInterface;
 use Isotope\CoreBundle\Controller\Backend\ShopConfigController;
+use Isotope\CoreBundle\Exception\UnderflowException;
 use Isotope\CoreBundle\Security\IsotopeCorePermissions;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Asset\Packages;
@@ -92,7 +93,7 @@ class BackendRequestListener
             }
         }
 
-        throw new \UnderflowException('No shop config for table "'.$table.'" found.');
+        throw new UnderflowException('No shop config for table "'.$table.'" found.');
     }
 }
 

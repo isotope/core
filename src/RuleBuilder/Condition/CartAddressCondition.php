@@ -6,6 +6,7 @@ namespace Isotope\CoreBundle\RuleBuilder\Condition;
 
 use Contao\CoreBundle\Intl\Countries;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsRuleCondition;
+use Isotope\CoreBundle\Exception\LogicException;
 use Isotope\CoreBundle\Intl\Subdivisions;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -35,7 +36,7 @@ class CartAddressCondition implements RuleConditionInterface
         $address = match ($this->type) {
             'billing' => $context->getCart()->getBillingAddress(),
             'shipping' => $context->getCart()->getShippingMethod(),
-            default => throw new \InvalidArgumentException('Unknown address type "'.$this->type.'"'),
+            default => throw new LogicException('Unknown address type "'.$this->type.'"'),
         };
 
         if (!$address) {

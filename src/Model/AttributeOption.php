@@ -3,6 +3,7 @@
 namespace Isotope\CoreBundle\Model;
 
 use Contao\Model\Collection;
+use Isotope\CoreBundle\Attribute\Exception\AttributeException;
 use Isotope\CoreBundle\Attribute\Option\OptionsSource;
 use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
 use Isotope\CoreBundle\Product\CoreProduct;
@@ -38,12 +39,12 @@ class AttributeOption extends Multilingual
      *
      * @return Collection<AttributeOption>|null
      *
-     * @throws \LogicException if attribute option source is not the database table
+     * @throws AttributeException if attribute option source is not the database table
      */
     public static function findByAttribute(OptionsAttributeInterface $attribute, array $options = []): Collection|null
     {
         if (OptionsSource::Table !== $attribute->getOptionsSource()) {
-            throw new \LogicException('Options source for attribute "' . $attribute->getFieldName() . '" is not the database table');
+            throw AttributeException::invalidDatabaseOptions($attribute->getFieldName());
         }
 
         $t = static::getTable();
@@ -64,12 +65,12 @@ class AttributeOption extends Multilingual
      *
      * @return Collection<AttributeOption>|null
      *
-     * @throws \LogicException If attribute options source is not the product.
+     * @throws AttributeException If attribute options source is not the product.
      */
     public static function findByProductAndAttribute(CoreProduct $product, OptionsAttributeInterface $attribute, array $options = []): Collection|null
     {
         if (OptionsSource::Product !== $attribute->getOptionsSource()) {
-            throw new \LogicException('Options source for attribute "' . $attribute->getFieldName() . '" is not the product');
+            throw AttributeException::invalidProductOptions($attribute->getFieldName());
         }
 
         $t = static::getTable();

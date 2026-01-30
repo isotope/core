@@ -6,6 +6,7 @@ namespace Isotope\CoreBundle\Database;
 
 use Contao\Controller;
 use Contao\DcaExtractor;
+use Isotope\CoreBundle\Exception\LogicException;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
@@ -44,7 +45,7 @@ class ProductDcaExtractor extends DcaExtractor
 
     public static function getInstance($strTable = null): void
     {
-        throw new \RuntimeException('Cannot create instance of '.self::class.', use the service instead');
+        throw new LogicException('Cannot create instance of '.self::class.', use the service instead');
     }
 
     /**

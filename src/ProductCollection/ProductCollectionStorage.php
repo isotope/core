@@ -9,6 +9,7 @@ use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
 use Isotope\CoreBundle\EventDispatcher\TransactionDispatcher;
+use Isotope\CoreBundle\Exception\InvalidArgumentException;
 use Isotope\CoreBundle\Model\ProductCollection;
 use Isotope\CoreBundle\Model\ProductCollectionItem;
 use Isotope\CoreBundle\ProductCollection\Cart\Cart;
@@ -50,7 +51,7 @@ class ProductCollectionStorage
     public function save(AbstractProductCollection $collection, StoreContext $context): void
     {
         if (!$collection instanceof Cart) {
-            throw new \InvalidArgumentException('Argument must be a cart');
+            throw new InvalidArgumentException('Argument must be a cart');
         }
 
         $model = ProductCollection::findByIdentifier($collection->getIdentifier(), $collection->getType(), $context->getStoreId());

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Product\Exception;
 
-class MissingFactoryException extends \UnderflowException
+use Isotope\CoreBundle\Exception\UnderflowException;
+
+class MissingFactoryException extends UnderflowException
 {
     public function __construct(string $type, int $code = 0, \Throwable|null $previous = null)
     {

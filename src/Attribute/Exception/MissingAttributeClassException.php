@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Isotope\CoreBundle\Exception;
+namespace Isotope\CoreBundle\Attribute\Exception;
 
-class MissingAttributeClassException extends \UnderflowException
+use Isotope\CoreBundle\Exception\UnderflowException;
+
+class MissingAttributeClassException extends UnderflowException
 {
     public function __construct(
         public readonly string $name,

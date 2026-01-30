@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Store\Context;
 
-class StoreContextException extends \RuntimeException
+use Isotope\CoreBundle\Exception\RuntimeException;
+
+class StoreContextException extends RuntimeException
 {
     public static function noRootPage(): self
     {

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\RuleBuilder\Exception;
 
-class InvalidTypeException extends \InvalidArgumentException
+use Isotope\CoreBundle\Exception\InvalidArgumentException;
+
+class InvalidTypeException extends InvalidArgumentException
 {
     public function __construct(string $type, string $class, int $code = 0, \Throwable|null $previous = null)
     {

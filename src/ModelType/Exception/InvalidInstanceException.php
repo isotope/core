@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\ModelType\Exception;
 
-class InvalidInstanceException extends \LogicException
+use Isotope\CoreBundle\Exception\LogicException;
+
+class InvalidInstanceException extends LogicException
 {
     public function __construct(object $instance, array|string $class, int $code = 0, \Throwable|null $previous = null)
     {

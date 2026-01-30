@@ -6,7 +6,7 @@ namespace Isotope\CoreBundle\Product\Query\Filter;
 
 use Doctrine\DBAL\Query\Expression\CompositeExpression;
 use Doctrine\DBAL\Query\QueryBuilder;
-use Isotope\CoreBundle\Exception\InvalidQueryAttributeException;
+use Isotope\CoreBundle\Product\Exception\InvalidQueryAttributeException;
 
 abstract class AbstractFilter implements FilterInterface
 {
@@ -19,7 +19,7 @@ abstract class AbstractFilter implements FilterInterface
         string $value,
     ) {
         if (null === $this->attributeName) {
-            throw new InvalidQueryAttributeException('');
+            throw new InvalidQueryAttributeException('NULL');
         }
 
         if (str_contains($value, '|')) {

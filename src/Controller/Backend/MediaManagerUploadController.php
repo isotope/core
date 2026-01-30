@@ -9,6 +9,7 @@ use Contao\FileUpload;
 use Contao\Message;
 use Contao\StringUtil;
 use Contao\System;
+use Isotope\CoreBundle\Exception\RuntimeException;
 use Isotope\CoreBundle\Security\IsotopeCorePermissions;
 use Isotope\CoreBundle\Widget\MediaManager;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -89,7 +90,7 @@ class MediaManagerUploadController extends AbstractController
                 ;
 
                 if (\is_array($messages)) {
-                    throw new \RuntimeException($messages[0]);
+                    throw new RuntimeException($messages[0]);
                 }
             }
         } finally {
@@ -97,7 +98,7 @@ class MediaManagerUploadController extends AbstractController
         }
 
         if (!\is_array($varInput) || empty($varInput)) {
-            throw new \RuntimeException($this->translator->trans('MSC.mmUnknownError', [], 'contao_default'));
+            throw new RuntimeException($this->translator->trans('MSC.mmUnknownError', [], 'contao_default'));
         }
 
         return $varInput[0] ?? '';

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Attribute;
 
+use Isotope\CoreBundle\Attribute\Exception\AttributeException;
 use Isotope\CoreBundle\ModelType\AbstractModelType;
 use Isotope\CoreBundle\Product\CoreProduct;
 
@@ -194,7 +195,7 @@ abstract class AbstractAttribute extends AbstractModelType implements AttributeI
             }
         }
 
-        throw new \RuntimeException(\sprintf('Unable to guess the inputType for %s, implement %s instead.', static::class, __METHOD__));
+        throw AttributeException::guessInputType(static::class, __METHOD__);
     }
 
     public function getFrontendWidget(): string|null
@@ -205,7 +206,7 @@ abstract class AbstractAttribute extends AbstractModelType implements AttributeI
             }
         }
 
-        throw new \RuntimeException(\sprintf('Unable to guess the frontend widget for %s, implement %s instead.', static::class, __METHOD__));
+        throw AttributeException::guessFrontendWidget(static::class, __METHOD__);
     }
 
     public function getValue(CoreProduct $product)

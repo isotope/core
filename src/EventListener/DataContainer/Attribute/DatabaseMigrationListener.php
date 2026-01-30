@@ -14,6 +14,7 @@ use Contao\StringUtil;
 use Doctrine\DBAL\Connection;
 use Isotope\CoreBundle\Database\DatabaseUpdater;
 use Isotope\CoreBundle\Database\ProductDcaExtractor;
+use Isotope\CoreBundle\Exception\InvalidArgumentException;
 
 class DatabaseMigrationListener
 {
@@ -61,14 +62,14 @@ class DatabaseMigrationListener
         $slugged = $this->slug->generate(StringUtil::prepareSlug($value), $options);
 
         if ($slugged !== $value) {
-            throw new \InvalidArgumentException(\sprintf($GLOBALS['TL_LANG']['ERR']['invalidColumn'], $value, $slugged));
+            throw new InvalidArgumentException(\sprintf($GLOBALS['TL_LANG']['ERR']['invalidColumn'], $value, $slugged));
         }
 
         if (
             ($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$value]['attributes']['systemColumn'] ?? false)
             || $this->connection->getDatabasePlatform()?->getReservedKeywordsList()->isKeyword($value)
         ) {
-            throw new \InvalidArgumentException(\sprintf($GLOBALS['TL_LANG']['ERR']['systemColumn'], $value));
+            throw new InvalidArgumentException(\sprintf($GLOBALS['TL_LANG']['ERR']['systemColumn'], $value));
         }
 
         return $value;

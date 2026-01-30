@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Util;
 
+use Isotope\CoreBundle\Exception\LogicException;
+
 /**
  * @see https://github.com/shopware/shopware/blob/trunk/src/Core/Framework/Util/FloatComparator.php
  */
@@ -20,7 +22,7 @@ class FloatComparator
             '=' => self::equals($a, $b),
             '>' => self::greaterThan($a, $b),
             '<' => self::lessThan($a, $b),
-            default => throw new \RuntimeException('Operator "'.$operator.'" is not supported.'),
+            default => throw new LogicException('Operator "'.$operator.'" is not supported.'),
         };
     }
 

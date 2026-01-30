@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Isotope\CoreBundle\Exception;
+namespace Isotope\CoreBundle\Product\Exception;
 
 use Contao\CoreBundle\Exception\BadRequestException;
 

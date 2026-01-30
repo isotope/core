@@ -8,6 +8,7 @@ use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use Contao\Database;
 use Contao\PageModel;
 use Doctrine\DBAL\Connection;
+use Isotope\CoreBundle\Exception\RuntimeException;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Util\ProductCategoryUtil;
 use Symfony\Contracts\Service\ResetInterface;
@@ -93,6 +94,6 @@ class CategoryFinder implements ResetInterface
         //    }
         //}
 
-        throw new \RuntimeException('Unable to determine categories for scope "'.$scope.'"');
+        throw new RuntimeException('Unable to determine categories for scope "'.$scope.'"');
     }
 }

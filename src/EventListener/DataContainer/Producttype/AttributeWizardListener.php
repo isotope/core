@@ -15,6 +15,8 @@ use Contao\System;
 use Doctrine\DBAL\Connection;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
 use Isotope\CoreBundle\Attribute\VariantAttributeInterface;
+use Isotope\CoreBundle\Exception\LogicException;
+use Isotope\CoreBundle\Exception\UnderflowException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
@@ -199,7 +201,7 @@ class AttributeWizardListener
         if (!$hasVariantField) {
             $variantLabels = implode(', ', array_map(fn (string $name) => $this->formatter->dcaLabel('tl_iso_product', $name), $this->attributeRegistry->getVariantOptionFields()));
 
-            throw new \UnderflowException($this->translator->trans('tl_iso_producttype.noVariantAttributes', [$variantLabels], 'contao_tl_iso_producttype'));
+            throw new UnderflowException($this->translator->trans('tl_iso_producttype.noVariantAttributes', [$variantLabels], 'contao_tl_iso_producttype'));
         }
 
         usort(
@@ -255,7 +257,7 @@ class AttributeWizardListener
         );
 
         if ([] !== $duplicates) {
-            throw new \LogicException($this->translator->trans('tl_iso_producttype.singularAttributes', [implode(', ', array_map(fn ($name) => $this->formatter->dcaLabel('tl_iso_product', $name), $duplicates))], 'contao_tl_iso_producttype'));
+            throw new LogicException($this->translator->trans('tl_iso_producttype.singularAttributes', [implode(', ', array_map(fn ($name) => $this->formatter->dcaLabel('tl_iso_product', $name), $duplicates))], 'contao_tl_iso_producttype'));
         }
 
         return $values;

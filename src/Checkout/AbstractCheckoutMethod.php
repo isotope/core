@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Checkout;
 
 use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
+use Isotope\CoreBundle\Exception\UnexpectedValueException;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\RuleBuilder\RuleMatcher;
 use Isotope\CoreBundle\Store\Context\StoreContext;
@@ -151,7 +152,7 @@ abstract class AbstractCheckoutMethod
     public function getPercentage(): float
     {
         if (!$this->percentage) {
-            throw new \UnexpectedValueException('Not have a percentage amount.');
+            throw new UnexpectedValueException('Not have a percentage amount.');
         }
 
         return $this->price;
