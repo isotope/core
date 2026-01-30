@@ -11,7 +11,6 @@ use Contao\Widget;
 use Doctrine\DBAL\Connection;
 use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
 use Isotope\CoreBundle\Attribute\VariantAttributeInterface;
-use Isotope\CoreBundle\Exception\InvalidArgumentException;
 use Isotope\CoreBundle\Exception\LogicException;
 use Isotope\CoreBundle\Exception\UnderflowException;
 use Isotope\CoreBundle\Exception\UnexpectedValueException;
@@ -19,11 +18,8 @@ use Isotope\CoreBundle\Model\AttributeOption;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Store\Context\ProductContext;
 use Isotope\CoreBundle\Store\Context\StoreContext;
-use Isotope\CoreBundle\Store\Price\CalculatedPrice;
 use Isotope\CoreBundle\Store\Price\PriceCalculator;
 use Isotope\CoreBundle\Store\Price\PriceDefinition;
-use Isotope\CoreBundle\Store\Price\PriceDisplay;
-use Isotope\CoreBundle\Store\Tax\TaxCalculator;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
@@ -32,7 +28,6 @@ class OptionFactory
     public function __construct(
         private readonly Connection $connection,
         private readonly TranslatorInterface $translator,
-        private readonly TaxCalculator $taxCalculator,
         private readonly PriceCalculator $priceCalculator,
         private readonly Environment $twig,
         private readonly ScopeMatcher $scopeMatcher,
@@ -202,25 +197,5 @@ class OptionFactory
         }
 
         return explode('.', $fallback, 2);
-    }
-
-    private function formatPrice(float $amount, StoreContext $context): string
-    {
-        $price = $this->twig->render('@Contao/component/isotope_price.html.twig', [
-            'amount' => abs($amount),
-            'html' => false,
-            'currency' => $context->getCurrency(),
-            'money' => $context->getMoneyFormat(),
-        ]);
-
-        if ($amount > 0) {
-            return '+ '.$price;
-        }
-
-        if ($amount < 0) {
-            return '- '.$price;
-        }
-
-        return $price;
     }
 }

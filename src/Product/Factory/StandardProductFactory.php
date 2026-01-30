@@ -135,13 +135,6 @@ class StandardProductFactory implements ProductFactoryInterface
         return $data;
     }
 
-    private function generatePrices(ProductDto $dto, ProductType $type): void
-    {
-        $advancedPrices = $type->hasAdvancedPrices();
-        $variantPrices = $type->hasVariants() && \in_array('price', $type->getVariantAttributes(), true);
-        $prices = !\in_array('price', $type->getAttributes(), true);
-    }
-
     private function getVariants(ProductDto $dto, StoreContext $context): ProductCollection
     {
         $products = new ProductCollection();
