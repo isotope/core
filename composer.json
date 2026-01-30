@@ -58,7 +58,8 @@
         "contao/test-case": "^5.x-dev"
     },
     "conflict": {
-        "contao/manager-plugin": "<2.0 || >= 3.0"
+        "contao/manager-plugin": "<2.0 || >= 3.0",
+        "isotope/isotope_documents": "*"
     },
     "autoload": {
         "psr-4": {
