@@ -31,8 +31,6 @@
                         {% for level,items in collection.lineItems.byLevel %}
                             {% for item in items %}
                                 {% block product_collection_item %}
-                                    {% from '@Contao/isotope/price_macros.html.twig' import format_unit_price, format_unit_tax, format_total_price %}
-
                                     <tr>
                                         {#<?php if(!$this->isNotification): ?>
                                         <td class="image"><?= $this->getGallery('images', $item['item'])->generateMainImage() ?></td>
@@ -52,17 +50,17 @@
                                         </td>
                                         {% set price = isotope_price(item) %}
                                         <td class="price">
-                                            {{ format_unit_price(price) }}
+                                            {{ price|raw }}
                                             {% if show_taxes|default %}
                                                 <div class="tax">
                                                     {% if price.is_gross|default %}incl.{% else %}.excl{% endif %}
-                                                    {{ format_unit_tax(price) }}
+                                                    {{ price.with({ amount: price.unit_tax }) }}
                                                     VAT
                                                 </div>
                                             {% endif %}
                                         </td>
                                         <td class="total">
-                                            {{ format_total_price(price) }}
+                                            {{ price.with({ amount: price.total_price }) }}
                                         </td>
                                         {% if multiple_taxes|default %}
                                             <td class="tax_id">{{ price.tax_ids|default([])|join(',') }}</td>
@@ -87,13 +85,11 @@
                             {% endfor %}
                             {% if not loop.last %}
                                 {% block product_collection_subtotal %}
-                                    {% from '@Contao/isotope/price_macros.html.twig' import format_price %}
-
                                     <tr class="subtotal">
                                         <td class="name" colspan="2">{{ 'MSC.subTotalLabel'|trans }}</td>
                                         <td class="price">&nbsp;</td>
                                         <td class="price total">
-                                            {{ format_price(isotope_price(collection.subtotal(level))) }}
+                                            {{ isotope_price(collection.subtotal(level)) }}
                                         </td>
                                         {% if multiple_taxes|default %}
                                             <td class="tax_id">&nbsp;</td>
@@ -107,14 +103,12 @@
                         {% endfor %}
                         {% set total = isotope_price(collection.total) %}
                         {% block product_collection_taxes %}
-                            {% from '@Contao/isotope/price_macros.html.twig' import format_price %}
-
-                            {% for tax in collection.total.calculatedTaxes %}
+                            {% for tax in total.calculated_taxes %}
                                 <tr class="tax">
                                     <td class="name" colspan="2">{{ tax.label }}</td>
                                     <td class="price">{{ tax.taxRate }}%</td>
                                     <td class="price total">
-                                        {{ format_price(total, tax.tax) }}
+                                        {{ total.with({ amount: tax.amount }) }}
                                     </td>
                                     {% if multiple_taxes|default %}
                                         <td class="tax_id">{{ tax.number }}</td>
@@ -126,13 +120,11 @@
                             {% endfor %}
                         {% endblock %}
                         {% block product_collection_total %}
-                            {% from '@Contao/isotope/price_macros.html.twig' import format_price %}
-
                             <tr class="total">
                                 <td class="name" colspan="2">{{ 'MSC.grandTotalLabel'|trans }}</td>
                                 <td class="price">&nbsp;</td>
                                 <td class="price total">
-                                    {{ format_price(total) }}
+                                    {{ total|raw }}
                                 </td>
                                 {% if multiple_taxes|default %}
                                     <td class="tax_id">&nbsp;</td>

@@ -16,6 +16,7 @@ use Isotope\CoreBundle\Store\Price\PriceDisplay;
 use Isotope\CoreBundle\Store\StoreManager;
 use Isotope\Isotope;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Twig\Environment;
 use Twig\Extension\RuntimeExtensionInterface;
 
 class ProductRuntime implements RuntimeExtensionInterface
@@ -23,6 +24,7 @@ class ProductRuntime implements RuntimeExtensionInterface
     public function __construct(
         private readonly StoreManager $storeManager,
         private readonly RequestStack $requestStack,
+        private readonly Environment $twig,
     ) {
     }
 
@@ -40,9 +42,8 @@ class ProductRuntime implements RuntimeExtensionInterface
      *
      * @return array{amount: float, money: MoneyFormat, currency: Currency}|null
      */
-    public function generatePrice(array $context, CalculatedPrice|LineItem|Product|null $productOrItem = null): array|null
+    public function generatePrice(CalculatedPrice|LineItem|Product|null $productOrItem = null, string|null $key = null, bool $html = true): TemplateContext|null
     {
-        $productOrItem ??= $context['product'] ?? null;
         $price = $productOrItem instanceof CalculatedPrice ? $productOrItem : null;
 
         if ($productOrItem instanceof CoreProduct || $productOrItem instanceof LineItem) {
@@ -62,12 +63,14 @@ class ProductRuntime implements RuntimeExtensionInterface
             'unit_tax' => $format->mathRound($price->getCalculatedTaxes()->sum()),
             'total_price' => $price->getTotalPrice(),
             'is_range' => $price->isRange(),
+            'calculated_taxes' => $price->getCalculatedTaxes(),
             'tax_ids' => $price->getCalculatedTaxes()->getNumbers(),
             'money' => $storeContext->getMoneyFormat(),
             'currency' => $storeContext->getCurrency(),
             'tax_calculation' => $storeContext->getTaxCalculation()->value,
             'price_display' => $storeContext->getPriceDisplay()->value,
             'is_gross' => PriceDisplay::Net !== $storeContext->getPriceDisplay(),
+            'html' => $html,
         ];
 
         if (PriceDisplay::Net === $storeContext->getPriceDisplay()) {
@@ -82,8 +85,9 @@ class ProductRuntime implements RuntimeExtensionInterface
         $data['total_tax'] = $data['unit_tax'] * $price->getQuantity();
         $data['net_total_price'] = $data['net_unit_price'] * $price->getQuantity();
         $data['gross_total_price'] = $data['gross_unit_price'] * $price->getQuantity();
+        $data['amount'] = $key ? ($data[$key] ?? null) : null;
 
-        return $data;
+        return new TemplateContext($this->twig, '@Contao/component/_isotope_price.html.twig', $data);
     }
 
     public function generateBasePrice(array $context): string

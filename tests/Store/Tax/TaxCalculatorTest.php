@@ -220,7 +220,7 @@ class TaxCalculatorTest extends TestCase
          * @var CalculatedTax $tax
          */
         foreach ($result as $i => $tax) {
-            $this->assertSame($tax->getTax(), $expectedTaxes[$i]);
+            $this->assertSame($tax->getAmount(), $expectedTaxes[$i]);
             $this->assertSame($tax->getPrice(), $expectedPrices[$i]);
             $this->assertSame($tax->getNumber(), $expectedNumbers[$i]);
         }

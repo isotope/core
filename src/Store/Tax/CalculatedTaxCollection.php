@@ -36,7 +36,7 @@ class CalculatedTaxCollection extends AbstractMap
 
     public function sum(): float
     {
-        return array_reduce($this->data, static fn (float $total, CalculatedTax $tax) => $total + $tax->getTax(), 0);
+        return array_reduce($this->data, static fn (float $total, CalculatedTax $tax) => $total + $tax->getAmount(), 0);
     }
 
     public function getNumbers(): array

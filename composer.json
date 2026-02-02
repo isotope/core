@@ -48,7 +48,8 @@
         "hashids/hashids": "^4.1",
         "symfony/intl": "^7.3",
         "symfony/polyfill-php85": "^1.0",
-        "ramsey/collection": "^2.0"
+        "ramsey/collection": "^2.0",
+        "twig/twig": "^3.12"
     },
     "require-dev": {
         "contao/core-bundle": "5.x-dev",

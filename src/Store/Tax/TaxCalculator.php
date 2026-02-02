@@ -63,14 +63,14 @@ class TaxCalculator
             $tax = 0;
 
             foreach ($taxRates as $taxRate) {
-                $tax += $this->calculateTaxFromGrossPrice($price, $taxRate)->getTax();
+                $tax += $this->calculateTaxFromGrossPrice($price, $taxRate)->getAmount();
             }
 
             return $price - $tax;
         }
 
         if ($taxRates->getIncluded()) {
-            $price -= $this->calculateTaxFromGrossPrice($price, $taxRates->getIncluded())->getTax();
+            $price -= $this->calculateTaxFromGrossPrice($price, $taxRates->getIncluded())->getAmount();
         }
 
         return $price;

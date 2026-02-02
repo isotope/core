@@ -1,5 +1,4 @@
 {% trans_default_domain 'contao_default' %}
-{% from '@Contao/isotope/price_macros.html.twig' import format_price %}
 
 {% for item in items %}
     {{- item.label }}
@@ -14,4 +13,4 @@
     {%- endif -%}
 {% endfor %}
 --------------------
-{{ 'MSC.subTotalLabel'|trans }}: {{ format_price(isotope_price(collection.subtotal), null, false) }}
+{{ 'MSC.subTotalLabel'|trans }}: {{ isotope_price(collection.subtotal, html: false) }}

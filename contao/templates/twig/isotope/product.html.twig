@@ -1,5 +1,4 @@
 {% trans_default_domain 'contao_default' %}
-{% from '@Contao/isotope/price_macros.html.twig' import format_price %}
 
 {% set product_attributes = attrs()
     .setIfExists('id', product_html_id)
@@ -46,10 +45,10 @@
                 {% endblock %}
 
                 {% block product_price %}
-                    {% set price = isotope_price() %}
+                    {% set price = isotope_price(product) %}
                     {% if price %}
                         <div class="offer">
-                            <div class="price">{{ format_price(price) }}</div>
+                            <div class="price">{{ price|raw }}</div>
                             {#{% if data.baseprice|default %}<div class="baseprice">{{ isotope_attribute('baseprice') }}</div>{% endif %}#}
                         </div>
                     {% endif %}

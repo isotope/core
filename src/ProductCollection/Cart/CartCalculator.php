@@ -77,7 +77,7 @@ class CartCalculator
 
         if (PriceDisplay::Net === $context->getPriceDisplay()) {
             // Always round tax here because we display it to the client
-            $tax = array_reduce($total->getCalculatedTaxes()->toArray(), static fn (float $total, CalculatedTax $tax) => $total + $context->getMoneyFormat()->mathRound($tax->getTax()), 0);
+            $tax = array_reduce($total->getCalculatedTaxes()->toArray(), static fn (float $total, CalculatedTax $tax) => $total + $context->getMoneyFormat()->mathRound($tax->getAmount()), 0);
             $amount = $context->getMoneyFormat()->moneyRound($total->getUnitPrice() + $tax);
 
             $total = new CalculatedPrice($amount, $amount, $total->getCalculatedTaxes(), $total->getTaxRates());

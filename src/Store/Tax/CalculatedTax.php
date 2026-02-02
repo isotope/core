@@ -8,7 +8,7 @@ use Isotope\CoreBundle\Util\FloatComparator;
 
 class CalculatedTax
 {
-    protected float $tax = 0;
+    protected float $amount = 0;
 
     protected float $taxRate;
 
@@ -24,7 +24,7 @@ class CalculatedTax
         float $taxRate,
         float $price,
     ) {
-        $this->tax = FloatComparator::cast($tax);
+        $this->amount = FloatComparator::cast($tax);
         $this->taxRate = FloatComparator::cast($taxRate);
         $this->price = FloatComparator::cast($price);
     }
@@ -34,14 +34,14 @@ class CalculatedTax
         return $this->id;
     }
 
-    public function getTax(): float
+    public function getAmount(): float
     {
-        return $this->tax;
+        return $this->amount;
     }
 
-    public function setTax(float $tax): void
+    public function setAmount(float $amount): void
     {
-        $this->tax = FloatComparator::cast($tax);
+        $this->amount = FloatComparator::cast($amount);
     }
 
     public function getTaxRate(): float
@@ -84,13 +84,13 @@ class CalculatedTax
 
     public function multiply(int $quantity): void
     {
-        $this->tax = FloatComparator::cast($this->tax * $quantity);
+        $this->amount = FloatComparator::cast($this->amount * $quantity);
         $this->price = FloatComparator::cast($this->price * $quantity);
     }
 
     public function increment(self $calculatedTax): void
     {
-        $this->tax = FloatComparator::cast($this->tax + $calculatedTax->getTax());
+        $this->amount = FloatComparator::cast($this->amount + $calculatedTax->getAmount());
         $this->price = FloatComparator::cast($this->price + $calculatedTax->getPrice());
     }
 }
