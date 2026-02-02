@@ -12,7 +12,7 @@ class ListView extends AbstractView
 {
     public function getTemplate(CoreProduct $product): string
     {
-        return '@Contao/'.($this->template ?: $product->getProductType()->list_template ?: 'isotope/product/list.html.twig');
+        return '@Contao/'.($this->template ?: $product->getProductType()->list_template ?: 'isotope/product/list').'.html.twig';
     }
 
     public function getGallery(CoreProduct $product): int

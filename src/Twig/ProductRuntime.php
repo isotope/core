@@ -26,7 +26,7 @@ class ProductRuntime implements RuntimeExtensionInterface
     ) {
     }
 
-    public function generateProduct(CoreProduct $product, ViewInterface $view): string
+    public function generateProduct(CoreProduct $product, ViewInterface $view): TemplateContext
     {
         return $product->getRenderer()->render(
             new ProductContext($product, $this->storeManager->getCurrentContext()),

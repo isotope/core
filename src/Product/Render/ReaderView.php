@@ -11,7 +11,7 @@ class ReaderView extends AbstractView
 {
     public function getTemplate(CoreProduct $product): string
     {
-        return '@Contao/'.($this->template ?: $product->getProductType()->reader_template ?: 'isotope/product/reader.html.twig');
+        return '@Contao/'.($this->template ?: $product->getProductType()->reader_template ?: 'isotope/product/reader').'.html.twig';
     }
 
     public function getGallery(CoreProduct $product): int
