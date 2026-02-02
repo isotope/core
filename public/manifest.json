@@ -2,7 +2,7 @@
   "backend.css": "/bundles/isotopecore/backend.ce026174.css",
   "backend.js": "/bundles/isotopecore/backend.ca7fb2c0.js",
   "isotope.css": "/bundles/isotopecore/isotope.2f465aeb.css",
-  "isotope.js": "/bundles/isotopecore/isotope.ad5418e7.js",
+  "isotope.js": "/bundles/isotopecore/isotope.630dfe33.js",
   "plugins/noUiSlider/nouislider.min.js": "/bundles/isotopecore/plugins/noUiSlider/nouislider.min.js",
   "plugins/noUiSlider/nouislider.js": "/bundles/isotopecore/plugins/noUiSlider/nouislider.js",
   "images/isotope-logo.svg": "/bundles/isotopecore/images/isotope-logo.svg",
@@ -43,7 +43,7 @@
   "images/price-tag.png": "/bundles/isotopecore/images/price-tag.png",
   "images/setup-producttypes.svg": "/bundles/isotopecore/images/setup-producttypes.svg",
   "images/drive-download.png": "/bundles/isotopecore/images/drive-download.png",
-  "images/cards-address.png": "/bundles/isotopecore/images/cards-address.png",
+  "images/addresses.svg": "/bundles/isotopecore/images/addresses.svg",
   "images/page_1.svg": "/bundles/isotopecore/images/page_1.svg",
   "images/page--dark.svg": "/bundles/isotopecore/images/page--dark.svg",
   "images/page.svg": "/bundles/isotopecore/images/page.svg",
@@ -56,5 +56,5 @@
   "backend.ce026174.css.map": "/bundles/isotopecore/backend.ce026174.css.map",
   "backend.ca7fb2c0.js.map": "/bundles/isotopecore/backend.ca7fb2c0.js.map",
   "isotope.2f465aeb.css.map": "/bundles/isotopecore/isotope.2f465aeb.css.map",
-  "isotope.ad5418e7.js.map": "/bundles/isotopecore/isotope.ad5418e7.js.map"
+  "isotope.630dfe33.js.map": "/bundles/isotopecore/isotope.630dfe33.js.map"
 }

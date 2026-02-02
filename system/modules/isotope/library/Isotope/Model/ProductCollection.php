@@ -23,6 +23,7 @@ use Isotope\CoreBundle\Attribute\AttributeInterface;
 use Isotope\CoreBundle\Checkout\Payment\PaymentInterface;
 use Isotope\CoreBundle\Checkout\Shipping\ShippingInterface;
 use Isotope\CoreBundle\Gallery\StandardGallery;
+use Isotope\CoreBundle\Model\Address;
 use Isotope\CoreBundle\Model\Attribute;
 use Isotope\CoreBundle\Model\Config;
 use Isotope\CoreBundle\Model\ProductCollectionItem;
@@ -393,7 +394,7 @@ abstract class ProductCollection extends TypeAgent
     /**
      * Get billing address for collection
      *
-     * @return  \Isotope\Model\Address|null
+     * @return  \Isotope\CoreBundle\Model\Address|null
      */
     public function getBillingAddress()
     {

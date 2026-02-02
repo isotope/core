@@ -35,12 +35,6 @@
       <trans-unit id="tl_nc_notification.type.iso_order_status_change.1">
         <source>This notification type can be sent when the order status changes.</source>
       </trans-unit>
-      <trans-unit id="tl_nc_notification.type.iso_memberaddress_change.0">
-        <source>Addressbook change</source>
-      </trans-unit>
-      <trans-unit id="tl_nc_notification.type.iso_memberaddress_change.1">
-        <source>This notification type can be sent when the customer makes changes in his addressbook.</source>
-      </trans-unit>
     </body>
   </file>
 </xliff>

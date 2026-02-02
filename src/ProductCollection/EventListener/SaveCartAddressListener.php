@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\ProductCollection\EventListener;
 
+use Isotope\CoreBundle\Model\Address;
 use Isotope\CoreBundle\Model\ProductCollection;
 use Isotope\CoreBundle\ProductCollection\Cart\Cart;
 use Isotope\CoreBundle\ProductCollection\Event\SaveCollectionTransaction;
-use Isotope\Model\Address;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
 #[AsEventListener(SaveCollectionTransaction::NAME.'.pre')]

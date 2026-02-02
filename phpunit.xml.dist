@@ -7,17 +7,22 @@
         bootstrap="vendor/autoload.php"
         cacheDirectory=".phpunit.cache"
 >
-  <source ignoreIndirectDeprecations="true" restrictNotices="true" restrictWarnings="true">
-    <include>
-      <directory>./tests</directory>
-    </include>
-  </source>
-  <php>
-    <env name="APP_ENV" value="test"/>
-  </php>
-  <testsuites>
-    <testsuite name="unit">
-      <directory>./tests</directory>
-    </testsuite>
-  </testsuites>
+    <source ignoreIndirectDeprecations="true" restrictNotices="true" restrictWarnings="true">
+        <include>
+            <directory>./tests</directory>
+        </include>
+    </source>
+    <php>
+        <env name="KERNEL_CLASS" value="Isotope\CoreBundle\Test\Fixture\TestKernel"/>
+        <env name="DISABLE_HTTP_CACHE" value="1"/>
+        <env name="APP_SECRET" value="foobar"/>
+        <env name="APP_ENV" value="test"/>
+        <env name="APP_DEBUG" value=""/>
+        <env name="DATABASE_URL" value="mysql://root:root@localhost:3306/contao_test"/>
+    </php>
+    <testsuites>
+        <testsuite name="unit">
+            <directory>./tests</directory>
+        </testsuite>
+    </testsuites>
 </phpunit>

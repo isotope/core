@@ -11,14 +11,15 @@ use Contao\StringUtil;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 use Isotope\CoreBundle\Exception\RuntimeException;
+use Isotope\CoreBundle\Model\Address;
 use Isotope\CoreBundle\Model\Config;
+use Isotope\CoreBundle\Store\Address\AddressConfig;
 use Isotope\CoreBundle\Store\CartManager;
 use Isotope\CoreBundle\Store\Event\ContextCreatedEvent;
 use Isotope\CoreBundle\Store\Price\Currency;
 use Isotope\CoreBundle\Store\Price\MoneyFormat;
 use Isotope\CoreBundle\Store\Price\PriceDisplay;
 use Isotope\CoreBundle\Store\Price\TaxCalculation;
-use Isotope\Model\Address;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\Intl\Currencies;
@@ -170,21 +171,21 @@ class StoreContextFactory
     private function getAddressConfig(array|string $fieldConfig, string $type, string $countries, string $defaultCountry): AddressConfig
     {
         $addressFields = [];
-        $addressFieldsConfig = [];
+        $mandatoryFields = [];
 
         $fields = StringUtil::deserialize($fieldConfig);
 
         if (\is_array($fields)) {
             foreach ($fields as $field) {
-                if ('disabled' !== $field[$type]) {
-                    $addressFields[] = $field['name'];
+                if ('disabled' === $field[$type]) {
+                    continue;
                 }
 
-                $addressFieldsConfig[] = [
-                    'value' => $field['name'],
-                    'enabled' => 'disabled' !== $field[$type],
-                    'mandatory' => 'mandatory' === $field[$type],
-                ];
+                $addressFields[] = $field['name'];
+
+                if ('mandatory' === $field[$type]) {
+                    $mandatoryFields[] = $field['name'];
+                }
             }
         }
 
@@ -196,7 +197,7 @@ class StoreContextFactory
 
         return new AddressConfig(
             $addressFields,
-            $addressFieldsConfig,
+            $mandatoryFields,
             $countryCodes,
             $defaultCountry,
         );

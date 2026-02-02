@@ -15,13 +15,15 @@ use Contao\Controller;
 use Contao\Date;
 use Contao\FrontendUser;
 use Contao\Input;
+use Contao\Model\Registry;
 use Contao\System;
 use Contao\Widget;
-use Isotope\CoreBundle\Store\StoreManager;
-use Isotope\Model\Address as AddressModel;
+use Isotope\CoreBundle\Model\Address as AddressModel;
+use Isotope\CoreBundle\Store\Address\AddressConfig;
+use Isotope\CoreBundle\Store\Address\AddressFormatter;
+use Isotope\Isotope;
 use Isotope\Module\Checkout;
 use Isotope\Template;
-use Contao\Model\Registry;
 
 abstract class Address extends CheckoutStep
 {
@@ -327,8 +329,11 @@ abstract class Address extends CheckoutStep
      *
      * @return array
      */
-    protected function getAddressOptions($arrFields = null)
+    protected function getAddressOptions(AddressConfig $addressConfig)
     {
+        /** @var AddressFormatter $addressFormatter */
+        $addressFormatter = System::getContainer()->get(AddressFormatter::class);
+
         $arrOptions = array();
 
         if (\Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER')) {
@@ -348,7 +353,7 @@ abstract class Address extends CheckoutStep
 
                     $arrOptions[] = [
                         'value'   => $objAddress->id,
-                        'label'   => $objAddress->generate($arrFields),
+                        'label'   => (string) $addressFormatter->get($objAddress, $addressConfig),
                         'default' => $objAddress->id == ($objDefault->id ?? false) ? '1' : '',
                     ];
                 }
@@ -386,7 +391,7 @@ abstract class Address extends CheckoutStep
      */
     protected function getAddresses()
     {
-        $objAddresses = AddressModel::findForMember(FrontendUser::getInstance()->id);
+        $objAddresses = AddressModel::findByMemberAndStoreId(FrontendUser::getInstance()->id, Isotope::getCart()->store_id);
 
         return null === $objAddresses ? array() : $objAddresses->getModels();
     }

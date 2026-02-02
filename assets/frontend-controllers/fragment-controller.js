@@ -41,16 +41,42 @@ export default class extends Controller {
         this.#load(new URL(window.location).toString());
     }
 
-    async #load (url) {
+    submit (event) {
+        if (event.defaultPrevented) {
+            return;
+        }
+
+        event.preventDefault();
+
+        const data = new FormData(event.target);
+
+        if (event.submitter && event.submitter.name) {
+            data.append(event.submitter.name, event.submitter.value);
+        }
+
+        this.#load(new URL(window.location).toString(), data);
+    }
+
+    async #load (url, postData) {
         const timer = setTimeout(() => {
             this.element.setAttribute('aria-busy', 'true');
         }, 500)
 
-        const response = await axios.get(url, {
-            headers: {
-                'Isotope-Fragment': this.idValue,
-            }
-        });
+        let response;
+
+        if (postData) {
+            response = await axios.post(url, postData, {
+                headers: {
+                    'Isotope-Fragment': this.idValue,
+                }
+            });
+        } else {
+            response = await axios.get(url, {
+                headers: {
+                    'Isotope-Fragment': this.idValue,
+                }
+            });
+        }
 
         clearTimeout(timer);
 

@@ -18,15 +18,17 @@ use Contao\System;
 use Contao\Template;
 use Isotope\CompatibilityHelper;
 use Isotope\CoreBundle\Document\DocumentInterface;
+use Isotope\CoreBundle\Model\Address;
 use Isotope\CoreBundle\Model\Document;
 use Isotope\CoreBundle\Model\OrderStatus;
 use Isotope\CoreBundle\ModelType\DocumentRegistry;
+use Isotope\CoreBundle\Store\Address\AddressFormatter;
+use Isotope\CoreBundle\Store\StoreManager;
 use Isotope\Haste\Util\Format;
 use Isotope\Interfaces\IsotopeNotificationTokens;
 use Isotope\Interfaces\IsotopeOrderStatusAware;
 use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Isotope;
-use Isotope\Model\Address;
 use Isotope\Model\ProductCollection;
 use Isotope\Model\ProductCollectionLog;
 use NotificationCenter\Model\Notification;
@@ -446,6 +448,12 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
             $arrTokens['collection_' . $k] = $v;
         }
 
+        /** @var AddressFormatter $addressFormatter */
+        $addressFormatter = System::getContainer()->get(AddressFormatter::class);
+
+        /** @var StoreManager $storeManager */
+        $storeManager = System::getContainer()->get(StoreManager::class);
+
         // Add billing/customer address fields
         if (($objAddress = $this->getBillingAddress()) !== null) {
             foreach ($objAddress->row() as $k => $v) {
@@ -455,7 +463,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
                 $arrTokens['billing_' . $k] = $arrTokens['billing_address_' . $k];
             }
 
-            $arrTokens['billing_address'] = $objAddress->generate($objConfig->getBillingFieldsConfig());
+            $arrTokens['billing_address'] = (string) $addressFormatter->get($objAddress, $storeManager->getCurrentContext()->getBillingAddressConfig());
 
             // @deprecated (use ##billing_address##)
             $arrTokens['billing_address_text'] = $arrTokens['billing_address'];
@@ -470,7 +478,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
                 $arrTokens['shipping_' . $k] = $arrTokens['shipping_address_' . $k];
             }
 
-            $arrTokens['shipping_address'] = $objAddress->generate($objConfig->getShippingFieldsConfig());
+            $arrTokens['shipping_address'] = (string) $addressFormatter->get($objAddress, $storeManager->getCurrentContext()->getShippingAddressConfig());
 
             // Shipping address equals billing address
             // @deprecated (use ##shipping_address##)

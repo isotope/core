@@ -1,0 +1,114 @@
+imports:
+    - { resource: security.yaml }
+
+parameters:
+    locale: en
+
+framework:
+    test: true
+    esi: { enabled: true }
+    translator: { fallbacks: ['%locale%'] }
+    secret: '%env(APP_SECRET)%'
+    router:
+        utf8: true
+        resource: '%kernel.project_dir%/../config/routes.yaml'
+        strict_requirements: '%kernel.debug%'
+    csrf_protection: ~
+    default_locale: '%locale%'
+    session:
+        handler_id: ~
+        storage_factory_id: session.storage.factory.mock_file
+        cookie_secure: true
+        cookie_samesite: lax
+    fragments: { path: /_fragment }
+    http_method_override: false
+    php_errors:
+        log: true
+    uid:
+        default_uuid_version: 7
+        time_based_uuid_version: 7
+    annotations:
+        enabled: false
+    handle_all_throwables: true
+
+twig:
+    cache: false
+    debug: false
+    strict_variables: true
+
+doctrine:
+    dbal:
+        default_connection: default
+        connections:
+            default:
+                driver: pdo_mysql
+                url: '%env(DATABASE_URL)%'
+                charset: utf8mb4
+                default_table_options:
+                    charset: utf8mb4
+                    collation: utf8mb4_unicode_ci
+                    engine: InnoDB
+        types:
+            binary_string:
+                class: Contao\CoreBundle\Doctrine\DBAL\Types\BinaryStringType
+    orm:
+        auto_mapping: true
+        auto_generate_proxy_classes: true
+        enable_lazy_ghost_objects: true
+
+contao:
+    cron:
+        web_listener: false
+    search:
+        default_indexer:
+            enable: false
+    messenger:
+        workers: [{ transports: [contao_test] }]
+
+scheb_two_factor:
+    trusted_device:
+        enabled: true
+    backup_codes:
+        enabled: true
+
+#webauthn:
+#    logger: logger
+#    credential_repository: contao.repository.webauthn_credential
+#    user_repository: contao.repository.webauthn_user_entity
+#    creation_profiles:
+#        contao_backend:
+#            rp:
+#                name: Contao Open Source CMS
+#            authenticator_selection_criteria:
+#                require_resident_key: true
+#                user_verification: !php/const Webauthn\AuthenticatorSelectionCriteria::USER_VERIFICATION_REQUIREMENT_REQUIRED
+#                resident_key: !php/const Webauthn\AuthenticatorSelectionCriteria::RESIDENT_KEY_REQUIREMENT_REQUIRED
+#        contao_frontend:
+#            rp:
+#                name: Contao Open Source CMS
+#            authenticator_selection_criteria:
+#                require_resident_key: true
+#                user_verification: !php/const Webauthn\AuthenticatorSelectionCriteria::USER_VERIFICATION_REQUIREMENT_REQUIRED
+#                resident_key: !php/const Webauthn\AuthenticatorSelectionCriteria::RESIDENT_KEY_REQUIREMENT_REQUIRED
+#    request_profiles:
+#        contao_backend:
+#            user_verification: !php/const Webauthn\AuthenticatorSelectionCriteria::USER_VERIFICATION_REQUIREMENT_REQUIRED
+#        contao_frontend:
+#            user_verification: !php/const Webauthn\AuthenticatorSelectionCriteria::USER_VERIFICATION_REQUIREMENT_REQUIRED
+#    controllers:
+#        enabled: true
+#        creation:
+#            contao_backend_add_authenticator:
+#                options_path: '%contao.backend.route_prefix%/webauthn/add/options'
+#                result_path: '%contao.backend.route_prefix%/webauthn/add/result'
+#                user_entity_guesser: contao.webauthn.user_entity_guesser
+#                profile: contao_backend
+#            contao_frontend_add_authenticator:
+#                options_path: /_contao/webauthn/frontend/add/options
+#                result_path: /_contao/webauthn/frontend/add/result
+#                user_entity_guesser: contao.webauthn.user_entity_guesser
+#                profile: contao_frontend
+
+services:
+    doctrine.orm.default_entity_manager.validator_loader:
+        synthetic: true

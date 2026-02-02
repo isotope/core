@@ -9,14 +9,13 @@ use Contao\CoreBundle\InsertTag\InsertTagResult;
 use Contao\CoreBundle\InsertTag\ResolvedInsertTag;
 use Contao\CoreBundle\InsertTag\ResolvedParameters;
 use Contao\CoreBundle\InsertTag\Resolver\InsertTagResolverNestedResolvedInterface;
-use Isotope\CoreBundle\Product\Extension\ShippingExtension;
+use Isotope\CoreBundle\Model\Address;
 use Isotope\CoreBundle\ProductCollection\AbstractProductCollection;
 use Isotope\CoreBundle\ProductCollection\Cart\Cart;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItemCollection;
+use Isotope\CoreBundle\Store\Address\AddressFormatter;
 use Isotope\CoreBundle\Store\StoreManager;
-use Isotope\CoreBundle\Weight\Scale;
 use Isotope\CoreBundle\Weight\WeightUnit;
-use Isotope\Model\Address;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -28,6 +27,7 @@ class ProductCollectionInsertTag implements InsertTagResolverNestedResolvedInter
         private readonly StoreManager $storeManager,
         private readonly TranslatorInterface $translator,
         private readonly PropertyAccessorInterface $propertyAccessor,
+        private readonly AddressFormatter $addressFormatter,
     ) {
     }
 
@@ -121,15 +121,15 @@ class ProductCollectionInsertTag implements InsertTagResolverNestedResolvedInter
         return (string) $amount;
     }
 
-    private function formatAddress(Address $address, string|null $attribute = null)
+    private function formatAddress(Address $address, string|null $attribute = null): string
     {
         if (null === $attribute) {
-            return $address->generate();
+            $context = $this->storeManager->getCurrentContext();
+
+            return (string) $this->addressFormatter->get($address, $context->getBillingAddressConfig());
         }
 
-        $tokens = $address->getTokens();
-
-        return $tokens[$attribute];
+        return (string) ($address->$attribute ?? '');
     }
 
     private function formatWeight(LineItemCollection $items, WeightUnit $unit): string

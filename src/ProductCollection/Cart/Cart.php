@@ -6,12 +6,9 @@ namespace Isotope\CoreBundle\ProductCollection\Cart;
 
 use Isotope\CoreBundle\Checkout\Payment\PaymentInterface;
 use Isotope\CoreBundle\Checkout\Shipping\ShippingInterface;
+use Isotope\CoreBundle\Model\Address;
 use Isotope\CoreBundle\ProductCollection\AbstractProductCollection;
-use Isotope\CoreBundle\Store\Price\CalculatedPrice;
-use Isotope\CoreBundle\Store\Tax\CalculatedTaxCollection;
-use Isotope\CoreBundle\Store\Tax\TaxRateCollection;
 use Isotope\CoreBundle\Util\ClosureTrait;
-use Isotope\Model\Address;
 
 class Cart extends AbstractProductCollection
 {

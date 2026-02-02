@@ -13,11 +13,12 @@ namespace Isotope\CheckoutStep;
 
 use Contao\MemberModel;
 use Contao\System;
+use Isotope\CoreBundle\Model\Address as AddressModel;
+use Isotope\CoreBundle\Store\Address\AddressFormatter;
 use Isotope\CoreBundle\Store\StoreManager;
 use Isotope\Interfaces\IsotopeCheckoutStep;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
-use Isotope\Model\Address as AddressModel;
 use Isotope\Module\Checkout;
 
 
@@ -55,8 +56,15 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
 
             Isotope::getCart()->setBillingAddress($address);
 
+            /** @var AddressFormatter $addressFormatter */
+            $addressFormatter = System::getContainer()->get(AddressFormatter::class);
+
+            /** @var StoreManager $storeManager */
+            $storeManager = System::getContainer()->get(StoreManager::class);
+            $addressConfig = $storeManager->getCurrentContext()->getBillingAddressConfig();
+
             $this->Template->class = $this->getStepClass();
-            $this->Template->options = $address->generate();
+            $this->Template->options = (string) $addressFormatter->get($address, $addressConfig);
             $this->Template->fields = '';
 
             return $this->Template->parse();
@@ -91,14 +99,17 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
             $strHeadline = $GLOBALS['TL_LANG']['MSC']['customer_address'];
         }
 
+        /** @var AddressFormatter $addressFormatter */
+        $addressFormatter = System::getContainer()->get(AddressFormatter::class);
+
         /** @var StoreManager $storeManager */
         $storeManager = System::getContainer()->get(StoreManager::class);
-        $context = $storeManager->getCurrentContext();
+        $addressConfig = $storeManager->getCurrentContext()->getBillingAddressConfig();
 
         return array('billing_address' => array
         (
             'headline' => $strHeadline,
-            'info'     => $objBillingAddress->generate($context->getBillingAddressConfig()->getAddressFieldsConfig()),
+            'info'     => (string) $addressFormatter->get($objBillingAddress, $addressConfig),
             'edit'     => $canEdit ? Checkout::generateUrlForStep(Checkout::STEP_ADDRESS) : '',
         ));
     }
@@ -114,12 +125,12 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
     /**
      * @inheritdoc
      */
-    protected function getAddressOptions($arrFields = null)
+    protected function getAddressOptions()
     {
         /** @var StoreManager $storeManager */
         $storeManager = System::getContainer()->get(StoreManager::class);
 
-        $arrOptions = parent::getAddressOptions($storeManager->getCurrentContext()->getBillingAddressConfig()->getAddressFieldsConfig());
+        $arrOptions = parent::getAddressOptions($storeManager->getCurrentContext()->getBillingAddressConfig());
 
         if (0 !== \count($arrOptions)) {
             $arrOptions[] = [
@@ -169,7 +180,7 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
 
             $objAddress = AddressModel::createForProductCollection(
                 Isotope::getCart(),
-                $context->getBillingAddressConfig()->getAddressFields(),
+                $context->getBillingAddressConfig()->getFields(),
                 true
             );
         }
@@ -239,7 +250,7 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
             if ($member) {
                 $data = AddressModel::getAddressDataForMember(
                     $member,
-                    $context->getBillingAddressConfig()->getAddressFields(),
+                    $context->getBillingAddressConfig()->getFields(),
                 );
 
                 foreach ($data as $k => $v) {

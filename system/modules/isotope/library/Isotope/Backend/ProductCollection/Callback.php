@@ -31,17 +31,16 @@ use Contao\StringUtil;
 use Contao\System;
 use Isotope\CompatibilityHelper;
 use Isotope\CoreBundle\Document\DocumentInterface;
+use Isotope\CoreBundle\Model\Address;
 use Isotope\CoreBundle\Model\Document;
-use Isotope\CoreBundle\Model\Payment;
-use Isotope\CoreBundle\Model\Shipping;
 use Isotope\CoreBundle\Model\OrderStatus;
 use Isotope\CoreBundle\ModelType\DocumentRegistry;
+use Isotope\CoreBundle\Store\Address\AddressFormatter;
 use Isotope\CoreBundle\Store\StoreManager;
 use Isotope\CoreBundle\Util\ColorUtil;
 use Isotope\Frontend;
 use Isotope\Haste\Util\Format;
 use Isotope\Isotope;
-use Isotope\Model\Address;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Model\ProductCollectionLog;
 use Isotope\Module\OrderDetails;
@@ -75,11 +74,13 @@ class Callback extends Backend
             switch ($field) {
                 case 'billing_address_id':
                     if (null !== ($objAddress = $objOrder->getBillingAddress())) {
+                        /** @var AddressFormatter $addressFormatter */
+                        $addressFormatter = System::getContainer()->get(AddressFormatter::class);
+
                         /** @var StoreManager $storeManager */
                         $storeManager = System::getContainer()->get(StoreManager::class);
 
-                        $arrTokens = $objAddress->getTokens($storeManager->getCurrentContext()->getBillingAddressConfig()->getAddressFieldsConfig());
-                        $args[$i] = $arrTokens['hcard_fn'];
+                        $arrTokens = $addressFormatter->get($objAddress, $storeManager->getCurrentContext()->getBillingAddressConfig())->getContext();
                     }
                     break;
 

@@ -11,7 +11,7 @@ use Contao\DataContainer;
 use Contao\Input;
 use Contao\StringUtil;
 use Contao\System;
-use Isotope\Model\Address;
+use Isotope\CoreBundle\Model\Address;
 
 class AddressFieldsListener extends Backend
 {

@@ -12,10 +12,9 @@
 namespace Isotope\Model\ProductCollection;
 
 use Contao\System;
+use Isotope\CoreBundle\Model\Address;
 use Isotope\CoreBundle\Store\StoreManager;
 use Isotope\Interfaces\IsotopeOrderableCollection;
-use Isotope\Isotope;
-use Isotope\Model\Address;
 use Isotope\Model\ProductCollection;
 
 /**
@@ -77,7 +76,7 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
 
             $objAddress = Address::createForProductCollection(
                 $this,
-                $context->getBillingAddressConfig()->getAddressFields(),
+                $context->getBillingAddressConfig()->getFields(),
                 true
             );
         }
@@ -108,7 +107,7 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
 
             $objAddress = Address::createForProductCollection(
                 $this,
-                $context->getShippingAddressConfig()->getAddressFields(),
+                $context->getShippingAddressConfig()->getFields(),
                 false,
                 true
             );

@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Store\Context;
 
+use Isotope\CoreBundle\Model\Address;
 use Isotope\CoreBundle\ProductCollection\Cart\Cart;
+use Isotope\CoreBundle\Store\Address\AddressConfig;
 use Isotope\CoreBundle\Store\Price\Currency;
 use Isotope\CoreBundle\Store\Price\MoneyFormat;
 use Isotope\CoreBundle\Store\Price\PriceDisplay;
 use Isotope\CoreBundle\Store\Price\TaxCalculation;
 use Isotope\CoreBundle\Util\ClosureTrait;
-use Isotope\Model\Address;
 
 /**
  * StoreContext holds information about the currently active Isotope shop, including

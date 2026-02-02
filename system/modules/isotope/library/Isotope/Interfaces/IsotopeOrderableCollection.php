@@ -13,9 +13,9 @@ namespace Isotope\Interfaces;
 
 use Isotope\CoreBundle\Checkout\Payment\PaymentInterface;
 use Isotope\CoreBundle\Checkout\Shipping\ShippingInterface;
+use Isotope\CoreBundle\Model\Address;
 use Isotope\CoreBundle\Model\Payment;
 use Isotope\CoreBundle\Model\Shipping;
-use Isotope\Model\Address;
 
 /**
  * IsotopeOrderableCollection describes a product collection that can have order information.
@@ -51,7 +51,7 @@ interface IsotopeOrderableCollection extends IsotopeProductCollection
     /**
      * Get billing address for collection
      *
-     * @return  \Isotope\Model\Address|null
+     * @return  \Isotope\CoreBundle\Model\Address|null
      */
     public function getBillingAddress();
 

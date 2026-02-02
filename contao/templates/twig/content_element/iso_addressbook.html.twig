@@ -1,0 +1,53 @@
+{% extends '@Contao/content_element/_isotope_base.html.twig' %}
+{% trans_default_domain 'contao_default' %}
+
+{% set attributes = attrs()
+    .set('data-controller', 'isotope--fragment')
+    .set('data-isotope--fragment-id-value', fragment_id)
+    .mergeWith(attributes|default)
+%}
+
+{% block content %}
+
+    {% if form|default %}
+        {% set form = form|merge({
+            attributes: attrs().set('data-action', 'isotope--fragment#submit'),
+        }) %}
+        {% include '@Contao/form_wrapper' with form only %}
+
+        <a href="{{ app.request.requestUri }}" data-action="isotope--fragment#update">{{ 'MSC.cancelBT'|trans }}</a>
+    {% else %}
+        <form method="POST" data-action="isotope--fragment#submit">
+            <input type="hidden" name="FORM_SUBMIT" value="create_address_{{ data.id }}">
+            <input type="hidden" name="REQUEST_TOKEN" value="{{ contao.request_token }}">
+            <button type="submit">{{ 'MSC.createNewAddressLabel'|trans }}</button>
+        </form>
+
+        {% if addresses is not empty %}
+        <ul>
+            {% for address in addresses %}
+                <li>
+                    <div class="address">{{ address }}</div>
+                    <div class="buttons">
+                        <form method="POST" data-action="isotope--fragment#submit">
+                            <input type="hidden" name="FORM_SUBMIT" value="edit_address_{{ data.id }}">
+                            <input type="hidden" name="REQUEST_TOKEN" value="{{ contao.request_token }}">
+                            <input type="hidden" name="address_id" value="{{ address.data.id }}">
+                            <button type="submit">{{ 'MSC.editAddressLabel'|trans }}</button>
+                        </form>
+                        <form method="POST" onsubmit="return confirm('{{ 'MSC.deleteAddressConfirm'|trans|e('js') }}')" data-action="isotope--fragment#submit">
+                            <input type="hidden" name="FORM_SUBMIT" value="delete_address_{{ data.id }}">
+                            <input type="hidden" name="REQUEST_TOKEN" value="{{ contao.request_token }}">
+                            <input type="hidden" name="address_id" value="{{ address.data.id }}">
+                            <button type="submit">{{ 'MSC.deleteAddressLabel'|trans }}</button>
+                        </form>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+            <p class="message empty">{{ 'ERR.noAddressBookEntries'|trans }}</p>
+        {% endif %}
+    {% endif %}
+
+{% endblock %}

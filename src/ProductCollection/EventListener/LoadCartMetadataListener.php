@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\ProductCollection\EventListener;
 
+use Isotope\CoreBundle\Model\Address;
 use Isotope\CoreBundle\Model\Payment;
 use Isotope\CoreBundle\Model\Shipping;
 use Isotope\CoreBundle\ModelType\PaymentRegistry;
 use Isotope\CoreBundle\ModelType\ShippingRegistry;
 use Isotope\CoreBundle\ProductCollection\Cart\Cart;
 use Isotope\CoreBundle\ProductCollection\Event\LoadCollectionTransaction;
-use Isotope\Model\Address;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
 #[AsEventListener(LoadCollectionTransaction::NAME.'.post')]

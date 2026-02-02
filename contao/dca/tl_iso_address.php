@@ -3,7 +3,6 @@
 use Contao\DataContainer;
 use Contao\DC_Table;
 use Contao\Input;
-use Isotope\Backend\Address\Callback;
 
 $GLOBALS['TL_DCA']['tl_iso_address'] = [
     'config' => [
@@ -23,14 +22,17 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = [
         'sorting' => [
             'mode' => DataContainer::MODE_PARENT,
             'headerFields' => ['firstname', 'lastname', 'username'],
-            'disableGrouping' => true,
-            'flag' => DataContainer::SORT_INITIAL_LETTER_ASC,
-            'panelLayout' => 'filter;sort,search,limit',
-            'child_record_callback' => [Callback::class, 'renderLabel'],
+            'defaultSearchField' => 'email',
+            'fields' => ['store_id'],
+            'flag' => DataContainer::SORT_ASC,
+            'panelLayout' => 'search,filter,limit',
+        ],
+        'label' => [
+            'fields' => ['country'],
         ],
     ],
     'palettes' => [
-        'default' => '{store_legend},label,store_id;{personal_legend},gender,salutation,firstname,lastname,dateOfBirth,company,vat_no;{address_legend},street_1,street_2,street_3,street_number_1,street_number_2,street_number_3,postal,city,subdivision,country;{contact_legend},email,phone',
+        'default' => '{personal_legend},gender,salutation,firstname,lastname,dateOfBirth;{company_legend},company,vat_no;{address_legend},street_1,street_2,street_3,postal,city,subdivision,country;{contact_legend},email,phone;{store_legend:hide},store_id',
     ],
     'fields' => [
         'id' => [
@@ -44,12 +46,6 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = [
         ],
         'ptable' => [
             'sql' => "varchar(64) NOT NULL default ''",
-        ],
-        'label' => [
-            'search' => true,
-            'inputType' => 'text',
-            'eval' => ['maxlength' => 255, 'feEditable' => true, 'feGroup' => 'address', 'tl_class' => 'w50'],
-            'sql' => "varchar(255) NOT NULL default ''",
         ],
         'store_id' => [
             'filter' => true,
@@ -78,7 +74,6 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = [
         ],
         'lastname' => [
             'search' => true,
-            'sorting' => true,
             'flag' => DataContainer::SORT_INITIAL_LETTER_ASC,
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'maxlength' => 255, 'feEditable' => true, 'feGroup' => 'personal', 'tl_class' => 'w50'],
@@ -91,7 +86,6 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = [
         ],
         'company' => [
             'search' => true,
-            'sorting' => true,
             'flag' => DataContainer::SORT_INITIAL_LETTER_ASC,
             'inputType' => 'text',
             'eval' => ['mandatory' => false, 'maxlength' => 255, 'feEditable' => true, 'feGroup' => 'address', 'tl_class' => 'w50'],
@@ -130,20 +124,17 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = [
         'city' => [
             'filter' => true,
             'search' => true,
-            'sorting' => true,
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'maxlength' => 255, 'feEditable' => true, 'feGroup' => 'address', 'tl_class' => 'w50'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'subdivision' => [
-            'sorting' => true,
             'inputType' => 'conditionalselect',
             'eval' => ['feEditable' => true, 'feGroup' => 'address', 'conditionField' => 'country', 'includeBlankOption' => true, 'tl_class' => 'w50'],
             'sql' => "varchar(10) NOT NULL default ''",
         ],
         'country' => [
             'filter' => true,
-            'sorting' => true,
             'inputType' => 'select',
             'eval' => ['mandatory' => true, 'feEditable' => true, 'feGroup' => 'address', 'tl_class' => 'w50', 'chosen' => true],
             'sql' => "varchar(32) NOT NULL default ''",
