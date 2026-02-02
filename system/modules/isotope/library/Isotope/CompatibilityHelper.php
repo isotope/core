@@ -11,10 +11,6 @@
 
 namespace Isotope;
 
-use Contao\Database;
-use Contao\FrontendUser;
-use Contao\MemberModel;
-use Contao\StringUtil;
 use Contao\System;
 
 /**
@@ -51,10 +47,5 @@ class CompatibilityHelper
         }
 
         return $container->get('contao.routing.scope_matcher')->isFrontendRequest($request);
-    }
-
-    public static function asset(string $path): string
-    {
-        return System::getContainer()->get('assets.packages')->getUrl($path, 'isotope_core');
     }
 }

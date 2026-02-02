@@ -12,7 +12,7 @@ $GLOBALS['TL_DCA']['tl_member']['config']['ctable'][] = 'tl_iso_address';
  */
 $GLOBALS['TL_DCA']['tl_member']['list']['operations']['address_book'] = [
     'href' => 'table=tl_iso_address',
-    'icon' => CompatibilityHelper::asset('images/cards-address.png'),
+    'icon' => 'images/cards-address.png',
 ];
 
 /*

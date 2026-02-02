@@ -54,7 +54,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
             'delete',
             'print_document' => [
                 'href' => 'key=print_document',
-                'icon' => CompatibilityHelper::asset('images/document-pdf-text.png'),
+                'icon' => 'images/document-pdf-text.png',
                 'button_callback' => [Callback::class, 'printButton'],
             ],
         ],

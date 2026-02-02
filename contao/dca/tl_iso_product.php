@@ -64,11 +64,11 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             '-',
             'related' => [
                 'href' => 'table=tl_iso_related_product',
-                'icon' => CompatibilityHelper::asset('images/related.svg'),
+                'icon' => 'images/related.svg',
             ],
             'downloads' => [
                 'href' => 'table=tl_iso_download',
-                'icon' => CompatibilityHelper::asset('images/paperclip.svg'),
+                'icon' => 'images/paperclip.svg',
             ],
         ],
     ],
