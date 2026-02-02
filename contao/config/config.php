@@ -62,18 +62,6 @@ ArrayUtil::arrayInsert($GLOBALS['BE_MOD']['isotope'], 0, [
 $GLOBALS['BE_MOD']['accounts']['member']['tables'][] = 'tl_iso_address';
 
 /*
- * Frontend modules
- */
-$GLOBALS['FE_MOD']['isotope'] = [
-    'iso_cart' => Cart::class,
-    'iso_checkout' => Checkout::class,
-    'iso_orderhistory' => OrderHistory::class,
-    'iso_configswitcher' => ConfigSwitcher::class,
-    'iso_addressbook' => AddressBook::class,
-    'iso_messages' => Messages::class,
-];
-
-/*
  * Backend form fields
  */
 $GLOBALS['BE_FFL']['mediaManager'] = MediaManager::class;

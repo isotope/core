@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[AsContentElement('iso_configswitcher', category: 'isotope')]
-class ConfigSwitcherController extends AbstractContentElementController
+class ConfigswitcherController extends AbstractContentElementController
 {
     public function __construct(
         private readonly StoreManager $storeManager,
