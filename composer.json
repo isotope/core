@@ -1,10 +1,10 @@
 {
-    "name":"isotope/isotope-core",
-    "description":"Isotope is the premier open source eCommerce solution for Contao Open Source CMS",
+    "name": "isotope/isotope-core",
+    "description": "Isotope is the premier open source eCommerce solution for Contao Open Source CMS",
     "homepage": "https://isotopeecommerce.org",
-    "keywords":["contao", "isotope"],
-    "type":"contao-bundle",
-    "license":"LGPL-3.0-or-later",
+    "keywords": ["contao", "isotope"],
+    "type": "contao-bundle",
+    "license": "LGPL-3.0-or-later",
     "authors": [
         {
             "name": "terminal42 gmbh",
@@ -31,32 +31,32 @@
         "forum": "https://community.contao.org/de/forumdisplay.php?111-isotope",
         "docs": "https://docs.isotopeecommerce.org/"
     },
-    "require":{
+    "require": {
         "php": "^8.1",
         "composer-runtime-api": "^2",
         "contao/core-bundle": "^5.7",
         "doctrine/dbal": "^4.3",
-        "terminal42/contao-conditionalselectmenu":"^4.1",
-        "terminal42/dcawizard": "^3.0",
+        "terminal42/contao-conditionalselectmenu": "^4.1",
+        "terminal42/dcawizard": "^3.1",
         "codefog/contao-haste": "^5.3.1",
-        "terminal42/notification_center": "dev-fix/dbal4 as 2.6.9999",
-        "terminal42/dc_multilingual": "dev-contao/5.x as 4.7.0",
+        "terminal42/notification_center": "^2.6.1",
+        "terminal42/dc_multilingual": "^4.7",
         "tecnickcom/tcpdf": "^6.2.22",
-        "symfony/filesystem": "^7.3",
-        "symfony/http-client": "^7.3",
+        "symfony/filesystem": "^7.4",
+        "symfony/http-client": "^7.4",
         "symfony/service-contracts": "^3.2",
         "hashids/hashids": "^4.1",
-        "symfony/intl": "^7.3",
+        "symfony/intl": "^7.4",
+        "symfony/validator": "^7.4",
         "symfony/polyfill-php85": "^1.0",
         "ramsey/collection": "^2.0",
         "twig/twig": "^3.12"
     },
     "require-dev": {
-        "contao/core-bundle": "5.7.x-dev",
         "contao/manager-plugin": "^2.0",
         "terminal42/contao-build-tools": "dev-main",
         "phpunit/phpunit": "^12.4",
-        "contao/test-case": "^5.7.x-dev",
+        "contao/test-case": "5.7.*",
         "monolog/monolog": "^3.0",
         "symfony/monolog-bridge": "^7.4",
         "symfony/monolog-bundle": "^3.1"
@@ -94,6 +94,5 @@
     },
     "extra": {
         "contao-manager-plugin": "Isotope\\CoreBundle\\ContaoManager\\Plugin"
-    },
-    "minimum-stabilitye": "dev"
+    }
 }
