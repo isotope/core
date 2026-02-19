@@ -7,6 +7,8 @@ namespace Isotope\CoreBundle\DependencyInjection\Attribute;
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
 class AsAttribute
 {
+    public const TAG_NAME = 'isotope.attribute';
+
     public function __construct(
         public string|null $type = null,
         public int $priority = 0,

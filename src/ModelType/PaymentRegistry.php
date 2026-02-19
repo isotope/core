@@ -15,8 +15,6 @@ use Symfony\Contracts\Service\ServiceProviderInterface;
 #[Autoconfigure(public: true)]
 class PaymentRegistry extends AbstractModelTypeRegistry
 {
-    public const TAG_NAME = 'isotope.payment';
-
     public function __construct(ServiceProviderInterface $factories)
     {
         parent::__construct($factories, PaymentInterface::class);

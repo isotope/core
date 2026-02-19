@@ -8,8 +8,6 @@ use Symfony\Contracts\Service\ServiceProviderInterface;
 
 class ProductActionRegistry
 {
-    public const TAG_NAME = 'isotope.product_action';
-
     public function __construct(private readonly ServiceProviderInterface $actions)
     {
     }

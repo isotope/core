@@ -15,8 +15,6 @@ use Symfony\Contracts\Service\ServiceProviderInterface;
 #[Autoconfigure(public: true)]
 class RuleConditionRegistry extends AbstractModelTypeRegistry
 {
-    public const TAG_NAME = 'isotope.rule_condition';
-
     public function __construct(ServiceProviderInterface $factories)
     {
         parent::__construct($factories, RuleConditionInterface::class);

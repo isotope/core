@@ -15,8 +15,6 @@ use Symfony\Contracts\Service\ServiceProviderInterface;
 #[Autoconfigure(public: true)]
 class ShippingRegistry extends AbstractModelTypeRegistry
 {
-    public const TAG_NAME = 'isotope.shipping';
-
     public function __construct(ServiceProviderInterface $factories)
     {
         parent::__construct($factories, ShippingInterface::class);

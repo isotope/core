@@ -82,18 +82,18 @@ class IsotopeCoreExtension extends ConfigurableExtension
         ;
 
         $attributesForAutoconfiguration = [
-            AsIsotopeHook::class => 'isotope.hook',
-            AsProductFilter::class => 'isotope.product_filter',
-            AsProductFactory::class => 'isotope.product_factory',
-            AsAttribute::class => AttributeRegistry::TAG_NAME,
-            AsDocument::class => DocumentRegistry::TAG_NAME,
-            AsGallery::class => GalleryRegistry::TAG_NAME,
-            AsPayment::class => PaymentRegistry::TAG_NAME,
-            AsShipping::class => ShippingRegistry::TAG_NAME,
-            AsProductAction::class => ProductActionRegistry::TAG_NAME,
-            AsProductCollectionAction::class => ProductCollectionActionRegistry::TAG_NAME,
-            AsProductCollectionItemAction::class => ProductCollectionItemActionRegistry::TAG_NAME,
-            AsRuleCondition::class => RuleConditionRegistry::TAG_NAME,
+            AsIsotopeHook::class => AsIsotopeHook::TAG_NAME,
+            AsProductFilter::class => AsProductFilter::TAG_NAME,
+            AsProductFactory::class => AsProductFactory::TAG_NAME,
+            AsAttribute::class => AsAttribute::TAG_NAME,
+            AsDocument::class => AsDocument::TAG_NAME,
+            AsGallery::class => AsGallery::TAG_NAME,
+            AsPayment::class => AsPayment::TAG_NAME,
+            AsShipping::class => AsShipping::TAG_NAME,
+            AsProductAction::class => AsProductAction::TAG_NAME,
+            AsProductCollectionAction::class => AsProductCollectionAction::TAG_NAME,
+            AsProductCollectionItemAction::class => AsProductCollectionItemAction::TAG_NAME,
+            AsRuleCondition::class => AsRuleCondition::TAG_NAME,
         ];
 
         foreach ($attributesForAutoconfiguration as $attributeClass => $tag) {

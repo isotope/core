@@ -18,6 +18,8 @@ namespace Isotope\CoreBundle\DependencyInjection\Attribute;
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class AsIsotopeHook
 {
+    public const string TAG_NAME = 'isotope.hook';
+
     public function __construct(
         public string $hook,
         public string|null $method = null,

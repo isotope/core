@@ -7,6 +7,8 @@ namespace Isotope\CoreBundle\DependencyInjection\Attribute;
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
 class AsProductAction
 {
+    public const TAG_NAME = 'isotope.product_action';
+
     public function __construct(
         public string|null $name = null,
         public int $priority = 0,

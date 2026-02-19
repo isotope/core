@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\DependencyInjection\Compiler;
 
+use Isotope\CoreBundle\DependencyInjection\Attribute\AsProductFactory;
 use Isotope\CoreBundle\EventListener\DataContainer\ModelTypeOptionsListener;
 use Isotope\CoreBundle\Product\ProductBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -20,18 +21,16 @@ class RegisterProductFactoryPass implements CompilerPassInterface
 {
     use PriorityTaggedServiceTrait;
 
-    private const string TAG_NAME = 'isotope.product_factory';
-
     public function process(ContainerBuilder $container): void
     {
         $types = [];
         $factories = [];
-        $services = $this->findAndSortTaggedServices(self::TAG_NAME, $container);
+        $services = $this->findAndSortTaggedServices(AsProductFactory::TAG_NAME, $container);
 
         foreach ($services as $reference) {
             $definition = $container->findDefinition((string) $reference);
 
-            foreach ($definition->getTag(self::TAG_NAME) as $attributes) {
+            foreach ($definition->getTag(AsProductFactory::TAG_NAME) as $attributes) {
                 $type = $this->getType($definition, $attributes);
                 $types[] = $type;
                 $factories[$type] = $reference;

@@ -15,8 +15,6 @@ use Symfony\Contracts\Service\ServiceProviderInterface;
 #[Autoconfigure(public: true)]
 class GalleryRegistry extends AbstractModelTypeRegistry
 {
-    public const TAG_NAME = 'isotope.gallery';
-
     public function __construct(ServiceProviderInterface $factories)
     {
         parent::__construct($factories, GalleryInterface::class);

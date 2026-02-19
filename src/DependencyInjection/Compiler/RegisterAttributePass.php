@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\DependencyInjection\Compiler;
 
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
+use Isotope\CoreBundle\DependencyInjection\Attribute\AsAttribute;
 use Isotope\CoreBundle\EventListener\DataContainer\ModelTypeOptionsListener;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PriorityTaggedServiceTrait;
@@ -23,13 +24,13 @@ class RegisterAttributePass implements CompilerPassInterface
     public function process(ContainerBuilder $container): void
     {
         $types = [];
-        $services = $this->findAndSortTaggedServices('isotope.attribute', $container);
+        $services = $this->findAndSortTaggedServices(AsAttribute::TAG_NAME, $container);
         $registry = $container->getDefinition(AttributeRegistry::class);
 
         foreach ($services as $reference) {
             $definition = $container->findDefinition((string) $reference);
 
-            foreach ($definition->getTag('isotope.attribute') as $attributes) {
+            foreach ($definition->getTag(AsAttribute::TAG_NAME) as $attributes) {
                 $types[] = $this->getType($definition, $attributes);
             }
 

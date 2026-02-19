@@ -15,8 +15,6 @@ use Symfony\Contracts\Service\ServiceProviderInterface;
 #[Autoconfigure(public: true)]
 class DocumentRegistry extends AbstractModelTypeRegistry
 {
-    public const TAG_NAME = 'isotope.document';
-
     public function __construct(ServiceProviderInterface $factories)
     {
         parent::__construct($factories, DocumentInterface::class);

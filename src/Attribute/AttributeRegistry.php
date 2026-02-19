@@ -25,8 +25,6 @@ use Symfony\Contracts\Service\ResetInterface;
 #[Autoconfigure(public: true)]
 class AttributeRegistry implements ResetInterface
 {
-    public const TAG_NAME = 'isotope.attribute';
-
     /**
      * @var array<class-string<AttributeInterface>, ContainerInterface|null>
      */

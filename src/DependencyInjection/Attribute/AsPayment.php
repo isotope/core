@@ -7,6 +7,8 @@ namespace Isotope\CoreBundle\DependencyInjection\Attribute;
 #[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
 class AsPayment
 {
+    public const TAG_NAME = 'isotope.payment';
+
     public function __construct(
         public string|null $type = null,
         public string|null $factory = null,
