@@ -20,7 +20,7 @@ use Ramsey\Collection\Sort;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-#[AsContentElement('iso_relatedproducts', category: 'isotope', template: 'content_element/iso_productlist')]
+#[AsContentElement('iso_relatedproducts', category: 'isotope')]
 class RelatedProductsController extends AbstractContentElementController
 {
     public function __construct(
