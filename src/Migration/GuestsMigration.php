@@ -6,6 +6,9 @@ namespace Isotope\CoreBundle\Migration;
 
 use Contao\CoreBundle\Migration\Version500\AbstractGuestsMigration;
 
+/**
+ * @internal
+ */
 class GuestsMigration extends AbstractGuestsMigration
 {
     protected function getTables(): array

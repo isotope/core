@@ -11,6 +11,9 @@ use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Table;
 
+/**
+ * @internal
+ */
 class ModuleToElementMigration extends AbstractMigration
 {
     private const array MAPPING = [

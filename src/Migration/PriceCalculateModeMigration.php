@@ -8,6 +8,9 @@ use Contao\CoreBundle\Migration\AbstractMigration;
 use Contao\CoreBundle\Migration\MigrationResult;
 use Doctrine\DBAL\Connection;
 
+/**
+ * @internal
+ */
 class PriceCalculateModeMigration extends AbstractMigration
 {
     public function __construct(private readonly Connection $connection)

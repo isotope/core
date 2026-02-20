@@ -9,6 +9,9 @@ use Contao\CoreBundle\Migration\MigrationResult;
 use Contao\StringUtil;
 use Doctrine\DBAL\Connection;
 
+/**
+ * @internal
+ */
 class UppercaseCountryMigration extends AbstractMigration
 {
     private const FIELD_MAP = [

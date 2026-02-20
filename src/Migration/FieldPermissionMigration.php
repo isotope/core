@@ -8,6 +8,9 @@ use Contao\CoreBundle\Migration\MigrationResult;
 use Contao\CoreBundle\Migration\Version507\AbstractFieldPermissionMigration;
 use Doctrine\DBAL\Connection;
 
+/**
+ * @internal
+ */
 class FieldPermissionMigration extends AbstractFieldPermissionMigration
 {
     private const array RENAME_FIELDS = [

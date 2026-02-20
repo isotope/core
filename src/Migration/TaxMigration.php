@@ -9,6 +9,9 @@ use Contao\CoreBundle\Migration\MigrationResult;
 use Contao\StringUtil;
 use Doctrine\DBAL\Connection;
 
+/**
+ * @internal
+ */
 class TaxMigration extends AbstractMigration
 {
     public function __construct(private readonly Connection $connection)
