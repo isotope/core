@@ -1,5 +1,24 @@
-{% use "@Contao/component/_figure.html.twig" %}
+{% extends "@Contao/isotope/gallery/_base.html.twig" %}
 
-{% with {figure: image} %}{{ block('figure_component') }}{% endwith %}
+{% block build_figure %}
+    {% if gallery.anchor.value == 'reader' %}
+        {% do figure_builder.setLinkHref(content_url(product_reference)) %}
+    {% elseif gallery.anchor.value == 'lightbox' %}
+        {% if file.link|default %}
+            {% do figure_builder.setLinkHref(file.link) %}
+            {% if file.rel|default %}
+                {% do figure_builder.setLinkAttribute('data-lightbox', file.rel) %}
+            {% else %}
+                {% do figure_builder.setLinkAttribute('target', '_blank') %}
+            {% endif %}
+        {% else %}
+            {% do figure_builder
+                .enableLightbox()
+                .setLightboxSize(gallery.lightboxSize)
+                .setLightboxGroupIdentifier("product.#{product.productId}")
+            %}
+        {% endif %}
+    {% endif %}
 
-{{ javascript|default|raw }}
+    {{ parent() }}
+{% endblock %}

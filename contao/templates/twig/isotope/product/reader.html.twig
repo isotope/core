@@ -1,6 +1,6 @@
 {% extends '@Contao/isotope/product.html.twig' %}
 
-{% set gallery = isotope_gallery('images') %}
+{% set gallery = isotope_gallery(product, 'images') %}
 
 {% block formbody %}
 
@@ -8,11 +8,11 @@
 
     <h2>{{ product.name }}</h2>
 
-    {{ gallery.main_image|raw }}
+    {{ block('main_image') }}
 
     {{ block('product_options') }}
 
-    {{ gallery.gallery_images|raw }}
+    {{ block('gallery_images') }}
 
     {% if product.sku|default %}<div class="sku">{{ product.sku }}</div>{% endif %}
     {% if product.description|default %}<div class="description">{{ product.description|csp_inline_styles|insert_tag|encode_email|raw }}</div>{% endif %}

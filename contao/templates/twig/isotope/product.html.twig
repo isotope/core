@@ -34,6 +34,16 @@
             {% block formbody %}
                 <h2>{{ product.name }}</h2>
 
+                {% block main_image %}
+                    {% if gallery is not defined %}{% set gallery = isotope_gallery(product, 'images') %}{% endif %}
+                    {{ gallery?.with({ type: 'main' }) }}
+                {% endblock %}
+
+                {% block gallery_images %}
+                    {% if gallery is not defined %}{% set gallery = isotope_gallery(product, 'images') %}{% endif %}
+                    {{ gallery?.with({ type: 'gallery' }) }}
+                {% endblock %}
+
                 {% block product_options %}
                     {% if configuration %}
                         <div class="options">

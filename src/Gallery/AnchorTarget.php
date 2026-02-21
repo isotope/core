@@ -15,6 +15,6 @@ enum AnchorTarget: string implements TranslatableLabelInterface
 
     public function label(): TranslatableMessage
     {
-        return new TranslatableMessage('tl_iso_gallery.'.$this->value, [], 'contao_tl_iso_gallery');
+        return new TranslatableMessage('tl_iso_gallery.anchor.'.$this->value, [], 'contao_tl_iso_gallery');
     }
 }

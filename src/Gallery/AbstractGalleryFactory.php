@@ -32,6 +32,7 @@ abstract class AbstractGalleryFactory implements ModelTypeFactoryInterface
         $instance = $this->doCreate($model)
             ->setMainSize($this->unserialize($model->main_size))
             ->setGallerySize($this->unserialize($model->gallery_size))
+            ->setLightboxSize($model->lightbox_size)
             ->setPlaceholder($model->placeholder)
         ;
 

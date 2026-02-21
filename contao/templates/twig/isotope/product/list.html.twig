@@ -1,14 +1,13 @@
+{% trans_default_domain 'contao_default' %}
 {% extends '@Contao/isotope/product.html.twig' %}
 
-{% trans_default_domain 'contao_default' %}
-{% set gallery = isotope_gallery('images') %}
 {% set href = content_url(view.productReference(product)) %}
 
 {% block formbody %}
 
     <h3>{% if href|default %}<a href="{{ href }}">{% endif %}{{ product.name }}{% if href|default %}</a>{% endif %}</h3>
 
-    {{ gallery.main_image|raw }}
+    {{ block('main_image') }}
 
     {% if product.sku|default %}<div class="sku">{{ product.sku }}</div>{% endif %}
     {% if product.teaser|default %}<div class="teaser">{{ product.teaser|nl2br }}</div>{% endif %}

@@ -1,6 +1,5 @@
 <?php
 
-use Contao\Controller;
 use Contao\DataContainer;
 use Contao\DC_Table;
 use Contao\System;
@@ -32,9 +31,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = [
         '__selector__' => ['type', 'anchor'],
         'default' => '{name_legend},name,type',
         'standard' => '{name_legend},name,type,anchor,placeholder;{size_legend},main_size,gallery_size;{template_legend:hide},customTpl',
-        'standardlightbox' => '{name_legend},name,type,anchor,placeholder;{size_legend},main_size,gallery_size;{lightbox_legend},lightbox_template,lightbox_size;{template_legend:hide},customTpl',
-        'inline' => '{name_legend},name,type,anchor,placeholder;{size_legend},main_size,gallery_size;{template_legend:hide},customTpl',
-        'inlinelightbox' => '{name_legend},name,type,anchor,placeholder;{size_legend},main_size,gallery_size;{lightbox_legend},lightbox_template,lightbox_size;{template_legend:hide},customTpl',
+        'standardlightbox' => '{name_legend},name,type,anchor,placeholder;{size_legend},main_size,gallery_size,lightbox_size;{template_legend:hide},customTpl',
     ],
     'fields' => [
         'id' => [
@@ -82,18 +79,6 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = [
             'eval' => ['includeBlankOption' => true, 'rgxp' => 'digit', 'nospace' => true, 'helpwizard' => true, 'tl_class' => 'w50'],
             'sql' => "varchar(64) NOT NULL default ''",
         ],
-        'lightbox_template' => [
-            'inputType' => 'checkboxWizard',
-            'options_callback' => static fn () =>
-                // Do not use \Isotope\Backend::getTemplates() here, as they cannot be selected in a page layout!
-                array_merge(
-                    Controller::getTemplateGroup('moo_'),
-                    Controller::getTemplateGroup('j_'),
-                    Controller::getTemplateGroup('js_'),
-                ),
-            'eval' => ['mandatory' => true, 'multiple' => true, 'tl_class' => 'w50'],
-            'sql' => 'blob NULL',
-        ],
         'lightbox_size' => [
             'inputType' => 'imageSize',
             'options_callback' => static fn () => System::getContainer()->get('contao.image.sizes')->getAllOptions(),
@@ -103,7 +88,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = [
         ],
         'customTpl' => [
             'inputType' => 'select',
-            'eval' => ['includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'],
+            'eval' => ['chosen' => true, 'tl_class' => 'w50'],
             'sql' => "varchar(64) COLLATE ascii_bin NOT NULL default ''",
         ],
     ],

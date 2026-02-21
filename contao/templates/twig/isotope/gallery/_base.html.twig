@@ -1,0 +1,19 @@
+{% use "@Contao/component/_figure.html.twig" %}
+{% set type = type|default('main') %}
+
+{% if type == 'main' %}
+    {% set files = files|slice(0, 1) %}
+    {% do figure_builder.setSize(gallery.mainSize) %}
+{% else %}
+    {% set files = files|slice(1) %}
+    {% do figure_builder.setSize(gallery.gallerySize) %}
+{% endif %}
+
+{% for file in files %}
+    {% do figure_builder.from(file.src) %}
+    {% block build_figure %}
+        {% with {figure: figure_builder.build()} %}
+            {{ block('figure_component') }}
+        {% endwith %}
+    {% endblock %}
+{% endfor %}

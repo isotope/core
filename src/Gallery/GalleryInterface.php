@@ -4,22 +4,13 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Gallery;
 
+use Isotope\CoreBundle\Product\CoreProduct;
+use Isotope\CoreBundle\Routing\ProductReference;
+use Isotope\CoreBundle\Twig\TemplateContext;
+
 interface GalleryInterface
 {
     public function getId(): int;
 
-    /**
-     * Generate main image and return it as HTML string.
-     */
-    public function generateMainImage(): string;
-
-    /**
-     * Generate gallery and return it as HTML string.
-     */
-    public function generateGallery(int $skip = 1): string;
-
-    /**
-     * Creates a clone of the gallery for the given product data.
-     */
-    public function withProductData(string $name, int $productId, array $files, string|null $href): static;
+    public function build(CoreProduct $product, string $attribute, ProductReference|null $productReference = null): TemplateContext|null;
 }

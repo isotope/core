@@ -17,7 +17,6 @@ use Contao\Model;
  * @property string      $gallery_size
  * @property string      $lightbox_size
  * @property string      $customTpl
- * @property string      $lightbox_template
  */
 class Gallery extends Model
 {

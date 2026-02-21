@@ -15,8 +15,8 @@ use Twig\Environment;
 class StandardGalleryFactory extends AbstractGalleryFactory
 {
     public function __construct(
-        private readonly Studio $imageStudio,
         private readonly Environment $twig,
+        private readonly Studio $imageStudio,
     ) {
     }
 
@@ -25,9 +25,11 @@ class StandardGalleryFactory extends AbstractGalleryFactory
      */
     protected function doCreate(Model $model): AbstractGallery
     {
-        $gallery = new StandardGallery($model->id, $this->imageStudio, $this->twig);
-        $gallery->setLightboxSize($model->lightbox_size);
-
-        return $gallery;
+        return new StandardGallery(
+            (int) $model->id,
+            '@Contao/isotope/gallery/standard.html.twig',
+            $this->twig,
+            $this->imageStudio,
+        );
     }
 }

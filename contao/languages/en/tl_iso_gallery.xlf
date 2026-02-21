@@ -38,12 +38,6 @@
       <trans-unit id="tl_iso_gallery.gallery_size.1">
         <source>Please enter a width and height for the additional images.</source>
       </trans-unit>
-      <trans-unit id="tl_iso_gallery.lightbox_template.0">
-        <source>Lightbox template</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_gallery.lightbox_template.1">
-        <source>Please select the lightbox template from your page-layout to reload the image gallery after an AJAX request.</source>
-      </trans-unit>
       <trans-unit id="tl_iso_gallery.lightbox_size.0">
         <source>Lightbox image size</source>
       </trans-unit>
@@ -62,20 +56,17 @@
       <trans-unit id="tl_iso_gallery.size_legend">
         <source>Image sizes</source>
       </trans-unit>
-      <trans-unit id="tl_iso_gallery.lightbox_legend">
-        <source>Lightbox/Mediabox</source>
-      </trans-unit>
       <trans-unit id="tl_iso_gallery.template_legend">
         <source>Template settings</source>
       </trans-unit>
-      <trans-unit id="tl_iso_gallery.none">
+      <trans-unit id="tl_iso_gallery.anchor.none">
         <source>No link action</source>
       </trans-unit>
-      <trans-unit id="tl_iso_gallery.reader">
+      <trans-unit id="tl_iso_gallery.anchor.reader">
         <source>Link to the product reader</source>
       </trans-unit>
-      <trans-unit id="tl_iso_gallery.lightbox">
-        <source>Open lightbox/mediabox</source>
+      <trans-unit id="tl_iso_gallery.anchor.lightbox">
+        <source>Link to the image (e.g. for lightbox)</source>
       </trans-unit>
     </body>
   </file>

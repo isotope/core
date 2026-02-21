@@ -13,12 +13,6 @@ class TemplateOptionsListener
     {
     }
 
-    #[AsCallback('tl_iso_gallery', 'fields.customTpl.options')]
-    public function getGalleryTemplates(): array
-    {
-        return $this->getOptions('gallery', true);
-    }
-
     #[AsCallback('tl_iso_producttype', 'fields.list_template.options')]
     #[AsCallback('tl_iso_producttype', 'fields.reader_template.options')]
     #[AsCallback('tl_content', 'fields.iso_list_layout.options')]
