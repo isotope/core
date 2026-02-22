@@ -6,14 +6,13 @@ namespace Isotope\CoreBundle\Controller\ContentElement;
 
 use Contao\ContentModel;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsContentElement;
-use Contao\CoreBundle\DependencyInjection\Attribute\AsFrontendModule;
 use Contao\CoreBundle\Twig\FragmentTemplate;
-use Contao\ModuleModel;
+use Isotope\CoreBundle\DependencyInjection\Attribute\AsFilterModule;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-#[AsContentElement('iso_categoryfilter', category: 'isotope')]
+#[AsContentElement('iso_categoryfilter', category: 'isotope'), AsFilterModule]
 class CategoryFilterController extends AbstractContentElementController
 {
     protected function getResponse(FragmentTemplate $template, ContentModel $model, Request $request): Response
@@ -31,8 +30,9 @@ class CategoryFilterController extends AbstractContentElementController
             $level = $model->levelOffset > 0 ? $model->levelOffset : 0;
         }
 
+        $template->filter_key = 'cte'.($model->origId ?: $model->id);
         $template->menuOptions = [
-            'filterId' => 'fmd'.$model->id,
+            'filterKey' => $template->filter_key,
             'rootPage' => $trail[$level] ?? 0,
             'showLevel' => $model->showLevel,
             'showHidden' => $model->showHidden,

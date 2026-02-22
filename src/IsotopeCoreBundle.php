@@ -12,6 +12,7 @@ use Isotope\CoreBundle\DependencyInjection\Attribute\AsProductCollectionAction;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsProductCollectionItemAction;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsRuleCondition;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsShipping;
+use Isotope\CoreBundle\DependencyInjection\Compiler\FilterModulesPass;
 use Isotope\CoreBundle\DependencyInjection\Compiler\RegisterActionPass;
 use Isotope\CoreBundle\DependencyInjection\Compiler\RegisterAttributePass;
 use Isotope\CoreBundle\DependencyInjection\Compiler\RegisterHookListenersPass;
@@ -45,6 +46,7 @@ class IsotopeCoreBundle extends Bundle
         $container->addCompilerPass(new RegisterAttributePass(), priority: 10);
         $container->addCompilerPass(new RegisterProductFactoryPass(), priority: 10);
         $container->addCompilerPass(new RegisterProductFilterPass());
+        $container->addCompilerPass(new FilterModulesPass());
         $container->addCompilerPass(new RegisterModelTypePass(AsPayment::TAG_NAME, PaymentRegistry::class, ['tl_iso_payment.type']), priority: 10);
         $container->addCompilerPass(new RegisterModelTypePass(AsShipping::TAG_NAME, ShippingRegistry::class, ['tl_iso_shipping.type']), priority: 10);
         $container->addCompilerPass(new RegisterModelTypePass(AsDocument::TAG_NAME, DocumentRegistry::class, ['tl_iso_document.type']), priority: 10);

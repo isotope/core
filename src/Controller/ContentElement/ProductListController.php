@@ -56,7 +56,7 @@ class ProductListController extends AbstractContentElementController
             return $template->getResponse();
         }
 
-        $filterModules = array_map(static fn ($id) => 'fmd'.$id, StringUtil::deserialize($model->iso_filterModules, true));
+        $filterModules = array_map(static fn ($id) => 'cte'.$id, explode(',', $model->iso_filterModules));
         $searchFields = StringUtil::deserialize($model->iso_searchFields, true);
         $products = $this->findProducts($model, $request, $filterModules, $searchFields);
 
@@ -93,14 +93,14 @@ class ProductListController extends AbstractContentElementController
 
         if ($model->iso_filterQuery) {
             $productQuery = $productQuery ? clone $productQuery : $this->productQueryFactory->create();
-            $productQuery->setFilters('fmd'.$model->id, $this->productQueryFactory->parseFilters($model->iso_filterQuery, $this->attributeRegistry->getNames()));
-            $filterModules[] = 'fmd'.$model->id;
+            $productQuery->setFilters('cte'.$model->id, $this->productQueryFactory->parseFilters($model->iso_filterQuery, $this->attributeRegistry->getNames()));
+            $filterModules[] = 'cte'.$model->id;
         }
 
         if ($model->iso_listingSortField) {
             $productQuery = $productQuery ? clone $productQuery : $this->productQueryFactory->create();
-            $productQuery->setSorting('fmd'.$model->id, [new Sorting($model->iso_listingSortField, 'DESC' === $model->iso_listingSortDirection)]);
-            $filterModules[] = 'fmd'.$model->id;
+            $productQuery->setSorting('cte'.$model->id, [new Sorting($model->iso_listingSortField, 'DESC' === $model->iso_listingSortDirection)]);
+            $filterModules[] = 'cte'.$model->id;
         }
 
         $productQuery?->apply($qb, $filterModules);

@@ -43,9 +43,15 @@ class ProductQueryFactory
                 continue;
             }
 
-            $id = $match[2] ?? null;
+            if ('q' === $match[1]) {
+                $instance->setSearch($v);
+                $isActive = true;
+                continue;
+            }
 
-            switch ($match[1]) {
+            $id = $match[3] ?? null;
+
+            switch ($match[2]) {
                 case 'f':
                     $instance->setFilters($id, $this->parseFilters($v, $validAttributes ??= $this->attributeRegistry->getNames()));
                     $isActive = true;
@@ -58,11 +64,6 @@ class ProductQueryFactory
 
                 case 'l':
                     // TODO
-                    $isActive = true;
-                    break;
-
-                case 'q':
-                    $instance->setSearch($v);
                     $isActive = true;
                     break;
             }

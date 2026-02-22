@@ -19,16 +19,6 @@ use Contao\System;
 class Callback extends Backend
 {
     /**
-     * Return all template folders as array
-     *
-     * @return array
-     */
-    public function getTemplateFolders()
-    {
-        return $this->doGetTemplateFolders('templates');
-    }
-
-    /**
      * Generate an options list of order details frontend modules
      *
      * @return array
@@ -49,28 +39,5 @@ class Callback extends Backend
         }
 
         return $modules;
-    }
-
-    /**
-     * Return all template folders as array
-     *
-     * @param string $path
-     * @param int    $level
-     *
-     * @return array
-     */
-    protected function doGetTemplateFolders($path, $level = 0)
-    {
-        $return = array();
-        $projectDir = System::getContainer()->getParameter('kernel.project_dir');
-
-        foreach (Folder::scan($projectDir . '/' . $path) as $file) {
-            if (is_dir($projectDir . '/' . $path . '/' . $file)) {
-                $return[$path . '/' . $file] = str_repeat(' &nbsp; &nbsp; ', $level) . $file;
-                $return                      = array_merge($return, $this->doGetTemplateFolders($path . '/' . $file, $level + 1));
-            }
-        }
-
-        return $return;
     }
 }

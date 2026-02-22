@@ -6,11 +6,6 @@ services:
     Isotope\CoreBundle\:
         resource: ../src/
 
-    # Used to find Isotope filter modules for checkbox options in tl_module settings
-    isotope.fragment.registry:
-        alias: contao.fragment.registry
-        public: true
-
     isotope.hashids:
         class: Hashids\Hashids
         arguments:

@@ -40,9 +40,9 @@ class CategoryFilterBuilder extends Module
         $this->arrData = $options;
 
         $menu = $this->factory->createItem('root');
-        [$productQuery, $currentIds] = $this->getCurrentIds($options['filterId']);
+        [$productQuery, $currentIds] = $this->getCurrentIds($options['filterKey']);
 
-        $this->renderTree($menu, $options['rootPage'], 1, $productQuery, $currentIds);
+        $this->renderTree($menu, $options['rootPage'], 1, $productQuery, $options['filterKey'], $currentIds);
 
         return $menu;
     }
@@ -52,7 +52,7 @@ class CategoryFilterBuilder extends Module
         throw new RuntimeException('Invalid call to '.__METHOD__);
     }
 
-    private function renderTree(ItemInterface $menu, $pid, $level, ProductQuery|null $productQuery, array $currentIds): void
+    private function renderTree(ItemInterface $menu, $pid, $level, ProductQuery|null $productQuery, string $filterKey, array $currentIds): void
     {
         $database = Database::getInstance();
         $pages = static::getPublishedSubpagesByPid($pid, $this->showHidden);
@@ -93,10 +93,10 @@ class CategoryFilterBuilder extends Module
             }
 
             if ('' === $value) {
-                $item->setUri($this->urlParser->removeQueryString(['_f'.$this->filterId]));
+                $item->setUri($this->urlParser->removeQueryString(['_f'.$filterKey]));
                 $item->setLinkAttribute('data-action', 'isotope--productquery#unset:prevent');
             } else {
-                $item->setUri($this->urlParser->addQueryString(http_build_query(['_f'.$this->filterId => (string) (new CategoryFilter(null, $value))])));
+                $item->setUri($this->urlParser->addQueryString(http_build_query(['_f'.$filterKey => (string) (new CategoryFilter(null, $value))])));
 
                 $item
                     ->setLinkAttribute('data-action', 'isotope--productquery#set:prevent')
@@ -110,7 +110,7 @@ class CategoryFilterBuilder extends Module
         }
     }
 
-    private function getCurrentIds(string $filterId): array
+    private function getCurrentIds(string $filterKey): array
     {
         $productQuery = $this->requestStack->getCurrentRequest()->attributes->get('_product_query');
 
@@ -118,7 +118,7 @@ class CategoryFilterBuilder extends Module
             return [null, []];
         }
 
-        foreach ($productQuery->getFilters([$filterId]) as $filter) {
+        foreach ($productQuery->getFilters([$filterKey]) as $filter) {
             if ($filter instanceof CategoryFilter) {
                 return [$productQuery, array_map(intval(...), $filter->values)];
             }

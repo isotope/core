@@ -136,15 +136,17 @@ export default class extends Controller {
     }
 
     #exec (query, event) {
+        const url = new URL(window.location);
+        url.search = query.toString();
+        window.history.pushState({}, '', url.toString());
+
         if (this.dispatch('update', { target: event?.target, detail: { query }, cancelable: true }).defaultPrevented) {
             event?.preventDefault();
 
-            const url = new URL(window.location);
-            url.search = query.toString();
-            window.history.pushState({}, '', url.toString());
-
             return;
         }
+
+        window.history.popState();
 
         window.location.search = query.toString()
     }

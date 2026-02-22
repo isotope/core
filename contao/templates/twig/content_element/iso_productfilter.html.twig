@@ -1,7 +1,7 @@
 {% trans_default_domain 'contao_default' %}
 {% extends '@Contao/content_element/_isotope_base.html.twig' %}
 
-{% set filters = ["fmd#{data.id}"] %}
+{% set filters = [filter_key] %}
 {% if hasSearch %}{% set filters = filters|merge(['q']) %}{% endif %}
 {% set attributes = attrs()
     .set('data-controller', 'isotope--productquery isotope--fragment')

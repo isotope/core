@@ -32,6 +32,57 @@ $GLOBALS['TL_DCA']['tl_content']['subpalettes']['iso_emptyFilter'] = 'iso_noFilt
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['navigationTpl']['eval']['includeBlankOption'] = true;
 
+// Define fields from tl_module if they do not exist in tl_content
+$GLOBALS['TL_DCA']['tl_content']['palettes']['__selector__'][] = 'defineRoot';
+$GLOBALS['TL_DCA']['tl_content']['subpalettes'] += [
+    'defineRoot' => 'rootPage',
+];
+$GLOBALS['TL_DCA']['tl_content']['fields'] += [
+    'defineRoot' => [
+        'label' => &$GLOBALS['TL_LANG']['tl_module']['defineRoot'],
+        'inputType' => 'checkbox',
+        'eval' => ['submitOnChange' => true],
+    ],
+    'rootPage' => [
+        'label' => &$GLOBALS['TL_LANG']['tl_module']['rootPage'],
+        'inputType' => 'pageTree',
+        'foreignKey' => 'tl_page.title',
+        'eval' => ['fieldType' => 'radio', 'tl_class' => 'clr'],
+        'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
+    ],
+    'numberOfItems' => [
+        'label' => &$GLOBALS['TL_LANG']['MSC']['numberOfItems'],
+        'inputType' => 'text',
+        'eval' => ['mandatory' => true, 'rgxp' => 'natural', 'tl_class' => 'w50'],
+    ],
+    'perPage' => [
+        'label' => &$GLOBALS['TL_LANG']['tl_module']['perPage'],
+        'inputType' => 'text',
+        'eval' => ['rgxp' => 'natural', 'tl_class' => 'w50'],
+    ],
+    'showLevel' => [
+        'label' => &$GLOBALS['TL_LANG']['tl_module']['showLevel'],
+        'inputType' => 'text',
+        'eval' => ['maxlength' => 5, 'rgxp' => 'natural', 'tl_class' => 'w25'],
+    ],
+    'hardLimit' => [
+        'label' => &$GLOBALS['TL_LANG']['tl_module']['hardLimit'],
+        'inputType' => 'checkbox',
+        'eval' => ['tl_class' => 'w25'],
+    ],
+    'showProtected' => [
+        'label' => &$GLOBALS['TL_LANG']['tl_module']['showProtected'],
+        'inputType' => 'checkbox',
+        'eval' => ['tl_class' => 'w25'],
+        'sql' => ['type' => 'boolean', 'default' => false],
+    ],
+    'showHidden' => [
+        'label' => &$GLOBALS['TL_LANG']['tl_module']['showHidden'],
+        'inputType' => 'checkbox',
+        'eval' => ['tl_class' => 'w25'],
+    ],
+];
+
 $GLOBALS['TL_DCA']['tl_content']['fields']['iso_list_layout'] = [
     'default' => 'isotope/product/list',
     'inputType' => 'select',
@@ -138,7 +189,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['iso_config_ids'] = [
 $GLOBALS['TL_DCA']['tl_content']['fields']['iso_payment_modules'] = [
     'inputType' => 'checkboxWizard',
     'foreignKey' => 'tl_iso_payment.name',
-    'options_callback' => [Callback::class, 'getPaymentModules'],
     'eval' => ['multiple' => true],
     'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
 ];
@@ -146,7 +196,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['iso_payment_modules'] = [
 $GLOBALS['TL_DCA']['tl_content']['fields']['iso_shipping_modules'] = [
     'inputType' => 'checkboxWizard',
     'foreignKey' => 'tl_iso_shipping.name',
-    'options_callback' => [Callback::class, 'getShippingModules'],
     'eval' => ['multiple' => true],
     'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
 ];
@@ -284,9 +333,8 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['iso_filterQuery'] = [
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['iso_filterModules'] = [
     'inputType' => 'checkboxWizard',
-    'foreignKey' => 'tl_content.name',
-    'options_callback' => [Callback::class, 'getFilterModules'],
-    'eval' => ['multiple' => true, 'tl_class' => 'clr'],
+    'foreignKey' => 'tl_content.title',
+    'eval' => ['multiple' => true, 'csv' => ',', 'tl_class' => 'clr'],
     'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
 ];
 

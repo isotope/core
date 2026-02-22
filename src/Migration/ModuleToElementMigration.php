@@ -68,6 +68,7 @@ class ModuleToElementMigration extends AbstractMigration
         }
 
         $this->updateLayouts($mapping);
+        $this->updateFilterModules($mapping);
 
         return $this->createResult(true);
     }
@@ -91,7 +92,7 @@ class ModuleToElementMigration extends AbstractMigration
 
         $this->connection->insert('tl_content', [
             ...$tableData,
-            'jsonData' => json_encode($jsonData),
+            'jsonData' => json_encode($jsonData, JSON_THROW_ON_ERROR),
         ]);
 
         $contentId = $this->connection->lastInsertId();
@@ -130,6 +131,31 @@ class ModuleToElementMigration extends AbstractMigration
             if ($changed) {
                 $this->connection->update('tl_layout', ['modules' => serialize($modules)], ['id' => $id]);
             }
+        }
+    }
+
+    private function updateFilterModules(array $mapping): void
+    {
+        $listElements = $this->connection->fetchAllKeyValue("SElECT id, jsonData FROM tl_content WHERE type='iso_productlist'");
+
+        foreach ($listElements as $id => $jsonData) {
+            $jsonData = json_decode($jsonData, true, 512, JSON_THROW_ON_ERROR);
+            $filterModules = StringUtil::deserialize($jsonData['iso_filterModules'] ?? null);
+
+            if (!\is_array($filterModules)) {
+                return;
+            }
+
+            foreach ($filterModules as $k => $v) {
+                $filterModules[$k] = $mapping[$k] ?? null;
+            }
+
+            $jsonData['iso_filterModules'] = implode(',', $filterModules);
+
+            $this->connection->executeStatement(
+                'UPDATE tl_content SET jsonData=? WHERE id=?',
+                [json_encode($jsonData, JSON_THROW_ON_ERROR), $id],
+            );
         }
     }
 }

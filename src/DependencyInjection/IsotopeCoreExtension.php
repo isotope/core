@@ -9,6 +9,7 @@ use Isotope\CoreBundle\Attribute\AttributeRegistry;
 use Isotope\CoreBundle\Backend\ShopConfig\ShopConfigInterface;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsAttribute;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsDocument;
+use Isotope\CoreBundle\DependencyInjection\Attribute\AsFilterModule;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsGallery;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsIsotopeHook;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsPayment;
@@ -84,6 +85,7 @@ class IsotopeCoreExtension extends ConfigurableExtension
         $attributesForAutoconfiguration = [
             AsIsotopeHook::class => AsIsotopeHook::TAG_NAME,
             AsProductFilter::class => AsProductFilter::TAG_NAME,
+            AsFilterModule::class => AsFilterModule::TAG_NAME,
             AsProductFactory::class => AsProductFactory::TAG_NAME,
             AsAttribute::class => AsAttribute::TAG_NAME,
             AsDocument::class => AsDocument::TAG_NAME,

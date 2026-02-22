@@ -4,7 +4,7 @@
     .set('data-controller', 'isotope--productquery isotope--fragment')
     .set('data-isotope--productquery-id-value', fragment_id)
     .set('data-isotope--fragment-id-value', fragment_id)
-    .set('data-isotope--fragment-filters-value', ["fmd#{data.id}"]|json_encode)
+    .set('data-isotope--fragment-filters-value', [filter_key]|json_encode)
     .set('data-action', 'isotope--productquery:update->isotope--fragment#update')
     .mergeWith(attributes|default)
 %}

@@ -18,16 +18,16 @@ use Doctrine\DBAL\Connection;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
 use Isotope\CoreBundle\Attribute\Option\OptionsSource;
 use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
+use Isotope\CoreBundle\DependencyInjection\Attribute\AsFilterModule;
 use Isotope\CoreBundle\Model\Product;
 use Isotope\CoreBundle\Product\Query\Filter\EqualFilter;
 use Isotope\CoreBundle\Product\Query\ProductQuery;
 use Isotope\CoreBundle\Product\Query\Sorting;
-use Isotope\Interfaces\IsotopeFilterModule;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-#[AsContentElement('iso_productfilter', category: 'isotope')]
-class ProductFilterController extends AbstractContentElementController implements IsotopeFilterModule
+#[AsContentElement('iso_productfilter', category: 'isotope'), AsFilterModule]
+class ProductFilterController extends AbstractContentElementController
 {
     public function __construct(
         private readonly AttributeRegistry $attributeRegistry,
@@ -47,13 +47,13 @@ class ProductFilterController extends AbstractContentElementController implement
         $template->sortingOptions = [];
         $template->limitOptions = [];
 
-        $moduleKey = 'cte'.$model->id;
+        $filterKey = 'cte'.$model->id;
         $productQuery = $this->getProductQuery($request);
 
         if ([] !== ($filterFields = StringUtil::deserialize($model->iso_filterFields, true))) {
             $template->filterWidgets = $this->getFilterWidgets(
                 $filterFields,
-                $this->getCurrentFilterValues($productQuery, $moduleKey, $filterFields),
+                $this->getCurrentFilterValues($productQuery, $filterKey, $filterFields),
                 (bool) $model->iso_filterHideSingle,
             );
         }
@@ -61,15 +61,17 @@ class ProductFilterController extends AbstractContentElementController implement
         if ([] !== ($sortingFields = StringUtil::deserialize($model->iso_sortingFields, true))) {
             $template->sortingOptions = $this->getSortingOptions(
                 $sortingFields,
-                $this->getCurrentSortingValue($productQuery, $moduleKey, $sortingFields),
+                $this->getCurrentSortingValue($productQuery, $filterKey, $sortingFields),
             );
         }
 
         if ($model->iso_enableLimit) {
-            $template->limitOptions = $this->getLimitOptions($model->iso_perPage, $productQuery, $moduleKey);
+            $template->limitOptions = $this->getLimitOptions($model->iso_perPage, $productQuery, $filterKey);
         }
 
         $this->applySearch($template, $model, $productQuery);
+
+        $template->filter_key = $filterKey;
 
         return $template->getResponse();
     }
