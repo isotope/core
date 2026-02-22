@@ -39,19 +39,13 @@ class ProductQueryFactory
         $isActive = false;
 
         foreach ($request->query->all() as $k => $v) {
-            if (!\is_string($v) || !preg_match('/^_(([fsl])(\w+)|q)$/', $k, $match)) {
+            if (!\is_string($v) || !preg_match('/^_([fslq])(\w*)$/', $k, $match)) {
                 continue;
             }
 
-            if ('q' === $match[1]) {
-                $instance->setSearch($v);
-                $isActive = true;
-                continue;
-            }
+            $id = $match[2] ?? '';
 
-            $id = $match[3] ?? null;
-
-            switch ($match[2]) {
+            switch ($match[1]) {
                 case 'f':
                     $instance->setFilters($id, $this->parseFilters($v, $validAttributes ??= $this->attributeRegistry->getNames()));
                     $isActive = true;
@@ -64,6 +58,11 @@ class ProductQueryFactory
 
                 case 'l':
                     // TODO
+                    $isActive = true;
+                    break;
+
+                case 'q':
+                    $instance->setSearch($id, $v);
                     $isActive = true;
                     break;
             }

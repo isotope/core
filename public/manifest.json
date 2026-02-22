@@ -2,7 +2,7 @@
   "backend.css": "/bundles/isotopecore/backend.ce026174.css",
   "backend.js": "/bundles/isotopecore/backend.ca7fb2c0.js",
   "isotope.css": "/bundles/isotopecore/isotope.2f465aeb.css",
-  "isotope.js": "/bundles/isotopecore/isotope.42aafd38.js",
+  "isotope.js": "/bundles/isotopecore/isotope.dcf2242f.js",
   "plugins/noUiSlider/nouislider.min.js": "/bundles/isotopecore/plugins/noUiSlider/nouislider.min.js",
   "plugins/noUiSlider/nouislider.js": "/bundles/isotopecore/plugins/noUiSlider/nouislider.js",
   "images/isotope-logo.svg": "/bundles/isotopecore/images/isotope-logo.svg",
@@ -56,5 +56,5 @@
   "backend.ce026174.css.map": "/bundles/isotopecore/backend.ce026174.css.map",
   "backend.ca7fb2c0.js.map": "/bundles/isotopecore/backend.ca7fb2c0.js.map",
   "isotope.2f465aeb.css.map": "/bundles/isotopecore/isotope.2f465aeb.css.map",
-  "isotope.42aafd38.js.map": "/bundles/isotopecore/isotope.42aafd38.js.map"
+  "isotope.dcf2242f.js.map": "/bundles/isotopecore/isotope.dcf2242f.js.map"
 }

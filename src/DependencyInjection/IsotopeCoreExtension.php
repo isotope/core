@@ -85,7 +85,6 @@ class IsotopeCoreExtension extends ConfigurableExtension
         $attributesForAutoconfiguration = [
             AsIsotopeHook::class => AsIsotopeHook::TAG_NAME,
             AsProductFilter::class => AsProductFilter::TAG_NAME,
-            AsFilterModule::class => AsFilterModule::TAG_NAME,
             AsProductFactory::class => AsProductFactory::TAG_NAME,
             AsAttribute::class => AsAttribute::TAG_NAME,
             AsDocument::class => AsDocument::TAG_NAME,

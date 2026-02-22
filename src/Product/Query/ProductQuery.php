@@ -11,21 +11,24 @@ use Isotope\CoreBundle\Product\Query\Filter\FilterInterface;
 class ProductQuery implements \Stringable
 {
     /**
-     * @var array<int, array<FilterInterface>>
+     * @var array<string, array<FilterInterface>>
      */
     private array $filters = [];
 
     /**
-     * @var array<int, array>
+     * @var array<string, array>
      */
     private array $sortings = [];
 
     /**
-     * @var array<int, int>
+     * @var array<string, int>
      */
     private array $limits = [];
 
-    private string|null $search = null;
+    /**
+     * @var array<string, string>
+     */
+    private array $search = [];
 
     public function __construct(private readonly Connection $connection)
     {
@@ -47,8 +50,8 @@ class ProductQuery implements \Stringable
             $query['_l'.$key] = $limit;
         }
 
-        if ($this->search) {
-            $query['_q'] = $this->search;
+        foreach ($this->search as $key => $search) {
+            $query['_q'.$key] = $search;
         }
 
         return http_build_query($query);
@@ -69,13 +72,14 @@ class ProductQuery implements \Stringable
         }
     }
 
-    public function applySearch(QueryBuilder $queryBuilder, array $fields): void
+    public function applySearch(QueryBuilder $queryBuilder, array $fields, array $keys): void
     {
-        if (!$this->search) {
+        $search = implode(' ', array_intersect_key($this->search, array_flip($keys)));
+        $keywords = array_unique(explode(' ', $search));
+
+        if ([] === $keywords) {
             return;
         }
-
-        $keywords = explode(' ', $this->search);
 
         foreach ($keywords as $keyword) {
             $expr = [];
@@ -149,15 +153,15 @@ class ProductQuery implements \Stringable
         return null;
     }
 
-    public function setSearch(string|null $search): self
+    public function setSearch(string $key, string $search): self
     {
-        $this->search = $search;
+        $this->search[$key] = $search;
 
         return $this;
     }
 
-    public function getSearch(): string|null
+    public function getSearches(array $keys): array
     {
-        return $this->search;
+        return array_intersect_key($this->search, array_flip($keys));
     }
 }

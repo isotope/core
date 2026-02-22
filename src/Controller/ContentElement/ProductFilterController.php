@@ -18,7 +18,6 @@ use Doctrine\DBAL\Connection;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
 use Isotope\CoreBundle\Attribute\Option\OptionsSource;
 use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
-use Isotope\CoreBundle\DependencyInjection\Attribute\AsFilterModule;
 use Isotope\CoreBundle\Model\Product;
 use Isotope\CoreBundle\Product\Query\Filter\EqualFilter;
 use Isotope\CoreBundle\Product\Query\ProductQuery;
@@ -26,7 +25,7 @@ use Isotope\CoreBundle\Product\Query\Sorting;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-#[AsContentElement('iso_productfilter', category: 'isotope'), AsFilterModule]
+#[AsContentElement('iso_productfilter', category: 'isotope')]
 class ProductFilterController extends AbstractContentElementController
 {
     public function __construct(
@@ -47,7 +46,7 @@ class ProductFilterController extends AbstractContentElementController
         $template->sortingOptions = [];
         $template->limitOptions = [];
 
-        $filterKey = 'cte'.$model->id;
+        $filterKey = $model->iso_filterKey ?: '';
         $productQuery = $this->getProductQuery($request);
 
         if ([] !== ($filterFields = StringUtil::deserialize($model->iso_filterFields, true))) {
@@ -69,7 +68,7 @@ class ProductFilterController extends AbstractContentElementController
             $template->limitOptions = $this->getLimitOptions($model->iso_perPage, $productQuery, $filterKey);
         }
 
-        $this->applySearch($template, $model, $productQuery);
+        $this->applySearch($template, $model, $productQuery, $filterKey);
 
         $template->filter_key = $filterKey;
 
@@ -187,7 +186,7 @@ class ProductFilterController extends AbstractContentElementController
         return $options;
     }
 
-    private function applySearch(FragmentTemplate $template, ContentModel $model, ProductQuery|null $productQuery): void
+    private function applySearch(FragmentTemplate $template, ContentModel $model, ProductQuery|null $productQuery, string $key): void
     {
         $template->hasSearch = false;
 
@@ -196,7 +195,7 @@ class ProductFilterController extends AbstractContentElementController
         }
 
         $template->hasSearch = true;
-        $template->keywords = $productQuery?->getSearch();
+        $template->keywords = implode(' ', $productQuery?->getSearches([$key]) ?? []);
     }
 
     /**
@@ -334,7 +333,7 @@ class ProductFilterController extends AbstractContentElementController
 
         foreach ($productQuery?->getFilters([$key]) ?? [] as $filter) {
             if (!$filter instanceof EqualFilter || !\in_array($filter->getAttributeName(), $fields, true) || 1 !== \count($filter->getValue())) {
-                throw new BadRequestException('Invalid filter configuration');
+                continue;
             }
 
             $current[$filter->getAttributeName()] = $filter->getValue()[0];
@@ -352,7 +351,7 @@ class ProductFilterController extends AbstractContentElementController
         }
 
         if (\count($current) > 1 || !\in_array($current[0]->attribute, $fields, true)) {
-            throw new BadRequestException('Invalid sorting configuration');
+            return null;
         }
 
         return $current[0];

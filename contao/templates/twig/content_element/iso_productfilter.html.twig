@@ -1,13 +1,12 @@
 {% trans_default_domain 'contao_default' %}
 {% extends '@Contao/content_element/_isotope_base.html.twig' %}
 
-{% set filters = [filter_key] %}
-{% if hasSearch %}{% set filters = filters|merge(['q']) %}{% endif %}
 {% set attributes = attrs()
     .set('data-controller', 'isotope--productquery isotope--fragment')
-    .set('data-isotope--productquery-id-value', fragment_id)
+    .set('data-isotope--productquery-id-value', filter_key)
     .set('data-isotope--fragment-id-value', fragment_id)
-    .set('data-isotope--fragment-filters-value', filters|json_encode)
+    .set('data-isotope--fragment-filters-value', [filter_key]|json_encode)
+    .set('data-action', 'isotope--productquery:update@window->isotope--fragment#query')
     .mergeWith(attributes|default)
 %}
 

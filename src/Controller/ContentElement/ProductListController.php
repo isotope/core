@@ -56,21 +56,17 @@ class ProductListController extends AbstractContentElementController
             return $template->getResponse();
         }
 
-        $filterModules = array_map(static fn ($id) => 'cte'.$id, explode(',', $model->iso_filterModules));
+        $filterKeys = [$model->iso_filterKey ?: ''];
         $searchFields = StringUtil::deserialize($model->iso_searchFields, true);
-        $products = $this->findProducts($model, $request, $filterModules, $searchFields);
+        $products = $this->findProducts($model, $request, $filterKeys, $searchFields);
 
         if ($model->iso_hide_empty && $products->isEmpty()) {
             return new Response('');
         }
 
-        if ([] !== $searchFields) {
-            $filterModules[] = 'q';
-        }
-
         $template->products = $products;
         $template->view = ListView::createFromContent($model);
-        $template->filters = $filterModules;
+        $template->filters = $filterKeys;
 
         return $template->getResponse();
     }
@@ -78,7 +74,7 @@ class ProductListController extends AbstractContentElementController
     /**
      * @return ProductCollection
      */
-    private function findProducts(ContentModel $model, Request $request, array $filterModules, array $searchFields): CollectionInterface
+    private function findProducts(ContentModel $model, Request $request, array $filterKeys, array $searchFields): CollectionInterface
     {
         $categories = $this->getCategories($model, $request);
 
@@ -94,19 +90,19 @@ class ProductListController extends AbstractContentElementController
         if ($model->iso_filterQuery) {
             $productQuery = $productQuery ? clone $productQuery : $this->productQueryFactory->create();
             $productQuery->setFilters('cte'.$model->id, $this->productQueryFactory->parseFilters($model->iso_filterQuery, $this->attributeRegistry->getNames()));
-            $filterModules[] = 'cte'.$model->id;
+            $filterKeys[] = 'cte'.$model->id;
         }
 
         if ($model->iso_listingSortField) {
             $productQuery = $productQuery ? clone $productQuery : $this->productQueryFactory->create();
             $productQuery->setSorting('cte'.$model->id, [new Sorting($model->iso_listingSortField, 'DESC' === $model->iso_listingSortDirection)]);
-            $filterModules[] = 'cte'.$model->id;
+            $filterKeys[] = 'cte'.$model->id;
         }
 
-        $productQuery?->apply($qb, $filterModules);
+        $productQuery?->apply($qb, $filterKeys);
 
         if ([] !== $searchFields) {
-            $productQuery?->applySearch($qb, $searchFields);
+            $productQuery?->applySearch($qb, $searchFields, $filterKeys);
         }
 
         if ($model->numberOfItems > 0) {

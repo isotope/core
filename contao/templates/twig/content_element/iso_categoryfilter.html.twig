@@ -2,10 +2,11 @@
 
 {% set attributes = attrs()
     .set('data-controller', 'isotope--productquery isotope--fragment')
-    .set('data-isotope--productquery-id-value', fragment_id)
+    .set('data-isotope--productquery-id-value', filter_key)
     .set('data-isotope--fragment-id-value', fragment_id)
     .set('data-isotope--fragment-filters-value', [filter_key]|json_encode)
     .set('data-action', 'isotope--productquery:update->isotope--fragment#update')
+    .set('data-action', 'isotope--productquery:update@window->isotope--fragment#query')
     .mergeWith(attributes|default)
 %}
 

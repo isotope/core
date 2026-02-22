@@ -110,7 +110,7 @@ export default class extends Controller {
 
         const query = ProductQuery.fromLocation();
 
-        query.apply(new Search(this.searchTarget.value))
+        query.apply(new Search(this.idValue, this.searchTarget.value))
 
         this.#exec(query, event);
     }
@@ -145,8 +145,6 @@ export default class extends Controller {
 
             return;
         }
-
-        window.history.popState();
 
         window.location.search = query.toString()
     }
