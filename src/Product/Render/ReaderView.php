@@ -24,7 +24,7 @@ class ReaderView extends AbstractView
         return new self(
             'cte'.($model->origId ?: $model->id),
             $model->iso_reader_layout ?: null,
-            $model->iso_gallery ?: null,
+            $model->iso_gallery ? (int) $model->iso_gallery : null,
             $model->row(),
         );
     }

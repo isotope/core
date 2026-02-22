@@ -34,7 +34,7 @@ class ListView extends AbstractView
         return new self(
             'cte'.$model->id,
             $model->iso_list_layout ?: null,
-            $model->iso_gallery ?: null,
+            $model->iso_gallery ? (int) $model->iso_gallery : null,
             $model->row(),
         );
     }
