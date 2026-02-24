@@ -39,7 +39,7 @@ class ProductCollectionInsertTag implements InsertTagResolverNestedResolvedInter
             return new InsertTagResult('');
         }
 
-        return new InsertTagResult($this->resolve($collection, $insertTag->getParameters()));
+        return new InsertTagResult((string) $this->resolve($collection, $insertTag->getParameters()));
     }
 
     private function getCollection(string $type): AbstractProductCollection|null
