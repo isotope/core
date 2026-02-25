@@ -3,6 +3,8 @@
 use Contao\BackendUser;
 use Contao\DataContainer;
 use Contao\DC_Table;
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
+use Doctrine\DBAL\Types\Types;
 use Isotope\Backend\Config\Callback;
 use Isotope\CoreBundle\Store\Price\PriceDisplay;
 use Isotope\CoreBundle\Store\Price\TaxCalculation;
@@ -35,7 +37,9 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
             {name_legend},name,label;
             {address_legend:hide},firstname,lastname,company,vat_no,street_1,street_2,street_3,postal,city,country,subdivision,email,phone;
             {bank_legend:hide},bankName,bankAccount,bankCode,taxNumber;
-            {checkout_legend},address_fields,billing_country,shipping_country,billing_countries,shipping_countries,limitMemberCountries,default_shipping,default_payment;
+            {checkout_legend},address_fields,billing_country,shipping_country,billing_countries,shipping_countries,limitMemberCountries;
+            {shipping_legend},shipping_ids;
+            {payment_legend},payment_ids;
             {pricing_legend},priceDisplay,taxCalculation,currencyFormat,priceRoundPrecision,priceRoundIncrement;
             {currency_legend},currency,currencyPosition,currencySymbol;
             {converter_legend:hide},priceCalculateFactor;
@@ -222,15 +226,19 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
             'eval' => ['tl_class' => 'w50'],
             'sql' => "char(1) NOT NULL default ''",
         ],
-        'default_shipping' => [
-            'inputType' => 'select',
-            'foreignKey' => 'tl_iso_shipping.name',
-            'eval' => ['includeBlankOption' => true, 'tl_class' => 'clr w50'],
-        ],
-        'default_payment' => [
-            'inputType' => 'select',
+        'payment_ids' => [
+            'inputType' => 'checkboxWizard',
             'foreignKey' => 'tl_iso_payment.name',
-            'eval' => ['includeBlankOption' => true, 'tl_class' => 'w50'],
+            'eval' => ['multiple' => true, 'csv' => ','],
+            'sql' => ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TINYTEXT, 'notnull' => false],
+            'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
+        ],
+        'shipping_ids' => [
+            'inputType' => 'checkboxWizard',
+            'foreignKey' => 'tl_iso_shipping.name',
+            'eval' => ['multiple' => true, 'csv' => ','],
+            'sql' => ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TINYTEXT, 'notnull' => false],
+            'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
         ],
         'priceDisplay' => [
             'default' => 'gross',

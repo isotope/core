@@ -71,8 +71,8 @@ class StoreContextFactory
 
         $context->setDefaultBillingAddress($billingAddress);
         $context->setDefaultShippingAddress($shippingAddress);
-        $context->setDefaultShippingMethod($config->default_shipping ? (int) $config->default_shipping : null);
-        $context->setDefaultPaymentMethod($config->default_payment ? (int) $config->default_payment : null);
+        $context->setShippingIds(array_filter(explode(',', (string) $config->shipping_ids)));
+        $context->setPaymentIds(array_filter(explode(',', (string) $config->payment_ids)));
 
         $this->eventDispatcher->dispatch(new ContextCreatedEvent($context, $config));
 

@@ -35,8 +35,6 @@ use Symfony\Component\HttpFoundation\Response;
  * Class ModuleIsotopeCheckout
  * Front end module Isotope "checkout".
  *
- * @property array $iso_payment_modules
- * @property array $iso_shipping_modules
  * @property bool  $iso_forward_review
  * @property bool  $iso_show_skipped
  * @property array $iso_notifications

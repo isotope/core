@@ -167,6 +167,18 @@
       <trans-unit id="tl_iso_config.limitMemberCountries.1">
         <source>Limit member countries (Registration, Personal Data) to the combined list of billing and shipping countries.</source>
       </trans-unit>
+      <trans-unit id="tl_iso_config.shipping_ids.0">
+        <source>Shipping methods</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.shipping_ids.1">
+        <source>Select one or more shipping methods for the checkout.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.payment_ids.0">
+        <source>Payment methods</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.payment_ids.1">
+        <source>Select one or more payment methods for the checkout.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_config.default_shipping.0">
         <source>Default shipping method</source>
       </trans-unit>
@@ -303,7 +315,13 @@
         <source>Configuration</source>
       </trans-unit>
       <trans-unit id="tl_iso_config.checkout_legend">
-        <source>Checkout</source>
+        <source>Checkout – Address</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.shipping_legend">
+        <source>Checkout – Shipping</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.payment_legend">
+        <source>Checkout – Payment</source>
       </trans-unit>
       <trans-unit id="tl_iso_config.bank_legend">
         <source>Bank details</source>

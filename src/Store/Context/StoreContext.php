@@ -32,9 +32,15 @@ final class StoreContext
 
     private Address|null $defaultShippingAddress = null;
 
-    private int|null $defaultShippingMethod = null;
+    /**
+     * @var list<int>
+     */
+    private array $shippingIds = [];
 
-    private int|null $defaultPaymentMethod = null;
+    /**
+     * @var list<int>
+     */
+    private array $paymentIds = [];
 
     /**
      * @internal use the StoreContextFactory to create a new instance
@@ -225,26 +231,38 @@ final class StoreContext
         return $this;
     }
 
-    public function getDefaultShippingMethod(): ?int
+    /**
+     * @return list<int>
+     */
+    public function getShippingIds(): array
     {
-        return $this->defaultShippingMethod;
+        return $this->shippingIds;
     }
 
-    public function setDefaultShippingMethod(?int $defaultShippingMethod): self
+    /**
+     * @param list<int> $shippingIds
+     */
+    public function setShippingIds(array $shippingIds): self
     {
-        $this->defaultShippingMethod = $defaultShippingMethod;
+        $this->shippingIds = $shippingIds;
 
         return $this;
     }
 
-    public function getDefaultPaymentMethod(): ?int
+    /**
+     * @return list<int>
+     */
+    public function getPaymentIds(): array
     {
-        return $this->defaultPaymentMethod;
+        return $this->paymentIds;
     }
 
-    public function setDefaultPaymentMethod(?int $defaultPaymentMethod): self
+    /**
+     * @param list<int> $paymentIds
+     */
+    public function setPaymentIds(array $paymentIds): self
     {
-        $this->defaultPaymentMethod = $defaultPaymentMethod;
+        $this->paymentIds = $paymentIds;
 
         return $this;
     }

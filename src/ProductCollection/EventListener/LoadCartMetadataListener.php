@@ -33,9 +33,15 @@ class LoadCartMetadataListener
         }
 
         $cart->setBillingAddress(fn () => $this->loadAddress((int) $cartModel?->billing_address_id, $context->getDefaultBillingAddress()));
-        $cart->setShippingAddress(fn () => $this->loadAddress((int) $cartModel?->shipping_address_id, $context->getDefaultShippingAddress()));
-        $cart->setPaymentMethod(fn () => $this->paymentRegistry->get(Payment::findById($cartModel?->payment_id ?: $context->getDefaultPaymentMethod())));
-        $cart->setShippingMethod(fn () => $this->shippingRegistry->get(Shipping::findById($cartModel?->shipping_id ?: $context->getDefaultShippingMethod())));
+        $cart->setShippingAddress(fn () => $this->loadAddress((int) $cartModel?->shipping_address_id));
+
+        if ($paymentId = $cartModel?->payment_id ?: $context->getPaymentIds()[0] ?? null) {
+            $cart->setPaymentMethod(fn () => $this->paymentRegistry->get(Payment::findById($paymentId), $context));
+        }
+
+        if ($shippingId = $cartModel?->shipping_id ?: $context->getShippingIds()[0] ?? null) {
+            $cart->setShippingMethod(fn () => $this->shippingRegistry->get(Shipping::findById($shippingId), $context));
+        }
     }
 
     private function loadAddress(int $id, Address|null $default = null): Address|null

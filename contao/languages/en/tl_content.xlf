@@ -110,18 +110,6 @@
       <trans-unit id="tl_content.iso_config_ids.1">
         <source>Select the store configurations that this module will be used for.</source>
       </trans-unit>
-      <trans-unit id="tl_content.iso_payment_modules.0">
-        <source>Payment methods</source>
-      </trans-unit>
-      <trans-unit id="tl_content.iso_payment_modules.1">
-        <source>Select one or more payment methods for this checkout module.</source>
-      </trans-unit>
-      <trans-unit id="tl_content.iso_shipping_modules.0">
-        <source>Shipping methods</source>
-      </trans-unit>
-      <trans-unit id="tl_content.iso_shipping_modules.1">
-        <source>Select one or more shipping methods for this checkout module.</source>
-      </trans-unit>
       <trans-unit id="tl_content.orderCompleteJumpTo.0">
         <source>Completed order jump to page</source>
       </trans-unit>
