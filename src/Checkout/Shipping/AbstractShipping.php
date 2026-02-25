@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Checkout\Shipping;
 
 use Isotope\CoreBundle\Checkout\AbstractCheckoutMethod;
-use Isotope\CoreBundle\Weight\Weight;
+use Isotope\CoreBundle\Store\Weight\Weight;
 
 abstract class AbstractShipping extends AbstractCheckoutMethod implements ShippingInterface
 {

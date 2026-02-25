@@ -19,7 +19,7 @@ use Isotope\CoreBundle\Product\ProductCollection;
 use Isotope\CoreBundle\Product\Render\DefaultProductRenderer;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Price\PriceCalculator;
-use Isotope\CoreBundle\Weight\Weight;
+use Isotope\CoreBundle\Store\Weight\Weight;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
 #[AsProductFactory('standard')]

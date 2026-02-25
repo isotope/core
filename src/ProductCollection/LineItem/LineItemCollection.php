@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\ProductCollection\LineItem;
 
-use Isotope\CoreBundle\Product\Extension\ShippingExtension;
+use Isotope\CoreBundle\Store\Weight\Scale;
+use Isotope\CoreBundle\Store\Weight\Weight;
+use Isotope\CoreBundle\Store\Weight\WeightUnit;
 use Isotope\CoreBundle\Util\FloatComparator;
-use Isotope\CoreBundle\Weight\Scale;
-use Isotope\CoreBundle\Weight\Weight;
-use Isotope\CoreBundle\Weight\WeightUnit;
 use Ramsey\Collection\AbstractCollection;
 use Ramsey\Collection\CollectionInterface;
 

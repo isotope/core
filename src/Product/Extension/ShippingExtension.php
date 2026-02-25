@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Product\Extension;
 
-use Isotope\CoreBundle\Weight\Weight;
+use Isotope\CoreBundle\Store\Weight\Weight;
 
 final class ShippingExtension implements ProductExtensionInterface
 {

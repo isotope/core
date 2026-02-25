@@ -36,7 +36,7 @@ use Isotope\CoreBundle\Product\Product;
 use Isotope\CoreBundle\Routing\ProductReference;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\StoreManager;
-use Isotope\CoreBundle\Weight\Scale;
+use Isotope\CoreBundle\Store\Weight\Scale;
 use Isotope\Haste\Util\Format;
 use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Interfaces\IsotopeProductCollection;

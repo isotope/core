@@ -6,7 +6,7 @@ namespace Isotope\CoreBundle\ProductCollection\LineItem;
 
 use Isotope\CoreBundle\Product\Product;
 use Isotope\CoreBundle\Store\Price\CalculatedPrice;
-use Isotope\CoreBundle\Weight\Weight;
+use Isotope\CoreBundle\Store\Weight\Weight;
 use Symfony\Contracts\Translation\TranslatableInterface;
 
 class LineItem

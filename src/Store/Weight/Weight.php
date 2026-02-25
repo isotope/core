@@ -1,6 +1,6 @@
 <?php
 
-namespace Isotope\CoreBundle\Weight;
+namespace Isotope\CoreBundle\Store\Weight;
 
 use Contao\StringUtil;
 use Isotope\CoreBundle\Util\FloatComparator;

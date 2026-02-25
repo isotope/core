@@ -16,7 +16,7 @@ use Contao\Template;
 use Isotope\CoreBundle\Model\Config;
 use Isotope\CoreBundle\Model\ProductCollectionItem;
 use Isotope\CoreBundle\Product\Product;
-use Isotope\CoreBundle\Weight\Scale;
+use Isotope\CoreBundle\Store\Weight\Scale;
 
 
 /**
