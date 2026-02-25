@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Checkout\Shipping;
 
-use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsShipping;
 use Isotope\CoreBundle\Exception\UnderflowException;
 use Isotope\CoreBundle\Exception\UnexpectedValueException;
-use Isotope\CoreBundle\RuleBuilder\RuleMatcher;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\Interfaces\IsotopeOrderableCollection;
 
@@ -30,13 +28,12 @@ class GroupShipping extends AbstractShipping
      */
     public function __construct(
         int $id,
+        StoreContext $context,
         array $methods,
         private readonly GroupCalculation $groupCalculation,
         private readonly bool $inherit,
-        TokenChecker $tokenChecker,
-        RuleMatcher $ruleMatcher,
     ) {
-        parent::__construct($id, $tokenChecker, $ruleMatcher);
+        parent::__construct($id, $context);
 
         $inner = [];
 

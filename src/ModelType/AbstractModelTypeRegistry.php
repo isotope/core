@@ -10,6 +10,7 @@ use Isotope\CoreBundle\Attribute\AttributeInterface;
 use Isotope\CoreBundle\ModelType\Exception\ContainerNotFoundException;
 use Isotope\CoreBundle\ModelType\Exception\InvalidInstanceException;
 use Isotope\CoreBundle\ModelType\Exception\FactoryNotFoundException;
+use Isotope\CoreBundle\Store\Context\StoreContext;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Contracts\Service\ServiceProviderInterface;
@@ -44,14 +45,14 @@ class AbstractModelTypeRegistry
      *
      * @return ($modelOrCollection is array|Collection<TModel> ? array<TType> : ($modelOrCollection is null ? null : TType) )
      */
-    public function get(Collection|Model|array|null $modelOrCollection): array|object|null
+    public function get(Collection|Model|array|null $modelOrCollection, StoreContext $context): array|object|null
     {
         return match (true) {
             null === $modelOrCollection => null,
-            $modelOrCollection instanceof Collection => array_map($this->get(...), $modelOrCollection->getModels()),
-            \is_array($modelOrCollection) => array_map($this->get(...), $modelOrCollection),
+            $modelOrCollection instanceof Collection => array_map(fn (Model $model) => $this->get($model, $context), $modelOrCollection->getModels()),
+            \is_array($modelOrCollection) => array_map(fn (Model $model) => $this->get($model, $context), $modelOrCollection),
             empty($modelOrCollection->type) => null,
-            default => $this->create($modelOrCollection),
+            default => $this->create($modelOrCollection, $context),
         };
     }
 
@@ -60,7 +61,7 @@ class AbstractModelTypeRegistry
      *
      * @return TType
      */
-    protected function create(Model $model): object
+    protected function create(Model $model, StoreContext $context): object
     {
         try {
             $factory = $this->factories->get($model->type);
@@ -68,7 +69,7 @@ class AbstractModelTypeRegistry
             throw new FactoryNotFoundException($model->type, $model::class, previous: $e);
         }
 
-        $instance = $factory->create($model);
+        $instance = $factory->create($model, $context);
 
         if (!$instance instanceof $this->interface) {
             throw new InvalidInstanceException($instance, $this->interface);

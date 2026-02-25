@@ -26,11 +26,10 @@ class FlatShipping extends AbstractShipping
 
     public function __construct(
         int $id,
+        StoreContext $context,
         private FlatCalculation|null $flatCalculation,
-        TokenChecker $tokenChecker,
-        RuleMatcher $ruleMatcher,
     ) {
-        parent::__construct($id, $tokenChecker, $ruleMatcher);
+        parent::__construct($id, $context);
     }
 
     public function getFlatCalculation(): FlatCalculation|null

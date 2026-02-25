@@ -6,15 +6,16 @@ namespace Isotope\CoreBundle\Checkout;
 
 use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use Isotope\CoreBundle\Exception\UnexpectedValueException;
+use Isotope\CoreBundle\ModelType\AbstractModelType;
+use Isotope\CoreBundle\ModelType\ContainerAwareInterface;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\RuleBuilder\RuleMatcher;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Price\PriceDefinition;
 use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Interfaces\IsotopeProductCollection;
-use Isotope\Isotope;
 
-abstract class AbstractCheckoutMethod
+abstract class AbstractCheckoutMethod extends AbstractModelType implements ContainerAwareInterface
 {
     protected string $label;
 
@@ -44,16 +45,28 @@ abstract class AbstractCheckoutMethod
     protected bool $enabled = true;
 
     public function __construct(
-        private readonly int $id,
-        private readonly TokenChecker $tokenChecker,
-        private readonly RuleMatcher $ruleMatcher,
+        protected readonly int $id,
+        protected readonly StoreContext $context,
     ) {
         $this->label = static::class;
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return [
+            TokenChecker::class,
+            RuleMatcher::class,
+        ];
     }
 
     public function getId(): int
     {
         return $this->id;
+    }
+
+    public function getStoreContext(): StoreContext
+    {
+        return $this->context;
     }
 
     public function getLabel(): string
@@ -234,15 +247,15 @@ abstract class AbstractCheckoutMethod
 
     public function isAvailable(StoreContext $context): bool
     {
-        if (!$this->enabled && !$this->tokenChecker->isPreviewMode()) {
+        if (!$this->enabled && !$this->get(TokenChecker::class)->isPreviewMode()) {
             return false;
         }
 
         if ($this->rule) {
-            return $this->ruleMatcher->isApplicable($this->rule, $context);
+            return $this->get(RuleMatcher::class)->isApplicable($this->rule, $this->context);
         }
 
-        $cart = $context->getCart();
+        $cart = $this->context->getCart();
 
         if (null !== $this->allowedProductTypes) {
             $items = $cart->getLineItems();

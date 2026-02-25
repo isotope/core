@@ -9,6 +9,7 @@ use Isotope\CoreBundle\Model\RuleCondition;
 use Isotope\CoreBundle\ModelType\ModelInstanceTrait;
 use Isotope\CoreBundle\ModelType\ModelTypeFactoryInterface;
 use Isotope\CoreBundle\RuleBuilder\Exception\InvalidTypeException;
+use Isotope\CoreBundle\Store\Context\StoreContext;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -28,7 +29,7 @@ class MemberConditionFactory implements ModelTypeFactoryInterface
     /**
      * @param RuleCondition $model
      */
-    public function create(Model $model): object
+    public function create(Model $model, StoreContext $context): object
     {
         $this->validateInstanceOf($model, RuleCondition::class);
 

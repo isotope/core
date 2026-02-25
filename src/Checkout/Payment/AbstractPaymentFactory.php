@@ -9,6 +9,7 @@ use Isotope\CoreBundle\Checkout\AbstractCheckoutMethodFactory;
 use Isotope\CoreBundle\Model\Payment;
 use Isotope\CoreBundle\ModelType\ModelInstanceTrait;
 use Isotope\CoreBundle\ModelType\SerializedPropertyTrait;
+use Isotope\CoreBundle\Store\Context\StoreContext;
 
 /**
  * @template TType of AbstractPayment
@@ -23,12 +24,12 @@ abstract class AbstractPaymentFactory extends AbstractCheckoutMethodFactory
     /**
      * @param Payment $model
      */
-    public function create(Model $model): AbstractPayment
+    public function create(Model $model, StoreContext $context): AbstractPayment
     {
         $this->validateInstanceOf($model, Payment::class);
 
         /** @var AbstractPayment $payment */
-        $payment = parent::create($model);
+        $payment = parent::create($model, $context);
         $payment
             ->setAllowedShippings($this->unserialize($model->shipping_modules, intval(...)))
         ;

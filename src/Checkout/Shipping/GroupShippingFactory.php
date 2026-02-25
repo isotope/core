@@ -10,6 +10,8 @@ use Contao\StringUtil;
 use Isotope\CoreBundle\Model\Shipping;
 use Isotope\CoreBundle\ModelType\ShippingRegistry;
 use Isotope\CoreBundle\RuleBuilder\RuleMatcher;
+use Isotope\CoreBundle\Store\Context\StoreContext;
+use Twig\Environment;
 
 /**
  * @extends AbstractShippingFactory<GroupShipping>
@@ -18,15 +20,13 @@ class GroupShippingFactory extends AbstractShippingFactory
 {
     public function __construct(
         private readonly ShippingRegistry $shippingRegistry,
-        private readonly TokenChecker $tokenChecker,
-        private readonly RuleMatcher $ruleMatcher,
     ) {
     }
 
     /**
      * @param Shipping $model
      */
-    public function doCreate(Model $model): AbstractShipping
+    public function doCreate(Model $model, StoreContext $context): AbstractShipping
     {
         $ids = StringUtil::deserialize($model->group_methods, true);
 
@@ -37,11 +37,10 @@ class GroupShippingFactory extends AbstractShippingFactory
 
         return new GroupShipping(
             $model->id,
-            $this->shippingRegistry->get(Shipping::findMultipleByIds($ids)) ?? [],
+            $context,
+            $this->shippingRegistry->get(Shipping::findMultipleByIds($ids), $context) ?? [],
             GroupCalculation::from($model->group_calculation),
             (bool) $model->inherit,
-            $this->tokenChecker,
-            $this->ruleMatcher,
         );
     }
 }

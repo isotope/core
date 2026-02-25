@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Checkout\Shipping;
 
-use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use Contao\Model;
 use Isotope\CoreBundle\Model\Shipping;
 use Isotope\CoreBundle\ModelType\SerializedPropertyTrait;
-use Isotope\CoreBundle\RuleBuilder\RuleMatcher;
-use Isotope\CoreBundle\Weight\Weight;
+use Isotope\CoreBundle\Store\Context\StoreContext;
+use Isotope\CoreBundle\Store\Weight\Weight;
 
 /**
  * @extends AbstractShippingFactory<FlatShipping>
@@ -18,23 +17,15 @@ class FlatShippingFactory extends AbstractShippingFactory
 {
     use SerializedPropertyTrait;
 
-    public function __construct(
-        private readonly TokenChecker $tokenChecker,
-        private readonly RuleMatcher $ruleMatcher,
-    ) {
-    }
-
     /**
      * @param Shipping $model
      */
-    public function doCreate(Model $model): AbstractShipping
+    public function doCreate(Model $model, StoreContext $context): AbstractShipping
     {
         $instance = new FlatShipping(
             $model->id,
+            $context,
             FlatCalculation::tryFrom($model->flatCalculation),
-            $this->tokenChecker,
-            $this->ruleMatcher,
-
         );
 
         $instance

@@ -8,23 +8,18 @@ use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use Contao\Model;
 use Isotope\CoreBundle\Model\Payment;
 use Isotope\CoreBundle\RuleBuilder\RuleMatcher;
+use Isotope\CoreBundle\Store\Context\StoreContext;
 
 /**
  * @extends AbstractPaymentFactory<CashPayment>
  */
 class CashPaymentFactory extends AbstractPaymentFactory
 {
-    public function __construct(
-        private readonly TokenChecker $tokenChecker,
-        private readonly RuleMatcher $ruleMatcher,
-    ) {
-    }
-
     /**
      * @param Payment $model
      */
-    public function doCreate(Model $model): AbstractPayment
+    public function doCreate(Model $model, StoreContext $context): AbstractPayment
     {
-        return new CashPayment($model->id, $model->new_order_status, $this->tokenChecker, $this->ruleMatcher);
+        return new CashPayment($model->id, $model->new_order_status, $context);
     }
 }

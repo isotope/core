@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Checkout\Shipping;
 
-use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsShipping;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\Extension\ShippingExtension;
 use Isotope\CoreBundle\Product\Product;
-use Isotope\CoreBundle\RuleBuilder\RuleMatcher;
 use Isotope\CoreBundle\Store\Context\StoreContext;
-use Isotope\Interfaces\IsotopeProductCollection;
-use Isotope\Isotope;
+use Isotope\CoreBundle\Store\Price\PriceDefinition;
+use Isotope\CoreBundle\Twig\TemplateContext;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 #[AsShipping]
 class ProductPriceShipping extends AbstractShipping
@@ -21,11 +21,11 @@ class ProductPriceShipping extends AbstractShipping
 
     public function __construct(
         int $id,
+        StoreContext $context,
         private readonly ProductCalculation $calculation,
-        TokenChecker $tokenChecker,
-        RuleMatcher $ruleMatcher,
+        private readonly int $taxClass,
     ) {
-        parent::__construct($id, $tokenChecker, $ruleMatcher);
+        parent::__construct($id, $context);
     }
 
     public function isAvailable(StoreContext $context): bool

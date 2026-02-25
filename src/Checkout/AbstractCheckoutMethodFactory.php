@@ -10,6 +10,7 @@ use Isotope\CoreBundle\Model\Shipping;
 use Isotope\CoreBundle\ModelType\ModelInstanceTrait;
 use Isotope\CoreBundle\ModelType\ModelTypeFactoryInterface;
 use Isotope\CoreBundle\ModelType\SerializedPropertyTrait;
+use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Price\PriceDefinition;
 
 /**
@@ -28,11 +29,11 @@ abstract class AbstractCheckoutMethodFactory implements ModelTypeFactoryInterfac
      *
      * @return TType
      */
-    public function create(Model $model): AbstractCheckoutMethod
+    public function create(Model $model, StoreContext $context): AbstractCheckoutMethod
     {
         $this->validateInstanceOf($model, [Payment::class, Shipping::class]);
 
-        $instance = $this->doCreate($model)
+        $instance = $this->doCreate($model, $context)
             ->setLabel($model->label ?: $model->name)
             ->setNote((string) $model->note)
             ->setPriceDefinition(PriceDefinition::fromString((string) $model->price, (int) $model->tax_class))
@@ -49,5 +50,5 @@ abstract class AbstractCheckoutMethodFactory implements ModelTypeFactoryInterfac
     /**
      * @return TType
      */
-    abstract protected function doCreate(Model $model): AbstractCheckoutMethod;
+    abstract protected function doCreate(Model $model, StoreContext $context): AbstractCheckoutMethod;
 }

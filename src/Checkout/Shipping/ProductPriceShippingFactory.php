@@ -4,32 +4,24 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Checkout\Shipping;
 
-use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use Contao\Model;
 use Isotope\CoreBundle\Model\Shipping;
-use Isotope\CoreBundle\RuleBuilder\RuleMatcher;
+use Isotope\CoreBundle\Store\Context\StoreContext;
 
 /**
  * @extends AbstractShippingFactory<ProductPriceShipping>
  */
 class ProductPriceShippingFactory extends AbstractShippingFactory
 {
-    public function __construct(
-        private readonly TokenChecker $tokenChecker,
-        private readonly RuleMatcher $ruleMatcher,
-    ) {
-    }
-
     /**
      * @param Shipping $model
      */
-    public function doCreate(Model $model): AbstractShipping
+    public function doCreate(Model $model, StoreContext $context): AbstractShipping
     {
         return new ProductPriceShipping(
             $model->id,
+            $context,
             ProductCalculation::from($model->productCalculation),
-            $this->tokenChecker,
-            $this->ruleMatcher,
         );
     }
 }

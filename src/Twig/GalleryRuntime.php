@@ -10,6 +10,7 @@ use Isotope\CoreBundle\Model\Gallery;
 use Isotope\CoreBundle\ModelType\GalleryRegistry;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\Render\ViewInterface;
+use Isotope\CoreBundle\Store\StoreManager;
 use Twig\Environment;
 use Twig\Extension\RuntimeExtensionInterface;
 
@@ -19,6 +20,7 @@ class GalleryRuntime implements RuntimeExtensionInterface
         private readonly GalleryRegistry $galleryRegistry,
         private readonly Studio $imageStudio,
         private readonly Environment $twig,
+        private readonly StoreManager $storeManager,
     ) {
     }
 
@@ -32,8 +34,7 @@ class GalleryRuntime implements RuntimeExtensionInterface
 
         $galleryId ??= $view->getGallery($product);
         $model = $galleryId > 0 ? Gallery::findById($galleryId) : null;
-
-        $gallery = $model ? $this->galleryRegistry->get($model) : new StandardGallery(0, $this->imageStudio, $this->twig);
+        $gallery = $model ? $this->galleryRegistry->get($model, $this->storeManager->getCurrentContext()) : new StandardGallery(0, $this->imageStudio, $this->twig);
 
         return $gallery->build($product, $attributeName, $view?->getProductReference($product));
     }

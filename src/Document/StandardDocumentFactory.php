@@ -11,6 +11,7 @@ use Contao\Model;
 use Isotope\CoreBundle\Model\Document;
 use Isotope\CoreBundle\ModelType\ModelInstanceTrait;
 use Isotope\CoreBundle\ModelType\ModelTypeFactoryInterface;
+use Isotope\CoreBundle\Store\Context\StoreContext;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
@@ -31,7 +32,7 @@ class StandardDocumentFactory implements ModelTypeFactoryInterface
     /**
      * @param Document $model
      */
-    public function create(Model $model): StandardDocument
+    public function create(Model $model, StoreContext $context): StandardDocument
     {
         $this->validateInstanceOf($model, Document::class);
 

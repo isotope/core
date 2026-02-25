@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\ModelType;
 
 use Contao\Model;
+use Isotope\CoreBundle\Store\Context\StoreContext;
 
 /**
  * @template TType of object
@@ -17,5 +18,5 @@ interface ModelTypeFactoryInterface
      *
      * @return TType
      */
-    public function create(Model $model): object;
+    public function create(Model $model, StoreContext $context): object;
 }

@@ -9,6 +9,7 @@ use Isotope\CoreBundle\Model\Gallery;
 use Isotope\CoreBundle\ModelType\ModelInstanceTrait;
 use Isotope\CoreBundle\ModelType\ModelTypeFactoryInterface;
 use Isotope\CoreBundle\ModelType\SerializedPropertyTrait;
+use Isotope\CoreBundle\Store\Context\StoreContext;
 
 /**
  * @template TType of AbstractGallery
@@ -25,7 +26,7 @@ abstract class AbstractGalleryFactory implements ModelTypeFactoryInterface
      *
      * @return TType
      */
-    public function create(Model $model): AbstractGallery
+    public function create(Model $model, StoreContext $context): AbstractGallery
     {
         $this->validateInstanceOf($model, Gallery::class);
 
