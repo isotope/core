@@ -4,16 +4,14 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Controller\Page;
 
-use Contao\CoreBundle\Controller\AbstractController;
+use Contao\CoreBundle\Controller\Page\AbstractPageController;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsPage;
 use Contao\CoreBundle\Exception\BadRequestException;
 use Contao\CoreBundle\Exception\ForwardPageNotFoundException;
 use Contao\CoreBundle\Exception\PageNotFoundException;
 use Contao\CoreBundle\Routing\ResponseContext\CoreResponseContextFactory;
 use Contao\CoreBundle\Routing\ResponseContext\HtmlHeadBag\HtmlHeadBag;
-use Contao\CoreBundle\Routing\ResponseContext\ResponseContextAccessor;
 use Contao\CoreBundle\String\HtmlDecoder;
-use Contao\FrontendIndex;
 use Contao\Input;
 use Contao\PageModel;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
@@ -31,11 +29,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 #[AsPage('iso_products')]
-class ProductsPageController extends AbstractController
+class ProductsPageController extends AbstractPageController
 {
     public function __construct(
         private readonly CoreResponseContextFactory $responseContextFactory,
-        private readonly ResponseContextAccessor $responseContextAccessor,
         private readonly HtmlDecoder $htmlDecoder,
         private readonly ProductCategoryUtil $productCategoryUtil,
         private readonly AttributeRegistry $attributeRegistry,
@@ -51,7 +48,7 @@ class ProductsPageController extends AbstractController
         $alias = ltrim($request->attributes->getString('parameters'), '/');
 
         if (!$alias) {
-            return $this->renderPage($pageModel, $request);
+            return $this->buildPage($pageModel, $request);
         }
 
         $product = Product::findByMultilingualAliasOrId($alias);
@@ -73,13 +70,13 @@ class ProductsPageController extends AbstractController
                 throw new ForwardPageNotFoundException();
             }
 
-            return $this->renderPage($readerPage, $request, $product);
+            return $this->buildPage($readerPage, $request, $product);
         }
 
-        return $this->renderPage($pageModel, $request, $product);
+        return $this->buildPage($pageModel, $request, $product);
     }
 
-    private function renderPage(PageModel $pageModel, Request $request, CoreProduct|null $product = null): Response
+    private function buildPage(PageModel $pageModel, Request $request, CoreProduct|null $product = null): Response
     {
         $pageModel->loadDetails();
         $originalPageModel = $request->attributes->get('pageModel');
@@ -114,9 +111,7 @@ class ProductsPageController extends AbstractController
             }
         }
 
-        $this->responseContextAccessor->setResponseContext($context);
-
-        $response = (new FrontendIndex())->renderPage($pageModel);
+        $response = $this->renderPage($pageModel, $context);
         $response->setVary('Isotope-Fragment', false);
 
         // A response exception should have been thrown by the fragment on this page
