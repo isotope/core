@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-#[Route('%contao.backend.route_prefix%/isotope-mediamanager-upload', 'iso_mediamanager_upload', defaults: ['_scope' => 'backend', '_store_referrer' => false, '_token_check' => false], methods: ['POST'])]
+#[Route('%contao.backend.route_prefix%/isotope-mediamanager-upload', 'iso_mediamanager_upload', defaults: ['_scope' => 'backend', '_token_check' => false], methods: ['POST'])]
 class MediaManagerUploadController extends AbstractController
 {
     private const NAME = 'file';
