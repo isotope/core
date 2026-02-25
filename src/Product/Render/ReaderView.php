@@ -22,7 +22,7 @@ class ReaderView extends AbstractView
     public static function createFromContent(ContentModel $model): self
     {
         return new self(
-            'cte'.($model->origId ?: $model->id),
+            'cte'.$model->id,
             $model->iso_reader_layout ?: null,
             $model->iso_gallery ? (int) $model->iso_gallery : null,
             $model->row(),

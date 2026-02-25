@@ -60,9 +60,7 @@ abstract class AbstractContentElementController extends CoreContentElementContro
 
     protected function getFragmentId(array $modelData): string
     {
-        $id = $modelData['origId'] ?? $modelData['id'];
-
-        return 'cte'.($id ?: '-'.substr(md5(serialize($modelData)), 0, 8));
+        return 'cte'.($modelData['id'] ?: '-'.substr(md5(serialize($modelData)), 0, 8));
     }
 
     protected function getStoreContext(): StoreContext
