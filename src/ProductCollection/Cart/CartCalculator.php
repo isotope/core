@@ -60,6 +60,7 @@ class CartCalculator
     {
         $toCalculate = $this->cartFactory->create($context);
 
+        $toCalculate->setId($cart->getId());
         $toCalculate->setBillingAddress($cart->getBillingAddress());
         $toCalculate->setShippingAddress($cart->getShippingAddress());
         $toCalculate->setShippingMethod($cart->getShippingMethod());

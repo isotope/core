@@ -17,6 +17,8 @@ use Symfony\Contracts\Translation\TranslatableInterface;
  */
 abstract class AbstractProductCollection
 {
+    protected int|null $id = null;
+
     protected LineItemCollection $lineItems;
 
     private array $subtotals = [];
@@ -38,6 +40,18 @@ abstract class AbstractProductCollection
     public function getIdentifier(): string
     {
         return $this->identifier;
+    }
+
+    public function getId(): int|null
+    {
+        return $this->id;
+    }
+
+    public function setId(int|null $collectionId): self
+    {
+        $this->id = $collectionId;
+
+        return $this;
     }
 
     abstract public static function getType(): string;

@@ -38,6 +38,8 @@ class ProductCollectionStorage
      */
     public function load(AbstractProductCollection $collection, ProductCollection $collectionModel, StoreContext $context): AbstractProductCollection
     {
+        $collection->setId((int) $collectionModel->id);
+
         return $this->transactionDispatcher->dispatch(
             new LoadCollectionTransaction($collection, $collectionModel, $context),
             function (AbstractProductCollection $collection, ProductCollection $collectionModel, StoreContext $context) {
