@@ -52,6 +52,10 @@ class AddressValidator
 
             if ('country' === $field) {
                 $constraints[] = new Assert\Country();
+
+                if ([] !== $addressConfig->getCountryCodes()) {
+                    $constraints[] = new Assert\Choice(choices: $addressConfig->getCountryCodes());
+                }
             }
 
             if ($addressConfig->isMandatory($field)) {
