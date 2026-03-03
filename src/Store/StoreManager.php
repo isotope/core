@@ -13,6 +13,7 @@ use Isotope\CoreBundle\ProductCollection\LockableCollectionInterface;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Context\StoreContextException;
 use Isotope\CoreBundle\Store\Context\StoreContextFactory;
+use Isotope\CoreBundle\Util\StringUtil;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\HttpFoundation\Request;
@@ -96,7 +97,7 @@ class StoreManager
             $collection->store_id,
             Config::findById($collection->config_id),
             $collection->language ?? $GLOBALS['TL_LANGUAGE'], // TODO: a collection must always have a language!
-            $collection->uniqid ?? $this->generateCookieId(), // TODO: a collection must always have an ID!
+            $collection->uniqid ?? StringUtil::generateRandomId(), // TODO: a collection must always have an ID!
             $collection->member ?: null,
         );
 
@@ -142,7 +143,7 @@ class StoreManager
             (int) $rootPage->iso_store_id,
             $config,
             $request->getLocale(),
-            $guestCartId ?? $this->generateCookieId(),
+            $guestCartId ?? StringUtil::generateRandomId(),
             $memberId,
         );
     }
@@ -156,18 +157,5 @@ class StoreManager
         }
 
         return null;
-    }
-
-    private function generateCookieId(): string
-    {
-        if (!function_exists('random_bytes')) {
-            return uniqid('', true);
-        }
-
-        try {
-            return bin2hex(random_bytes(32));
-        } catch (\Exception) {
-            return uniqid('', true);
-        }
     }
 }

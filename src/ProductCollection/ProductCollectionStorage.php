@@ -52,9 +52,7 @@ class ProductCollectionStorage
 
     public function save(AbstractProductCollection $collection, StoreContext $context): void
     {
-        if (!$collection instanceof Cart) {
-            throw new InvalidArgumentException('Argument must be a cart');
-        }
+        // TODO: check if collection is locked
 
         $model = ProductCollection::findByIdentifier($collection->getIdentifier(), $collection->getType(), $context->getStoreId());
 
@@ -69,6 +67,7 @@ class ProductCollectionStorage
         $model->config_id = $context->getConfigId();
         $model->language = $context->getLocale();
         $model->currency = $context->getCurrency()->getCode();
+        $model->member = (int) $context->getMemberId();
 
         // TODO: save price etc.
 
@@ -84,9 +83,9 @@ class ProductCollectionStorage
 
     public function delete(ProductCollection $model): bool
     {
-        return $this->transactionDispatcher->dispatch(new DeleteCollectionTransaction($model), function (ProductCollection $model) {
-            $pid = $model->id;
-            $affectedRows = $model->delete();
+        return $this->transactionDispatcher->dispatch(new DeleteCollectionTransaction($model), function (ProductCollection $collectionModel) {
+            $pid = $collectionModel->id;
+            $affectedRows = $collectionModel->delete();
 
             if (!$pid || !$affectedRows) {
                 return false;

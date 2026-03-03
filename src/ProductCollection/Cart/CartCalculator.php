@@ -49,7 +49,7 @@ class CartCalculator
             $cart = $toCalculate;
 
             if ($setter) {
-                $setter($cart);
+                $setter($cart, $context);
             }
         }
 
@@ -58,7 +58,7 @@ class CartCalculator
 
     private function prepare(Cart $cart, StoreContext $context): Cart
     {
-        $toCalculate = $this->cartFactory->create($context);
+        $toCalculate = $this->cartFactory->create($context, $cart->getIdentifier());
 
         $toCalculate->setId($cart->getId());
         $toCalculate->setBillingAddress($cart->getBillingAddress());

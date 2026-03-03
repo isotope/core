@@ -63,6 +63,19 @@ class ProductCollection extends Model
         return self::findBy($columns, $values, $options);
     }
 
+    /**
+     * @return Collection<self>|null
+     */
+    public static function findOneByMember(int $memberId, string $type, int $storeId = null, array $options = []): self|null
+    {
+        $t = self::$strTable;
+
+        $columns = ["$t.member=?", "$t.type=?", "$t.store_id=?"];
+        $values = [$memberId, $type, $storeId];
+
+        return self::findOneBy($columns, $values, $options);
+    }
+
     public static function findByIdentifier(string $identifier, string $type, int|null $storeId = null, array $options = []): self|null
     {
         $t = self::$strTable;
