@@ -1,0 +1,31 @@
+{% trans_default_domain 'contao_default' %}
+
+{% if form|default %}
+    {% block form %}
+        {{ form }}
+    {% endblock %}
+{% else %}
+    <input type="hidden" name="REQUEST_TOKEN" value="{{ contao.request_token }}">
+    {% if addresses is not empty %}
+        <ul>
+            {% for address in addresses %}
+                <li>
+                    {% block address %}
+                        <div class="address">{{ address }}</div>
+                    {% endblock %}
+                    {% block address_buttons %}
+                        <div class="buttons">
+                            <button type="submit" name="edit_address_{{ identifier }}" value="{{ address.data.id }}">{{ 'MSC.editAddressLabel'|trans }}</button>
+                            <button type="submit" name="delete_address_{{ identifier }}" value="{{ address.data.id }}" onclick="return confirm('{{ 'MSC.deleteAddressConfirm'|trans|e('js') }}')">{{ 'MSC.deleteAddressLabel'|trans }}</button>
+                        </div>
+                    {% endblock %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="message empty">{{ 'ERR.noAddressBookEntries'|trans }}</p>
+    {% endif %}
+
+    <button type="submit" name="create_address_{{ identifier }}" value="1">{{ 'MSC.createNewAddressLabel'|trans }}</button>
+
+{% endif %}

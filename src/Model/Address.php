@@ -47,6 +47,20 @@ class Address extends Model
     }
 
     /**
+     * Find addresses for parent table, parent ID and store ID.
+     *
+     * @return Collection<Address>|null
+     */
+    public static function findByParentAndStoreId(string $ptable, int $pid, int $storeId, array $options = array()): Collection|null
+    {
+        return static::findBy(
+            array('ptable=?', 'pid=?', 'store_id=?'),
+            array($ptable, $pid, $storeId),
+            $options
+        );
+    }
+
+    /**
      * Find addresses for member and store ID.
      *
      * @return Collection<Address>|null
@@ -61,19 +75,16 @@ class Address extends Model
     }
 
     /**
-     * Find address by ID and member, automatically checking the current store ID and tl_member parent table
+     * Find addresses for product collection and store ID.
      *
-     * @param int   $intId
-     * @param int   $intMember
-     *
-     * @return Address|null
+     * @return Collection<Address>|null
      */
-    public static function findOneForMember($intId, $intMember, array $arrOptions = array())
+    public static function findByCollectionAndStoreId(int $collection, int $storeId, array $options = array()): Collection|null
     {
-        return static::findOneBy(
-            array('id=?', 'pid=?', 'ptable=?', 'store_id=?'),
-            array($intId, $intMember, 'tl_member', Isotope::getCart()->store_id),
-            $arrOptions
+        return static::findBy(
+            array('pid=?', 'ptable=?', 'store_id=?'),
+            array($collection, 'tl_iso_product_collection', $storeId),
+            $options
         );
     }
 
