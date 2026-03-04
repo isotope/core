@@ -5,21 +5,18 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Store\Address;
 
 use Codefog\HasteBundle\Form\Form;
-use Contao\ContentModel;
-use Contao\CoreBundle\Exception\RedirectResponseException;
 use Contao\CoreBundle\Intl\Countries;
 use Isotope\CoreBundle\Model\Address;
-use Isotope\CoreBundle\Twig\TemplateContext;
+use Isotope\CoreBundle\Twig\TemplateMarkup;
+use Isotope\CoreBundle\Twig\TemplateMarkupFactory;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig\Environment;
 
 class FormBuilder
 {
     public function __construct(
         private readonly AddressValidator $addressValidator,
-        private readonly Environment $twig,
         private readonly Countries $countries,
+        private readonly TemplateMarkupFactory $markupFactory,
     ) {
     }
 
@@ -69,14 +66,14 @@ class FormBuilder
         return true;
     }
 
-    public function render(Form $form, array $errors = []): TemplateContext
+    public function render(Form $form, array $errors = []): TemplateMarkup
     {
         $templateObject = $form->getHelperObject();
         $templateObject->class = '';
         $templateObject->errors = $errors;
         $templateObject->formSubmit = $templateObject->formId;
 
-        return new TemplateContext($this->twig, '@Contao/form_inline.html.twig', (array) $templateObject);
+        return $this->markupFactory->create('@Contao/form_inline.html.twig', (array) $templateObject);
     }
 
     private function addDcaField(string &$field, array &$config, AddressConfig $addressConfig, string $prefix): bool

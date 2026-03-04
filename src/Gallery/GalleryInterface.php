@@ -6,11 +6,11 @@ namespace Isotope\CoreBundle\Gallery;
 
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Routing\ProductReference;
-use Isotope\CoreBundle\Twig\TemplateContext;
+use Isotope\CoreBundle\Twig\TemplateMarkup;
 
 interface GalleryInterface
 {
     public function getId(): int;
 
-    public function build(CoreProduct $product, string $attribute, ProductReference|null $productReference = null): TemplateContext|null;
+    public function build(CoreProduct $product, string $attribute, ProductReference|null $productReference = null): TemplateMarkup|null;
 }

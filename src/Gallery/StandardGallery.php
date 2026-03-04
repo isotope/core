@@ -8,8 +8,8 @@ use Contao\CoreBundle\Image\Studio\Studio;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsGallery;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Routing\ProductReference;
-use Isotope\CoreBundle\Twig\TemplateContext;
-use Twig\Environment;
+use Isotope\CoreBundle\Twig\TemplateMarkup;
+use Isotope\CoreBundle\Twig\TemplateMarkupFactory;
 
 #[AsGallery]
 class StandardGallery extends AbstractGallery
@@ -17,15 +17,15 @@ class StandardGallery extends AbstractGallery
     public function __construct(
         int $id,
         string $template,
-        protected readonly Environment $twig,
-        protected readonly Studio $imageStudio,
+        private readonly TemplateMarkupFactory $markupFactory,
+        private readonly Studio $imageStudio,
     ) {
         parent::__construct($id, $template);
     }
 
-    public function build(CoreProduct $product, string $attribute, ProductReference|null $productReference = null): TemplateContext|null
+    public function build(CoreProduct $product, string $attribute, ProductReference|null $productReference = null): TemplateMarkup|null
     {
-        return new TemplateContext($this->twig, $this->getTemplate(), [
+        return $this->markupFactory->create($this->getTemplate(), [
             'files' => $this->getFiles($product, $attribute),
             'gallery' => $this,
             'product' => $product,

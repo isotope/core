@@ -24,7 +24,7 @@ class GalleryRuntime implements RuntimeExtensionInterface
     ) {
     }
 
-    public function get(array $context, CoreProduct $product, string $attributeName, int|null $galleryId = null): TemplateContext|null
+    public function get(array $context, CoreProduct $product, string $attributeName, int|null $galleryId = null): TemplateMarkup|null
     {
         $view = $context['view'] ?? null;
 

@@ -9,22 +9,22 @@ use Contao\StringUtil;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\Event\ProductPriceEvent;
 use Isotope\CoreBundle\Store\Context\ProductContext;
-use Isotope\CoreBundle\Twig\TemplateContext;
+use Isotope\CoreBundle\Twig\TemplateMarkup;
+use Isotope\CoreBundle\Twig\TemplateMarkupFactory;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Twig\Environment;
 
 class DefaultProductRenderer implements ProductRendererInterface
 {
     public function __construct(
-        private readonly Environment $twig,
         private readonly ProductConfigurationFactory $configurationFactory,
         private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly TemplateMarkupFactory $markupFactory,
     ) {
     }
 
-    public function render(ProductContext $productContext, ViewInterface $view, Request $request): TemplateContext
+    public function render(ProductContext $productContext, ViewInterface $view, Request $request): TemplateMarkup
     {
         $product = $productContext->getProduct();
         $type = $product->getProductType();
@@ -54,7 +54,7 @@ class DefaultProductRenderer implements ProductRendererInterface
             'isActive' => $request->attributes->get('_content') instanceof CoreProduct && $request->attributes->get('_content')?->getProductId() === $product->getProductId(),
         ];
 
-        $template = new TemplateContext($this->twig, $view->getTemplate($product), $context);
+        $template = $this->markupFactory->create($view->getTemplate($product), $context);
 
         if (
             $useOptions

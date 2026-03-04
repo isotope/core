@@ -5,19 +5,26 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Twig;
 
 use Hashids\Hashids;
-use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Twig\Environment;
 use Twig\Extension\AbstractExtension;
+use Twig\Runtime\EscaperRuntime;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
-#[Autoconfigure(bind: [
-    '$hashids' => '@isotope.hashids',
-])]
+/**
+ * @internal
+ */
 class IsotopeExtension extends AbstractExtension
 {
     public function __construct(
-        private readonly Hashids $hashids,
+        private readonly Environment $environment,
+        #[Autowire(service: 'isotope.hashids')] private readonly Hashids $hashids,
     ) {
+        $this->environment
+            ->getRuntime(EscaperRuntime::class)
+            ->addSafeClass(TemplateMarkup::class, ['html', 'contao_html'])
+        ;
     }
 
     public function getFilters(): array

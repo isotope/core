@@ -7,21 +7,14 @@ namespace Isotope\CoreBundle\Twig;
 use Symfony\Component\DependencyInjection\Exception\RuntimeException;
 use Traversable;
 use Twig\Environment;
-use Twig\Runtime\EscaperRuntime;
 
-final class TemplateContext implements \ArrayAccess, \IteratorAggregate, \Countable
+final class TemplateMarkup implements \ArrayAccess, \IteratorAggregate, \Countable, \Stringable
 {
-    private static bool $safe = false;
-
     public function __construct(
         private readonly Environment $twig,
         private readonly string $template,
         private readonly array $context,
     ) {
-        if (!self::$safe) {
-            self::$safe = true;
-            $this->twig->getRuntime(EscaperRuntime::class)->addSafeClass(self::class, ['html', 'contao_html']);
-        }
     }
 
     public function __toString(): string

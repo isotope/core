@@ -16,7 +16,6 @@ use Isotope\CoreBundle\Store\Price\PriceDisplay;
 use Isotope\CoreBundle\Store\StoreManager;
 use Isotope\Isotope;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Twig\Environment;
 use Twig\Extension\RuntimeExtensionInterface;
 
 class ProductRuntime implements RuntimeExtensionInterface
@@ -24,11 +23,11 @@ class ProductRuntime implements RuntimeExtensionInterface
     public function __construct(
         private readonly StoreManager $storeManager,
         private readonly RequestStack $requestStack,
-        private readonly Environment $twig,
+        private readonly TemplateMarkupFactory $markupFactory,
     ) {
     }
 
-    public function generateProduct(CoreProduct $product, ViewInterface $view): TemplateContext
+    public function generateProduct(CoreProduct $product, ViewInterface $view): TemplateMarkup
     {
         return $product->getRenderer()->render(
             new ProductContext($product, $this->storeManager->getCurrentContext()),
@@ -42,7 +41,7 @@ class ProductRuntime implements RuntimeExtensionInterface
      *
      * @return array{amount: float, money: MoneyFormat, currency: Currency}|null
      */
-    public function generatePrice(CalculatedPrice|LineItem|Product|null $productOrItem = null, string|null $key = null, bool $html = true): TemplateContext|null
+    public function generatePrice(CalculatedPrice|LineItem|Product|null $productOrItem = null, string|null $key = null, bool $html = true): TemplateMarkup|null
     {
         $price = $productOrItem instanceof CalculatedPrice ? $productOrItem : null;
 
@@ -87,7 +86,7 @@ class ProductRuntime implements RuntimeExtensionInterface
         $data['gross_total_price'] = $data['gross_unit_price'] * $price->getQuantity();
         $data['amount'] = $key ? ($data[$key] ?? null) : null;
 
-        return new TemplateContext($this->twig, '@Contao/component/_isotope_price.html.twig', $data);
+        return $this->markupFactory->create('@Contao/component/_isotope_price.html.twig', $data);
     }
 
     public function generateBasePrice(array $context): string

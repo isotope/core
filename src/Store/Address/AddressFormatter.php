@@ -6,21 +6,21 @@ namespace Isotope\CoreBundle\Store\Address;
 
 use Contao\CoreBundle\DataContainer\ValueFormatter;
 use Isotope\CoreBundle\Model\Address;
-use Isotope\CoreBundle\Twig\TemplateContext;
+use Isotope\CoreBundle\Twig\TemplateMarkup;
+use Isotope\CoreBundle\Twig\TemplateMarkupFactory;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Twig\Environment;
 
 #[Autoconfigure(public: true)] // TODO: remove public:true once Address model does not longer need it
 class AddressFormatter
 {
     public function __construct(
-        private readonly Environment $twig,
         #[Autowire(service: 'contao.data_container.value_formatter')] private readonly ValueFormatter $formatter,
+        private readonly TemplateMarkupFactory $markupFactory,
     ) {
     }
 
-    public function get(Address $address, AddressConfig $config): TemplateContext
+    public function get(Address $address, AddressConfig $config): TemplateMarkup
     {
         $data = array_intersect_key($address->row(), array_flip($config->getFields()));
 
@@ -35,7 +35,7 @@ class AddressFormatter
             $data['data']['country'] = $config->getDefaultCountryCode();
         }
 
-        return new TemplateContext($this->twig, '@Contao/isotope/address.html.twig', $data);
+        return $this->markupFactory->create('@Contao/isotope/address.html.twig', $data);
     }
 
     public function getText(Address $address, AddressConfig $config): string
