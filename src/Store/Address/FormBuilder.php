@@ -89,6 +89,11 @@ class FormBuilder
             unset($config['options_callback']);
         }
 
+        if (isset($config['eval']['conditionField'])) {
+            // Special field type "conditionalselect"
+            $config['eval']['conditionField'] = $prefix.$config['eval']['conditionField'];
+        }
+
         $config['boundName'] = $field;
         $field = $prefix.$field;
 
