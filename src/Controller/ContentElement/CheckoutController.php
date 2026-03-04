@@ -68,47 +68,9 @@ class CheckoutController extends AbstractContentElementController
         $template->collection = $cart;
 
         if ($allCompleted && $request->isMethod(Request::METHOD_POST) && $request->request->getBoolean('place_order')) {
-            /*$data = [
-            'member' => 0,
-            'config_id' => $context->getConfigId(),
-            'store_id' => $context->getStoreId(),
-            //'billing_address' => $cart->getBillingAddress()?->row() ?? [],
-            'billing_address' => (new Address())->setRow([
-                'company' => 'Musterfirma',
-                'firstname' => 'Max',
-                'lastname' => 'Muster',
-                'street_1' => 'Musterstrasse 1',
-                'postal' => '0000',
-                'city' => 'Musterhausen',
-                //'country' => 'CH',
-            ]),
+            $this->cartManager->order($cart, $context);
 
-            'payment_id' => 0,
-            'payment_data' => null,
-
-            'shipping_id' => 0,
-            'shipping_data' => null,
-
-            'line_items' => [],
-            'subtotal' => 0,
-            'total' => 0,
-            'currency' => $context->getCurrency()->getCode(),
-            'locale' => $context->getLocale(),
-
-            'order_status' => 1,
-            //'date_paid' => null,
-            //'date_shipped' => null,
-
-            'notes' => 'foo',
-        ];
-
-        if ($shippingAddress = $cart->getShippingAddress()) {
-            $data['shipping_address'] = $shippingAddress->row();
-        }
-
-        $this->orderManager->createOrder($data, $context);
-*/
-        dd('test');
+            throw new RedirectResponseException($this->generateContentUrl(PageModel::findById($config['orderCompleteJumpTo'])));
         }
 
         return $template->getResponse();

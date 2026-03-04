@@ -8,10 +8,13 @@ use Isotope\CoreBundle\Model\ProductCollection;
 use Isotope\CoreBundle\ProductCollection\Cart\Cart;
 use Isotope\CoreBundle\ProductCollection\Cart\CartCalculator;
 use Isotope\CoreBundle\ProductCollection\Cart\CartFactory;
+use Isotope\CoreBundle\ProductCollection\Event\CartConvertedEvent;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItemCollection;
 use Isotope\CoreBundle\ProductCollection\ProductCollectionStorage;
 use Isotope\CoreBundle\Store\Context\StoreContext;
+use Isotope\CoreBundle\Store\Order\OrderConverter;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Contracts\Service\ResetInterface;
 
@@ -30,6 +33,7 @@ class CartManager implements ResetInterface
         private readonly CartFactory $cartFactory,
         private readonly ProductCollectionStorage $storage,
         private readonly CartCalculator $calculator,
+        private readonly OrderManager $orderManager, private readonly OrderConverter $orderConverter, private readonly ProductCollectionStorage $productCollectionStorage,
     ) {
     }
 
@@ -129,7 +133,7 @@ class CartManager implements ResetInterface
 
     public function deleteCart(StoreContext $context): void
     {
-        $cart = ProductCollection::findByIdentifier($context->getIdentifier(), Cart::COLLECTION_TYPE, $context->getStoreId());
+        $cart = ProductCollection::findByIdentifier($context->getIdentifier(), Cart::getType(), $context->getStoreId());
 
         if ($cart) {
             $this->storage->delete($cart);
@@ -139,5 +143,37 @@ class CartManager implements ResetInterface
     public function reset(): void
     {
         $this->cart = [];
+    }
+
+    public function order(Cart $cart, StoreContext $context): string
+    {
+        $cart = $this->calculator->calculate($cart, $context);
+
+        $data = $this->orderConverter->convertToOrder($cart, $context);
+
+        $data += [
+            'order_status' => 1,
+            //'date_paid' => null,
+            //'date_shipped' => null,
+        ];
+
+        $this->orderManager->createOrder($data, $context);
+
+        if (isset($this->cart[$context->getIdentifier()])) {
+            unset($this->cart[$context->getIdentifier()]);
+        }
+
+        // TODO: duplicate the same way we duplicate on recalculate
+        $newCart = $this->createNew($context);
+        $newCart->setBillingAddress($cart->getBillingAddress());
+        $newCart->setShippingAddress($cart->getShippingAddress());
+        $newCart->setShippingMethod($cart->getShippingMethod());
+        $newCart->setPaymentMethod($cart->getPaymentMethod());
+
+        if ($model = ProductCollection::findByIdentifier($cart->getIdentifier(), Cart::getType())) {
+            $this->productCollectionStorage->delete($model);
+        }
+
+        return 'FOO'; //$orderId;
     }
 }

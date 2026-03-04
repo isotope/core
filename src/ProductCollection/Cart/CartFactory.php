@@ -22,8 +22,8 @@ class CartFactory
 
     public function load(StoreContext $context): Cart|null
     {
-        $cartModel = $context->getMemberId() ? ProductCollection::findOneByMember($context->getMemberId(), Cart::COLLECTION_TYPE, $context->getStoreId()) : null;
-        $guestCartModel = ProductCollection::findByIdentifier($context->getIdentifier(), Cart::COLLECTION_TYPE, $context->getStoreId());
+        $cartModel = $context->getMemberId() ? ProductCollection::findOneByMember($context->getMemberId(), Cart::getType(), $context->getStoreId()) : null;
+        $guestCartModel = ProductCollection::findByIdentifier($context->getIdentifier(), Cart::getType(), $context->getStoreId());
 
         if (!$cartModel && $guestCartModel) {
             $cartModel = $guestCartModel;

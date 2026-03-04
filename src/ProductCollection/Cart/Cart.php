@@ -14,7 +14,7 @@ class Cart extends AbstractProductCollection
 {
     use ClosureTrait;
 
-    public const string COLLECTION_TYPE = 'cart';
+    private const string COLLECTION_TYPE = 'cart';
 
     private bool $isModified = false;
 

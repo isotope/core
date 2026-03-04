@@ -14,6 +14,7 @@ use Isotope\Isotope;
  * @property int    $id
  * @property int    $pid
  * @property string $ptable
+ * @property int    $tstamp
  * @property int    $store_id
  * @property string $gender
  * @property string $salutation
