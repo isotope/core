@@ -35,11 +35,11 @@ class LoadCartMetadataListener
         $cart->setBillingAddress(fn () => $this->loadAddress((int) $cartModel?->billing_address_id, $context->getDefaultBillingAddress()));
         $cart->setShippingAddress(fn () => $this->loadAddress((int) $cartModel?->shipping_address_id));
 
-        if ($paymentId = $cartModel?->payment_id ?: $context->getPaymentIds()[0] ?? null) {
+        if ($paymentId = $cartModel?->payment_id) {
             $cart->setPaymentMethod(fn () => $this->paymentRegistry->get(Payment::findById($paymentId), $context));
         }
 
-        if ($shippingId = $cartModel?->shipping_id ?: $context->getShippingIds()[0] ?? null) {
+        if ($shippingId = $cartModel?->shipping_id) {
             $cart->setShippingMethod(fn () => $this->shippingRegistry->get(Shipping::findById($shippingId), $context));
         }
     }
