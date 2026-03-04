@@ -80,7 +80,7 @@ class Callback extends Backend
                         /** @var StoreManager $storeManager */
                         $storeManager = System::getContainer()->get(StoreManager::class);
 
-                        $arrTokens = $addressFormatter->get($objAddress, $storeManager->getCurrentContext()->getBillingAddressConfig())->getContext();
+                        $arrTokens = $addressFormatter->toHtml($objAddress, $storeManager->getCurrentContext()->getBillingAddressConfig())->getContext();
                     }
                     break;
 

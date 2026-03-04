@@ -23,7 +23,7 @@ class LabelListener
         $address = new Address();
         $address->setRow($row);
 
-        return (string) $this->addressFormatter->get(
+        return (string) $this->addressFormatter->toHtml(
             $address,
             $this->storeManager->getCurrentContext()->getBillingAddressConfig(),
         );

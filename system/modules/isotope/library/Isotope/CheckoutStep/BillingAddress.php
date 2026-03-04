@@ -64,7 +64,7 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
             $addressConfig = $storeManager->getCurrentContext()->getBillingAddressConfig();
 
             $this->Template->class = $this->getStepClass();
-            $this->Template->options = (string) $addressFormatter->get($address, $addressConfig);
+            $this->Template->options = (string) $addressFormatter->toHtml($address, $addressConfig);
             $this->Template->fields = '';
 
             return $this->Template->parse();
@@ -109,7 +109,7 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
         return array('billing_address' => array
         (
             'headline' => $strHeadline,
-            'info'     => (string) $addressFormatter->get($objBillingAddress, $addressConfig),
+            'info'     => (string) $addressFormatter->toHtml($objBillingAddress, $addressConfig),
             'edit'     => $canEdit ? Checkout::generateUrlForStep(Checkout::STEP_ADDRESS) : '',
         ));
     }

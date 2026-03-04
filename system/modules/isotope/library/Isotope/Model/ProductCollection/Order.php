@@ -463,7 +463,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
                 $arrTokens['billing_' . $k] = $arrTokens['billing_address_' . $k];
             }
 
-            $arrTokens['billing_address'] = (string) $addressFormatter->get($objAddress, $storeManager->getCurrentContext()->getBillingAddressConfig());
+            $arrTokens['billing_address'] = (string) $addressFormatter->toHtml($objAddress, $storeManager->getCurrentContext()->getBillingAddressConfig());
 
             // @deprecated (use ##billing_address##)
             $arrTokens['billing_address_text'] = $arrTokens['billing_address'];
@@ -478,7 +478,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
                 $arrTokens['shipping_' . $k] = $arrTokens['shipping_address_' . $k];
             }
 
-            $arrTokens['shipping_address'] = (string) $addressFormatter->get($objAddress, $storeManager->getCurrentContext()->getShippingAddressConfig());
+            $arrTokens['shipping_address'] = (string) $addressFormatter->toHtml($objAddress, $storeManager->getCurrentContext()->getShippingAddressConfig());
 
             // Shipping address equals billing address
             // @deprecated (use ##shipping_address##)

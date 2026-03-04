@@ -20,7 +20,7 @@ class AddressFormatter
     ) {
     }
 
-    public function get(Address $address, AddressConfig $config): TemplateMarkup
+    public function toHtml(Address $address, AddressConfig $config): TemplateMarkup
     {
         $data = array_intersect_key($address->row(), array_flip($config->getFields()));
 
@@ -38,9 +38,9 @@ class AddressFormatter
         return $this->markupFactory->create('@Contao/isotope/address.html.twig', $data);
     }
 
-    public function getText(Address $address, AddressConfig $config): string
+    public function toText(Address $address, AddressConfig $config): string
     {
-        $output = (string) $this->get($address, $config);
+        $output = (string) $this->toHtml($address, $config);
 
         // Remove newlines in template and keep HTML <br> for newlines
         $output = str_replace(array("\n", '<br>'), array('', "\n"), $output);

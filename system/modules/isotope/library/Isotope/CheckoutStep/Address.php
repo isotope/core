@@ -353,7 +353,7 @@ abstract class Address extends CheckoutStep
 
                     $arrOptions[] = [
                         'value'   => $objAddress->id,
-                        'label'   => (string) $addressFormatter->get($objAddress, $addressConfig),
+                        'label'   => (string) $addressFormatter->toHtml($objAddress, $addressConfig),
                         'default' => $objAddress->id == ($objDefault->id ?? false) ? '1' : '',
                     ];
                 }

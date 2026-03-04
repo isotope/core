@@ -47,8 +47,8 @@ class AddressFormatterTest extends KernelTestCase
             $data['country'],
         );
 
-        $this->assertSame($expectedHTML, (string) $addressFormatter->get($address, $config));
-        $this->assertSame($expectedText, $addressFormatter->getText($address, $config));
+        $this->assertSame($expectedHTML, (string) $addressFormatter->toHtml($address, $config));
+        $this->assertSame($expectedText, $addressFormatter->toText($address, $config));
     }
 
     public static function addressProvider(): iterable

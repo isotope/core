@@ -73,7 +73,7 @@ class AddressManager
         return [
             'identifier' => $identifier,
             'addresses' => array_map(
-                fn ($address) => $this->addressFormatter->get($address, $addressConfig),
+                fn ($address) => $this->addressFormatter->toHtml($address, $addressConfig),
                 $addresses,
             ),
         ];
@@ -119,7 +119,7 @@ class AddressManager
                 'query' => 'DELETE FROM tl_iso_address WHERE id='.$addressId,
                 'affectedRows' => 1,
                 'data' => serialize(['tl_iso_address' => [$address->row()]]),
-                'preview' => (string) $this->addressFormatter->get($address, $addressConfig),
+                'preview' => (string) $this->addressFormatter->toHtml($address, $addressConfig),
             ]
         );
 
