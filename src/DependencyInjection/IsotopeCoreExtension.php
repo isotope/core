@@ -7,6 +7,7 @@ namespace Isotope\CoreBundle\DependencyInjection;
 use Isotope\CoreBundle\Attribute\AttributeFactoryInterface;
 use Isotope\CoreBundle\Backend\ShopConfig\ShopConfigInterface;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsAttribute;
+use Isotope\CoreBundle\DependencyInjection\Attribute\AsCheckoutStep;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsDocument;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsGallery;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsIsotopeHook;
@@ -85,6 +86,7 @@ class IsotopeCoreExtension extends ConfigurableExtension
             AsProductCollectionAction::class => AsProductCollectionAction::TAG_NAME,
             AsProductCollectionItemAction::class => AsProductCollectionItemAction::TAG_NAME,
             AsRuleCondition::class => AsRuleCondition::TAG_NAME,
+            AsCheckoutStep::class => AsCheckoutStep::TAG_NAME,
         ];
 
         foreach ($attributesForAutoconfiguration as $attributeClass => $tag) {

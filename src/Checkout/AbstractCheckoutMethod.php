@@ -25,8 +25,6 @@ abstract class AbstractCheckoutMethod extends AbstractModelType implements Conta
 
     protected float|null $price = null;
 
-    protected int $taxClass = 0;
-
     protected bool $percentage = false;
 
     protected int $rule = 0;
@@ -149,37 +147,6 @@ abstract class AbstractCheckoutMethod extends AbstractModelType implements Conta
         return $this;
     }
 
-    /**
-     * TODO: remove this
-     * @deprecated
-     */
-    public function isPercentage(): bool
-    {
-        return $this->percentage;
-    }
-
-    /**
-     * TODO: remove this
-     * @deprecated
-     */
-    public function getPercentage(): float
-    {
-        if (!$this->percentage) {
-            throw new UnexpectedValueException('Not have a percentage amount.');
-        }
-
-        return $this->price;
-    }
-
-    /**
-     * TODO: remove this
-     * @deprecated
-     */
-    public function getPercentageLabel(): string
-    {
-        return $this->isPercentage() ? $this->price.'%' : '';
-    }
-
     public function getLevel(): int
     {
         // TODO: allow to configure the level
@@ -198,54 +165,7 @@ abstract class AbstractCheckoutMethod extends AbstractModelType implements Conta
         return $this->priceDefinition;
     }
 
-    /**
-     * TODO: remove this
-     * @deprecated
-     */
-    public function getPrice(IsotopeOrderableCollection $collection): float|null
-    {
-        $price = $this->calculatePrice($collection);
-
-        if (null === $price) {
-            return null;
-        }
-
-        return Isotope::calculatePrice($price, $this, 'price', $this->taxClass);
-    }
-
-    /**
-     * TODO: remove this
-     * @deprecated
-     */
-    public function setPrice(float|null $price, bool $isPercentage): static
-    {
-        $this->price = $price;
-        $this->percentage = $isPercentage;
-
-        return $this;
-    }
-
-    /**
-     * TODO: remove this
-     * @deprecated
-     */
-    public function getTaxClass(IsotopeOrderableCollection $collection): int
-    {
-        return $this->taxClass;
-    }
-
-    /**
-     * TODO: remove this
-     * @deprecated
-     */
-    public function setTaxClass(int $taxClass): static
-    {
-        $this->taxClass = $taxClass;
-
-        return $this;
-    }
-
-    public function isAvailable(StoreContext $context): bool
+    public function isAvailable(): bool
     {
         if (!$this->enabled && !$this->get(TokenChecker::class)->isPreviewMode()) {
             return false;
@@ -286,11 +206,6 @@ abstract class AbstractCheckoutMethod extends AbstractModelType implements Conta
         }
 
         return true;
-    }
-
-    public function checkoutReview(IsotopeOrderableCollection $collection): string
-    {
-        return $this->getLabel($collection);
     }
 
     protected function calculatePrice(IsotopeProductCollection $collection): float|null

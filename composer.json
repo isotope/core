@@ -38,7 +38,7 @@
         "doctrine/dbal": "^4.3",
         "terminal42/contao-conditionalselectmenu": "^4.1",
         "terminal42/dcawizard": "^3.1",
-        "codefog/contao-haste": "^5.3.1",
+        "codefog/contao-haste": "^5.4",
         "terminal42/notification_center": "^2.6.1",
         "terminal42/dc_multilingual": "^4.7",
         "tecnickcom/tcpdf": "^6.2.22",

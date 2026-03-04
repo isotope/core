@@ -1,0 +1,120 @@
+{% trans_default_domain 'contao_default' %}
+{% extends '@Contao/isotope/checkout_step/_base.html.twig' %}
+
+{% block content %}
+    {% if edit_address|default %}
+        {% embed '@Contao/isotope/address_manager.html.twig' with edit_address only %}
+            {% block form %}
+                {% trans_default_domain 'contao_default' %}
+                {{ parent() }}
+                <a href="{{ app.request.requestUri }}" data-action="isotope--fragment#update">{{ 'MSC.cancelBT'|trans }}</a>
+            {% endblock %}
+        {% endembed %}
+    {% else %}
+        <form id="member_address" method="POST" data-action="isotope--fragment#submit">
+            <input type="hidden" name="REQUEST_TOKEN" value="{{ contao.request_token }}">
+            <input type="hidden" name="edit_address_step" value="1">
+        </form>
+
+        <form method="POST" data-action="isotope--fragment#submit">
+            <fieldset class="billing_address">
+                <legend>
+                    {% if requires_payment %}
+                        <h4>{{ 'MSC.billing_address'|trans }}</h4>
+                    {% else %}
+                        <h4>{{ 'MSC.customer_address'|trans }}</h4>
+                    {% endif %}
+                </legend>
+                {% if requires_payment %}
+                    <p>{{ 'MSC.billing_address_message'|trans }}</p>
+                {% else %}
+                    <p>{{ 'MSC.customer_address_message'|trans }}</p>
+                {% endif %}
+
+                <fieldset>
+                    {% embed '@Contao/isotope/address_manager.html.twig' with billing_address_manager|merge({ current: billing_address }) only %}
+                        {% block address %}
+                            <span>
+                                <input
+                                    id="opt_billing_address_{{ address.data.id }}"
+                                    type="radio"
+                                    form="member_address"
+                                    name="billing_address_id"
+                                    class="radio"
+                                    value="{{ address.data.id }}"
+                                    {% if addresses|length == 1 or address.data.id == current.id|default %} checked{% endif %}
+                                >
+                                <label for="opt_billing_address_{{ address.data.id }}">{{ address }}</label>
+                            </span>
+                        {% endblock %}
+                    {% endembed %}
+                </fieldset>
+            </fieldset>
+        </form>
+
+        {% if requires_shipping and shipping_address_manager|default %}
+            <form method="POST" data-action="isotope--fragment#submit">
+                <fieldset data-controller="isotope--toggle-attribute">
+                    <legend>
+                        <h4>{{ 'MSC.shipping_address'|trans }}</h4>
+                    </legend>
+                    <p>{{ 'MSC.shipping_address_guest_message'|trans }}</p>
+                    <fieldset class="radio_container">
+                        <span>
+                            <input
+                                id="ctrl_add_shipping_address_0"
+                                type="radio"
+                                name="add_shipping_address"
+                                class="radio"
+                                value=""
+                                {% if not add_shipping_address %} checked{% endif %}
+                                data-action="isotope--toggle-attribute#disable"
+                            >
+                            <label for="ctrl_add_shipping_address_0">
+                                {% if requires_payment %}
+                                    {{ 'MSC.useBillingAddress'|trans }}
+                                {% else %}
+                                    {{ 'MSC.useCustomerAddress'|trans }}
+                                {% endif %}
+                            </label>
+                        </span>
+                        <span>
+                            <input
+                                id="ctrl_add_shipping_address_1"
+                                type="radio"
+                                name="add_shipping_address"
+                                class="radio"
+                                value="1"
+                                data-action="isotope--toggle-attribute#enable"
+                                {% if add_shipping_address %} checked{% endif %}
+                            >
+                            <label for="ctrl_add_shipping_address_1">{{ 'MSC.differentShippingAddress'|trans }}</label>
+                        </span>
+                    </fieldset>
+                    <fieldset data-isotope--toggle-attribute-target="receiver"{% if not add_shipping_address %} disabled{% endif %}>
+                        {% embed '@Contao/isotope/address_manager.html.twig' with shipping_address_manager|merge({ current: shipping_address }) only %}
+                            {% block address %}
+                                <div class="address">
+                                    <input
+                                        id="opt_shipping_address_{{ address.data.id }}"
+                                        type="radio"
+                                        form="member_address"
+                                        name="shipping_address_id"
+                                        class="radio"
+                                        value="{{ address.data.id }}"
+                                        {% if addresses|length == 1 or address.data.id == current.id|default %} checked{% endif %}
+                                    >
+                                    <label for="opt_shipping_address_{{ address.data.id }}">
+                                        {{ address }}
+                                    </label>
+                                </div>
+                            {% endblock %}
+                        {% endembed %}
+                    </fieldset>
+                </fieldset>
+            </form>
+        {% endif %}
+
+        <button type="submit" form="member_address" name="submit_address_step" value="1">{{ 'MSC.nextStep'|trans }}</button>
+    {% endif %}
+{% endblock %}

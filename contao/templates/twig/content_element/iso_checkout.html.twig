@@ -1,0 +1,43 @@
+{% trans_default_domain 'contao_default' %}
+{% extends '@Contao/content_element/_isotope_base.html.twig' %}
+{% use '@Contao/isotope/product_collection.html.twig' %}
+
+{% set attributes = attrs()
+    .set('data-controller', 'isotope--fragment')
+    .set('data-isotope--fragment-id-value', fragment_id)
+    .set('data-action', 'isotope--product:submit.add_to_cart@window->isotope--fragment#update isotope--collection:submit.cart@window->isotope--fragment#update')
+    .mergeWith(attributes|default)
+%}
+
+{% block content %}
+    {% if collection.isEmpty %}
+        <p class="message empty">{{ 'MSC.noItemsInCart'|trans }}</p>
+    {% else %}
+        <div class="steps{% if completed %} completed{% endif %}">
+            {% set continue = true %}
+            {% for step in steps|default %}
+                {% set step_attributes = attrs()
+                    .addClass('complete', continue and step.is_complete)
+                    .addClass('current', continue and not step.is_complete)
+                    .addClass('pending', not continue)
+                %}
+                <div{{ step_attributes }}>
+                    <h3>{{ loop.index }}. {{ step.title }}</h3>
+                    {% if continue %}{{ step.details }}{% endif %}
+                    {% if not step.is_complete %}{% set continue = false %}{% endif %}
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="summary">
+            <h3>{{ steps|length + 1 }}. {{ 'MSC.order_review'|trans }}</h3>
+            {{ block('product_collection') }}
+
+            <form method="POST">
+                <input type="hidden" name="REQUEST_TOKEN" value="{{ contao.request_token }}">
+                <input type="hidden" name="place_order" value="1">
+                <button type="submit"{% if not completed %} disabled{% endif %}>Bestellen</button>
+            </form>
+        </div>
+    {% endif %}
+{% endblock %}

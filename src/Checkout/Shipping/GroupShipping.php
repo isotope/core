@@ -8,7 +8,10 @@ use Isotope\CoreBundle\DependencyInjection\Attribute\AsShipping;
 use Isotope\CoreBundle\Exception\UnderflowException;
 use Isotope\CoreBundle\Exception\UnexpectedValueException;
 use Isotope\CoreBundle\Store\Context\StoreContext;
+use Isotope\CoreBundle\Twig\TemplateMarkup;
 use Isotope\Interfaces\IsotopeOrderableCollection;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 #[AsShipping]
 class GroupShipping extends AbstractShipping
@@ -48,15 +51,15 @@ class GroupShipping extends AbstractShipping
         $this->inner = $inner;
     }
 
-    public function isAvailable(StoreContext $context): bool
+    public function isAvailable(): bool
     {
-        if (!parent::isAvailable($context)) {
+        if (!parent::isAvailable()) {
             return false;
         }
 
         // Group is available if at least one shipping method is available.
         foreach ($this->inner as $shipping) {
-            if ($shipping->isAvailable($context)) {
+            if ($shipping->isAvailable()) {
                 return true;
             }
         }
@@ -66,18 +69,19 @@ class GroupShipping extends AbstractShipping
 
     public function getLabel(): string
     {
-        if ($this->inherit) {
-            try {
-                return $this->getFirst($collection)->getLabel($collection);
-            } catch (\UnderflowException) {
-            }
-        }
+        //if ($this->inherit) {
+        //    try {
+        //        return $this->getFirst($collection)->getLabel($collection);
+        //    } catch (\UnderflowException) {
+        //    }
+        //}
 
-        return parent::getLabel($collection);
+        return parent::getLabel();
     }
 
     public function getNote(): string
     {
+        return 'foo';
         if ($this->inherit) {
             try {
                 return $this->getFirst($collection)->getNote($collection);
@@ -86,6 +90,16 @@ class GroupShipping extends AbstractShipping
         }
 
         return parent::getNote($collection);
+    }
+
+    public function hasError(): bool
+    {
+        return false;
+    }
+
+    public function review(): TemplateMarkup|null
+    {
+        return null;
     }
 
     public function getPrice(IsotopeOrderableCollection $collection): float|null

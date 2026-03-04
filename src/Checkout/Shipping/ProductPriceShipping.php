@@ -10,9 +10,7 @@ use Isotope\CoreBundle\Product\Extension\ShippingExtension;
 use Isotope\CoreBundle\Product\Product;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Price\PriceDefinition;
-use Isotope\CoreBundle\Twig\TemplateContext;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Isotope\CoreBundle\Twig\TemplateMarkup;
 
 #[AsShipping]
 class ProductPriceShipping extends AbstractShipping
@@ -28,13 +26,13 @@ class ProductPriceShipping extends AbstractShipping
         parent::__construct($id, $context);
     }
 
-    public function isAvailable(StoreContext $context): bool
+    public function isAvailable(): bool
     {
-        if (!parent::isAvailable($context)) {
+        if (!parent::isAvailable()) {
             return false;
         }
 
-        $cart = $context->getCart();
+        $cart = $this->getStoreContext()->getCart();
 
         foreach ($cart->getLineItems() as $item) {
             //if ($item->hasProduct() && $this->hasShippingPrice($item->getProduct())) {
@@ -45,12 +43,12 @@ class ProductPriceShipping extends AbstractShipping
         return false;
     }
 
-    public function getPrice(IsotopeProductCollection $collection): float|null
+    public function getPriceDefinition(): PriceDefinition|null
     {
         $isFirst = true;
         $price = 0;
 
-        foreach ($collection->getItems() as $item) {
+        foreach ($this->getStoreContext()->getCart()->getLineItems()->products() as $item) {
             $cartProduct = $item->getProduct();
 
             if (null === $cartProduct || !$this->hasShippingPrice($cartProduct)) {
@@ -77,11 +75,11 @@ class ProductPriceShipping extends AbstractShipping
                     break;
 
                 case ProductCalculation::sumItems:
-                    $price += $item->quantity * $shippingPrice;
+                    $price += $item->getQuantity() * $shippingPrice;
                     break;
 
                 case ProductCalculation::lowestItem:
-                    $shippingPrice = $item->quantity * $shippingPrice;
+                    $shippingPrice = $item->getQuantity() * $shippingPrice;
 
                     if ($isFirst || $shippingPrice < $price) {
                         $price = $shippingPrice;
@@ -89,7 +87,7 @@ class ProductPriceShipping extends AbstractShipping
                     break;
 
                 case ProductCalculation::highestItem:
-                    $shippingPrice = $item->quantity * $shippingPrice;
+                    $shippingPrice = $item->getQuantity() * $shippingPrice;
 
                     if ($isFirst || $shippingPrice >= $price) {
                         $price = $shippingPrice;
@@ -100,7 +98,17 @@ class ProductPriceShipping extends AbstractShipping
             $isFirst = false;
         }
 
-        return Isotope::calculatePrice($price, $this, 'price', $this->taxClass);
+        return new PriceDefinition($price, $this->taxClass);
+    }
+
+    public function hasError(): bool
+    {
+        return false;
+    }
+
+    public function review(): TemplateMarkup|null
+    {
+        return null;
     }
 
     private function hasShippingPrice(Product $product): bool

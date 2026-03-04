@@ -20,7 +20,6 @@ use Isotope\CoreBundle\Store\Weight\Weight;
 abstract class AbstractShippingFactory extends AbstractCheckoutMethodFactory
 {
     use ModelInstanceTrait;
-    use SerializedPropertyTrait;
 
     /**
      * @param Shipping $model

@@ -29,7 +29,7 @@ class AddressbookController extends AbstractContentElementController
 
         $addressConfig = $context
             ->getBillingAddressConfig()
-            ->mergeWith($context->getShippingAddressConfig())
+            ->intersectWith($context->getShippingAddressConfig())
         ;
 
         $template->address_manager = $this->addressManager->generate($request, $context->getMemberId(), $context->getStoreId(), $addressConfig, 'cte'.$model->id);

@@ -110,6 +110,9 @@
       <trans-unit id="tl_iso_payment.config_legend">
         <source>General configuration</source>
       </trans-unit>
+      <trans-unit id="tl_iso_payment.gateway_legend">
+        <source>Payment gateway configuration</source>
+      </trans-unit>
       <trans-unit id="tl_iso_payment.price_legend">
         <source>Price</source>
       </trans-unit>

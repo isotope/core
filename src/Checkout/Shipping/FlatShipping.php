@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Checkout\Shipping;
 
-use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsShipping;
-use Isotope\CoreBundle\Model\ProductCollectionItem;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\Extension\ShippingExtension;
-use Isotope\CoreBundle\RuleBuilder\RuleMatcher;
-use Isotope\CoreBundle\Weight\Weight;
-use Isotope\Interfaces\IsotopeProductCollection;
-use Isotope\Isotope;
+use Isotope\CoreBundle\ProductCollection\LineItem\LineItemCollection;
+use Isotope\CoreBundle\Store\Context\StoreContext;
+use Isotope\CoreBundle\Store\Price\PriceDefinition;
+use Isotope\CoreBundle\Store\Weight\Weight;
+use Isotope\CoreBundle\Twig\TemplateMarkup;
 
 #[AsShipping]
 class FlatShipping extends AbstractShipping
@@ -28,6 +27,7 @@ class FlatShipping extends AbstractShipping
         int $id,
         StoreContext $context,
         private FlatCalculation|null $flatCalculation,
+        private readonly int $taxId,
     ) {
         parent::__construct($id, $context);
     }
@@ -58,36 +58,41 @@ class FlatShipping extends AbstractShipping
         return $this;
     }
 
-    public function getPrice(IsotopeProductCollection $collection): float|null
+    public function getPriceDefinition(): PriceDefinition|null
     {
-        $price = $this->calculatePrice($collection);
+        $priceDefinition = parent::getPriceDefinition();
 
-        if (null === $price) {
+        if (!$priceDefinition) {
             return null;
         }
 
         $multiply = match ($this->flatCalculation) {
             FlatCalculation::perProduct,
-            FlatCalculation::perItem => $this->productMultiplier($collection->getItems()),
-            FlatCalculation::perWeight => $this->weightMultiplier($collection),
+            FlatCalculation::perItem => $this->productMultiplier($this->getStoreContext()->getCart()->getLineItems()->products()),
+            FlatCalculation::perWeight => $this->weightMultiplier($this->getStoreContext()->getCart()->getLineItems()->products()),
             default => 1,
         };
 
-        $price *= $multiply;
-
-        return Isotope::calculatePrice($price, $this, 'price', $this->taxClass);
+        return new PriceDefinition($priceDefinition->getAmount() * $multiply, $this->taxId);
     }
 
-    /**
-     * @param array<ProductCollectionItem> $items
-     */
-    private function productMultiplier(array $items): int
+    public function review(): TemplateMarkup|null
+    {
+        return null;
+    }
+
+    public function hasError(): bool
+    {
+        return false;
+    }
+
+    private function productMultiplier(LineItemCollection $items): int
     {
         $multiply = 0;
 
-        foreach ($items as $objItem) {
+        foreach ($items as $item) {
             /** @var CoreProduct $product */
-            if (!($product = $objItem->getProduct()) || $product->getExtension(ShippingExtension::class)?->isExemptFromShipping()) {
+            if (!($product = $item->getProduct()) || $product->getExtension(ShippingExtension::class)?->isExemptFromShipping()) {
                 continue;
             }
 
@@ -99,13 +104,13 @@ class FlatShipping extends AbstractShipping
                 }
             }
 
-            $multiply += FlatCalculation::perProduct === $this->flatCalculation ? 1 : $objItem->quantity;
+            $multiply += FlatCalculation::perProduct === $this->flatCalculation ? 1 : $item->getQuantity();
         }
 
         return $multiply;
     }
 
-    private function weightMultiplier(IsotopeProductCollection $collection): float
+    private function weightMultiplier(LineItemCollection $items): float
     {
         $multiply = floor($this->flatWeight->getAmount());
 
@@ -113,7 +118,7 @@ class FlatShipping extends AbstractShipping
             return 1;
         }
 
-        $cartWeight = floor($collection->addToScale()->amountIn($this->flatWeight->getUnit()));
+        $cartWeight = floor($items->calculateWeight($this->flatWeight->getUnit())->getAmount());
 
         return $cartWeight / $multiply;
     }

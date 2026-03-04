@@ -1,9 +1,8 @@
 <?php
 
 use Contao\Controller;
-use Isotope\Backend;
 use Isotope\Backend\Config\Callback as ConfigCallback;
-use Isotope\Backend\Module\Callback;
+use Isotope\CoreBundle\Checkout\CheckoutMethod;
 use Isotope\CoreBundle\Product\Category\CategoryScope;
 
 $GLOBALS['TL_DCA']['tl_content']['palettes']['__selector__'][] = 'iso_checkout_method';
@@ -151,7 +150,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['iso_display404Page'] = [
 $GLOBALS['TL_DCA']['tl_content']['fields']['iso_checkout_method'] = [
     'inputType' => 'radio',
     'default' => 'member',
-    'options' => ['member', 'guest', 'both'],
+    'enum' => CheckoutMethod::class,
     'reference' => &$GLOBALS['TL_LANG']['tl_content']['iso_checkout_method_ref'],
     'eval' => ['mandatory' => true, 'submitOnChange' => true],
 ];

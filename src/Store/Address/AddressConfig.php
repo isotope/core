@@ -53,12 +53,27 @@ final readonly class AddressConfig
         return $this->defaultCountryCode;
     }
 
-    public function mergeWith(self $addressConfig): self
+    public function isSameAs(self $addressConfig): bool
+    {
+        return $this->fields === $addressConfig->getFields();
+    }
+
+    public function intersectWith(self $addressConfig): self
     {
         return new self(
             array_unique(array_merge($this->fields, $addressConfig->getFields())),
             array_intersect($this->mandatory, $addressConfig->getMandatory()),
             array_unique(array_merge($this->countryCodes, $addressConfig->getCountryCodes())),
+            $this->defaultCountryCode,
+        );
+    }
+
+    public function mergeWith(self $addressConfig): self
+    {
+        return new self(
+            array_unique(array_merge($this->fields, $addressConfig->getFields())),
+            array_unique(array_merge($this->mandatory, $addressConfig->getMandatory())),
+            array_intersect($this->countryCodes, $addressConfig->getCountryCodes()),
             $this->defaultCountryCode,
         );
     }

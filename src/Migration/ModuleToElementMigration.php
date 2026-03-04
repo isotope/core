@@ -25,6 +25,7 @@ class ModuleToElementMigration extends AbstractMigration
         'iso_productfilter' => [],
         'iso_categoryfilter' => [],
         'iso_relatedproducts' => [],
+        'iso_checkout' => [],
     ];
 
     public function __construct(private readonly Connection $connection)

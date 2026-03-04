@@ -1,0 +1,43 @@
+{% trans_default_domain 'contao_default' %}
+{% extends '@Contao/isotope/checkout_step/_base.html.twig' %}
+
+{% block content %}
+    {% if options is empty %}
+        <p>{{ 'MSC.noPaymentModules'|trans }}</p>
+    {% else %}
+        <form id="payment_method" method="POST" data-action="isotope--fragment#submit">
+            <input type="hidden" name="REQUEST_TOKEN" value="{{ contao.request_token }}">
+            <input type="hidden" name="edit_payment_step" value="1">
+        </form>
+
+        <fieldset class="radio_container">
+            {% for option in options %}
+                <span>
+                    <input
+                        id="opt_payment_{{ option.value }}"
+                        type="radio"
+                        form="payment_method"
+                        name="payment_id"
+                        class="radio"
+                        value="{{ option.value }}"
+                        {% if options|length == 1 or option.value == current.id|default %} checked{% endif %}
+                        data-isotope--shipping-target="option"
+                        data-action="isotope--shipping#select"
+                    >
+                    <label for="opt_payment_{{ option.value }}">{{ option.label }}</label>
+                    {% if option.configurable %}
+                        <form
+                            action="{{ path('isotope_checkout_shipping', {id: option.value}) }}"
+                            method="post"
+                            data-isotope--shipping-target="form"
+                            data-isotope--shipping-option="{{ option.value }}"
+                            data-action="isotope--shipping#submit"
+                        ></form>
+                    {% endif %}
+                </span>
+            {% endfor %}
+        </fieldset>
+
+        <button type="submit" form="payment_method" name="submit_payment_step" value="1">{{ 'MSC.nextStep'|trans }}</button>
+    {% endif %}
+{% endblock %}

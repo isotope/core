@@ -10,3 +10,7 @@
         background: var(--isotope-busy-background, rgba(255,255,255,.8));
     }
 }
+
+.content-iso-checkout fieldset:disabled {
+    display: none;
+}

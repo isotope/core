@@ -1,0 +1,26 @@
+{% trans_default_domain 'contao_default' %}
+{% extends '@Contao/isotope/checkout_step/summary/_base.html.twig' %}
+
+{% set attributes = attrs()
+    .set('class', 'address_summary')
+%}
+
+{% block content %}
+    <div class="billing_address">
+        {% if requires_shipping and not shipping_address %}
+            <h4>{{ 'MSC.billing_shipping_address'|trans }}</h4>
+        {% elseif requires_payment %}
+            <h4>{{ 'MSC.billing_address'|trans }}</h4>
+        {% else %}
+            <h4>{{ 'MSC.customer_address'|trans }}</h4>
+        {% endif %}
+        <div class="address">{{ billing_address }}</div>
+    </div>
+
+    {% if requires_shipping and shipping_address %}
+        <div class="shipping_address">
+            <h4>{{ 'MSC.shipping_address'|trans }}</h4>
+            <div class="address">{{ shipping_address }}</div>
+        </div>
+    {% endif %}
+{% endblock %}

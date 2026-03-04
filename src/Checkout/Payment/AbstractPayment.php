@@ -23,13 +23,13 @@ abstract class AbstractPayment extends AbstractCheckoutMethod implements Payment
         return $this;
     }
 
-    public function isAvailable(StoreContext $context): bool
+    public function isAvailable(): bool
     {
-        if (!parent::isAvailable($context)) {
+        if (!parent::isAvailable()) {
             return false;
         }
 
-        $shipping = $context->getCart()->getShippingMethod();
+        $shipping = $this->getStoreContext()->getCart()->getShippingMethod();
 
         if (
             null !== $this->allowedShippings
@@ -45,16 +45,5 @@ abstract class AbstractPayment extends AbstractCheckoutMethod implements Payment
         }
 
         return true;
-    }
-
-    public function getPrice(IsotopeOrderableCollection $collection): float|null
-    {
-        $price = $this->calculatePrice($collection);
-
-        if (null === $price) {
-            return null;
-        }
-
-        return Isotope::calculatePrice($price, $this, 'price', $this->taxClass);
     }
 }

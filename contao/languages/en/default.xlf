@@ -347,6 +347,9 @@
       <trans-unit id="MSC.shipping_address_message">
         <source>Enter your shipping information or select an existing address.</source>
       </trans-unit>
+      <trans-unit id="MSC.shipping_address_guest_message">
+        <source>Enter your shipping information.</source>
+      </trans-unit>
       <trans-unit id="MSC.billing_address_message">
         <source>Enter your billing information or select an existing address.</source>
       </trans-unit>

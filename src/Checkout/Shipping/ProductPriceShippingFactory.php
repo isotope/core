@@ -22,6 +22,7 @@ class ProductPriceShippingFactory extends AbstractShippingFactory
             $model->id,
             $context,
             ProductCalculation::from($model->productCalculation),
+            (int) $model->tax_class,
         );
     }
 }
