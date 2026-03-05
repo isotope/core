@@ -49,57 +49,6 @@ use NotificationCenter\Model\Notification;
 
 class Callback extends Backend
 {
-
-    /**
-     * Generate the order label and return it as string
-     *
-     * @param array          $row
-     * @param string         $label
-     *
-     * @return array
-     */
-    public function getOrderLabel($row, $label, DataContainer $dc, array $args)
-    {
-        /** @var Order $objOrder */
-        $objOrder = Order::findByPk($row['id']);
-
-        if (null === $objOrder) {
-            return $args;
-        }
-
-        // Override system to correctly format currencies etc
-        Isotope::setConfig($objOrder->getRelated('config_id'));
-
-        foreach ($GLOBALS['TL_DCA'][$dc->table]['list']['label']['fields'] as $i => $field) {
-            switch ($field) {
-                case 'billing_address_id':
-                    if (null !== ($objAddress = $objOrder->getBillingAddress())) {
-                        /** @var AddressFormatter $addressFormatter */
-                        $addressFormatter = System::getContainer()->get(AddressFormatter::class);
-
-                        /** @var StoreManager $storeManager */
-                        $storeManager = System::getContainer()->get(StoreManager::class);
-
-                        $arrTokens = $addressFormatter->toHtml($objAddress, $storeManager->getCurrentContext()->getBillingAddressConfig())->getContext();
-                    }
-                    break;
-
-                case 'total':
-                    $args[$i] = Isotope::formatPriceWithCurrency($row['total']);
-                    break;
-
-                case 'order_status':
-                    /** @var OrderStatus $objStatus */
-                    if (null !== ($objStatus = $objOrder->getRelated('order_status'))) {
-                        $args[$i] = '<span style="' . ColorUtil::getCssBackgroundStyles($objStatus->color) . '">' . $objOrder->getStatusLabel() . '</span>';
-                    }
-                    break;
-            }
-        }
-
-        return $args;
-    }
-
     /**
      * Generate the order details view when editing an order
      *
@@ -346,78 +295,6 @@ class Callback extends Backend
         return $strBuffer . '
 </tbody></table>
 </div>';
-    }
-
-    /**
-     * Review order page stores temporary information in this table to know it when user is redirected to a payment provider. We do not show this data in backend.
-     */
-    public function checkPermission()
-    {
-        if (BackendUser::getInstance()->isAdmin) {
-            return;
-        }
-
-        // Only admins can delete orders. Others should set the order_status to cancelled.
-        unset($GLOBALS['TL_DCA']['tl_iso_product_collection']['list']['operations']['delete']);
-        if ('delete' === Input::get('act') || 'deleteAll' === Input::get('act')) {
-            throw new AccessDeniedException('Only admin can delete orders!');
-        }
-
-        $arrIds = [0];
-        $arrWhere = [];
-
-        $arrConfigs = \Contao\BackendUser::getInstance()->iso_configs;
-        if (\is_array($arrConfigs) && !empty($arrConfigs)) {
-            $arrWhere[] = 'config_id IN ('.implode(',', $arrConfigs).')';
-        }
-
-        $arrGroups = \Contao\BackendUser::getInstance()->iso_member_groups;
-        if (\is_array($arrGroups) && !empty($arrGroups)) {
-            $blnGuests = \in_array(-1, $arrGroups, false);
-            $arrLike = [];
-            $memberIds = [];
-
-            foreach ($arrGroups as $id) {
-                if ($id == -1) {
-                    continue;
-                }
-
-                $arrLike[] = "tl_member.groups LIKE '%\"$id\"%'";
-                $arrLike[] = "tl_member.groups LIKE '%i:$id;%'";
-            }
-
-            if (!empty($arrLike)) {
-                $memberIds = Database::getInstance()->execute(
-                    'SELECT id FROM tl_member WHERE '.implode(' OR ', $arrLike)
-                )->fetchEach('id');
-            }
-
-            if ($blnGuests) {
-                array_unshift($memberIds, 0);
-            }
-
-            if (empty($memberIds)) {
-                $arrWhere[] = false;
-            } else {
-                $arrWhere[] = 'member IN ('.implode(',', $memberIds).')';
-            }
-        }
-
-        if (!empty($arrWhere) && !\in_array(false, $arrWhere, true)) {
-            $objOrders = Database::getInstance()->query(
-                'SELECT id FROM tl_iso_product_collection WHERE '.implode(' AND ', $arrWhere)
-            );
-
-            if ($objOrders->numRows) {
-                $arrIds = $objOrders->fetchEach('id');
-            }
-        }
-
-        $GLOBALS['TL_DCA']['tl_iso_product_collection']['list']['sorting']['root'] = $arrIds;
-
-        if (Input::get('id') != '' && !\in_array(Input::get('id'), $arrIds)) {
-            throw new AccessDeniedException('Trying to access disallowed order ID ' . Input::get('id'));
-        }
     }
 
     /**

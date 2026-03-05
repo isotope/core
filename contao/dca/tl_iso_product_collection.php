@@ -24,7 +24,6 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
         'notDeletable' => ('select' === Input::get('act')),
         'permissions' => ['update'],
         'onload_callback' => [
-            [Callback::class, 'checkPermission'],
             [Callback::class, 'prepareOrderLog'],
         ],
         'sql' => [
@@ -34,6 +33,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
                 'member,store_id,type' => 'index',
                 'uniqid,store_id,type' => 'index',
                 'source_collection_id,type' => 'index',
+                'type,order_status,locked,config_id,member' => 'index',
             ],
         ],
     ],
@@ -47,7 +47,6 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
         'label' => [
             'fields' => ['id', 'document_number', 'locked', 'billing_address_id', 'total', 'order_status'],
             'showColumns' => true,
-            'label_callback' => [Callback::class, 'getOrderLabel'],
         ],
         'operations' => [
             'edit',

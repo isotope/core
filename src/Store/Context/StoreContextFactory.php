@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Store\Context;
 
 use Contao\CoreBundle\Framework\ContaoFramework;
-use Contao\CoreBundle\Intl\Countries;
 use Contao\MemberModel;
 use Contao\StringUtil;
 use Doctrine\DBAL\ArrayParameterType;
@@ -13,7 +12,7 @@ use Doctrine\DBAL\Connection;
 use Isotope\CoreBundle\Exception\RuntimeException;
 use Isotope\CoreBundle\Model\Address;
 use Isotope\CoreBundle\Model\Config;
-use Isotope\CoreBundle\Store\Address\AddressConfig;
+use Isotope\CoreBundle\Store\Address\AddressConfigFactory;
 use Isotope\CoreBundle\Store\CartManager;
 use Isotope\CoreBundle\Store\Event\ContextCreatedEvent;
 use Isotope\CoreBundle\Store\Price\Currency;
@@ -33,9 +32,9 @@ class StoreContextFactory
     public function __construct(
         private readonly ContaoFramework $framework,
         private readonly Connection $connection,
-        private readonly Countries $countries,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly CartManager $cartManager,
+        private readonly AddressConfigFactory $addressConfigFactory,
     ) {
     }
 
@@ -64,8 +63,8 @@ class StoreContextFactory
             taxCalculation: fn () => TaxCalculation::from($config->taxCalculation),
             currency: fn () => $this->getCurrency($config),
             currencyFactor: (float) $config->priceCalculateFactor,
-            billingAddressConfig: fn () => $this->getAddressConfig($config->address_fields, 'billing', (string) $config->billing_countries, $config->billing_country),
-            shippingAddressConfig: fn () => $this->getAddressConfig($config->address_fields, 'shipping', (string) $config->shipping_countries, $config->shipping_country),
+            billingAddressConfig: fn () => $this->addressConfigFactory->createFromConfig($config, 'billing'),
+            shippingAddressConfig: fn () => $this->addressConfigFactory->createFromConfig($config, 'shipping'),
             ownerAddress: fn () => $this->getOwnerAddress($config),
         );
 
@@ -166,41 +165,6 @@ class StoreContextFactory
         $address->preventSaving(false);
 
         return $address;
-    }
-
-    private function getAddressConfig(array|string $fieldConfig, string $type, string $countries, string $defaultCountry): AddressConfig
-    {
-        $addressFields = [];
-        $mandatoryFields = [];
-
-        $fields = StringUtil::deserialize($fieldConfig);
-
-        if (\is_array($fields)) {
-            foreach ($fields as $field) {
-                if ('disabled' === $field[$type]) {
-                    continue;
-                }
-
-                $addressFields[] = $field['name'];
-
-                if ('mandatory' === $field[$type]) {
-                    $mandatoryFields[] = $field['name'];
-                }
-            }
-        }
-
-        if ('' === $countries) {
-            $countryCodes = array_keys($this->countries->getCountries());
-        } else {
-            $countryCodes = explode(',', $countries);
-        }
-
-        return new AddressConfig(
-            $addressFields,
-            $mandatoryFields,
-            $countryCodes,
-            $defaultCountry,
-        );
     }
 
     private function getMemberGroups(int|null $memberId): \Closure|array
