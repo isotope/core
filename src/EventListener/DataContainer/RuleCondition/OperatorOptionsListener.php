@@ -8,12 +8,14 @@ use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\DataContainer;
 use Isotope\CoreBundle\Model\RuleCondition;
 use Isotope\CoreBundle\ModelType\RuleConditionRegistry;
+use Isotope\CoreBundle\Store\Context\StoreContextFactory;
 
 #[AsCallback('tl_iso_rule_condition', 'fields.operator.options')]
 class OperatorOptionsListener
 {
     public function __construct(
         private readonly RuleConditionRegistry $conditionRegistry,
+        private readonly StoreContextFactory $contextFactory,
     ) {
     }
 
@@ -24,6 +26,6 @@ class OperatorOptionsListener
 
     private function getOperators(int $id): array
     {
-        return $this->conditionRegistry->get(RuleCondition::findById($id))?->getOperators() ?? [];
+        return $this->conditionRegistry->get(RuleCondition::findById($id), $this->contextFactory->createBackend())?->getOperators() ?? [];
     }
 }
