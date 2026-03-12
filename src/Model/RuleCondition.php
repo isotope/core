@@ -48,6 +48,6 @@ class RuleCondition extends Model
             $options['order'] = 'sorting';
         }
 
-        return self::findBy('pid', $ruleId, $options);
+        return self::findBy(['tl_iso_rule_condition.pid=?', 'tl_iso_rule_condition.tstamp>0'], [$ruleId], $options);
     }
 }

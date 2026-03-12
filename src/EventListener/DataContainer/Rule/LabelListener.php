@@ -27,7 +27,7 @@ class LabelListener
         System::loadLanguageFile('tl_iso_rule_condition');
 
         $conditions = [];
-        $results = $this->connection->fetchAllAssociative("SELECT * FROM tl_iso_rule_condition WHERE pid=?", [$row['id']]);
+        $results = $this->connection->fetchAllAssociative("SELECT * FROM tl_iso_rule_condition WHERE pid=? AND tstamp>0", [$row['id']]);
 
         foreach ($results as $result){
             $conditions[] = $this->labelListener->__invoke($result);
