@@ -6,6 +6,7 @@ namespace Isotope\CoreBundle\Database;
 
 use Contao\CoreBundle\Migration\CommandCompiler;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Types\StringType;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -47,6 +48,7 @@ class DatabaseUpdater
                 $this->fixStringToInt($change, $table);
                 $this->fixNullValues($change, $table);
             }
+
             $this->connection->executeStatement($command);
         }
     }
@@ -57,7 +59,7 @@ class DatabaseUpdater
     private function fixStringToInt(string $command, string $table): void
     {
         // New field type is not integer
-        if (!preg_match('/ `?(\w+)`? (INT DEFAULT 0 NOT NULL|int\(10\) NOT NULL default 0)$/i', $command, $match)) {
+        if (!preg_match('/ `?(\w+)`? (INT (UNSIGNED )?DEFAULT 0 NOT NULL|int\(10\) NOT NULL default 0)$/i', $command, $match)) {
             return;
         }
 
@@ -86,7 +88,7 @@ class DatabaseUpdater
 
     private function isStringType(Type $type): bool
     {
-        return \in_array($type->getName(), [Types::STRING, Types::TEXT], true);
+        return \in_array(Type::lookupName($type), [Types::STRING, Types::TEXT], true);
     }
 
     /**
