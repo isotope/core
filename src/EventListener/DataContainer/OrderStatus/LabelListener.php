@@ -14,7 +14,7 @@ class LabelListener
     public function __invoke(array $row, string|null $label, DataContainer $dc, array $args): array
     {
         foreach ($GLOBALS['TL_DCA']['tl_iso_orderstatus']['list']['label']['fields'] as $k => $field) {
-            if ('color' === $field) {
+            if ('name' === $field && $row['color']) {
                 $args[$k] = \sprintf(
                     '<span style="display:inline-block; padding: 2px 5px 3px;border-radius: 2px;vertical-align: middle;%s">%s</span>',
                     ColorUtil::getCssBackgroundStyles($row['color']),

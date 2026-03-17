@@ -20,6 +20,18 @@
       <trans-unit id="tl_iso_product_collection.order_status.1">
         <source>Select the status of this order.</source>
       </trans-unit>
+      <trans-unit id="tl_iso_product_collection.transaction_status.0">
+        <source>Payment status</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.transaction_status.1">
+        <source>Select the payment status of this order.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.delivery_status.0">
+        <source>Shipping status</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.delivery_status.1">
+        <source>Select the delivery status of this order.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_product_collection.locked.0">
         <source>Placed</source>
       </trans-unit>

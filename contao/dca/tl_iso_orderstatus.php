@@ -2,7 +2,7 @@
 
 use Contao\DataContainer;
 use Contao\DC_Table;
-use Isotope\Backend\OrderStatus\Callback;
+use Isotope\CoreBundle\Store\Order\StatusType;
 
 $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = [
     'config' => [
@@ -12,22 +12,27 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = [
             'keys' => [
                 'id' => 'primary',
                 'paid' => 'index',
+                'type,alias' => 'unique',
             ],
         ],
     ],
     'list' => [
         'sorting' => [
             'mode' => DataContainer::MODE_SORTED,
-            'fields' => ['name'],
-            'panelLayout' => 'filter;search,limit',
+            'fields' => ['type', 'name'],
+            'panelLayout' => 'filter,search,limit',
+            'defaultSearchField' => 'name'
         ],
         'label' => [
-            'fields' => ['name', 'color', 'paid'],
-            'showColumns' => true,
+            'fields' => ['name'],
         ],
     ],
     'palettes' => [
-        'default' => '{name_legend},name,color,paid,welcomescreen;{email_legend},notification',
+        '__selector__' => ['type'],
+        'default' => '{name_legend},type,alias,name;{workflow_legend},workflow',
+        'order' => '{name_legend},type,alias,name,label,color,welcomescreen;{workflow_legend},workflow',
+        'transaction' => '{name_legend},type,alias,name,label,color,paid;{workflow_legend},workflow',
+        'delivery' => '{name_legend},type,alias,name,label,color;{workflow_legend},workflow',
     ],
     'fields' => [
         'id' => [
@@ -36,9 +41,29 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = [
         'tstamp' => [
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
+        'type' => [
+            'inputType' => 'select',
+            'filter' => true,
+            'enum' => StatusType::class,
+            'eval' => ['mandatory' => true, 'submitOnChange' => true, 'tl_class' => 'w50'],
+            'sql' => "varchar(16) NOT NULL default 'order'",
+        ],
+        'alias' => [
+            'inputType' => 'text',
+            'search' => true,
+            'eval' => ['mandatory' => true, 'rgxp' => 'alias', 'maxlength' => 32, 'tl_class' => 'w50'],
+            'sql' => "varchar(32) NOT NULL default ''",
+        ],
         'name' => [
             'inputType' => 'text',
+            'search' => true,
             'eval' => ['mandatory' => true, 'maxlength' => 255, 'tl_class' => 'w50'],
+            'sql' => "varchar(255) NOT NULL default ''",
+        ],
+        'label' => [
+            'inputType' => 'text',
+            'search' => true,
+            'eval' => ['maxlength' => 255, 'tl_class' => 'w50'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'color' => [
@@ -46,6 +71,14 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = [
             'eval' => ['minlength' => 6, 'maxlength' => 6, 'colorpicker' => true, 'isHexColor' => true, 'decodeEntities' => true, 'tl_class' => 'w50 wizard'],
             'sql' => "varchar(6) NOT NULL default ''",
         ],
+        'workflow' => [
+            'inputType' => 'checkboxWizard',
+            'filter' => true,
+            'options' => ['open'],
+            'eval' => ['multiple' => true, 'csv' => ',', 'tl_class' => 'clr'],
+            'sql' => 'text NULL',
+        ],
+        // TODO: this should no longer be necessary
         'paid' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
@@ -55,12 +88,6 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
             'sql' => "char(1) NOT NULL default ''",
-        ],
-        'notification' => [
-            'inputType' => 'select',
-            'options_callback' => [Callback::class, 'getNotificationChoices'],
-            'eval' => ['multiple' => true, 'csv' => ',', 'includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'],
-            'sql' => "varchar(255) NOT NULL default ''",
         ],
     ],
 ];

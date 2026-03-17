@@ -2,11 +2,44 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="contao/languages/en/tl_iso_orderstatus.xlf" source-language="en">
     <body>
+      <trans-unit id="tl_iso_orderstatus.type.0">
+        <source>Type</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.type.1">
+        <source>Select the status type.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.type.order">
+        <source>Order status</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.type.transaction">
+        <source>Payment status</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.type.delivery">
+        <source>Shipping status</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.alias.0">
+        <source>Technical name</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.alias.1">
+        <source>Please enter a technical name for this status. Use letters and underscores only.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_orderstatus.name.0">
         <source>Name</source>
       </trans-unit>
       <trans-unit id="tl_iso_orderstatus.name.1">
         <source>Please enter a name for this status.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.label.0">
+        <source>Label</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.label.1">
+        <source>Optionally enter a front end label for this status.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.workflow.0">
+        <source>Next possible states</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.workflow.1">
+        <source>Select the next status options and order can receive when having this status.</source>
       </trans-unit>
       <trans-unit id="tl_iso_orderstatus.color.0">
         <source>Color</source>
@@ -26,20 +59,8 @@
       <trans-unit id="tl_iso_orderstatus.welcomescreen.1">
         <source>Show number of orders with this status on the backend welcome screen.</source>
       </trans-unit>
-      <trans-unit id="tl_iso_orderstatus.notification.0">
-        <source>Notification</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_orderstatus.notification.1">
-        <source>Please select a notification.</source>
-      </trans-unit>
       <trans-unit id="tl_iso_orderstatus.name_legend">
         <source>Name</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_orderstatus.email_legend">
-        <source>E-Mail Notification</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_orderstatus.payment_legend">
-        <source>Payment Gateways</source>
       </trans-unit>
     </body>
   </file>

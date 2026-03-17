@@ -42,7 +42,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
             'mode' => DataContainer::MODE_SORTABLE,
             'fields' => ['locked DESC'],
             'panelLayout' => 'filter;sort,search,limit',
-            'filter' => [['type=?', 'order'], ['order_status>?', '0'], ['locked!=?', '']],
+            'filter' => [['type=?', 'order'], 'order_status IS NOT NULL', ['locked!=?', '']],
         ],
         'label' => [
             'fields' => ['id', 'document_number', 'locked', 'billing_address_id', 'total', 'order_status'],
@@ -60,7 +60,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
     ],
     'palettes' => [
         '__selector__' => ['sendNotification'],
-        'default' => '{status_legend},order_status,date_paid,date_shipped,notes,sendNotification,submit_buttons;{log_legend},order_log;{details_legend},details;{show_legend:hide},show;{email_legend:hide},email_data;{billing_address_legend:hide},billing_address_data;{shipping_address_legend:hide},shipping_address_data',
+        'default' => '{status_legend},transaction_status,delivery_status,order_status,date_paid,date_shipped,notes,sendNotification,submit_buttons;{log_legend},order_log;{details_legend},details;{show_legend:hide},show;{email_legend:hide},email_data;{billing_address_legend:hide},billing_address_data;{shipping_address_legend:hide},shipping_address_data',
     ],
     'subpalettes' => [
         'sendNotification' => 'notification,notification_shipping_tracking,notification_customer_notes',
@@ -129,10 +129,20 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
             'filter' => true,
             'sorting' => true,
             'inputType' => 'select',
-            'foreignKey' => 'tl_iso_orderstatus.name',
-            'eval' => ['tl_class' => 'w50'],
-            'sql' => "int(10) unsigned NOT NULL default '0'",
-            'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
+            'eval' => ['tl_class' => 'w33'],
+            'sql' => 'varchar(32) NULL',
+        ],
+        'transaction_status' => [
+            'filter' => true,
+            'inputType' => 'select',
+            'eval' => ['tl_class' => 'w33'],
+            'sql' => 'varchar(32) NULL',
+        ],
+        'delivery_status' => [
+            'filter' => true,
+            'inputType' => 'select',
+            'eval' => ['tl_class' => 'w33'],
+            'sql' => 'varchar(32) NULL',
         ],
         'date_paid' => [
             'inputType' => 'text',
@@ -141,7 +151,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
         ],
         'date_shipped' => [
             'inputType' => 'text',
-            'eval' => ['rgxp' => 'datim', 'datepicker' => true, 'tl_class' => 'w50 wizard'],
+            'eval' => ['rgxp' => 'datim', 'datepicker' => true, 'tl_class' => 'w33 wizard'],
             'sql' => 'int(10) NULL',
         ],
         'sendNotification' => [

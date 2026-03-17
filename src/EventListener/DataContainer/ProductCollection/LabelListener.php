@@ -8,10 +8,10 @@ use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\DataContainer;
 use Isotope\CoreBundle\Model\Address;
 use Isotope\CoreBundle\Model\Config;
-use Isotope\CoreBundle\Model\OrderStatus;
 use Isotope\CoreBundle\Store\Address\AddressConfig;
 use Isotope\CoreBundle\Store\Address\AddressConfigFactory;
 use Isotope\CoreBundle\Store\Address\AddressFormatter;
+use Isotope\CoreBundle\Store\Order\WorkflowManager;
 use Isotope\CoreBundle\Util\ColorUtil;
 use Isotope\Isotope;
 
@@ -21,6 +21,7 @@ class LabelListener
     public function __construct(
         private readonly AddressFormatter $addressFormatter,
         private readonly AddressConfigFactory $addressConfigFactory,
+        private readonly WorkflowManager $workflowManager,
     ) {
     }
 
@@ -39,8 +40,8 @@ class LabelListener
                     break;
 
                 case 'order_status':
-                    if (null !== ($status = OrderStatus::findById($row[$field]))) {
-                        $args[$i] = '<span style="' . ColorUtil::getCssBackgroundStyles($status->color) . '">' . $status->getName() . '</span>';
+                    if ($color = $this->workflowManager->getOrderWorkflow()->getMetadataStore()->getPlaceMetadata($row['order_status'])['color'] ?? null) {
+                        $args[$i] = '<span style="' . ColorUtil::getCssBackgroundStyles($color) . '">' . $args[$i] . '</span>';
                     }
                     break;
             }

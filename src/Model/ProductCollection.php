@@ -28,6 +28,16 @@ use Contao\Model\Collection;
  * @property float  $tax_free_total
  * @property string $currency
  * @property string $language
+ * @property string $document_number
+ * @property array $checkout_info
+ * @property array $payment_data
+ * @property array $shipping_data
+ * @property string|null $order_status
+ * @property string|null $transaction_status
+ * @property string|null $delivery_status
+ * @property int $date_paid
+ * @property int $date_shipped
+ * @property string $notes
  */
 class ProductCollection extends Model
 {
@@ -43,6 +53,42 @@ class ProductCollection extends Model
         if ($this->locked) {
             $this->blnPreventSaving = true;
         }
+    }
+
+    public function getOrderStatus(): string|null
+    {
+        return $this->order_status;
+    }
+
+    public function setOrderStatus(string $status): self
+    {
+        $this->order_status = $status;
+
+        return $this;
+    }
+
+    public function getTransactionStatus(): string|null
+    {
+        return $this->transaction_status;
+    }
+
+    public function setTransactionStatus(string $status): self
+    {
+        $this->transaction_status = $status;
+
+        return $this;
+    }
+
+    public function getDeliveryStatus(): string|null
+    {
+        return $this->delivery_status;
+    }
+
+    public function setDeliveryStatus(string $status): self
+    {
+        $this->delivery_status = $status;
+
+        return $this;
     }
 
     /**
