@@ -1,0 +1,16 @@
+{% trans_default_domain 'contao_tl_iso_product_collection' %}
+{% for log in logs %}
+    {% if not loop.first %}<hr>{% endif %}
+    <table class="tl_show with-padding with-zebra">
+        <tbody>
+        {% for logEntry in log %}
+            <tr>
+                <td class="tl_label">{{ logEntry.label }}</td>
+                <td>{{ logEntry.value }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <div class="tl_info">{{ 'tl_iso_product_collection.noLogData'|trans }}</div>
+{% endfor %}

@@ -23,9 +23,6 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
         'notCopyable' => true,
         'notDeletable' => ('select' === Input::get('act')),
         'permissions' => ['update'],
-        'onload_callback' => [
-            [Callback::class, 'prepareOrderLog'],
-        ],
         'sql' => [
             'keys' => [
                 'id' => 'primary',
@@ -174,7 +171,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
             'eval' => ['logAlwaysVisible' => true, 'tl_class' => 'clr', 'doNotShow' => true],
         ],
         'submit_buttons' => [
-            'input_field_callback' => [Callback::class, 'onSubmitButtonsInputFieldCallback'],
+            // input_field_callback from OrderLogListener
             'eval' => ['doNotShow' => true],
         ],
         'config_id' => [
@@ -210,7 +207,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
         ],
         'order_log' => [
-            'input_field_callback' => [Callback::class, 'onLogInputFieldCallback'],
+            // input_field_callback from OrderLogListener
             'eval' => ['doNotShow' => true],
         ],
         'subtotal' => [

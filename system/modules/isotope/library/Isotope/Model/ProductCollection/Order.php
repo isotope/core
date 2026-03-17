@@ -21,6 +21,7 @@ use Isotope\CoreBundle\Document\DocumentInterface;
 use Isotope\CoreBundle\Model\Address;
 use Isotope\CoreBundle\Model\Document;
 use Isotope\CoreBundle\Model\OrderStatus;
+use Isotope\CoreBundle\Model\ProductCollectionLog;
 use Isotope\CoreBundle\ModelType\DocumentRegistry;
 use Isotope\CoreBundle\Store\Address\AddressFormatter;
 use Isotope\CoreBundle\Store\StoreManager;
@@ -30,7 +31,6 @@ use Isotope\Interfaces\IsotopeOrderStatusAware;
 use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Isotope;
 use Isotope\Model\ProductCollection;
-use Isotope\Model\ProductCollectionLog;
 use NotificationCenter\Model\Notification;
 
 

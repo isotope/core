@@ -1,5 +1,6 @@
-@import './backend/_mediamanager.scss';
-@import './backend/_shop-config.scss';
+@import './backend/mediamanager';
+@import './backend/shop-config';
+@import './backend/orders';
 
 #tl_navigation .group-isotope {
     background: url(../images/module.svg) 3px 1px no-repeat;

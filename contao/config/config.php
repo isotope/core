@@ -22,6 +22,7 @@ use Isotope\CoreBundle\Model\Product;
 use Isotope\CoreBundle\Model\ProductCategory;
 use Isotope\CoreBundle\Model\ProductCollection;
 use Isotope\CoreBundle\Model\ProductCollectionItem;
+use Isotope\CoreBundle\Model\ProductCollectionLog;
 use Isotope\CoreBundle\Model\ProductType;
 use Isotope\CoreBundle\Model\RelatedCategory;
 use Isotope\CoreBundle\Model\RelatedProduct;
@@ -34,7 +35,6 @@ use Isotope\CoreBundle\Widget\InheritCheckBox;
 use Isotope\CoreBundle\Widget\MediaManager;
 use Isotope\Model\Download;
 use Isotope\Model\ProductCollectionDownload;
-use Isotope\Model\ProductCollectionLog;
 
 /*
  * Backend modules
