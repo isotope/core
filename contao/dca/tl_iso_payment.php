@@ -9,9 +9,6 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = [
     'config' => [
         'dataContainer' => DC_Table::class,
         'enableVersioning' => true,
-        'onload_callback' => [
-            [Callback::class, 'loadShippingModules'],
-        ],
         'sql' => [
             'keys' => [
                 'id' => 'primary',
