@@ -29,13 +29,11 @@ class DatabaseMigrationListener
     /**
      * @param DataContainer|mixed|null $dc
      */
-    #[AsHook('getAttributesFromDca')]
+    #[AsCallback('tl_iso_attribute', 'fields.field_name.attributes')]
     public function disableFieldName(array $attributes, mixed $dc): array
     {
         if (
             $dc instanceof DataContainer
-            && 'tl_iso_attribute' === $dc->table
-            && 'field_name' === $dc->field
             && '' !== (string) $dc->value
         ) {
             $attributes['disabled'] = true;
