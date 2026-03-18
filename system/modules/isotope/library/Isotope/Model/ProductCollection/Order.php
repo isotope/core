@@ -147,23 +147,6 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
     }
 
     /**
-     * Get the alias for current order status
-     *
-     * @return string
-     */
-    public function getStatusAlias()
-    {
-        try {
-            /** @var OrderStatus $objStatus */
-            $objStatus = $this->getRelated('order_status');
-
-            return null === $objStatus ? $this->order_status : $objStatus->getAlias();
-        } catch (\Exception $e) {
-            return $this->order_status;
-        }
-    }
-
-    /**
      * Process the order checkout
      *
      * @return bool

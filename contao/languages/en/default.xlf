@@ -269,14 +269,20 @@
       <trans-unit id="MSC.iso_invoice_title">
         <source>Invoice</source>
       </trans-unit>
-      <trans-unit id="MSC.iso_order_status">
-        <source>Status</source>
-      </trans-unit>
       <trans-unit id="MSC.iso_order_date">
         <source>Order date</source>
       </trans-unit>
       <trans-unit id="MSC.iso_order_document_number">
         <source>Order number</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_status">
+        <source>Order status</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_transaction_status">
+        <source>Payment status</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_delivery_status">
+        <source>Shipping status</source>
       </trans-unit>
       <trans-unit id="MSC.iso_order_description">
         <source>Description</source>

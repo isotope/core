@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Twig;
 
 use Hashids\Hashids;
+use Isotope\CoreBundle\Store\Address\AddressFormatter;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
@@ -19,6 +20,7 @@ class IsotopeExtension extends AbstractExtension
 {
     public function __construct(
         private readonly Environment $environment,
+        private readonly AddressFormatter $addressFormatter,
         #[Autowire(service: 'isotope.hashids')] private readonly Hashids $hashids,
     ) {
         $this->environment
@@ -46,6 +48,7 @@ class IsotopeExtension extends AbstractExtension
             new TwigFunction('isotope_attribute_label', [AttributeRuntime::class, 'getLabel']),
             new TwigFunction('isotope_attribute_value', [AttributeRuntime::class, 'getValue']),
             new TwigFunction('isotope_gallery', [GalleryRuntime::class, 'get'], ['needs_context' => true]),
+            new TwigFunction('isotope_address', $this->addressFormatter->toHtml(...)),
         ];
     }
 }

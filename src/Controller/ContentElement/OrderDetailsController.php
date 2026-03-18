@@ -10,35 +10,42 @@ use Contao\CoreBundle\Exception\AccessDeniedException;
 use Contao\CoreBundle\Exception\PageNotFoundException;
 use Contao\CoreBundle\Twig\FragmentTemplate;
 use Contao\FrontendUser;
-use Contao\StringUtil;
-use Isotope\Model\ProductCollection\Order;
+use Isotope\CoreBundle\ProductCollection\Order\OrderFactory;
+use Isotope\CoreBundle\Store\Address\AddressFormatter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 #[AsContentElement('iso_orderdetails', category: 'isotope')]
 class OrderDetailsController extends AbstractContentElementController
 {
+    public function __construct(
+        private readonly OrderFactory $loader,
+        private readonly AddressFormatter $addressFormatter,
+    ) {
+    }
+
     protected function getResponse(FragmentTemplate $template, ContentModel $model, Request $request): Response
     {
-        $collection = Order::findOneBy('uniqid', $request->query->getString('uid'));
+        $order = $this->loader->loadFromIdentifier($request->query->getString('uid'));
 
-        if (!$collection) {
+        if (!$order) {
             throw new PageNotFoundException();
         }
 
-        if ($collection->member > 0) {
+        $context = $order->getContext();
+
+        if ($context->getMemberId() > 0) {
             $user = $this->getUser();
 
             if (
                 (!$user instanceof FrontendUser && $model->iso_loginRequired)
-                || ($user instanceof FrontendUser && (int) $user->id !== (int) $collection->member)
+                || ($user instanceof FrontendUser && (int) $user->id !== $context->getMemberId())
             ) {
                 throw new AccessDeniedException();
             }
         }
 
-        $template->collection = $collection;
-        $template->info = StringUtil::deserialize($collection->checkout_info, true);
+        $template->order = $order;
 
         return $template->getResponse();
     }

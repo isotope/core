@@ -1,0 +1,44 @@
+{% trans_default_domain 'contao_default' %}
+{% extends '@Contao/content_element/_isotope_base.html.twig' %}
+
+{% block content %}
+
+    {% if orders is not empty %}
+        <table>
+            <thead>
+            <tr>
+                <th class="col_0 col_first order_date">{{ 'MSC.iso_order_date'|trans }}</th>
+                <th class="col_1 document_number">{{ 'MSC.iso_order_document_number'|trans }}</th>
+                <th class="col_2 order_total">{{ 'MSC.iso_order_total'|trans }}</th>
+                <th class="col_3 order_status">{{ 'MSC.iso_order_status'|trans }}</th>
+                <th class="col_3 order_status">{{ 'MSC.iso_transaction_status'|trans }}</th>
+                <th class="col_3 order_status">{{ 'MSC.iso_delivery_status'|trans }}</th>
+                <th class="col_4 col_last link">&nbsp;</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for order in orders %}
+                <tr class="{{ order.orderStatus.alias }}">
+                    <td class="col_0 col_first order_date">{{ order.locked|date(contao.page.dateFormat) }}</td>
+                    <td class="col_1 document_number">{{ order.documentNumber }}</td>
+                    <td class="col_2 order_total">{{ isotope_price(order.total) }}</td>
+                    <td class="col_3 order_status">{{ order.orderStatus.label|default(order.orderStatus.name)|trans([], 'isotope') }}</td>
+                    <td class="col_3 transaction_status">{{ order?.transactionStatus?.label|default(order.transactionStatus?.name)|trans([], 'isotope') }}</td>
+                    <td class="col_3 delivery_status">{{ order.deliveryStatus?.label|default(order.deliveryStatus?.name)|trans([], 'isotope') }}</td>
+                    <td class="col_4 col_last link">
+                        {% if detailPage %}
+                            <a href="{{ content_url(detailPage, {uid: order.identifier}) }}">{{ 'MSC.detailLabel'|trans }}</a>
+                        {% endif %}
+                        {% if reorder %}
+                            <a href="{{ content_url(contao.page, {reorder: order.identifier}) }}">{{ 'MSC.reorderLabel'|trans }}</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p class="message empty">{{ 'ERR.emptyOrderHistory'|trans }}</p>
+    {% endif %}
+
+{% endblock %}

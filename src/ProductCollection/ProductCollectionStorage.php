@@ -20,6 +20,9 @@ use Isotope\CoreBundle\ProductCollection\Event\SaveCollectionTransaction;
 use Isotope\CoreBundle\ProductCollection\Event\SaveItemTransaction;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
 use Isotope\CoreBundle\Store\Context\StoreContext;
+use Isotope\CoreBundle\Store\Price\CalculatedPrice;
+use Isotope\CoreBundle\Store\Tax\CalculatedTaxCollection;
+use Isotope\CoreBundle\Store\Tax\TaxRateCollection;
 
 class ProductCollectionStorage
 {
@@ -125,6 +128,7 @@ class ProductCollectionStorage
             $item->setSku($itemModel->sku);
             $item->setLabel($itemModel->label);
             $item->setLevel((int) $itemModel->level);
+            $item->setPrice(new CalculatedPrice((float) $itemModel->price, $itemModel->price * $itemModel->quantity, new CalculatedTaxCollection(), new TaxRateCollection()));
 
             if (\is_array($configuration = StringUtil::deserialize($itemModel->configuration))) {
                 $item->setConfiguration($configuration);

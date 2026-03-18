@@ -5,19 +5,20 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Model;
 
 use Contao\Model;
-use Contao\StringUtil;
 use Contao\System;
+use Isotope\CoreBundle\Store\Order\StatusType;
 
 /**
  * @property int    $id
  * @property int    $pid
  * @property int    $tstamp
- * @property int    $sorting
+ * @property string $type
+ * @property string $alias
  * @property string $name
+ * @property string $label
  * @property string $color
  * @property bool   $paid
  * @property bool   $welcomescreen
- * @property int    $notification
  */
 class OrderStatus extends Model
 {
@@ -42,12 +43,12 @@ class OrderStatus extends Model
         return System::getContainer()->get('translator')->trans($this->name, [], 'isotope');
     }
 
-    /**
-     * Return the localized order status name
-     * Do not use $this->getName(), the alias should not be localized.
-     */
-    public function getAlias(): string
+    public static function findOneByAlias(string $alias, StatusType $type, array $options = []): self|null
     {
-        return StringUtil::standardize($this->name);
+        return self::findOneBy(
+            ['tl_iso_orderstatus.alias=?', 'tl_iso_orderstatus.type=?'],
+            [$alias, $type->value],
+            $options,
+        );
     }
 }

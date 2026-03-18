@@ -21,6 +21,7 @@ class ModuleToElementMigration extends AbstractMigration
         'iso_productreader' => [],
         'iso_cart' => [],
         'iso_configswitcher' => [],
+        'iso_orderhistory' => [],
         'iso_orderdetails' => [],
         'iso_productfilter' => [],
         'iso_categoryfilter' => [],

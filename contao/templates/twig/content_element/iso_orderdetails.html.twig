@@ -4,17 +4,39 @@
 
 {% block content %}
 
-    <h2>{{ 'MSC.orderDetailsHeadline'|trans([collection.documentNumber, collection.locked|date(contao.page.datimFormat)]) }}</h2>
-    <div class="order_status {{ collection.statusAlias }}">{{ 'MSC.orderStatusHeadline'|trans([collection.statusLabel]) }}</div>
+    <h2>{{ 'MSC.orderDetailsHeadline'|trans([order.documentNumber, order.locked|date(contao.page.datimFormat)]) }}</h2>
+    <div class="order_status {{ order.orderStatus.alias }}">{{ 'MSC.orderStatusHeadline'|trans([order.orderStatus.label|default(order.orderStatus.name)|trans([], 'isotope')]) }}</div>
 
-    {% for type,data in info %}
-        <div class="info_container {{ type }} {{ data.class|default }}">
-            <h3>{{ data.headline }}</h3>
-            <div class="info">{{ data.info|raw }}</div>
-        </div>
-    {% endfor %}
+    {% if order.billingAddress %}
+        {% if order.shippingMethod and not order.shippingAddress %}
+            <h3>{{ 'MSC.billing_shipping_address'|trans }}</h3>
+        {% elseif order.paymentMethod %}
+            <h3>{{ 'MSC.billing_address'|trans }}</h3>
+        {% else %}
+            <h3>{{ 'MSC.customer_address'|trans }}</h3>
+        {% endif %}
+        {{ isotope_address(order.billingAddress, order.context.billingAddressConfig) }}
+    {% endif %}
 
-    {{ block('product_collection') }}
+    {% if order.shippingAddress %}
+        <h3>{{ 'MSC.shipping_address'|trans }}</h3>
+        {{ isotope_address(order.shippingAddress, order.context.shippingAddressConfig) }}
+    {% endif %}
+
+    {% if order.shippingMethod %}
+        <h3>{{ 'MSC.shipping_method'|trans }}</h3>
+        {{ order.shippingMethod.label }}
+    {% endif %}
+
+    {% if order.paymentMethod %}
+        <h3>{{ 'MSC.payment_method'|trans }}</h3>
+        {{ order.paymentMethod.label }}
+    {% endif %}
+
+    {% with {collection: order} %}
+        <h3>{{ 'MSC.order_review'|trans }}</h3>
+        {{ block('product_collection') }}
+    {% endwith %}
 
 {% endblock %}
 
