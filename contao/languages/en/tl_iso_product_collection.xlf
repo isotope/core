@@ -2,6 +2,9 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="contao/languages/en/tl_iso_product_collection.xlf" source-language="en">
     <body>
+      <trans-unit id="tl_iso_product_collection.recordLabel">
+        <source>Order #%s</source>
+      </trans-unit>
       <trans-unit id="tl_iso_product_collection.id.0">
         <source>ID</source>
       </trans-unit>
@@ -26,11 +29,17 @@
       <trans-unit id="tl_iso_product_collection.transaction_status.1">
         <source>Select the payment status of this order.</source>
       </trans-unit>
+      <trans-unit id="tl_iso_product_collection.transaction_status.2">
+        <source>Payment</source>
+      </trans-unit>
       <trans-unit id="tl_iso_product_collection.delivery_status.0">
         <source>Shipping status</source>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.delivery_status.1">
         <source>Select the delivery status of this order.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.delivery_status.2">
+        <source>Shipping</source>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.locked.0">
         <source>Placed</source>
@@ -113,6 +122,12 @@
       <trans-unit id="tl_iso_product_collection.notes.1">
         <source>If you would like to convey information to other backend users, please do so here.</source>
       </trans-unit>
+      <trans-unit id="tl_iso_product_collection.details.0">
+        <source>Order details</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.details.1">
+        <source>Show details of order ID %s</source>
+      </trans-unit>
       <trans-unit id="tl_iso_product_collection.print_document.0">
         <source>Print a document</source>
       </trans-unit>
@@ -164,8 +179,14 @@
       <trans-unit id="tl_iso_product_collection.billing_address_legend">
         <source>Billing address data</source>
       </trans-unit>
+      <trans-unit id="tl_iso_product_collection.billing_address_empty">
+        <source>This order does not have any billing address data.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_product_collection.shipping_address_legend">
         <source>Shipping address data</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.shipping_address_empty">
+        <source>This order does not have any shipping address data.</source>
       </trans-unit>
     </body>
   </file>

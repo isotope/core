@@ -1,0 +1,77 @@
+
+#picker-menu a.productPicker {
+    background-image: url(../../images/picker.svg);
+    background-size: 16px;
+}
+
+// "Sort in category" button in filter panel on product list view
+.tl_iso_category_sorting {
+    margin-top: -20px;
+    background: var(--content-bg);
+
+    .tl_submit {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+    }
+}
+
+// "Products of category" button in filter panel on product list view
+.iso_filter .tl_submit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &.active {
+        border: 1px solid var(--form-border);
+        background: var(--active-bg);
+    }
+}
+
+// Sorting hint on product categories is hidden by default
+.hide_sort_hint {
+    .sort_hint {
+        display: none;
+        background-color: var(--content-bg);
+        left: 200px !important;
+    }
+
+    &:hover {
+        .sort_hint {
+            display: block;
+        }
+    }
+}
+
+.iso_listing_container  {
+    th.col_images {
+        font-size: 0;
+        width: 60px;
+    }
+
+    td.col_images {
+        height: 50px;
+        text-align: center;
+    }
+}
+
+h3.inherit,
+.tl_checkbox_single_container.inherit
+{
+    background-color: #f8f8f8;
+    padding: 2px 2px 2px 0;
+    margin: 11px 0 1px 0;
+}
+
+.inherit-default {
+    float: right;
+    display: flex;
+    align-items: center;
+    column-gap: 3px;
+    margin: 2px 0;
+
+    label {
+        font-weight: normal;
+    }
+}

@@ -42,11 +42,17 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
             'filter' => [['type=?', 'order'], 'order_status IS NOT NULL', ['locked!=?', '']],
         ],
         'label' => [
-            'fields' => ['id', 'document_number', 'locked', 'billing_address_id', 'total', 'order_status'],
+            'fields' => ['document_number', 'locked', 'billing_address_id', 'total', 'order_status'],
             'showColumns' => true,
         ],
         'operations' => [
-            'edit',
+            'details' => [
+                'href' => 'act=edit',
+                'icon' => 'images/order.svg',
+                'primary' => true,
+                'prefetch' => true,
+                'attributes' => 'data-contao--deeplink-target="primary"',
+            ],
             'delete',
             'print_document' => [
                 'href' => 'key=print_document',
@@ -110,7 +116,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
         'source_collection_id' => [
             // Not necessarily a cart (as the label says), but useful for the backend order view
             'label' => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['source_collection_id'],
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => 'int(10) unsigned NOT NULL default 0',
             'relation' => ['type' => 'hasOne', 'load' => 'lazy', 'table' => 'tl_iso_product_collection'],
         ],
         'document_number' => [
@@ -143,7 +149,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
         ],
         'date_paid' => [
             'inputType' => 'text',
-            'eval' => ['rgxp' => 'datim', 'datepicker' => true, 'tl_class' => 'clr w50 wizard'],
+            'eval' => ['rgxp' => 'datim', 'datepicker' => true, 'tl_class' => 'clr w33 wizard'],
             'sql' => 'int(10) NULL',
         ],
         'date_shipped' => [

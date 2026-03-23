@@ -62,6 +62,9 @@
       <trans-unit id="tl_iso_orderstatus.name_legend">
         <source>Name</source>
       </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.workflow_legend">
+        <source>Workflow</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>

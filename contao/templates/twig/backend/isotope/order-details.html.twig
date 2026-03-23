@@ -1,0 +1,48 @@
+{% trans_default_domain 'contao_default' %}
+{% use '@Contao/isotope/product_collection/backend.html.twig' %}
+
+    <div class="summary">
+        <h3>Bestellnummer: {{ order.documentNumber }}</h3>
+        <div>Bestelldatum: {{ order.locked|date(datimFormat) }}</div>
+    </div>
+
+    {% if order.billingAddress %}
+        <div class="billing_address">
+            {% if order.shippingMethod and not order.shippingAddress %}
+                <h3>{{ 'MSC.billing_shipping_address'|trans }}</h3>
+            {% elseif order.paymentMethod %}
+                <h3>{{ 'MSC.billing_address'|trans }}</h3>
+            {% else %}
+                <h3>{{ 'MSC.customer_address'|trans }}</h3>
+            {% endif %}
+            {{ isotope_address(order.billingAddress, order.context.billingAddressConfig) }}
+        </div>
+    {% endif %}
+
+    {% if order.shippingAddress %}
+        <div class="shipping_address">
+            <h3>{{ 'MSC.shipping_address'|trans }}</h3>
+            {{ isotope_address(order.shippingAddress, order.context.shippingAddressConfig) }}
+        </div>
+    {% endif %}
+
+    {% if order.shippingMethod %}
+        <div class="shipping_method">
+            <h3>{{ 'MSC.shipping_method'|trans }}</h3>
+            {{ order.shippingMethod.label }}
+        </div>
+    {% endif %}
+
+    {% if order.paymentMethod %}
+        <div class="payment_method">
+            <h3>{{ 'MSC.payment_method'|trans }}</h3>
+            {{ order.paymentMethod.label }}
+        </div>
+    {% endif %}
+
+{% with {collection: order} %}
+    <div class="details">
+        <h3>{{ 'MSC.order_review'|trans }}</h3>
+        {{ block('product_collection') }}
+    </div>
+{% endwith %}

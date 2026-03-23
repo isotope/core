@@ -15,15 +15,15 @@
                 <table>
                     <thead>
                         <tr>
-                            <td class="name"></td>
-                            <td class="quantity">Quantity</td>
-                            <td class="price">Price</td>
-                            <td class="total">Total</td>
+                            <th class="name"></th>
+                            <th class="quantity">Quantity</th>
+                            <th class="price">Price</th>
+                            <th class="total">Total</th>
                             {% if multiple_taxes|default %}
-                                <td class="tax_id"></td>
+                                <th class="tax_id"></th>
                             {% endif %}
                             {% if block("product_collection_item_actions") is defined %}
-                                <td class="actions"></td>
+                                <th class="actions"></th>
                             {% endif %}
                         </tr>
                     </thead>
@@ -65,10 +65,10 @@
                                         {% if multiple_taxes|default %}
                                             <td class="tax_id">{{ price.tax_ids|default([])|join(',') }}</td>
                                         {% endif %}
-                                        {% if block("product_collection_item_actions") is defined %}
+                                        {% if block('product_collection_item_actions') is defined %}
                                             <td class="actions">
                                                 {#<?php if ($item['edit_href'] ?? null): ?><a href="<?= $item['edit_href'] ?>" class="edit" title="<?= $item['edit_title'] ?>"><?= $item['edit_link'] ?></a><?php endif; ?>#}
-                                                {% block product_collection_item_actions %}{% endblock %}
+                                                {{ block('product_collection_item_actions') }}
                                             </td>
                                         {% endif %}
                                     </tr>
@@ -83,7 +83,7 @@
                                     {% endif %}
                                 {% endblock %}
                             {% endfor %}
-                            {% if not loop.last %}
+                            {% if not loop.last or level == 0 %}
                                 {% block product_collection_subtotal %}
                                     <tr class="subtotal">
                                         <td class="name" colspan="2">{{ 'MSC.subTotalLabel'|trans }}</td>
@@ -140,7 +140,7 @@
     {% if block("product_collection_actions") is defined %}
             </div>
             <div class="submit_container">
-                {% block product_collection_actions %}{% endblock %}
+                {{ block("product_collection_actions") }}
             </div>
         </form>
     {% endif %}

@@ -14,6 +14,8 @@ use Isotope\CoreBundle\Store\Address\AddressFormatter;
 use Isotope\CoreBundle\Store\Order\WorkflowManager;
 use Isotope\CoreBundle\Util\ColorUtil;
 use Isotope\Isotope;
+use Symfony\Component\Workflow\Workflow;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[AsCallback('tl_iso_product_collection', 'list.label.label')]
 class LabelListener
@@ -22,6 +24,7 @@ class LabelListener
         private readonly AddressFormatter $addressFormatter,
         private readonly AddressConfigFactory $addressConfigFactory,
         private readonly WorkflowManager $workflowManager,
+        private readonly TranslatorInterface $translator,
     ) {
     }
 
@@ -29,6 +32,10 @@ class LabelListener
     {
         foreach ($GLOBALS['TL_DCA']['tl_iso_product_collection']['list']['label']['fields'] as $i => $field) {
             switch ($field) {
+                case 'document_number':
+                    $args[$i] = $label.'<br><small class="tl_gray">ID '.$row['id'].'</small>';
+                    break;
+
                 case 'billing_address_id':
                 case 'shipping_address_id':
                     $args[$i] = $this->formatAddress($row, $field);
@@ -40,9 +47,23 @@ class LabelListener
                     break;
 
                 case 'order_status':
-                    if ($color = $this->workflowManager->getOrderWorkflow()->getMetadataStore()->getPlaceMetadata($row['order_status'])['color'] ?? null) {
-                        $args[$i] = '<span style="' . ColorUtil::getCssBackgroundStyles($color) . '">' . $args[$i] . '</span>';
-                    }
+                    $args[$i] = sprintf(
+                        '<div>%s</div><div>%s: %s</div><div>%s: %s</div>',
+                        $this->formatStatus(
+                            $this->workflowManager->getOrderWorkflow(),
+                            $row['order_status'],
+                        ),
+                        $this->translator->trans('tl_iso_product_collection.transaction_status.2', [], 'contao_tl_iso_product_collection'),
+                        $this->formatStatus(
+                            $this->workflowManager->getTransactionWorkflow(),
+                            $row['transaction_status'],
+                        ),
+                        $this->translator->trans('tl_iso_product_collection.delivery_status.2', [], 'contao_tl_iso_product_collection'),
+                        $this->formatStatus(
+                            $this->workflowManager->getDeliveryWorkflow(),
+                            $row['delivery_status'],
+                        ),
+                    );
                     break;
             }
         }
@@ -60,5 +81,24 @@ class LabelListener
         $addressConfig = new AddressConfig($fields, $addressConfig->getMandatory(), $addressConfig->getCountryCodes(), $addressConfig->getDefaultCountryCode());
 
         return (string) $this->addressFormatter->toHtml(Address::findById($row[$field]), $addressConfig);
+    }
+
+    private function formatStatus(Workflow $workflow, string|null $value, string $element = 'span'): string
+    {
+        if (!$value) {
+            return '';
+        }
+
+        $metadata = $workflow->getMetadataStore()->getPlaceMetadata($value);
+
+        if (empty($metadata['color'])) {
+            return $metadata['name'] ?? $value;
+        }
+
+        return sprintf(
+            '<span style="%s">%s</span>',
+            ColorUtil::getCssBackgroundStyles($metadata['color']),
+            $metadata['name'],
+        );
     }
 }

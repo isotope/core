@@ -1,0 +1,5 @@
+{% extends '@Contao/backend/data_container/table/view/_record_listing.html.twig' %}
+
+{% set listing_attributes = attrs()
+    .addClass(app.request.query.get('table')|default(app.request.query.get('do')))
+%}

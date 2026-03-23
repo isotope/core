@@ -6,28 +6,28 @@
         <source>Isotope eCommerce</source>
       </trans-unit>
       <trans-unit id="MOD.iso_products.0">
-        <source>Product management</source>
+        <source>Products</source>
       </trans-unit>
       <trans-unit id="MOD.iso_products.1">
-        <source>Manage products for your Isotope eCommerce shop</source>
+        <source>Manage products for your Isotope eCommerce shop.</source>
       </trans-unit>
       <trans-unit id="MOD.iso_orders.0">
         <source>Orders</source>
       </trans-unit>
       <trans-unit id="MOD.iso_orders.1">
-        <source>See and manage orders for your shop</source>
+        <source>See and manage orders for your shop.</source>
       </trans-unit>
       <trans-unit id="MOD.iso_rules.0">
         <source>Rules</source>
       </trans-unit>
       <trans-unit id="MOD.iso_rules.1">
-        <source>Create discounts, shipping conditions, tax behaviour or other rules to influence the store frontend.</source>
+        <source>Create rules to influence the store frontend.</source>
       </trans-unit>
       <trans-unit id="MOD.iso_setup.0">
-        <source>Store configuration</source>
+        <source>Configuration</source>
       </trans-unit>
       <trans-unit id="MOD.iso_setup.1">
-        <source>Setup and configure Isotope eCommerce to your needs</source>
+        <source>Setup and configure Isotope eCommerce to your needs.</source>
       </trans-unit>
       <trans-unit id="FMD.isotope">
         <source>Isotope eCommerce</source>

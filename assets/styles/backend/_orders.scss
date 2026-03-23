@@ -1,3 +1,33 @@
+.tl_listing_container.iso_orders,
+.tl_listing_container.tl_iso_product_collection {
+    td {
+        vertical-align: top;
+    }
+
+    .col_order_status {
+        padding: 0;
+    }
+
+    .col_order_status {
+        padding-top: 3px;
+
+        div {
+            margin: 2px 0;
+        }
+
+        span {
+            display: inline-block;
+            padding: 2px 5px 3px;
+            border-radius: 2px;
+        }
+
+        div:first-child span {
+            display: block;
+        }
+    }
+}
+
+
 form#tl_iso_product_collection {
 
     > .tl_formbody_submit {
@@ -44,18 +74,95 @@ form#tl_iso_product_collection {
     }
 
     #pal_log_legend > .widget-group {
-        padding: 0;
-
         hr {
-            margin: 0 2%;
-        }
-
-        table.tl_show:last-child {
             margin-bottom: 0;
         }
 
         > .tl_info {
-            margin: 1em 2% 0;
+            margin: 1em 0 0;
         }
+    }
+
+    #pal_details_legend {
+        .widget-group {
+            display: grid;
+            grid-template:
+  "summary baddress saddress payment" auto
+  "summary baddress saddress shipping" auto
+  "details details  details  details" auto / auto auto auto auto;
+            gap: 10px;
+
+            .summary {
+                grid-area: summary;
+            }
+
+            .billing_address {
+                grid-area: baddress;
+            }
+
+            .shipping_address {
+                grid-area: saddress;
+            }
+
+            .payment_method {
+                grid-area: payment;
+            }
+
+            .shipping_method {
+                grid-area: shipping;
+            }
+
+            .details {
+                margin-top: 10px;
+                grid-area: details;
+
+                p {
+                    margin: 0;
+                }
+
+                table {
+                    margin-top: 10px;
+                    width: 100%;
+
+                    th, td {
+                        line-height: 18px;
+                        padding: var(--row-padding) 6px;
+                        border-top: solid var(--border);
+                        border-width: 1px 0;
+                    }
+
+                    th {
+                        background-color: var(--table-header);
+                        border-top: bottom var(--border);
+                        border-width: 1px 0;
+                    }
+
+                    td {
+                        &:first-child:last-child[colspan] {
+                            padding-top: 0;
+                            border-top: none;
+                        }
+                    }
+
+                    .price,
+                    .total {
+                        text-align: right;
+                    }
+
+                    tr.total td {
+                        border-top: 1px solid var(--text);
+                        font-weight: bold;
+                        padding-top: 10px;
+                    }
+                }
+            }
+        }
+    }
+
+    .tl_show {
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+        margin-bottom: 0;
     }
 }

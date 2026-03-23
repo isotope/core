@@ -11,7 +11,6 @@ use Contao\CoreBundle\Exception\PageNotFoundException;
 use Contao\CoreBundle\Twig\FragmentTemplate;
 use Contao\FrontendUser;
 use Isotope\CoreBundle\ProductCollection\Order\OrderFactory;
-use Isotope\CoreBundle\Store\Address\AddressFormatter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -20,7 +19,6 @@ class OrderDetailsController extends AbstractContentElementController
 {
     public function __construct(
         private readonly OrderFactory $loader,
-        private readonly AddressFormatter $addressFormatter,
     ) {
     }
 

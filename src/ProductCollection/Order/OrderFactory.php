@@ -18,6 +18,17 @@ class OrderFactory
     ) {
     }
 
+    public function loadFromId(int $id): Order|null
+    {
+        $collection = ProductCollection::findById($id);
+
+        if (!$collection || Order::getType() !== $collection->type) {
+            return null;
+        }
+
+        return $this->load($collection);
+    }
+
     public function loadFromIdentifier(string $identifier): Order|null
     {
         $collection = ProductCollection::findByIdentifier($identifier, Order::getType());

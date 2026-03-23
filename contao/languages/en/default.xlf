@@ -74,6 +74,9 @@
       <trans-unit id="PTY.iso_products.1">
         <source>Select this page type if your want to display a product list and product reader.</source>
       </trans-unit>
+      <trans-unit id="MSC.productPicker">
+        <source>Products</source>
+      </trans-unit>
       <trans-unit id="MSC.filterByPages">
         <source>Products of category</source>
       </trans-unit>
@@ -495,7 +498,7 @@
         <source>This is the page where most of the configuration will take place.</source>
       </trans-unit>
       <trans-unit id="MSC.isotopeIntroduction.3">
-        <source>You should start from the bottom of this page and work your way upward from right to left.</source>
+        <source>For initial setup, you should start from the bottom of this page and work your way upward.</source>
       </trans-unit>
       <trans-unit id="MSC.isotopeIntroduction.4">
         <source>Visit the official Isotope eCommerce website for the latest news, configuration manuals and professional support. Thank you so much for considering giving something back!</source>

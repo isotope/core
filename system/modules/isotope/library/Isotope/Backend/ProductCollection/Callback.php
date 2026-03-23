@@ -12,11 +12,9 @@
 namespace Isotope\Backend\ProductCollection;
 
 use Contao\Backend;
-use Contao\BackendTemplate;
 use Contao\BackendUser;
 use Contao\Controller;
 use Contao\CoreBundle\Exception\InternalServerErrorException;
-use Contao\CoreBundle\Monolog\ContaoContext;
 use Contao\Database;
 use Contao\DataContainer;
 use Contao\DcaExtractor;
@@ -24,57 +22,20 @@ use Contao\Environment;
 use Contao\Image;
 use Contao\Input;
 use Contao\Message;
-use Contao\ModuleModel;
 use Contao\SelectMenu;
 use Contao\StringUtil;
 use Contao\System;
-use Isotope\CompatibilityHelper;
 use Isotope\CoreBundle\Document\DocumentInterface;
-use Isotope\CoreBundle\Model\Address;
 use Isotope\CoreBundle\Model\Document;
-use Isotope\CoreBundle\Model\OrderStatus;
-use Isotope\CoreBundle\Model\ProductCollectionLog;
 use Isotope\CoreBundle\ModelType\DocumentRegistry;
 use Isotope\Frontend;
 use Isotope\Haste\Util\Format;
 use Isotope\Model\ProductCollection\Order;
-use Isotope\Module\OrderDetails;
 use NotificationCenter\Model\Notification;
 
 
 class Callback extends Backend
 {
-    /**
-     * Generate the order details view when editing an order
-     *
-     * @param object $dc
-     *
-     * @return string
-     */
-    public function generateOrderDetails($dc)
-    {
-        $objOrder = Order::findByPk($dc->id);
-
-        if (null === $objOrder) {
-            return '';
-        }
-
-        // Try to find a order details module or create a dummy FE module model
-        if (($config = $objOrder->getRelated('config_id')) === null
-            || ($moduleModel = $config->getRelated('orderDetailsModule')) === null
-        ) {
-            $moduleModel = new ModuleModel();
-            $moduleModel->type = 'iso_orderdetails';
-            $moduleModel->iso_collectionTpl = 'iso_collection_default';
-        }
-
-        // Generate a regular order details module
-        Input::setGet('uid', $objOrder->uniqid);
-        $objModule = new OrderDetails($moduleModel);
-
-        return \Contao\System::getContainer()->get('contao.insert_tag.parser')->replace($objModule->generate(true));
-    }
-
     /**
      * @param DataContainer $dc
      */
@@ -217,73 +178,6 @@ class Callback extends Backend
   <tr>
     <td class="tl_label">' . ($GLOBALS['TL_LANG']['tl_iso_product_collection']['emailData'][$k] ?? $k) . ': <small>'.$k.'</small></td>
     <td>' . $strValue . '</td>
-  </tr>';
-        }
-
-        return $strBuffer . '
-</tbody></table>
-</div>';
-    }
-
-    /**
-     * Generate the billing address details
-     *
-     * @param object $dc
-     *
-     * @return string
-     */
-    public function generateBillingAddressData($dc)
-    {
-        /** @var Order $objOrder */
-        $objOrder = Order::findByPk($dc->id);
-
-        return $this->generateAddressData((null === $objOrder) ? null : $objOrder->getBillingAddress());
-    }
-
-    /**
-     * Generate the shipping address details
-     *
-     * @param object $dc
-     *
-     * @return string
-     */
-    public function generateShippingAddressData($dc)
-    {
-        /** @var Order $objOrder */
-        $objOrder = Order::findByPk($dc->id);
-
-        return $this->generateAddressData((null === $objOrder) ? null : $objOrder->getShippingAddress());
-    }
-
-    /**
-     * Generate address details amd return it as string
-     *
-     *
-     * @return string
-     */
-    protected function generateAddressData(Address $objAddress = null)
-    {
-        if (null === $objAddress) {
-            return '<div class="tl_gerror">No address data available.</div>';
-        }
-
-        System::loadLanguageFile(Address::getTable());
-        Controller::loadDataContainer(Address::getTable());
-
-        $strBuffer = '
-<div>
-<table class="tl_show">
-  <tbody>';
-
-        foreach ($GLOBALS['TL_DCA'][Address::getTable()]['fields'] as $field => $config) {
-            if (!isset($objAddress->{$field})) {
-                continue;
-            }
-
-            $strBuffer .= '
-  <tr>
-    <td class="tl_label">' . Format::dcaLabel(Address::getTable(), $field) . ' <small>'.$field.'</small></td>
-    <td>' . Format::dcaValue(Address::getTable(), $field, $objAddress->{$field}) . '</td>
   </tr>';
         }
 
