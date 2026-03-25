@@ -7,13 +7,16 @@ namespace Isotope\CoreBundle\ProductCollection\Action;
 use Contao\System;
 use Isotope\CoreBundle\HttpFoundation\ActionResult;
 use Isotope\CoreBundle\ProductCollection\AbstractProductCollection;
+use Isotope\CoreBundle\Store\CartManager;
+use Isotope\CoreBundle\Store\StoreManager;
 use Isotope\Haste\Util\Url;
-use Isotope\Isotope;
 use Twig\Environment;
 
 class ReorderAction implements ProductCollectionActionInterface
 {
     public function __construct(
+        private readonly StoreManager $storeManager,
+        private readonly CartManager $cartManager,
         private readonly Environment $twig,
     ) {
     }
@@ -30,7 +33,14 @@ class ReorderAction implements ProductCollectionActionInterface
 
     public function handle(AbstractProductCollection $collection, array $context): ActionResult
     {
-        Isotope::getCart()?->copyItemsFrom($collection);
+        $storeContext = $this->storeManager->getCurrentContext();
+        $cart = $storeContext->getCart();
+
+        $this->cartManager->add(
+            $cart,
+            $collection->getLineItems()->products()->clone()->toArray(),
+            $storeContext,
+        );
 
         $redirect = null;
 

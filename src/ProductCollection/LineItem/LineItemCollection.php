@@ -34,6 +34,11 @@ class LineItemCollection extends AbstractCollection
         return $this->where('getType', LineItem::TYPE_PRODUCT);
     }
 
+    public function clone(): self
+    {
+        return $this->map(static fn (LineItem $old) => (clone $old)->setId(0));
+    }
+
     public function sumQuantity(): int
     {
         return $this->reduce(
@@ -73,17 +78,8 @@ class LineItemCollection extends AbstractCollection
         return $levels;
     }
 
-    public function getUnitPriceAmount(): float
+    public function map(callable $callback): self
     {
-        $prices = $this->map(fn (LineItem $item) => $item->getPrice()?->getUnitPrice() ?? 0.0);
-
-        return FloatComparator::cast(array_sum($prices->toArray()));
-    }
-
-    public function getTotalPriceAmount(): float
-    {
-        $prices = $this->map(fn (LineItem $item) => $item->getPrice()?->getTotalPrice() ?? 0.0);
-
-        return FloatComparator::cast(array_sum($prices->toArray()));
+        return new self(array_map($callback, $this->data));
     }
 }

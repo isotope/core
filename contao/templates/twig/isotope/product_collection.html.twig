@@ -2,10 +2,10 @@
 
 {% block product_collection %}
     {% if block("product_collection_actions") is defined %}
-        <form id="{{ fragment_id }}" method="post" data-isotope--collection-target="form">
+        <form id="{{ fragment_id }}" method="post" data-action="isotope--collection#formAction" data-isotope--collection-target="form">
+            <input type="hidden" name="FORM_SUBMIT" value="{{ fragment_id }}">
+            <input type="hidden" name="REQUEST_TOKEN" value="{{ contao.request_token }}">
             <div class="formbody">
-                <input type="hidden" name="FORM_SUBMIT" value="{{ fragment_id }}">
-                <input type="hidden" name="REQUEST_TOKEN" value="{{ contao.request_token }}">
     {% endif %}
 
                 {#<?php if ($this->collection->hasErrors()): ?>

@@ -2,6 +2,14 @@
 {% extends '@Contao/content_element/_isotope_base.html.twig' %}
 {% use '@Contao/isotope/product_collection.html.twig' %}
 
+{% set attributes = attrs()
+    .set('data-controller', 'isotope--collection isotope--fragment')
+    .set('data-isotope--collection-id-value', fragment_id)
+    .set('data-isotope--collection-type-value', 'order')
+    .set('data-isotope--fragment-id-value', fragment_id)
+    .mergeWith(attributes|default)
+%}
+
 {% block content %}
 
     <h2>{{ 'MSC.orderDetailsHeadline'|trans([order.documentNumber, order.locked|date(contao.page.datimFormat)]) }}</h2>

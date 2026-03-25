@@ -82,9 +82,8 @@ class CartManager implements ResetInterface
 
         foreach ($items as $item) {
             $cart->add($item);
+            $cart->setModified();
         }
-
-        $cart->setModified();
 
         return $this->recalculate($cart, $context);
     }

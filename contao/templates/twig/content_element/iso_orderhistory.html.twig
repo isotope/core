@@ -1,6 +1,14 @@
 {% trans_default_domain 'contao_default' %}
 {% extends '@Contao/content_element/_isotope_base.html.twig' %}
 
+{% set attributes = attrs()
+    .set('data-controller', 'isotope--collection isotope--fragment')
+    .set('data-isotope--collection-id-value', fragment_id)
+    .set('data-isotope--collection-type-value', 'order')
+    .set('data-isotope--fragment-id-value', fragment_id)
+    .mergeWith(attributes|default)
+%}
+
 {% block content %}
 
     {% if orders is not empty %}
@@ -17,21 +25,21 @@
             </tr>
             </thead>
             <tbody>
-            {% for order in orders %}
-                <tr class="{{ order.orderStatus.alias }}">
-                    <td class="col_0 col_first order_date">{{ order.locked|date(contao.page.dateFormat) }}</td>
-                    <td class="col_1 document_number">{{ order.documentNumber }}</td>
-                    <td class="col_2 order_total">{{ isotope_price(order.total) }}</td>
-                    <td class="col_3 order_status">{{ order.orderStatus.label|default(order.orderStatus.name)|trans([], 'isotope') }}</td>
-                    <td class="col_3 transaction_status">{{ order?.transactionStatus?.label|default(order.transactionStatus?.name)|trans([], 'isotope') }}</td>
-                    <td class="col_3 delivery_status">{{ order.deliveryStatus?.label|default(order.deliveryStatus?.name)|trans([], 'isotope') }}</td>
+            {% for collection in orders %}
+                <tr class="{{ collection.orderStatus.alias }}">
+                    <td class="col_0 col_first order_date">{{ collection.locked|date(contao.page.dateFormat) }}</td>
+                    <td class="col_1 document_number">{{ collection.documentNumber }}</td>
+                    <td class="col_2 order_total">{{ isotope_price(collection.total) }}</td>
+                    <td class="col_3 order_status">{{ collection.orderStatus.label|default(collection.orderStatus.name)|trans([], 'isotope') }}</td>
+                    <td class="col_3 transaction_status">{{ collection?.transactionStatus?.label|default(collection.transactionStatus?.name)|trans([], 'isotope') }}</td>
+                    <td class="col_3 delivery_status">{{ collection.deliveryStatus?.label|default(collection.deliveryStatus?.name)|trans([], 'isotope') }}</td>
                     <td class="col_4 col_last link">
-                        {% if detailPage %}
-                            <a href="{{ content_url(detailPage, {uid: order.identifier}) }}">{{ 'MSC.detailLabel'|trans }}</a>
-                        {% endif %}
-                        {% if reorder %}
-                            <a href="{{ content_url(contao.page, {reorder: order.identifier}) }}">{{ 'MSC.reorderLabel'|trans }}</a>
-                        {% endif %}
+                        <form id="{{ fragment_id }}" method="post" data-isotope--collection-target="form" data-action="isotope--collection#formAction">
+                            <input type="hidden" name="FORM_SUBMIT" value="{{ fragment_id }}">
+                            <input type="hidden" name="REQUEST_TOKEN" value="{{ contao.request_token }}">
+                            {{ isotope_product_collection_action('link_to_details') }}
+                            {{ isotope_product_collection_action('reorder') }}
+                        </form>
                     </td>
                 </tr>
             {% endfor %}
