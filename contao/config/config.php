@@ -40,7 +40,7 @@ use Isotope\Model\ProductCollectionDownload;
  * Backend modules
  */
 if (!is_array($GLOBALS['BE_MOD']['isotope'] ?? null)) {
-    ArrayUtil::arrayInsert($GLOBALS['BE_MOD'], 1, ['isotope' => []]);
+    $GLOBALS['BE_MOD']['isotope'] = [];
 }
 
 ArrayUtil::arrayInsert($GLOBALS['BE_MOD']['isotope'], 0, [

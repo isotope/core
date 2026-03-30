@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\EventListener;
 
 use Contao\Controller;
+use Contao\CoreBundle\Event\MenuEvent;
 use Contao\CoreBundle\Exception\AccessDeniedException;
 use Contao\CoreBundle\Routing\ScopeMatcher;
 use Contao\CoreBundle\Security\ContaoCorePermissions;
@@ -13,21 +14,24 @@ use Isotope\CoreBundle\Backend\ShopConfig\ShopConfigInterface;
 use Isotope\CoreBundle\Controller\Backend\ShopConfigController;
 use Isotope\CoreBundle\Exception\UnderflowException;
 use Isotope\CoreBundle\Security\IsotopeCorePermissions;
+use Knp\Menu\Util\MenuManipulator;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Asset\Packages;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-#[AsEventListener]
+// Run after notification center (prio 0)
+#[AsEventListener(priority: -10)]
 class BackendRequestListener
 {
     /**
      * @param iterable<ShopConfigInterface> $shopConfigs
      */
     public function __construct(
+        private readonly RequestStack $requestStack,
         private readonly ScopeMatcher $scopeMatcher,
         private readonly Packages $packages,
         private readonly Security $security,
@@ -36,16 +40,37 @@ class BackendRequestListener
     ) {
     }
 
-    public function __invoke(RequestEvent $event): void
+    public function __invoke(MenuEvent $event): void
     {
-        if (!$this->scopeMatcher->isBackendMainRequest($event)) {
+        $request = $this->requestStack->getCurrentRequest();
+
+        if (!$request || !$this->scopeMatcher->isBackendRequest($request)) {
+            return;
+        }
+
+        $tree = $event->getTree();
+
+        if ('mainMenu' !== $tree->getName()) {
+            return;
+        }
+
+        $isotope = $tree->getChild('isotope');
+
+        // No permissions for the NC
+        if (null === $isotope) {
             return;
         }
 
         $GLOBALS['TL_JAVASCRIPT'][] = $this->packages->getUrl('backend.js', 'isotope_core');
         $GLOBALS['TL_CSS'][] = $this->packages->getUrl('backend.css', 'isotope_core');
 
-        $this->handleShopConfig($event->getRequest());
+        // Moves Isotope after "content" (or 1 if that does not exist)
+        $targetPosition = array_search('content', array_keys($tree->getChildren()), true);
+        $targetPosition = false === $targetPosition ? 1 : $targetPosition + 1;
+        $manipulator = new MenuManipulator();
+        $manipulator->moveToPosition($isotope, $targetPosition);
+
+        $this->handleShopConfig($request);
     }
 
     public function handleShopConfig(Request $request): void
