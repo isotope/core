@@ -165,8 +165,8 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
         'notification' => [
             'inputType' => 'select',
             'foreignKey' => 'tl_nc_notification.title',
-            'options_callback' => [Callback::class, 'onNotificationOptionsCallback'],
             'eval' => ['mandatory' => true, 'includeBlankOption' => true, 'chosen' => true, 'logAlwaysVisible' => true, 'tl_class' => 'clr', 'doNotShow' => true],
+            'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
         ],
         'notification_shipping_tracking' => [
             'inputType' => 'textarea',

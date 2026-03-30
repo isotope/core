@@ -418,9 +418,9 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['iso_continueShopping'] = [
 $GLOBALS['TL_DCA']['tl_content']['fields']['iso_notifications'] = [
     'label' => &$GLOBALS['TL_LANG']['tl_content']['nc_notification'],
     'inputType' => 'select',
-    //'options_callback' => ['NotificationCenter\tl_content', 'getNotificationChoices'],
+    'foreignKey' => 'tl_nc_notification.title',
     'eval' => ['multiple' => true, 'csv' => ',', 'includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'],
-    'relation' => ['type' => 'hasOne', 'load' => 'lazy', 'table' => 'tl_nc_notification'],
+    'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
 ];
 
 /*

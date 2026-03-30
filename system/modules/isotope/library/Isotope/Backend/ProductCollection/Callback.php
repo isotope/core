@@ -288,20 +288,4 @@ class Callback extends Backend
 </div>
 </form>';
     }
-
-    /**
-     * On notification options callback
-     *
-     * @return array
-     */
-    public function onNotificationOptionsCallback()
-    {
-        $options = [];
-
-        if (($notifications = Notification::findBy('type', 'iso_order_status_change', ['order' => 'title'])) !== null) {
-            $options = $notifications->fetchEach('title');
-        }
-
-        return $options;
-    }
 }

@@ -87,7 +87,7 @@
         <source>Please enter the phone number.</source>
       </trans-unit>
       <trans-unit id="tl_iso_config.email.0">
-        <source>Shipping email address</source>
+        <source>E-mail address</source>
       </trans-unit>
       <trans-unit id="tl_iso_config.email.1">
         <source>Please enter a valid e-mail address.</source>

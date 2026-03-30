@@ -20,6 +20,9 @@ class AddressFormatter
     ) {
     }
 
+    /**
+     * Format an address for an HTML template.
+     */
     public function toHtml(Address $address, AddressConfig $config): TemplateMarkup
     {
         $data = array_intersect_key($address->row(), array_flip($config->getFields()));
@@ -38,13 +41,23 @@ class AddressFormatter
         return $this->markupFactory->create('@Contao/isotope/address.html.twig', $data);
     }
 
-    public function toText(Address $address, AddressConfig $config): string
+    /**
+     * Format an address as HTML string, so that applying `strip_tags` results in the correct text representation.
+     */
+    public function toHtmlString(Address $address, AddressConfig $config): string
     {
         $output = (string) $this->toHtml($address, $config);
 
-        // Remove newlines in template and keep HTML <br> for newlines
-        $output = str_replace(array("\n", '<br>'), array('', "\n"), $output);
+        $output = str_replace(array("\n", '<br>'), array('', "<br>\n"), $output);
 
-        return trim(strip_tags($output));
+        return trim($output);
+    }
+
+    /**
+     * Format an address as plain text.
+     */
+    public function toText(Address $address, AddressConfig $config): string
+    {
+        return strip_tags($this->toHtmlString($address, $config));
     }
 }

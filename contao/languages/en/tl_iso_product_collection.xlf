@@ -147,10 +147,10 @@
         <source>The status of your order has been updated.</source>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.orderStatusNotificationSuccess">
-        <source>Notifications (e.g. email to client) have been sent.</source>
+        <source>Notifications (e.g. email to client) have been sent. Check the system log if they were delivered successfully.</source>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.orderStatusNotificationError">
-        <source>Notifications (e.g. email to client) clould not be sent. Check the system log.</source>
+        <source>Notifications (e.g. email to client) could not be sent. Check the system log for details.</source>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.noEmailData">
         <source>No additional email data available.</source>

@@ -26,14 +26,17 @@
       <trans-unit id="tl_nc_notification.iso_document.1">
         <source>If you would like to attach a document to the notification, choose one here and use the simple token in the notification center.</source>
       </trans-unit>
-      <trans-unit id="tl_nc_notification.type.isotope">
-        <source>Isotope eCommerce</source>
+      <trans-unit id="tl_nc_notification.type.iso_order.0">
+        <source>New Order (Isotope eCommerce)</source>
       </trans-unit>
-      <trans-unit id="tl_nc_notification.type.iso_order_status_change.0">
-        <source>Order status change</source>
+      <trans-unit id="tl_nc_notification.type.iso_order.1">
+        <source>This notification type can be sent for new orders in Isotope eCommerce.</source>
       </trans-unit>
-      <trans-unit id="tl_nc_notification.type.iso_order_status_change.1">
-        <source>This notification type can be sent when the order status changes.</source>
+      <trans-unit id="tl_nc_notification.type.iso_order_update.0">
+        <source>Order Update (Isotope eCommerce)</source>
+      </trans-unit>
+      <trans-unit id="tl_nc_notification.type.iso_order_update.1">
+        <source>This notification type can be sent when order status is updated in the backend.</source>
       </trans-unit>
     </body>
   </file>

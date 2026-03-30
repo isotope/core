@@ -9,29 +9,36 @@ use Contao\BackendUser;
 use Contao\Controller;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\DataContainer;
+use Contao\Message;
 use Contao\StringUtil;
 use Contao\System;
-use Isotope\CoreBundle\Exception\RuntimeException;
-use Isotope\CoreBundle\Model\ProductCollection;
+use Isotope\CoreBundle\Model\OrderStatus;
 use Isotope\CoreBundle\Model\ProductCollectionLog;
-use Isotope\CoreBundle\Store\Order\WorkflowManager;
+use Isotope\CoreBundle\Store\Order\OrderNotifier;
+use Isotope\CoreBundle\Store\Order\StatusType;
+use Isotope\CoreBundle\Store\OrderManager;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 class OrderLogListener
 {
     public function __construct(
-        private readonly WorkflowManager $workflowManager,
+        private readonly OrderManager $orderManager,
         private readonly RequestStack $requestStack,
         private readonly Security $security,
         private readonly Formatter $formatter,
         private readonly Environment $twig,
+        private readonly OrderNotifier $orderNotifier,
+        private readonly TranslatorInterface $translator,
+        private readonly LoggerInterface $contaoLogger,
     ) {
     }
 
     #[AsCallback('tl_iso_product_collection', 'fields.submit_buttons.input_field')]
-    public function adjustSubmit(): string
+    public function submitButtons(): string
     {
         return $this->twig->render('@Contao/backend/isotope/order-submit.html.twig');
     }
@@ -135,57 +142,15 @@ class OrderLogListener
             return $values;
         }
 
-        $order = ProductCollection::findById($dc->id);
+        $current = $dc->getCurrentRecord();
+        $updated = $values;
+        $values['sendNotification'] ??= $current['sendNotification'] ?? null;
+        unset($updated['sendNotification'], $updated['notification'], $updated['notification_shipping_tracking'], $updated['notification_customer_notes']);
 
-        if (!$order) {
-            throw new RuntimeException('Order not found');
-        }
-
-        if (isset($values['order_status'])) {
-            $this->workflowManager->getOrderWorkflow()->apply($order, $values['order_status']);
-            $values['order_status'] = $order->getOrderStatus();
-        }
-
-        if (isset($values['transaction_status'])) {
-            $this->workflowManager->getTransactionWorkflow()->apply($order, $values['transaction_status']);
-            $values['transaction_status'] = $order->getTransactionStatus();
-        }
-
-        if (isset($values['delivery_status'])) {
-            $this->workflowManager->getDeliveryWorkflow()->apply($order, $values['delivery_status']);
-            $values['delivery_status'] = $order->getDeliveryStatus();
-        }
-
-        $oldOrderStatus = $order->order_status;
-
-        //if (CompatibilityHelper::isBackend()) {
-        //    if ($order->pageId == 0) {
-        //        unset($GLOBALS['objPage']);
-        //    }
-        //
-        //    Frontend::loadOrderEnvironment($order);
-        //}
-
-        $sendNotification = (bool) ($values['sendNotification'] ?? null);
-        $values['sendNotification'] = '';
-
-        if (empty($values)) {
-            return $values;
-        }
-
-        //if (isset($update['order_status']) && $update['order_status'] != $oldOrderStatus) {
-        //    if (!$order->updateOrderStatus($update, Order::STATUS_UPDATE_SKIP_LOG)) {
-        //        return;
-        //    }
-        //} else {
-        //    foreach ($update as $k => $v) {
-        //        $order->{$k} = $v;
-        //    }
-        //    $order->save();
-        //}
+        $updated = $this->orderManager->updateOrder((int) $dc->id, $updated, false);
 
         $log = new ProductCollectionLog();
-        $log->pid = $order->id;
+        $log->pid = $dc->id;
         $log->tstamp = time();
         $log->author = $this->getUserId();
         $log->setData($values);
@@ -194,63 +159,44 @@ class OrderLogListener
         $blnNotificationError = null;
 
         // Send a notification
-        //if (($values['sendNotification'] ?? false) && ($values['notification'] ?? null) && ($objNotification = Notification::findByPk($values['notification'])) !== null) {
-        //    $objOldStatus = OrderStatus::findByPk($oldOrderStatus);
-        //    $objNewStatus = OrderStatus::findByPk($order->order_status);
-        //
-        //    $tokens = $order->getNotificationTokens($objNotification->id);
-        //
-        //    $tokens['order_status_id'] = $objNewStatus->id;
-        //    $tokens['order_status'] = $objNewStatus->getName();
-        //    $tokens['order_status_id_old'] = $objOldStatus->id;
-        //    $tokens['order_status_old'] = $objOldStatus->getName();
-        //    $tokens['order_status_tracking_numbers'] = str_replace("\n", '<br>', trim($values['notification_shipping_tracking']));
-        //    $tokens['order_status_notes'] = str_replace("\n", '<br>', trim($values['notification_customer_notes']));
-        //
-        //    /** @var Notification $objNotification */
-        //    $arrResult = $objNotification->send($tokens, $order->language);
-        //
-        //    if (\in_array(false, $arrResult, true)) {
-        //        $blnNotificationError = true;
-        //        System::getContainer()->get('monolog.logger.contao')->error('Error sending status update notification for order ID ' . $order->id, ['contao' => new ContaoContext(__METHOD__, ContaoContext::ERROR)]);
-        //    } elseif (\count($arrResult) > 0) {
-        //        $blnNotificationError = false;
-        //    }
-        //}
+        if ($values['sendNotification'] && ($values['notification'] ?? null)) {
+            $tokens = [];
 
-        //if (CompatibilityHelper::isBackend()) {
-        //    Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusUpdate']);
-        //
-        //    if ($blnNotificationError === true) {
-        //        Message::addError($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusNotificationError']);
-        //    } elseif ($blnNotificationError === false) {
-        //        Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusNotificationSuccess']);
-        //    }
-        //}
+            foreach (StatusType::cases() as $type) {
+                if ($status = OrderStatus::findOneByAlias((string) $current[$type->value.'_status'], $type)) {
+                    foreach ($status->row() as $k => $v) {
+                        $tokens['previous_'.$type->value.'_status_' . $k] = $this->formatter->dcaValue(OrderStatus::getTable(), $k, $v);
+                    }
 
-        return $values;
-    }
+                    $tokens['previous_'.$type->value.'_status'] = $this->translator->trans($status->label ?: $status->name, [], 'isotope');
+                }
+            }
 
-    private function setTransactionStatus(ProductCollection $collection, string $value): string
-    {
-        $workflow = $this->workflowManager->getTransactionWorkflow();
+            $tokens['tracking_numbers'] = str_replace("\n", '<br>', trim($values['notification_shipping_tracking'] ?? ''));
+            $tokens['customer_notes'] = str_replace("\n", '<br>', trim($values['notification_customer_notes'] ?? ''));
 
-        if ($workflow) {
-            $workflow->apply($collection, $value);
+            $receipt = $this->orderNotifier->sendNotification((int) $dc->id, (int) $values['notification'], $tokens);
+
+            if (!$receipt->wereAllDelivered()) {
+                $blnNotificationError = true;
+                $this->contaoLogger->error('Error sending status update notification for order ID ' . $dc->id);
+            } elseif ($receipt->count() > 0) {
+                $blnNotificationError = false;
+            }
         }
 
-        return $collection->getTransactionStatus();
-    }
+        Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusUpdate']);
 
-    private function setDeliveryStatus(ProductCollection $collection, string $value): string
-    {
-        $workflow = $this->workflowManager->getDeliveryWorkflow();
-
-        if ($workflow) {
-            $workflow->apply($collection, $value);
+        if (true === $blnNotificationError) {
+            Message::addError($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusNotificationError']);
+        } elseif (false === $blnNotificationError) {
+            Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusNotificationSuccess']);
         }
 
-        return $collection->getDeliveryStatus();
+        // Reset the sendNotification checkbox
+        $updated['sendNotification'] = false;
+
+        return $updated;
     }
 
     private function getUserId(): int

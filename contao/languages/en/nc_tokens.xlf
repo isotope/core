@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="contao/languages/en/nc_tokens.xlf" source-language="en">
+    <body>
+      <trans-unit id="nc_tokens.iso_order.uniqid">
+        <source>The order's unique ID.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.order_status">
+        <source>The label of the order's current status.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.order_status_*">
+        <source>Fields of the current order status.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.transaction_status">
+        <source>The label of the order's transaction status.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.transaction_status_*">
+        <source>Fields of the current transaction status.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.delivery_status">
+        <source>The label of the order's delivery status.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.delivery_status_*">
+        <source>Fields of the current delivery status.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.recipient_email">
+        <source>The email address of the recipient.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.order_id">
+        <source>The ID of the order.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.order_items">
+        <source>The number of items (quantities summed up) in the order.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.order_products">
+        <source>The number of individual products in the order.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.order_subtotal">
+        <source>The order's subtotal.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.order_total">
+        <source>The order's total.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.document_number">
+        <source>The order document number.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.cart_text">
+        <source>Order/Cart as text.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.cart_html">
+        <source>Order/Cart as HTML.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.document">
+        <source>The document that should be attached (e.g. an invoice).</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.bank_name">
+        <source>Bank name entered in store config.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.bank_account">
+        <source>Bank account number (IBAN) entered in store config.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.bank_code">
+        <source>Bank code (BIC/SWIFT) entered in store config.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.tax_number">
+        <source>Tax number entered in store config.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.log_shipping_tracking">
+        <source>Shipping tracking entered in order status log.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.log_customer_notes">
+        <source>Customer notes entered in order status log.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.collection_*">
+        <source>All the collection/order column fields as stored in the database</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.billing_address">
+        <source>Formatted billing address.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.billing_address_*">
+        <source>All the billing address model fields.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.shipping_address">
+        <source>Formatted shipping address.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.shipping_address_*">
+        <source>All the shipping address model fields.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.form_*">
+        <source>All the order condition form fields.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.payment_id">
+        <source>Payment method ID.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.payment_label">
+        <source>Payment method label.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.payment_note">
+        <source>Payment method note.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.shipping_id">
+        <source>Shipping method ID.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.shipping_label">
+        <source>Shipping method label.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.shipping_note">
+        <source>Shipping method note.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.config_*">
+        <source>All the store configuration fields.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.member_*">
+        <source>All the member fields if it was a member checkout.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.previous_order_status">
+        <source>The label of the order's previous status. Useful for things like "order status changed from x to y".</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.previous_order_status_*">
+        <source>Fields of the previous order status.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.previous_transaction_status">
+        <source>The label of the previous transaction status.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.previous_transaction_status_*">
+        <source>Fields of the previous transaction status.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.previous_delivery_status">
+        <source>The label of the previous delivery status.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.previous_delivery_status_*">
+        <source>Fields of the previous delivery status.</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

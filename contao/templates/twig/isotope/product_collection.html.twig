@@ -36,8 +36,24 @@
                                         <td class="image"><?= $this->getGallery('images', $item['item'])->generateMainImage() ?></td>
                                         <?php endif; ?>#}
                                         <td class="name">
-                                            {{ block('item_name') }}
-                                            {{ block('item_attributes') }}
+                                            {% block item_name %}
+                                                {% set href = content_url(item) %}
+                                                {% if href %}
+                                                    <a href="{{ href }}">{{ item.label }}</a>
+                                                {% else %}
+                                                    {{ item.label }}
+                                                {% endif %}
+                                            {% endblock %}
+                                            {% block item_attributes %}
+                                                {% set configuration = item.configuration %}
+                                                {% if configuration is not empty %}
+                                                    <ul>
+                                                        {% for attribute, value in configuration %}
+                                                            <li><strong>{{ isotope_attribute_label(attribute) }}:</strong> {{ isotope_attribute_value(attribute, value)|join(', ') }}</li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                {% endif %}
+                                            {% endblock %}
                                         </td>
                                         <td class="quantity">
                                             {% if not item.isDynamic %}
@@ -159,24 +175,4 @@
     <?php endif; ?>
 
     <?php endif; ?>#}
-{% endblock %}
-
-{% block item_name %}
-    {% set href = content_url(item) %}
-    {% if href %}
-        <a href="{{ href }}">{{ item.label }}</a>
-    {% else %}
-        {{ item.label }}
-    {% endif %}
-{% endblock %}
-
-{% block item_attributes %}
-    {% set configuration = item.configuration %}
-    {% if configuration is not empty %}
-        <ul>
-            {% for attribute, value in configuration %}
-                <li><strong>{{ isotope_attribute_label(attribute) }}:</strong> {{ isotope_attribute_value(attribute, value)|join(', ') }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
 {% endblock %}

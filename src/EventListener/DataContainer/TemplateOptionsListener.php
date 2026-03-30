@@ -22,6 +22,12 @@ class TemplateOptionsListener
         return $this->getOptions('product', true);
     }
 
+    #[AsCallback('tl_nc_notification', 'fields.iso_collectionTpl.options')]
+    public function getCollectionTemplates(): array
+    {
+        return $this->getOptions('product_collection');
+    }
+
     private function getOptions(string $type, bool $variantsExclusive = false): array
     {
         return $this->finderFactory
