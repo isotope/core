@@ -23,6 +23,12 @@
       <trans-unit id="tl_iso_orderstatus.alias.1">
         <source>Please enter a technical name for this status. Use letters and underscores only.</source>
       </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.sorting.0">
+        <source>Position</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.sorting.1">
+        <source>Enter a numerical value to sort the order status.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_orderstatus.name.0">
         <source>Name</source>
       </trans-unit>

@@ -2,6 +2,7 @@
 
 use Contao\DataContainer;
 use Contao\DC_Table;
+use Doctrine\DBAL\Types\Types;
 use Isotope\CoreBundle\Store\Order\StatusType;
 
 $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = [
@@ -19,8 +20,8 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = [
     'list' => [
         'sorting' => [
             'mode' => DataContainer::MODE_SORTED,
-            'fields' => ['type', 'name'],
-            'panelLayout' => 'filter,search,limit',
+            'fields' => ['type', 'sorting'],
+            'panelLayout' => 'search,filter,limit',
             'defaultSearchField' => 'name'
         ],
         'label' => [
@@ -29,10 +30,10 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = [
     ],
     'palettes' => [
         '__selector__' => ['type'],
-        'default' => '{name_legend},type,alias,name;{workflow_legend},workflow',
-        'order' => '{name_legend},type,alias,name,label,color,welcomescreen;{workflow_legend},workflow',
-        'transaction' => '{name_legend},type,alias,name,label,color,paid;{workflow_legend},workflow',
-        'delivery' => '{name_legend},type,alias,name,label,color;{workflow_legend},workflow',
+        'default' => '{name_legend},type,alias,sorting,name;{workflow_legend},workflow',
+        'order' => '{name_legend},type,alias,sorting,name,label,color,welcomescreen;{workflow_legend},workflow',
+        'transaction' => '{name_legend},type,alias,sorting,name,label,color,paid;{workflow_legend},workflow',
+        'delivery' => '{name_legend},type,alias,sorting,name,label,color;{workflow_legend},workflow',
     ],
     'fields' => [
         'id' => [
@@ -51,8 +52,13 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = [
         'alias' => [
             'inputType' => 'text',
             'search' => true,
-            'eval' => ['mandatory' => true, 'rgxp' => 'alias', 'maxlength' => 32, 'tl_class' => 'w50'],
+            'eval' => ['mandatory' => true, 'rgxp' => 'alias', 'maxlength' => 32, 'tl_class' => 'w25'],
             'sql' => "varchar(32) NOT NULL default ''",
+        ],
+        'sorting' => [
+            'inputType' => 'text',
+            'eval' => ['mandatory' => true, 'rgxp' => 'natural', 'tl_class' => 'w25'],
+            'sql' => ['type' => Types::INTEGER, 'default' => 0, 'unsigned' => true],
         ],
         'name' => [
             'inputType' => 'text',
