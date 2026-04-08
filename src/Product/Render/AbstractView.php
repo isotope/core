@@ -30,7 +30,7 @@ abstract class AbstractView implements ViewInterface
 
     public function getActions(CoreProduct $product): array
     {
-        return StringUtil::deserialize($this->get('iso_buttons'), true);
+        return array_filter(explode(',', $this->get('iso_buttons')));
     }
 
     public function useQuantity(CoreProduct $product): bool

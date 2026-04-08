@@ -120,7 +120,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
         'product_types' => [
             'inputType' => 'select',
             'foreignKey' => 'tl_iso_producttype.name',
-            'eval' => ['multiple' => true, 'size' => 8, 'chosen' => true, 'tl_class' => 'clr w50'],
+            'eval' => ['multiple' => true, 'size' => 8, 'csv' => ',', 'chosen' => true, 'tl_class' => 'clr w50'],
             'sql' => 'blob NULL',
             'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
         ],
@@ -160,7 +160,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
         'flatProductTypes' => [
             'inputType' => 'select',
             'foreignKey' => 'tl_iso_producttype.name',
-            'eval' => ['multiple' => true, 'size' => 8, 'chosen' => true, 'tl_class' => 'w50'],
+            'eval' => ['multiple' => true, 'size' => 8, 'csv' => ',', 'chosen' => true, 'tl_class' => 'w50'],
             'sql' => 'blob NULL',
             'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
         ],

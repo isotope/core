@@ -10,10 +10,12 @@ use Contao\StringUtil;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Table;
+use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
 /**
  * @internal
  */
+#[AutoconfigureTag('contao.migration', ['priority' => -100])]
 class ModuleToElementMigration extends AbstractMigration
 {
     private const array MAPPING = [

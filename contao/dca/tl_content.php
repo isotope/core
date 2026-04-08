@@ -212,7 +212,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['iso_checkout_skippable'] = [
     'inputType' => 'checkbox',
     'options' => ['billing_address', 'shipping_address', 'payment_method', 'shipping_method'],
     'reference' => &$GLOBALS['TL_LANG']['tl_content']['iso_checkout_skippable'],
-    'eval' => ['multiple' => true, 'tl_class' => 'clr'],
+    'eval' => ['multiple' => true, 'csv' => ',', 'tl_class' => 'clr'],
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['iso_order_conditions'] = [
@@ -328,7 +328,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['iso_filterKey'] = [
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['iso_filterFields'] = [
     'inputType' => 'checkboxWizard',
-    'eval' => ['multiple' => true, 'tl_class' => 'clr w50'],
+    'eval' => ['multiple' => true, 'csv' => ',', 'tl_class' => 'clr w50'],
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['iso_filterHideSingle'] = [
@@ -343,12 +343,12 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['iso_enableSearch'] = [
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['iso_searchFields'] = [
     'inputType' => 'checkbox',
-    'eval' => ['multiple' => true, 'tl_class' => 'clr w50'],
+    'eval' => ['multiple' => true, 'csv' => ',', 'tl_class' => 'clr w50'],
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['iso_sortingFields'] = [
     'inputType' => 'checkboxWizard',
-    'eval' => ['multiple' => true, 'tl_class' => 'clr w50'],
+    'eval' => ['multiple' => true, 'csv' => ',', 'tl_class' => 'clr w50'],
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['iso_enableLimit'] = [
@@ -395,13 +395,13 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['iso_buttons'] = [
     'inputType' => 'checkboxWizard',
     'default' => ['add_to_cart'],
     'reference' => &$GLOBALS['TL_LANG']['MSC']['buttonLabel'],
-    'eval' => ['multiple' => true, 'tl_class' => 'clr'],
+    'eval' => ['multiple' => true, 'csv' => ',', 'tl_class' => 'clr'],
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['iso_related_categories'] = [
     'inputType' => 'checkboxWizard',
     'foreignKey' => 'tl_iso_related_category.name',
-    'eval' => ['mandatory' => true, 'multiple' => true, 'tl_class' => 'clr'],
+    'eval' => ['mandatory' => true, 'multiple' => true, 'csv' => ',', 'tl_class' => 'clr'],
     'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
 ];
 

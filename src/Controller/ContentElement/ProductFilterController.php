@@ -49,7 +49,7 @@ class ProductFilterController extends AbstractContentElementController
         $filterKey = $model->iso_filterKey ?: '';
         $productQuery = $this->getProductQuery($request);
 
-        if ([] !== ($filterFields = StringUtil::deserialize($model->iso_filterFields, true))) {
+        if ([] !== ($filterFields = array_filter(explode(',', $model->iso_filterFields)))) {
             $template->filterWidgets = $this->getFilterWidgets(
                 $filterFields,
                 $this->getCurrentFilterValues($productQuery, $filterKey, $filterFields),
@@ -57,7 +57,7 @@ class ProductFilterController extends AbstractContentElementController
             );
         }
 
-        if ([] !== ($sortingFields = StringUtil::deserialize($model->iso_sortingFields, true))) {
+        if ([] !== ($sortingFields = array_filter(explode(',', $model->iso_sortingFields)))) {
             $template->sortingOptions = $this->getSortingOptions(
                 $sortingFields,
                 $this->getCurrentSortingValue($productQuery, $filterKey, $sortingFields),

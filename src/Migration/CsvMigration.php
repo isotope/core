@@ -17,9 +17,11 @@ use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 class CsvMigration extends AbstractMigration
 {
     private const array MAPPING = [
+        'tl_iso_payment' => ['shipping_modules', 'product_types'],
+        'tl_iso_shipping' => ['product_types', 'flatProductTypes'],
         'tl_iso_tax_class' => ['rates'],
         'tl_iso_tax_rate' => ['rate', 'address'],
-        'tl_module' => ['iso_config_ids'],
+        'tl_module' => ['iso_config_ids', 'iso_checkout_skippable', 'iso_filterFields', 'iso_searchFields', 'iso_sortingFields', 'iso_related_categories'],
     ];
 
     public function __construct(private readonly Connection $connection)

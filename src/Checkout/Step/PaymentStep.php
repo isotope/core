@@ -106,7 +106,7 @@ class PaymentStep implements CheckoutStepInterface
             return $payment;
         }
 
-        $skippable = StringUtil::deserialize($config['iso_checkout_skippable'] ?? null, true);
+        $skippable = explode(',', $config['iso_checkout_skippable'] ?? '');
 
         if (\in_array('payment_method', $skippable, true) && $id = ($context->getPaymentIds()[0] ?? null)) {
             return $this->paymentRegistry->get(Payment::findById($id), $context);

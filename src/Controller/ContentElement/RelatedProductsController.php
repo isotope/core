@@ -31,7 +31,7 @@ class RelatedProductsController extends AbstractContentElementController
 
     protected function getResponse(FragmentTemplate $template, ContentModel $model, Request $request): Response
     {
-        $categories = StringUtil::deserialize($model->iso_related_categories, true);
+        $categories = array_filter(explode(',', $model->iso_related_categories));
         $product = $request->attributes->get('_content');
 
         if (!$product instanceof CoreProduct || [] === $categories) {

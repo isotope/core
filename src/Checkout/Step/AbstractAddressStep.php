@@ -24,14 +24,14 @@ abstract class AbstractAddressStep implements CheckoutStepInterface
 
     protected function useMemberAddress(array $config): bool
     {
-        $skippable = StringUtil::deserialize($config['iso_checkout_skippable'] ?? null, true);
+        $skippable = explode(',', $config['iso_checkout_skippable'] ?? '');
 
         return \in_array('billing_address', $skippable, true);
     }
 
     protected function skipShippingAddress(array $config): bool
     {
-        $skippable = StringUtil::deserialize($config['iso_checkout_skippable'] ?? null, true);
+        $skippable = explode(',', $config['iso_checkout_skippable'] ?? '');
 
         return \in_array('shipping_address', $skippable, true);
     }

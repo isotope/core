@@ -108,7 +108,7 @@ class ShippingStep implements CheckoutStepInterface
             return $shipping;
         }
 
-        $skippable = StringUtil::deserialize($config['iso_checkout_skippable'] ?? null, true);
+        $skippable = explode(',', $config['iso_checkout_skippable'] ?? '');
 
         if (\in_array('shipping_method', $skippable, true) && $id = ($context->getShippingIds()[0] ?? null)) {
             return $this->shippingRegistry->get(Shipping::findById($id), $context);

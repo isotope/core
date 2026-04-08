@@ -57,7 +57,7 @@ class ProductListController extends AbstractContentElementController
         }
 
         $filterKeys = [$model->iso_filterKey ?: ''];
-        $searchFields = StringUtil::deserialize($model->iso_searchFields, true);
+        $searchFields = array_filter(explode(',', $model->iso_searchFields));
         $products = $this->findProducts($model, $request, $filterKeys, $searchFields);
 
         if ($model->iso_hide_empty && $products->isEmpty()) {

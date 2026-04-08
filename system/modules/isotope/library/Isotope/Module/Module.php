@@ -28,7 +28,7 @@ use Isotope\Message;
  * @property string $iso_noProducts
  * @property bool   $iso_emptyFilter
  * @property string $iso_noFilter
- * @property array  $iso_buttons
+ * @property string $iso_buttons
  * @property bool   $iso_link_primary
  */
 abstract class Module extends AbstractFrontendModule

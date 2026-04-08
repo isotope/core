@@ -22,4 +22,19 @@ trait SerializedPropertyTrait
 
         return $values;
     }
+
+    private function csv(string|null $value, callable|null $callable = null): array|null
+    {
+        $values = array_filter(explode(',', $value));
+
+        if ([] === $values) {
+            return null;
+        }
+
+        if ($callable) {
+            return array_map($callable, $values);
+        }
+
+        return $values;
+    }
 }

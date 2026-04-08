@@ -30,7 +30,7 @@ class FlatShippingFactory extends AbstractShippingFactory
         );
 
         $instance
-            ->setFlatProductTypes($this->unserialize($model->flatProductTypes, intval(...)))
+            ->setFlatProductTypes($this->csv($model->flatProductTypes, intval(...)))
             ->setFlatWeight(Weight::createFromTimePeriod($model->flatWeight))
         ;
 

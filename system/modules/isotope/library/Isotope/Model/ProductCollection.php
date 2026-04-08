@@ -69,7 +69,7 @@ use Isotope\Message;
  *
  * @property int|array $nc_notification
  * @property bool      $iso_addToAddressbook
- * @property array     $iso_checkout_skippable
+ * @property string    $iso_checkout_skippable
  * @property array     $email_data
  * @property int       $orderdetails_page
  */
@@ -1617,7 +1617,7 @@ abstract class ProductCollection extends TypeAgent
             throw new \UnderflowException('Product collection must be saved before creating unique addresses.');
         }
 
-        $canSkip = StringUtil::deserialize($this->iso_checkout_skippable, true);
+        $canSkip = explode(',', $this->iso_checkout_skippable ?? '');
         $objBillingAddress  = $this->getBillingAddress();
         $objShippingAddress = $this->getShippingAddress();
 
