@@ -87,7 +87,7 @@ class OrderstatusMigration extends AbstractMigration
         }
 
         if (!$table->hasColumn('alias')) {
-            $this->addAliases();
+            $this->addAliases($schemaManager);
         }
 
         $this->addMissingTypes();
