@@ -263,24 +263,6 @@
       <trans-unit id="tl_iso_config.orderDigits.1">
         <source>Select the minimum length of the order number (not including order prefix).</source>
       </trans-unit>
-      <trans-unit id="tl_iso_config.orderstatus_new.0">
-        <source>Status for new orders</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_config.orderstatus_new.1">
-        <source>Choose a matching status for new orders. A payment module can override this.</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_config.orderstatus_error.0">
-        <source>Order status on error</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_config.orderstatus_error.1">
-        <source>Select an order status if something goes wrong (e.g. payment).</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_config.orderDetailsModule.0">
-        <source>Module for backend view</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_config.orderDetailsModule.1">
-        <source>Select a order details module that is used to show the order in the backend.</source>
-      </trans-unit>
       <trans-unit id="tl_iso_config.left">
         <source>To the left of price</source>
       </trans-unit>
@@ -326,11 +308,8 @@
       <trans-unit id="tl_iso_config.bank_legend">
         <source>Bank details</source>
       </trans-unit>
-      <trans-unit id="tl_iso_config.pricing_legend">
-        <source>Pricing</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_config.currency_legend">
-        <source>Currency formatting</source>
+      <trans-unit id="tl_iso_config.price_legend">
+        <source>Price display &amp; currency formatting</source>
       </trans-unit>
       <trans-unit id="tl_iso_config.converter_legend">
         <source>Currency conversion</source>

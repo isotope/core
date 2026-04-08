@@ -213,7 +213,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
 
         // Set order status only if a payment module has not already set it
         if ($this->order_status == 0) {
-            $this->updateOrderStatus($this->getRelated('config_id')->orderstatus_new);
+            //$this->updateOrderStatus($this->getRelated('config_id')->orderstatus_new);
         }
 
         // !HOOK: post-process checkout

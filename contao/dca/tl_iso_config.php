@@ -40,10 +40,9 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
             {checkout_legend},address_fields,billing_country,shipping_country,billing_countries,shipping_countries,limitMemberCountries;
             {shipping_legend},shipping_ids;
             {payment_legend},payment_ids;
-            {pricing_legend},priceDisplay,taxCalculation,currencyFormat,priceRoundPrecision,priceRoundIncrement;
-            {currency_legend},currency,currencyPosition,currencySymbol;
+            {price_legend},priceDisplay,taxCalculation,currencyFormat,priceRoundPrecision,priceRoundIncrement,currency,currencyPosition,currencySymbol;
             {converter_legend:hide},priceCalculateFactor;
-            {order_legend:hide},orderPrefix,orderDigits,orderstatus_new,orderstatus_error,orderDetailsModule',
+            {order_legend:hide},orderPrefix,orderDigits',
     ],
     'subpalettes' => [
         'currencySymbol' => 'currencySpace',
@@ -247,7 +246,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
             'inputType' => 'select',
             'enum' => PriceDisplay::class,
             'reference' => &$GLOBALS['TL_LANG']['MSC']['iso_priceDisplay'],
-            'eval' => ['mandatory' => true, 'tl_class' => 'w50', 'helpwizard' => true],
+            'eval' => ['mandatory' => true, 'tl_class' => 'w33', 'helpwizard' => true],
             'sql' => "varchar(8) NOT NULL default 'gross'",
         ],
         'taxCalculation' => [
@@ -255,13 +254,13 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
             'inputType' => 'select',
             'enum' => TaxCalculation::class,
             'reference' => &$GLOBALS['TL_LANG']['MSC']['iso_taxCalculation'],
-            'eval' => ['mandatory' => true, 'tl_class' => 'w50', 'helpwizard' => true],
+            'eval' => ['mandatory' => true, 'tl_class' => 'w33', 'helpwizard' => true],
             'sql' => "varchar(16) NOT NULL default 'vertical'",
         ],
         'currencyFormat' => [
             'inputType' => 'select',
             'options' => \array_keys($GLOBALS['ISO_NUM']),
-            'eval' => ['includeBlankOption' => true, 'decodeEntities' => true, 'mandatory' => true, 'tl_class' => 'w33'],
+            'eval' => ['includeBlankOption' => true, 'decodeEntities' => true, 'mandatory' => true, 'tl_class' => 'clr w33'],
             'sql' => "varchar(20) NOT NULL default ''",
         ],
         'priceRoundPrecision' => [
@@ -278,17 +277,17 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
         ],
         'currency' => [
             'inputType' => 'select',
-            'eval' => ['includeBlankOption' => true, 'mandatory' => true, 'chosen' => true, 'tl_class' => 'w50'],
+            'eval' => ['includeBlankOption' => true, 'mandatory' => true, 'chosen' => true, 'tl_class' => 'w33'],
             'sql' => "varchar(3) NOT NULL default ''",
         ],
         'currencySymbol' => [
             'inputType' => 'checkbox',
-            'eval' => ['submitOnChange' => true, 'tl_class' => 'w50'],
+            'eval' => ['submitOnChange' => true, 'tl_class' => 'w33'],
             'sql' => "char(1) NOT NULL default ''",
         ],
         'currencySpace' => [
             'inputType' => 'checkbox',
-            'eval' => ['tl_class' => 'w50'],
+            'eval' => ['tl_class' => 'w33'],
             'sql' => "char(1) NOT NULL default ''",
         ],
         'currencyPosition' => [
@@ -296,7 +295,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
             'default' => 'left',
             'options' => ['left', 'right'],
             'reference' => &$GLOBALS['TL_LANG']['tl_iso_config'],
-            'eval' => ['tl_class' => 'w50'],
+            'eval' => ['tl_class' => 'w33'],
             'sql' => "varchar(5) NOT NULL default ''",
         ],
         'priceCalculateFactor' => [
@@ -316,29 +315,6 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
             'options' => \range(1, 9),
             'eval' => ['tl_class' => 'w50'],
             'sql' => "int(1) unsigned NOT NULL default '4'",
-        ],
-        'orderstatus_new' => [
-            'filter' => true,
-            'inputType' => 'select',
-            'foreignKey' => 'tl_iso_orderstatus.name',
-            'eval' => ['mandatory' => true, 'includeBlankOption' => true, 'tl_class' => 'w50'],
-            'sql' => "int(10) unsigned NOT NULL default '0'",
-            'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
-        ],
-        'orderstatus_error' => [
-            'filter' => true,
-            'inputType' => 'select',
-            'foreignKey' => 'tl_iso_orderstatus.name',
-            'eval' => ['mandatory' => true, 'includeBlankOption' => true, 'tl_class' => 'w50'],
-            'sql' => "int(10) unsigned NOT NULL default '0'",
-            'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
-        ],
-        'orderDetailsModule' => [
-            'inputType' => 'select',
-            'options_callback' => [Callback::class, 'getOrderDetailsModules'],
-            'eval' => ['includeBlankOption' => true, 'tl_class' => 'w50'],
-            'sql' => "int(10) unsigned NOT NULL default '0'",
-            'relation' => ['type' => 'hasOne', 'table' => 'tl_module'],
         ],
     ],
 ];

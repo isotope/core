@@ -22,10 +22,11 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = [
             'mode' => DataContainer::MODE_SORTED,
             'fields' => ['type', 'sorting'],
             'panelLayout' => 'search,filter,limit',
-            'defaultSearchField' => 'name'
+            'defaultSearchField' => 'name',
         ],
         'label' => [
-            'fields' => ['name'],
+            'fields' => ['type', 'name', 'alias', 'sorting'],
+            'showColumns' => true,
         ],
     ],
     'palettes' => [
@@ -82,8 +83,9 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = [
         'workflow' => [
             'inputType' => 'checkboxWizard',
             'filter' => true,
-            'options' => ['open'],
+            'foreignKey' => 'tl_iso_orderstatus.name',
             'eval' => ['multiple' => true, 'csv' => ',', 'tl_class' => 'clr'],
+            'relation' => ['table' => 'tl_iso_orderstatus', 'field' => 'alias', 'type' => 'hasOne', 'load' => 'lazy'],
             'sql' => 'text NULL',
         ],
         // TODO: this should no longer be necessary

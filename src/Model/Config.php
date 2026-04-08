@@ -46,8 +46,6 @@ use Contao\Model;
  * @property string $priceCalculateFactor
  * @property string $orderPrefix
  * @property int    $orderDigits
- * @property int    $orderstatus_new
- * @property int    $orderstatus_error
  */
 class Config extends Model
 {
