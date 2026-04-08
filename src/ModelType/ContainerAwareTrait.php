@@ -6,11 +6,13 @@ namespace Isotope\CoreBundle\ModelType;
 
 use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface as SymfonyContainerInterface;
+use Symfony\Contracts\Service\Attribute\Required;
 
 trait ContainerAwareTrait
 {
     protected ContainerInterface $container;
 
+    #[Required]
     public function setContainer(ContainerInterface $container): void
     {
         $this->container = $container;
