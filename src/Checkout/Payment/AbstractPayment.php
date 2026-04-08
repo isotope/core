@@ -6,8 +6,6 @@ namespace Isotope\CoreBundle\Checkout\Payment;
 
 use Isotope\CoreBundle\Checkout\AbstractCheckoutMethod;
 use Isotope\CoreBundle\Store\Context\StoreContext;
-use Isotope\Interfaces\IsotopeOrderableCollection;
-use Isotope\Isotope;
 
 abstract class AbstractPayment extends AbstractCheckoutMethod implements PaymentInterface
 {

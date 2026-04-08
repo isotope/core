@@ -6,9 +6,9 @@ namespace Isotope\CoreBundle\RuleBuilder\Condition;
 
 use Contao\Model;
 use Isotope\CoreBundle\Model\RuleCondition;
+use Isotope\CoreBundle\ModelType\Exception\InvalidTypeException;
 use Isotope\CoreBundle\ModelType\ModelInstanceTrait;
 use Isotope\CoreBundle\ModelType\ModelTypeFactoryInterface;
-use Isotope\CoreBundle\RuleBuilder\Exception\InvalidTypeException;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Symfony\Contracts\Translation\TranslatorInterface;
 

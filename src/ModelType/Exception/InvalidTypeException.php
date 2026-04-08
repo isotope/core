@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Isotope\CoreBundle\RuleBuilder\Exception;
+namespace Isotope\CoreBundle\ModelType\Exception;
 
 use Isotope\CoreBundle\Exception\InvalidArgumentException;
 

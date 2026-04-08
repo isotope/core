@@ -28,7 +28,7 @@ class WorkflowManager implements ResetInterface
     ) {
     }
 
-    public function reset()
+    public function reset(): void
     {
         $this->order = null;
         $this->transaction = null;

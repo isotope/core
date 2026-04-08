@@ -11,7 +11,6 @@ use Contao\CoreBundle\Twig\FragmentTemplate;
 use Contao\StringUtil;
 use Isotope\CoreBundle\Model\Config;
 use Isotope\CoreBundle\Store\CartManager;
-use Isotope\CoreBundle\Store\StoreManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -20,7 +19,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class ConfigswitcherController extends AbstractContentElementController
 {
     public function __construct(
-        private readonly StoreManager $storeManager,
         private readonly CartManager $cartManager,
         private readonly TranslatorInterface $translator,
     ) {
@@ -48,7 +46,7 @@ class ConfigswitcherController extends AbstractContentElementController
         }
 
         $configModels = Config::findMultipleByIds($configIds);
-        $currentId = $this->storeManager->getCurrentContext()->getConfigId();
+        $currentId = $this->getStoreContext()->getConfigId();
 
         if (null !== $configModels) {
             foreach ($configModels as $config) {
@@ -69,7 +67,7 @@ class ConfigswitcherController extends AbstractContentElementController
 
     private function overrideConfig(int $id, array $configIds, bool $force = false): bool
     {
-        $context = $this->storeManager->getCurrentContext();
+        $context = $this->getStoreContext();
 
         if (
             (!$force && $context->getConfigId() === $id)

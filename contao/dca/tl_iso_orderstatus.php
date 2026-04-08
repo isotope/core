@@ -61,15 +61,15 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = [
             'sql' => ['type' => Types::INTEGER, 'default' => 0, 'unsigned' => true],
         ],
         'name' => [
-            'inputType' => 'text',
             'search' => true,
+            'inputType' => 'text',
             'eval' => ['mandatory' => true, 'maxlength' => 255, 'tl_class' => 'w50'],
             'translation' => ['domain' => 'isotope'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'label' => [
-            'inputType' => 'text',
             'search' => true,
+            'inputType' => 'text',
             'eval' => ['maxlength' => 255, 'tl_class' => 'w50'],
             'translation' => ['domain' => 'isotope'],
             'sql' => "varchar(255) NOT NULL default ''",
