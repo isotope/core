@@ -21,10 +21,9 @@ use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-// Run after notification center (prio 0)
-#[AsEventListener(priority: -10)]
 class BackendRequestListener
 {
     /**
@@ -40,7 +39,22 @@ class BackendRequestListener
     ) {
     }
 
-    public function __invoke(MenuEvent $event): void
+    #[AsEventListener]
+    public function injectScripts(RequestEvent $event): void
+    {
+        if (!$this->scopeMatcher->isBackendMainRequest($event)) {
+            return;
+        }
+
+        $GLOBALS['TL_JAVASCRIPT'][] = $this->packages->getUrl('backend.js', 'isotope_core');
+        $GLOBALS['TL_CSS'][] = $this->packages->getUrl('backend.css', 'isotope_core');
+
+        $this->handleShopConfig($event->getRequest());
+    }
+
+    // Run after notification center (prio 0)
+    #[AsEventListener(priority: -10)]
+    public function orderMenu(MenuEvent $event): void
     {
         $request = $this->requestStack->getCurrentRequest();
 
@@ -61,19 +75,14 @@ class BackendRequestListener
             return;
         }
 
-        $GLOBALS['TL_JAVASCRIPT'][] = $this->packages->getUrl('backend.js', 'isotope_core');
-        $GLOBALS['TL_CSS'][] = $this->packages->getUrl('backend.css', 'isotope_core');
-
         // Moves Isotope after "content" (or 1 if that does not exist)
         $targetPosition = array_search('content', array_keys($tree->getChildren()), true);
         $targetPosition = false === $targetPosition ? 1 : $targetPosition + 1;
         $manipulator = new MenuManipulator();
         $manipulator->moveToPosition($isotope, $targetPosition);
-
-        $this->handleShopConfig($request);
     }
 
-    public function handleShopConfig(Request $request): void
+    private function handleShopConfig(Request $request): void
     {
         $tables = [];
 
