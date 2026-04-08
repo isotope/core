@@ -35,8 +35,16 @@
             margin-bottom: 18px;
         }
 
-        @media(max-width:991px) {
-            display: none;
+        @media(max-width:600px) {
+            grid-template: auto auto/auto;
+
+            .text {
+                order: 1;
+            }
+
+            .logo {
+                padding: 0 15px 15px;
+            }
         }
     }
 
