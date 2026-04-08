@@ -61,17 +61,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
         'tstamp' => [
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
-        'name' => [
-            'search' => true,
-            'inputType' => 'text',
-            'eval' => ['mandatory' => true, 'maxlength' => 255, 'tl_class' => 'w50'],
-            'sql' => "varchar(255) NOT NULL default ''",
-        ],
-        'label' => [
-            'inputType' => 'text',
-            'eval' => ['maxlength' => 255, 'tl_class' => 'w50'],
-            'sql' => "varchar(255) NOT NULL default ''",
-        ],
         'type' => [
             'filter' => true,
             'inputType' => 'select',
@@ -85,9 +74,23 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
             'eval' => ['submitOnChange' => true, 'tl_class' => 'w50 m12'],
             'sql' => "char(1) NOT NULL default ''",
         ],
+        'name' => [
+            'search' => true,
+            'inputType' => 'text',
+            'eval' => ['mandatory' => true, 'maxlength' => 255, 'tl_class' => 'w50'],
+            'translation' => ['domain' => 'isotope'],
+            'sql' => "varchar(255) NOT NULL default ''",
+        ],
+        'label' => [
+            'inputType' => 'text',
+            'eval' => ['maxlength' => 255, 'tl_class' => 'w50'],
+            'translation' => ['domain' => 'isotope'],
+            'sql' => "varchar(255) NOT NULL default ''",
+        ],
         'note' => [
             'inputType' => 'textarea',
             'eval' => ['rte' => 'tinyMCE', 'decodeEntities' => true],
+            'translation' => ['domain' => 'isotope'],
             'sql' => 'text NULL',
         ],
         'rule' => [

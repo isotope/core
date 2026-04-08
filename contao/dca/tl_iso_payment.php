@@ -43,12 +43,14 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = [
         'name' => [
             'search' => true,
             'inputType' => 'text',
-            'eval' => ['mandatory' => true, 'maxlength' => 255, 'tl_class' => 'w50'],
+            'eval' => ['mandatory' => true, 'maxlength' => 255, 'tl_class' => 'clr w50'],
+            'translation' => ['domain' => 'isotope'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'label' => [
             'inputType' => 'text',
             'eval' => ['maxlength' => 255, 'tl_class' => 'w50'],
+            'translation' => ['domain' => 'isotope'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'type' => [
@@ -62,6 +64,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = [
         'note' => [
             'inputType' => 'textarea',
             'eval' => ['rte' => 'tinyMCE'],
+            'translation' => ['domain' => 'isotope'],
             'sql' => 'text NULL',
         ],
         'new_order_status' => [

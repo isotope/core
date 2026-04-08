@@ -18,7 +18,7 @@ use Symfony\Component\DependencyInjection\Definition;
  */
 class RegisterAttributePass implements CompilerPassInterface
 {
-    use ContainerAwareTrait;
+    use ContainerRegistryTrait;
     use PriorityTaggedServiceTrait;
 
     public function process(ContainerBuilder $container): void

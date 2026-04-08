@@ -11,11 +11,14 @@ use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Price\PriceDisplay;
 use Isotope\CoreBundle\Store\Price\TaxCalculation;
 use Isotope\CoreBundle\Util\FloatComparator;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class TaxCalculator
 {
-    public function __construct(private readonly RuleMatcher $ruleMatcher)
-    {
+    public function __construct(
+        private readonly RuleMatcher $ruleMatcher,
+        private readonly TranslatorInterface $translator,
+    ) {
     }
 
     public function getTaxRates(int|null $taxClassId, StoreContext $context): TaxRateCollection
@@ -31,7 +34,7 @@ class TaxCalculator
                 (string) $taxRate->id,
                 (float) $taxRate->rate,
                 100,
-                PriceDisplay::Net === $context->getPriceDisplay() ? ($taxRate->label ?: null) : ($taxClass->label ?: $taxRate->label ?: null),
+                $this->trans(PriceDisplay::Net === $context->getPriceDisplay() ? ($taxRate->label ?: null) : ($taxClass->label ?: $taxRate->label ?: null)),
             );
 
             $taxCollection->setIncluded($tax);
@@ -48,7 +51,7 @@ class TaxCalculator
                         (string) $taxRate->id,
                         (float) $taxRate->rate,
                         100,
-                        $taxRate->label ?: null,
+                        $this->trans($taxRate->label ?: null),
                     ));
                 }
             }
@@ -181,5 +184,14 @@ class TaxCalculator
         }
 
         return $taxes;
+    }
+
+    private function trans(string|null $message): string|null
+    {
+        if (!$message) {
+            return $message;
+        }
+
+        return $this->translator->trans($message, [], 'isotope');
     }
 }

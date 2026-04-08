@@ -19,7 +19,7 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class RegisterModelTypePass implements CompilerPassInterface
 {
-    use ContainerAwareTrait;
+    use ContainerRegistryTrait;
     use PriorityTaggedServiceTrait;
 
     public function __construct(

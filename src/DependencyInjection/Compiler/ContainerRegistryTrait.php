@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
-trait ContainerAwareTrait
+trait ContainerRegistryTrait
 {
     private function registerContainer(Reference $reference, Definition $definition, ContainerBuilder $container, Definition $registry): void
     {

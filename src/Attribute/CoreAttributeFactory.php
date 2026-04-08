@@ -9,11 +9,13 @@ use Isotope\CoreBundle\Attribute\Option\OptionFactory;
 use Isotope\CoreBundle\Attribute\Option\OptionsSource;
 use Isotope\CoreBundle\Store\Context\ProductContext;
 use Isotope\Interfaces\IsotopeAttribute;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CoreAttributeFactory implements AttributeFactoryInterface
 {
     public function __construct(
         private readonly OptionFactory $optionFactory,
+        private readonly TranslatorInterface $translator,
     ) {
     }
 
@@ -35,9 +37,9 @@ class CoreAttributeFactory implements AttributeFactoryInterface
         }
 
         $attribute = $this->createInstance($class, $fieldName, $config, $dca)
-            ->setName($config['name'] ?? $dca['label'][0] ?? null)
-            ->setDescription($config['description'] ?? $dca['label'][1] ?? null)
-            ->setPlaceholder($config['placeholder'] ?? $dca['eval']['placeholder'] ?? '')
+            ->setName($this->trans($config['name'] ?? $dca['label'][0] ?? null))
+            ->setDescription($this->trans($config['description'] ?? $dca['label'][1] ?? null))
+            ->setPlaceholder($this->trans($config['placeholder'] ?? $dca['eval']['placeholder'] ?? '', [], 'isotope'))
             ->setCustomerDefined((bool) ($config['customer_defined'] ?? $dca['attributes']['customer_defined'] ?? false))
             ->setMandatory((bool) ($config['mandatory'] ?? $dca['eval']['mandatory'] ?? false))
             ->setBackendSearchable((bool) ($config['be_search'] ?? $dca['search'] ?? false))
@@ -136,5 +138,14 @@ class CoreAttributeFactory implements AttributeFactoryInterface
         }
 
         return \is_array($options) ? $options : null;
+    }
+
+    private function trans(string|null $message): string|null
+    {
+        if (!$message) {
+            return $message;
+        }
+
+        return $this->translator->trans($message, [], 'isotope');
     }
 }

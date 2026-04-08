@@ -87,6 +87,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
             'flag' => DataContainer::SORT_INITIAL_LETTER_ASC,
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'maxlength' => 255, 'decodeEntities' => true, 'tl_class' => 'w50'],
+            'translation' => ['domain' => 'isotope'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'field_name' => [
@@ -121,6 +122,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
             'search' => true,
             'inputType' => 'text',
             'eval' => ['maxlength' => 255, 'tl_class' => 'clr long'],
+            'translation' => ['domain' => 'isotope'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'optionsSource' => [
@@ -295,6 +297,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
             'search' => true,
             'inputType' => 'text',
             'eval' => ['decodeEntities' => true, 'maxlength' => 255, 'tl_class' => 'w50'],
+            'translation' => ['domain' => 'isotope'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'minlength' => [

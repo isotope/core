@@ -58,11 +58,13 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
         'name' => [
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'unique' => true, 'maxlength' => 255, 'tl_class' => 'w50'],
+            'translation' => ['domain' => 'isotope'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'label' => [
             'inputType' => 'text',
             'eval' => ['maxlength' => 255, 'tl_class' => 'w50'],
+            'translation' => ['domain' => 'isotope'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'firstname' => [

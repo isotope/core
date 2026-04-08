@@ -64,12 +64,14 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = [
             'inputType' => 'text',
             'search' => true,
             'eval' => ['mandatory' => true, 'maxlength' => 255, 'tl_class' => 'w50'],
+            'translation' => ['domain' => 'isotope'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'label' => [
             'inputType' => 'text',
             'search' => true,
             'eval' => ['maxlength' => 255, 'tl_class' => 'w50'],
+            'translation' => ['domain' => 'isotope'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'color' => [
