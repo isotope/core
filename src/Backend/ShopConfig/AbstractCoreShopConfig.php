@@ -17,6 +17,6 @@ abstract class AbstractCoreShopConfig extends AbstractTableShopConfig
 
     public function getIcon(): string|null
     {
-        return $this->assets->getUrl('images/setup-'.$this->getName().'.svg', 'isotope_core');
+        return $this->assets->getUrl('images/setup-'.$this->getName().'.svg', 'isotope');
     }
 }

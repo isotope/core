@@ -5,13 +5,13 @@
     {{ parent() }}
 
     {% add "isotope_css" to stylesheets %}
-        {% with {file: asset('isotope.css', 'isotope_core')} %}
+        {% with {file: asset('isotope.css', 'isotope')} %}
             {{ block('stylesheet_component') }}
         {% endwith %}
     {% endadd %}
 
     {% add "isotope_js" to head %}
-        <script src="{{ asset('isotope.js', 'isotope_core') }}"></script>
+        <script src="{{ asset('isotope.js', 'isotope') }}"></script>
     {% endadd %}
 
 {% endblock %}

@@ -46,8 +46,8 @@ class BackendRequestListener
             return;
         }
 
-        $GLOBALS['TL_JAVASCRIPT'][] = $this->packages->getUrl('backend.js', 'isotope_core');
-        $GLOBALS['TL_CSS'][] = $this->packages->getUrl('backend.css', 'isotope_core');
+        $GLOBALS['TL_JAVASCRIPT'][] = $this->packages->getUrl('backend.js', 'isotope');
+        $GLOBALS['TL_CSS'][] = $this->packages->getUrl('backend.css', 'isotope');
 
         $this->handleShopConfig($event->getRequest());
     }

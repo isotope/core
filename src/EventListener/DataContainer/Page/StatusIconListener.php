@@ -20,6 +20,6 @@ class StatusIconListener
             return $icon;
         }
 
-        return $this->packages->getUrl('images/page'.substr($icon, 7), 'isotope_core');
+        return $this->packages->getUrl('images/page'.substr($icon, 7), 'isotope');
     }
 }

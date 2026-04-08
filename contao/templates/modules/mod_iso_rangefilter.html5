@@ -2,8 +2,8 @@
 
 $this->extend('block_unsearchable');
 
-$GLOBALS['TL_CSS'][] = $this->asset('plugins/noUiSlider/nouislider.min.css', 'isotope_core');
-$script = $this->asset('plugins/noUiSlider/nouislider.min.js', 'isotope_core');
+$GLOBALS['TL_CSS'][] = $this->asset('plugins/noUiSlider/nouislider.min.css', 'isotope');
+$script = $this->asset('plugins/noUiSlider/nouislider.min.js', 'isotope');
 
 $GLOBALS['TL_BODY'][] = <<<HTML
 <script src="$script"></script>

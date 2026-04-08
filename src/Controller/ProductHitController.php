@@ -8,6 +8,7 @@ use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 use Hashids\Hashids;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
@@ -19,18 +20,16 @@ class ProductHitController
 {
     public function __construct(
         private readonly Connection $connection,
-        private readonly string $secret,
+        #[Autowire(service: 'isotope.hashids')] private readonly Hashids $hashids,
     ) {
     }
 
     public function __invoke(string $hashid): Response
     {
-        $hashids = new Hashids($this->secret, 8);
-
         try {
             $this->connection->executeStatement(
                 'UPDATE tl_iso_product SET hitCount=hitCount+1 WHERE id IN (?)',
-                [$hashids->decode($hashid)],
+                [$this->hashids->decode($hashid)],
                 [ArrayParameterType::INTEGER],
             );
         } catch (\Throwable) {

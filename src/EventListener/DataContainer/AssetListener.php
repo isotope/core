@@ -36,7 +36,7 @@ class AssetListener
             $keys = explode('.', $target);
 
             $dcaRef = &$this->getDcaReference($table, $keys);
-            $dcaRef = $this->packages->getUrl($dcaRef, 'isotope_core');
+            $dcaRef = $this->packages->getUrl($dcaRef, 'isotope');
         }
     }
 

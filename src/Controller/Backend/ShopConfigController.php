@@ -32,8 +32,8 @@ class ShopConfigController extends AbstractController
         $this->initializeContaoFramework();
         System::loadLanguageFile('default');
 
-        $GLOBALS['TL_CSS'][] = $this->assets->getUrl('backend.css', 'isotope_core');
-        $GLOBALS['TL_JAVASCRIPT'][] = $this->assets->getUrl('backend.js', 'isotope_core');
+        $GLOBALS['TL_CSS'][] = $this->assets->getUrl('backend.css', 'isotope');
+        $GLOBALS['TL_JAVASCRIPT'][] = $this->assets->getUrl('backend.js', 'isotope');
 
         $links = [];
 
