@@ -10,9 +10,10 @@
         }
 
         .text {
+            overflow: hidden;
             padding: 0 15px;
             background: #eff5fa;
-            overflow: hidden;
+            border-radius: var(--border-radius);
 
             strong {
                 color: #1899ad;
@@ -41,9 +42,9 @@
 
     .tl_file_list {
         &:first-child {
-            width: 50px;
-            padding-top: 11px;
-            padding-bottom: 11px;
+            width: 40px;
+            padding-top: 8px;
+            padding-bottom: 8px;
 
             img {
                 width: 100%;
@@ -52,12 +53,11 @@
         }
 
         p {
-            margin: 5px 0;
+            margin: 0;
         }
     }
 
     .tl_right_nowrap {
-        padding-top: 11px;
-        padding-bottom: 11px;
+        vertical-align: middle;
     }
 }

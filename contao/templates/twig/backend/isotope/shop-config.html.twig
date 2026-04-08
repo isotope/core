@@ -21,7 +21,7 @@
             <tbody>
             {% for group,modules in links %}
                 <tr>
-                    <td colspan="3" class="tl_folder_tlist">{{ ('IMD.'~group)|trans([], 'contao_modules') }}</td>
+                    <td colspan="3" class="{{ loop.first ? 'tl_folder_tlist' : 'tl_folder_list' }}">{{ ('IMD.'~group)|trans([], 'contao_modules') }}</td>
                 </tr>
                 {% for link in modules %}
                     <tr class="click2edit hover-row">
@@ -36,7 +36,7 @@
                         </td>
                         <td class="tl_file_list tl_right_nowrap">
                             {% if link.url %}
-                                <a href="{{ link.url }}" class="edit">{{ backend_icon('edit.svg', ('IMD.'~link.name~'.1')|trans([], 'contao_modules')) }}</a>
+                                <a href="{{ link.url }}" class="edit">{{ backend_icon('children.svg', ('IMD.'~link.name~'.1')|trans([], 'contao_modules')) }}</a>
                             {% else %}
                                 {{ backend_icon('edit--disabled.svg') }}
                             {% endif %}
