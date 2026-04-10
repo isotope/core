@@ -2,4 +2,5 @@
 
 {% set listing_attributes = attrs()
     .addClass(app.request.query.get('table')|default(app.request.query.get('do')))
+    .mergeWith(listing_attributes|default)
 %}
