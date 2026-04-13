@@ -83,7 +83,6 @@
                                         {% endif %}
                                         {% if block('product_collection_item_actions') is defined %}
                                             <td class="actions">
-                                                {#<?php if ($item['edit_href'] ?? null): ?><a href="<?= $item['edit_href'] ?>" class="edit" title="<?= $item['edit_title'] ?>"><?= $item['edit_link'] ?></a><?php endif; ?>#}
                                                 {{ block('product_collection_item_actions') }}
                                             </td>
                                         {% endif %}

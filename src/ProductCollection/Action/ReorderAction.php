@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\ProductCollection\Action;
 
-use Contao\System;
+use Contao\CoreBundle\Routing\ContentUrlGenerator;
+use Contao\PageModel;
 use Isotope\CoreBundle\HttpFoundation\ActionResult;
 use Isotope\CoreBundle\ProductCollection\AbstractProductCollection;
 use Isotope\CoreBundle\Store\CartManager;
 use Isotope\CoreBundle\Store\StoreManager;
-use Isotope\Haste\Util\Url;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\UriSigner;
+use Symfony\Component\Routing\Exception\ExceptionInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
 
 class ReorderAction implements ProductCollectionActionInterface
@@ -18,6 +22,9 @@ class ReorderAction implements ProductCollectionActionInterface
         private readonly StoreManager $storeManager,
         private readonly CartManager $cartManager,
         private readonly Environment $twig,
+        private readonly RequestStack $requestStack,
+        private readonly ContentUrlGenerator $urlGenerator,
+        private readonly UriSigner $uriSigner,
     ) {
     }
 
@@ -44,8 +51,16 @@ class ReorderAction implements ProductCollectionActionInterface
 
         $redirect = null;
 
-        if (($context['data']['iso_cart_jumpTo'] ?? null) > 0) {
-            $redirect = Url::addQueryString('continue='.base64_encode(System::getReferer()), $context['data']['iso_cart_jumpTo']);
+        if (($context['data']['iso_cart_jumpTo'] ?? null) > 0 && ($request = $this->requestStack->getCurrentRequest())) {
+            try {
+                $redirect = $this->uriSigner->sign($this->urlGenerator->generate(
+                    PageModel::findById($context['data']['iso_cart_jumpTo']),
+                    ['continue' => base64_encode($request->getRequestUri())],
+                    UrlGeneratorInterface::ABSOLUTE_URL,
+                ));
+            } catch (ExceptionInterface) {
+                // ignore redirect URL
+            }
         }
 
         return new ActionResult(

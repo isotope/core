@@ -4,16 +4,20 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Product\Action;
 
+use Contao\CoreBundle\Routing\ContentUrlGenerator;
 use Contao\Input;
+use Contao\PageModel;
 use Isotope\CoreBundle\HttpFoundation\ActionResult;
-use Isotope\CoreBundle\Model\ProductCollectionItem;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\Render\ViewInterface;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
 use Isotope\CoreBundle\Store\CartManager;
 use Isotope\CoreBundle\Store\StoreManager;
 use Isotope\Haste\Util\Url;
-use Isotope\Isotope;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\UriSigner;
+use Symfony\Component\Routing\Exception\ExceptionInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
 
 class AddToCartAction implements ProductActionInterface
@@ -21,6 +25,9 @@ class AddToCartAction implements ProductActionInterface
     public function __construct(
         private readonly StoreManager $storeManager,
         private readonly CartManager $cartManager,
+        private readonly RequestStack $requestStack,
+        private readonly ContentUrlGenerator $urlGenerator,
+        private readonly UriSigner $uriSigner,
         private readonly Environment $twig,
     ) {
     }
@@ -37,48 +44,27 @@ class AddToCartAction implements ProductActionInterface
         ]);
     }
 
-    //public function getLabel(IsotopeProduct $product = null): string
-    //{
-    //    if ($this->getCurrentCartItem($product)) {
-    //        return $GLOBALS['TL_LANG']['MSC']['buttonLabel']['update_cart'];
-    //    }
-    //
-    //    return $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'];
-    //}
-
     public function handle(CoreProduct $product, array $configuration, ViewInterface $view): ActionResult
     {
-        $item = $this->getCurrentCartItem($product);
+        $request = $this->requestStack->getCurrentRequest();
+        $response = $this->handleAddToCart($product, $configuration, $view);
 
-        if ($item) {
-            $response = $this->handleUpdateCart($item, $product);
-        } else {
-            $response = $this->handleAddToCart($product, $configuration, $view);
-        }
-
-        if ($response->success && $view->get('iso_addProductJumpTo')) {
-            return new ActionResult(
-                null,
-                Url::addQueryString(
-                    'continue='.base64_encode(\Contao\Environment::get('request')),
-                    $view->get('iso_addProductJumpTo'),
-                ),
-            );
+        if ($request && $response->success && $view->get('iso_addProductJumpTo')) {
+            try {
+                return new ActionResult(
+                    null,
+                    $this->uriSigner->sign($this->urlGenerator->generate(
+                        PageModel::findById($view->get('iso_addProductJumpTo')),
+                        ['continue' => base64_encode($request->getRequestUri())],
+                        UrlGeneratorInterface::ABSOLUTE_URL,
+                    )),
+                );
+            } catch (ExceptionInterface) {
+                // ignore routing exception
+            }
         }
 
         return $response;
-    }
-
-    private function getCurrentCartItem(CoreProduct $product): ProductCollectionItem|null
-    {
-        if (!Input::get('collection_item')) {
-            return null;
-        }
-
-        /** @var ProductCollectionItem $item */
-        $item = Isotope::getCart()->getItemById(Input::get('collection_item'));
-
-        return $item?->isProduct($product) ? $item : null;
     }
 
     private function handleAddToCart(CoreProduct $product, array $configuration, ViewInterface $view): ActionResult
@@ -112,16 +98,5 @@ class AddToCartAction implements ProductActionInterface
         $this->cartManager->add($context->getCart(), $item, $context);
 
         return new ActionResult($GLOBALS['TL_LANG']['MSC']['addedToCart']);
-    }
-
-    private function handleUpdateCart(ProductCollectionItem $item, CoreProduct $product): ActionResult
-    {
-        $success = Isotope::getCart()->updateProduct($product, $item);
-
-        if ($success) {
-            return new ActionResult($GLOBALS['TL_LANG']['MSC']['updatedInCart']);
-        }
-
-        return new ActionResult('Das Produkt konnte nicht aktualisiert werden.', success: false);
     }
 }

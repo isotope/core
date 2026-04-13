@@ -7,12 +7,14 @@ namespace Isotope\CoreBundle\ProductCollection\Action;
 use Isotope\CoreBundle\HttpFoundation\ActionResult;
 use Isotope\CoreBundle\ProductCollection\AbstractProductCollection;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\UriSigner;
 use Twig\Environment;
 
 class ContinueShoppingAction implements ProductCollectionActionInterface
 {
     public function __construct(
         private readonly Environment $twig,
+        private readonly UriSigner $uriSigner,
     ) {
     }
 
@@ -37,7 +39,11 @@ class ContinueShoppingAction implements ProductCollectionActionInterface
     {
         $request = $context['app']?->getRequest();
 
-        if (!$request instanceof Request || !$request->query->has('continue')) {
+        if (
+            !$request instanceof Request
+            || !$request->query->has('continue')
+            || !$this->uriSigner->checkRequest($request)
+        ) {
             return null;
         }
 
