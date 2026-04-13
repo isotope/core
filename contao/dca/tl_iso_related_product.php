@@ -10,9 +10,6 @@ $GLOBALS['TL_DCA']['tl_iso_related_product'] = [
         'enableVersioning' => true,
         'notSortable' => true,
         'ptable' => 'tl_iso_product',
-        'onload_callback' => [
-            [Callback::class, 'initDCA'],
-        ],
         'sql' => [
             'keys' => [
                 'id' => 'primary',
@@ -24,11 +21,14 @@ $GLOBALS['TL_DCA']['tl_iso_related_product'] = [
         'sorting' => [
             'mode' => DataContainer::MODE_PARENT,
             'fields' => ['category'],
-            'flag' => DataContainer::SORT_INITIAL_LETTER_ASC,
             'panelLayout' => 'filter,limit',
             'headerFields' => ['type', 'name', 'alias', 'sku', 'published'],
-            'disableGrouping' => true,
-            'child_record_callback' => [Callback::class, 'listRows'],
+            'renderAsGrid' => true,
+            'limitHeight' => 160,
+        ],
+        'label' => [
+            'fields' => ['category'],
+            'format' => '%s',
         ],
     ],
     'palettes' => [
@@ -46,26 +46,21 @@ $GLOBALS['TL_DCA']['tl_iso_related_product'] = [
         'tstamp' => [
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
-        'sorting' => [
-            'sql' => "int(10) unsigned NOT NULL default '0'",
-        ],
         'category' => [
             'filter' => true,
             'inputType' => 'select',
             'foreignKey' => 'tl_iso_related_category.name',
             'eval' => ['mandatory' => true, 'includeBlankOption' => true, 'tl_class' => 'w50'],
             'sql' => "int(10) unsigned NOT NULL default '0'",
-            'relation' => ['table' => 'tl_iso_related_category', 'type' => 'hasOne', 'load' => 'lazy'],
+            'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
         ],
         'products' => [
+            'filter' => true,
             'inputType' => 'picker',
-            'eval' => ['mandatory' => true, 'multiple' => true, 'csv' => ',', 'tl_class' => 'clr', 'orderField' => 'productsOrder'],
+            'foreignKey' => 'tl_iso_product.name',
+            'eval' => ['mandatory' => true, 'multiple' => true, 'csv' => ',', 'tl_class' => 'clr', 'isSortable' => true],
             'sql' => 'blob NULL',
-            'relation' => ['table' => 'tl_iso_product', 'type' => 'hasMany', 'load' => 'lazy'],
-        ],
-        'productsOrder' => [
-            'sql' => 'blob NULL',
-            'eval' => ['doNotShow' => true],
+            'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
         ],
     ],
 ];

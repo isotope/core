@@ -40,7 +40,7 @@ class LabelListener
             $args = [];
         }
 
-        foreach ($GLOBALS['TL_DCA'][$dc->table]['list']['label']['fields'] as $i => $field) {
+        foreach ($GLOBALS['TL_DCA']['tl_iso_product']['list']['label']['fields'] as $i => $field) {
             switch ($field) {
                 case 'images':
                     $args[$i] = $this->generateImage($row);
@@ -201,11 +201,11 @@ class LabelListener
     {
         $attributes = [];
 
-        foreach ($GLOBALS['TL_DCA'][$dc->table]['list']['label']['variantFields'] as $variantField) {
+        foreach ($GLOBALS['TL_DCA']['tl_iso_product']['list']['label']['variantFields'] as $variantField) {
             $attributes[] = \sprintf(
                 '<strong>%s:</strong>&nbsp;%s',
-                $this->formatter->dcaLabel($dc->table, $variantField),
-                $this->formatter->dcaValue($dc->table, $variantField, $row[$variantField] ?? null),
+                $this->formatter->dcaLabel('tl_iso_product', $variantField),
+                $this->formatter->dcaValue('tl_iso_product', $variantField, $row[$variantField] ?? null),
             );
         }
 

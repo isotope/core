@@ -18,6 +18,8 @@ $GLOBALS['TL_DCA']['tl_iso_related_category'] = [
             'mode' => DataContainer::MODE_SORTED,
             'fields' => ['name'],
             'flag' => DataContainer::SORT_INITIAL_LETTER_ASC,
+            'panelLayout' => 'search,limit',
+            'defaultSearchField' => 'name',
         ],
         'label' => [
             'fields' => ['name'],
@@ -35,6 +37,7 @@ $GLOBALS['TL_DCA']['tl_iso_related_category'] = [
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
         'name' => [
+            'search' => true,
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'maxlength' => 255, 'tl_class' => 'long'],
             'sql' => "varchar(255) NOT NULL default ''",

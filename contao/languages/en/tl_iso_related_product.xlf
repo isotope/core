@@ -20,6 +20,9 @@
       <trans-unit id="tl_iso_related_product.products_legend">
         <source>Related products</source>
       </trans-unit>
+      <trans-unit id="tl_iso_related_product.empty">
+        <source>No products selected for this category.</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>

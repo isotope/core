@@ -1,0 +1,59 @@
+.tl_listing_container.tl_iso_related_product {
+
+    .tl_content_right {
+        grid-column: 2/2;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .cte_type {
+        display: none;
+    }
+
+    .cte_content {
+        grid-area: 1 / 1 / 3 / 1;
+        border-top: 0;
+    }
+
+    .cte_preview {
+        padding: 0;
+
+        .tl_listing {
+            background: transparent;
+        }
+
+        table {
+            margin-bottom: 0;
+        }
+
+        th {
+            height: 22px;
+
+            &:last-child {
+                border-top-right-radius: 0;
+            }
+        }
+
+        td {
+            background: transparent;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .cte_type {
+            display: block;
+            min-height: 18px;
+            border-bottom-left-radius: var(--border-radius)
+        }
+
+        &:has(.cte_type) {
+            padding: 0;
+        }
+    }
+
+    .inside:has(.cte_content .cte_type) .tl_content_right {
+        border-bottom-right-radius: var(--border-radius);
+        border-bottom: none;
+    }
+}

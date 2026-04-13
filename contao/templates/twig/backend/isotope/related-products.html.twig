@@ -1,0 +1,30 @@
+<div class="iso_listing_container list_view">
+    <table class="tl_listing showColumns">
+        {% if table_headers|length %}
+            <thead>
+            <tr>
+                {% for name, label in table_headers %}
+                    {% set table_header_attributes = attrs()
+                        .addClass('tl_folder_tlist')
+                        .addClass("col_#{name}")
+                    %}
+                    <th{{ table_header_attributes }}>{{ label }}</th>
+                {% endfor %}
+            </tr>
+            </thead>
+        {% endif %}
+        <tbody>
+        {% for record in records %}
+            <tr>
+                {% for name, label in record %}
+                    {% set col_attributes = attrs()
+                        .addClass('tl_file_list')
+                        .addClass("col_#{name}")
+                    %}
+                    <td{{ col_attributes }}>{{ label|raw }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
