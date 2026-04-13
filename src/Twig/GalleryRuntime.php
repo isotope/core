@@ -4,27 +4,24 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Twig;
 
-use Contao\CoreBundle\Image\Studio\Studio;
 use Isotope\CoreBundle\Gallery\StandardGallery;
 use Isotope\CoreBundle\Model\Gallery;
 use Isotope\CoreBundle\ModelType\GalleryRegistry;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\Render\ViewInterface;
+use Isotope\CoreBundle\Routing\ProductReference;
 use Isotope\CoreBundle\Store\StoreManager;
-use Twig\Environment;
 use Twig\Extension\RuntimeExtensionInterface;
 
 class GalleryRuntime implements RuntimeExtensionInterface
 {
     public function __construct(
         private readonly GalleryRegistry $galleryRegistry,
-        private readonly Studio $imageStudio,
-        private readonly Environment $twig,
         private readonly StoreManager $storeManager,
     ) {
     }
 
-    public function get(array $context, CoreProduct $product, string $attributeName, int|null $galleryId = null): TemplateMarkup|null
+    public function get(array $context, CoreProduct $product, string $attributeName, int|null $galleryId = null, ProductReference|string|null $href = null): TemplateMarkup|null
     {
         $view = $context['view'] ?? null;
 
@@ -34,8 +31,8 @@ class GalleryRuntime implements RuntimeExtensionInterface
 
         $galleryId ??= $view->getGallery($product);
         $model = $galleryId > 0 ? Gallery::findById($galleryId) : null;
-        $gallery = $model ? $this->galleryRegistry->get($model, $this->storeManager->getCurrentContext()) : new StandardGallery(0, $this->imageStudio, $this->twig);
+        $gallery = $model ? $this->galleryRegistry->get($model, $this->storeManager->getCurrentContext()) : new StandardGallery(0);
 
-        return $gallery->build($product, $attributeName, $view?->getProductReference($product));
+        return $gallery->build($product, $attributeName, $href ?? $view?->getProductReference($product));
     }
 }

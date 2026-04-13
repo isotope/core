@@ -12,5 +12,5 @@ interface GalleryInterface
 {
     public function getId(): int;
 
-    public function build(CoreProduct $product, string $attribute, ProductReference|null $productReference = null): TemplateMarkup|null;
+    public function build(CoreProduct $product, string $attribute, ProductReference|string|null $href = null): TemplateMarkup|null;
 }
