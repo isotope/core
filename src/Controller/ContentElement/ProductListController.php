@@ -9,7 +9,6 @@ use Contao\CoreBundle\DependencyInjection\Attribute\AsContentElement;
 use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use Contao\CoreBundle\Twig\FragmentTemplate;
 use Contao\PageModel;
-use Contao\StringUtil;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
@@ -25,6 +24,7 @@ use Isotope\CoreBundle\Product\Query\ProductQueryFactory;
 use Isotope\CoreBundle\Product\Query\Sorting;
 use Isotope\CoreBundle\Product\Render\ListView;
 use Isotope\CoreBundle\Store\StoreManager;
+use Isotope\CoreBundle\Util\StringUtil;
 use Ramsey\Collection\CollectionInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -57,8 +57,7 @@ class ProductListController extends AbstractContentElementController
         }
 
         $filterKeys = [$model->iso_filterKey ?: ''];
-        $searchFields = array_filter(explode(',', $model->iso_searchFields));
-        $products = $this->findProducts($model, $request, $filterKeys, $searchFields);
+        $products = $this->findProducts($model, $request, $filterKeys);
 
         if ($model->iso_hide_empty && $products->isEmpty()) {
             return new Response('');
@@ -74,7 +73,7 @@ class ProductListController extends AbstractContentElementController
     /**
      * @return ProductCollection
      */
-    private function findProducts(ContentModel $model, Request $request, array $filterKeys, array $searchFields): CollectionInterface
+    private function findProducts(ContentModel $model, Request $request, array $filterKeys): CollectionInterface
     {
         $categories = $this->getCategories($model, $request);
 
@@ -101,7 +100,7 @@ class ProductListController extends AbstractContentElementController
 
         $productQuery?->apply($qb, $filterKeys);
 
-        if ([] !== $searchFields) {
+        if ($searchFields = StringUtil::csv($model->iso_searchFields)) {
             $productQuery?->applySearch($qb, $searchFields, $filterKeys);
         }
 

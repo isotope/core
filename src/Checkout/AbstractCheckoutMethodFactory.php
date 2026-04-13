@@ -11,9 +11,9 @@ use Isotope\CoreBundle\ModelType\ContainerAwareInterface;
 use Isotope\CoreBundle\ModelType\ContainerAwareTrait;
 use Isotope\CoreBundle\ModelType\ModelInstanceTrait;
 use Isotope\CoreBundle\ModelType\ModelTypeFactoryInterface;
-use Isotope\CoreBundle\ModelType\SerializedPropertyTrait;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Price\PriceDefinition;
+use Isotope\CoreBundle\Util\StringUtil;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -26,7 +26,6 @@ abstract class AbstractCheckoutMethodFactory implements ModelTypeFactoryInterfac
 {
     use ContainerAwareTrait;
     use ModelInstanceTrait;
-    use SerializedPropertyTrait;
 
     public static function getSubscribedServices(): array
     {
@@ -47,7 +46,7 @@ abstract class AbstractCheckoutMethodFactory implements ModelTypeFactoryInterfac
             ->setNote((string) $model->note)
             ->setPriceDefinition(PriceDefinition::fromString((string) $model->price, (int) $model->tax_class))
             ->setRule((int) $model->rule)
-            ->setAllowedProductTypes($this->csv($model->product_types, intval(...)), ProductTypeCondition::from($model->product_types_condition))
+            ->setAllowedProductTypes(StringUtil::csv($model->product_types, intval(...)), ProductTypeCondition::from($model->product_types_condition))
             ->setDebug((bool) $model->debug)
             ->setLogging((bool) $model->logging)
             ->setEnabled((bool) $model->enabled)

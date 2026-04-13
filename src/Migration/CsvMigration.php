@@ -21,7 +21,7 @@ class CsvMigration extends AbstractMigration
         'tl_iso_shipping' => ['product_types', 'flatProductTypes'],
         'tl_iso_tax_class' => ['rates'],
         'tl_iso_tax_rate' => ['rate', 'address'],
-        'tl_module' => ['iso_config_ids', 'iso_checkout_skippable', 'iso_filterFields', 'iso_searchFields', 'iso_sortingFields', 'iso_related_categories'],
+        'tl_module' => ['iso_config_ids', 'iso_checkout_skippable', 'iso_filterFields', 'iso_searchFields', 'iso_sortingFields', 'iso_related_categories', 'iso_buttons', 'iso_notifications'],
     ];
 
     public function __construct(private readonly Connection $connection)

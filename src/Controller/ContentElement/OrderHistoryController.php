@@ -11,6 +11,7 @@ use Contao\FrontendUser;
 use Isotope\CoreBundle\Model\ProductCollection;
 use Isotope\CoreBundle\ProductCollection\Order\Order;
 use Isotope\CoreBundle\ProductCollection\Order\OrderFactory;
+use Isotope\CoreBundle\Util\StringUtil;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -25,9 +26,9 @@ class OrderHistoryController extends AbstractContentElementController
     protected function getResponse(FragmentTemplate $template, ContentModel $model, Request $request): Response
     {
         $user = $this->getUser();
-        $configIds = explode(',', $model->iso_config_ids);
+        $configIds = StringUtil::csv($model->iso_config_ids, intval(...));
 
-        if ([] === $configIds || !$user instanceof FrontendUser) {
+        if (!$configIds || !$user instanceof FrontendUser) {
             return new Response();
         }
 
@@ -38,7 +39,7 @@ class OrderHistoryController extends AbstractContentElementController
                 'locked IS NOT NULL',
                 'type = ?',
                 'member = ?',
-                'config_id IN (' . implode(',', array_map(intval(...), $configIds)) . ')'
+                'config_id IN (' . implode(',', $configIds) . ')'
             ],
             [Order::getType(), $user->id],
             ['order' => 'locked DESC']

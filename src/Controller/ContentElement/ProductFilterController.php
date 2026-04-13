@@ -12,7 +12,6 @@ use Contao\CoreBundle\Exception\BadRequestException;
 use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use Contao\CoreBundle\Twig\FragmentTemplate;
 use Contao\Date;
-use Contao\StringUtil;
 use Contao\Widget;
 use Doctrine\DBAL\Connection;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
@@ -22,6 +21,7 @@ use Isotope\CoreBundle\Model\Product;
 use Isotope\CoreBundle\Product\Query\Filter\EqualFilter;
 use Isotope\CoreBundle\Product\Query\ProductQuery;
 use Isotope\CoreBundle\Product\Query\Sorting;
+use Isotope\CoreBundle\Util\StringUtil;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -166,7 +166,7 @@ class ProductFilterController extends AbstractContentElementController
     private function getLimitOptions(string $perPage, ProductQuery|null $productQuery, string $key): array
     {
         $options = [];
-        $limits = array_unique(array_map(intval(...), StringUtil::trimsplit(',', $perPage)));
+        $limits = array_unique(StringUtil::csv($perPage, intval(...), []));
         sort($limits);
 
         $current = $productQuery?->getLimit([$key]);
@@ -273,7 +273,7 @@ class ProductFilterController extends AbstractContentElementController
             && !empty($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$field]['eval']['csv'] ?? null);
 
         return array_unique(array_merge(...array_map(
-            static fn ($v) => $isCsv ? explode($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$field]['eval']['csv'], $v) : StringUtil::deserialize($v, true),
+            static fn ($v) => $isCsv ? explode($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$field]['eval']['csv'], $v) : \Contao\StringUtil::deserialize($v, true),
             $options,
         )));
     }
@@ -291,14 +291,14 @@ class ProductFilterController extends AbstractContentElementController
         $productTypes = $this->connection->fetchAllAssociative('SELECT id, attributes, variants, variant_attributes FROM tl_iso_producttype');
 
         foreach ($productTypes as $type) {
-            foreach (StringUtil::deserialize($type['attributes'], true) as $attribute => $config) {
+            foreach (\Contao\StringUtil::deserialize($type['attributes'], true) as $attribute => $config) {
                 if ($config['enabled'] ?? false) {
                     $attributes[$attribute][] = $type['id'];
                 }
             }
 
             if ($type['variants']) {
-                foreach (StringUtil::deserialize($type['variant_attributes'], true) as $attribute => $config) {
+                foreach (\Contao\StringUtil::deserialize($type['variant_attributes'], true) as $attribute => $config) {
                     if ($config['enabled'] ?? false) {
                         $variantAttributes[$attribute][] = $type['id'];
                     }

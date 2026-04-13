@@ -8,9 +8,9 @@ use Contao\ContentModel;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsContentElement;
 use Contao\CoreBundle\Exception\RedirectResponseException;
 use Contao\CoreBundle\Twig\FragmentTemplate;
-use Contao\StringUtil;
 use Isotope\CoreBundle\Model\Config;
 use Isotope\CoreBundle\Store\CartManager;
+use Isotope\CoreBundle\Util\StringUtil;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -27,7 +27,7 @@ class ConfigswitcherController extends AbstractContentElementController
     protected function getResponse(FragmentTemplate $template, ContentModel $model, Request $request): Response
     {
         $formId = 'iso_configswitcher_'.$model->id;
-        $configIds = array_map(intval(...), StringUtil::deserialize($model->iso_config_ids, true));
+        $configIds = StringUtil::csv($model->iso_config_ids, intval(...));
         $configTotal = \count($configIds);
 
         // If the module config has only one config, always override the current cart

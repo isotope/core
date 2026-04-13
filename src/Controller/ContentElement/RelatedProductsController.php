@@ -7,7 +7,6 @@ namespace Isotope\CoreBundle\Controller\ContentElement;
 use Contao\ContentModel;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsContentElement;
 use Contao\CoreBundle\Twig\FragmentTemplate;
-use Contao\StringUtil;
 use Isotope\CoreBundle\Model\RelatedProduct;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\DataCollector\ProductDto;
@@ -16,6 +15,7 @@ use Isotope\CoreBundle\Product\ProductBuilder;
 use Isotope\CoreBundle\Product\ProductCollection;
 use Isotope\CoreBundle\Product\Render\ListView;
 use Isotope\CoreBundle\Store\StoreManager;
+use Isotope\CoreBundle\Util\StringUtil;
 use Ramsey\Collection\Sort;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,10 +31,10 @@ class RelatedProductsController extends AbstractContentElementController
 
     protected function getResponse(FragmentTemplate $template, ContentModel $model, Request $request): Response
     {
-        $categories = array_filter(explode(',', $model->iso_related_categories));
+        $categories = StringUtil::csv($model->iso_related_categories, intval(...));
         $product = $request->attributes->get('_content');
 
-        if (!$product instanceof CoreProduct || [] === $categories) {
+        if (!$product instanceof CoreProduct || !$categories) {
             return new Response();
         }
 
@@ -59,7 +59,7 @@ class RelatedProductsController extends AbstractContentElementController
 
         if (null !== $relatedProducts) {
             foreach ($relatedProducts as $category) {
-                $ids = StringUtil::trimsplit(',', $category->products);
+                $ids = StringUtil::csv($category->products, intval(...));
 
                 if (\is_array($ids) && 0 !== \count($ids)) {
                     $productIds = array_unique(array_merge($productIds, $ids));

@@ -6,17 +6,15 @@ namespace Isotope\CoreBundle\Checkout\Shipping;
 
 use Contao\Model;
 use Isotope\CoreBundle\Model\Shipping;
-use Isotope\CoreBundle\ModelType\SerializedPropertyTrait;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Weight\Weight;
+use Isotope\CoreBundle\Util\StringUtil;
 
 /**
  * @extends AbstractShippingFactory<FlatShipping>
  */
 class FlatShippingFactory extends AbstractShippingFactory
 {
-    use SerializedPropertyTrait;
-
     /**
      * @param Shipping $model
      */
@@ -30,7 +28,7 @@ class FlatShippingFactory extends AbstractShippingFactory
         );
 
         $instance
-            ->setFlatProductTypes($this->csv($model->flatProductTypes, intval(...)))
+            ->setFlatProductTypes(StringUtil::csv($model->flatProductTypes, intval(...)))
             ->setFlatWeight(Weight::createFromTimePeriod($model->flatWeight))
         ;
 

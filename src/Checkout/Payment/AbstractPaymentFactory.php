@@ -8,8 +8,8 @@ use Contao\Model;
 use Isotope\CoreBundle\Checkout\AbstractCheckoutMethodFactory;
 use Isotope\CoreBundle\Model\Payment;
 use Isotope\CoreBundle\ModelType\ModelInstanceTrait;
-use Isotope\CoreBundle\ModelType\SerializedPropertyTrait;
 use Isotope\CoreBundle\Store\Context\StoreContext;
+use Isotope\CoreBundle\Util\StringUtil;
 
 /**
  * @template TType of AbstractPayment
@@ -19,7 +19,6 @@ use Isotope\CoreBundle\Store\Context\StoreContext;
 abstract class AbstractPaymentFactory extends AbstractCheckoutMethodFactory
 {
     use ModelInstanceTrait;
-    use SerializedPropertyTrait;
 
     /**
      * @param Payment $model
@@ -31,7 +30,7 @@ abstract class AbstractPaymentFactory extends AbstractCheckoutMethodFactory
         /** @var AbstractPayment $payment */
         $payment = parent::create($model, $context);
         $payment
-            ->setAllowedShippings($this->csv($model->shipping_modules, intval(...)))
+            ->setAllowedShippings(StringUtil::csv($model->shipping_modules, intval(...)))
         ;
 
         return $payment;

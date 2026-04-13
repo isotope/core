@@ -1,7 +1,6 @@
 <?php
 
 use Contao\Controller;
-use Isotope\Backend\Config\Callback as ConfigCallback;
 use Isotope\CoreBundle\Checkout\CheckoutMethod;
 use Isotope\CoreBundle\Product\Category\CategoryScope;
 

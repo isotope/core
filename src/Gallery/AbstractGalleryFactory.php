@@ -8,8 +8,8 @@ use Contao\Model;
 use Isotope\CoreBundle\Model\Gallery;
 use Isotope\CoreBundle\ModelType\ModelInstanceTrait;
 use Isotope\CoreBundle\ModelType\ModelTypeFactoryInterface;
-use Isotope\CoreBundle\ModelType\SerializedPropertyTrait;
 use Isotope\CoreBundle\Store\Context\StoreContext;
+use Isotope\CoreBundle\Util\StringUtil;
 
 /**
  * @template TType of AbstractGallery
@@ -19,7 +19,6 @@ use Isotope\CoreBundle\Store\Context\StoreContext;
 abstract class AbstractGalleryFactory implements ModelTypeFactoryInterface
 {
     use ModelInstanceTrait;
-    use SerializedPropertyTrait;
 
     /**
      * @param Gallery $model
@@ -31,8 +30,8 @@ abstract class AbstractGalleryFactory implements ModelTypeFactoryInterface
         $this->validateInstanceOf($model, Gallery::class);
 
         $instance = $this->doCreate($model)
-            ->setMainSize($this->unserialize($model->main_size))
-            ->setGallerySize($this->unserialize($model->gallery_size))
+            ->setMainSize(StringUtil::unserialize($model->main_size))
+            ->setGallerySize(StringUtil::unserialize($model->gallery_size))
             ->setLightboxSize($model->lightbox_size)
             ->setPlaceholder($model->placeholder)
         ;
