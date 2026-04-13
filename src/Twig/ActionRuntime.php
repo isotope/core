@@ -79,7 +79,10 @@ class ActionRuntime implements RuntimeExtensionInterface
             return '';
         }
 
-        if ($request->request->get('FORM_SUBMIT') === $fragmentId /*&& !$this->doNotSubmit*/ && $request->request->get('_action') === $name) {
+        if (
+            $request->request->get('FORM_SUBMIT') === $fragmentId
+            && $request->request->get('_action') === $name
+        ) {
             $result = $action->handle($collection, $context);
 
             $this->handleActionResult($request, $result);
@@ -91,6 +94,7 @@ class ActionRuntime implements RuntimeExtensionInterface
     public function renderProductCollectionItemAction(array $context, string $name): string
     {
         $collection = $context['collection'] ?? null;
+        $fragmentId = $context['fragment_id'] ?? null;
         $item = $context['item'] ?? null;
         $request = $context['app']->getRequest();
         $action = $this->itemActionRegistry->get($name);
@@ -102,6 +106,7 @@ class ActionRuntime implements RuntimeExtensionInterface
         if (
             !$collection instanceof AbstractProductCollection
             || !$item instanceof LineItem
+            || !$fragmentId
             || !$request instanceof Request
             || !$collection->hasItem($item)
             || !$action->supports($collection, $item, $context)
@@ -109,7 +114,12 @@ class ActionRuntime implements RuntimeExtensionInterface
             return '';
         }
 
-        if ($request->query->getString('_action') === $name && $request->query->getInt('_item') === $item->getId()) {
+        if (
+            $request->isMethod(Request::METHOD_POST)
+            && $request->request->get('FORM_SUBMIT') === $fragmentId
+            && $request->request->has($name)
+            && $request->request->getInt($name) === $item->getId()
+        ) {
             $result = $action->handle($collection, $item, $context);
 
             $this->handleActionResult($request, $result);

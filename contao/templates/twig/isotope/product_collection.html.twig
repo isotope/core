@@ -1,13 +1,14 @@
 {% trans_default_domain 'contao_default' %}
 
 {% block product_collection %}
-    {% if block("product_collection_actions") is defined %}
+    {% if block('product_collection_actions') is defined or block('product_collection_item_actions') is defined %}
         <form id="{{ fragment_id }}" method="post" data-action="isotope--collection#formAction" data-isotope--collection-target="form">
             <input type="hidden" name="FORM_SUBMIT" value="{{ fragment_id }}">
             <input type="hidden" name="REQUEST_TOKEN" value="{{ contao.request_token }}">
             <div class="formbody">
     {% endif %}
 
+    {% block product_collection_inner %}
                 {#<?php if ($this->collection->hasErrors()): ?>
                 <p class="error"><?= implode('</p><p class="error">', $this->collection->getErrors()) ?></p>
                 <?php endif; ?>#}
@@ -151,6 +152,7 @@
                         {% endblock %}
                     </tbody>
                 </table>
+    {% endblock %}
 
     {% if block("product_collection_actions") is defined %}
             </div>

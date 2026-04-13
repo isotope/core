@@ -1,10 +1,11 @@
 {% trans_default_domain 'contao_default' %}
-{% from '@Contao/isotope/action_macros.html.twig' import link %}
+{% from '@Contao/isotope/action_macros.html.twig' import button %}
 
 {% set attributes = attrs()
+    .set('name', 'remove_from_cart')
+    .set('value', item.id)
     .set('title', 'MSC.removeProductLinkTitle'|trans([item.label]))
-    .set('data-action', 'isotope--collection#linkAction')
     .addClass('remove')
 %}
 
-{{ link(href, 'MSC.removeProductLinkText'|trans, attributes) }}
+{{ button('remove_from_cart', 'MSC.removeProductLinkText'|trans, attributes) }}

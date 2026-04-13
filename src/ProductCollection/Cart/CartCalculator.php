@@ -118,6 +118,10 @@ class CartCalculator
             $levels[$level] = $subtotal;
         }
 
+        if ([] === $levels) {
+            $levels[0] = new CalculatedPrice(0, 0, new CalculatedTaxCollection(), new TaxRateCollection());
+        }
+
         return $levels;
     }
 }

@@ -11,7 +11,6 @@ use Isotope\CoreBundle\ProductCollection\Cart\Cart;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
 use Isotope\CoreBundle\Store\CartManager;
 use Isotope\CoreBundle\Store\StoreManager;
-use Isotope\Haste\Util\Url;
 use Twig\Environment;
 
 class RemoveFromCartAction implements ProductCollectionItemActionInterface
@@ -32,7 +31,6 @@ class RemoveFromCartAction implements ProductCollectionItemActionInterface
     {
         return $this->twig->render('@Contao/isotope/product_collection_item_action/remove_from_cart.html.twig', [
             'item' => $item,
-            'href' => Url::addQueryString('_action=remove_from_cart&_item='.$item->getId()),
         ]);
     }
 
@@ -44,6 +42,6 @@ class RemoveFromCartAction implements ProductCollectionItemActionInterface
 
         $this->cartManager->remove($collection, $item->getId(), $this->storeManager->getCurrentContext());
 
-        return new ActionResult(null, $isAjax ? null : Url::removeQueryString(['remove']));
+        return new ActionResult();
     }
 }
