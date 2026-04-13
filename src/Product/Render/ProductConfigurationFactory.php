@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Product\Render;
 
 use Contao\Controller;
+use Contao\StringUtil;
 use Contao\System;
 use Contao\UploadableWidgetInterface;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
@@ -161,8 +162,8 @@ class ProductConfigurationFactory
             $item = ProductCollectionItem::findById($request->query->get('collection_item'));
             // TODO: check this item belongs to a collection that belongs to the current user
 
-            if ($item && $item->isProduct($product)) {
-                return $item->getConfiguration();
+            if ($item && $item->identifier === $product->getIdentifier()) {
+                return StringUtil::deserialize($item->configuration, true);
             }
         }
 

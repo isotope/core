@@ -33,9 +33,11 @@
                             {% for item in items %}
                                 {% block product_collection_item %}
                                     <tr>
-                                        {#<?php if(!$this->isNotification): ?>
-                                        <td class="image"><?= $this->getGallery('images', $item['item'])->generateMainImage() ?></td>
-                                        <?php endif; ?>#}
+                                        {% if data.iso_gallery|default %}
+                                            <td class="image">
+                                                {{ isotope_gallery(item.product, 'images', data.iso_gallery, content_url(item)) }}
+                                            </td>
+                                        {% endif %}
                                         <td class="name">
                                             {% block item_name %}
                                                 {% set href = content_url(item) %}

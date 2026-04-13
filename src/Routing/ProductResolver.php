@@ -11,6 +11,7 @@ use Isotope\CoreBundle\Model\Product;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\DataCollector\ProductDto;
 use Isotope\CoreBundle\Product\ProductBuilder;
+use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
 use Isotope\CoreBundle\Store\StoreManager;
 use Isotope\CoreBundle\Util\ProductCategoryUtil;
 use Symfony\Component\HttpFoundation\RequestStack;
