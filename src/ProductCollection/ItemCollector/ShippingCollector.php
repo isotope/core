@@ -27,13 +27,14 @@ class ShippingCollector implements ItemCollectorInterface
             return;
         }
 
-        $priceDefinition = $shipping->getPriceDefinition();
-
-        if (null === $priceDefinition) {
+        if (
+            !($priceDefinition = $shipping->getPriceDefinition())
+            || !($subtotal = $original->getSubtotal($shipping->getLevel() - 1))
+        ) {
             return;
         }
 
-        $price = $this->priceCalculator->calculatePriceDefinition($priceDefinition, $original->getSubtotal($shipping->getLevel() - 1), $context);
+        $price = $this->priceCalculator->calculatePriceDefinition($priceDefinition, $subtotal, $context);
 
         $item = new LineItem(LineItem::TYPE_SHIPPING, 'tl_iso_shipping.'.$shipping->getId());
         $item->setLabel($shipping->getLabel());

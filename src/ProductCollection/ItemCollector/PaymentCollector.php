@@ -26,13 +26,14 @@ class PaymentCollector implements ItemCollectorInterface
             return;
         }
 
-        $priceDefinition = $payment->getPriceDefinition();
-
-        if (null === $priceDefinition) {
+        if (
+            !($priceDefinition = $payment->getPriceDefinition())
+            || !($subtotal = $original->getSubtotal($payment->getLevel() - 1))
+        ) {
             return;
         }
 
-        $price = $this->priceCalculator->calculatePriceDefinition($priceDefinition, $original->getSubtotal($payment->getLevel() - 1), $context);
+        $price = $this->priceCalculator->calculatePriceDefinition($priceDefinition, $subtotal, $context);
 
         $item = new LineItem(LineItem::TYPE_PAYMENT, 'tl_iso_payment.'.$payment->getId());
         $item->setLabel($payment->getLabel());
