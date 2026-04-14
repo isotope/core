@@ -50,7 +50,7 @@ $GLOBALS['TL_DCA']['tl_iso_related_product'] = [
             'filter' => true,
             'inputType' => 'select',
             'foreignKey' => 'tl_iso_related_category.name',
-            'eval' => ['mandatory' => true, 'includeBlankOption' => true, 'tl_class' => 'w50'],
+            'eval' => ['mandatory' => true, 'includeBlankOption' => true, 'doNotCopy' => true, 'tl_class' => 'w50'],
             'sql' => "int(10) unsigned NOT NULL default '0'",
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
         ],
