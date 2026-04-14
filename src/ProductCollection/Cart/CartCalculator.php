@@ -100,7 +100,7 @@ class CartCalculator
             $data['items'][] = $item->getHashData();
         }
 
-        return hash('sha256', json_encode($data, JSON_THROW_ON_ERROR));
+        return hash('xxh3', json_encode($data, JSON_THROW_ON_ERROR));
     }
 
     private function calculateSubtotals(Cart $cart): array

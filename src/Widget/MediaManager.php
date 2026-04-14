@@ -173,10 +173,10 @@ class MediaManager extends Widget implements UploadableWidgetInterface
 
                 if (
                     is_file($projectDir . '/' . $strFile)
-                    && md5_file($projectDir . '/' .  $v['src']) !== md5_file($projectDir . '/' . $strFile)
+                    && hash_file('xxh3', $projectDir . '/' .  $v['src']) !== ($hash = hash_file('xxh3', $projectDir . '/' . $strFile))
                 ) {
                     $strFile = $this->getFilePath(
-                        StringUtil::standardize($pathinfo['filename']) . '-' . substr(md5_file($projectDir . '/' .  $strFile), 0, 8) . '.' . $pathinfo['extension']
+                        StringUtil::standardize($pathinfo['filename']) . '-' . $hash . '.' . $pathinfo['extension']
                     );
                 }
 

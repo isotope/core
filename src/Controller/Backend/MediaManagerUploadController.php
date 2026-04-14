@@ -62,10 +62,9 @@ class MediaManagerUploadController extends AbstractController
 
                 if (
                     is_file($this->projectDir.'/'.$uploadFolder.'/'.$strCacheName)
-                    && md5_file($_FILES[self::NAME]['tmp_name']) !== md5_file($this->projectDir.'/'.$uploadFolder.'/'.$strCacheName)
+                    && hash_file('xxh3', $this->projectDir.'/'.$uploadFolder.'/'.$strCacheName) !== ($hash = hash_file('xxh3', $_FILES[self::NAME]['tmp_name']))
                 ) {
-                    $strCacheName = StringUtil::standardize($pathinfo['filename']).'-'.substr(md5_file($_FILES[self::NAME]['tmp_name']), 0, 8).'.'.$pathinfo['extension'];
-                    $uploadFolder = MediaManager::TEMP_FOLDER.'/'.$strCacheName[0];
+                    $strCacheName = StringUtil::standardize($pathinfo['filename']).'-'.$hash.'.'.$pathinfo['extension'];
                 }
 
                 $this->filesystem->mkdir($uploadFolder);
