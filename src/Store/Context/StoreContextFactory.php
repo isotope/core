@@ -12,6 +12,7 @@ use Doctrine\DBAL\Connection;
 use Isotope\CoreBundle\Model\Address;
 use Isotope\CoreBundle\Model\Config;
 use Isotope\CoreBundle\Store\Address\AddressConfigFactory;
+use Isotope\CoreBundle\Store\CartManager;
 use Isotope\CoreBundle\Store\Event\ContextCreatedEvent;
 use Isotope\CoreBundle\Store\Price\Currency;
 use Isotope\CoreBundle\Store\Price\MoneyFormat;

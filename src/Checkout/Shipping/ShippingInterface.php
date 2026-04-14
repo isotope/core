@@ -4,13 +4,9 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Checkout\Shipping;
 
-use Isotope\CoreBundle\ProductCollection\Cart\Cart;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Price\PriceDefinition;
 use Isotope\CoreBundle\Twig\TemplateMarkup;
-use Isotope\Interfaces\IsotopeOrderableCollection;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Interface for an Isotope shipping method.

@@ -10,8 +10,6 @@ use Isotope\CoreBundle\Exception\UnexpectedValueException;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Twig\TemplateMarkup;
 use Isotope\Interfaces\IsotopeOrderableCollection;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 #[AsShipping]
 class GroupShipping extends AbstractShipping
@@ -102,7 +100,7 @@ class GroupShipping extends AbstractShipping
         return null;
     }
 
-    public function getPrice(IsotopeOrderableCollection $collection): float|null
+    public function getPrice(/*IsotopeOrderableCollection */ $collection): float|null
     {
         if ([] === $this->inner) {
             return null;
@@ -157,7 +155,7 @@ class GroupShipping extends AbstractShipping
     /**
      * @return array<ShippingInterface>
      */
-    private function getAvailable(IsotopeOrderableCollection $collection): array
+    private function getAvailable(/*IsotopeOrderableCollection */$collection): array
     {
         if (isset($this->cache[$collection->getId()])) {
             return $this->cache[$collection->getId()];

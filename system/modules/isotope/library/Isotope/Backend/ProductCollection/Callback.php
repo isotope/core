@@ -225,7 +225,7 @@ class Callback extends Backend
                 Controller::redirect($strRedirectUrl);
             }
 
-            Frontend::loadOrderEnvironment($objOrder);
+            //Frontend::loadOrderEnvironment($objOrder);
 
             if (($documentModel = Document::findByPk(Input::post('document'))) === null) {
                 Message::addError('Could not find document id.');

@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Checkout\Payment;
 
-use Contao\Module;
 use Isotope\CoreBundle\Store\Price\PriceDefinition;
 use Isotope\CoreBundle\Twig\TemplateMarkup;
-use Isotope\Interfaces\IsotopeOrderableCollection;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Interface for an Isotope payment method.
@@ -48,5 +45,5 @@ interface PaymentInterface
     /**
      * Process payment on checkout confirmation page.
      */
-    public function processPayment(IsotopeOrderableCollection $order, Module $objModule): bool|string;
+    public function processPayment(/*IsotopeOrderableCollection */$order, /*Module */$objModule): bool|string;
 }

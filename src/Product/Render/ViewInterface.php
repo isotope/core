@@ -26,6 +26,4 @@ interface ViewInterface
     public function useFallbackVariant(CoreProduct $product): bool;
 
     public function get(string $key): mixed;
-
-    public function toArray(CoreProduct $product): array;
 }

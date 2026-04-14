@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Widget;
 
-use Contao\Database;
 use Contao\File;
 use Contao\Image;
 use Contao\StringUtil;

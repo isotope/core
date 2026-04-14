@@ -93,6 +93,8 @@ class StoreManager
      */
     public function runWithCollection(ProductCollection $collection, \Closure $closure): mixed
     {
+        // TODO: remove this when unused
+
         $context = $this->contextFactory->create(
             $collection->store_id,
             Config::findById($collection->config_id),

@@ -8,17 +8,13 @@ use Isotope\CoreBundle\Model\ProductCollection;
 use Isotope\CoreBundle\ProductCollection\Cart\Cart;
 use Isotope\CoreBundle\ProductCollection\Cart\CartCalculator;
 use Isotope\CoreBundle\ProductCollection\Cart\CartFactory;
-use Isotope\CoreBundle\ProductCollection\Event\CartConvertedEvent;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItemCollection;
 use Isotope\CoreBundle\ProductCollection\ProductCollectionStorage;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Order\OrderConverter;
-use Psr\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Contracts\Service\ResetInterface;
 
-#[Autoconfigure(public: true)]
 class CartManager implements ResetInterface
 {
     /**
@@ -33,7 +29,9 @@ class CartManager implements ResetInterface
         private readonly CartFactory $cartFactory,
         private readonly ProductCollectionStorage $storage,
         private readonly CartCalculator $calculator,
-        private readonly OrderManager $orderManager, private readonly OrderConverter $orderConverter, private readonly ProductCollectionStorage $productCollectionStorage,
+        private readonly OrderManager $orderManager,
+        private readonly OrderConverter $orderConverter,
+        private readonly ProductCollectionStorage $productCollectionStorage,
     ) {
     }
 

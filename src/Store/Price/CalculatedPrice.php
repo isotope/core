@@ -7,6 +7,7 @@ namespace Isotope\CoreBundle\Store\Price;
 use Isotope\CoreBundle\Store\Tax\CalculatedTax;
 use Isotope\CoreBundle\Store\Tax\CalculatedTaxCollection;
 use Isotope\CoreBundle\Store\Tax\TaxRateCollection;
+use Isotope\CoreBundle\Util\FloatComparator;
 
 class CalculatedPrice
 {
@@ -17,12 +18,14 @@ class CalculatedPrice
     private BasePrice|null $basePrice = null;
 
     public function __construct(
-        private readonly float $unitPrice,
-        private readonly float $totalPrice,
-        private readonly CalculatedTaxCollection $calculatedTaxes,
-        private readonly TaxRateCollection $taxRates,
+        private float $unitPrice,
+        private float $totalPrice,
+        private readonly CalculatedTaxCollection $calculatedTaxes = new CalculatedTaxCollection(),
+        private readonly TaxRateCollection $taxRates = new TaxRateCollection(),
         private readonly int $quantity = 1,
     ) {
+        $this->unitPrice = FloatComparator::cast($unitPrice);
+        $this->totalPrice = FloatComparator::cast($totalPrice);
     }
 
     public function getUnitPrice(): float

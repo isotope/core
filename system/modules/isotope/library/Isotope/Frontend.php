@@ -27,37 +27,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class Frontend extends \Contao\Frontend
 {
     /**
-     * Initialize environment (language, objPage) for a given order
-     *
-     * @param string $strLanguage
-     */
-    public static function loadOrderEnvironment(Order $objOrder, $strLanguage = null)
-    {
-        global $objPage;
-
-        $strLanguage = $strLanguage ?: $objOrder->language;
-
-        // Load page configuration
-        if (
-            $objOrder->pageId > 0
-            && (null === $objPage || $objPage->id != $objOrder->pageId)
-            && ($objPage = PageModel::findWithDetails($objOrder->pageId))
-        ) {
-            $objPage = static::loadPageConfig($objPage);
-        }
-
-        // Set the current system to the language when the user placed the order.
-        // This will result in correct e-mails and payment description.
-        self::setLanguage($strLanguage);
-
-        Isotope::setConfig($objOrder->getRelated('config_id'));
-
-        if (($objCart = $objOrder->getRelated('source_collection_id')) !== null && $objCart instanceof Cart) {
-            Isotope::setCart($objCart);
-        }
-    }
-
-    /**
      * Load system configuration into page object
      *
      * @param Result|PageModel $objPage

@@ -166,6 +166,7 @@ class ProductListController extends AbstractContentElementController
             && 'article' === $request->query->get('do')
             && 'tl_content' === $request->query->get('table')
         ) {
+            // TODO: this won't work for nested elements
             $pageId = $this->connection->fetchOne('SELECT pid FROM tl_article WHERE id=?', [$request->query->getInt('id')]);
             $pageModel = PageModel::findWithDetails($pageId);
         }

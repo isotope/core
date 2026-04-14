@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Checkout\Payment;
 
-use Contao\Module;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsPayment;
 use Isotope\CoreBundle\Store\Context\StoreContext;
+use Isotope\CoreBundle\Store\Order\CreateOrderResult;
 use Isotope\CoreBundle\Twig\TemplateMarkup;
-use Isotope\Interfaces\IsotopeProductCollection;
-use Isotope\Interfaces\IsotopePurchasableCollection;
 
 #[AsPayment]
 class CashPayment extends AbstractPayment
@@ -37,11 +35,11 @@ class CashPayment extends AbstractPayment
 
 
 
-    public function processPayment(IsotopeProductCollection $order, Module $objModule): bool
+    public function processPayment(/*IsotopeProductCollection */$order, /*Module */$objModule): bool
     {
-        if (!$order instanceof IsotopePurchasableCollection) {
-            return false;
-        }
+        //if (!$order instanceof IsotopePurchasableCollection) {
+        //    return false;
+        //}
 
         $order->checkout();
         $order->updateOrderStatus($this->newOrderStatus);

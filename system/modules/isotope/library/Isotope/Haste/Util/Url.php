@@ -52,69 +52,6 @@ class Url
         return $strScript . $href;
     }
 
-    /**
-     * Remove query parameters from the current URL
-     *
-     * @param array           $arrParams
-     * @param string|int|null $varUrl
-     *
-     * @return string
-     */
-    public static function removeQueryString(array $arrParams, $varUrl=null)
-    {
-        $strUrl = static::prepareUrl($varUrl);
-
-        if (empty($arrParams)) {
-            return $strUrl;
-        }
-
-        list($strScript, $strQueryString) = explode('?', $strUrl, 2) + array('', '');
-
-        parse_str($strQueryString, $queries);
-
-        $queries = array_filter($queries);
-        $queries = array_diff_key($queries, array_flip($arrParams));
-
-        $href = '';
-
-        if (!empty($queries)) {
-            $href .= '?' . http_build_query($queries, '', '&');
-        }
-
-        return $strScript . $href;
-    }
-
-    /**
-     * Remove query parameters from the current URL using a callback method.
-     *
-     * @param callable        $callback
-     * @param string|int|null $varUrl
-     *
-     * @return string
-     */
-    public static function removeQueryStringCallback(callable $callback, $varUrl=null)
-    {
-        $strUrl = static::prepareUrl($varUrl);
-
-        list($strScript, $strQueryString) = explode('?', $strUrl, 2) + array('', '');
-
-        parse_str($strQueryString, $queries);
-
-        // Cannot use array_filter because flags ARRAY_FILTER_USE_BOTH is only supported in PHP 5.6
-        foreach ($queries as $k => $v) {
-            if (true !== call_user_func($callback, $v, $k)) {
-                unset($queries[$k]);
-            }
-        }
-
-        $href = '';
-
-        if (!empty($queries)) {
-            $href .= '?' . http_build_query($queries, '', '&');
-        }
-
-        return $strScript . $href;
-    }
 
     /**
      * Prepare URL from ID and keep query string from current string

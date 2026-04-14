@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Checkout;
 
 use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
-use Isotope\CoreBundle\Exception\UnexpectedValueException;
 use Isotope\CoreBundle\ModelType\AbstractModelType;
 use Isotope\CoreBundle\ModelType\ContainerAwareInterface;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\RuleBuilder\RuleMatcher;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Price\PriceDefinition;
-use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Interfaces\IsotopeProductCollection;
 
 abstract class AbstractCheckoutMethod extends AbstractModelType implements ContainerAwareInterface
@@ -206,18 +204,5 @@ abstract class AbstractCheckoutMethod extends AbstractModelType implements Conta
         }
 
         return true;
-    }
-
-    protected function calculatePrice(IsotopeProductCollection $collection): float|null
-    {
-        if (null === $this->price) {
-            return null;
-        }
-
-        if ($this->percentage) {
-            return $collection->getSubtotal() / 100 * $this->price;
-        }
-
-        return $this->price;
     }
 }
