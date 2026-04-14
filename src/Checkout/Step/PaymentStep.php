@@ -83,7 +83,7 @@ class PaymentStep implements CheckoutStepInterface
                 'value' => $payment->getId(),
                 'label' => $payment->getLabel(),
                 'note' => $payment->getNote(),
-                //'configurable' => $payment instanceof ConfigurableShippingInterface,
+                'configurable' => false, //$payment instanceof ConfigurableShippingInterface,
             ];
         }
 
@@ -121,14 +121,14 @@ class PaymentStep implements CheckoutStepInterface
      */
     private function getPaymentMethods(array $ids, StoreContext $context): array
     {
-        $payment = $this->paymentRegistry->get(Payment::findMultipleByIds($ids), $context);
+        $payments = $this->paymentRegistry->get(Payment::findMultipleByIds($ids), $context, true);
 
-        if (!$payment) {
+        if (!$payments) {
             return [];
         }
 
         return array_filter(
-            $payment,
+            $payments,
             static fn (PaymentInterface $payment) => $payment->isAvailable($context),
         );
     }

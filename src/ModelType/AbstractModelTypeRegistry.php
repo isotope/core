@@ -45,15 +45,23 @@ class AbstractModelTypeRegistry
      *
      * @return ($modelOrCollection is array|Collection<TModel> ? array<TType> : ($modelOrCollection is null ? null : TType) )
      */
-    public function get(Collection|Model|array|null $modelOrCollection, StoreContext $context): array|object|null
+    public function get(Collection|Model|array|null $modelOrCollection, StoreContext $context, bool $skipMissing = false): array|object|null
     {
-        return match (true) {
-            null === $modelOrCollection => null,
-            $modelOrCollection instanceof Collection => array_map(fn (Model $model) => $this->get($model, $context), $modelOrCollection->getModels()),
-            \is_array($modelOrCollection) => array_map(fn (Model $model) => $this->get($model, $context), $modelOrCollection),
-            empty($modelOrCollection->type) => null,
-            default => $this->create($modelOrCollection, $context),
-        };
+        try {
+            return match (true) {
+                null === $modelOrCollection => null,
+                $modelOrCollection instanceof Collection => array_filter(array_map(fn (Model $model) => $this->get($model, $context, $skipMissing), $modelOrCollection->getModels())),
+                \is_array($modelOrCollection) => array_filter(array_map(fn (Model $model) => $this->get($model, $context, $skipMissing), $modelOrCollection)),
+                empty($modelOrCollection->type) => null,
+                default => $this->create($modelOrCollection, $context),
+            };
+        } catch (FactoryNotFoundException $e) {
+            if ($skipMissing) {
+                return null;
+            }
+
+            throw $e;
+        }
     }
 
     /**

@@ -85,7 +85,7 @@ class ShippingStep implements CheckoutStepInterface
                 'value' => $shipping->getId(),
                 'label' => $shipping->getLabel(),
                 'note' => $shipping->getNote(),
-                'configurable' => $shipping instanceof ConfigurableShippingInterface,
+                'configurable' => false, //$shipping instanceof ConfigurableShippingInterface,
             ];
         }
 
@@ -124,7 +124,7 @@ class ShippingStep implements CheckoutStepInterface
     private function getShippingMethods(array $ids, StoreContext $context): array
     {
         /** @var list<ShippingInterface> $shippings */
-        $shippings = $this->shippingRegistry->get(Shipping::findMultipleByIds($ids), $context);
+        $shippings = $this->shippingRegistry->get(Shipping::findMultipleByIds($ids), $context, true);
 
         if (!$shippings) {
             return [];
