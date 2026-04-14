@@ -309,7 +309,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['iso_category_scope'] = [
     'inputType' => 'radio',
     'default' => 'current_category',
     'enum' => CategoryScope::class,
-    'reference' => &$GLOBALS['TL_LANG']['tl_content']['iso_category_scope_ref'],
     'explanation' => 'iso_category_scope',
     'eval' => ['tl_class' => 'clr w50', 'helpwizard' => true],
 ];

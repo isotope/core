@@ -239,6 +239,42 @@
       <trans-unit id="tl_content.iso_category_scope.1">
         <source>Specify the scope of a product lister.</source>
       </trans-unit>
+      <trans-unit id="tl_content.iso_category_scope.global.0">
+        <source>All Categories</source>
+      </trans-unit>
+      <trans-unit id="tl_content.iso_category_scope.global.1">
+        <source>Show all products that are assigned to a page of the active page tree (based on the root page).</source>
+      </trans-unit>
+      <trans-unit id="tl_content.iso_category_scope.current_and_first_child.0">
+        <source>Current Category and First Child Category</source>
+      </trans-unit>
+      <trans-unit id="tl_content.iso_category_scope.current_and_first_child.1">
+        <source>Show all products that are assigned to the active page or child pages on the first sublevel.</source>
+      </trans-unit>
+      <trans-unit id="tl_content.iso_category_scope.current_and_all_children.0">
+        <source>Current Category and All Child Categories</source>
+      </trans-unit>
+      <trans-unit id="tl_content.iso_category_scope.current_and_all_children.1">
+        <source>Show all products that are assigned to the active page or any child page of it.</source>
+      </trans-unit>
+      <trans-unit id="tl_content.iso_category_scope.current_category.0">
+        <source>Current Category</source>
+      </trans-unit>
+      <trans-unit id="tl_content.iso_category_scope.current_category.1">
+        <source>Show all products that are assigned to the active page (default).</source>
+      </trans-unit>
+      <trans-unit id="tl_content.iso_category_scope.parent.0">
+        <source>Parent Category</source>
+      </trans-unit>
+      <trans-unit id="tl_content.iso_category_scope.parent.1">
+        <source>Show all products that are assigned to the parent page of the active page.</source>
+      </trans-unit>
+      <trans-unit id="tl_content.iso_category_scope.product.0">
+        <source>Current Product's Categories</source>
+      </trans-unit>
+      <trans-unit id="tl_content.iso_category_scope.product.1">
+        <source>Show all products that are assigned to the same pages the currently active product is assigned to.</source>
+      </trans-unit>
       <trans-unit id="tl_content.iso_filterQuery.0">
         <source>Filter Query</source>
       </trans-unit>
@@ -352,42 +388,6 @@
       </trans-unit>
       <trans-unit id="tl_content.iso_checkout_method_ref.both">
         <source>Both allowed</source>
-      </trans-unit>
-      <trans-unit id="tl_content.iso_category_scope_ref.global.0">
-        <source>All Categories</source>
-      </trans-unit>
-      <trans-unit id="tl_content.iso_category_scope_ref.global.1">
-        <source>Show all products that are assigned to a page of the active page tree (based on the root page).</source>
-      </trans-unit>
-      <trans-unit id="tl_content.iso_category_scope_ref.current_and_first_child.0">
-        <source>Current Category and First Child Category</source>
-      </trans-unit>
-      <trans-unit id="tl_content.iso_category_scope_ref.current_and_first_child.1">
-        <source>Show all products that are assigned to the active page or child pages on the first sublevel.</source>
-      </trans-unit>
-      <trans-unit id="tl_content.iso_category_scope_ref.current_and_all_children.0">
-        <source>Current Category and All Child Categories</source>
-      </trans-unit>
-      <trans-unit id="tl_content.iso_category_scope_ref.current_and_all_children.1">
-        <source>Show all products that are assigned to the active page or any child page of it.</source>
-      </trans-unit>
-      <trans-unit id="tl_content.iso_category_scope_ref.current_category.0">
-        <source>Current Category</source>
-      </trans-unit>
-      <trans-unit id="tl_content.iso_category_scope_ref.current_category.1">
-        <source>Show all products that are assigned to the active page (default).</source>
-      </trans-unit>
-      <trans-unit id="tl_content.iso_category_scope_ref.parent.0">
-        <source>Parent Category</source>
-      </trans-unit>
-      <trans-unit id="tl_content.iso_category_scope_ref.parent.1">
-        <source>Show all products that are assigned to the parent page of the active page.</source>
-      </trans-unit>
-      <trans-unit id="tl_content.iso_category_scope_ref.product.0">
-        <source>Current Product's Categories</source>
-      </trans-unit>
-      <trans-unit id="tl_content.iso_category_scope_ref.product.1">
-        <source>Show all products that are assigned to the same pages the currently active product is assigned to.</source>
       </trans-unit>
       <trans-unit id="tl_content.sortingDirection.ASC">
         <source>ASC</source>

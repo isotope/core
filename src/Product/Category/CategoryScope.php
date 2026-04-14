@@ -18,6 +18,6 @@ enum CategoryScope: string implements TranslatableLabelInterface
 
     public function label(): TranslatableMessage
     {
-        return new TranslatableMessage('tl_content.iso_category_scope_ref.'.$this->value, [], 'contao_tl_content');
+        return new TranslatableMessage('tl_content.iso_category_scope.'.$this->value.'.0', [], 'contao_tl_content');
     }
 }
