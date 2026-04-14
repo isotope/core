@@ -29,9 +29,13 @@ class CollectionItemMigration extends AbstractMigration
 
         return !$table->hasColumn('identifier')
             && !$table->hasColumn('level')
+            && !$table->hasColumn('label')
+            && !$table->hasColumn('referencePage')
             && !$table->hasColumn('unit_label')
             && $table->hasColumn('type')
-            && $table->hasColumn('product_id');
+            && $table->hasColumn('product_id')
+            && $table->hasColumn('name')
+            && $table->hasColumn('jumpTo');
     }
 
     public function run(): MigrationResult
@@ -43,7 +47,8 @@ class CollectionItemMigration extends AbstractMigration
                 ADD COLUMN `identifier` varchar(64) NOT NULL,
                 ADD COLUMN `level` tinyint unsigned NOT NULL default 0,
                 ADD COLUMN `unit_label` varchar(128) NULL,
-                CHANGE COLUMN `name` `label` varchar(255) NOT NULL default ''
+                CHANGE COLUMN `name` `label` varchar(255) NOT NULL default '',
+                CHANGE COLUMN `jumpTo` `referencePage` int(0) unsigned NOT NULL default 0
         SQL);
 
         $this->connection->executeStatement("UPDATE tl_iso_product_collection_item SET type='product', identifier=CONCAT('tl_iso_product.', product_id)");

@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\ProductCollection\LineItem;
 
+use Contao\PageModel;
+use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\Product;
+use Isotope\CoreBundle\Routing\ProductReference;
 use Isotope\CoreBundle\Store\Price\CalculatedPrice;
 use Isotope\CoreBundle\Store\Weight\Weight;
 use Symfony\Contracts\Translation\TranslatableInterface;
@@ -20,6 +23,8 @@ class LineItem
     private int $id = 0;
 
     private array|null $configuration = null;
+
+    private PageModel|int|null $referencePage = null;
 
     private int $level = 0;
 
@@ -158,6 +163,32 @@ class LineItem
         $this->quantity = $quantity;
 
         return $this;
+    }
+
+    public function getReferencePage(): PageModel|int|null
+    {
+        return $this->referencePage;
+    }
+
+    public function getReferencePageId(): int|null
+    {
+        return $this->referencePage instanceof PageModel ? (int) $this->referencePage->id : $this->referencePage;
+    }
+
+    public function setReferencePage(PageModel|int|null $referencePage): self
+    {
+        $this->referencePage = $referencePage;
+
+        return $this;
+    }
+
+    public function getProductReference(): ProductReference|null
+    {
+        if (!$this->product instanceof CoreProduct) {
+            return null;
+        }
+
+        return new ProductReference($this->product, $this->referencePage);
     }
 
     public function getLevel(): int

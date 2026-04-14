@@ -29,14 +29,17 @@ class ProductItemResolver implements ContentUrlResolverInterface
     {
         $id = null;
         $product = null;
+        $referencePage = null;
 
         if ($content instanceof LineItem) {
             $id = $content->getId();
+            $referencePage = $content->getReferencePage();
             $product = $content->getProduct();
         }
 
         if ($content instanceof ProductCollectionItem) {
             $id = $content->id;
+            $referencePage = $content->referencePage;
             $product = $this->productBuilder->buildOne(
                 new ProductDto($content->identifier),
                 $this->storeManager->getCurrentContext(),
@@ -47,8 +50,10 @@ class ProductItemResolver implements ContentUrlResolverInterface
             return null;
         }
 
+        $content = new ProductReference($product, $referencePage ?: null);
+
         return ContentUrlResult::url($this->urlGenerator->generate(
-            $product,
+            $content,
             $id ? ['collection_item' => $id] : [],
             UrlGeneratorInterface::ABSOLUTE_URL,
         ));

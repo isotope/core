@@ -34,7 +34,7 @@ use Isotope\Model\ProductCollectionDownload;
  * @property float  $price
  * @property float  $tax_free_price
  * @property string $tax_id
- * @property int    $jumpTo
+ * @property int    $referencePage
  *
  * @property string|null $unit_label
 */

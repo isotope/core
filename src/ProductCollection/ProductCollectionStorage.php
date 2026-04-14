@@ -127,6 +127,7 @@ class ProductCollectionStorage
             $item->setId($itemModel->id);
             $item->setSku($itemModel->sku);
             $item->setLabel($itemModel->label);
+            $item->setReferencePage($itemModel->referencePage ?: null);
             $item->setLevel((int) $itemModel->level);
             $item->setPrice(new CalculatedPrice((float) $itemModel->price, $itemModel->price * $itemModel->quantity, new CalculatedTaxCollection(), new TaxRateCollection()));
 
@@ -166,6 +167,7 @@ class ProductCollectionStorage
             $itemModel->quantity = $lineItem->getQuantity();
             $itemModel->label = $lineItem->getLabel();
             $itemModel->sku = $lineItem->getSku();
+            $itemModel->referencePage = $lineItem->getReferencePageId();
 
             if ($product = $lineItem->getProduct()) {
                 //$itemModel->product_id = $product->getId();

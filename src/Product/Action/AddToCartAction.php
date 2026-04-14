@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Product\Action;
 
 use Contao\CoreBundle\Routing\ContentUrlGenerator;
+use Contao\CoreBundle\Routing\PageFinder;
 use Contao\Input;
 use Contao\PageModel;
 use Isotope\CoreBundle\HttpFoundation\ActionResult;
@@ -26,6 +27,7 @@ class AddToCartAction implements ProductActionInterface
         private readonly StoreManager $storeManager,
         private readonly CartManager $cartManager,
         private readonly RequestStack $requestStack,
+        private readonly PageFinder $pageFinder,
         private readonly ContentUrlGenerator $urlGenerator,
         private readonly UriSigner $uriSigner,
         private readonly Environment $twig,
@@ -94,6 +96,7 @@ class AddToCartAction implements ProductActionInterface
         $item->setProduct($product);
         $item->setSku($product->getSku());
         $item->setLabel($product->getName());
+        $item->setReferencePage($this->pageFinder->getCurrentPage());
 
         $this->cartManager->add($context->getCart(), $item, $context);
 

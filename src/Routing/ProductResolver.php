@@ -6,21 +6,20 @@ namespace Isotope\CoreBundle\Routing;
 
 use Contao\CoreBundle\Routing\Content\ContentUrlResolverInterface;
 use Contao\CoreBundle\Routing\Content\ContentUrlResult;
+use Contao\CoreBundle\Routing\PageFinder;
 use Contao\PageModel;
 use Isotope\CoreBundle\Model\Product;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\DataCollector\ProductDto;
 use Isotope\CoreBundle\Product\ProductBuilder;
-use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
 use Isotope\CoreBundle\Store\StoreManager;
 use Isotope\CoreBundle\Util\ProductCategoryUtil;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 class ProductResolver implements ContentUrlResolverInterface
 {
     public function __construct(
         private readonly ProductCategoryUtil $productCategoryUtil,
-        private readonly RequestStack $requestStack,
+        private readonly PageFinder $pageFinder,
         private readonly ProductBuilder $productBuilder,
         private readonly StoreManager $storeManager,
     ) {
@@ -45,15 +44,9 @@ class ProductResolver implements ContentUrlResolverInterface
             }
         }
 
-        $request = $this->requestStack->getCurrentRequest();
-
-        if (!$request) {
-            return null;
-        }
-
         if (
             (!$content instanceof ProductReference || !$content->linkToPrimary)
-            && ($currentPage = $request->attributes->get('pageModel')) instanceof PageModel
+            && ($currentPage = $this->pageFinder->getCurrentPage())
             && self::canLinkToPage($currentPage)
         ) {
             return ContentUrlResult::resolve($currentPage);

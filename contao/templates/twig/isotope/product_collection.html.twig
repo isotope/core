@@ -1,6 +1,8 @@
 {% trans_default_domain 'contao_default' %}
 
 {% block product_collection %}
+    {% set href = null %}
+
     {% if block('product_collection_actions') is defined or block('product_collection_item_actions') is defined %}
         <form id="{{ fragment_id }}" method="post" data-action="isotope--collection#formAction" data-isotope--collection-target="form">
             <input type="hidden" name="FORM_SUBMIT" value="{{ fragment_id }}">
@@ -35,15 +37,15 @@
                         {% for level,items in collection.lineItems.byLevel %}
                             {% for item in items %}
                                 {% block product_collection_item %}
+                                    {% set href = item.productReference ? content_url(item.productReference) : null %}
                                     <tr>
-                                        {% if data.iso_gallery|default %}
+                                        {% if data.iso_gallery|default and item.product %}
                                             <td class="image">
-                                                {{ isotope_gallery(item.product, 'images', data.iso_gallery, content_url(item, item.configuration)) }}
+                                                {{ isotope_gallery(item.product, 'images', data.iso_gallery, href) }}
                                             </td>
                                         {% endif %}
-                                        <td class="name">
+                                        <td class="name"{% if data.iso_gallery|default and not item.product %} colspan="2"{% endif %}>
                                             {% block item_name %}
-                                                {% set href = content_url(item) %}
                                                 {% if href %}
                                                     <a href="{{ href }}">{{ item.label }}</a>
                                                 {% else %}

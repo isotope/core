@@ -60,7 +60,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_item'] = [
             // Not the ID of a tax class or rate, this is the CSV list of applicable taxes (incremental numeric)
             'sql' => "varchar(32) NOT NULL default ''",
         ],
-        'jumpTo' => [
+        'referencePage' => [
             'foreignKey' => 'tl_page.title',
             'sql' => "int(10) unsigned NOT NULL default '0'",
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
