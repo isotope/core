@@ -49,7 +49,7 @@ class ProductFilterController extends AbstractContentElementController
         $filterKey = $model->iso_filterKey ?: '';
         $productQuery = $this->getProductQuery($request);
 
-        if ([] !== ($filterFields = array_filter(explode(',', $model->iso_filterFields)))) {
+        if ($filterFields = StringUtil::csv($model->iso_filterFields)) {
             $template->filterWidgets = $this->getFilterWidgets(
                 $filterFields,
                 $this->getCurrentFilterValues($productQuery, $filterKey, $filterFields),
@@ -57,7 +57,7 @@ class ProductFilterController extends AbstractContentElementController
             );
         }
 
-        if ([] !== ($sortingFields = array_filter(explode(',', $model->iso_sortingFields)))) {
+        if ($sortingFields = StringUtil::csv($model->iso_sortingFields)) {
             $template->sortingOptions = $this->getSortingOptions(
                 $sortingFields,
                 $this->getCurrentSortingValue($productQuery, $filterKey, $sortingFields),
@@ -166,7 +166,7 @@ class ProductFilterController extends AbstractContentElementController
     private function getLimitOptions(string $perPage, ProductQuery|null $productQuery, string $key): array
     {
         $options = [];
-        $limits = array_unique(StringUtil::csv($perPage, intval(...), []));
+        $limits = array_unique(StringUtil::csv($perPage, intval(...), true));
         sort($limits);
 
         $current = $productQuery?->getLimit([$key]);

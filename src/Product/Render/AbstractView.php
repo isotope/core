@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Product\Render;
 
-use Contao\StringUtil;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Routing\ProductReference;
+use Isotope\CoreBundle\Util\StringUtil;
 
 abstract class AbstractView implements ViewInterface
 {
@@ -30,7 +30,7 @@ abstract class AbstractView implements ViewInterface
 
     public function getActions(CoreProduct $product): array
     {
-        return array_filter(explode(',', $this->get('iso_buttons')));
+        return StringUtil::csv($this->get('iso_buttons'), forceArray: true);
     }
 
     public function useQuantity(CoreProduct $product): bool
