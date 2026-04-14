@@ -41,7 +41,7 @@ class IsotopeExtension extends AbstractExtension
         return [
             new TwigFunction('isotope_product', [ProductRuntime::class, 'generateProduct'], ['is_safe' => ['html']]),
             new TwigFunction('isotope_price', [ProductRuntime::class, 'generatePrice'], ['is_safe' => ['html']]),
-            new TwigFunction('isotope_baseprice', [ProductRuntime::class, 'generateBasePrice'], ['needs_context' => true]),
+            new TwigFunction('isotope_baseprice', [ProductRuntime::class, 'generateBasePrice'], ['is_safe' => ['html']]),
             new TwigFunction('isotope_product_action', [ActionRuntime::class, 'renderProductAction'], ['is_safe' => ['html']]),
             new TwigFunction('isotope_product_collection_action', [ActionRuntime::class, 'renderProductCollectionAction'], ['needs_context' => true, 'is_safe' => ['html']]),
             new TwigFunction('isotope_product_collection_item_action', [ActionRuntime::class, 'renderProductCollectionItemAction'], ['needs_context' => true, 'is_safe' => ['html']]),

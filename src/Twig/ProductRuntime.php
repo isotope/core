@@ -55,21 +55,35 @@ class ProductRuntime implements RuntimeExtensionInterface
         return $this->priceFormatter->toHtml($price, $context, $key);
     }
 
-    public function generateBasePrice(array $context): string
+    /**
+     * TODO: this should probably use a template for base price (and return a TemplateMarkup)
+     */
+    public function generateBasePrice(CalculatedPrice|LineItem|Product|null $productOrItem = null, string|null $key = null, bool $html = true): string
     {
-        $product = $context['product'] ?? null;
+        $productPrice = $productOrItem instanceof CalculatedPrice ? $productOrItem : null;
 
-        if (!$product instanceof CoreProduct) {
+        if ($productOrItem instanceof CoreProduct || $productOrItem instanceof LineItem) {
+            $productPrice = $productOrItem->getPrice();
+        }
+
+        if (!$productPrice instanceof CalculatedPrice || !($basePrice = $productPrice->getBasePrice())) {
             return '';
         }
 
-        $price = $product->getPrice();
-        $basePrice = $price?->getBasePrice();
+        $context = $this->storeManager->getCurrentContext();
+        $amount = $productPrice->getUnitPrice() / $basePrice->getProductAmount() * $basePrice->getBaseAmount();
+        $price = new CalculatedPrice($amount, $amount);
 
-        if (!$price || !$basePrice) {
-            return '';
+        if ($html) {
+            $priceString = (string) $this->priceFormatter->toHtml($productPrice, $context, $key);
+        } else {
+            $priceString = (string) $this->priceFormatter->toText($price, $context, $key);
         }
 
-        return \sprintf($basePrice->getLabel(), Isotope::formatPriceWithCurrency($price->getUnitPrice() / $basePrice->getProductAmount() * $basePrice->getBaseAmount()), $basePrice->getProductAmount());
+        return \sprintf(
+            $basePrice->getLabel(),
+            $priceString,
+            $basePrice->getProductAmount()
+        );
     }
 }

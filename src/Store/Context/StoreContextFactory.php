@@ -9,11 +9,9 @@ use Contao\MemberModel;
 use Contao\StringUtil;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
-use Isotope\CoreBundle\Exception\RuntimeException;
 use Isotope\CoreBundle\Model\Address;
 use Isotope\CoreBundle\Model\Config;
 use Isotope\CoreBundle\Store\Address\AddressConfigFactory;
-use Isotope\CoreBundle\Store\CartManager;
 use Isotope\CoreBundle\Store\Event\ContextCreatedEvent;
 use Isotope\CoreBundle\Store\Price\Currency;
 use Isotope\CoreBundle\Store\Price\MoneyFormat;
@@ -80,7 +78,12 @@ class StoreContextFactory
 
     public function createBackend(): StoreContext
     {
-        return $this->create(0, new Config(), $GLOBALS['TL_LANGUAGE'], '__backend__', null);
+        $config = new Config();
+        $config->currency = '';
+        $config->priceDisplay = PriceDisplay::Gross->value;
+        $config->taxCalculation = TaxCalculation::Vertical->value;
+
+        return $this->create(0, $config, $GLOBALS['TL_LANGUAGE'], '__backend__', null);
     }
 
     private function getCurrency(Config $config): Currency
@@ -96,8 +99,9 @@ class StoreContextFactory
 
     private function getMoneyFormat(Config $config): MoneyFormat
     {
+        // TODO: ISO_NUM?
         if (!isset($GLOBALS['ISO_NUM'][$config->currencyFormat])) {
-            throw new RuntimeException(\sprintf('Unknown currency format "%s" in shop config ID %s', $config->currencyFormat, $config->id));
+            return new MoneyFormat();
         }
 
         $format = $GLOBALS['ISO_NUM'][$config->currencyFormat];

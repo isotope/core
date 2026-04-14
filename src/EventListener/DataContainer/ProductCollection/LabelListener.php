@@ -11,9 +11,11 @@ use Isotope\CoreBundle\Model\Config;
 use Isotope\CoreBundle\Store\Address\AddressConfig;
 use Isotope\CoreBundle\Store\Address\AddressConfigFactory;
 use Isotope\CoreBundle\Store\Address\AddressFormatter;
+use Isotope\CoreBundle\Store\Context\StoreContextFactory;
 use Isotope\CoreBundle\Store\Order\WorkflowManager;
+use Isotope\CoreBundle\Store\Price\CalculatedPrice;
+use Isotope\CoreBundle\Store\Price\PriceFormatter;
 use Isotope\CoreBundle\Util\ColorUtil;
-use Isotope\Isotope;
 use Symfony\Component\Workflow\Workflow;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -21,6 +23,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class LabelListener
 {
     public function __construct(
+        private readonly StoreContextFactory $storeContextFactory,
+        private readonly PriceFormatter $priceFormatter,
         private readonly AddressFormatter $addressFormatter,
         private readonly AddressConfigFactory $addressConfigFactory,
         private readonly WorkflowManager $workflowManager,
@@ -42,8 +46,9 @@ class LabelListener
                     break;
 
                 case 'total':
-                    // TODO: format the price
-                    $args[$i] = Isotope::formatPriceWithCurrency($row['total']);
+                    $context = $this->storeContextFactory->create($row['store_id'], Config::findById($row['config_id']), $row['language'], $row['uniqid'], $row['member']);
+
+                    $args[$i] = $this->priceFormatter->toHtml(new CalculatedPrice((float) $row['total'], (float) $row['total']), $context);
                     break;
 
                 case 'order_status':
