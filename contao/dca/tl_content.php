@@ -150,7 +150,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['iso_checkout_method'] = [
     'inputType' => 'radio',
     'default' => 'member',
     'enum' => CheckoutMethod::class,
-    'reference' => &$GLOBALS['TL_LANG']['tl_content']['iso_checkout_method_ref'],
     'eval' => ['mandatory' => true, 'submitOnChange' => true],
 ];
 

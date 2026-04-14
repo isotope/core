@@ -80,6 +80,15 @@
       <trans-unit id="tl_content.iso_checkout_method.1">
         <source>Choose your checkout method.</source>
       </trans-unit>
+      <trans-unit id="tl_content.iso_checkout_method.member">
+        <source>Login/Registration required</source>
+      </trans-unit>
+      <trans-unit id="tl_content.iso_checkout_method.guest">
+        <source>Guest checkout only</source>
+      </trans-unit>
+      <trans-unit id="tl_content.iso_checkout_method.both">
+        <source>Both allowed</source>
+      </trans-unit>
       <trans-unit id="tl_content.iso_loginRequired.0">
         <source>Require login</source>
       </trans-unit>
@@ -380,14 +389,8 @@
       <trans-unit id="tl_content.iso_order_conditions_legend">
         <source>Order conditions form</source>
       </trans-unit>
-      <trans-unit id="tl_content.iso_checkout_method_ref.member">
-        <source>Login/Registration required</source>
-      </trans-unit>
-      <trans-unit id="tl_content.iso_checkout_method_ref.guest">
-        <source>Guest checkout only</source>
-      </trans-unit>
-      <trans-unit id="tl_content.iso_checkout_method_ref.both">
-        <source>Both allowed</source>
+      <trans-unit id="tl_content.reference_legend">
+        <source>Reference page</source>
       </trans-unit>
       <trans-unit id="tl_content.sortingDirection.ASC">
         <source>ASC</source>
