@@ -32,7 +32,6 @@ class StoreContextFactory
         private readonly ContaoFramework $framework,
         private readonly Connection $connection,
         private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly CartManager $cartManager,
         private readonly AddressConfigFactory $addressConfigFactory,
     ) {
     }
@@ -54,7 +53,6 @@ class StoreContextFactory
             $storeId,
             (int) $config->id,
             $memberId,
-            $this->cartManager->getCart(...),
             memberGroups: $this->getMemberGroups($memberId),
             locale: $locale,
             moneyFormat: fn () => $this->getMoneyFormat($config),

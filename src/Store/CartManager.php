@@ -41,31 +41,13 @@ class CartManager implements ResetInterface
         $this->cart[$context->getIdentifier()] = $cart;
     }
 
-    public function hasCart(string $token): bool
+    public function getCart(StoreContext $context): Cart
     {
-        return isset($this->cart[$token]);
-    }
-
-    public function createNew(StoreContext $context): Cart
-    {
-        $cart = $this->cartFactory->create($context);
-
-        return $this->cart[$context->getIdentifier()] = $cart;
-    }
-
-    public function getCart(StoreContext $context, bool $caching = true): Cart
-    {
-        if ($caching && $this->hasCart($context->getIdentifier())) {
-            return $this->cart[$context->getIdentifier()];
-        }
-
         $cart = $this->cartFactory->load($context);
 
         if (!$cart) {
             $cart = $this->cartFactory->create($context);
         }
-
-        $this->cart[$context->getIdentifier()] = $cart;
 
         return $this->recalculate($cart, $context);
     }
@@ -116,7 +98,7 @@ class CartManager implements ResetInterface
 
     public function recalculate(Cart $original, StoreContext $context): Cart
     {
-        $cart = $this->calculator->calculate($original, $context, $this->setCart(...));
+        $cart = $this->calculator->calculate($original, $context);
 
         if ($original->isModified()) {
             $cart->setModified();
@@ -126,7 +108,7 @@ class CartManager implements ResetInterface
             $this->storage->save($cart, $context);
         }
 
-        return $this->cart[$context->getIdentifier()] = $cart;
+        return $cart;
     }
 
     public function deleteCart(StoreContext $context): void

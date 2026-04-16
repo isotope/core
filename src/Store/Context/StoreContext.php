@@ -42,6 +42,8 @@ final class StoreContext
      */
     private array $paymentIds = [];
 
+    private Cart|null $cart = null;
+
     /**
      * @internal use the StoreContextFactory to create a new instance
      */
@@ -50,7 +52,6 @@ final class StoreContext
         private readonly int $storeId,
         private int $configId,
         private int|null $memberId,
-        private readonly \Closure $cartGetter,
         private \Closure|array $memberGroups,
         private readonly string $locale,
         private \Closure|MoneyFormat $moneyFormat,
@@ -267,10 +268,15 @@ final class StoreContext
         return $this;
     }
 
-    public function getCart(): Cart
+    public function getCart(): Cart|null
     {
-        $getter = $this->cartGetter;
+        return $this->cart;
+    }
 
-        return $getter($this);
+    public function setCart(Cart|null $cart): self
+    {
+        $this->cart = $cart;
+
+        return $this;
     }
 }

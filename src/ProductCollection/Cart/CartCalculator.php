@@ -26,7 +26,7 @@ class CartCalculator
     ) {
     }
 
-    public function calculate(Cart $cart, StoreContext $context, \Closure|null $setter = null): Cart
+    public function calculate(Cart $cart, StoreContext $context): Cart
     {
         $originalHash = $this->hash($cart);
 
@@ -48,9 +48,7 @@ class CartCalculator
             $originalHash = $calculatedHash;
             $cart = $toCalculate;
 
-            if ($setter) {
-                $setter($cart, $context);
-            }
+            $context->setCart($cart);
         }
 
         return $toCalculate;

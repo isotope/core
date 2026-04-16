@@ -10,6 +10,7 @@ use Contao\FrontendUser;
 use Isotope\CoreBundle\Model\ConfigModel;
 use Isotope\CoreBundle\Model\ProductCollectionModel;
 use Isotope\CoreBundle\ProductCollection\LockableCollectionInterface;
+use Isotope\CoreBundle\Store\CartManager;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Context\StoreContextException;
 use Isotope\CoreBundle\Store\Context\StoreContextFactory;
@@ -34,6 +35,7 @@ class StoreManager
         private readonly PageFinder $pageFinder,
         private readonly Security $security,
         private readonly StoreContextFactory $contextFactory,
+        private readonly CartManager $cartManager,
     ) {
     }
 
@@ -141,13 +143,15 @@ class StoreManager
             throw StoreContextException::noConfig();
         }
 
-        return $this->contextFactory->create(
+        $context = $this->contextFactory->create(
             (int) $rootPage->iso_store_id,
             $config,
             $request->getLocale(),
             $guestCartId ?? StringUtil::generateRandomId(),
             $memberId,
         );
+
+        return $context->setCart($this->cartManager->getCart($context));
     }
 
     private function getMemberId(): int|null
