@@ -1,5 +1,6 @@
 <?php
 
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Types\Types;
 
 $GLOBALS['TL_DCA']['tl_iso_product_collection_item'] = [
@@ -24,6 +25,9 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_item'] = [
             'relation' => ['type' => 'belongsTo', 'load' => 'lazy'],
         ],
         'tstamp' => [
+            'sql' => "int(10) unsigned NOT NULL default '0'",
+        ],
+        'sorting' => [
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
         'type' => [
@@ -55,6 +59,9 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_item'] = [
         ],
         'tax_free_price' => [
             'sql' => 'decimal(12,2) NOT NULL default 0.00',
+        ],
+        'price_data' => [
+            'sql' => ['type' => Types::BLOB, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_MEDIUMBLOB, 'notnull' => false],
         ],
         'tax_id' => [
             // Not the ID of a tax class or rate, this is the CSV list of applicable taxes (incremental numeric)

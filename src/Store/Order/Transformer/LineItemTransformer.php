@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Store\Order\Transformer;
 
+use Isotope\CoreBundle\ProductCollection\Cart\Cart;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
-use Isotope\CoreBundle\ProductCollection\LineItem\LineItemCollection;
+use Isotope\CoreBundle\Store\Price\CalculatedPrice;
 
 /**
  * @internal
@@ -15,15 +16,29 @@ class LineItemTransformer
     /**
      * @return array<string, array<string, mixed>>
      */
-    public static function transformCollection(LineItemCollection $lineItems, ?string $parentId = null): array
+    public static function transformCart(Cart $cart, ?string $parentId = null): array
     {
         $output = [];
         $position = 1;
 
-        foreach ($lineItems as $lineItem) {
-            $output = array_replace($output, self::transform($lineItem, $parentId, $position));
-            ++$position;
+        foreach ($cart->getLineItems()->byLevel() as $level => $lineItems) {
+            foreach ($lineItems as $lineItem) {
+                $output = [...$output, ...self::transform($lineItem, $parentId, $position)];
+            }
+
+            $output[] = self::transformSubtotal($level, $cart->getSubtotal($level), $position);
         }
+
+        $output[] = [
+            'type' => LineItem::TYPE_TOTAL,
+            'sorting' => $position,
+            'identifier' => LineItem::TYPE_TOTAL,
+            'quantity' => 1,
+            'price' => $cart->getTotal()?->getTotalPrice() ?? 0.0,
+            'tax_free_price' => 0,
+            'price_data' => $cart->getTotal()?->jsonSerialize(),
+            'tax_id' => '',
+        ];
 
         return $output;
     }
@@ -33,7 +48,7 @@ class LineItemTransformer
      *
      * @return array<string, array<string, mixed>>
      */
-    public static function transform(LineItem $lineItem, ?string $parentId = null, int $sorting = 1): array
+    public static function transform(LineItem $lineItem, ?string $parentId = null, int &$position = 1): array
     {
         $output = [];
 
@@ -42,21 +57,43 @@ class LineItemTransformer
         $data = [
             'type' => $lineItem->getType(),
             'parent_id' => $parentId,
-            'sorting' => $sorting,
+            'sorting' => $position,
             'identifier' => $lineItem->getIdentifier(),
-            'configuration' => '',
-            'sku' => '',
+            'configuration' => $lineItem->getConfiguration(),
+            'sku' => $lineItem->getSku(),
             'label' => $lineItem->getLabel(),
             'quantity' => $lineItem->getQuantity(),
-            'price' => 0,
+            'price' => $price?->getTotalPrice() ?? 0.0,
+            'price_data' => $price?->jsonSerialize(),
             'tax_free_price' => 0,
-            'tax_id' => '',
+            'tax_id' => implode(',', $price?->getCalculatedTaxes()->getNumbers() ?? []),
             'jumpTo' => 0,
             'level' => $lineItem->getLevel(),
         ];
 
-        $output[$lineItem->getId()] = array_filter($data, fn ($value) => $value !== null);
+        $position++;
+
+        $output[] = $data;
 
         return $output;
+    }
+
+    public static function transformSubtotal(int $level, CalculatedPrice|null $price, &$position = 1): array
+    {
+        $data = [
+            'type' => LineItem::TYPE_SUBTOTAL,
+            'sorting' => $position,
+            'identifier' => LineItem::TYPE_SUBTOTAL.'.'.$level,
+            'quantity' => 1,
+            'price' => $price?->getTotalPrice() ?? 0.0,
+            'tax_free_price' => 0,
+            'price_data' => $price?->jsonSerialize(),
+            'tax_id' => '',
+            'level' => $level,
+        ];
+
+        $position++;
+
+        return $data;
     }
 }

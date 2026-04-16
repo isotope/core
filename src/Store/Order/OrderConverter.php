@@ -24,7 +24,7 @@ class OrderConverter
         $data = CartTransformer::transform($cart, $context);
 
         $data['billing_address'] = AddressTransformer::transform($cart->getBillingAddress());
-        $data['line_items'] = LineItemTransformer::transformCollection($cart->getLineItems());
+        $data['line_items'] = LineItemTransformer::transformCart($cart);
 
         if ($shippingAddress = $cart->getShippingAddress()) {
             $data['shipping_address'] = AddressTransformer::transform($shippingAddress);

@@ -12,6 +12,8 @@ use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItemCollection;
 use Isotope\CoreBundle\ProductCollection\ProductCollectionStorage;
 use Isotope\CoreBundle\Store\Context\StoreContext;
+use Isotope\CoreBundle\Store\Exception\EmptyCartException;
+use Isotope\CoreBundle\Store\Order\CreateOrderResult;
 use Isotope\CoreBundle\Store\Order\OrderConverter;
 use Symfony\Contracts\Service\ResetInterface;
 
@@ -31,7 +33,6 @@ class CartManager implements ResetInterface
         private readonly CartCalculator $calculator,
         private readonly OrderManager $orderManager,
         private readonly OrderConverter $orderConverter,
-        private readonly ProductCollectionStorage $productCollectionStorage,
     ) {
     }
 
@@ -142,35 +143,46 @@ class CartManager implements ResetInterface
         $this->cart = [];
     }
 
-    public function order(Cart $cart, StoreContext $context): string
+    public function order(Cart $cart, StoreContext $context): CreateOrderResult
     {
+        if ($cart->isEmpty()) {
+            throw new EmptyCartException();
+        }
+
         $cart = $this->calculator->calculate($cart, $context);
 
         $data = $this->orderConverter->convertToOrder($cart, $context);
+        $result = $this->orderManager->createOrder($data, $context);
 
-        $data += [
-            'order_status' => 1,
-            //'date_paid' => null,
-            //'date_shipped' => null,
-        ];
+        if ($payment = $cart->getPaymentMethod()) {
+            if ($response = $payment->processPayment($result, $context)) {
+                $result->setResponse($response);
 
-        $this->orderManager->createOrder($data, $context);
+                return $result;
+            }
+        }
+
+        if (!$this->orderManager->lockOrder($result->getCollectionId(), $context)) {
+            throw new \RuntimeException();
+        }
+
+        // TODO: maybe send email?
 
         if (isset($this->cart[$context->getIdentifier()])) {
             unset($this->cart[$context->getIdentifier()]);
         }
 
         // TODO: duplicate the same way we duplicate on recalculate
-        $newCart = $this->createNew($context);
+        $newCart = $this->cartFactory->create($context);
         $newCart->setBillingAddress($cart->getBillingAddress());
         $newCart->setShippingAddress($cart->getShippingAddress());
         $newCart->setShippingMethod($cart->getShippingMethod());
         $newCart->setPaymentMethod($cart->getPaymentMethod());
 
         if ($model = ProductCollectionModel::findByIdentifier($cart->getIdentifier(), Cart::getType())) {
-            $this->productCollectionStorage->delete($model);
+            $this->storage->delete($model);
         }
 
-        return 'FOO'; //$orderId;
+        return $result;
     }
 }

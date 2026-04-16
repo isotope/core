@@ -1,0 +1,172 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Isotope\CoreBundle\Test\Store\Order\Transformer;
+
+use Isotope\CoreBundle\ProductCollection\Cart\Cart;
+use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
+use Isotope\CoreBundle\Store\Order\Transformer\LineItemTransformer;
+use Isotope\CoreBundle\Store\Price\CalculatedPrice;
+use Isotope\CoreBundle\Store\Tax\CalculatedTaxCollection;
+use Isotope\CoreBundle\Store\Tax\TaxRateCollection;
+use PHPUnit\Framework\TestCase;
+
+class LineItemTransformerTest extends TestCase
+{
+    public function testTransformCart(): void
+    {
+        $cart = new Cart('test');
+        $cart->add((new LineItem(LineItem::TYPE_PRODUCT, 'tl_iso_product.42'))->setPrice($this->createPrice(10)));
+        $cart->add((new LineItem(LineItem::TYPE_PRODUCT, 'tl_iso_product.43'))->setPrice($this->createPrice(20)));
+        $cart->add((new LineItem(LineItem::TYPE_SHIPPING, 'tl_iso_shipping.1'))->setPrice($this->createPrice(30))->setLevel(1));
+
+        $cart->setSubtotals([
+            0 => $this->createPrice(30),
+            1 => $this->createPrice(60),
+        ]);
+
+        $cart->setTotal($this->createPrice(60));
+
+        $result = LineItemTransformer::transformCart($cart);
+
+        $this->assertSame(
+            [
+                [
+                    'type' => 'product',
+                    'parent_id' => null,
+                    'sorting' => 1,
+                    'identifier' => 'tl_iso_product.42',
+                    'configuration' => null,
+                    'sku' => null,
+                    'label' => 'tl_iso_product.42',
+                    'quantity' => 1,
+                    'price' => 10.0,
+                    'price_data' => [
+                        'unit_price' => 10.0,
+                        'quantity' => 1,
+                        'total_price' => 10.0,
+                        'unit_label' => null,
+                        'is_range' => false,
+                        'calculated_taxes' => [],
+                        'tax_rates' => ['rates' => [], 'included' => null],
+                    ],
+                    'tax_free_price' => 0,
+                    'tax_id' => '',
+                    'jumpTo' => 0,
+                    'level' => 0,
+                ],
+                [
+                    'type' => 'product',
+                    'parent_id' => null,
+                    'sorting' => 2,
+                    'identifier' => 'tl_iso_product.43',
+                    'configuration' => null,
+                    'sku' => null,
+                    'label' => 'tl_iso_product.43',
+                    'quantity' => 1,
+                    'price' => 20.0,
+                    'price_data' => [
+                        'unit_price' => 20.0,
+                        'quantity' => 1,
+                        'total_price' => 20.0,
+                        'unit_label' => null,
+                        'is_range' => false,
+                        'calculated_taxes' => [],
+                        'tax_rates' => ['rates' => [], 'included' => null],
+                    ],
+                    'tax_free_price' => 0,
+                    'tax_id' => '',
+                    'jumpTo' => 0,
+                    'level' => 0,
+                ],
+                [
+                    'type' => 'subtotal',
+                    'sorting' => 3,
+                    'identifier' => 'subtotal.0',
+                    'quantity' => 1,
+                    'price' => 30.0,
+                    'tax_free_price' => 0,
+                    'price_data' => [
+                        'unit_price' => 30.0,
+                        'quantity' => 1,
+                        'total_price' => 30.0,
+                        'unit_label' => null,
+                        'is_range' => false,
+                        'calculated_taxes' => [],
+                        'tax_rates' => ['rates' => [], 'included' => null],
+                    ],
+                    'tax_id' => '',
+                    'level' => 0,
+                ],
+                [
+                    'type' => 'shipping',
+                    'parent_id' => null,
+                    'sorting' => 4,
+                    'identifier' => 'tl_iso_shipping.1',
+                    'configuration' => null,
+                    'sku' => null,
+                    'label' => 'tl_iso_shipping.1',
+                    'quantity' => 1,
+                    'price' => 30.0,
+                    'price_data' => [
+                        'unit_price' => 30.0,
+                        'quantity' => 1,
+                        'total_price' => 30.0,
+                        'unit_label' => null,
+                        'is_range' => false,
+                        'calculated_taxes' => [],
+                        'tax_rates' => ['rates' => [], 'included' => null],
+                    ],
+                    'tax_free_price' => 0,
+                    'tax_id' => '',
+                    'jumpTo' => 0,
+                    'level' => 1,
+                ],
+                [
+                    'type' => 'subtotal',
+                    'sorting' => 5,
+                    'identifier' => 'subtotal.1',
+                    'quantity' => 1,
+                    'price' => 60.0,
+                    'tax_free_price' => 0,
+                    'price_data' => [
+                        'unit_price' => 60.0,
+                        'quantity' => 1,
+                        'total_price' => 60.0,
+                        'unit_label' => null,
+                        'is_range' => false,
+                        'calculated_taxes' => [],
+                        'tax_rates' => ['rates' => [], 'included' => null],
+                    ],
+                    'tax_id' => '',
+                    'level' => 1,
+                ],
+                [
+                    'type' => 'total',
+                    'sorting' => 6,
+                    'identifier' => 'total',
+                    'quantity' => 1,
+                    'price' => 60.0,
+                    'tax_free_price' => 0,
+                    'price_data' => [
+                        'unit_price' => 60.0,
+                        'quantity' => 1,
+                        'total_price' => 60.0,
+                        'unit_label' => null,
+                        'is_range' => false,
+                        'calculated_taxes' => [],
+                        'tax_rates' => ['rates' => [], 'included' => null],
+                    ],
+                    'tax_id' => '',
+                ],
+            ],
+            $result,
+        );
+    }
+
+    private function createPrice(float $unitPrice, int $quantity = 1): CalculatedPrice
+    {
+        return new CalculatedPrice($unitPrice, $unitPrice * $quantity);
+    }
+}

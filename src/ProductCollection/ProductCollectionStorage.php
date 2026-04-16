@@ -9,20 +9,16 @@ use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
 use Isotope\CoreBundle\EventDispatcher\TransactionDispatcher;
-use Isotope\CoreBundle\Exception\InvalidArgumentException;
 use Isotope\CoreBundle\Model\ProductCollectionModel;
 use Isotope\CoreBundle\Model\ProductCollectionItemModel;
-use Isotope\CoreBundle\ProductCollection\Cart\Cart;
+use Isotope\CoreBundle\ProductCollection\Event\DeleteCollectionTransaction;
 use Isotope\CoreBundle\ProductCollection\Event\LoadCollectionTransaction;
 use Isotope\CoreBundle\ProductCollection\Event\LoadItemTransaction;
-use Isotope\CoreBundle\ProductCollection\Event\DeleteCollectionTransaction;
 use Isotope\CoreBundle\ProductCollection\Event\SaveCollectionTransaction;
 use Isotope\CoreBundle\ProductCollection\Event\SaveItemTransaction;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Price\CalculatedPrice;
-use Isotope\CoreBundle\Store\Tax\CalculatedTaxCollection;
-use Isotope\CoreBundle\Store\Tax\TaxRateCollection;
 
 class ProductCollectionStorage
 {
@@ -55,8 +51,6 @@ class ProductCollectionStorage
 
     public function save(AbstractProductCollection $collection, StoreContext $context): void
     {
-        // TODO: check if collection is locked
-
         $model = ProductCollectionModel::findByIdentifier($collection->getIdentifier(), $collection->getType(), $context->getStoreId());
 
         if (!$model) {
@@ -115,7 +109,9 @@ class ProductCollectionStorage
 
     protected function loadLineItems(AbstractProductCollection $collection, ProductCollectionModel $collectionModel, StoreContext $context): void
     {
-        $models = ProductCollectionItem::findByCollection($collectionModel->id)?->getModels() ?? [];
+        $models = ProductCollectionItemModel::findByCollection($collectionModel->id)?->getModels() ?? [];
+        $subtotals = [];
+        $total = null;
 
         foreach ($models as $itemModel) {
             $item = new LineItem(
@@ -129,7 +125,10 @@ class ProductCollectionStorage
             $item->setLabel($itemModel->label);
             $item->setReferencePage($itemModel->referencePage ?: null);
             $item->setLevel((int) $itemModel->level);
-            $item->setPrice(new CalculatedPrice((float) $itemModel->price, $itemModel->price * $itemModel->quantity, new CalculatedTaxCollection(), new TaxRateCollection()));
+
+            if ($itemModel->price_data) {
+                $item->setPrice(CalculatedPrice::createFromJson($itemModel->price_data));
+            }
 
             if (\is_array($configuration = StringUtil::deserialize($itemModel->configuration))) {
                 $item->setConfiguration($configuration);
@@ -137,11 +136,26 @@ class ProductCollectionStorage
 
             $this->transactionDispatcher->dispatch(
                 new LoadItemTransaction($collection, $item, $itemModel, $context),
-                function (AbstractProductCollection $collection, LineItem $lineItem, ProductCollectionItem $itemModel, StoreContext $context) {
-                    $collection->add($lineItem);
+                function (AbstractProductCollection $collection, LineItem $lineItem, ProductCollectionItemModel $itemModel, StoreContext $context) use (&$total, &$subtotals) {
+                    switch ($lineItem->getType()) {
+                        case LineItem::TYPE_TOTAL:
+                            $total = $lineItem->getPrice();
+                            break;
+
+                        case LineItem::TYPE_SUBTOTAL:
+                            $subtotals[$lineItem->getLevel()] = $lineItem->getPrice();
+                            break;
+
+                        default:
+                            $collection->getLineItems()->add($lineItem);
+                            break;
+                    }
                 },
             );
         }
+
+        $collection->setSubtotals($subtotals);
+        $collection->setTotal($total);
     }
 
     protected function saveLineItems(AbstractProductCollection $collection, ProductCollectionModel $collectionModel): void

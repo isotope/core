@@ -74,17 +74,21 @@
                                         </td>
                                         {% set price = isotope_price(item) %}
                                         <td class="price">
-                                            {{ price|raw }}
-                                            {% if show_taxes|default %}
-                                                <div class="tax">
-                                                    {% if price.is_gross|default %}incl.{% else %}.excl{% endif %}
-                                                    {{ price.with({ amount: price.unit_tax }) }}
-                                                    VAT
-                                                </div>
+                                            {% if price %}
+                                                {{ price|raw }}
+                                                {% if show_taxes|default %}
+                                                    <div class="tax">
+                                                        {% if price.is_gross|default %}incl.{% else %}.excl{% endif %}
+                                                        {{ price.with({ amount: price.unit_tax }) }}
+                                                        VAT
+                                                    </div>
+                                                {% endif %}
                                             {% endif %}
                                         </td>
                                         <td class="total">
-                                            {{ price.with({ amount: price.total_price }) }}
+                                            {% if price %}
+                                                {{ price.with({ amount: price.total_price }) }}
+                                            {% endif %}
                                         </td>
                                         {% if multiple_taxes|default %}
                                             <td class="tax_id">{{ price.tax_ids|default([])|join(',') }}</td>
@@ -108,55 +112,60 @@
                             {% endfor %}
                             {% if not loop.last or level == 0 %}
                                 {% block product_collection_subtotal %}
-                                    <tr class="subtotal">
-                                        <td class="name" colspan="{{ data.iso_gallery|default ? '3' : '2' }}">{{ 'MSC.subTotalLabel'|trans }}</td>
-                                        <td class="price">&nbsp;</td>
+                                    {% set price = isotope_price(collection.subtotal(level)) %}
+                                    {% if price %}
+                                        <tr class="subtotal">
+                                            <td class="name" colspan="{{ data.iso_gallery|default ? '3' : '2' }}">{{ 'MSC.subTotalLabel'|trans }}</td>
+                                            <td class="price">&nbsp;</td>
+                                            <td class="price total">
+                                                {{ isotope_price(collection.subtotal(level)) }}
+                                            </td>
+                                            {% if multiple_taxes|default %}
+                                                <td class="tax_id">&nbsp;</td>
+                                            {% endif %}
+                                            {% if block("product_collection_item_actions") is defined %}
+                                                <td class="actions">&nbsp;</td>
+                                            {% endif %}
+                                        </tr>
+                                    {% endif %}
+                                {% endblock %}
+                            {% endif %}
+                        {% endfor %}
+                        {% set total = isotope_price(collection.total) %}
+                        {% if total %}
+                            {% block product_collection_taxes %}
+                                {% for tax in total.calculated_taxes %}
+                                    <tr class="tax">
+                                        <td class="name" colspan="{{ data.iso_gallery|default ? '3' : '2' }}">{{ tax.label }}</td>
+                                        <td class="price">{{ tax.taxRate }}%</td>
                                         <td class="price total">
-                                            {{ isotope_price(collection.subtotal(level)) }}
+                                            {{ total.with({ amount: tax.amount }) }}
                                         </td>
                                         {% if multiple_taxes|default %}
-                                            <td class="tax_id">&nbsp;</td>
+                                            <td class="tax_id">{{ tax.number }}</td>
                                         {% endif %}
                                         {% if block("product_collection_item_actions") is defined %}
                                             <td class="actions">&nbsp;</td>
                                         {% endif %}
                                     </tr>
-                                {% endblock %}
-                            {% endif %}
-                        {% endfor %}
-                        {% set total = isotope_price(collection.total) %}
-                        {% block product_collection_taxes %}
-                            {% for tax in total.calculated_taxes %}
-                                <tr class="tax">
-                                    <td class="name" colspan="{{ data.iso_gallery|default ? '3' : '2' }}">{{ tax.label }}</td>
-                                    <td class="price">{{ tax.taxRate }}%</td>
+                                {% endfor %}
+                            {% endblock %}
+                            {% block product_collection_total %}
+                                <tr class="total">
+                                    <td class="name" colspan="{{ data.iso_gallery|default ? '3' : '2' }}">{{ 'MSC.grandTotalLabel'|trans }}</td>
+                                    <td class="price">&nbsp;</td>
                                     <td class="price total">
-                                        {{ total.with({ amount: tax.amount }) }}
+                                        {{ total|raw }}
                                     </td>
                                     {% if multiple_taxes|default %}
-                                        <td class="tax_id">{{ tax.number }}</td>
+                                        <td class="tax_id">&nbsp;</td>
                                     {% endif %}
                                     {% if block("product_collection_item_actions") is defined %}
                                         <td class="actions">&nbsp;</td>
                                     {% endif %}
                                 </tr>
-                            {% endfor %}
-                        {% endblock %}
-                        {% block product_collection_total %}
-                            <tr class="total">
-                                <td class="name" colspan="{{ data.iso_gallery|default ? '3' : '2' }}">{{ 'MSC.grandTotalLabel'|trans }}</td>
-                                <td class="price">&nbsp;</td>
-                                <td class="price total">
-                                    {{ total|raw }}
-                                </td>
-                                {% if multiple_taxes|default %}
-                                    <td class="tax_id">&nbsp;</td>
-                                {% endif %}
-                                {% if block("product_collection_item_actions") is defined %}
-                                    <td class="actions">&nbsp;</td>
-                                {% endif %}
-                            </tr>
-                        {% endblock %}
+                            {% endblock %}
+                        {% endif %}
                     </tbody>
                 </table>
     {% endblock %}

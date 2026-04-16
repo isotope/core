@@ -8,6 +8,7 @@ use Isotope\CoreBundle\Model\ConfigModel;
 use Isotope\CoreBundle\Model\ProductCollectionModel;
 use Isotope\CoreBundle\ProductCollection\ProductCollectionStorage;
 use Isotope\CoreBundle\Store\Context\StoreContextFactory;
+use Isotope\CoreBundle\Store\Exception\ConfigNotFoundException;
 use Isotope\CoreBundle\Util\StringUtil;
 
 class OrderFactory
@@ -42,13 +43,21 @@ class OrderFactory
 
     public function load(ProductCollectionModel $collection): Order
     {
+        if (!($config = ConfigModel::findById($collection->config_id))) {
+            throw ConfigNotFoundException::cannotRestoreOrder((int) $collection->config_id, (int) $collection->id);
+        }
+
         $context = $this->contextFactory->create(
             $collection->store_id,
-            Config::findById($collection->config_id),
-            $collection->language ?? $GLOBALS['TL_LANGUAGE'], // TODO: a collection must always have a language!
-            $collection->uniqid ?? StringUtil::generateRandomId(), // TODO: a collection must always have an ID!
+            $config,
+            $collection->language,
+            $collection->uniqid,
             $collection->member ?: null,
         );
+
+        if ($collection->locked) {
+            $context->setTimestamp(\DateTimeImmutable::createFromFormat('U', (string) $collection->locked));
+        }
 
         return $this->storage->load(new Order($context->getIdentifier(), $context), $collection, $context);
     }

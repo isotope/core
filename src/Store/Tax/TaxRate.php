@@ -6,7 +6,7 @@ namespace Isotope\CoreBundle\Store\Tax;
 
 use Isotope\CoreBundle\Util\FloatComparator;
 
-class TaxRate
+class TaxRate implements \JsonSerializable
 {
     public function __construct(
         private readonly string $id,
@@ -36,5 +36,15 @@ class TaxRate
     public function getLabel(): ?string
     {
         return $this->label;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'id' => $this->id,
+            'tax_rate' => $this->taxRate,
+            'percentage' => $this->percentage,
+            'label' => $this->label,
+        ];
     }
 }

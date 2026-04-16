@@ -11,7 +11,7 @@ use Ramsey\Collection\Tool\ValueToStringTrait;
 /**
  * @extends AbstractMap<CalculatedTax>
  */
-class CalculatedTaxCollection extends AbstractMap
+class CalculatedTaxCollection extends AbstractMap implements \JsonSerializable
 {
     use ValueToStringTrait;
 
@@ -49,5 +49,10 @@ class CalculatedTaxCollection extends AbstractMap
         }
 
         return array_unique($numbers);
+    }
+
+    public function jsonSerialize(): array
+    {
+        return array_map(static fn (CalculatedTax $tax) => $tax->jsonSerialize(), $this->data);
     }
 }

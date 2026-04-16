@@ -20,6 +20,12 @@ class LineItem
 
     public const string TYPE_PAYMENT = 'payment';
 
+    public const string TYPE_SUBTOTAL = 'subtotal';
+
+    public const string TYPE_TAX = 'tax';
+
+    public const string TYPE_TOTAL = 'total';
+
     private int $id = 0;
 
     private array|null $configuration = null;
@@ -32,7 +38,7 @@ class LineItem
 
     private string|null $sku = null;
 
-    private string $label;
+    private string|null $label = null;
 
     private CalculatedPrice|null $price = null;
 
@@ -95,7 +101,7 @@ class LineItem
 
     public function getLabel(): string
     {
-        return $this->label;
+        return $this->label ?: $this->identifier;
     }
 
     public function setLabel(string $label): self

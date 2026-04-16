@@ -6,10 +6,11 @@ namespace Isotope\CoreBundle\Store\Price;
 
 use Isotope\CoreBundle\Store\Tax\CalculatedTax;
 use Isotope\CoreBundle\Store\Tax\CalculatedTaxCollection;
+use Isotope\CoreBundle\Store\Tax\TaxRate;
 use Isotope\CoreBundle\Store\Tax\TaxRateCollection;
 use Isotope\CoreBundle\Util\FloatComparator;
 
-class CalculatedPrice
+class CalculatedPrice implements \JsonSerializable
 {
     private bool $isRange = false;
 
@@ -109,5 +110,54 @@ class CalculatedPrice
             ->setUnitLabel($this->unitLabel)
             ->setBasePrice($this->basePrice)
         ;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'unit_price' => $this->unitPrice,
+            'quantity' => $this->quantity,
+            'total_price' => $this->totalPrice,
+            'unit_label' => $this->unitLabel,
+            'is_range' => $this->isRange(),
+            'calculated_taxes' => $this->calculatedTaxes->jsonSerialize(),
+            'tax_rates' => $this->taxRates->jsonSerialize(),
+        ];
+    }
+
+    public static function createFromJson(string $data): self|null
+    {
+        try {
+            $data = json_decode($data, true, 512, JSON_THROW_ON_ERROR);
+        } catch (\JsonException) {
+            return null;
+        }
+
+        $price = new self(
+            (float) ($data['unit_price'] ?? 0),
+            (float) ($data['total_price'] ?? 0),
+            new CalculatedTaxCollection(),
+            new TaxRateCollection(),
+        );
+
+        foreach (($data['calculated_taxes'] ?? []) as $tax) {
+            $price->getCalculatedTaxes()->put(
+                $tax['id'],
+                (new CalculatedTax($tax['id'], $tax['amount'], $tax['tax_rate'], $tax['price']))
+                    ->setLabel($tax['label'])
+                    ->setNumber($tax['number'])
+            );
+        }
+
+        foreach (($data['tax_rates']['rates'] ?? []) as $tax) {
+            $price->getTaxRates()->add(new TaxRate($tax['id'], $tax['tax_rate'], $tax['percentage'], $tax['label']));
+        }
+
+        if (isset($data['tax_rates']['included'])) {
+            $tax = $data['tax_rates']['included'];
+            $price->getTaxRates()->setIncluded(new TaxRate($tax['id'], $tax['tax_rate'], $tax['percentage'], $tax['label']));
+        }
+
+        return $price;
     }
 }

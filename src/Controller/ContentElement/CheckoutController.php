@@ -35,6 +35,10 @@ class CheckoutController extends AbstractContentElementController
         $context = $this->getStoreContext();
         $cart = $context->getCart();
 
+        if ($cart->isModified()) {
+            $this->cartManager->recalculate($cart, $context);
+        }
+
         $steps = [];
         $config = $model->row();
         $allCompleted = true;
@@ -57,10 +61,6 @@ class CheckoutController extends AbstractContentElementController
             if (!$completed) {
                 $allCompleted = false;
             }
-        }
-
-        if ($cart->isModified()) {
-            $this->cartManager->recalculate($cart, $context);
         }
 
         $template->steps = $steps;

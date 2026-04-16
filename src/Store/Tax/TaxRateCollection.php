@@ -9,7 +9,7 @@ use Ramsey\Collection\AbstractCollection;
 /**
  * @extends AbstractCollection<TaxRate>
  */
-class TaxRateCollection extends AbstractCollection
+class TaxRateCollection extends AbstractCollection implements \JsonSerializable
 {
     private TaxRate|null $included = null;
 
@@ -28,5 +28,13 @@ class TaxRateCollection extends AbstractCollection
         $this->included = $included;
 
         return $this;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'rates' => array_map(static fn (TaxRate $tax) => $tax->jsonSerialize(), $this->data),
+            'included' => $this->included?->jsonSerialize(),
+        ];
     }
 }

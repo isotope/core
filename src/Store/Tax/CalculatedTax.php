@@ -6,25 +6,19 @@ namespace Isotope\CoreBundle\Store\Tax;
 
 use Isotope\CoreBundle\Util\FloatComparator;
 
-class CalculatedTax
+class CalculatedTax implements \JsonSerializable
 {
-    protected float $amount = 0;
+    private string|null $label = null;
 
-    protected float $taxRate;
-
-    protected float $price = 0;
-
-    protected string|null $label = null;
-
-    protected int $number = 0;
+    private int $number = 0;
 
     public function __construct(
         private readonly string $id,
-        float $tax,
-        float $taxRate,
-        float $price,
+        private float $amount,
+        private float $taxRate,
+        private float $price,
     ) {
-        $this->amount = FloatComparator::cast($tax);
+        $this->amount = FloatComparator::cast($amount);
         $this->taxRate = FloatComparator::cast($taxRate);
         $this->price = FloatComparator::cast($price);
     }
@@ -92,5 +86,17 @@ class CalculatedTax
     {
         $this->amount = FloatComparator::cast($this->amount + $calculatedTax->getAmount());
         $this->price = FloatComparator::cast($this->price + $calculatedTax->getPrice());
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'id' => $this->id,
+            'amount' => $this->amount,
+            'tax_rate' => $this->taxRate,
+            'price' => $this->price,
+            'label' => $this->label,
+            'number' => $this->number,
+        ];
     }
 }

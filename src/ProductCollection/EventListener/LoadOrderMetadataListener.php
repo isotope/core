@@ -59,13 +59,6 @@ class LoadOrderMetadataListener
             $order->setLocked(\DateTimeImmutable::createFromFormat('U', (string) $model->locked));
         }
 
-        $order->setTotal(new CalculatedPrice(
-            FloatComparator::cast((float) $model->total),
-            FloatComparator::cast((float) $model->total),
-            new CalculatedTaxCollection(),
-            new TaxRateCollection(),
-        ));
-
         $order->setBillingAddress(fn () => AddressModel::findById($model->billing_address_id));
         $order->setShippingAddress(fn () => AddressModel::findById($model->shipping_address_id));
 

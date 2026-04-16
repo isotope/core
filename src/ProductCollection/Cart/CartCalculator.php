@@ -90,7 +90,7 @@ class CartCalculator
     private function hash(Cart $cart): string
     {
         $data = [
-            'price' => $cart->getSubtotal()->getTotalPrice(),
+            'price' => $cart->getSubtotal()?->getTotalPrice() ?? 0,
             'shipping' => $cart->getShippingMethod()?->getId(),
             'payment' => $cart->getPaymentMethod()?->getId(),
             'items' => [],
@@ -106,7 +106,7 @@ class CartCalculator
     private function calculateSubtotals(Cart $cart): array
     {
         $levels = [];
-        $subtotal = new CalculatedPrice(0, 0, new CalculatedTaxCollection(), new TaxRateCollection());
+        $subtotal = new CalculatedPrice(0, 0);
 
         foreach ($cart->getLineItems()->byLevel() as $level => $items) {
             foreach ($items as $item) {
@@ -119,7 +119,7 @@ class CartCalculator
         }
 
         if ([] === $levels) {
-            $levels[0] = new CalculatedPrice(0, 0, new CalculatedTaxCollection(), new TaxRateCollection());
+            $levels[0] = new CalculatedPrice(0, 0);
         }
 
         return $levels;

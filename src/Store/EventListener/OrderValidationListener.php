@@ -25,15 +25,20 @@ class OrderValidationListener
         $event->addConstraint(new Assert\Collection(
             fields: [
                 'member_id' => [new Assert\NotBlank(), new Assert\PositiveOrZero()],
-                'store_id' => [new Assert\NotBlank(), new Assert\PositiveOrZero()],
                 'config_id' => [new Assert\NotBlank(), new Assert\Positive()],
+                'store_id' => [new Assert\NotBlank(), new Assert\PositiveOrZero()],
+                'locale' => [new Assert\NotBlank(), new Assert\Locale()],
+                'source_collection_id' => [new Assert\NotBlank(), new Assert\PositiveOrZero()],
 
                 'billing_address' => $this->addressValidator->getConstraint($context->getBillingAddressConfig()),
                 'shipping_address' => new Assert\Optional($this->addressValidator->getConstraint($context->getShippingAddressConfig())),
+
                 'payment_id' => [new Assert\NotBlank(), new Assert\PositiveOrZero()],
                 'shipping_id' => [new Assert\NotBlank(), new Assert\PositiveOrZero()],
+
+                'subtotal' => [new Assert\NotBlank(), new Assert\PositiveOrZero()],
+                'total' => [new Assert\NotBlank(), new Assert\PositiveOrZero()],
                 'currency' => [new Assert\NotBlank(), new Assert\Currency()],
-                'locale' => [new Assert\NotBlank(), new Assert\Locale()],
 
                 'order_status' => [new Assert\NotBlank(), new Assert\Positive()],
                 'date_paid' => new Assert\Optional([new Assert\NotBlank(), new Assert\DateTime()]),
