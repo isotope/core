@@ -38,7 +38,7 @@ use Contao\Model;
  * @property int          $maxlength
  * @property bool         $datepicker
  */
-class Attribute extends Model
+class AttributeModel extends Model
 {
     /**
      * @var string

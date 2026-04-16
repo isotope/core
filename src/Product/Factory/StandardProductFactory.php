@@ -7,7 +7,7 @@ namespace Isotope\CoreBundle\Product\Factory;
 use Contao\StringUtil;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsProductFactory;
-use Isotope\CoreBundle\Model\ProductType;
+use Isotope\CoreBundle\Model\ProductTypeModel;
 use Isotope\CoreBundle\Product\AvailabilityChecker;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\DataCollector\ProductDto;
@@ -37,7 +37,7 @@ class StandardProductFactory implements ProductFactoryInterface
 
     public function create(ProductDto $dto, StoreContext $context): CoreProduct
     {
-        $type = ProductType::findById($dto['type'] ?: $dto['__parent']['type']);
+        $type = ProductTypeModel::findById($dto['type'] ?: $dto['__parent']['type']);
         $data = $this->getProductData($dto, $type);
 
         $product = new CoreProduct($data, $type, $this->productRenderer);
@@ -64,7 +64,7 @@ class StandardProductFactory implements ProductFactoryInterface
         return $product;
     }
 
-    private function getProductData(ProductDto $dto, ProductType $type): array
+    private function getProductData(ProductDto $dto, ProductTypeModel $type): array
     {
         $originalData = $dto->getArrayCopy();
 
@@ -103,7 +103,7 @@ class StandardProductFactory implements ProductFactoryInterface
         return $data;
     }
 
-    private function inherit(array $data, array $originalData, ProductType $type): array
+    private function inherit(array $data, array $originalData, ProductTypeModel $type): array
     {
         if (!$originalData['__parent']) {
             return $data;

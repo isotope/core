@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Store;
 
-use Isotope\CoreBundle\Model\ProductCollection;
+use Isotope\CoreBundle\Model\ProductCollectionModel;
 use Isotope\CoreBundle\ProductCollection\Cart\Cart;
 use Isotope\CoreBundle\ProductCollection\Cart\CartCalculator;
 use Isotope\CoreBundle\ProductCollection\Cart\CartFactory;
@@ -130,7 +130,7 @@ class CartManager implements ResetInterface
 
     public function deleteCart(StoreContext $context): void
     {
-        $cart = ProductCollection::findByIdentifier($context->getIdentifier(), Cart::getType(), $context->getStoreId());
+        $cart = ProductCollectionModel::findByIdentifier($context->getIdentifier(), Cart::getType(), $context->getStoreId());
 
         if ($cart) {
             $this->storage->delete($cart);
@@ -167,7 +167,7 @@ class CartManager implements ResetInterface
         $newCart->setShippingMethod($cart->getShippingMethod());
         $newCart->setPaymentMethod($cart->getPaymentMethod());
 
-        if ($model = ProductCollection::findByIdentifier($cart->getIdentifier(), Cart::getType())) {
+        if ($model = ProductCollectionModel::findByIdentifier($cart->getIdentifier(), Cart::getType())) {
             $this->productCollectionStorage->delete($model);
         }
 

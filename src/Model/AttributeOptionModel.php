@@ -10,8 +10,6 @@ use Isotope\CoreBundle\Product\CoreProduct;
 use Terminal42\DcMultilingualBundle\Model\Multilingual;
 
 /**
- * Class AttributeOption
- *
  * @property int    $id
  * @property int    $pid
  * @property int    $sorting
@@ -27,7 +25,7 @@ use Terminal42\DcMultilingualBundle\Model\Multilingual;
  * @property string $cssClass
  * @property bool   $published
  */
-class AttributeOption extends Multilingual
+class AttributeOptionModel extends Multilingual
 {
     /**
      * @var string
@@ -37,7 +35,7 @@ class AttributeOption extends Multilingual
     /**
      * Find published options by attribute.
      *
-     * @return Collection<AttributeOption>|null
+     * @return Collection<AttributeOptionModel>|null
      *
      * @throws AttributeException if attribute option source is not the database table
      */
@@ -63,7 +61,7 @@ class AttributeOption extends Multilingual
     /**
      * Find published options by product attribute.
      *
-     * @return Collection<AttributeOption>|null
+     * @return Collection<AttributeOptionModel>|null
      *
      * @throws AttributeException If attribute options source is not the product.
      */
@@ -98,7 +96,7 @@ class AttributeOption extends Multilingual
     /**
      * Find published attribute options by IDs.
      *
-     * @return Collection<AttributeOption>|null
+     * @return Collection<AttributeOptionModel>|null
      */
     public static function findPublishedByIds(array $arrIds, array $arrOptions = []): Collection|null
     {

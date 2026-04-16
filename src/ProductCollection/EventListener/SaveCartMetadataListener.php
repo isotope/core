@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\ProductCollection\EventListener;
 
 use Contao\FrontendUser;
-use Isotope\CoreBundle\Model\Address;
-use Isotope\CoreBundle\Model\ProductCollection;
+use Isotope\CoreBundle\Model\AddressModel;
+use Isotope\CoreBundle\Model\ProductCollectionModel;
 use Isotope\CoreBundle\ProductCollection\Cart\Cart;
 use Isotope\CoreBundle\ProductCollection\Event\SaveCollectionTransaction;
 use Isotope\CoreBundle\Store\Context\StoreContext;
@@ -35,7 +35,7 @@ class SaveCartMetadataListener
         $event->collectionModel->payment_id = $collection->getPaymentMethod()?->getId() ?? 0;
     }
 
-    private function saveAddress(Address|null $address, ProductCollection $collection): int
+    private function saveAddress(AddressModel|null $address, ProductCollectionModel $collection): int
     {
         if (null === $address) {
             return 0;

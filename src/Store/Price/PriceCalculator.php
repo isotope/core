@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Store\Price;
 
 use Contao\StringUtil;
-use Isotope\CoreBundle\Model\BasePrice as BasePriceModel;
+use Isotope\CoreBundle\Model\BasePriceModel as BasePriceModel;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Tax\TaxCalculator;

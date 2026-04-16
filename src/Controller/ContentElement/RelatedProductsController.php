@@ -7,7 +7,7 @@ namespace Isotope\CoreBundle\Controller\ContentElement;
 use Contao\ContentModel;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsContentElement;
 use Contao\CoreBundle\Twig\FragmentTemplate;
-use Isotope\CoreBundle\Model\RelatedProduct;
+use Isotope\CoreBundle\Model\RelatedProductModel;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\DataCollector\ProductDto;
 use Isotope\CoreBundle\Product\DataCollector\ProductDtoCollection;
@@ -54,8 +54,8 @@ class RelatedProductsController extends AbstractContentElementController
     {
         $productIds = [];
 
-        /** @var array<RelatedProduct> $relatedProducts */
-        $relatedProducts = RelatedProduct::findByProductAndCategories($product, $categories);
+        /** @var array<RelatedProductModel> $relatedProducts */
+        $relatedProducts = RelatedProductModel::findByProductAndCategories($product, $categories);
 
         if (null !== $relatedProducts) {
             foreach ($relatedProducts as $category) {

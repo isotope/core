@@ -6,7 +6,7 @@ namespace Isotope\CoreBundle\EventListener\DataContainer\AttributeOption;
 
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\Input;
-use Isotope\CoreBundle\Model\AttributeOption;
+use Isotope\CoreBundle\Model\AttributeOptionModel;
 
 class LabelListener
 {
@@ -36,7 +36,7 @@ class LabelListener
             $label = '<strong>'.$label.'</strong>';
         }
 
-        if ('' !== $row['price'] && isset($GLOBALS['TL_DCA'][AttributeOption::getTable()]['fields']['price'])) {
+        if ('' !== $row['price'] && isset($GLOBALS['TL_DCA'][AttributeOptionModel::getTable()]['fields']['price'])) {
             $label .= ' <span class="label-info">('.$row['price'].')</span>';
         }
 

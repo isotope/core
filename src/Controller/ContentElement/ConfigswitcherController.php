@@ -8,7 +8,7 @@ use Contao\ContentModel;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsContentElement;
 use Contao\CoreBundle\Exception\RedirectResponseException;
 use Contao\CoreBundle\Twig\FragmentTemplate;
-use Isotope\CoreBundle\Model\Config;
+use Isotope\CoreBundle\Model\ConfigModel;
 use Isotope\CoreBundle\Store\CartManager;
 use Isotope\CoreBundle\Util\StringUtil;
 use Symfony\Component\HttpFoundation\Request;
@@ -45,7 +45,7 @@ class ConfigswitcherController extends AbstractContentElementController
             throw new RedirectResponseException($request->getRequestUri());
         }
 
-        $configModels = Config::findMultipleByIds($configIds);
+        $configModels = ConfigModel::findMultipleByIds($configIds);
         $currentId = $this->getStoreContext()->getConfigId();
 
         if (null !== $configModels) {
@@ -72,7 +72,7 @@ class ConfigswitcherController extends AbstractContentElementController
         if (
             (!$force && $context->getConfigId() === $id)
             || !\in_array($id, $configIds, true)
-            || !Config::findById($id)
+            || !ConfigModel::findById($id)
         ) {
             return false;
         }

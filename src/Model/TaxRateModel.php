@@ -17,7 +17,7 @@ use Contao\Model;
  * @property string $rate
  * @property int    $rule
  */
-class TaxRate extends Model
+class TaxRateModel extends Model
 {
     /**
      * @var string

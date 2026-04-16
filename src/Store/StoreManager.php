@@ -7,8 +7,8 @@ namespace Isotope\CoreBundle\Store;
 use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\CoreBundle\Routing\PageFinder;
 use Contao\FrontendUser;
-use Isotope\CoreBundle\Model\Config;
-use Isotope\CoreBundle\Model\ProductCollection;
+use Isotope\CoreBundle\Model\ConfigModel;
+use Isotope\CoreBundle\Model\ProductCollectionModel;
 use Isotope\CoreBundle\ProductCollection\LockableCollectionInterface;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Context\StoreContextException;
@@ -91,13 +91,13 @@ class StoreManager
      *
      * @return T
      */
-    public function runWithCollection(ProductCollection $collection, \Closure $closure): mixed
+    public function runWithCollection(ProductCollectionModel $collection, \Closure $closure): mixed
     {
         // TODO: remove this when unused
 
         $context = $this->contextFactory->create(
             $collection->store_id,
-            Config::findById($collection->config_id),
+            ConfigModel::findById($collection->config_id),
             $collection->language ?? $GLOBALS['TL_LANGUAGE'], // TODO: a collection must always have a language!
             $collection->uniqid ?? StringUtil::generateRandomId(), // TODO: a collection must always have an ID!
             $collection->member ?: null,
@@ -126,15 +126,15 @@ class StoreManager
         $guestCartId = $request->cookies->get(self::CONTEXT_COOKIE);
 
         if ($memberId) {
-            $config = Config::findByMemberCart($memberId, $storeId);
+            $config = ConfigModel::findByMemberCart($memberId, $storeId);
         }
 
         if (!$config && $guestCartId) {
-            $config = Config::findByGuestCart($guestCartId, $storeId);
+            $config = ConfigModel::findByGuestCart($guestCartId, $storeId);
         }
 
         if (!$config) {
-            $config = Config::findByRootPage((int) $rootPage->id);
+            $config = ConfigModel::findByRootPage((int) $rootPage->id);
         }
 
         if (!$config) {

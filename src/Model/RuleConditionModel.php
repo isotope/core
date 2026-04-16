@@ -32,7 +32,7 @@ use Contao\Model\Collection;
  * @property string $subdivisions
  * @property string $postalcodes
  */
-class RuleCondition extends Model
+class RuleConditionModel extends Model
 {
     /**
      * @var string
@@ -40,7 +40,7 @@ class RuleCondition extends Model
     protected static $strTable = 'tl_iso_rule_condition';
 
     /**
-     * @return Collection<RuleCondition>|null
+     * @return Collection<RuleConditionModel>|null
      */
     public static function findByRuleId(int $ruleId, array $options = []): Collection|null
     {

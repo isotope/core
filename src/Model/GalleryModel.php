@@ -18,7 +18,7 @@ use Contao\Model;
  * @property string      $lightbox_size
  * @property string      $customTpl
  */
-class Gallery extends Model
+class GalleryModel extends Model
 {
     /**
      * @var string

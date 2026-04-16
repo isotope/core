@@ -5,8 +5,6 @@ namespace Isotope\CoreBundle\Model;
 use Contao\Model;
 
 /**
- * ProductCollectionLog represents a log in a product collection.
- *
  * @property int    $id
  * @property int    $pid
  * @property int    $tstamp
@@ -17,7 +15,7 @@ use Contao\Model;
  * @property string $notes
  * @property int    $notification
 */
-class ProductCollectionLog extends Model
+class ProductCollectionLogModel extends Model
 {
     /**
      * @var string

@@ -7,7 +7,7 @@ namespace Isotope\CoreBundle\EventListener\DataContainer\Attribute;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
 use Isotope\CoreBundle\Attribute\VariantAttributeInterface;
-use Isotope\CoreBundle\Model\AttributeOption;
+use Isotope\CoreBundle\Model\AttributeOptionModel;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Terminal42\DcawizardBundle\Widget\DcaWizard;
 
@@ -35,6 +35,6 @@ class TableOptionsPriceListener
             $widget->fields = array_merge($widget->fields, ['price']);
         }
 
-        return AttributeOption::getTable();
+        return AttributeOptionModel::getTable();
     }
 }

@@ -9,7 +9,7 @@ use Contao\DataContainer;
 use Contao\System;
 use Doctrine\DBAL\Connection;
 use Isotope\CoreBundle\EventListener\DataContainer\RuleCondition\LabelListener as RuleConditionLabelListener;
-use Isotope\CoreBundle\Model\RuleCondition;
+use Isotope\CoreBundle\Model\RuleConditionModel;
 use Isotope\CoreBundle\ModelType\RuleConditionRegistry;
 use Symfony\Contracts\Translation\TranslatorInterface;
 

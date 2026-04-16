@@ -10,7 +10,7 @@ use Isotope\CoreBundle\Attribute\AttributeRegistry;
 use Isotope\CoreBundle\Attribute\CheckboxAttribute;
 use Isotope\CoreBundle\Attribute\RadioAttribute;
 use Isotope\CoreBundle\Attribute\VariantAttributeInterface;
-use Isotope\CoreBundle\Model\Attribute;
+use Isotope\CoreBundle\Model\AttributeModel;
 
 /**
  * Configures the options wizard in attribute configuration.
@@ -28,7 +28,7 @@ class OptionsWizardListener
             return $attributes;
         }
 
-        $attribute = $this->attributeRegistry->get(Attribute::findById($dc->id));
+        $attribute = $this->attributeRegistry->get(AttributeModel::findById($dc->id));
 
         if ($attribute instanceof VariantAttributeInterface && $attribute->isVariantOption()) {
             unset($attributes['fields']['group'], $attributes['fields']['default']);

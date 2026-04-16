@@ -20,7 +20,7 @@ use Isotope\CoreBundle\Store\Order\StatusType;
  * @property bool   $paid
  * @property bool   $welcomescreen
  */
-class OrderStatus extends Model
+class OrderStatusModel extends Model
 {
     /**
      * @var string

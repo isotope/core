@@ -16,8 +16,8 @@ use Isotope\CoreBundle\Attribute\Option\OptionsSource;
 use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
 use Isotope\CoreBundle\Attribute\VariantAttributeInterface;
 use Isotope\CoreBundle\DataContainer\ProductData;
-use Isotope\CoreBundle\Model\ProductType;
-use Isotope\CoreBundle\Model\RelatedCategory;
+use Isotope\CoreBundle\Model\ProductTypeModel;
+use Isotope\CoreBundle\Model\RelatedCategoryModel;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
@@ -60,7 +60,7 @@ class AttributeListener
             $GLOBALS['TL_DCA']['tl_iso_product']['fields']['inherit']['eval']['doNotShow'] = true;
             $GLOBALS['TL_DCA']['tl_iso_product']['fields']['fallback']['eval']['doNotShow'] = true;
 
-            if (0 === RelatedCategory::countAll()) {
+            if (0 === RelatedCategoryModel::countAll()) {
                 unset($GLOBALS['TL_DCA']['tl_iso_product']['list']['operations']['related']);
             }
         } else {
@@ -88,7 +88,7 @@ class AttributeListener
                     [ArrayParameterType::INTEGER, ArrayParameterType::INTEGER],
                 );
 
-                foreach (ProductType::findMultipleByIds($types) as $type) {
+                foreach (ProductTypeModel::findMultipleByIds($types) as $type) {
                     $typeAttributes = $this->getAvailableFieldsForType($type, null !== $dc->currentPid);
                     $typeHasPrice = \in_array('price', $typeAttributes, true);
                     $hasAdvancedPrices = $hasAdvancedPrices || ($typeHasPrice && $type->hasAdvancedPrices());
@@ -124,8 +124,8 @@ class AttributeListener
         $hasVariants = null !== $dc->currentPid; // Only check for variants if we are in product view
         $attributes = [];
 
-        if (null !== ($objProductTypes = ProductType::findAllUsed())) {
-            /** @var ProductType $objType */
+        if (null !== ($objProductTypes = ProductTypeModel::findAllUsed())) {
+            /** @var ProductTypeModel $objType */
             foreach ($objProductTypes as $objType) {
                 if (!$hasDownloads && $objType->hasDownloads()) {
                     $hasDownloads = true;
@@ -376,7 +376,7 @@ class AttributeListener
 
     /**
      * @return array{
-     *     0: ProductType|null,
+     *     0: ProductTypeModel|null,
      *     2: bool
      * }
      */
@@ -394,7 +394,7 @@ class AttributeListener
             $product = $dc->getCurrentRecord($product['pid']);
         }
 
-        $type = ProductType::findById($product['type']);
+        $type = ProductTypeModel::findById($product['type']);
 
         if (!$type) {
             return [null, false];
@@ -403,7 +403,7 @@ class AttributeListener
         return [$type, null !== $variant];
     }
 
-    private function getAvailableFieldsForType(ProductType $type, bool $forVariant): array
+    private function getAvailableFieldsForType(ProductTypeModel $type, bool $forVariant): array
     {
         $dcaFields = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
         $selected = $forVariant ? $type->getVariantAttributes() : $type->getAttributes();

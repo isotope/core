@@ -7,7 +7,7 @@ namespace Isotope\CoreBundle\Checkout\Shipping;
 use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use Contao\Model;
 use Contao\StringUtil;
-use Isotope\CoreBundle\Model\Shipping;
+use Isotope\CoreBundle\Model\ShippingModel;
 use Isotope\CoreBundle\ModelType\ShippingRegistry;
 use Isotope\CoreBundle\RuleBuilder\RuleMatcher;
 use Isotope\CoreBundle\Store\Context\StoreContext;
@@ -24,7 +24,7 @@ class GroupShippingFactory extends AbstractShippingFactory
     }
 
     /**
-     * @param Shipping $model
+     * @param ShippingModel $model
      */
     public function doCreate(Model $model, StoreContext $context): AbstractShipping
     {
@@ -38,7 +38,7 @@ class GroupShippingFactory extends AbstractShippingFactory
         return new GroupShipping(
             $model->id,
             $context,
-            $this->shippingRegistry->get(Shipping::findMultipleByIds($ids), $context) ?? [],
+            $this->shippingRegistry->get(ShippingModel::findMultipleByIds($ids), $context) ?? [],
             GroupCalculation::from($model->group_calculation),
             (bool) $model->inherit,
         );

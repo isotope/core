@@ -13,14 +13,14 @@ namespace Isotope\Backend\Shipping;
 
 
 use Contao\Backend;
-use Isotope\CoreBundle\Model\Shipping;
+use Isotope\CoreBundle\Model\ShippingModel;
 
 class Callback extends Backend
 {
     public function hideLabelAndNotes($dc)
     {
         if ($dc->id) {
-            $shipping = Shipping::findByPk($dc->id);
+            $shipping = ShippingModel::findByPk($dc->id);
 
             if ($shipping->type === 'group' && $shipping->inherit) {
                 unset(

@@ -8,7 +8,7 @@ use Contao\CoreBundle\Routing\Content\ContentUrlResolverInterface;
 use Contao\CoreBundle\Routing\Content\ContentUrlResult;
 use Contao\CoreBundle\Routing\ContentUrlGenerator;
 use Contao\PageModel;
-use Isotope\CoreBundle\Model\ProductCollectionItem;
+use Isotope\CoreBundle\Model\ProductCollectionItemModel;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\DataCollector\ProductDto;
 use Isotope\CoreBundle\Product\ProductBuilder;
@@ -37,7 +37,7 @@ class ProductItemResolver implements ContentUrlResolverInterface
             $product = $content->getProduct();
         }
 
-        if ($content instanceof ProductCollectionItem) {
+        if ($content instanceof ProductCollectionItemModel) {
             $id = $content->id;
             $referencePage = $content->referencePage;
             $product = $this->productBuilder->buildOne(

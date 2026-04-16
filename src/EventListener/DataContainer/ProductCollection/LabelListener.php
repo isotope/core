@@ -6,8 +6,8 @@ namespace Isotope\CoreBundle\EventListener\DataContainer\ProductCollection;
 
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\DataContainer;
-use Isotope\CoreBundle\Model\Address;
-use Isotope\CoreBundle\Model\Config;
+use Isotope\CoreBundle\Model\AddressModel;
+use Isotope\CoreBundle\Model\ConfigModel;
 use Isotope\CoreBundle\Store\Address\AddressConfig;
 use Isotope\CoreBundle\Store\Address\AddressConfigFactory;
 use Isotope\CoreBundle\Store\Address\AddressFormatter;
@@ -46,7 +46,7 @@ class LabelListener
                     break;
 
                 case 'total':
-                    $context = $this->storeContextFactory->create($row['store_id'], Config::findById($row['config_id']), $row['language'], $row['uniqid'], $row['member']);
+                    $context = $this->storeContextFactory->create($row['store_id'], ConfigModel::findById($row['config_id']), $row['language'], $row['uniqid'], $row['member']);
 
                     $args[$i] = $this->priceFormatter->toHtml(new CalculatedPrice((float) $row['total'], (float) $row['total']), $context);
                     break;
@@ -79,13 +79,13 @@ class LabelListener
     private function formatAddress(array $row, string $field): string
     {
         [$type] = explode('_', $field);
-        $addressConfig = $this->addressConfigFactory->createFromConfig(Config::findById($row['config_id']), $type);
+        $addressConfig = $this->addressConfigFactory->createFromConfig(ConfigModel::findById($row['config_id']), $type);
 
         // Remove phone number and email from backend view
         $fields = array_diff($addressConfig->getFields(), ['email', 'phone']);
         $addressConfig = new AddressConfig($fields, $addressConfig->getMandatory(), $addressConfig->getCountryCodes(), $addressConfig->getDefaultCountryCode());
 
-        return (string) $this->addressFormatter->toHtml(Address::findById($row[$field]), $addressConfig);
+        return (string) $this->addressFormatter->toHtml(AddressModel::findById($row[$field]), $addressConfig);
     }
 
     private function formatStatus(Workflow $workflow, string|null $value, string $element = 'span'): string

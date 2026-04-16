@@ -24,7 +24,7 @@ use Contao\Model;
  * @property bool   $logging
  * @property bool   $enabled
  */
-class Payment extends Model
+class PaymentModel extends Model
 {
     /**
      * @var string

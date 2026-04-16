@@ -9,8 +9,8 @@ use Contao\MemberModel;
 use Contao\StringUtil;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
-use Isotope\CoreBundle\Model\Address;
-use Isotope\CoreBundle\Model\Config;
+use Isotope\CoreBundle\Model\AddressModel;
+use Isotope\CoreBundle\Model\ConfigModel;
 use Isotope\CoreBundle\Store\Address\AddressConfigFactory;
 use Isotope\CoreBundle\Store\CartManager;
 use Isotope\CoreBundle\Store\Event\ContextCreatedEvent;
@@ -37,16 +37,16 @@ class StoreContextFactory
     ) {
     }
 
-    public function create(int $storeId, Config $config, string $locale, string $identifier, int|null $memberId): StoreContext
+    public function create(int $storeId, ConfigModel $config, string $locale, string $identifier, int|null $memberId): StoreContext
     {
         $this->framework->initialize();
 
         // TODO: load applicable taxes, etc.
 
-        $billingAddress = new Address();
+        $billingAddress = new AddressModel();
         $billingAddress->country = $config->billing_country;
 
-        $shippingAddress = new Address();
+        $shippingAddress = new AddressModel();
         $shippingAddress->country = $config->shipping_country;
 
         $context = new StoreContext(
@@ -79,7 +79,7 @@ class StoreContextFactory
 
     public function createBackend(): StoreContext
     {
-        $config = new Config();
+        $config = new ConfigModel();
         $config->currency = '';
         $config->priceDisplay = PriceDisplay::Gross->value;
         $config->taxCalculation = TaxCalculation::Vertical->value;
@@ -87,7 +87,7 @@ class StoreContextFactory
         return $this->create(0, $config, $GLOBALS['TL_LANGUAGE'], '__backend__', null);
     }
 
-    private function getCurrency(Config $config): Currency
+    private function getCurrency(ConfigModel $config): Currency
     {
         return new Currency(
             $config->currency,
@@ -98,7 +98,7 @@ class StoreContextFactory
         );
     }
 
-    private function getMoneyFormat(Config $config): MoneyFormat
+    private function getMoneyFormat(ConfigModel $config): MoneyFormat
     {
         // TODO: ISO_NUM?
         if (!isset($GLOBALS['ISO_NUM'][$config->currencyFormat])) {
@@ -116,7 +116,7 @@ class StoreContextFactory
         );
     }
 
-    private function getPriceDisplay(Config $config, int|null $memberId): PriceDisplay
+    private function getPriceDisplay(ConfigModel $config, int|null $memberId): PriceDisplay
     {
         $priceDisplay = PriceDisplay::from($config->priceDisplay);
 
@@ -149,9 +149,9 @@ class StoreContextFactory
     /**
      * Returns an address model for the shop configuration address data.
      */
-    private function getOwnerAddress(Config $config): Address
+    private function getOwnerAddress(ConfigModel $config): AddressModel
     {
-        $address = new Address();
+        $address = new AddressModel();
 
         $address->company = $config->company;
         $address->firstname = $config->firstname;

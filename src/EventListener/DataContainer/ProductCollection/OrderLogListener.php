@@ -12,8 +12,8 @@ use Contao\DataContainer;
 use Contao\Message;
 use Contao\StringUtil;
 use Contao\System;
-use Isotope\CoreBundle\Model\OrderStatus;
-use Isotope\CoreBundle\Model\ProductCollectionLog;
+use Isotope\CoreBundle\Model\OrderStatusModel;
+use Isotope\CoreBundle\Model\ProductCollectionLogModel;
 use Isotope\CoreBundle\Store\Order\OrderNotifier;
 use Isotope\CoreBundle\Store\Order\StatusType;
 use Isotope\CoreBundle\Store\OrderManager;
@@ -47,12 +47,12 @@ class OrderLogListener
     public function viewLog(DataContainer $dc): string
     {
         $logs = [];
-        $logTable = ProductCollectionLog::getTable();
+        $logTable = ProductCollectionLogModel::getTable();
 
         System::loadLanguageFile($logTable);
         Controller::loadDataContainer($logTable);
 
-        if (null !== ($logModels = ProductCollectionLog::findBy('pid', $dc->id, ['order' => 'tstamp']))) {
+        if (null !== ($logModels = ProductCollectionLogModel::findBy('pid', $dc->id, ['order' => 'tstamp']))) {
             $previousLogModel = null;
 
             foreach ($logModels as $logModel) {
@@ -149,7 +149,7 @@ class OrderLogListener
 
         $updated = $this->orderManager->updateOrder((int) $dc->id, $updated, false);
 
-        $log = new ProductCollectionLog();
+        $log = new ProductCollectionLogModel();
         $log->pid = $dc->id;
         $log->tstamp = time();
         $log->author = $this->getUserId();
@@ -163,9 +163,9 @@ class OrderLogListener
             $tokens = [];
 
             foreach (StatusType::cases() as $type) {
-                if ($status = OrderStatus::findOneByAlias((string) $current[$type->value.'_status'], $type)) {
+                if ($status = OrderStatusModel::findOneByAlias((string) $current[$type->value.'_status'], $type)) {
                     foreach ($status->row() as $k => $v) {
-                        $tokens['previous_'.$type->value.'_status_' . $k] = $this->formatter->dcaValue(OrderStatus::getTable(), $k, $v);
+                        $tokens['previous_'.$type->value.'_status_' . $k] = $this->formatter->dcaValue(OrderStatusModel::getTable(), $k, $v);
                     }
 
                     $tokens['previous_'.$type->value.'_status'] = $this->translator->trans($status->label ?: $status->name, [], 'isotope');

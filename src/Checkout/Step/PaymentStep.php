@@ -8,7 +8,7 @@ use Contao\CoreBundle\Exception\RedirectResponseException;
 use Contao\StringUtil;
 use Isotope\CoreBundle\Checkout\Payment\PaymentInterface;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsCheckoutStep;
-use Isotope\CoreBundle\Model\Payment;
+use Isotope\CoreBundle\Model\PaymentModel;
 use Isotope\CoreBundle\ModelType\PaymentRegistry;
 use Isotope\CoreBundle\ProductCollection\Cart\Cart;
 use Isotope\CoreBundle\Store\CartManager;
@@ -109,7 +109,7 @@ class PaymentStep implements CheckoutStepInterface
         $skippable = explode(',', $config['iso_checkout_skippable'] ?? '');
 
         if (\in_array('payment_method', $skippable, true) && $id = ($context->getPaymentIds()[0] ?? null)) {
-            return $this->paymentRegistry->get(Payment::findById($id), $context);
+            return $this->paymentRegistry->get(PaymentModel::findById($id), $context);
         }
 
         return null;
@@ -121,7 +121,7 @@ class PaymentStep implements CheckoutStepInterface
      */
     private function getPaymentMethods(array $ids, StoreContext $context): array
     {
-        $payments = $this->paymentRegistry->get(Payment::findMultipleByIds($ids), $context, true);
+        $payments = $this->paymentRegistry->get(PaymentModel::findMultipleByIds($ids), $context, true);
 
         if (!$payments) {
             return [];

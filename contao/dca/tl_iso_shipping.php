@@ -8,7 +8,7 @@ use Isotope\CoreBundle\Checkout\ProductTypeCondition;
 use Isotope\CoreBundle\Checkout\Shipping\FlatCalculation;
 use Isotope\CoreBundle\Checkout\Shipping\GroupCalculation;
 use Isotope\CoreBundle\Checkout\Shipping\ProductCalculation;
-use Isotope\CoreBundle\Model\Shipping;
+use Isotope\CoreBundle\Model\ShippingModel;
 
 /*
  * Load tl_iso_product data container and language files
@@ -182,7 +182,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
         'group_methods' => [
             'inputType' => 'checkboxWizard',
             'options_callback' => static function ($dc) {
-                $objShipping = Shipping::findBy([$dc->table.'.id!=?'], $dc->id);
+                $objShipping = ShippingModel::findBy([$dc->table.'.id!=?'], $dc->id);
 
                 return null === $objShipping ? [] : $objShipping->fetchEach('name');
             },

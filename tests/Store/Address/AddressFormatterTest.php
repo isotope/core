@@ -4,7 +4,7 @@ namespace Isotope\CoreBundle\Test\Store\Address;
 
 use Contao\CoreBundle\DataContainer\ValueFormatter;
 use Contao\System;
-use Isotope\CoreBundle\Model\Address;
+use Isotope\CoreBundle\Model\AddressModel;
 use Isotope\CoreBundle\Store\Address\AddressConfig;
 use Isotope\CoreBundle\Store\Address\AddressFormatter;
 use Isotope\CoreBundle\Twig\TemplateMarkupFactory;
@@ -38,8 +38,8 @@ class AddressFormatterTest extends KernelTestCase
 
         $addressFormatter = new AddressFormatter($formatter, new TemplateMarkupFactory($twig));
 
-        $address = new Address();
-        (new \ReflectionProperty(Address::class, 'arrData'))->setValue($address, $data);
+        $address = new AddressModel();
+        (new \ReflectionProperty(AddressModel::class, 'arrData'))->setValue($address, $data);
 
         $config = new AddressConfig(
             ['gender', 'company', 'salutation', 'firstname', 'lastname', 'street_1', 'street_2', 'street_3', 'postal', 'city', 'subdivision', 'country', 'email', 'phone'],

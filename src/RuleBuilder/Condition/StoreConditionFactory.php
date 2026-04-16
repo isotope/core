@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\RuleBuilder\Condition;
 
 use Contao\Model;
-use Isotope\CoreBundle\Model\RuleCondition;
+use Isotope\CoreBundle\Model\RuleConditionModel;
 use Isotope\CoreBundle\ModelType\Exception\InvalidTypeException;
 use Isotope\CoreBundle\ModelType\ModelInstanceTrait;
 use Isotope\CoreBundle\ModelType\ModelTypeFactoryInterface;
@@ -13,7 +13,7 @@ use Isotope\CoreBundle\Store\Context\StoreContext;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * @implements ModelTypeFactoryInterface<RuleConditionInterface, RuleCondition>
+ * @implements ModelTypeFactoryInterface<RuleConditionInterface, RuleConditionModel>
  */
 class StoreConditionFactory implements ModelTypeFactoryInterface
 {
@@ -25,11 +25,11 @@ class StoreConditionFactory implements ModelTypeFactoryInterface
     }
 
     /**
-     * @param RuleCondition $model
+     * @param RuleConditionModel $model
      */
     public function create(Model $model, StoreContext $context): object
     {
-        $this->validateInstanceOf($model, RuleCondition::class);
+        $this->validateInstanceOf($model, RuleConditionModel::class);
 
         return match ($model->type) {
             'store_config' => new StoreConfigCondition(

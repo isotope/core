@@ -8,7 +8,7 @@ use Contao\ContentModel;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsContentElement;
 use Contao\CoreBundle\Twig\FragmentTemplate;
 use Contao\FrontendUser;
-use Isotope\CoreBundle\Model\ProductCollection;
+use Isotope\CoreBundle\Model\ProductCollectionModel;
 use Isotope\CoreBundle\ProductCollection\Order\Order;
 use Isotope\CoreBundle\ProductCollection\Order\OrderFactory;
 use Isotope\CoreBundle\Util\StringUtil;
@@ -33,7 +33,7 @@ class OrderHistoryController extends AbstractContentElementController
         }
 
         $orders = [];
-        $models = ProductCollection::findBy(
+        $models = ProductCollectionModel::findBy(
             [
                 'order_status IS NOT NULL',
                 'locked IS NOT NULL',

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\ProductCollection\Event;
 
 use Isotope\CoreBundle\EventDispatcher\Transaction;
-use Isotope\CoreBundle\Model\ProductCollection;
+use Isotope\CoreBundle\Model\ProductCollectionModel;
 use Isotope\CoreBundle\ProductCollection\AbstractProductCollection;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 
@@ -18,7 +18,7 @@ class LoadCollectionTransaction extends Transaction
 
     public function __construct(
         public readonly AbstractProductCollection $collection,
-        public readonly ProductCollection $collectionModel,
+        public readonly ProductCollectionModel $collectionModel,
         public readonly StoreContext $context,
     ) {
     }

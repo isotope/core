@@ -6,7 +6,7 @@ namespace Isotope\CoreBundle\Store\Address;
 
 use Contao\CoreBundle\Intl\Countries;
 use Contao\StringUtil;
-use Isotope\CoreBundle\Model\Config;
+use Isotope\CoreBundle\Model\ConfigModel;
 
 class AddressConfigFactory
 {
@@ -15,7 +15,7 @@ class AddressConfigFactory
     ) {
     }
 
-    public function createFromConfig(Config $config, string $type): AddressConfig
+    public function createFromConfig(ConfigModel $config, string $type): AddressConfig
     {
         return $this->create(
             $config->address_fields,

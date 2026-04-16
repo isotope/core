@@ -11,7 +11,7 @@ use Contao\DataContainer;
 use Contao\Input;
 use Contao\StringUtil;
 use Contao\System;
-use Isotope\CoreBundle\Model\Address;
+use Isotope\CoreBundle\Model\AddressModel;
 
 class AddressFieldsListener extends Backend
 {
@@ -26,9 +26,9 @@ class AddressFieldsListener extends Backend
     #[AsCallback('tl_iso_config', 'fields.address_fields.load')]
     public function load($varValue): array
     {
-        Controller::loadDataContainer(Address::getTable());
+        Controller::loadDataContainer(AddressModel::getTable());
 
-        $arrDCA = &$GLOBALS['TL_DCA'][Address::getTable()]['fields'];
+        $arrDCA = &$GLOBALS['TL_DCA'][AddressModel::getTable()]['fields'];
         $arrFields = [];
         $arrValues = StringUtil::deserialize($varValue);
 
@@ -66,7 +66,7 @@ class AddressFieldsListener extends Backend
     #[AsCallback('tl_iso_config', 'fields.address_fields.save')]
     public function save($value, DataContainer $dc): string
     {
-        Controller::loadDataContainer(Address::getTable());
+        Controller::loadDataContainer(AddressModel::getTable());
 
         $fields = StringUtil::deserialize($value);
         $input = Input::post($dc->field);
@@ -93,7 +93,7 @@ class AddressFieldsListener extends Backend
      */
     private function getNameClosure(string $name, array|null $value): \Closure
     {
-        System::loadLanguageFile(Address::getTable());
+        System::loadLanguageFile(AddressModel::getTable());
 
         $row = 0;
 
@@ -108,7 +108,7 @@ class AddressFieldsListener extends Backend
                 $name,
                 $row++,
                 $strName,
-                $GLOBALS['TL_DCA'][Address::getTable()]['fields'][$strName]['label'][0] ?: $strName,
+                $GLOBALS['TL_DCA'][AddressModel::getTable()]['fields'][$strName]['label'][0] ?: $strName,
                 $strName,
             );
         };

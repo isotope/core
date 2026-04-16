@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\ProductCollection\EventListener;
 
-use Isotope\CoreBundle\Model\Address;
-use Isotope\CoreBundle\Model\Payment;
-use Isotope\CoreBundle\Model\Shipping;
+use Isotope\CoreBundle\Model\AddressModel;
+use Isotope\CoreBundle\Model\PaymentModel;
+use Isotope\CoreBundle\Model\ShippingModel;
 use Isotope\CoreBundle\ModelType\PaymentRegistry;
 use Isotope\CoreBundle\ModelType\ShippingRegistry;
 use Isotope\CoreBundle\ProductCollection\Cart\Cart;
@@ -36,20 +36,20 @@ class LoadCartMetadataListener
         $cart->setShippingAddress(fn () => $this->loadAddress((int) $cartModel?->shipping_address_id));
 
         if ($paymentId = $cartModel?->payment_id) {
-            $cart->setPaymentMethod(fn () => $this->paymentRegistry->get(Payment::findById($paymentId), $context));
+            $cart->setPaymentMethod(fn () => $this->paymentRegistry->get(PaymentModel::findById($paymentId), $context));
         }
 
         if ($shippingId = $cartModel?->shipping_id) {
-            $cart->setShippingMethod(fn () => $this->shippingRegistry->get(Shipping::findById($shippingId), $context));
+            $cart->setShippingMethod(fn () => $this->shippingRegistry->get(ShippingModel::findById($shippingId), $context));
         }
     }
 
-    private function loadAddress(int $id, Address|null $default = null): Address|null
+    private function loadAddress(int $id, AddressModel|null $default = null): AddressModel|null
     {
         if (!$id) {
             return $default;
         }
 
-        return Address::findById($id) ?? $default;
+        return AddressModel::findById($id) ?? $default;
     }
 }

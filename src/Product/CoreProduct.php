@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Product;
 
-use Isotope\CoreBundle\Model\ProductType;
+use Isotope\CoreBundle\Model\ProductTypeModel;
 use Isotope\CoreBundle\Product\Render\ProductRendererInterface;
 use Isotope\CoreBundle\Store\Price\CalculatedPrice;
 use Isotope\CoreBundle\Store\Price\PriceDefinitionCollection;
@@ -60,13 +60,13 @@ class CoreProduct extends Product
 
     public function __construct(
         array $data,
-        private readonly ProductType $productType,
+        private readonly ProductTypeModel $productType,
         private readonly ProductRendererInterface $renderer,
     ) {
         parent::__construct('tl_iso_product.'.$data['id'], $data);
     }
 
-    public function getProductType(): ProductType
+    public function getProductType(): ProductTypeModel
     {
         return $this->productType;
     }

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\RuleBuilder;
 
-use Isotope\CoreBundle\Model\Rule;
-use Isotope\CoreBundle\Model\RuleCondition;
+use Isotope\CoreBundle\Model\RuleModel;
+use Isotope\CoreBundle\Model\RuleConditionModel;
 use Isotope\CoreBundle\ModelType\RuleConditionRegistry;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\StoreManager;
@@ -19,13 +19,13 @@ class RuleMatcher
 
     public function isApplicable(int $ruleId, StoreContext $context): bool
     {
-        $rule = Rule::findById($ruleId);
+        $rule = RuleModel::findById($ruleId);
 
         if (!$rule?->enabled) {
             return false;
         }
 
-        $conditions = RuleCondition::findByRuleId($ruleId);
+        $conditions = RuleConditionModel::findByRuleId($ruleId);
 
         if (null === $conditions) {
             return true;
@@ -35,7 +35,7 @@ class RuleMatcher
     }
 
     /**
-     * @param array<RuleCondition> $conditions
+     * @param array<RuleConditionModel> $conditions
      */
     private function validateConditions(array $conditions, StoreContext $context): bool
     {

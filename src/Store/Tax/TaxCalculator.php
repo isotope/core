@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Store\Tax;
 
-use Isotope\CoreBundle\Model\TaxClass;
-use Isotope\CoreBundle\Model\TaxRate as TaxRateModel;
+use Isotope\CoreBundle\Model\TaxClassModel;
+use Isotope\CoreBundle\Model\TaxRateModel as TaxRateModel;
 use Isotope\CoreBundle\RuleBuilder\RuleMatcher;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Price\PriceDisplay;
@@ -23,7 +23,7 @@ class TaxCalculator
 
     public function getTaxRates(int|null $taxClassId, StoreContext $context): TaxRateCollection
     {
-        if (!$taxClassId || !($taxClass = TaxClass::findById($taxClassId))) {
+        if (!$taxClassId || !($taxClass = TaxClassModel::findById($taxClassId))) {
             return new TaxRateCollection();
         }
 

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Checkout;
 
 use Contao\Model;
-use Isotope\CoreBundle\Model\Payment;
-use Isotope\CoreBundle\Model\Shipping;
+use Isotope\CoreBundle\Model\PaymentModel;
+use Isotope\CoreBundle\Model\ShippingModel;
 use Isotope\CoreBundle\ModelType\ContainerAwareInterface;
 use Isotope\CoreBundle\ModelType\ContainerAwareTrait;
 use Isotope\CoreBundle\ModelType\ModelInstanceTrait;
@@ -18,7 +18,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @template TType of AbstractCheckoutMethod
- * @template TModel of Payment|Shipping
+ * @template TModel of PaymentModel|ShippingModel
  *
  * @template-implements ModelTypeFactoryInterface<TType, TModel>
  */
@@ -39,7 +39,7 @@ abstract class AbstractCheckoutMethodFactory implements ModelTypeFactoryInterfac
      */
     public function create(Model $model, StoreContext $context): AbstractCheckoutMethod
     {
-        $this->validateInstanceOf($model, [Payment::class, Shipping::class]);
+        $this->validateInstanceOf($model, [PaymentModel::class, ShippingModel::class]);
 
         $instance = $this->doCreate($model, $context)
             ->setLabel($this->get(TranslatorInterface::class)->trans($model->label ?: $model->name, [], 'isotope'))

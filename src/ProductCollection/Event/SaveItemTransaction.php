@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\ProductCollection\Event;
 
 use Isotope\CoreBundle\EventDispatcher\Transaction;
-use Isotope\CoreBundle\Model\ProductCollection;
-use Isotope\CoreBundle\Model\ProductCollectionItem;
+use Isotope\CoreBundle\Model\ProductCollectionModel;
+use Isotope\CoreBundle\Model\ProductCollectionItemModel;
 use Isotope\CoreBundle\ProductCollection\AbstractProductCollection;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
 
@@ -16,9 +16,9 @@ class SaveItemTransaction extends Transaction
 
     public function __construct(
         public readonly AbstractProductCollection $collection,
-        public readonly ProductCollection $collectionModel,
+        public readonly ProductCollectionModel $collectionModel,
         public readonly LineItem $lineItem,
-        public readonly ProductCollectionItem $itemModel,
+        public readonly ProductCollectionItemModel $itemModel,
     ) {
     }
 

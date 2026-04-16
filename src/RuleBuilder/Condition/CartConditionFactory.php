@@ -7,7 +7,7 @@ namespace Isotope\CoreBundle\RuleBuilder\Condition;
 use Contao\CoreBundle\Intl\Countries;
 use Contao\Model;
 use Isotope\CoreBundle\Intl\Subdivisions;
-use Isotope\CoreBundle\Model\RuleCondition;
+use Isotope\CoreBundle\Model\RuleConditionModel;
 use Isotope\CoreBundle\ModelType\Exception\InvalidTypeException;
 use Isotope\CoreBundle\ModelType\ModelInstanceTrait;
 use Isotope\CoreBundle\ModelType\ModelTypeFactoryInterface;
@@ -16,7 +16,7 @@ use Isotope\CoreBundle\Util\PostalCodeUtil;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * @implements ModelTypeFactoryInterface<RuleConditionInterface, RuleCondition>
+ * @implements ModelTypeFactoryInterface<RuleConditionInterface, RuleConditionModel>
  */
 class CartConditionFactory implements ModelTypeFactoryInterface
 {
@@ -30,11 +30,11 @@ class CartConditionFactory implements ModelTypeFactoryInterface
     }
 
     /**
-     * @param RuleCondition $model
+     * @param RuleConditionModel $model
      */
     public function create(Model $model, StoreContext $context): object
     {
-        $this->validateInstanceOf($model, RuleCondition::class);
+        $this->validateInstanceOf($model, RuleConditionModel::class);
 
         return match ($model->type) {
             'cart_address' => new CartAddressCondition(

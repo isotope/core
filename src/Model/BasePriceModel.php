@@ -10,12 +10,13 @@ use Contao\Model;
  * @property int    $id
  * @property int    $tstamp
  * @property string $name
- * @property bool   $enabled
+ * @property string $amount
+ * @property string $label
  */
-class Rule extends Model
+class BasePriceModel extends Model
 {
     /**
      * @var string
      */
-    protected static $strTable = 'tl_iso_rule';
+    protected static $strTable = 'tl_iso_baseprice';
 }

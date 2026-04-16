@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Gallery;
 
 use Contao\Model;
-use Isotope\CoreBundle\Model\Gallery;
+use Isotope\CoreBundle\Model\GalleryModel;
 
 /**
  * @extends AbstractGalleryFactory<StandardGallery>
@@ -13,7 +13,7 @@ use Isotope\CoreBundle\Model\Gallery;
 class StandardGalleryFactory extends AbstractGalleryFactory
 {
     /**
-     * @param Gallery $model
+     * @param GalleryModel $model
      */
     protected function doCreate(Model $model): AbstractGallery
     {

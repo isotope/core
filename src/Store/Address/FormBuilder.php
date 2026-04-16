@@ -6,7 +6,7 @@ namespace Isotope\CoreBundle\Store\Address;
 
 use Codefog\HasteBundle\Form\Form;
 use Contao\CoreBundle\Intl\Countries;
-use Isotope\CoreBundle\Model\Address;
+use Isotope\CoreBundle\Model\AddressModel;
 use Isotope\CoreBundle\Twig\TemplateMarkup;
 use Isotope\CoreBundle\Twig\TemplateMarkupFactory;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,7 +20,7 @@ class FormBuilder
     ) {
     }
 
-    public function build(Request $request, Address $address, AddressConfig $addressConfig, string $prefix = ''): Form
+    public function build(Request $request, AddressModel $address, AddressConfig $addressConfig, string $prefix = ''): Form
     {
         $formId = 'iso_'.$prefix.'address';
 
@@ -47,7 +47,7 @@ class FormBuilder
 
         $address = $form->getBoundModel();
 
-        if (!$address instanceof Address) {
+        if (!$address instanceof AddressModel) {
             return false;
         }
 

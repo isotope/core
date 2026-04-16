@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Checkout\Shipping;
 
 use Contao\Model;
-use Isotope\CoreBundle\Model\Shipping;
+use Isotope\CoreBundle\Model\ShippingModel;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 
 /**
@@ -14,7 +14,7 @@ use Isotope\CoreBundle\Store\Context\StoreContext;
 class ProductPriceShippingFactory extends AbstractShippingFactory
 {
     /**
-     * @param Shipping $model
+     * @param ShippingModel $model
      */
     public function doCreate(Model $model, StoreContext $context): AbstractShipping
     {

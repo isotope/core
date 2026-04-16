@@ -7,9 +7,9 @@ namespace Isotope\CoreBundle\Store\EventListener;
 use Codefog\HasteBundle\Formatter;
 use Contao\MemberModel;
 use Contao\StringUtil;
-use Isotope\CoreBundle\Model\Address;
-use Isotope\CoreBundle\Model\Config;
-use Isotope\CoreBundle\Model\OrderStatus;
+use Isotope\CoreBundle\Model\AddressModel;
+use Isotope\CoreBundle\Model\ConfigModel;
+use Isotope\CoreBundle\Model\OrderStatusModel;
 use Isotope\CoreBundle\ProductCollection\Order\Order;
 use Isotope\CoreBundle\Store\Address\AddressFormatter;
 use Isotope\CoreBundle\Store\Context\StoreContext;
@@ -46,14 +46,14 @@ class DefaultOrderNotificationTokensListener
         $tokens['order_subtotal']  = $order->getSubtotal() ? $this->priceFormatter->toText($order->getSubtotal(), $context) : '';
         $tokens['order_total'] = $order->getTotal() ? $this->priceFormatter->toText($order->getTotal(), $context) : '';
 
-        if ($config = Config::findById($context->getConfigId())) {
+        if ($config = ConfigModel::findById($context->getConfigId())) {
             $tokens['bank_name'] = $config->bankName;
             $tokens['bank_account'] = $config->bankAccount;
             $tokens['bank_code'] = $config->bankCode;
             $tokens['tax_number'] = $config->taxNumber;
 
             foreach ($config->row() as $k => $v) {
-                $tokens['config_' . $k] = $this->formatter->dcaValue(Config::getTable(), $k, $v);
+                $tokens['config_' . $k] = $this->formatter->dcaValue(ConfigModel::getTable(), $k, $v);
             }
         }
 
@@ -66,7 +66,7 @@ class DefaultOrderNotificationTokensListener
         foreach ($statuses as $type => $status) {
             if ($status) {
                 foreach ($status->row() as $k => $v) {
-                    $tokens[$type.'_status_' . $k] = $this->formatter->dcaValue(OrderStatus::getTable(), $k, $v);
+                    $tokens[$type.'_status_' . $k] = $this->formatter->dcaValue(OrderStatusModel::getTable(), $k, $v);
                 }
 
                 $tokens[$type.'_status'] = $this->translator->trans($status->label ?: $status->name, [], 'isotope');
@@ -78,7 +78,7 @@ class DefaultOrderNotificationTokensListener
         foreach ($addresses as $type => $address) {
             if ($address) {
                 foreach ($address->row() as $k => $v) {
-                    $tokens[$type.'_address_'.$k] = $this->formatter->dcaValue(Address::getTable(), $k, $v);
+                    $tokens[$type.'_address_'.$k] = $this->formatter->dcaValue(AddressModel::getTable(), $k, $v);
                 }
 
                 $tokens[$type.'_address'] = $this->addressFormatter->toHtmlString($address, $context->getBillingAddressConfig());

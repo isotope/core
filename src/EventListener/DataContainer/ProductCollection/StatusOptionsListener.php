@@ -6,7 +6,7 @@ namespace Isotope\CoreBundle\EventListener\DataContainer\ProductCollection;
 
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\DataContainer;
-use Isotope\CoreBundle\Model\ProductCollection;
+use Isotope\CoreBundle\Model\ProductCollectionModel;
 use Isotope\CoreBundle\Store\Order\WorkflowManager;
 use Symfony\Component\Workflow\Workflow;
 
@@ -20,7 +20,7 @@ class StatusOptionsListener
     #[AsCallback('tl_iso_product_collection', 'fields.order_status.options')]
     public function getOrderOptions(DataContainer $dc): array
     {
-        $collection = $dc->id ? ProductCollection::findbyId($dc->id) : null;
+        $collection = $dc->id ? ProductCollectionModel::findbyId($dc->id) : null;
 
         return $this->buildOptions(
             $this->workflowManager->getOrderWorkflow(),
@@ -32,7 +32,7 @@ class StatusOptionsListener
     #[AsCallback('tl_iso_product_collection', 'fields.transaction_status.options')]
     public function getTransactionOptions(DataContainer $dc): array
     {
-        $collection = $dc->id ? ProductCollection::findbyId($dc->id) : null;
+        $collection = $dc->id ? ProductCollectionModel::findbyId($dc->id) : null;
 
         return $this->buildOptions(
             $this->workflowManager->getTransactionWorkflow(),
@@ -44,7 +44,7 @@ class StatusOptionsListener
     #[AsCallback('tl_iso_product_collection', 'fields.delivery_status.options')]
     public function getDeliveryOptions(DataContainer $dc): array
     {
-        $collection = $dc->id ? ProductCollection::findbyId($dc->id) : null;
+        $collection = $dc->id ? ProductCollectionModel::findbyId($dc->id) : null;
 
         return $this->buildOptions(
             $this->workflowManager->getDeliveryWorkflow(),
@@ -56,7 +56,7 @@ class StatusOptionsListener
     /**
      * @return array<string, string>
      */
-    private function buildOptions(Workflow $workflow, ProductCollection|null $collection, string|null $current): array
+    private function buildOptions(Workflow $workflow, ProductCollectionModel|null $collection, string|null $current): array
     {
         $options = [];
 

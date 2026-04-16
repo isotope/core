@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Store\Context;
 
-use Isotope\CoreBundle\Model\Address;
+use Isotope\CoreBundle\Model\AddressModel;
 use Isotope\CoreBundle\ProductCollection\Cart\Cart;
 use Isotope\CoreBundle\Store\Address\AddressConfig;
 use Isotope\CoreBundle\Store\Price\Currency;
@@ -28,9 +28,9 @@ final class StoreContext
 
     private \DateTimeImmutable $timestamp;
 
-    private Address|null $defaultBillingAddress = null;
+    private AddressModel|null $defaultBillingAddress = null;
 
-    private Address|null $defaultShippingAddress = null;
+    private AddressModel|null $defaultShippingAddress = null;
 
     /**
      * @var list<int>
@@ -60,7 +60,7 @@ final class StoreContext
         private readonly float $currencyFactor,
         private AddressConfig|\Closure $billingAddressConfig,
         private AddressConfig|\Closure $shippingAddressConfig,
-        private Address|\Closure $ownerAddress,
+        private AddressModel|\Closure $ownerAddress,
     ) {
         $this->timestamp = new \DateTimeImmutable();
     }
@@ -200,31 +200,31 @@ final class StoreContext
         return $this->shippingAddressConfig->getCountryCodes();
     }
 
-    public function getOwnerAddress(): Address
+    public function getOwnerAddress(): AddressModel
     {
         $this->resolveClosure($this->ownerAddress);
 
         return $this->ownerAddress;
     }
 
-    public function getDefaultBillingAddress(): Address|null
+    public function getDefaultBillingAddress(): AddressModel|null
     {
         return $this->defaultBillingAddress;
     }
 
-    public function setDefaultBillingAddress(Address|null $defaultBillingAddress): self
+    public function setDefaultBillingAddress(AddressModel|null $defaultBillingAddress): self
     {
         $this->defaultBillingAddress = $defaultBillingAddress;
 
         return $this;
     }
 
-    public function getDefaultShippingAddress(): Address|null
+    public function getDefaultShippingAddress(): AddressModel|null
     {
         return $this->defaultShippingAddress;
     }
 
-    public function setDefaultShippingAddress(Address|null $defaultShippingAddress): self
+    public function setDefaultShippingAddress(AddressModel|null $defaultShippingAddress): self
     {
         $this->defaultShippingAddress = $defaultShippingAddress;
 

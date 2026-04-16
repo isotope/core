@@ -11,7 +11,7 @@ use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 use Isotope\CoreBundle\Attribute\Exception\MissingAttributeClassException;
 use Isotope\CoreBundle\Attribute\Option\OptionsSource;
-use Isotope\CoreBundle\Model\Attribute;
+use Isotope\CoreBundle\Model\AttributeModel;
 use Isotope\CoreBundle\ModelType\ContainerAwareInterface;
 use Isotope\CoreBundle\ModelType\Exception\ContainerNotFoundException;
 use Psr\Container\ContainerInterface;
@@ -103,9 +103,9 @@ class AttributeRegistry implements ResetInterface
     }
 
     /**
-     * @param string|Collection<Attribute>|Attribute|array<Attribute>|null $fieldOrModelOrCollection
+     * @param string|Collection<AttributeModel>|AttributeModel|array<AttributeModel>|null $fieldOrModelOrCollection
      *
-     * @return ($fieldOrModelOrCollection is array|Collection<Attribute> ? array<AttributeInterface> : ($modelOrCollection is null ? null : AttributeInterface|null) )
+     * @return ($fieldOrModelOrCollection is array|Collection<AttributeModel> ? array<AttributeInterface> : ($modelOrCollection is null ? null : AttributeInterface|null) )
      */
     public function get(Collection|Model|array|string|null $fieldOrModelOrCollection): AttributeInterface|array|null
     {
@@ -113,7 +113,7 @@ class AttributeRegistry implements ResetInterface
 
         return match (true) {
             null === $fieldOrModelOrCollection => null,
-            $fieldOrModelOrCollection instanceof Attribute => $this->get($fieldOrModelOrCollection->field_name),
+            $fieldOrModelOrCollection instanceof AttributeModel => $this->get($fieldOrModelOrCollection->field_name),
             $fieldOrModelOrCollection instanceof Collection => array_map($this->get(...), $fieldOrModelOrCollection->getModels()),
             \is_array($fieldOrModelOrCollection) => array_map($this->get(...), $fieldOrModelOrCollection),
             default => $this->attributes[$fieldOrModelOrCollection] ?? null,

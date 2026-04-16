@@ -7,7 +7,7 @@ namespace Isotope\CoreBundle\EventListener\DataContainer\Product;
 use Contao\CoreBundle\DataContainer\DataContainerOperation;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Doctrine\DBAL\Connection;
-use Isotope\CoreBundle\Model\ProductType;
+use Isotope\CoreBundle\Model\ProductTypeModel;
 
 class ButtonListener
 {
@@ -32,7 +32,7 @@ class ButtonListener
         }
     }
 
-    private function getProductType(array $product): ProductType|null
+    private function getProductType(array $product): ProductTypeModel|null
     {
         $id = $product['type'];
 
@@ -40,6 +40,6 @@ class ButtonListener
             $id = $this->connection->fetchOne('SELECT type FROM tl_iso_product WHERE id=?', [$product['pid']]);
         }
 
-        return ProductType::findById($id);
+        return ProductTypeModel::findById($id);
     }
 }

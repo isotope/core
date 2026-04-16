@@ -14,7 +14,7 @@ use Isotope\CoreBundle\Attribute\VariantAttributeInterface;
 use Isotope\CoreBundle\Exception\LogicException;
 use Isotope\CoreBundle\Exception\UnderflowException;
 use Isotope\CoreBundle\Exception\UnexpectedValueException;
-use Isotope\CoreBundle\Model\AttributeOption;
+use Isotope\CoreBundle\Model\AttributeOptionModel;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Store\Context\ProductContext;
 use Isotope\CoreBundle\Store\Context\StoreContext;
@@ -50,7 +50,7 @@ class OptionFactory
                 return $this->createFromTable($foreignKey, $productContext?->getContext());
 
             case OptionsSource::Table:
-                return $this->createFromModels(AttributeOption::findByAttribute($attribute), !$isVariant, $productContext);
+                return $this->createFromModels(AttributeOptionModel::findByAttribute($attribute), !$isVariant, $productContext);
 
             case OptionsSource::Product:
                 $product = $productContext?->getProduct();
@@ -59,7 +59,7 @@ class OptionFactory
                     throw new LogicException('Must pass product to '.__METHOD__.' if optionsSource is "product"');
                 }
 
-                return $this->createFromModels(AttributeOption::findByProductAndAttribute($product, $attribute), !$isVariant, $productContext);
+                return $this->createFromModels(AttributeOptionModel::findByProductAndAttribute($product, $attribute), !$isVariant, $productContext);
 
             default:
                 $config = Widget::getAttributesFromDca($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute->getFieldName()], $attribute->getFieldName());
@@ -89,7 +89,7 @@ class OptionFactory
     }
 
     /**
-     * @param Collection<AttributeOption>|null $models
+     * @param Collection<AttributeOptionModel>|null $models
      */
     private function createFromModels(Collection|null $models, bool $canHaveDefault, ProductContext|null $productContext): OptionCollection
     {
@@ -99,7 +99,7 @@ class OptionFactory
 
         $data = [];
 
-        /** @var AttributeOption $model */
+        /** @var AttributeOptionModel $model */
         foreach ($models as $model) {
             $option = new Option(
                 (string) $model->getLanguageId(),

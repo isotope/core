@@ -7,7 +7,7 @@ namespace Isotope\CoreBundle\Checkout\Step;
 use Contao\CoreBundle\Exception\RedirectResponseException;
 use Contao\StringUtil;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsCheckoutStep;
-use Isotope\CoreBundle\Model\Address;
+use Isotope\CoreBundle\Model\AddressModel;
 use Isotope\CoreBundle\Store\Address\AddressFormatter;
 use Isotope\CoreBundle\Store\Address\AddressValidator;
 use Isotope\CoreBundle\Store\AddressManager;
@@ -134,9 +134,9 @@ class MemberAddressStep extends AbstractAddressStep
         );
     }
 
-    private function getAddress(int $id, StoreContext $context): Address|null
+    private function getAddress(int $id, StoreContext $context): AddressModel|null
     {
-        $address = Address::findById($id);
+        $address = AddressModel::findById($id);
 
         if (
             !$address

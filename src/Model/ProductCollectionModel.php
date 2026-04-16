@@ -39,7 +39,7 @@ use Contao\Model\Collection;
  * @property int $date_shipped
  * @property string $notes
  */
-class ProductCollection extends Model
+class ProductCollectionModel extends Model
 {
     /**
      * @var string

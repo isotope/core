@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\ProductCollection\Cart;
 
-use Isotope\CoreBundle\Model\ProductCollection;
+use Isotope\CoreBundle\Model\ProductCollectionModel;
 use Isotope\CoreBundle\ProductCollection\Event\CartCreatedEvent;
 use Isotope\CoreBundle\ProductCollection\Event\MergeGuestCartEvent;
 use Isotope\CoreBundle\ProductCollection\ProductCollectionStorage;
@@ -22,8 +22,8 @@ class CartFactory
 
     public function load(StoreContext $context): Cart|null
     {
-        $cartModel = $context->getMemberId() ? ProductCollection::findOneByMember($context->getMemberId(), Cart::getType(), $context->getStoreId()) : null;
-        $guestCartModel = ProductCollection::findByIdentifier($context->getIdentifier(), Cart::getType(), $context->getStoreId());
+        $cartModel = $context->getMemberId() ? ProductCollectionModel::findOneByMember($context->getMemberId(), Cart::getType(), $context->getStoreId()) : null;
+        $guestCartModel = ProductCollectionModel::findByIdentifier($context->getIdentifier(), Cart::getType(), $context->getStoreId());
 
         if (!$cartModel && $guestCartModel) {
             $cartModel = $guestCartModel;

@@ -6,7 +6,7 @@ namespace Isotope\CoreBundle\Checkout\Step;
 
 use Contao\CoreBundle\Exception\RedirectResponseException;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsCheckoutStep;
-use Isotope\CoreBundle\Model\Address;
+use Isotope\CoreBundle\Model\AddressModel;
 use Isotope\CoreBundle\Store\Address\AddressFormatter;
 use Isotope\CoreBundle\Store\Address\AddressValidator;
 use Isotope\CoreBundle\Store\Address\FormBuilder;
@@ -52,7 +52,7 @@ class GuestAddressStep extends AbstractAddressStep
             $billingAddressConfig = $billingAddressConfig->mergeWith($context->getShippingAddressConfig());
         }
 
-        $billingAddress = $cart->getBillingAddress() ?? new Address();
+        $billingAddress = $cart->getBillingAddress() ?? new AddressModel();
         $billingForm = $this->formBuilder->build($request, $billingAddress, $billingAddressConfig, 'billing_');
 
         $addShipping = null !== $cart->getShippingAddress();
@@ -62,7 +62,7 @@ class GuestAddressStep extends AbstractAddressStep
         // TODO: validate that the existing address matches the requested config
 
         if ($requiresShipping && !$skipShipping) {
-            $shippingAddress = $cart->getShippingAddress() ?? new Address();
+            $shippingAddress = $cart->getShippingAddress() ?? new AddressModel();
 
             // Ensure we have a separate shipping address ID
             if ((int) $shippingAddress->id === (int) $billingAddress->id) {

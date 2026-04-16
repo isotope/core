@@ -17,7 +17,7 @@ use Doctrine\DBAL\Connection;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
 use Isotope\CoreBundle\Attribute\Option\OptionsSource;
 use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
-use Isotope\CoreBundle\Model\Product;
+use Isotope\CoreBundle\Model\ProductModel;
 use Isotope\CoreBundle\Product\Query\Filter\EqualFilter;
 use Isotope\CoreBundle\Product\Query\ProductQuery;
 use Isotope\CoreBundle\Product\Query\Sorting;
@@ -38,7 +38,7 @@ class ProductFilterController extends AbstractContentElementController
 
     protected function getResponse(FragmentTemplate $template, ContentModel $model, Request $request): Response
     {
-        if ($request->attributes->get('_content') instanceof Product && $model->iso_hide_list) {
+        if ($request->attributes->get('_content') instanceof ProductModel && $model->iso_hide_list) {
             return new Response('');
         }
 

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Store\Address;
 
 use Contao\CoreBundle\DataContainer\ValueFormatter;
-use Isotope\CoreBundle\Model\Address;
+use Isotope\CoreBundle\Model\AddressModel;
 use Isotope\CoreBundle\Twig\TemplateMarkup;
 use Isotope\CoreBundle\Twig\TemplateMarkupFactory;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
@@ -23,7 +23,7 @@ class AddressFormatter
     /**
      * Format an address for an HTML template.
      */
-    public function toHtml(Address $address, AddressConfig $config): TemplateMarkup
+    public function toHtml(AddressModel $address, AddressConfig $config): TemplateMarkup
     {
         $data = array_intersect_key($address->row(), array_flip($config->getFields()));
 
@@ -44,7 +44,7 @@ class AddressFormatter
     /**
      * Format an address as HTML string, so that applying `strip_tags` results in the correct text representation.
      */
-    public function toHtmlString(Address $address, AddressConfig $config): string
+    public function toHtmlString(AddressModel $address, AddressConfig $config): string
     {
         $output = (string) $this->toHtml($address, $config);
 
@@ -56,7 +56,7 @@ class AddressFormatter
     /**
      * Format an address as plain text.
      */
-    public function toText(Address $address, AddressConfig $config): string
+    public function toText(AddressModel $address, AddressConfig $config): string
     {
         return strip_tags($this->toHtmlString($address, $config));
     }

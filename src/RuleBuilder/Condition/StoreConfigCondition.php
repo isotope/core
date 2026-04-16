@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\RuleBuilder\Condition;
 
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsRuleCondition;
-use Isotope\CoreBundle\Model\Config;
+use Isotope\CoreBundle\Model\ConfigModel;
 use Isotope\CoreBundle\RuleBuilder\Exception\InvalidOperatorException;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -38,7 +38,7 @@ class StoreConfigCondition implements RuleConditionInterface
 
     public function getBackendLabel(): string
     {
-        $names = Config::findMultipleByIds($this->configs)?->fetchEach('name') ?? [];
+        $names = ConfigModel::findMultipleByIds($this->configs)?->fetchEach('name') ?? [];
         $names = array_replace(array_combine($this->configs, $this->configs), $names);
 
         return \sprintf('%s "%s"', $this->trans($this->operator), implode('", "', $names));

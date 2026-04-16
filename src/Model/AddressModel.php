@@ -28,7 +28,7 @@ use Contao\Model\Collection;
  * @property string $phone
  * @property string $email
  */
-class Address extends Model
+class AddressModel extends Model
 {
     /**
      * @var string
@@ -38,7 +38,7 @@ class Address extends Model
     /**
      * Find addresses for member and store ID.
      *
-     * @return Collection<Address>|null
+     * @return Collection<AddressModel>|null
      */
     public static function findByMemberAndStoreId(int $member, int $storeId, array $options = array()): Collection|null
     {

@@ -6,7 +6,7 @@ namespace Isotope\CoreBundle\Checkout\Payment;
 
 use Contao\Model;
 use Isotope\CoreBundle\Checkout\AbstractCheckoutMethodFactory;
-use Isotope\CoreBundle\Model\Payment;
+use Isotope\CoreBundle\Model\PaymentModel;
 use Isotope\CoreBundle\ModelType\ModelInstanceTrait;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Util\StringUtil;
@@ -14,18 +14,18 @@ use Isotope\CoreBundle\Util\StringUtil;
 /**
  * @template TType of AbstractPayment
  *
- * @extends AbstractCheckoutMethodFactory<TType, Payment>
+ * @extends AbstractCheckoutMethodFactory<TType, PaymentModel>
  */
 abstract class AbstractPaymentFactory extends AbstractCheckoutMethodFactory
 {
     use ModelInstanceTrait;
 
     /**
-     * @param Payment $model
+     * @param PaymentModel $model
      */
     public function create(Model $model, StoreContext $context): AbstractPayment
     {
-        $this->validateInstanceOf($model, Payment::class);
+        $this->validateInstanceOf($model, PaymentModel::class);
 
         /** @var AbstractPayment $payment */
         $payment = parent::create($model, $context);

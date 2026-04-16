@@ -9,7 +9,7 @@ use Contao\CoreBundle\Event\PreviewUrlConvertEvent;
 use Contao\CoreBundle\Event\PreviewUrlCreateEvent;
 use Contao\CoreBundle\Routing\ContentUrlGenerator;
 use Contao\Input;
-use Isotope\CoreBundle\Model\Product;
+use Isotope\CoreBundle\Model\ProductModel;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -52,6 +52,6 @@ class FrontendPreviewListener
             return;
         }
 
-        $event->setUrl($this->urlGenerator->generate(Product::findById($request?->query->get('product')), [], UrlGeneratorInterface::ABSOLUTE_URL));
+        $event->setUrl($this->urlGenerator->generate(ProductModel::findById($request?->query->get('product')), [], UrlGeneratorInterface::ABSOLUTE_URL));
     }
 }

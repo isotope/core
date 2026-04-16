@@ -10,7 +10,7 @@ use Contao\CoreBundle\InsertTag\OutputType;
 use Contao\CoreBundle\InsertTag\ResolvedInsertTag;
 use Contao\CoreBundle\InsertTag\Resolver\InsertTagResolverNestedResolvedInterface;
 use Contao\CoreBundle\Routing\ContentUrlGenerator;
-use Isotope\CoreBundle\Model\Product;
+use Isotope\CoreBundle\Model\ProductModel;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\DataCollector\ProductDto;
 use Isotope\CoreBundle\Product\ProductBuilder;
@@ -58,7 +58,7 @@ class ProductInsertTag implements InsertTagResolverNestedResolvedInterface
 
     private function resolveLink(ResolvedInsertTag $insertTag, int $id): InsertTagResult
     {
-        $product = Product::findById($id);
+        $product = ProductModel::findById($id);
 
         if (!$product) {
             return new InsertTagResult('');

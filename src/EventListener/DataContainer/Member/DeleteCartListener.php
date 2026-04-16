@@ -7,7 +7,7 @@ namespace Isotope\CoreBundle\EventListener\DataContainer\Member;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 use Contao\DataContainer;
-use Isotope\CoreBundle\Model\ProductCollection;
+use Isotope\CoreBundle\Model\ProductCollectionModel;
 use Isotope\CoreBundle\ProductCollection\Cart\Cart;
 use Isotope\CoreBundle\ProductCollection\ProductCollectionStorage;
 
@@ -31,7 +31,7 @@ class DeleteCartListener
 
     private function deleteCarts(int $memberId): void
     {
-        $carts = ProductCollection::findByMember($memberId, Cart::getType());
+        $carts = ProductCollectionModel::findByMember($memberId, Cart::getType());
 
         if (null !== $carts) {
             foreach ($carts as $cart) {

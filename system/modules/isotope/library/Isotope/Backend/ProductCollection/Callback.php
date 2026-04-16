@@ -26,7 +26,7 @@ use Contao\SelectMenu;
 use Contao\StringUtil;
 use Contao\System;
 use Isotope\CoreBundle\Document\DocumentInterface;
-use Isotope\CoreBundle\Model\Document;
+use Isotope\CoreBundle\Model\DocumentModel;
 use Isotope\CoreBundle\ModelType\DocumentRegistry;
 use Isotope\Frontend;
 use Isotope\Haste\Util\Format;
@@ -227,7 +227,7 @@ class Callback extends Backend
 
             //Frontend::loadOrderEnvironment($objOrder);
 
-            if (($documentModel = Document::findByPk(Input::post('document'))) === null) {
+            if (($documentModel = DocumentModel::findByPk(Input::post('document'))) === null) {
                 Message::addError('Could not find document id.');
                 Controller::redirect($strRedirectUrl);
             }

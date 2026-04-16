@@ -13,8 +13,8 @@ namespace Isotope\Interfaces;
 
 use Contao\MemberModel;
 use Contao\Template;
-use Isotope\CoreBundle\Model\Config;
-use Isotope\CoreBundle\Model\ProductCollectionItem;
+use Isotope\CoreBundle\Model\ConfigModel;
+use Isotope\CoreBundle\Model\ProductCollectionItemModel;
 use Isotope\CoreBundle\Product\Product;
 use Isotope\CoreBundle\Store\Weight\Scale;
 
@@ -56,7 +56,7 @@ interface IsotopeProductCollection
     /**
      * Returns the shop config associated with this collection.
      *
-     * @return Config|null
+     * @return ConfigModel|null
      */
     public function getConfig();
 
@@ -151,7 +151,7 @@ interface IsotopeProductCollection
      * @param callable
      * @param bool
      *
-     * @return \Isotope\CoreBundle\Model\ProductCollectionItem[]
+     * @return \Isotope\CoreBundle\Model\ProductCollectionItemModel[]
      */
     public function getItems($varCallable = null, $blnNoCache = false);
 
@@ -159,7 +159,7 @@ interface IsotopeProductCollection
      * Search item for a specific product
      *
      *
-     * @return ProductCollectionItem|null
+     * @return ProductCollectionItemModel|null
      */
     public function getItemForProduct(Product $objProduct, array $configuration = []);
 
@@ -168,19 +168,19 @@ interface IsotopeProductCollection
      *
      * @param integer        $intQuantity
      *
-     * @return ProductCollectionItem
+     * @return ProductCollectionItemModel
      */
     public function addProduct(Product $objProduct, int $intQuantity, array $configuration, array $arrConfig = []);
 
     /**
      * Update a product collection item
      *
-     * @param ProductCollectionItem $objItem The product object
+     * @param ProductCollectionItemModel $objItem The product object
      * @param array                 $arrSet  The property(ies) to adjust
      *
      * @return bool
      */
-    public function updateItem(ProductCollectionItem $objItem, $arrSet);
+    public function updateItem(ProductCollectionItemModel $objItem, $arrSet);
 
     /**
      * Update product collection item with given ID
@@ -198,7 +198,7 @@ interface IsotopeProductCollection
      *
      * @return bool
      */
-    public function deleteItem(ProductCollectionItem $objItem);
+    public function deleteItem(ProductCollectionItemModel $objItem);
 
     /**
      * Remove item with given ID from collection

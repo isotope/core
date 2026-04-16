@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Store\Order\Transformer;
 
-use Isotope\CoreBundle\Model\Address;
+use Isotope\CoreBundle\Model\AddressModel;
 
 class AddressTransformer
 {
-    public static function transform(Address $address): array
+    public static function transform(AddressModel $address): array
     {
         $data = $address->row();
 

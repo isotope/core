@@ -16,7 +16,7 @@ use Isotope\CoreBundle\Product\CoreProduct;
  * @property int    $category
  * @property string $products
  */
-class RelatedProduct extends Model
+class RelatedProductModel extends Model
 {
     /**
      * @var string
@@ -26,7 +26,7 @@ class RelatedProduct extends Model
     /**
      * Find related products of a product.
      *
-     * @return Collection<RelatedProduct>|null
+     * @return Collection<RelatedProductModel>|null
      */
     public static function findByProductAndCategories(CoreProduct $objProduct, array $arrCategories, array $arrOptions = []): Collection|null
     {

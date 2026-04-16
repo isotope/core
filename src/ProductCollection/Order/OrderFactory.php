@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\ProductCollection\Order;
 
-use Isotope\CoreBundle\Model\Config;
-use Isotope\CoreBundle\Model\ProductCollection;
+use Isotope\CoreBundle\Model\ConfigModel;
+use Isotope\CoreBundle\Model\ProductCollectionModel;
 use Isotope\CoreBundle\ProductCollection\ProductCollectionStorage;
 use Isotope\CoreBundle\Store\Context\StoreContextFactory;
 use Isotope\CoreBundle\Util\StringUtil;
@@ -20,7 +20,7 @@ class OrderFactory
 
     public function loadFromId(int $id): Order|null
     {
-        $collection = ProductCollection::findById($id);
+        $collection = ProductCollectionModel::findById($id);
 
         if (!$collection || Order::getType() !== $collection->type) {
             return null;
@@ -31,7 +31,7 @@ class OrderFactory
 
     public function loadFromIdentifier(string $identifier): Order|null
     {
-        $collection = ProductCollection::findByIdentifier($identifier, Order::getType());
+        $collection = ProductCollectionModel::findByIdentifier($identifier, Order::getType());
 
         if (!$collection) {
             return null;
@@ -40,7 +40,7 @@ class OrderFactory
         return $this->load($collection);
     }
 
-    public function load(ProductCollection $collection): Order
+    public function load(ProductCollectionModel $collection): Order
     {
         $context = $this->contextFactory->create(
             $collection->store_id,

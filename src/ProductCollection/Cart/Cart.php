@@ -6,7 +6,7 @@ namespace Isotope\CoreBundle\ProductCollection\Cart;
 
 use Isotope\CoreBundle\Checkout\Payment\PaymentInterface;
 use Isotope\CoreBundle\Checkout\Shipping\ShippingInterface;
-use Isotope\CoreBundle\Model\Address;
+use Isotope\CoreBundle\Model\AddressModel;
 use Isotope\CoreBundle\ProductCollection\AbstractProductCollection;
 use Isotope\CoreBundle\Util\ClosureTrait;
 
@@ -18,9 +18,9 @@ class Cart extends AbstractProductCollection
 
     private bool $isModified = false;
 
-    private Address|\Closure|null $billingAddress = null;
+    private AddressModel|\Closure|null $billingAddress = null;
 
-    private Address|\Closure|null $shippingAddress = null;
+    private AddressModel|\Closure|null $shippingAddress = null;
 
     private \Closure|PaymentInterface|null $paymentMethod = null;
 
@@ -43,28 +43,28 @@ class Cart extends AbstractProductCollection
         return $this;
     }
 
-    public function getBillingAddress(): Address|null
+    public function getBillingAddress(): AddressModel|null
     {
         $this->resolveClosure($this->billingAddress);
 
         return $this->billingAddress;
     }
 
-    public function setBillingAddress(Address|\Closure|null $billingAddress): self
+    public function setBillingAddress(AddressModel|\Closure|null $billingAddress): self
     {
         $this->billingAddress = $billingAddress;
 
         return $this;
     }
 
-    public function getShippingAddress(): Address|null
+    public function getShippingAddress(): AddressModel|null
     {
         $this->resolveClosure($this->shippingAddress);
 
         return $this->shippingAddress;
     }
 
-    public function setShippingAddress(Address|\Closure|null $shippingAddress): self
+    public function setShippingAddress(AddressModel|\Closure|null $shippingAddress): self
     {
         $this->shippingAddress = $shippingAddress;
 

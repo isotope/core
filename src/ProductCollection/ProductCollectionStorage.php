@@ -10,8 +10,8 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
 use Isotope\CoreBundle\EventDispatcher\TransactionDispatcher;
 use Isotope\CoreBundle\Exception\InvalidArgumentException;
-use Isotope\CoreBundle\Model\ProductCollection;
-use Isotope\CoreBundle\Model\ProductCollectionItem;
+use Isotope\CoreBundle\Model\ProductCollectionModel;
+use Isotope\CoreBundle\Model\ProductCollectionItemModel;
 use Isotope\CoreBundle\ProductCollection\Cart\Cart;
 use Isotope\CoreBundle\ProductCollection\Event\LoadCollectionTransaction;
 use Isotope\CoreBundle\ProductCollection\Event\LoadItemTransaction;
@@ -39,13 +39,13 @@ class ProductCollectionStorage
      *
      * @return AbstractProductCollection<TType>
      */
-    public function load(AbstractProductCollection $collection, ProductCollection $collectionModel, StoreContext $context): AbstractProductCollection
+    public function load(AbstractProductCollection $collection, ProductCollectionModel $collectionModel, StoreContext $context): AbstractProductCollection
     {
         $collection->setId((int) $collectionModel->id);
 
         return $this->transactionDispatcher->dispatch(
             new LoadCollectionTransaction($collection, $collectionModel, $context),
-            function (AbstractProductCollection $collection, ProductCollection $collectionModel, StoreContext $context) {
+            function (AbstractProductCollection $collection, ProductCollectionModel $collectionModel, StoreContext $context) {
                 $this->loadLineItems($collection, $collectionModel, $context);
 
                 return $collection;
@@ -57,10 +57,10 @@ class ProductCollectionStorage
     {
         // TODO: check if collection is locked
 
-        $model = ProductCollection::findByIdentifier($collection->getIdentifier(), $collection->getType(), $context->getStoreId());
+        $model = ProductCollectionModel::findByIdentifier($collection->getIdentifier(), $collection->getType(), $context->getStoreId());
 
         if (!$model) {
-            $model = new ProductCollection();
+            $model = new ProductCollectionModel();
             $model->uniqid = $collection->getIdentifier();
             $model->type = $collection->getType();
             $model->store_id = $context->getStoreId();
@@ -76,7 +76,7 @@ class ProductCollectionStorage
 
         $this->transactionDispatcher->dispatch(
             new SaveCollectionTransaction($collection, $model),
-            function (AbstractProductCollection $collection, ProductCollection $collectionModel) {
+            function (AbstractProductCollection $collection, ProductCollectionModel $collectionModel) {
                 $collectionModel->save();
             },
         );
@@ -84,9 +84,9 @@ class ProductCollectionStorage
         $this->saveLineItems($collection, $model);
     }
 
-    public function delete(ProductCollection $model): bool
+    public function delete(ProductCollectionModel $model): bool
     {
-        return $this->transactionDispatcher->dispatch(new DeleteCollectionTransaction($model), function (ProductCollection $collectionModel) {
+        return $this->transactionDispatcher->dispatch(new DeleteCollectionTransaction($model), function (ProductCollectionModel $collectionModel) {
             $pid = $collectionModel->id;
             $affectedRows = $collectionModel->delete();
 
@@ -113,7 +113,7 @@ class ProductCollectionStorage
         });
     }
 
-    protected function loadLineItems(AbstractProductCollection $collection, ProductCollection $collectionModel, StoreContext $context): void
+    protected function loadLineItems(AbstractProductCollection $collection, ProductCollectionModel $collectionModel, StoreContext $context): void
     {
         $models = ProductCollectionItem::findByCollection($collectionModel->id)?->getModels() ?? [];
 
@@ -144,7 +144,7 @@ class ProductCollectionStorage
         }
     }
 
-    protected function saveLineItems(AbstractProductCollection $collection, ProductCollection $collectionModel): void
+    protected function saveLineItems(AbstractProductCollection $collection, ProductCollectionModel $collectionModel): void
     {
         $itemIds = [0];
 
@@ -153,10 +153,10 @@ class ProductCollectionStorage
                 continue;
             }
 
-            $itemModel = ProductCollectionItem::findOneByCollection($collectionModel->id, $lineItem->getIdentifier(), $lineItem->getConfiguration());
+            $itemModel = ProductCollectionItemModel::findOneByCollection($collectionModel->id, $lineItem->getIdentifier(), $lineItem->getConfiguration());
 
             if (!$itemModel) {
-                $itemModel = new ProductCollectionItem();
+                $itemModel = new ProductCollectionItemModel();
             }
 
             $itemModel->pid = $collectionModel->id;
@@ -179,7 +179,7 @@ class ProductCollectionStorage
 
             $this->transactionDispatcher->dispatch(
                 new SaveItemTransaction($collection, $collectionModel, $lineItem, $itemModel),
-                function (AbstractProductCollection $collection, ProductCollection $collectionModel, LineItem $lineItem, ProductCollectionItem $itemModel) {
+                function (AbstractProductCollection $collection, ProductCollectionModel $collectionModel, LineItem $lineItem, ProductCollectionItemModel $itemModel) {
                     $itemModel->save();
                 },
             );

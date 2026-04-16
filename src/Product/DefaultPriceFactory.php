@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Product;
 
 use Contao\StringUtil;
-use Isotope\CoreBundle\Model\ProductType;
+use Isotope\CoreBundle\Model\ProductTypeModel;
 use Isotope\CoreBundle\Product\DataCollector\ProductDto;
 use Isotope\CoreBundle\RuleBuilder\RuleMatcher;
 use Isotope\CoreBundle\Store\Context\StoreContext;
@@ -18,7 +18,7 @@ class DefaultPriceFactory
     {
     }
 
-    public function create(ProductDto $dto, ProductType $type, StoreContext $context): PriceDefinitionCollection|null
+    public function create(ProductDto $dto, ProductTypeModel $type, StoreContext $context): PriceDefinitionCollection|null
     {
         if (!\in_array('price', $type->getAttributes(), true) && !$type->hasVariantPrices()) {
             return null;

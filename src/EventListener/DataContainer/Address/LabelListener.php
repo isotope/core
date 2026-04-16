@@ -4,7 +4,7 @@ namespace Isotope\CoreBundle\EventListener\DataContainer\Address;
 
 use Codefog\HasteBundle\Formatter;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
-use Isotope\CoreBundle\Model\Address;
+use Isotope\CoreBundle\Model\AddressModel;
 use Isotope\CoreBundle\Store\Address\AddressFormatter;
 use Isotope\CoreBundle\Store\StoreManager;
 
@@ -20,7 +20,7 @@ class LabelListener
     #[AsCallback('tl_iso_address', 'list.label.label')]
     public function rowLabel(array $row): string
     {
-        $address = new Address();
+        $address = new AddressModel();
         $address->setRow($row);
 
         return (string) $this->addressFormatter->toHtml(

@@ -11,8 +11,6 @@ use Contao\Model\Collection;
 use Contao\StringUtil;
 
 /**
- * ProductType defines a product configuration.
- *
  * @property int    $id
  * @property int    $tstamp
  * @property string $name
@@ -33,7 +31,7 @@ use Contao\StringUtil;
  * @property string $shipping_exempt
  * @property bool   $downloads
  */
-class ProductType extends Model
+class ProductTypeModel extends Model
 {
     /**
      * @var string
@@ -137,7 +135,7 @@ class ProductType extends Model
     /**
      * Get all product types that are in use.
      *
-     * @return Collection<ProductType>|null
+     * @return Collection<ProductTypeModel>|null
      */
     public static function findAllUsed(array $arrOptions = []): Collection|null
     {

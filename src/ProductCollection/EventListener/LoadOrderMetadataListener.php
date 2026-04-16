@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\ProductCollection\EventListener;
 
-use Isotope\CoreBundle\Model\Address;
-use Isotope\CoreBundle\Model\OrderStatus;
-use Isotope\CoreBundle\Model\Payment;
-use Isotope\CoreBundle\Model\Shipping;
+use Isotope\CoreBundle\Model\AddressModel;
+use Isotope\CoreBundle\Model\OrderStatusModel;
+use Isotope\CoreBundle\Model\PaymentModel;
+use Isotope\CoreBundle\Model\ShippingModel;
 use Isotope\CoreBundle\ModelType\PaymentRegistry;
 use Isotope\CoreBundle\ModelType\ShippingRegistry;
 use Isotope\CoreBundle\ProductCollection\Cart\Cart;
@@ -44,15 +44,15 @@ class LoadOrderMetadataListener
         }
 
         if ($model->order_status) {
-            $order->setOrderStatus(static fn () => OrderStatus::findOneByAlias($model->order_status, StatusType::Order));
+            $order->setOrderStatus(static fn () => OrderStatusModel::findOneByAlias($model->order_status, StatusType::Order));
         }
 
         if ($model->transaction_status) {
-            $order->setTransactionStatus(static fn () => OrderStatus::findOneByAlias($model->transaction_status, StatusType::Transaction));
+            $order->setTransactionStatus(static fn () => OrderStatusModel::findOneByAlias($model->transaction_status, StatusType::Transaction));
         }
 
         if ($model->delivery_status) {
-            $order->setDeliveryStatus(static fn () => OrderStatus::findOneByAlias($model->delivery_status, StatusType::Delivery));
+            $order->setDeliveryStatus(static fn () => OrderStatusModel::findOneByAlias($model->delivery_status, StatusType::Delivery));
         }
 
         if ($model->locked) {
@@ -66,15 +66,15 @@ class LoadOrderMetadataListener
             new TaxRateCollection(),
         ));
 
-        $order->setBillingAddress(fn () => Address::findById($model->billing_address_id));
-        $order->setShippingAddress(fn () => Address::findById($model->shipping_address_id));
+        $order->setBillingAddress(fn () => AddressModel::findById($model->billing_address_id));
+        $order->setShippingAddress(fn () => AddressModel::findById($model->shipping_address_id));
 
         if ($paymentId = $model?->payment_id) {
-            $order->setPaymentMethod(fn () => $this->paymentRegistry->get(Payment::findById($paymentId), $context));
+            $order->setPaymentMethod(fn () => $this->paymentRegistry->get(PaymentModel::findById($paymentId), $context));
         }
 
         if ($shippingId = $model?->shipping_id) {
-            $order->setShippingMethod(fn () => $this->shippingRegistry->get(Shipping::findById($shippingId), $context));
+            $order->setShippingMethod(fn () => $this->shippingRegistry->get(ShippingModel::findById($shippingId), $context));
         }
     }
 }

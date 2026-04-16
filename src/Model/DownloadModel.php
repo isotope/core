@@ -1,15 +1,6 @@
 <?php
 
-/*
- * Isotope eCommerce for Contao Open Source CMS
- *
- * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
- *
- * @link       https://isotopeecommerce.org
- * @license    https://opensource.org/licenses/lgpl-3.0.html
- */
-
-namespace Isotope\Model;
+namespace Isotope\CoreBundle\Model;
 
 use Contao\FilesModel;
 use Contao\Model;
@@ -18,9 +9,16 @@ use Contao\System;
 use Isotope\CoreBundle\Product\ProductInterface;
 
 /**
- * Download model represents a file or folder download for a product.
+ * @property int    $id
+ * @property int    $pid
+ * @property int    $sorting
+ * @property int    $tstamp
+ * @property string $singleSRC
+ * @property int    $downloads_allowed
+ * @property string $expires
+ * @property bool   $published
  */
-class Download extends Model
+class DownloadModel extends Model
 {
     /**
      * @var string
@@ -87,7 +85,7 @@ class Download extends Model
      * Finds downloads for a given product or variant.
      *
      *
-     * @return Download[]|\Contao\Model\Collection|null
+     * @return DownloadModel[]|\Contao\Model\Collection|null
      */
     public static function findByProduct(ProductInterface $product)
     {

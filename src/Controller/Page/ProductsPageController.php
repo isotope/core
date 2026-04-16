@@ -15,7 +15,7 @@ use Contao\CoreBundle\String\HtmlDecoder;
 use Contao\Input;
 use Contao\PageModel;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
-use Isotope\CoreBundle\Model\Product;
+use Isotope\CoreBundle\Model\ProductModel;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\DataCollector\ProductDto;
 use Isotope\CoreBundle\Product\Extension\MetadataExtension;
@@ -51,7 +51,7 @@ class ProductsPageController extends AbstractPageController
             return $this->buildPage($pageModel, $request);
         }
 
-        $product = Product::findByMultilingualAliasOrId($alias);
+        $product = ProductModel::findByMultilingualAliasOrId($alias);
 
         if (!$product) {
             throw new PageNotFoundException();

@@ -5,7 +5,7 @@ use Contao\Input;
 use Contao\System;
 use Isotope\CompatibilityHelper;
 use Isotope\CoreBundle\DataContainer\ProductData;
-use Isotope\CoreBundle\Model\TaxClass;
+use Isotope\CoreBundle\Model\TaxClassModel;
 
 System::loadLanguageFile('tl_iso_producttype');
 
@@ -232,7 +232,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
                 ],
                 'tax_class' => [
                     'label' => &$GLOBALS['TL_LANG']['tl_iso_product']['prices']['tax_class'],
-                    'default' => static fn () => TaxClass::findFallback()?->id,
+                    'default' => static fn () => TaxClassModel::findFallback()?->id,
                     'inputType' => 'select',
                     'foreignKey' => 'tl_iso_tax_class.name',
                     'eval' => ['includeBlankOption' => true, 'blankOptionLabel' => &$GLOBALS['TL_LANG']['MSC']['taxFree'], 'tl_class' => 'clr'],

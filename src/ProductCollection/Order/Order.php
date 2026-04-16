@@ -6,8 +6,8 @@ namespace Isotope\CoreBundle\ProductCollection\Order;
 
 use Isotope\CoreBundle\Checkout\Payment\PaymentInterface;
 use Isotope\CoreBundle\Checkout\Shipping\ShippingInterface;
-use Isotope\CoreBundle\Model\Address;
-use Isotope\CoreBundle\Model\OrderStatus;
+use Isotope\CoreBundle\Model\AddressModel;
+use Isotope\CoreBundle\Model\OrderStatusModel;
 use Isotope\CoreBundle\ProductCollection\AbstractProductCollection;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Util\ClosureTrait;
@@ -22,15 +22,15 @@ class Order extends AbstractProductCollection
 
     private string|null $documentNumber = null;
 
-    private OrderStatus|\Closure|null $orderStatus = null;
+    private OrderStatusModel|\Closure|null $orderStatus = null;
 
-    private OrderStatus|\Closure|null $transactionStatus = null;
+    private OrderStatusModel|\Closure|null $transactionStatus = null;
 
-    private OrderStatus|\Closure|null $deliveryStatus = null;
+    private OrderStatusModel|\Closure|null $deliveryStatus = null;
 
-    private Address|\Closure|null $billingAddress = null;
+    private AddressModel|\Closure|null $billingAddress = null;
 
-    private Address|\Closure|null $shippingAddress = null;
+    private AddressModel|\Closure|null $shippingAddress = null;
 
     private \Closure|PaymentInterface|null $paymentMethod = null;
 
@@ -77,70 +77,70 @@ class Order extends AbstractProductCollection
         return $this;
     }
 
-    public function getOrderStatus(): OrderStatus|null
+    public function getOrderStatus(): OrderStatusModel|null
     {
         $this->resolveClosure($this->orderStatus);
 
         return $this->orderStatus;
     }
 
-    public function setOrderStatus(OrderStatus|\Closure|null $status): self
+    public function setOrderStatus(OrderStatusModel|\Closure|null $status): self
     {
         $this->orderStatus = $status;
 
         return $this;
     }
 
-    public function getTransactionStatus(): OrderStatus|null
+    public function getTransactionStatus(): OrderStatusModel|null
     {
         $this->resolveClosure($this->transactionStatus);
 
         return $this->transactionStatus;
     }
 
-    public function setTransactionStatus(OrderStatus|\Closure|null $status): self
+    public function setTransactionStatus(OrderStatusModel|\Closure|null $status): self
     {
         $this->transactionStatus = $status;
 
         return $this;
     }
 
-    public function getDeliveryStatus(): OrderStatus|null
+    public function getDeliveryStatus(): OrderStatusModel|null
     {
         $this->resolveClosure($this->deliveryStatus);
 
         return $this->deliveryStatus;
     }
 
-    public function setDeliveryStatus(OrderStatus|\Closure|null $status): self
+    public function setDeliveryStatus(OrderStatusModel|\Closure|null $status): self
     {
         $this->deliveryStatus = $status;
 
         return $this;
     }
 
-    public function getBillingAddress(): Address|null
+    public function getBillingAddress(): AddressModel|null
     {
         $this->resolveClosure($this->billingAddress);
 
         return $this->billingAddress;
     }
 
-    public function setBillingAddress(Address|\Closure|null $billingAddress): self
+    public function setBillingAddress(AddressModel|\Closure|null $billingAddress): self
     {
         $this->billingAddress = $billingAddress;
 
         return $this;
     }
 
-    public function getShippingAddress(): Address|null
+    public function getShippingAddress(): AddressModel|null
     {
         $this->resolveClosure($this->shippingAddress);
 
         return $this->shippingAddress;
     }
 
-    public function setShippingAddress(Address|\Closure|null $shippingAddress): self
+    public function setShippingAddress(AddressModel|\Closure|null $shippingAddress): self
     {
         $this->shippingAddress = $shippingAddress;
 

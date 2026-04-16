@@ -6,7 +6,7 @@ namespace Isotope\CoreBundle\EventListener\DataContainer\RuleCondition;
 
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\DataContainer;
-use Isotope\CoreBundle\Model\RuleCondition;
+use Isotope\CoreBundle\Model\RuleConditionModel;
 use Isotope\CoreBundle\ModelType\RuleConditionRegistry;
 use Isotope\CoreBundle\Store\Context\StoreContextFactory;
 
@@ -26,6 +26,6 @@ class OperatorOptionsListener
 
     private function getOperators(int $id): array
     {
-        return $this->conditionRegistry->get(RuleCondition::findById($id), $this->contextFactory->createBackend())?->getOperators() ?? [];
+        return $this->conditionRegistry->get(RuleConditionModel::findById($id), $this->contextFactory->createBackend())?->getOperators() ?? [];
     }
 }

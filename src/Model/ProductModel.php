@@ -31,7 +31,7 @@ use Terminal42\DcMultilingualBundle\Model\Multilingual;
  * @property string $start
  * @property string $stop
  */
-class Product extends Multilingual
+class ProductModel extends Multilingual
 {
     /**
      * @var string

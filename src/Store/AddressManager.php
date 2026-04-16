@@ -7,7 +7,7 @@ namespace Isotope\CoreBundle\Store;
 use Contao\CoreBundle\Cache\CacheTagManager;
 use Contao\CoreBundle\Exception\RedirectResponseException;
 use Doctrine\DBAL\Connection;
-use Isotope\CoreBundle\Model\Address;
+use Isotope\CoreBundle\Model\AddressModel;
 use Isotope\CoreBundle\Store\Address\AddressConfig;
 use Isotope\CoreBundle\Store\Address\AddressFormatter;
 use Isotope\CoreBundle\Store\Address\AddressValidator;
@@ -35,7 +35,7 @@ class AddressManager
     public function generate(Request $request, int $memberId, int $storeId, AddressConfig $addressConfig, string $identifier): array
     {
         if ($this->isAction($request, $identifier, 'create')) {
-            $address = new Address();
+            $address = new AddressModel();
             $address->ptable = 'tl_member';
             $address->pid = $memberId;
 
@@ -46,7 +46,7 @@ class AddressManager
 
         if ($this->isAction($request, $identifier, 'edit')) {
             $id = $request->request->getInt('edit_address_'.$identifier);
-            $address = array_find($addresses, fn (Address $address) => (int) $address->id === $id);
+            $address = array_find($addresses, fn (AddressModel $address) => (int) $address->id === $id);
 
             if (!$address) {
                 throw new BadRequestHttpException();
@@ -57,7 +57,7 @@ class AddressManager
 
         if ($this->isAction($request, $identifier, 'delete')) {
             $id = $request->request->getInt('delete_address_'.$identifier);
-            $address = array_find($addresses, fn (Address $address) => (int) $address->id === $id);
+            $address = array_find($addresses, fn (AddressModel $address) => (int) $address->id === $id);
 
             if (!$address) {
                 throw new BadRequestHttpException();
@@ -79,7 +79,7 @@ class AddressManager
         ];
     }
 
-    private function generateForm(Request $request, Address $address, AddressConfig $addressConfig, string $identifier, string $action): array
+    private function generateForm(Request $request, AddressModel $address, AddressConfig $addressConfig, string $identifier, string $action): array
     {
         $form = $this->formBuilder->build($request, $address, $addressConfig, $identifier.'_');
         $form->addFormField($action.'_address_'.$identifier, [
@@ -105,7 +105,7 @@ class AddressManager
     /**
      * Replicate DC_Table::delete() behaviour.
      */
-    private function deleteAddress(Address $address, AddressConfig $addressConfig): void
+    private function deleteAddress(AddressModel $address, AddressConfig $addressConfig): void
     {
         $addressId = $address->id;
 
@@ -136,11 +136,11 @@ class AddressManager
     }
 
     /**
-     * @return array<Address>
+     * @return array<AddressModel>
      */
     private function getAddresses(int $memberId, AddressConfig $addressConfig, int $storeId): array
     {
-        $addresses = Address::findByMemberAndStoreId($memberId, $storeId)?->getModels() ?? [];
+        $addresses = AddressModel::findByMemberAndStoreId($memberId, $storeId)?->getModels() ?? [];
 
         foreach ($addresses as $k => $address) {
             if (!$this->addressValidator->isValid($address, $addressConfig)) {

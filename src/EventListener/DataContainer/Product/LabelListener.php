@@ -10,8 +10,8 @@ use Contao\CoreBundle\Image\Studio\Studio;
 use Contao\DataContainer;
 use Contao\StringUtil;
 use Doctrine\DBAL\Connection;
-use Isotope\CoreBundle\Model\ProductType;
-use Isotope\CoreBundle\Model\TaxClass;
+use Isotope\CoreBundle\Model\ProductTypeModel;
+use Isotope\CoreBundle\Model\TaxClassModel;
 use Isotope\CoreBundle\Product\DefaultPriceFactory;
 use Isotope\CoreBundle\Store\Context\StoreContextFactory;
 use Isotope\CoreBundle\Store\Price\MoneyFormat;
@@ -59,7 +59,7 @@ class LabelListener
                     break;
 
                 default:
-                    $objProductType = ProductType::findById($row['type']);
+                    $objProductType = ProductTypeModel::findById($row['type']);
                     if (
                         $objProductType
                         && $objProductType->hasVariants()
@@ -144,9 +144,9 @@ class LabelListener
         $context = $this->storeContextFactory->createBackend();
 
         if (0 === $row['pid']) {
-            $type = ProductType::findById($row['type']);
+            $type = ProductTypeModel::findById($row['type']);
         } else {
-            $type = ProductType::findById($this->connection->fetchOne('SELECT type FROM tl_iso_product WHERE id=?', [$row['pid']]));
+            $type = ProductTypeModel::findById($this->connection->fetchOne('SELECT type FROM tl_iso_product WHERE id=?', [$row['pid']]));
         }
 
         if (
@@ -185,7 +185,7 @@ class LabelListener
                 $label = $this->translator->trans('MSC.priceRangeLabel', [$label], 'contao_default');
             }
 
-            $taxClass = $priceDefinition->getTaxId() ? TaxClass::findById($priceDefinition->getTaxId()) : null;
+            $taxClass = $priceDefinition->getTaxId() ? TaxClassModel::findById($priceDefinition->getTaxId()) : null;
             $label .= sprintf(' <span style="color:#999">[%s]</span>', $taxClass?->name ?? $this->translator->trans('MSC.taxFree', [], 'contao_default'));
 
             return $label;

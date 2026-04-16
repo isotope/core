@@ -12,11 +12,8 @@ use Isotope\CoreBundle\Product\ProductBuilder;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\StoreManager;
 use Isotope\Interfaces\IsotopeProductCollection;
-use Isotope\Model\ProductCollectionDownload;
 
 /**
- * ProductCollectionItem represents an item in a product collection.
- *
  * @property int    $id
  * @property int    $pid
  * @property int    $tstamp
@@ -29,12 +26,13 @@ use Isotope\Model\ProductCollectionDownload;
  * @property int    $level
  * @property float  $price
  * @property float  $tax_free_price
+ * @property string $price_data
  * @property string $tax_id
  * @property int    $referencePage
  *
  * @property string|null $unit_label
 */
-class ProductCollectionItem extends Model
+class ProductCollectionItemModel extends Model
 {
     /**
      * @var string
@@ -149,14 +147,14 @@ class ProductCollectionItem extends Model
     /**
      * Return downloads associated with this product collection item
      *
-     * @return ProductCollectionDownload[]
+     * @return ProductCollectionDownloadModel[]
      */
     public function getDownloads()
     {
         if (null === $this->arrDownloads) {
             $this->arrDownloads = [];
 
-            $objDownloads = ProductCollectionDownload::findBy('pid', $this->id);
+            $objDownloads = ProductCollectionDownloadModel::findBy('pid', $this->id);
 
             if (null !== $objDownloads) {
                 while ($objDownloads->next()) {

@@ -8,7 +8,7 @@ use Contao\CoreBundle\Routing\PageFinder;
 use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use Contao\Database;
 use Doctrine\DBAL\Connection;
-use Isotope\CoreBundle\Model\Product;
+use Isotope\CoreBundle\Model\ProductModel;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -43,7 +43,7 @@ class ProductCategoryUtil implements ResetInterface
     /**
      * @return array<int>
      */
-    public function getForProduct(Product $product): array
+    public function getForProduct(ProductModel $product): array
     {
         if (null === $this->unpublished) {
             $this->unpublished = $this->preload(false);

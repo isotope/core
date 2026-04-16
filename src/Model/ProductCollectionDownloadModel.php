@@ -1,15 +1,6 @@
 <?php
 
-/*
- * Isotope eCommerce for Contao Open Source CMS
- *
- * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
- *
- * @link       https://isotopeecommerce.org
- * @license    https://opensource.org/licenses/lgpl-3.0.html
- */
-
-namespace Isotope\Model;
+namespace Isotope\CoreBundle\Model;
 
 use Contao\Controller;
 use Contao\Database;
@@ -27,23 +18,18 @@ use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\ProductCollection\Order;
 
 /**
- * ProductCollectionDownload model represents a download in a collection (usually an order)
- *
  * @property int    $pid
  * @property int    $tstamp
  * @property int    $download_id
  * @property string $downloads_remaining
  * @property string $expires
  */
-class ProductCollectionDownload extends Model
+class ProductCollectionDownloadModel extends Model
 {
-
     /**
-     * Name of the current table
      * @var string
      */
     protected static $strTable = 'tl_iso_product_collection_download';
-
 
     /**
      * Check if downloads are remaining and is not expired
@@ -81,7 +67,7 @@ class ProductCollectionDownload extends Model
      */
     public function getForTemplate($blnOrderPaid = false, $orderDetailsPageId = null)
     {
-        /** @var Download $objDownload */
+        /** @var DownloadModel $objDownload */
         $objDownload = $this->getRelated('download_id');
 
         if (null === $objDownload) {
@@ -205,10 +191,10 @@ class ProductCollectionDownload extends Model
 
         foreach ($objCollection->getItems() as $objItem) {
             if ($objItem->hasProduct()) {
-                $objDownloads = Download::findByProduct($objItem->getProduct());
+                $objDownloads = DownloadModel::findByProduct($objItem->getProduct());
 
                 if (null !== $objDownloads) {
-                    /** @var Download $objDownload */
+                    /** @var DownloadModel $objDownload */
                     foreach ($objDownloads as $objDownload) {
                         $objItemDownload              = new static();
                         $objItemDownload->pid         = $objItem->id;

@@ -32,7 +32,7 @@ use Contao\Model;
  * @property string $flatWeight
  * @property string $productCalculation
  */
-class Shipping extends Model
+class ShippingModel extends Model
 {
     /**
      * @var string

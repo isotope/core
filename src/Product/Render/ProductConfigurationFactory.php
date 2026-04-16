@@ -11,7 +11,7 @@ use Contao\UploadableWidgetInterface;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
 use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
 use Isotope\CoreBundle\Attribute\VariantAttributeInterface;
-use Isotope\CoreBundle\Model\ProductCollectionItem;
+use Isotope\CoreBundle\Model\ProductCollectionItemModel;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\Event\ProductConfigurationEvent;
 use Isotope\CoreBundle\Store\Context\ProductContext;
@@ -159,7 +159,7 @@ class ProductConfigurationFactory
     private function getDefaults(CoreProduct $product, Request $request): array
     {
         if ($request->query->has('collection_item')) {
-            $item = ProductCollectionItem::findById($request->query->get('collection_item'));
+            $item = ProductCollectionItemModel::findById($request->query->get('collection_item'));
             // TODO: check this item belongs to a collection that belongs to the current user
 
             if ($item && $item->identifier === $product->getIdentifier()) {

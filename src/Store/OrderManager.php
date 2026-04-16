@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Store;
 
 use Isotope\CoreBundle\EventDispatcher\TransactionDispatcher;
-use Isotope\CoreBundle\Model\Address;
-use Isotope\CoreBundle\Model\ProductCollection;
-use Isotope\CoreBundle\Model\ProductCollectionItem;
+use Isotope\CoreBundle\Model\AddressModel;
+use Isotope\CoreBundle\Model\ProductCollectionModel;
+use Isotope\CoreBundle\Model\ProductCollectionItemModel;
 use Isotope\CoreBundle\ProductCollection\Order\Order;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Event\OrderValidationEvent;
@@ -95,7 +95,7 @@ class OrderManager
 
         unset($data['id']);
 
-        $address = new Address();
+        $address = new AddressModel();
         $address->setRow($data);
         $address->pid = 0;
         $address->ptable = 'tl_iso_product_collection';

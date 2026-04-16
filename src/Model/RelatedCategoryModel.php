@@ -7,14 +7,14 @@ namespace Isotope\CoreBundle\Model;
 use Contao\Model;
 
 /**
+ * @property int    $id
+ * @property int    $tstamp
  * @property string $name
- * @property string $amount
- * @property string $label
  */
-class BasePrice extends Model
+class RelatedCategoryModel extends Model
 {
     /**
      * @var string
      */
-    protected static $strTable = 'tl_iso_baseprice';
+    protected static $strTable = 'tl_iso_related_category';
 }

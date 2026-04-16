@@ -7,7 +7,7 @@ namespace Isotope\CoreBundle\Store\Address;
 use Contao\Controller;
 use Contao\System;
 use Contao\Widget;
-use Isotope\CoreBundle\Model\Address;
+use Isotope\CoreBundle\Model\AddressModel;
 use Isotope\CoreBundle\Validator\Constraints\DcaAttributes;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -20,12 +20,12 @@ class AddressValidator
     {
     }
 
-    public function isValid(Address $address, AddressConfig $addressConfig): bool
+    public function isValid(AddressModel $address, AddressConfig $addressConfig): bool
     {
         return 0 === $this->validate($address, $addressConfig)->count();
     }
 
-    public function validate(Address $address, AddressConfig $addressConfig): ConstraintViolationListInterface
+    public function validate(AddressModel $address, AddressConfig $addressConfig): ConstraintViolationListInterface
     {
         return $this->validator->validate(
             $address->row(),

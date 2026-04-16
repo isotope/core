@@ -47,7 +47,7 @@ use Contao\Model;
  * @property string $orderPrefix
  * @property int    $orderDigits
  */
-class Config extends Model
+class ConfigModel extends Model
 {
     /**
      * @var string

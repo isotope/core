@@ -8,14 +8,14 @@ use Codefog\HasteBundle\StringParser;
 use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\CoreBundle\InsertTag\InsertTagParser;
 use Contao\Model;
-use Isotope\CoreBundle\Model\Document;
+use Isotope\CoreBundle\Model\DocumentModel;
 use Isotope\CoreBundle\ModelType\ModelInstanceTrait;
 use Isotope\CoreBundle\ModelType\ModelTypeFactoryInterface;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
- * @implements ModelTypeFactoryInterface<DocumentInterface, Document>
+ * @implements ModelTypeFactoryInterface<DocumentInterface, DocumentModel>
  */
 class StandardDocumentFactory implements ModelTypeFactoryInterface
 {
@@ -30,11 +30,11 @@ class StandardDocumentFactory implements ModelTypeFactoryInterface
     }
 
     /**
-     * @param Document $model
+     * @param DocumentModel $model
      */
     public function create(Model $model, StoreContext $context): StandardDocument
     {
-        $this->validateInstanceOf($model, Document::class);
+        $this->validateInstanceOf($model, DocumentModel::class);
 
         $document = new StandardDocument(
             $this->framework,

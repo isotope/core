@@ -9,7 +9,7 @@ use Contao\CoreBundle\InsertTag\InsertTagResult;
 use Contao\CoreBundle\InsertTag\ResolvedInsertTag;
 use Contao\CoreBundle\InsertTag\ResolvedParameters;
 use Contao\CoreBundle\InsertTag\Resolver\InsertTagResolverNestedResolvedInterface;
-use Isotope\CoreBundle\Model\Address;
+use Isotope\CoreBundle\Model\AddressModel;
 use Isotope\CoreBundle\ProductCollection\AbstractProductCollection;
 use Isotope\CoreBundle\ProductCollection\Cart\Cart;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItemCollection;
@@ -121,7 +121,7 @@ class ProductCollectionInsertTag implements InsertTagResolverNestedResolvedInter
         return (string) $amount;
     }
 
-    private function formatAddress(Address $address, string|null $attribute = null): string
+    private function formatAddress(AddressModel $address, string|null $attribute = null): string
     {
         if (null === $attribute) {
             $context = $this->storeManager->getCurrentContext();

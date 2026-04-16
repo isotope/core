@@ -10,8 +10,8 @@ use Contao\DataContainer;
 use Contao\Input;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
 use Isotope\CoreBundle\Attribute\VariantAttributeInterface;
-use Isotope\CoreBundle\Model\Attribute;
-use Isotope\CoreBundle\Model\AttributeOption;
+use Isotope\CoreBundle\Model\AttributeModel;
+use Isotope\CoreBundle\Model\AttributeOptionModel;
 
 /**
  * Price is not available for an attribute option if the attribute is a variant option attribute.
@@ -30,17 +30,17 @@ class PriceFieldListener
             return;
         }
 
-        $attribute = $this->attributeRegistry->get(Attribute::findById($dc->currentPid));
+        $attribute = $this->attributeRegistry->get(AttributeModel::findById($dc->currentPid));
 
         if (
             null === $attribute
             || ($attribute instanceof VariantAttributeInterface && $attribute->isVariantOption())
         ) {
-            unset($GLOBALS['TL_DCA'][AttributeOption::getTable()]['fields']['price']);
+            unset($GLOBALS['TL_DCA'][AttributeOptionModel::getTable()]['fields']['price']);
 
             PaletteManipulator::create()
                 ->removeField('price')
-                ->applyToPalette('option', AttributeOption::getTable())
+                ->applyToPalette('option', AttributeOptionModel::getTable())
             ;
         }
     }

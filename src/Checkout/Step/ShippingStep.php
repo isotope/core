@@ -9,7 +9,7 @@ use Contao\StringUtil;
 use Isotope\CoreBundle\Checkout\Shipping\ConfigurableShippingInterface;
 use Isotope\CoreBundle\Checkout\Shipping\ShippingInterface;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsCheckoutStep;
-use Isotope\CoreBundle\Model\Shipping;
+use Isotope\CoreBundle\Model\ShippingModel;
 use Isotope\CoreBundle\ModelType\ShippingRegistry;
 use Isotope\CoreBundle\Product\Extension\ShippingExtension;
 use Isotope\CoreBundle\ProductCollection\Cart\Cart;
@@ -111,7 +111,7 @@ class ShippingStep implements CheckoutStepInterface
         $skippable = explode(',', $config['iso_checkout_skippable'] ?? '');
 
         if (\in_array('shipping_method', $skippable, true) && $id = ($context->getShippingIds()[0] ?? null)) {
-            return $this->shippingRegistry->get(Shipping::findById($id), $context);
+            return $this->shippingRegistry->get(ShippingModel::findById($id), $context);
         }
 
         return null;
@@ -124,7 +124,7 @@ class ShippingStep implements CheckoutStepInterface
     private function getShippingMethods(array $ids, StoreContext $context): array
     {
         /** @var list<ShippingInterface> $shippings */
-        $shippings = $this->shippingRegistry->get(Shipping::findMultipleByIds($ids), $context, true);
+        $shippings = $this->shippingRegistry->get(ShippingModel::findMultipleByIds($ids), $context, true);
 
         if (!$shippings) {
             return [];

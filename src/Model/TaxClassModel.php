@@ -13,7 +13,7 @@ use Contao\Model;
  * @property string      $label
  * @property string|null $rates
  */
-class TaxClass extends Model
+class TaxClassModel extends Model
 {
     /**
      * @var string
