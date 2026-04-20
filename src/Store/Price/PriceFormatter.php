@@ -31,7 +31,26 @@ class PriceFormatter
         return $this->markupFactory->create('@Contao/component/_isotope_price.html.twig', $data);
     }
 
-    private function getData(CalculatedPrice $price, StoreContext $context, string|null $key): array
+    public function getBasePrice(CalculatedPrice $productPrice, StoreContext $context, bool $html = true): TemplateMarkup|null
+    {
+        if (!$basePrice = $productPrice->getBasePrice()) {
+            return null;
+        }
+
+        $amount = $productPrice->getUnitPrice() / $basePrice->getProductAmount() * $basePrice->getBaseAmount();
+        $data = $this->getData(new CalculatedPrice($amount, $amount), $context);
+
+        return $this->markupFactory->create(
+            '@Contao/component/_isotope_base_price.html.twig',
+            [
+                ...$data,
+                'base_price' => $basePrice,
+                'html' => $html,
+            ],
+        );
+    }
+
+    private function getData(CalculatedPrice $price, StoreContext $context, string|null $key = null): array
     {
         $format = $context->getMoneyFormat();
 

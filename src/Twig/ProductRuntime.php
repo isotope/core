@@ -22,6 +22,7 @@ class ProductRuntime implements RuntimeExtensionInterface
         private readonly StoreManager $storeManager,
         private readonly RequestStack $requestStack,
         private readonly PriceFormatter $priceFormatter,
+        private readonly TemplateMarkupFactory $markupFactory,
     ) {
     }
 
@@ -34,7 +35,7 @@ class ProductRuntime implements RuntimeExtensionInterface
         );
     }
 
-    public function generatePrice(CalculatedPrice|LineItem|Product|null $productOrItem = null, string|null $key = null, bool $html = true): TemplateMarkup|null
+    public function generatePrice(CalculatedPrice|LineItem|Product|null $productOrItem, string|null $key = null, bool $html = true): TemplateMarkup|null
     {
         $price = $productOrItem instanceof CalculatedPrice ? $productOrItem : null;
 
@@ -55,10 +56,7 @@ class ProductRuntime implements RuntimeExtensionInterface
         return $this->priceFormatter->toHtml($price, $context, $key);
     }
 
-    /**
-     * TODO: this should probably use a template for base price (and return a TemplateMarkup)
-     */
-    public function generateBasePrice(CalculatedPrice|LineItem|Product|null $productOrItem = null, string|null $key = null, bool $html = true): string
+    public function generateBasePrice(CalculatedPrice|LineItem|Product|null $productOrItem, bool $html = true): TemplateMarkup|null
     {
         $productPrice = $productOrItem instanceof CalculatedPrice ? $productOrItem : null;
 
@@ -66,24 +64,10 @@ class ProductRuntime implements RuntimeExtensionInterface
             $productPrice = $productOrItem->getPrice();
         }
 
-        if (!$productPrice instanceof CalculatedPrice || !($basePrice = $productPrice->getBasePrice())) {
-            return '';
+        if (!$productPrice instanceof CalculatedPrice) {
+            return null;
         }
 
-        $context = $this->storeManager->getCurrentContext();
-        $amount = $productPrice->getUnitPrice() / $basePrice->getProductAmount() * $basePrice->getBaseAmount();
-        $price = new CalculatedPrice($amount, $amount);
-
-        if ($html) {
-            $priceString = (string) $this->priceFormatter->toHtml($productPrice, $context, $key);
-        } else {
-            $priceString = (string) $this->priceFormatter->toText($price, $context, $key);
-        }
-
-        return \sprintf(
-            $basePrice->getLabel(),
-            $priceString,
-            $basePrice->getProductAmount()
-        );
+        return $this->priceFormatter->getBasePrice($productPrice, $this->storeManager->getCurrentContext());
     }
 }
