@@ -390,7 +390,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['iso_listingSortDirection'] = [
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['iso_buttons'] = [
     'inputType' => 'checkboxWizard',
-    'default' => ['add_to_cart'],
+    'default' => 'add_to_cart',
     'reference' => &$GLOBALS['TL_LANG']['MSC']['buttonLabel'],
     'eval' => ['multiple' => true, 'csv' => ',', 'tl_class' => 'clr'],
 ];
