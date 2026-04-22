@@ -12,6 +12,7 @@ use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Routing\ProductReference;
 use Isotope\CoreBundle\Twig\TemplateMarkup;
 use Isotope\CoreBundle\Twig\TemplateMarkupFactory;
+use Symfony\Component\Routing\Exception\ExceptionInterface;
 
 #[AsGallery]
 class StandardGallery extends AbstractGallery implements ContainerAwareInterface
@@ -33,7 +34,11 @@ class StandardGallery extends AbstractGallery implements ContainerAwareInterface
     public function build(CoreProduct $product, string $attribute, ProductReference|string|null $href = null): TemplateMarkup|null
     {
         if ($href instanceof ProductReference) {
-            $href = $this->get(ContentUrlGenerator::class)->generate($href);
+            try {
+                $href = $this->get(ContentUrlGenerator::class)->generate($href);
+            } catch (ExceptionInterface) {
+                $href = null;
+            }
         }
 
         return $this->get(TemplateMarkupFactory::class)->create($this->getTemplate(), [
