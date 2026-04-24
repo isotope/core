@@ -17,4 +17,19 @@ enum PriceDisplay: string implements TranslatableLabelInterface
     {
         return new TranslatableMessage('MSC.iso_priceDisplay.'.$this->value.'.0', [], 'contao_default');
     }
+
+    public function isNet(): bool
+    {
+        return $this === self::Net;
+    }
+
+    public function isGross(): bool
+    {
+        return $this === self::Gross;
+    }
+
+    public function isFixed(): bool
+    {
+        return $this === self::Fixed;
+    }
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Isotope\CoreBundle\Twig;
+namespace Isotope\CoreBundle\Twig\Runtime;
 
 use Codefog\HasteBundle\Formatter;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;

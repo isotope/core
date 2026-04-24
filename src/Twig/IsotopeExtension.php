@@ -6,9 +6,15 @@ namespace Isotope\CoreBundle\Twig;
 
 use Hashids\Hashids;
 use Isotope\CoreBundle\Store\Address\AddressFormatter;
+use Isotope\CoreBundle\Twig\Global\IsotopeVariable;
+use Isotope\CoreBundle\Twig\Runtime\ActionRuntime;
+use Isotope\CoreBundle\Twig\Runtime\AttributeRuntime;
+use Isotope\CoreBundle\Twig\Runtime\GalleryRuntime;
+use Isotope\CoreBundle\Twig\Runtime\ProductRuntime;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
+use Twig\Extension\GlobalsInterface;
 use Twig\Runtime\EscaperRuntime;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -16,14 +22,15 @@ use Twig\TwigFunction;
 /**
  * @internal
  */
-class IsotopeExtension extends AbstractExtension
+class IsotopeExtension extends AbstractExtension implements GlobalsInterface
 {
     public function __construct(
-        private readonly Environment $environment,
+        private readonly Environment $twig,
+        private readonly IsotopeVariable $isotopeVariable,
         private readonly AddressFormatter $addressFormatter,
         #[Autowire(service: 'isotope.hashids')] private readonly Hashids $hashids,
     ) {
-        $this->environment
+        $this->twig
             ->getRuntime(EscaperRuntime::class)
             ->addSafeClass(TemplateMarkup::class, ['html', 'contao_html'])
         ;
@@ -50,5 +57,10 @@ class IsotopeExtension extends AbstractExtension
             new TwigFunction('isotope_gallery', [GalleryRuntime::class, 'get'], ['needs_context' => true]),
             new TwigFunction('isotope_address', $this->addressFormatter->toHtml(...)),
         ];
+    }
+
+    public function getGlobals(): array
+    {
+        return ['isotope' => $this->isotopeVariable];
     }
 }

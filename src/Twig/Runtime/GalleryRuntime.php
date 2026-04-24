@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Isotope\CoreBundle\Twig;
+namespace Isotope\CoreBundle\Twig\Runtime;
 
 use Isotope\CoreBundle\Gallery\StandardGallery;
 use Isotope\CoreBundle\Model\GalleryModel;
@@ -11,6 +11,7 @@ use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\Render\ViewInterface;
 use Isotope\CoreBundle\Routing\ProductReference;
 use Isotope\CoreBundle\Store\StoreManager;
+use Isotope\CoreBundle\Twig\TemplateMarkup;
 use Twig\Extension\RuntimeExtensionInterface;
 
 class GalleryRuntime implements RuntimeExtensionInterface

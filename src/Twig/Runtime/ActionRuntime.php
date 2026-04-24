@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Isotope\CoreBundle\Twig;
+namespace Isotope\CoreBundle\Twig\Runtime;
 
 use Contao\Controller;
 use Contao\CoreBundle\Exception\ResponseException;
@@ -135,11 +135,14 @@ class ActionRuntime implements RuntimeExtensionInterface
         }
 
         if ($result->message) {
+            // TODO: this confirmation is never shown
             Message::addConfirmation($result->message);
         }
 
         if ($result->redirect) {
             Controller::redirect($result->redirect);
         }
+
+        Controller::reload();
     }
 }

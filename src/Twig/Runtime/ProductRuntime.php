@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Isotope\CoreBundle\Twig;
+namespace Isotope\CoreBundle\Twig\Runtime;
 
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\Product;
@@ -12,7 +12,7 @@ use Isotope\CoreBundle\Store\Context\ProductContext;
 use Isotope\CoreBundle\Store\Price\CalculatedPrice;
 use Isotope\CoreBundle\Store\Price\PriceFormatter;
 use Isotope\CoreBundle\Store\StoreManager;
-use Isotope\Isotope;
+use Isotope\CoreBundle\Twig\TemplateMarkup;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Extension\RuntimeExtensionInterface;
 
@@ -22,7 +22,6 @@ class ProductRuntime implements RuntimeExtensionInterface
         private readonly StoreManager $storeManager,
         private readonly RequestStack $requestStack,
         private readonly PriceFormatter $priceFormatter,
-        private readonly TemplateMarkupFactory $markupFactory,
     ) {
     }
 
