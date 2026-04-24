@@ -13,13 +13,23 @@ class SaveCollectionTransaction extends Transaction
     public const string NAME = 'isotope.product_collection.save';
 
     public function __construct(
-        public readonly AbstractProductCollection $collection,
-        public readonly ProductCollectionModel $collectionModel,
+        private readonly AbstractProductCollection $collection,
+        private readonly ProductCollectionModel $collectionModel,
     ) {
     }
 
     public function getEventName(): string
     {
         return self::NAME;
+    }
+
+    public function getCollection(): AbstractProductCollection
+    {
+        return $this->collection;
+    }
+
+    public function getCollectionModel(): ProductCollectionModel
+    {
+        return $this->collectionModel;
     }
 }

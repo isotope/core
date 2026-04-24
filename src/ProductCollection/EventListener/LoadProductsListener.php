@@ -23,10 +23,10 @@ class LoadProductsListener
 
     public function __invoke(LoadCollectionTransaction $event): void
     {
-        $lineItems = $event->collection->getLineItems()->whereType(LineItem::TYPE_PRODUCT);
+        $lineItems = $event->getCollection()->getLineItems()->whereType(LineItem::TYPE_PRODUCT);
         $identifiers = array_unique($lineItems->column('getIdentifier'));
         $dtoCollection = new ProductDtoCollection(array_map(static fn (string $identifier) => new ProductDto($identifier), $identifiers));
-        $products = $this->productBuilder->build($dtoCollection, $event->context);
+        $products = $this->productBuilder->build($dtoCollection, $event->getStoreContext());
 
         foreach ($lineItems as $item) {
             $product = $products->findByIdentifier($item->getIdentifier());

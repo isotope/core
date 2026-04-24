@@ -41,7 +41,7 @@ class TransactionDispatcher
 
         if (!$transaction->isPropagationStopped()) {
             try {
-                $transaction->result = $function(...$transaction->getParams());
+                $transaction->result = $function($transaction);
             } catch (\Throwable $e) {
                 $transaction->exception = $e;
 

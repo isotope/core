@@ -41,10 +41,10 @@ class ProductCollectionStorage
 
         return $this->transactionDispatcher->dispatch(
             new LoadCollectionTransaction($collection, $collectionModel, $context),
-            function (AbstractProductCollection $collection, ProductCollectionModel $collectionModel, StoreContext $context) {
-                $this->loadLineItems($collection, $collectionModel, $context);
+            function (LoadCollectionTransaction $transaction) {
+                $this->loadLineItems($transaction->getCollection(), $transaction->getCollectionModel(), $transaction->getStoreContext());
 
-                return $collection;
+                return $transaction->getCollection();
             },
         );
     }
@@ -70,8 +70,8 @@ class ProductCollectionStorage
 
         $this->transactionDispatcher->dispatch(
             new SaveCollectionTransaction($collection, $model),
-            function (AbstractProductCollection $collection, ProductCollectionModel $collectionModel) {
-                $collectionModel->save();
+            function (SaveCollectionTransaction $transaction) {
+                $transaction->getCollectionModel()->save();
             },
         );
 
@@ -80,7 +80,8 @@ class ProductCollectionStorage
 
     public function delete(ProductCollectionModel $model): bool
     {
-        return $this->transactionDispatcher->dispatch(new DeleteCollectionTransaction($model), function (ProductCollectionModel $collectionModel) {
+        return $this->transactionDispatcher->dispatch(new DeleteCollectionTransaction($model), function (DeleteCollectionTransaction $transaction) {
+            $collectionModel = $transaction->getCollectionModel();
             $pid = $collectionModel->id;
             $affectedRows = $collectionModel->delete();
 
@@ -136,7 +137,9 @@ class ProductCollectionStorage
 
             $this->transactionDispatcher->dispatch(
                 new LoadItemTransaction($collection, $item, $itemModel, $context),
-                function (AbstractProductCollection $collection, LineItem $lineItem, ProductCollectionItemModel $itemModel, StoreContext $context) use (&$total, &$subtotals) {
+                function (LoadItemTransaction $transaction) use (&$total, &$subtotals) {
+                    $lineItem = $transaction->getLineItem();
+
                     switch ($lineItem->getType()) {
                         case LineItem::TYPE_TOTAL:
                             $total = $lineItem->getPrice();
@@ -147,7 +150,7 @@ class ProductCollectionStorage
                             break;
 
                         default:
-                            $collection->getLineItems()->add($lineItem);
+                            $transaction->getCollection()->getLineItems()->add($lineItem);
                             break;
                     }
                 },
@@ -193,8 +196,8 @@ class ProductCollectionStorage
 
             $this->transactionDispatcher->dispatch(
                 new SaveItemTransaction($collection, $collectionModel, $lineItem, $itemModel),
-                function (AbstractProductCollection $collection, ProductCollectionModel $collectionModel, LineItem $lineItem, ProductCollectionItemModel $itemModel) {
-                    $itemModel->save();
+                function (SaveItemTransaction $transaction) {
+                    $transaction->getItemModel()->save();
                 },
             );
 

@@ -17,14 +17,29 @@ class LoadCollectionTransaction extends Transaction
     public const string NAME = 'isotope.product_collection.load';
 
     public function __construct(
-        public readonly AbstractProductCollection $collection,
-        public readonly ProductCollectionModel $collectionModel,
-        public readonly StoreContext $context,
+        private readonly AbstractProductCollection $collection,
+        private readonly ProductCollectionModel $collectionModel,
+        private readonly StoreContext $context,
     ) {
     }
 
     public function getEventName(): string
     {
         return self::NAME;
+    }
+
+    public function getCollection(): AbstractProductCollection
+    {
+        return $this->collection;
+    }
+
+    public function getCollectionModel(): ProductCollectionModel
+    {
+        return $this->collectionModel;
+    }
+
+    public function getStoreContext(): StoreContext
+    {
+        return $this->context;
     }
 }

@@ -24,9 +24,9 @@ class LoadCartMetadataListener
 
     public function __invoke(LoadCollectionTransaction $event): void
     {
-        $cart = $event->collection;
-        $cartModel = $event->collectionModel;
-        $context = $event->context;
+        $cart = $event->getCollection();
+        $cartModel = $event->getCollectionModel();
+        $context = $event->getStoreContext();
 
         if (!$cart instanceof Cart) {
             return;

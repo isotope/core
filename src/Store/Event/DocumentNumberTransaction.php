@@ -11,14 +11,29 @@ class DocumentNumberTransaction extends Transaction
     public const string NAME = 'isotope.document_number';
 
     public function __construct(
-        public readonly string $prefix,
-        public readonly int $length,
-        public readonly int $storeId,
+        private readonly string $prefix,
+        private readonly int $length,
+        private readonly int $storeId,
     ) {
     }
 
     public function getEventName(): string
     {
         return self::NAME;
+    }
+
+    public function getPrefix(): string
+    {
+        return $this->prefix;
+    }
+
+    public function getLength(): int
+    {
+        return $this->length;
+    }
+
+    public function getStoreId(): int
+    {
+        return $this->storeId;
     }
 }

@@ -12,13 +12,23 @@ class OrderTransaction extends Transaction
     public const string NAME = 'isotope.order';
 
     public function __construct(
-        public readonly array $data,
-        public readonly StoreContext $context,
+        private readonly array $data,
+        private readonly StoreContext $context,
     ) {
     }
 
     public function getEventName(): string
     {
         return self::NAME;
+    }
+
+    public function getData(): array
+    {
+        return $this->data;
+    }
+
+    public function getStoreContext(): StoreContext
+    {
+        return $this->context;
     }
 }

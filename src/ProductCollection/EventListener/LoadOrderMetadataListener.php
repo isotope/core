@@ -31,9 +31,9 @@ class LoadOrderMetadataListener
 
     public function __invoke(LoadCollectionTransaction $event): void
     {
-        $order = $event->collection;
-        $model = $event->collectionModel;
-        $context = $event->context;
+        $order = $event->getCollection();
+        $model = $event->getCollectionModel();
+        $context = $event->getStoreContext();
 
         if (!$order instanceof Order) {
             return;

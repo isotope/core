@@ -23,16 +23,17 @@ class SaveCartMetadataListener
 
     public function __invoke(SaveCollectionTransaction $event): void
     {
-        $collection = $event->collection;
+        $collection = $event->getCollection();
 
         if (!$collection instanceof Cart) {
             return;
         }
 
-        $event->collectionModel->billing_address_id = $this->saveAddress($collection->getBillingAddress(), $event->collectionModel);
-        $event->collectionModel->shipping_address_id = $this->saveAddress($collection->getShippingAddress(), $event->collectionModel);
-        $event->collectionModel->shipping_id = $collection->getShippingMethod()?->getId() ?? 0;
-        $event->collectionModel->payment_id = $collection->getPaymentMethod()?->getId() ?? 0;
+        $model = $event->getCollectionModel();
+        $model->billing_address_id = $this->saveAddress($collection->getBillingAddress(), $model);
+        $model->shipping_address_id = $this->saveAddress($collection->getShippingAddress(), $model);
+        $model->shipping_id = $collection->getShippingMethod()?->getId() ?? 0;
+        $model->payment_id = $collection->getPaymentMethod()?->getId() ?? 0;
     }
 
     private function saveAddress(AddressModel|null $address, ProductCollectionModel $collection): int

@@ -49,7 +49,10 @@ class OrderManager
 
         return $this->transactionDispatcher->dispatch(
             new OrderTransaction($data, $context),
-            function (array $data, StoreContext $context): CreateOrderResult {
+            function (OrderTransaction $transaction): CreateOrderResult {
+                $data = $transaction->getData();
+                $context = $transaction->getStoreContext();
+
                 $collection = new ProductCollectionModel();
                 $collection->tstamp = time();
                 $collection->type = Order::getType();
@@ -152,7 +155,10 @@ class OrderManager
 
         return $this->transactionDispatcher->dispatch(
             new OrderStatusTransaction($order, $values),
-            function (ProductCollectionModel $order, array $values) use ($updateDatabase): array {
+            function (OrderStatusTransaction $transaction) use ($updateDatabase): array {
+                $order = $transaction->getOrder();
+                $values = $transaction->getValues();
+
                 $hasChanges = false;
                 foreach ($values as $k => $v) {
                     if ($hasChanges = ($v !== $order->{$k})) {
@@ -227,9 +233,9 @@ class OrderManager
         return $address;
     }
 
-    private function generateDocumentNumber(string $prefix, int $length, int $storeId): string
+    private function generateDocumentNumber(DocumentNumberTransaction $transaction): string
     {
-        $prefix = $this->insertTagParser->replaceInline($prefix);
+        $prefix = $this->insertTagParser->replaceInline($transaction->getPrefix());
 
         $qb = $this->connection->createQueryBuilder();
         $qb
@@ -238,7 +244,7 @@ class OrderManager
             ->where('type=:type')
             ->andWhere('store_id=:storeId')
             ->setParameter('type', Order::getType())
-            ->setParameter('storeId', $storeId)
+            ->setParameter('storeId', $transaction->getStoreId())
         ;
 
         if ('' !== $prefix) {
@@ -256,7 +262,7 @@ class OrderManager
             $max = (int) substr($result, mb_strlen($prefix));
         }
 
-        return $prefix.str_pad((string) ($max + 1), $length, '0', STR_PAD_LEFT);
+        return $prefix.str_pad((string) ($max + 1), $transaction->getLength(), '0', STR_PAD_LEFT);
     }
 
     private function getUserId(): int

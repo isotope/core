@@ -30,18 +30,6 @@ abstract class Transaction implements StoppableEventInterface
         return $this->result;
     }
 
-    /**
-     * @return array<string, mixed>
-     */
-    public function getParams(): array
-    {
-        $data = get_object_vars($this);
-
-        unset($data['result'], $data['propagationStopped'], $data['exception']);
-
-        return $data;
-    }
-
     public function isPropagationStopped(): bool
     {
         return $this->propagationStopped;
