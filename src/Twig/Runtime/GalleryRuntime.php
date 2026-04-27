@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Twig\Runtime;
 
-use Isotope\CoreBundle\Gallery\StandardGallery;
 use Isotope\CoreBundle\Model\GalleryModel;
 use Isotope\CoreBundle\ModelType\GalleryRegistry;
 use Isotope\CoreBundle\Product\CoreProduct;
@@ -32,8 +31,14 @@ class GalleryRuntime implements RuntimeExtensionInterface
 
         $galleryId ??= $view->getGallery($product);
         $model = $galleryId > 0 ? GalleryModel::findById($galleryId) : null;
-        $gallery = $model ? $this->galleryRegistry->get($model, $this->storeManager->getCurrentContext()) : new StandardGallery(0);
 
-        return $gallery->build($product, $attributeName, $href ?? $view?->getProductReference($product));
+        if (!$model) {
+            return null;
+        }
+
+        return $this->galleryRegistry
+            ->get($model, $this->storeManager->getCurrentContext())
+            ->build($product, $attributeName, $href ?? $view?->getProductReference($product))
+        ;
     }
 }
