@@ -65,11 +65,13 @@
                                         </td>
                                         <td class="quantity">
                                             {% if not item.isDynamic %}
-                                                {% if editable|default %}
-                                                    <input name="quantity[{{ item.id }}]" type="number" class="text" value="{{ item.quantity }}" maxlength="10">
-                                                {% else %}
-                                                    {{ item.quantity }} x
-                                                {% endif %}
+                                                {% block item_quantity %}
+                                                    {% if editable|default %}
+                                                        <input name="quantity[{{ item.id }}]" type="number" class="text" value="{{ item.quantity }}" maxlength="10">
+                                                    {% else %}
+                                                        {{ item.quantity }} x
+                                                    {% endif %}
+                                                {% endblock %}
                                             {% endif %}
                                         </td>
                                         {% set price = isotope_price(item) %}
