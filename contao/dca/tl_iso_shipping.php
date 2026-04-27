@@ -45,9 +45,9 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
     'palettes' => [
         '__selector__' => ['type', 'flatCalculation'],
         'default' => '{title_legend},name,label,type',
-        'flat' => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},price,tax_class,shipping_weight,flatCalculation;{config_legend},minimum_weight,maximum_weight,product_types,product_types_condition,rule;{enabled_legend},enabled',
-        'product_price' => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},tax_class,shipping_weight,productCalculation;{config_legend},minimum_weight,maximum_weight,product_types,product_types_condition,rule;{enabled_legend},enabled',
-        'group' => '{title_legend},name,label,type,inherit;{note_legend:hide},note;{config_legend},group_methods,rule;{price_legend},group_calculation,tax_class;{enabled_legend},enabled',
+        'flat' => '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},price,tax_class,shipping_weight,flatCalculation;{config_legend},minimum_weight,maximum_weight,product_types,product_types_condition,rule;{enabled_legend},enabled',
+        'product_price' => '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},tax_class,shipping_weight,productCalculation;{config_legend},minimum_weight,maximum_weight,product_types,product_types_condition,rule;{enabled_legend},enabled',
+        'group' => '{title_legend},type,inherit,name,label;{note_legend:hide},note;{config_legend},group_methods,rule;{price_legend},group_calculation,tax_class;{enabled_legend},enabled',
     ],
     'subpalettes' => [
         'flatCalculation_perProduct' => 'flatProductTypes',
