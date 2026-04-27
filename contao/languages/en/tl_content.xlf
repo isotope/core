@@ -20,12 +20,6 @@
       <trans-unit id="tl_content.iso_gallery.1">
         <source>Select a gallery to render images (overrides the product type config).</source>
       </trans-unit>
-      <trans-unit id="tl_content.iso_collectionTpl.0">
-        <source>Product collection template</source>
-      </trans-unit>
-      <trans-unit id="tl_content.iso_collectionTpl.1">
-        <source>Please choose a template to render the products. You can add custom collection templates to folder &lt;em&gt;templates&lt;/em&gt;. Collection template files start with &lt;em&gt;iso_collection_&lt;/em&gt;.</source>
-      </trans-unit>
       <trans-unit id="tl_content.iso_filterTpl.0">
         <source>Filter template</source>
       </trans-unit>
@@ -205,12 +199,6 @@
       </trans-unit>
       <trans-unit id="tl_content.iso_order_conditions_position.after">
         <source>After products list</source>
-      </trans-unit>
-      <trans-unit id="tl_content.iso_addToAddressbook.0">
-        <source>Add to address book</source>
-      </trans-unit>
-      <trans-unit id="tl_content.iso_addToAddressbook.1">
-        <source>Add new addresses to members address book (if logged in).</source>
       </trans-unit>
       <trans-unit id="tl_content.iso_orderCollectionBy.0">
         <source>Sorting</source>
