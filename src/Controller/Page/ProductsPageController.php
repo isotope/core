@@ -138,7 +138,7 @@ class ProductsPageController extends AbstractPageController
         if (1 === \count($categories)) {
             $htmlHeadBag->setCanonicalUri(
                 $this->generateContentUrl(
-                    new ProductReference($product, $categories[0]),
+                    new ProductReference($product, array_first($categories)),
                     [],
                     UrlGeneratorInterface::ABSOLUTE_URL,
                 ),

@@ -73,7 +73,7 @@ class ProductCategoryUtil implements ResetInterface
             $this->root[$rootId] = Database::getInstance()->getChildRecords($rootId, 'tl_page', false, [$rootId]);
         }
 
-        return array_intersect($this->getPublishedForProduct($product), $this->root[$rootId]);
+        return array_values(array_intersect($this->getPublishedForProduct($product), $this->root[$rootId]));
     }
 
     /**
