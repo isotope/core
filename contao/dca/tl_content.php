@@ -77,7 +77,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields'] += [
         'label' => &$GLOBALS['TL_LANG']['tl_module']['showProtected'],
         'inputType' => 'checkbox',
         'eval' => ['tl_class' => 'w25'],
-        'sql' => ['type' => 'boolean', 'default' => false],
     ],
     'showHidden' => [
         'label' => &$GLOBALS['TL_LANG']['tl_module']['showHidden'],
