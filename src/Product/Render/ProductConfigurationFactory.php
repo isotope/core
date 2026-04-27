@@ -8,6 +8,7 @@ use Contao\Controller;
 use Contao\StringUtil;
 use Contao\System;
 use Contao\UploadableWidgetInterface;
+use Contao\Widget;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
 use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
 use Isotope\CoreBundle\Attribute\VariantAttributeInterface;
@@ -38,8 +39,9 @@ class ProductConfigurationFactory
         $product = $productContext->getProduct();
         $type = $product->getProductType();
         $attributes = array_unique(array_merge($type->getAttributes(), $type->getVariantAttributes()));
+
         $variants = $product->getVariants();
-        $defaultVariant = $view->useFallbackVariant($product) ? $product->getDefaultVariant() : null;
+        $defaultVariant = $product->isVariant() ? $product : ($view->useFallbackVariant($product) ? $product->getDefaultVariant() : null);
         $defaults = $this->getDefaults($product, $request);
 
         foreach ($attributes as $attributeName) {
@@ -70,7 +72,7 @@ class ProductConfigurationFactory
                 } elseif ($defaultVariant) {
                     $value = $defaultVariant->{$attributeName};
                 } elseif (1 === \count($values)) {
-                    $value = $values[0];
+                    $value = array_first($values);
                 }
 
                 if ($value) {
@@ -92,6 +94,7 @@ class ProductConfigurationFactory
 
             $fieldConfig['id'] = $view->getFormId($product).'_'.$attributeName;
 
+            /** @var Widget $widget */
             $widget = new $widgetClass($fieldConfig);
             $widget->storeValues = true;
             $widget->value = $value ?? $defaults[$attributeName] ?? null;
