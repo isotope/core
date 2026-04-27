@@ -22,8 +22,6 @@ class LineItem
 
     public const string TYPE_SUBTOTAL = 'subtotal';
 
-    public const string TYPE_TAX = 'tax';
-
     public const string TYPE_TOTAL = 'total';
 
     private int $id = 0;
