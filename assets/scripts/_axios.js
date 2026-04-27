@@ -1,6 +1,6 @@
 import Axios from 'axios';
-import NProgress from 'nprogress';
-import 'nprogress/nprogress.css'
+import '@bprogress/core/css';
+import { BProgress } from '@bprogress/core';
 
 const instance = Axios.create({
     headers: {
@@ -9,19 +9,19 @@ const instance = Axios.create({
 });
 
 instance.interceptors.request.use(config => {
-    NProgress.start();
+    BProgress.start();
     return config;
 }, error => {
-    NProgress.done();
+    BProgress.done();
     return Promise.reject(error);
 });
 
 // see https://gist.github.com/nemanja947/a71018e659f7d5255ea43c304f8ee108
 instance.interceptors.response.use(response => {
-    NProgress.done();
+    BProgress.done();
     return response;
 }, error => {
-    NProgress.done();
+    BProgress.done();
     return Promise.reject(error);
 });
 
