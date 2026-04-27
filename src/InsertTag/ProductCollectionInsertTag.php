@@ -16,6 +16,7 @@ use Isotope\CoreBundle\ProductCollection\LineItem\LineItemCollection;
 use Isotope\CoreBundle\Store\Address\AddressFormatter;
 use Isotope\CoreBundle\Store\StoreManager;
 use Isotope\CoreBundle\Store\Weight\WeightUnit;
+use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -102,7 +103,11 @@ class ProductCollectionInsertTag implements InsertTagResolverNestedResolvedInter
                 return $this->formatWeight($collection->getLineItems(), $unit);
 
             default:
-                return $this->propertyAccessor->getValue($collection, $parameters->get(0));
+                try {
+                    return $this->propertyAccessor->getValue($collection, $parameters->get(0));
+                } catch (NoSuchPropertyException) {
+                    return '';
+                }
         }
     }
 

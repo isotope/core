@@ -16,7 +16,9 @@ use Isotope\CoreBundle\Product\DataCollector\ProductDto;
 use Isotope\CoreBundle\Product\ProductBuilder;
 use Isotope\CoreBundle\Store\StoreManager;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Routing\Exception\ExceptionInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -31,6 +33,7 @@ class ProductInsertTag implements InsertTagResolverNestedResolvedInterface
         private readonly RequestStack $requestStack,
         private readonly ProductBuilder $productBuilder,
         private readonly StoreManager $storeManager,
+        private readonly PropertyAccessorInterface $propertyAccessor,
     ) {
     }
 
@@ -103,9 +106,13 @@ class ProductInsertTag implements InsertTagResolverNestedResolvedInterface
             return new InsertTagResult('');
         }
 
-        $propertyAccessor = PropertyAccess::createPropertyAccessor();
+        try {
+            $value = (string) $this->propertyAccessor->getValue($product, $attribute);
+        } catch (NoSuchPropertyException) {
+            $value = '';
+        }
 
-        return new InsertTagResult((string) $propertyAccessor->getValue($product, $attribute));
+        return new InsertTagResult($value);
     }
 
     private function findProduct(int|null $id): CoreProduct|null
