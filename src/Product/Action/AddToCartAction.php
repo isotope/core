@@ -27,7 +27,6 @@ class AddToCartAction implements ProductActionInterface
         private readonly StoreManager $storeManager,
         private readonly CartManager $cartManager,
         private readonly RequestStack $requestStack,
-        private readonly PageFinder $pageFinder,
         private readonly ContentUrlGenerator $urlGenerator,
         private readonly UriSigner $uriSigner,
         private readonly Environment $twig,
@@ -72,9 +71,10 @@ class AddToCartAction implements ProductActionInterface
     private function handleAddToCart(CoreProduct $product, array $configuration, ViewInterface $view): ActionResult
     {
         $quantity = 1;
+        $request = $this->requestStack->getCurrentRequest();
 
-        if ($view->useQuantity($product) && Input::post('quantity_requested') > 0) {
-            $quantity = (int) Input::post('quantity_requested');
+        if ($view->useQuantity($product) && ($quantityRequested = (int) $request?->request->get('quantity_requested')) > 0) {
+            $quantity = $quantityRequested;
         }
 
         // Do not add parent of variant product to the cart
@@ -96,7 +96,13 @@ class AddToCartAction implements ProductActionInterface
         $item->setProduct($product);
         $item->setSku($product->getSku());
         $item->setLabel($product->getName());
-        $item->setReferencePage($this->pageFinder->getCurrentPage());
+
+        if (
+            ($page = $request?->attributes->get('originalPageModel')) instanceof PageModel
+            || ($page = $request?->attributes->get('pageModel')) instanceof PageModel
+        ) {
+            $item->setReferencePage($page);
+        }
 
         $this->cartManager->add($context->getCart(), $item, $context);
 
