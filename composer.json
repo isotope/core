@@ -32,9 +32,9 @@
         "docs": "https://docs.isotopeecommerce.org/"
     },
     "require": {
-        "php": "^8.1",
+        "php": "^8.3",
         "composer-runtime-api": "^2",
-        "contao/core-bundle": "^5.7.3",
+        "contao/core-bundle": "^5.7.4",
         "doctrine/dbal": "^4.3",
         "terminal42/contao-conditionalselectmenu": "^4.1",
         "terminal42/dcawizard": "^3.1",
