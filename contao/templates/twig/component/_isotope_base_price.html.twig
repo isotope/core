@@ -1,3 +1,3 @@
 {% use '@Contao/component/_isotope_price.html.twig' %}
 {% set price = block('isotope_price_component') %}
-{{ base_price.label|sanitize_html('contao')|format(price, base_price.productAmount)|raw }}
+{{ label|default(base_price.label)|sanitize_html('contao')|format(price, base_price.productAmount)|raw }}
