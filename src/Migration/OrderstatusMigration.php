@@ -109,10 +109,11 @@ class OrderstatusMigration extends AbstractMigration
         $types = $this->getMissingTypes();
 
         foreach ($types as $type) {
-            foreach (self::DEFAULTS[$type] as $status) {
+            foreach (self::DEFAULTS[$type] as $position => $status) {
                 $this->connection->insert('tl_iso_orderstatus', [
                     'tstamp' => time(),
                     'type'=> $type,
+                    'sorting' => $position,
                     ...$status,
                 ]);
             }
