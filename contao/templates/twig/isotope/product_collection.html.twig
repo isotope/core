@@ -77,7 +77,7 @@
                                         {% set price = isotope_price(item) %}
                                         <td class="price">
                                             {% if price %}
-                                                {{ price|raw }}
+                                                {{ price }}
                                                 {% if show_taxes|default %}
                                                     <div class="tax">
                                                         {% if price.is_gross|default %}incl.{% else %}.excl{% endif %}
@@ -157,7 +157,7 @@
                                     <td class="name" colspan="{{ data.iso_gallery|default ? '3' : '2' }}">{{ 'MSC.grandTotalLabel'|trans }}</td>
                                     <td class="price">&nbsp;</td>
                                     <td class="price total">
-                                        {{ total|raw }}
+                                        {{ total }}
                                     </td>
                                     {% if multiple_taxes|default %}
                                         <td class="tax_id">&nbsp;</td>
