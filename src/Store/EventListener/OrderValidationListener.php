@@ -24,7 +24,7 @@ class OrderValidationListener
 
         $event->addConstraint(new Assert\Collection(
             fields: [
-                'member_id' => [new Assert\NotBlank(), new Assert\PositiveOrZero()],
+                'member_id' => new Assert\Required([new Assert\Positive()]),
                 'config_id' => [new Assert\NotBlank(), new Assert\Positive()],
                 'store_id' => [new Assert\NotBlank(), new Assert\PositiveOrZero()],
                 'locale' => [new Assert\NotBlank(), new Assert\Locale()],
@@ -40,7 +40,7 @@ class OrderValidationListener
                 'total' => [new Assert\NotBlank(), new Assert\PositiveOrZero()],
                 'currency' => [new Assert\NotBlank(), new Assert\Currency()],
 
-                'order_status' => [new Assert\NotBlank(), new Assert\Positive()],
+                'order_status' => new Assert\Optional([new Assert\NotBlank(), new Assert\Positive()]),
                 'date_paid' => new Assert\Optional([new Assert\NotBlank(), new Assert\DateTime()]),
                 'date_shipped' => new Assert\Optional([new Assert\NotBlank(), new Assert\DateTime()]),
 

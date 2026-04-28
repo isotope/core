@@ -83,7 +83,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
         'member' => [
             'search' => true,
             'foreignKey' => "tl_member.CONCAT_WS(' ', company, firstname, lastname, street, postal, city)",
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => 'int(10) unsigned NULL',
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
         ],
         'locked' => [
