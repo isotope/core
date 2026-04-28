@@ -10,7 +10,7 @@ $GLOBALS['TL_DCA']['tl_content']['palettes']['__selector__'][] = 'iso_emptyMessa
 $GLOBALS['TL_DCA']['tl_content']['palettes']['__selector__'][] = 'iso_emptyFilter';
 $GLOBALS['TL_DCA']['tl_content']['palettes']['iso_productlist'] = '{type_legend},title,headline,type;{config_legend},numberOfItems,perPage,iso_category_scope,iso_searchFields,iso_filterQuery,iso_filterKey,iso_listingSortField,iso_listingSortDirection;{redirect_legend},iso_link_primary,iso_jump_first,iso_addProductJumpTo;{reference_legend:hide},defineRoot;{template_legend:hide},customTpl,iso_list_layout,iso_gallery,iso_use_quantity,iso_hide_list,iso_hide_empty,iso_disable_options,iso_includeMessages,iso_emptyMessage,iso_emptyFilter,iso_buttons;{protected_legend:hide},protected;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
 $GLOBALS['TL_DCA']['tl_content']['palettes']['iso_productreader'] = '{type_legend},title,headline,type;{config_legend},iso_use_quantity,iso_display404Page;{redirect_legend},iso_addProductJumpTo;{template_legend:hide},customTpl,iso_reader_layout,iso_gallery,iso_disable_options,iso_includeMessages,iso_buttons;{protected_legend:hide},protected;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
-$GLOBALS['TL_DCA']['tl_content']['palettes']['iso_cart'] = '{type_legend},title,headline,type;{redirect_legend},iso_cart_jumpTo,iso_checkout_jumpTo;{template_legend:hide},customTpl,iso_orderCollectionBy,iso_gallery,iso_continueShopping,iso_includeMessages,iso_emptyMessage;{protected_legend:hide},protected;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
+$GLOBALS['TL_DCA']['tl_content']['palettes']['iso_cart'] = '{type_legend},title,headline,type;{redirect_legend},iso_cart_jumpTo,iso_checkout_jumpTo,iso_checkout_guest_jumpTo;{template_legend:hide},customTpl,iso_orderCollectionBy,iso_gallery,iso_continueShopping,iso_includeMessages,iso_emptyMessage;{protected_legend:hide},protected;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
 $GLOBALS['TL_DCA']['tl_content']['palettes']['iso_checkout'] = '{type_legend},title,headline,type;{config_legend},iso_checkout_method,iso_notifications;{redirect_legend},iso_forward_review,iso_show_skipped,iso_checkout_skippable,orderCompleteJumpTo,iso_cart_jumpTo;{template_legend:hide},customTpl,iso_orderCollectionBy,iso_gallery,iso_includeMessages;{iso_order_conditions_legend},iso_order_conditions;{protected_legend:hide},protected;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
 $GLOBALS['TL_DCA']['tl_content']['palettes']['iso_checkoutmember'] = '{type_legend},title,headline,type;{config_legend},iso_checkout_method,iso_notifications;{redirect_legend},iso_forward_review,iso_show_skipped,iso_checkout_skippable,orderCompleteJumpTo,iso_login_jumpTo,iso_cart_jumpTo;{template_legend:hide},customTpl,iso_orderCollectionBy,iso_gallery,iso_includeMessages;{iso_order_conditions_legend},iso_order_conditions;{protected_legend:hide},protected;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
 $GLOBALS['TL_DCA']['tl_content']['palettes']['iso_checkoutguest'] = '{type_legend},title,headline,type;{config_legend},iso_checkout_method,iso_notifications;{redirect_legend},iso_forward_review,iso_show_skipped,iso_checkout_skippable,orderCompleteJumpTo,iso_cart_jumpTo;{template_legend:hide},customTpl,iso_orderCollectionBy,iso_gallery,iso_includeMessages;{iso_order_conditions_legend},iso_order_conditions;{protected_legend:hide},protected;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
@@ -355,6 +355,14 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['iso_cart_jumpTo'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['iso_checkout_jumpTo'] = [
+    'inputType' => 'pageTree',
+    'foreignKey' => 'tl_page.title',
+    'eval' => ['fieldType' => 'radio', 'tl_class' => 'clr'],
+    'explanation' => 'jumpTo',
+    'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['iso_checkout_guest_jumpTo'] = [
     'inputType' => 'pageTree',
     'foreignKey' => 'tl_page.title',
     'eval' => ['fieldType' => 'radio', 'tl_class' => 'clr'],

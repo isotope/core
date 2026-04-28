@@ -8,6 +8,7 @@ use Contao\CoreBundle\Routing\ContentUrlGenerator;
 use Contao\PageModel;
 use Isotope\CoreBundle\HttpFoundation\ActionResult;
 use Isotope\CoreBundle\ProductCollection\AbstractProductCollection;
+use Isotope\CoreBundle\Store\StoreManager;
 use Twig\Environment;
 
 class SubmitToCheckoutAction implements ProductCollectionActionInterface
@@ -15,6 +16,7 @@ class SubmitToCheckoutAction implements ProductCollectionActionInterface
     public function __construct(
         private readonly Environment $twig,
         private readonly ContentUrlGenerator $urlGenerator,
+        private readonly StoreManager $storeManager,
     ) {
     }
 
@@ -35,10 +37,15 @@ class SubmitToCheckoutAction implements ProductCollectionActionInterface
 
     private function getPageModel(array $context): PageModel|null
     {
-        if (!isset($context['data']['iso_checkout_jumpTo'])) {
-            return null;
+        $pageId = $context['data']['iso_checkout_jumpTo'] ?? null;
+
+        if (
+            $this->storeManager->getCurrentContext()->getMemberId()
+            && isset($context['data']['iso_checkout_guest_jumpTo'])
+        ) {
+            $pageId = $context['data']['iso_checkout_guest_jumpTo'];
         }
 
-        return PageModel::findById($context['data']['iso_checkout_jumpTo']);
+        return $pageId ? PageModel::findById($pageId) : null;
     }
 }

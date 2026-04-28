@@ -338,6 +338,12 @@
       <trans-unit id="tl_content.iso_checkout_jumpTo.1">
         <source>This setting defines to which page a user will be redirected when completing their transaction.</source>
       </trans-unit>
+      <trans-unit id="tl_content.iso_checkout_guest_jumpTo.0">
+        <source>Checkout Jump to page for guests</source>
+      </trans-unit>
+      <trans-unit id="tl_content.iso_checkout_guest_jumpTo.1">
+        <source>Override the checkout jump to page if no member is logged in.</source>
+      </trans-unit>
       <trans-unit id="tl_content.iso_listingSortField.0">
         <source>Initial sorting field</source>
       </trans-unit>
