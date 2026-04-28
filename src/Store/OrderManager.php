@@ -77,13 +77,15 @@ class OrderManager
                     $shippingAddress = $this->saveAddress($data['shipping_address'], (int) $collection->id, $context->getStoreId());
                 }
 
-                foreach ($data['line_items'] as $lineItem) {
+                foreach ($data['line_items'] as &$lineItem) {
                     $item = new ProductCollectionItemModel();
                     $item->setRow($lineItem);
                     $item->pid = $collection->id;
                     $item->tstamp = time();
                     $item->price_data = json_encode($item->price_data);
                     $item->save();
+
+                    $lineItem['id'] = $item->id;
                 }
 
                 $collection->order_status = array_key_first($this->workflowManager->getOrderWorkflow()->getMarking($collection)->getPlaces());
@@ -92,6 +94,8 @@ class OrderManager
                 $collection->billing_address_id = $billingAddress->id ?? 0;
                 $collection->shipping_address_id = $shippingAddress?->id ?? 0;
                 $collection->save();
+
+                $transaction->setData($data);
 
                 return new CreateOrderResult((int) $collection->id, $collection->uniqid);
             },

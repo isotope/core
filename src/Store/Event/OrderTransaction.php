@@ -11,10 +11,19 @@ class OrderTransaction extends Transaction
 {
     public const string NAME = 'isotope.order';
 
+    /**
+     * @var array<mixed>
+     */
+    private array $data;
+
+    /**
+     * @param array<mixed> $data
+     */
     public function __construct(
-        private readonly array $data,
+        private array $originalData,
         private readonly StoreContext $context,
     ) {
+        $this->data = $originalData;
     }
 
     public function getEventName(): string
@@ -22,9 +31,21 @@ class OrderTransaction extends Transaction
         return self::NAME;
     }
 
+    public function getOriginalData(): array
+    {
+        return $this->originalData;
+    }
+
     public function getData(): array
     {
         return $this->data;
+    }
+
+    public function setData(array $data): self
+    {
+        $this->data = $data;
+
+        return $this;
     }
 
     public function getStoreContext(): StoreContext
