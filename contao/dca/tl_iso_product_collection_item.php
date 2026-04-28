@@ -33,7 +33,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_item'] = [
             'sql' => 'varchar(32) NOT NULL',
         ],
         'identifier' => [
-            'sql' => 'varchar(64) NOT NULL',
+            'sql' => 'varchar(64) NULL',
         ],
         'configuration' => [
             'sql' => 'blob NULL',
@@ -68,7 +68,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_item'] = [
         ],
         'referencePage' => [
             'foreignKey' => 'tl_page.title',
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => "int(10) unsigned NULL",
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
         ],
     ],

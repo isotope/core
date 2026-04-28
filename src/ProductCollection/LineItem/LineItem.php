@@ -51,7 +51,7 @@ class LineItem
 
     public function __construct(
         private string $type,
-        private string $identifier,
+        private string|null $identifier,
         private int $quantity = 1,
     ) {
     }
@@ -61,12 +61,12 @@ class LineItem
         return $this->type;
     }
 
-    public function getIdentifier(): string
+    public function getIdentifier(): string|null
     {
         return $this->identifier;
     }
 
-    public function setIdentifier(string $identifier): self
+    public function setIdentifier(string|null $identifier): self
     {
         $this->identifier = $identifier;
 
@@ -99,7 +99,7 @@ class LineItem
 
     public function getLabel(): string
     {
-        return $this->label ?: $this->identifier;
+        return $this->label ?: $this->identifier ?: $this->type;
     }
 
     public function setLabel(string $label): self
