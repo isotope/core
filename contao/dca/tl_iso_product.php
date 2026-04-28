@@ -14,7 +14,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
         'label' => &$GLOBALS['TL_LANG']['MOD']['iso_products'][0],
         'dataContainer' => ProductData::class,
         'enableVersioning' => true,
-        'ctable' => ['tl_iso_product', 'tl_iso_related_product', 'tl_iso_download', 'tl_iso_attribute_option'],
+        'ctable' => ['tl_iso_product', 'tl_iso_related_product', 'tl_iso_attribute_option'],
         'sql' => [
             'keys' => [
                 'id' => 'primary',
@@ -65,10 +65,6 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'related' => [
                 'href' => 'table=tl_iso_related_product',
                 'icon' => 'images/related.svg',
-            ],
-            'downloads' => [
-                'href' => 'table=tl_iso_download',
-                'icon' => 'images/paperclip.svg',
             ],
         ],
     ],

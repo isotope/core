@@ -6,7 +6,6 @@ use Doctrine\DBAL\Types\Types;
 $GLOBALS['TL_DCA']['tl_iso_product_collection_item'] = [
     'config' => [
         'ptable' => 'tl_iso_product_collection',
-        'ctable' => ['tl_iso_product_collection_download'],
         'sql' => [
             'keys' => [
                 'id' => 'primary',

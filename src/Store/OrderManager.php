@@ -86,8 +86,6 @@ class OrderManager
                     $item->save();
                 }
 
-                // TODO: add downloads
-
                 $collection->order_status = array_key_first($this->workflowManager->getOrderWorkflow()->getMarking($collection)->getPlaces());
                 $collection->transaction_status = array_key_first($this->workflowManager->getTransactionWorkflow()->getMarking($collection)->getPlaces());
                 $collection->delivery_status = array_key_first($this->workflowManager->getDeliveryWorkflow()->getMarking($collection)->getPlaces());

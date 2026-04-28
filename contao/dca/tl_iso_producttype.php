@@ -25,14 +25,14 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = [
             'panelLayout' => 'filter;search,limit',
         ],
         'label' => [
-            'fields' => ['name', 'variants', 'downloads', 'prices', 'shipping_exempt'],
+            'fields' => ['name', 'variants', 'prices', 'shipping_exempt'],
             'showColumns' => true,
         ],
     ],
     'palettes' => [
         '__selector__' => ['class', 'prices', 'variants'],
         'default' => '{name_legend},name,class',
-        'standard' => '{name_legend},name,class,fallback;{description_legend:hide},description;{prices_legend:hide},prices;{template_legend},list_template,reader_template,list_gallery,reader_gallery,cssClass;{attributes_legend},attributes;{variants_legend:hide},variants;{expert_legend:hide},shipping_exempt,downloads',
+        'standard' => '{name_legend},name,class,fallback;{description_legend:hide},description;{prices_legend:hide},prices;{template_legend},list_template,reader_template,list_gallery,reader_gallery,cssClass;{attributes_legend},attributes;{variants_legend:hide},variants;{expert_legend:hide},shipping_exempt',
     ],
     'subpalettes' => [
         'prices' => 'show_price_tiers',
@@ -169,12 +169,6 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = [
                 'blankOptionLabel' => &$GLOBALS['TL_LANG']['tl_iso_producttype']['shipping_exempt']['default'],
                 'helpwizard' => true,
             ],
-            'sql' => "char(1) NOT NULL default ''",
-        ],
-        'downloads' => [
-            'filter' => true,
-            'inputType' => 'checkbox',
-            'eval' => ['tl_class' => 'w50'],
             'sql' => "char(1) NOT NULL default ''",
         ],
     ],

@@ -47,9 +47,6 @@
       <trans-unit id="ERR.datepickerRgxp">
         <source>Select an appropriate field validation (date, time, date and time) to enable the date picker.</source>
       </trans-unit>
-      <trans-unit id="ERR.emptyDownloadsFolder">
-        <source>The selected folder is empty.</source>
-      </trans-unit>
       <trans-unit id="ERR.checkoutNotAllowed">
         <source>User checkout not allowed</source>
       </trans-unit>
@@ -118,9 +115,6 @@
       </trans-unit>
       <trans-unit id="MSC.defaultSearchText">
         <source>search products</source>
-      </trans-unit>
-      <trans-unit id="MSC.downloadsLabel">
-        <source>Your downloadable products</source>
       </trans-unit>
       <trans-unit id="MSC.priceRangeLabel">
         <source>&lt;span class="from"&gt;From&lt;/span&gt; %s</source>
@@ -223,9 +217,6 @@
       </trans-unit>
       <trans-unit id="MSC.noOrders">
         <source>No orders found.</source>
-      </trans-unit>
-      <trans-unit id="MSC.downloadsRemaining">
-        <source>&lt;br /&gt;%s downloads remaining</source>
       </trans-unit>
       <trans-unit id="MSC.cartBT">
         <source>Shopping Cart</source>

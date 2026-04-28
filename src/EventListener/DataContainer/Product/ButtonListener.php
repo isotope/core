@@ -24,14 +24,6 @@ class ButtonListener
         }
     }
 
-    #[AsCallback('tl_iso_product', 'list.operations.downloads.button')]
-    public function downloadsButton(DataContainerOperation $operation): void
-    {
-        if (!$this->getProductType($operation->getRecord())?->hasDownloads()) {
-            $operation->setHtml('');
-        }
-    }
-
     private function getProductType(array $product): ProductTypeModel|null
     {
         $id = $product['type'];

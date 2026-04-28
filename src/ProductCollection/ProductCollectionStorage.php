@@ -80,32 +80,27 @@ class ProductCollectionStorage
 
     public function delete(ProductCollectionModel $model): bool
     {
-        return $this->transactionDispatcher->dispatch(new DeleteCollectionTransaction($model), function (DeleteCollectionTransaction $transaction) {
-            $collectionModel = $transaction->getCollectionModel();
-            $pid = $collectionModel->id;
-            $affectedRows = $collectionModel->delete();
+        if (!$model->id) {
+            return false;
+        }
 
-            if (!$pid || !$affectedRows) {
-                return false;
-            }
+        $success = $this->transactionDispatcher->dispatch(new DeleteCollectionTransaction((int) $model->id, $model), function (DeleteCollectionTransaction $transaction) {
+            return $transaction->getCollectionModel()->delete() > 0;
+        });
 
-            $this->connection->executeStatement('
-                DELETE FROM tl_iso_product_collection_download
-                WHERE pid IN (SELECT id FROM tl_iso_product_collection_item WHERE pid=?)
-            ', [$pid]);
-
+        if ($success) {
             $this->connection->executeStatement(
                 'DELETE FROM tl_iso_product_collection_item WHERE pid=?',
-                [$pid],
+                [$model->id],
             );
 
             $this->connection->executeStatement(
                 "DELETE FROM tl_iso_address WHERE ptable='tl_iso_product_collection' AND pid=?",
-                [$pid],
+                [$model->id],
             );
+        }
 
-            return true;
-        });
+        return $success;
     }
 
     protected function loadLineItems(AbstractProductCollection $collection, ProductCollectionModel $collectionModel, StoreContext $context): void

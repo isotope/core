@@ -263,12 +263,6 @@
       <trans-unit id="tl_iso_product.related.1">
         <source>Manage related products for product ID %s</source>
       </trans-unit>
-      <trans-unit id="tl_iso_product.downloads.0">
-        <source>Downloads</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_product.downloads.1">
-        <source>Edit downloads for product ID %s</source>
-      </trans-unit>
       <trans-unit id="tl_iso_product.general_legend">
         <source>General Settings</source>
       </trans-unit>

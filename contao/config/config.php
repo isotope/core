@@ -15,12 +15,10 @@ use Isotope\CoreBundle\Model\AttributeOptionModel;
 use Isotope\CoreBundle\Model\BasePriceModel;
 use Isotope\CoreBundle\Model\ConfigModel;
 use Isotope\CoreBundle\Model\DocumentModel;
-use Isotope\CoreBundle\Model\DownloadModel;
 use Isotope\CoreBundle\Model\GalleryModel;
 use Isotope\CoreBundle\Model\OrderStatusModel;
 use Isotope\CoreBundle\Model\PaymentModel;
 use Isotope\CoreBundle\Model\ProductCategoryModel;
-use Isotope\CoreBundle\Model\ProductCollectionDownloadModel;
 use Isotope\CoreBundle\Model\ProductCollectionItemModel;
 use Isotope\CoreBundle\Model\ProductCollectionLogModel;
 use Isotope\CoreBundle\Model\ProductCollectionModel;
@@ -45,10 +43,10 @@ if (!is_array($GLOBALS['BE_MOD']['isotope'] ?? null)) {
 
 ArrayUtil::arrayInsert($GLOBALS['BE_MOD']['isotope'], 0, [
     'iso_products' => [
-        'tables' => ['tl_iso_product', 'tl_iso_product_category', 'tl_iso_download', 'tl_iso_related_product', 'tl_iso_attribute_option'],
+        'tables' => ['tl_iso_product', 'tl_iso_product_category', 'tl_iso_related_product', 'tl_iso_attribute_option'],
     ],
     'iso_orders' => [
-        'tables' => ['tl_iso_product_collection', 'tl_iso_product_collection_item', 'tl_iso_product_collection_download', 'tl_iso_address'],
+        'tables' => ['tl_iso_product_collection', 'tl_iso_product_collection_item', 'tl_iso_address'],
         'class' => 'iso_orders',
         'print_document' => [Callback::class, 'printDocument'],
     ],
@@ -75,14 +73,12 @@ $GLOBALS['TL_MODELS'][AttributeOptionModel::getTable()] = AttributeOptionModel::
 $GLOBALS['TL_MODELS'][BasePriceModel::getTable()] = BasePriceModel::class;
 $GLOBALS['TL_MODELS'][ConfigModel::getTable()] = ConfigModel::class;
 $GLOBALS['TL_MODELS'][DocumentModel::getTable()] = DocumentModel::class;
-$GLOBALS['TL_MODELS'][DownloadModel::getTable()] = DownloadModel::class;
 $GLOBALS['TL_MODELS'][GalleryModel::getTable()] = GalleryModel::class;
 $GLOBALS['TL_MODELS'][OrderStatusModel::getTable()] = OrderStatusModel::class;
 $GLOBALS['TL_MODELS'][PaymentModel::getTable()] = PaymentModel::class;
 $GLOBALS['TL_MODELS'][ProductModel::getTable()] = ProductModel::class;
 $GLOBALS['TL_MODELS'][ProductCategoryModel::getTable()] = ProductCategoryModel::class;
 $GLOBALS['TL_MODELS'][ProductCollectionModel::getTable()] = ProductCollectionModel::class;
-$GLOBALS['TL_MODELS'][ProductCollectionDownloadModel::getTable()] = ProductCollectionDownloadModel::class;
 $GLOBALS['TL_MODELS'][ProductCollectionItemModel::getTable()] = ProductCollectionItemModel::class;
 $GLOBALS['TL_MODELS'][ProductCollectionLogModel::getTable()] = ProductCollectionLogModel::class;
 $GLOBALS['TL_MODELS'][ProductTypeModel::getTable()] = ProductTypeModel::class;

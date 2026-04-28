@@ -120,17 +120,12 @@ class AttributeListener
             return;
         }
 
-        $hasDownloads = false;
         $hasVariants = null !== $dc->currentPid; // Only check for variants if we are in product view
         $attributes = [];
 
         if (null !== ($objProductTypes = ProductTypeModel::findAllUsed())) {
             /** @var ProductTypeModel $objType */
             foreach ($objProductTypes as $objType) {
-                if (!$hasDownloads && $objType->hasDownloads()) {
-                    $hasDownloads = true;
-                }
-
                 if (!$hasVariants && $objType->hasVariants()) {
                     $hasVariants = true;
                 }
@@ -144,11 +139,6 @@ class AttributeListener
         }
 
         $attributes = array_merge(...$attributes);
-
-        // If no downloads are enabled in any product type, we do not need the operation
-        if (!$hasDownloads) {
-            unset($GLOBALS['TL_DCA']['tl_iso_product']['list']['operations']['downloads']);
-        }
 
         // Disable variant button if there are no variants at all
         if (!$hasVariants) {

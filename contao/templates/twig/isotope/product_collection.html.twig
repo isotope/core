@@ -180,18 +180,3 @@
         </form>
     {% endif %}
 {% endblock %}
-
-{% block product_collection_downloads %}
-    {#<?php if (!$this->isEditable && !empty($this->downloads) && \is_array($this->downloads)): ?>
-    <div class="downloads">
-        <h2><?= $GLOBALS['TL_LANG']['MSC']['downloadsLabel'] ?></h2>
-        <ul>
-            <?php foreach ($this->downloads as $download): ?>
-            <li class="<?= $download['downloadable'] ? 'available' : 'unavailable' ?>"><?php if ($download['downloadable'] && $download['href']): ?><a href="<?= $download['href'] ?>"><?php endif; echo $download['title']; if ($download['downloadable'] && $download['href']): ?></a><?php endif; echo $download['remaining']; ?></li>
-            <?php endforeach; ?>
-        </ul>
-    </div>
-    <?php endif; ?>
-
-    <?php endif; ?>#}
-{% endblock %}

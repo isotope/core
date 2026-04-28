@@ -15,6 +15,7 @@ final class DeleteCollectionTransaction extends Transaction
     public const string NAME = 'isotope.product_collection.delete';
 
     public function __construct(
+        private readonly int $collectionId,
         private readonly ProductCollectionModel $collectionModel,
     ) {
     }
@@ -22,6 +23,11 @@ final class DeleteCollectionTransaction extends Transaction
     public function getEventName(): string
     {
         return self::NAME;
+    }
+
+    public function getCollectionId(): int
+    {
+        return $this->collectionId;
     }
 
     public function getCollectionModel(): ProductCollectionModel

@@ -29,7 +29,6 @@ use Contao\StringUtil;
  * @property array  $variant_attributes
  * @property bool   $force_variant_options
  * @property string $shipping_exempt
- * @property bool   $downloads
  */
 class ProductTypeModel extends Model
 {
@@ -90,14 +89,6 @@ class ProductTypeModel extends Model
     public function showPriceTiers(): bool
     {
         return $this->prices && $this->show_price_tiers;
-    }
-
-    /**
-     * Returns true if downloads are enabled in the product type, otherwise returns false.
-     */
-    public function hasDownloads(): bool
-    {
-        return (bool) $this->downloads;
     }
 
     /**

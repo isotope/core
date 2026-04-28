@@ -14,7 +14,6 @@ class AssetListener
         'tl_member' => ['list.operations.address_book.icon'],
         'tl_iso_product' => [
             'list.operations.related.icon',
-            'list.operations.downloads.icon',
         ],
         'tl_iso_product_collection' => [
             'list.operations.details.icon',
