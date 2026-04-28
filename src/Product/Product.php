@@ -85,13 +85,23 @@ abstract class Product
     /**
      * @param array<ProductExtensionInterface> $extensions
      */
-    public function setExtensions(array $extensions): self
+    public function addExtensions(array $extensions): self
     {
         foreach ($extensions as $extension) {
             $this->addExtension($extension);
         }
 
         return $this;
+    }
+
+    /**
+     * @param array<ProductExtensionInterface> $extensions
+     */
+    public function setExtensions(array $extensions): self
+    {
+        $this->extensions = [];
+
+        return $this->addExtensions($extensions);
     }
 
     public function has(string $key): bool
