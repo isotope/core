@@ -119,18 +119,6 @@
       <trans-unit id="tl_content.orderCompleteJumpTo.1">
         <source>Select a page the customer will be referred to after their order is complete.</source>
       </trans-unit>
-      <trans-unit id="tl_content.iso_forward_review.0">
-        <source>Forward to review page</source>
-      </trans-unit>
-      <trans-unit id="tl_content.iso_forward_review.1">
-        <source>Forward the user to the review page if no data is required on any step.</source>
-      </trans-unit>
-      <trans-unit id="tl_content.iso_show_skipped.0">
-        <source>Show skipped steps</source>
-      </trans-unit>
-      <trans-unit id="tl_content.iso_show_skipped.1">
-        <source>Show skipped steps in the checkout step navigation to keep the layout consistent.</source>
-      </trans-unit>
       <trans-unit id="tl_content.iso_checkout_skippable.0">
         <source>Skip checkout steps</source>
       </trans-unit>
