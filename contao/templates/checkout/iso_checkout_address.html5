@@ -1,9 +1,0 @@
-<h2><?= $this->headline ?></h2>
-<?php if($this->message): ?><p><?= $this->message ?></p><?php endif; ?>
-<?= $this->options ?>
-
-<?php if ($this->fields): ?>
-<div id="<?= $this->class ?>_new" class="address_new"<?php if($this->style): ?> style="<?= $this->style ?>"<?php endif; ?>>
-<?= $this->fields ?>
-</div>
-<?php endif; ?>

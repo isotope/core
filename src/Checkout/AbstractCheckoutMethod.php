@@ -11,7 +11,6 @@ use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\RuleBuilder\RuleMatcher;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Price\PriceDefinition;
-use Isotope\Interfaces\IsotopeProductCollection;
 
 abstract class AbstractCheckoutMethod extends AbstractModelType implements ContainerAwareInterface
 {

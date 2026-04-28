@@ -1,4 +1,0 @@
-<h2><?= $this->headline ?></h2>
-<p><?= $this->message ?></p>
-
-<?= $this->options ?>
