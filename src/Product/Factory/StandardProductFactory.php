@@ -109,20 +109,23 @@ class StandardProductFactory implements ProductFactoryInterface
             return $data;
         }
 
-        $data['alias'] = $originalData['__parent']['alias'] ?? $originalData['alias'] ?? '';
+        $fallbackFields = $this->attributeRegistry->getFetchTranslationFallbackFields();
+        $parent = $this->translate($originalData['__parent'], $originalData['__parent']);
+        $data['alias'] = $parent['alias'] ?? $originalData['alias'] ?? '';
 
         foreach (array_diff($type->getAttributes(), $type->getVariantAttributes()) as $field) {
-            if (isset($originalData['__parent'][$field])) {
-                $data[$field] = $originalData['__parent'][$field];
+            if (isset($parent[$field])) {
+                $data[$field] = $parent[$field];
+            }
+
+            if (\in_array($field, $fallbackFields)) {
+                $data[$field.'_fallback'] = $parent[$field.'_fallback'] ?? null;
             }
         }
 
         $inherit = StringUtil::deserialize($originalData['inherit']);
 
         if (!empty($inherit) && \is_array($inherit)) {
-            $parent = $this->translate($originalData['__parent'], $originalData);
-            $fallbackFields = $this->attributeRegistry->getFetchTranslationFallbackFields();
-
             foreach ($inherit as $field) {
                 $data[$field] = $parent[$field];
 
