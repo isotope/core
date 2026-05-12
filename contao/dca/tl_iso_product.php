@@ -15,6 +15,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
         'dataContainer' => ProductData::class,
         'enableVersioning' => true,
         'ctable' => ['tl_iso_product', 'tl_iso_related_product', 'tl_iso_attribute_option'],
+        'markAsCopy' => 'name',
         'sql' => [
             'keys' => [
                 'id' => 'primary',

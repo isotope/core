@@ -9,6 +9,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = [
     'config' => [
         'dataContainer' => DC_Table::class,
         'enableVersioning' => true,
+        'markAsCopy' => 'name',
         'sql' => [
             'keys' => [
                 'id' => 'primary',

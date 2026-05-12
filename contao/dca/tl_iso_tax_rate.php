@@ -7,6 +7,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = [
     'config' => [
         'dataContainer' => DC_Table::class,
         'enableVersioning' => true,
+        'markAsCopy' => 'name',
         'sql' => [
             'keys' => [
                 'id' => 'primary',

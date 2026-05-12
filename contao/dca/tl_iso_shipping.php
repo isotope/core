@@ -23,6 +23,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
         'onload_callback' => [
             [Callback::class, 'hideLabelAndNotes'],
         ],
+        'markAsCopy' => 'name',
         'sql' => [
             'keys' => [
                 'id' => 'primary',

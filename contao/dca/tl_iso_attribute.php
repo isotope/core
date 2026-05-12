@@ -15,6 +15,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
     'config' => [
         'dataContainer' => DC_Table::class,
         'enableVersioning' => true,
+        'markAsCopy' => 'name',
         'ctable' => ['tl_iso_attribute_option'],
         'sql' => [
             'keys' => [
