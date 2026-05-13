@@ -134,6 +134,8 @@ class OrderManager
                 'UPDATE tl_iso_product_collection SET locked=?, document_number=? WHERE id=?',
                 [$locked->getTimestamp(), $documentNumber, $orderId],
             );
+
+            $collection->refresh();
         } finally {
             $this->connection->executeStatement('UNLOCK TABLES');
         }
@@ -247,6 +249,7 @@ class OrderManager
             ->andWhere('store_id=:storeId')
             ->setParameter('type', Order::getType())
             ->setParameter('storeId', $transaction->getStoreId())
+            ->orderBy('document_number', 'DESC')
         ;
 
         if ('' !== $prefix) {
