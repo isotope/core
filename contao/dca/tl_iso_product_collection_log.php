@@ -3,6 +3,7 @@
 $GLOBALS['TL_DCA']['tl_iso_product_collection_log'] = [
     'config' => [
         'ptable' => 'tl_iso_product_collection',
+        'backendSearchIgnore' => true,
         'permissions' => [],
         'sql' => [
             'keys' => [
