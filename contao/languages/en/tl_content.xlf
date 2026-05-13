@@ -368,6 +368,12 @@
       <trans-unit id="tl_content.iso_continueShopping.1">
         <source>Add a link to the currently added product to the cart.</source>
       </trans-unit>
+      <trans-unit id="tl_content.iso_notifications.0">
+        <source>Order notifications</source>
+      </trans-unit>
+      <trans-unit id="tl_content.iso_notifications.1">
+        <source>Send one or multiple notifications when the order is placed.</source>
+      </trans-unit>
       <trans-unit id="tl_content.iso_order_conditions_legend">
         <source>Order conditions form</source>
       </trans-unit>

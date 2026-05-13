@@ -398,17 +398,8 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['iso_continueShopping'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['iso_notifications'] = [
-    'label' => &$GLOBALS['TL_LANG']['tl_content']['nc_notification'],
     'inputType' => 'select',
     'foreignKey' => 'tl_nc_notification.title',
     'eval' => ['multiple' => true, 'csv' => ',', 'includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'],
     'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
 ];
-
-/*
- * Limit notification choices
- */
-$GLOBALS['TL_DCA']['tl_content']['fields']['iso_notifications']['eval']['ncNotificationChoices']['iso_checkout'] = ['iso_order_status_change'];
-$GLOBALS['TL_DCA']['tl_content']['fields']['iso_notifications']['eval']['ncNotificationChoices']['iso_checkoutmember'] = ['iso_order_status_change'];
-$GLOBALS['TL_DCA']['tl_content']['fields']['iso_notifications']['eval']['ncNotificationChoices']['iso_checkoutguest'] = ['iso_order_status_change'];
-$GLOBALS['TL_DCA']['tl_content']['fields']['iso_notifications']['eval']['ncNotificationChoices']['iso_checkoutboth'] = ['iso_order_status_change'];

@@ -12,6 +12,8 @@ use Contao\PageModel;
 use Isotope\CoreBundle\Checkout\CheckoutMethod;
 use Isotope\CoreBundle\Checkout\Step\CheckoutStepInterface;
 use Isotope\CoreBundle\Store\CartManager;
+use Isotope\CoreBundle\Store\Order\CreateOrderResult;
+use Isotope\CoreBundle\Store\Order\OrderNotifier;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,6 +27,7 @@ class CheckoutController extends AbstractContentElementController
     public function __construct(
         #[AutowireIterator('isotope.checkout_step')] private readonly iterable $checkoutSteps,
         private readonly CartManager $cartManager,
+        private readonly OrderNotifier $orderNotifier,
     ) {
     }
 
@@ -68,9 +71,13 @@ class CheckoutController extends AbstractContentElementController
         $template->collection = $cart;
 
         if ($allCompleted && $request->isMethod(Request::METHOD_POST) && $request->request->getBoolean('place_order')) {
-            $this->cartManager->order($cart, $context);
+            $result = $this->cartManager->order($cart, $context);
 
-            throw new RedirectResponseException($this->generateContentUrl(PageModel::findById($config['orderCompleteJumpTo'])));
+            if ($model->iso_notifications) {
+                $this->sendNotifications($result, explode(',', $model->iso_notifications));
+            }
+
+            throw new RedirectResponseException($this->generateContentUrl(PageModel::findById($model->orderCompleteJumpTo), ['uid' => $result->getIdentifier()]));
         }
 
         return $template->getResponse();
@@ -86,5 +93,12 @@ class CheckoutController extends AbstractContentElementController
         }
 
         throw new RedirectResponseException($this->generateContentUrl(PageModel::findById($model->iso_login_jumpTo)));
+    }
+
+    private function sendNotifications(CreateOrderResult $result, array $ids): void
+    {
+        foreach ($ids as $id) {
+            $this->orderNotifier->sendNotification($result->getCollectionId(), (int) $id);
+        }
     }
 }
