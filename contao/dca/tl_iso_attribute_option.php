@@ -75,7 +75,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = [
         'isDefault' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50 m12', 'doNotCopy' => true],
-            'sql' => "char(1) NOT NULL default ''",
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'label' => [
             'inputType' => 'text',
@@ -111,7 +111,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = [
             'toggle' => true,
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50', 'doNotCopy' => true],
-            'sql' => "char(1) NOT NULL default ''",
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
     ],
 ];

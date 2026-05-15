@@ -201,7 +201,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
         'includeBlankOption' => [
             'inputType' => 'checkbox',
             'eval' => ['submitOnChange' => true, 'tl_class' => 'w50 m12'],
-            'sql' => "char(1) NOT NULL default ''",
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'blankOptionLabel' => [
             'inputType' => 'text',
@@ -212,7 +212,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
             'filter' => true,
             'inputType' => 'checkbox',
             'eval' => ['submitOnChange' => true, 'tl_class' => 'w50'],
-            'sql' => "char(1) NOT NULL default ''",
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'be_filter' => [
             'inputType' => 'checkbox',
@@ -233,12 +233,12 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
             'filter' => true,
             'inputType' => 'checkbox',
             'eval' => ['submitOnChange' => true, 'tl_class' => 'w50'],
-            'sql' => "char(1) NOT NULL default ''",
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'mandatory' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
-            'sql' => "char(1) NOT NULL default ''",
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'fe_filter' => [
             'inputType' => 'checkbox',
@@ -258,7 +258,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
         'multiple' => [
             'inputType' => 'checkbox',
             'eval' => ['submitOnChange' => true, 'tl_class' => 'clr w50'],
-            'sql' => "char(1) NOT NULL default ''",
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'size' => [
             'inputType' => 'text',
@@ -269,7 +269,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
         'chosen' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
-            'sql' => "char(1) NOT NULL default ''",
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'extensions' => [
             'default' => '',
@@ -285,7 +285,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
         'multilingual' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
-            'sql' => "char(1) NOT NULL default ''",
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'rgxp' => [
             'inputType' => 'select',
@@ -329,7 +329,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
         'datepicker' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
-            'sql' => "char(1) NOT NULL default ''",
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'customTpl' => [
             'inputType' => 'select',

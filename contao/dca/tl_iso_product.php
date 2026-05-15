@@ -136,7 +136,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'inputType' => 'checkbox',
             'eval' => ['doNotCopy' => true, 'fallback' => true, 'tl_class' => 'clr'],
             'attributes' => ['legend' => 'general_legend', 'variant_fixed' => true, 'excluded' => true, 'systemColumn' => true],
-            'sql' => "char(1) NOT NULL default ''",
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'alias' => [
             'search' => true,
@@ -264,13 +264,13 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
             'attributes' => ['legend' => 'shipping_legend'],
-            'sql' => "char(1) NOT NULL default ''",
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'shipping_pickup' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
             'attributes' => ['legend' => 'shipping_legend'],
-            'sql' => "char(1) NOT NULL default ''",
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'shipping_price' => [
             'inputType' => 'text',
@@ -290,7 +290,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'inputType' => 'checkbox',
             'eval' => ['submitOnChange' => true, 'tl_class' => 'clr'],
             'attributes' => ['legend' => 'expert_legend', 'systemColumn' => true],
-            'sql' => "char(1) NOT NULL default ''",
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'groups' => [
             'filter' => true,
@@ -312,7 +312,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'inputType' => 'checkbox',
             'eval' => ['doNotCopy' => true, 'tl_class' => 'clr'],
             'attributes' => ['legend' => 'publish_legend', 'fixed' => true, 'variant_fixed' => true, 'systemColumn' => true],
-            'sql' => "char(1) NOT NULL default ''",
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'start' => [
             'inputType' => 'text',

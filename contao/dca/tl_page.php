@@ -62,7 +62,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['iso_config'] = [
 $GLOBALS['TL_DCA']['tl_page']['fields']['iso_store_id'] = [
     'inputType' => 'text',
     'eval' => ['mandatory' => true, 'rgxp' => 'digit', 'nospace' => true, 'maxlength' => 2, 'tl_class' => 'w50'],
-    'sql' => "int(2) unsigned NOT NULL default '0'",
+    'sql' => 'int(2) unsigned NOT NULL default 0',
 ];
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['iso_readerMode'] = [
@@ -85,7 +85,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['iso_readerJumpTo'] = [
 $GLOBALS['TL_DCA']['tl_page']['fields']['iso_sitemapVariants'] = [
     'inputType' => 'checkbox',
     'eval' => ['tl_class' => 'w50'],
-    'sql' => "char(1) NOT NULL default '1'",
+    'sql' => ['type' => 'boolean', 'default' => false],
 ];
 
 /*

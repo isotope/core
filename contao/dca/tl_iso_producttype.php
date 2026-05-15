@@ -64,7 +64,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = [
             'filter' => true,
             'inputType' => 'checkbox',
             'eval' => ['fallback' => true, 'tl_class' => 'w50'],
-            'sql' => "char(1) NOT NULL default ''",
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'description' => [
             'inputType' => 'textarea',
@@ -74,12 +74,12 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = [
         'prices' => [
             'inputType' => 'checkbox',
             'eval' => ['submitOnChange' => true, 'tl_class' => 'clr'],
-            'sql' => "char(1) NOT NULL default ''",
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'show_price_tiers' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
-            'sql' => "char(1) NOT NULL default ''",
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'list_template' => [
             'inputType' => 'select',
@@ -135,7 +135,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = [
             'filter' => true,
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'clr', 'submitOnChange' => true],
-            'sql' => "char(1) NOT NULL default ''",
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'variant_attributes' => [
             'inputType' => 'rowWizard',
@@ -148,7 +148,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = [
         'force_variant_options' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'clr'],
-            'sql' => "char(1) NOT NULL default ''",
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'validAliasCharacters' => [
             'inputType' => 'select',

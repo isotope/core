@@ -73,7 +73,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
         'inherit' => [
             'inputType' => 'checkbox',
             'eval' => ['submitOnChange' => true, 'tl_class' => 'w50 m12'],
-            'sql' => "char(1) NOT NULL default ''",
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'name' => [
             'search' => true,
@@ -199,18 +199,18 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
         'debug' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'clr w50'],
-            'sql' => "char(1) NOT NULL default ''",
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'logging' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
-            'sql' => "char(1) NOT NULL default ''",
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'enabled' => [
             'toggle' => true,
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
-            'sql' => "char(1) NOT NULL default ''",
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
     ],
 ];

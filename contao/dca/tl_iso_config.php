@@ -226,7 +226,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
         'limitMemberCountries' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
-            'sql' => "char(1) NOT NULL default ''",
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'payment_ids' => [
             'inputType' => 'checkboxWizard',
@@ -284,12 +284,12 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
         'currencySymbol' => [
             'inputType' => 'checkbox',
             'eval' => ['submitOnChange' => true, 'tl_class' => 'w33'],
-            'sql' => "char(1) NOT NULL default ''",
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'currencySpace' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w33'],
-            'sql' => "char(1) NOT NULL default ''",
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'currencyPosition' => [
             'inputType' => 'radio',

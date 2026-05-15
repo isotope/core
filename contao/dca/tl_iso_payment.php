@@ -117,18 +117,18 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = [
         'debug' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'clr w50'],
-            'sql' => "char(1) NOT NULL default ''",
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'logging' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
-            'sql' => "char(1) NOT NULL default ''",
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'enabled' => [
             'toggle' => true,
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
-            'sql' => "char(1) NOT NULL default ''",
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
     ],
 ];

@@ -160,7 +160,6 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
         'sendNotification' => [
             'inputType' => 'checkbox',
             'eval' => ['submitOnChange' => true, 'logAlwaysVisible' => true, 'tl_class' => 'clr', 'doNotShow' => true],
-            'sql' => "char(1) NOT NULL default ''",
         ],
         'notification' => [
             'inputType' => 'select',
