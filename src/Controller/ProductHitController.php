@@ -7,7 +7,6 @@ namespace Isotope\CoreBundle\Controller;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 use Hashids\Hashids;
-use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
@@ -15,7 +14,6 @@ use Symfony\Component\Routing\Attribute\Route;
 
 #[AsController]
 #[Route(path: '/_isotope/product-hit/{hashid}', name: 'isotope_product_hits', requirements: ['id' => '.+'], defaults: ['_scope' => 'frontend'])]
-#[Autoconfigure(bind: ['$secret' => '%kernel.secret%'])]
 class ProductHitController
 {
     public function __construct(

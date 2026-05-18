@@ -27,7 +27,7 @@ abstract class AbstractPayment extends AbstractCheckoutMethod implements Payment
             return false;
         }
 
-        $shipping = $this->getStoreContext()->getCart()->getShippingMethod();
+        $shipping = $this->context->getCart()?->getShippingMethod();
 
         if (
             null !== $this->allowedShippings

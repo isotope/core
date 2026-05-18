@@ -32,7 +32,7 @@ class ProductPriceShipping extends AbstractShipping
             return false;
         }
 
-        $cart = $this->getStoreContext()->getCart();
+        $cart = $this->context->getCart();
 
         foreach ($cart->getLineItems() as $item) {
             //if ($item->hasProduct() && $this->hasShippingPrice($item->getProduct())) {

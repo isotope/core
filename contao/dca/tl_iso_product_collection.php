@@ -5,13 +5,6 @@ use Contao\DC_Table;
 use Contao\Input;
 use Contao\System;
 use Isotope\Backend\ProductCollection\Callback;
-use Isotope\CompatibilityHelper;
-
-/*
- * Load tl_iso_product data container and language files
- */
-$this->loadDataContainer('tl_iso_product');
-System::loadLanguageFile('tl_iso_product');
 
 $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
     'config' => [
@@ -114,8 +107,6 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
             'sql' => 'blob NULL',
         ],
         'source_collection_id' => [
-            // Not necessarily a cart (as the label says), but useful for the backend order view
-            'label' => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['source_collection_id'],
             'sql' => 'int(10) unsigned NOT NULL default 0',
             'relation' => ['type' => 'hasOne', 'load' => 'lazy', 'table' => 'tl_iso_product_collection'],
         ],
@@ -199,14 +190,14 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
         ],
         'billing_address_id' => [
             'search' => true,
-            'foreignKey' => "tl_iso_address.CONCAT_WS(' ', label, company, firstname, lastname, street_1, street_2, street_3, postal, city)",
+            'foreignKey' => "tl_iso_address.CONCAT_WS(' ', company, firstname, lastname, street_1, street_2, street_3, postal, city)",
             'eval' => ['doNotShow' => true],
             'sql' => "int(10) unsigned NOT NULL default '0'",
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
         ],
         'shipping_address_id' => [
             'search' => true,
-            'foreignKey' => "tl_iso_address.CONCAT_WS(' ', label, company, firstname, lastname, street_1, street_2, street_3, postal, city)",
+            'foreignKey' => "tl_iso_address.CONCAT_WS(' ', company, firstname, lastname, street_1, street_2, street_3, postal, city)",
             'eval' => ['doNotShow' => true],
             'sql' => "int(10) unsigned NOT NULL default '0'",
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],

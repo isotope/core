@@ -184,7 +184,7 @@ abstract class AbstractCheckoutMethod extends AbstractModelType implements Conta
 
         $cart = $this->context->getCart();
 
-        if (null !== $this->allowedProductTypes) {
+        if ($cart && null !== $this->allowedProductTypes) {
             $items = $cart->getLineItems();
             $types = [];
 

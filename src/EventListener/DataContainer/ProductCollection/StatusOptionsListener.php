@@ -61,7 +61,7 @@ class StatusOptionsListener
         $options = [];
 
         if (!$collection) {
-            foreach ($this->workflowManager->getOrderWorkflow()->getDefinition()->getPlaces() as $place) {
+            foreach ($workflow->getDefinition()->getPlaces() as $place) {
                 $options[$place] = $workflow->getMetadataStore()->getPlaceMetadata($place)['name'] ?? $place;
             }
 

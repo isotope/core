@@ -24,7 +24,7 @@ class ProductCollectionLogModel extends Model
 
     public function getData(): array
     {
-        return $this->data ? json_decode($this->data, true) : [];
+        return $this->data ? json_decode($this->data, true, 512, JSON_THROW_ON_ERROR) : [];
     }
 
     public function setData(array $data): self

@@ -41,7 +41,7 @@ class RuleMatcher
     {
         foreach ($conditions as $model) {
             try {
-                $condition = $this->conditionRegistry->get($model);
+                $condition = $this->conditionRegistry->get($model, $context);
             } catch (\Exception) {
                 // Do not break the store if the rule cannot be loaded
                 // TODO: log error

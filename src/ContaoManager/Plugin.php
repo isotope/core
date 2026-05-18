@@ -35,7 +35,7 @@ class Plugin implements BundlePluginInterface, RoutingPluginInterface
                 Terminal42DcawizardBundle::class,
                 CodefogHasteBundle::class,
                 Terminal42DcMultilingualBundle::class,
-            ]),
+            ])->setReplace(['isotope', 'isotope_rules', 'isotope_reports']),
         ];
     }
 

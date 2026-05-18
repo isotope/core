@@ -27,22 +27,6 @@ class OrderStatusModel extends Model
      */
     protected static $strTable = 'tl_iso_orderstatus';
 
-    /**
-     * Return if the order status means a collection has been paid (configuration flag).
-     */
-    public function isPaid(): bool
-    {
-        return (bool) $this->paid;
-    }
-
-    /**
-     * Return the localized order status name.
-     */
-    public function getName(): string
-    {
-        return System::getContainer()->get('translator')->trans($this->name, [], 'isotope');
-    }
-
     public static function findOneByAlias(string $alias, StatusType $type, array $options = []): self|null
     {
         return self::findOneBy(

@@ -9,7 +9,6 @@ use Isotope\CoreBundle\Model\ProductCollectionModel;
 use Isotope\CoreBundle\ProductCollection\ProductCollectionStorage;
 use Isotope\CoreBundle\Store\Context\StoreContextFactory;
 use Isotope\CoreBundle\Store\Exception\ConfigNotFoundException;
-use Isotope\CoreBundle\Util\StringUtil;
 
 class OrderFactory
 {
