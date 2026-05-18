@@ -58,7 +58,7 @@
         "terminal42/contao-build-tools": "dev-main",
         "phpunit/phpunit": "^12.4",
         "contao/test-case": "5.7.*",
-        "monolog/monolog": "^3.0",
+        "monolog/monolog": "^3.5",
         "symfony/monolog-bridge": "^7.4",
         "symfony/monolog-bundle": "^3.1"
     },

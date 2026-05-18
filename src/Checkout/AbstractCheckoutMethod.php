@@ -11,8 +11,10 @@ use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\RuleBuilder\RuleMatcher;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Price\PriceDefinition;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerInterface;
 
-abstract class AbstractCheckoutMethod extends AbstractModelType implements ContainerAwareInterface
+abstract class AbstractCheckoutMethod extends AbstractModelType implements ContainerAwareInterface, LoggerAwareInterface
 {
     protected string $label;
 
@@ -39,6 +41,8 @@ abstract class AbstractCheckoutMethod extends AbstractModelType implements Conta
 
     protected bool $enabled = true;
 
+    private LoggerInterface|null $logger = null;
+
     public function __construct(
         protected readonly int $id,
         protected readonly StoreContext $context,
@@ -51,7 +55,13 @@ abstract class AbstractCheckoutMethod extends AbstractModelType implements Conta
         return [
             TokenChecker::class,
             RuleMatcher::class,
+            LoggerInterface::class,
         ];
+    }
+
+    public function setLogger(LoggerInterface $logger): void
+    {
+        $this->logger = $logger;
     }
 
     public function getId(): int
@@ -203,5 +213,14 @@ abstract class AbstractCheckoutMethod extends AbstractModelType implements Conta
         }
 
         return true;
+    }
+
+    protected function debugLog(string|\Stringable $message, array $context = []): void
+    {
+        if (!$this->isLogging() || !$this->logger) {
+            return;
+        }
+
+        $this->logger->info($message, $context);
     }
 }

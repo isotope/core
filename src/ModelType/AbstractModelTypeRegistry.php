@@ -12,6 +12,8 @@ use Isotope\CoreBundle\ModelType\Exception\InvalidInstanceException;
 use Isotope\CoreBundle\ModelType\Exception\FactoryNotFoundException;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Psr\Container\ContainerInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Contracts\Service\ServiceProviderInterface;
 
@@ -22,9 +24,14 @@ use Symfony\Contracts\Service\ServiceProviderInterface;
 class AbstractModelTypeRegistry
 {
     /**
-     * @var array<class-string<AttributeInterface>, ContainerInterface|null>
+     * @var array<class-string<ModelTypeInterface::class>, ContainerInterface|null>
      */
     protected array $subscribedServices = [];
+
+    /**
+     * @var array<class-string, LoggerAwareInterface>
+     */
+    protected array $loggers = [];
 
     /**
      * @param ServiceProviderInterface<ModelTypeFactoryInterface<TType, TModel>> $factories
@@ -35,9 +42,14 @@ class AbstractModelTypeRegistry
     ) {
     }
 
-    public function setContainer(string $attributeClass, ContainerInterface $container): void
+    public function setContainer(string $class, ContainerInterface $container): void
     {
-        $this->subscribedServices[$attributeClass] = $container;
+        $this->subscribedServices[$class] = $container;
+    }
+
+    public function setLogger(string $class, LoggerInterface $logger): void
+    {
+        $this->loggers[$class] = $logger;
     }
 
     /**
@@ -89,6 +101,10 @@ class AbstractModelTypeRegistry
             }
 
             $instance->setContainer($this->subscribedServices[$instance::class]);
+        }
+
+        if ($instance instanceof LoggerAwareInterface && isset($this->loggers[$instance::class])) {
+            $instance->setLogger($this->loggers[$instance::class]);
         }
 
         return $instance;

@@ -20,6 +20,7 @@ use Symfony\Component\DependencyInjection\Reference;
 class RegisterModelTypePass implements CompilerPassInterface
 {
     use ContainerRegistryTrait;
+    use LoggerRegistryTrait;
     use PriorityTaggedServiceTrait;
 
     public function __construct(
@@ -53,6 +54,7 @@ class RegisterModelTypePass implements CompilerPassInterface
             }
 
             $this->registerContainer($reference, $definition, $container, $registry);
+            $this->registerLogger($reference, $definition, $registry, $this->tagName);
 
             $container->removeDefinition((string) $reference);
         }
