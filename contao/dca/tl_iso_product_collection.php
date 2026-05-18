@@ -149,12 +149,12 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
         ],
         'date_paid' => [
             'inputType' => 'text',
-            'eval' => ['rgxp' => 'datim', 'datepicker' => true, 'tl_class' => 'clr w33 wizard'],
+            'eval' => ['rgxp' => 'datim', 'datepicker' => true, 'tl_class' => 'clr w33'],
             'sql' => 'int(10) NULL',
         ],
         'date_shipped' => [
             'inputType' => 'text',
-            'eval' => ['rgxp' => 'datim', 'datepicker' => true, 'tl_class' => 'w33 wizard'],
+            'eval' => ['rgxp' => 'datim', 'datepicker' => true, 'tl_class' => 'w33'],
             'sql' => 'int(10) NULL',
         ],
         'sendNotification' => [

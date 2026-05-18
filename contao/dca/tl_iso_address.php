@@ -81,7 +81,7 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = [
         ],
         'dateOfBirth' => [
             'inputType' => 'text',
-            'eval' => ['rgxp' => 'date', 'datepicker' => true, 'feEditable' => true, 'feViewable' => true, 'feGroup' => 'personal', 'tl_class' => 'w50 wizard'],
+            'eval' => ['rgxp' => 'date', 'datepicker' => true, 'feEditable' => true, 'feViewable' => true, 'feGroup' => 'personal', 'tl_class' => 'w50'],
             'sql' => "varchar(11) NOT NULL default ''",
         ],
         'company' => [
