@@ -10,6 +10,9 @@ use Isotope\CoreBundle\Validator\Constraints\NotHasKey;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @internal
+ */
 #[AsEventListener('isotope.validation.order.create')]
 class OrderValidationListener
 {

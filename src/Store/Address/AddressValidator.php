@@ -14,6 +14,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * @experimental
+ */
 class AddressValidator
 {
     public function __construct(private readonly ValidatorInterface $validator)

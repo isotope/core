@@ -6,6 +6,9 @@ namespace Isotope\CoreBundle\Store\Order\Transformer;
 
 use Isotope\CoreBundle\Model\AddressModel;
 
+/**
+ * @experimental
+ */
 class AddressTransformer
 {
     public static function transform(AddressModel $address): array

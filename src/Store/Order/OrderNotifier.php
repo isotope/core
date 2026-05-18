@@ -14,6 +14,9 @@ use Terminal42\NotificationCenterBundle\Exception\Parcel\CouldNotCreateParcelExc
 use Terminal42\NotificationCenterBundle\NotificationCenter;
 use Terminal42\NotificationCenterBundle\Receipt\ReceiptCollection;
 
+/**
+ * @experimental
+ */
 class OrderNotifier
 {
     public function __construct(

@@ -6,6 +6,9 @@ namespace Isotope\CoreBundle\Store\Address;
 
 final readonly class AddressConfig
 {
+    /**
+     * @internal use the AddressConfigFactory to create a new instance
+     */
     public function __construct(
         private array $fields,
         private array $mandatory,

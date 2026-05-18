@@ -19,6 +19,9 @@ use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
+/**
+ * @internal
+ */
 #[AsEventListener(priority: 100)]
 class DefaultOrderNotificationTokensListener
 {

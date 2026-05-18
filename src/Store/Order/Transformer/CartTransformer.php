@@ -7,6 +7,9 @@ namespace Isotope\CoreBundle\Store\Order\Transformer;
 use Isotope\CoreBundle\ProductCollection\Cart\Cart;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 
+/**
+ * @experimental
+ */
 class CartTransformer
 {
     public static function transform(Cart $cart, StoreContext $context): array

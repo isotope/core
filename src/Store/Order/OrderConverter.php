@@ -14,6 +14,9 @@ use Isotope\CoreBundle\Store\Order\Transformer\CartTransformer;
 use Isotope\CoreBundle\Store\Order\Transformer\LineItemTransformer;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
+/**
+ * @experimental
+ */
 class OrderConverter
 {
     public function __construct(

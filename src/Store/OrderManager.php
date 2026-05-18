@@ -27,6 +27,9 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * @experimental
+ */
 class OrderManager
 {
     public function __construct(
