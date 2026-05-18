@@ -6,7 +6,6 @@ namespace Isotope\CoreBundle\Checkout\Step;
 
 use Contao\CoreBundle\Exception\RedirectResponseException;
 use Contao\StringUtil;
-use Isotope\CoreBundle\Checkout\Shipping\ConfigurableShippingInterface;
 use Isotope\CoreBundle\Checkout\Shipping\ShippingInterface;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsCheckoutStep;
 use Isotope\CoreBundle\Model\ShippingModel;
@@ -51,6 +50,7 @@ class ShippingStep implements CheckoutStepInterface
 
             return new CheckoutStepSummary(
                 $this->translator->trans('MSC.checkout_shipping', [], 'contao_default'),
+                'shipping',
                 true,
                 $this->markupFactory->create(
                     '@Contao/isotope/checkout_step/summary/shipping.html.twig',
@@ -91,6 +91,7 @@ class ShippingStep implements CheckoutStepInterface
 
         return new CheckoutStepSummary(
             $this->translator->trans('MSC.checkout_shipping', [], 'contao_default'),
+            'shipping',
             false,
             $this->markupFactory->create(
                 '@Contao/isotope/checkout_step/shipping.html.twig',

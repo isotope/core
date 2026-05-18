@@ -105,6 +105,7 @@ class GuestAddressStep extends AbstractAddressStep
 
         return new CheckoutStepSummary(
             $this->translator->trans('MSC.checkout_address', [], 'contao_default'),
+            'address guest',
             false,
             $this->markupFactory->create(
                 '@Contao/isotope/checkout_step/guest_address.html.twig',

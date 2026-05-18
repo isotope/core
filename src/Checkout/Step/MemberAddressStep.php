@@ -126,6 +126,7 @@ class MemberAddressStep extends AbstractAddressStep
     {
         return new CheckoutStepSummary(
             $this->translator->trans('MSC.checkout_address', [], 'contao_default'),
+            'address member',
             false,
             $this->markupFactory->create(
                 '@Contao/isotope/checkout_step/member_address.html.twig',

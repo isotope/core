@@ -77,6 +77,7 @@ abstract class AbstractAddressStep implements CheckoutStepInterface
 
         return new CheckoutStepSummary(
             $this->translator->trans('MSC.checkout_address', [], 'contao_default'),
+            'address',
             true,
             $this->markupFactory->create(
                 '@Contao/isotope/checkout_step/summary/address.html.twig',

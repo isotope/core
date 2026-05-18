@@ -1,6 +1,11 @@
 {% trans_default_domain 'contao_default' %}
 {% extends '@Contao/isotope/checkout_step/_base.html.twig' %}
 
+{% set attributes = attrs()
+    .addClass('address guest')
+    .mergeWith(attributes|default)
+%}
+
 {% block content %}
     <form method="POST" data-action="isotope--fragment#submit">
         <input type="hidden" name="REQUEST_TOKEN" value="{{ contao.request_token }}">
@@ -24,7 +29,7 @@
         </fieldset>
 
         {% if requires_shipping %}
-            <fieldset data-controller="isotope--toggle-attribute">
+            <fieldset class="shipping_address" data-controller="isotope--toggle-attribute">
                 <legend>
                     <h4>{{ 'MSC.shipping_address'|trans }}</h4>
                 </legend>
@@ -37,8 +42,9 @@
                             name="add_shipping_address"
                             class="radio"
                             value=""
-                            {% if not add_shipping_address %} checked{% endif %}
+                            required
                             data-action="isotope--toggle-attribute#disable"
+                            {% if not add_shipping_address %} checked{% endif %}
                         >
                         <label for="ctrl_add_shipping_address_0">
                             {% if requires_payment %}
@@ -55,19 +61,22 @@
                             name="add_shipping_address"
                             class="radio"
                             value="1"
+                            required
                             data-action="isotope--toggle-attribute#enable"
                             {% if add_shipping_address %} checked{% endif %}
                         >
                         <label for="ctrl_add_shipping_address_1">{{ 'MSC.differentShippingAddress'|trans }}</label>
                     </span>
                 </fieldset>
-                <fieldset data-isotope--toggle-attribute-target="receiver"{% if not add_shipping_address %} disabled{% endif %}>
+                <fieldset class="shipping_address_input" data-isotope--toggle-attribute-target="receiver"{% if not add_shipping_address %} disabled{% endif %}>
                     {{ shipping_address_form.hidden|raw }}
                     {{ shipping_address_form.fields|raw }}
                 </fieldset>
             </fieldset>
         {% endif %}
 
-        <button type="submit" name="submit_address_step" value="1">{{ 'MSC.nextStep'|trans }}</button>
+        <div class="submit_container">
+            <button type="submit" name="submit_address_step" value="1">{{ 'MSC.nextStep'|trans }}</button>
+        </div>
     </form>
 {% endblock %}

@@ -2,7 +2,8 @@
 {% extends '@Contao/isotope/checkout_step/summary/_base.html.twig' %}
 
 {% set attributes = attrs()
-    .set('class', 'address_summary')
+    .addClass('address_summary')
+    .mergeWith(attributes|default)
 %}
 
 {% block content %}

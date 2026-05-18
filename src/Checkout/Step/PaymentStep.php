@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Checkout\Step;
 
 use Contao\CoreBundle\Exception\RedirectResponseException;
-use Contao\StringUtil;
 use Isotope\CoreBundle\Checkout\Payment\PaymentInterface;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsCheckoutStep;
 use Isotope\CoreBundle\Model\PaymentModel;
@@ -49,6 +48,7 @@ class PaymentStep implements CheckoutStepInterface
 
             return new CheckoutStepSummary(
                 $this->translator->trans('MSC.checkout_payment', [], 'contao_default'),
+                'payment',
                 true,
                 $this->markupFactory->create(
                     '@Contao/isotope/checkout_step/summary/payment.html.twig',
@@ -89,6 +89,7 @@ class PaymentStep implements CheckoutStepInterface
 
         return new CheckoutStepSummary(
             $this->translator->trans('MSC.checkout_payment', [], 'contao_default'),
+            'payment',
             false,
             $this->markupFactory->create(
                 '@Contao/isotope/checkout_step/payment.html.twig',

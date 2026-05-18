@@ -58,6 +58,7 @@ class CheckoutController extends AbstractContentElementController
             $steps[] = [
                 'title' => $stepContext->getTitle(),
                 'details' => $allCompleted ? $stepContext->getDetails() : '',
+                'class' => $stepContext->getClass(),
                 'is_complete' => $completed,
             ];
 
