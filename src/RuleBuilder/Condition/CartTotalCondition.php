@@ -31,7 +31,7 @@ class CartTotalCondition implements RuleConditionInterface
     public function isApplicable(StoreContext $context): bool
     {
         $cart = $context->getCart();
-        $price = (float) $cart->getTotal()?->getUnitPrice();
+        $price = (float) $cart?->getTotal()?->getUnitPrice();
 
         return match ($this->operator) {
             'eq' => FloatComparator::equals($price, $this->amount),

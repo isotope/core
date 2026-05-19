@@ -34,8 +34,8 @@ class CartAddressCondition implements RuleConditionInterface
     public function isApplicable(StoreContext $context): bool
     {
         $address = match ($this->type) {
-            'billing' => $context->getCart()->getBillingAddress(),
-            'shipping' => $context->getCart()->getShippingMethod(),
+            'billing' => $context->getCart()?->getBillingAddress(),
+            'shipping' => $context->getCart()?->getShippingMethod(),
             default => throw new LogicException('Unknown address type "'.$this->type.'"'),
         };
 
