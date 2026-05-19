@@ -40,8 +40,8 @@ class SubmitToCheckoutAction implements ProductCollectionActionInterface
         $pageId = $context['data']['iso_checkout_jumpTo'] ?? null;
 
         if (
-            $this->storeManager->getCurrentContext()->getMemberId()
-            && isset($context['data']['iso_checkout_guest_jumpTo'])
+            !$this->storeManager->getCurrentContext()->getMemberId()
+            && !empty($context['data']['iso_checkout_guest_jumpTo'])
         ) {
             $pageId = $context['data']['iso_checkout_guest_jumpTo'];
         }
