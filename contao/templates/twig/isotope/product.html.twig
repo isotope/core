@@ -58,8 +58,11 @@
                     {% set price = isotope_price(product) %}
                     {% if price %}
                         <div class="offer">
-                            <div class="price">{{ price|raw }}</div>
-                            {#{% if data.baseprice|default %}<div class="baseprice">{{ isotope_attribute('baseprice') }}</div>{% endif %}#}
+                            <div class="price">{{ price }}</div>
+                            {% set baseprice = isotope_baseprice(product) %}
+                            {% if baseprice %}
+                                <div class="baseprice">{{ baseprice }}</div>
+                            {% endif %}
                         </div>
                     {% endif %}
                 {% endblock %}
