@@ -8,7 +8,6 @@ use Contao\StringUtil;
 use Isotope\CoreBundle\Attribute\Option\OptionFactory;
 use Isotope\CoreBundle\Attribute\Option\OptionsSource;
 use Isotope\CoreBundle\Store\Context\ProductContext;
-use Isotope\Interfaces\IsotopeAttribute;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CoreAttributeFactory implements AttributeFactoryInterface
@@ -21,7 +20,7 @@ class CoreAttributeFactory implements AttributeFactoryInterface
 
     public function create(string $fieldName, array $config, array $dca): AttributeInterface|null
     {
-        /** @var class-string<IsotopeAttribute> $class */
+        /** @var class-string<AttributeInterface> $class */
         $class = match ($class = ($config['type'] ?? $dca['inputType'] ?? null)) {
             'text' => TextAttribute::class,
             'textarea' => TextareaAttribute::class,
@@ -97,12 +96,6 @@ class CoreAttributeFactory implements AttributeFactoryInterface
      */
     private function createInstance(string $class, string $fieldName, array $config, array $dca): AbstractAttribute
     {
-        $optionsSource = match (true) {
-            isset($config['optionsSource']) => OptionsSource::tryFrom($config['optionsSource']),
-            CheckboxAttribute::class === $class && !($config['multiple'] ?? $dca['eval']['multiple'] ?? false) => OptionsSource::Name,
-            default => OptionsSource::Attribute,
-        };
-
         if (is_a($class, AbstractOptionsAttribute::class, true)) {
             $optionsFactory = fn (AbstractOptionsAttribute $attribute, ProductContext|null $productContext = null) => $this->optionFactory->create(
                 $attribute,
@@ -110,6 +103,12 @@ class CoreAttributeFactory implements AttributeFactoryInterface
                 $this->getOptions($config, $dca),
                 $config['foreignKey'] ?? $dca['foreignKey'] ?? null,
             );
+
+            $optionsSource = match (true) {
+                isset($config['optionsSource']) => OptionsSource::tryFrom($config['optionsSource']),
+                CheckboxAttribute::class === $class && !($config['multiple'] ?? $dca['eval']['multiple'] ?? false) => OptionsSource::Name,
+                default => OptionsSource::Attribute,
+            };
 
             $instance = new $class($fieldName, $optionsSource, $optionsFactory);
 

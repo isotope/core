@@ -9,14 +9,14 @@ use Isotope\CoreBundle\DependencyInjection\Attribute\AsAttribute;
 #[AsAttribute]
 class MediaManagerAttribute extends AbstractAttribute implements TranslatableAttributeInterface
 {
-    private array $extensions = [];
+    private array|null $extensions = null;
 
-    public function getExtensions(): array
+    public function getExtensions(): array|null
     {
         return $this->extensions;
     }
 
-    public function setExtensions(array $extensions): self
+    public function setExtensions(array|null $extensions): self
     {
         $this->extensions = $extensions;
 

@@ -245,12 +245,6 @@
       <trans-unit id="tl_iso_attribute.optionsTable_edit">
         <source>Edit options</source>
       </trans-unit>
-      <trans-unit id="tl_iso_attribute.checkbox">
-        <source>Checkbox</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_attribute.radio">
-        <source>Radio</source>
-      </trans-unit>
       <trans-unit id="tl_iso_attribute.digit.0">
         <source>Numeric characters</source>
       </trans-unit>

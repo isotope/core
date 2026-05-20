@@ -37,14 +37,11 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
         ],
         'operations' => [
             'edit',
-            // TODO: would render editChilds operation because of ctable=tl_iso_attribute_option
             'copy',
             'delete',
             'show',
         ],
     ],
-
-    // Palettes
     'palettes' => [
         '__selector__' => ['type', 'optionsSource', 'includeBlankOption', 'variant_option', 'multiple', 'rgxp'],
         'default' => '{attribute_legend},name,field_name,type,legend',
@@ -64,8 +61,6 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
         'checkboxproduct' => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{options_legend},optionsSource;{config_legend},mandatory;{search_filters_legend},fe_sorting',
         'mediaManager' => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},extensions,mandatory',
     ],
-
-    // Subpalettes
     'subpalettes' => [
         'optionsSource_attribute' => 'options',
         'optionsSource_table' => 'optionsTable',
@@ -73,8 +68,6 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
         'multiple' => 'size',
         'includeBlankOption' => 'blankOptionLabel',
     ],
-
-    // Fields
     'fields' => [
         'id' => [
             'sql' => 'int(10) unsigned NOT NULL auto_increment',
@@ -272,9 +265,8 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
             'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'extensions' => [
-            'default' => '',
             'inputType' => 'text',
-            'eval' => ['mandatory' => true, 'rgxp' => 'extnd', 'maxlength' => 255, 'tl_class' => 'w50'],
+            'eval' => ['rgxp' => 'extnd', 'maxlength' => 255, 'tl_class' => 'w50'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'rte' => [
