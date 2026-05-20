@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Product\DataCollector;
 
+use Contao\CoreBundle\DataContainer\VirtualFieldsHandler;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 #[Autoconfigure(tags: ['isotope.product_data_collector'])]
 class CoreDataCollector implements DataCollectorInterface
@@ -16,6 +18,7 @@ class CoreDataCollector implements DataCollectorInterface
     public function __construct(
         private readonly Connection $connection,
         private readonly AttributeRegistry $attributeRegistry,
+        #[Autowire(service: 'contao.data_container.virtual_fields_handler')] private readonly VirtualFieldsHandler $virtualFieldsHandler,
     ) {
     }
 
@@ -94,7 +97,7 @@ class CoreDataCollector implements DataCollectorInterface
             $data['__parent']['__translation'] = $parentTranslation;
         }
 
-        return $data;
+        return $this->virtualFieldsHandler->expandFields($data, 'tl_iso_product');
     }
 
     private function extract(array &$data, string $prefix): array|null
@@ -112,7 +115,7 @@ class CoreDataCollector implements DataCollectorInterface
             return null;
         }
 
-        return $extract;
+        return $this->virtualFieldsHandler->expandFields($extract, 'tl_iso_product');
     }
 
     private function getVariants(array $data, int $pid): array

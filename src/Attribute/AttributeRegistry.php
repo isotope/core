@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Attribute;
 
 use Contao\Controller;
+use Contao\CoreBundle\DataContainer\VirtualFieldsHandler;
 use Contao\Model;
 use Contao\Model\Collection;
 use Doctrine\DBAL\ArrayParameterType;
@@ -16,6 +17,7 @@ use Isotope\CoreBundle\ModelType\ContainerAwareInterface;
 use Isotope\CoreBundle\ModelType\Exception\ContainerNotFoundException;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 use Symfony\Contracts\Service\ResetInterface;
 
@@ -37,6 +39,7 @@ class AttributeRegistry implements ResetInterface
      */
     public function __construct(
         private readonly Connection $connection,
+        #[Autowire(service: 'contao.data_container.virtual_fields_handler')] private readonly VirtualFieldsHandler $virtualFieldsHandler,
         #[AutowireIterator('isotope.attribute_factory')] private readonly iterable $factories,
     ) {
     }
@@ -68,6 +71,7 @@ class AttributeRegistry implements ResetInterface
 
             foreach ($attributes as $config) {
                 $name = $config['field_name'];
+                $config = $this->virtualFieldsHandler->expandFields($config, 'tl_iso_attribute');
                 $attribute = $this->create($name, $config, $dca['fields'][$name] ?? []);
 
                 if (null === $attribute) {

@@ -234,12 +234,12 @@ abstract class AbstractAttribute extends AbstractModelType implements AttributeI
         $field['attributes']['fe_search'] = $this->isFrontendSearchable();
         $field['eval']['mandatory'] = $this->isMandatory();
 
-        if (!isset($field['sql']) && !$this->isCustomerDefined()) {
-            $field['sql'] = $this->getSqlDefinition();
+        if (!isset($field['sql']) && !$this->isCustomerDefined() && null !== ($sql = $this->getSqlDefinition())) {
+            $field['sql'] = $sql;
         }
     }
 
-    abstract protected function getSqlDefinition(): array|string;
+    abstract protected function getSqlDefinition(): array|string|null;
 
     private function guessInputType(): array
     {

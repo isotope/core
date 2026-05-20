@@ -58,13 +58,15 @@ class ProductDcaExtractor extends DcaExtractor
         $this->filesystem->dumpFile(
             Path::join($this->cacheDir, 'contao/sql', $this->strTable.'.php'),
             \sprintf(
-                "<?php\n\n%s\n\n%s\n\n%s\n\n%s\n\n%s\n\n%s\n\n\$this->blnIsDbTable = true;\n",
+                "<?php\n\n%s\n\n%s\n\n%s\n\n%s\n\n%s\n\n%s\n\n%s\n\n%s\n\n\$this->blnIsDbTable = true;\n",
                 \sprintf('$this->arrMeta = %s;', var_export($this->getMeta(), true)),
                 \sprintf('$this->arrFields = %s;', var_export($this->getFields(), true)),
                 \sprintf('$this->arrUniqueFields = %s;', var_export($this->getUniqueFields(), true)),
                 \sprintf('$this->arrKeys = %s;', var_export($this->getKeys(), true)),
                 \sprintf('$this->arrRelations = %s;', var_export($this->getRelations(), true)),
                 \sprintf('$this->arrEnums = %s;', var_export($this->getEnums(), true)),
+                \sprintf('$this->arrVirtualTargets = %s;', var_export($this->getVirtualTargets(), true)),
+                \sprintf('$this->arrVirtualFields = %s;', var_export($this->getVirtualFields(), true)),
             ),
         );
 

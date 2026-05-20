@@ -114,7 +114,7 @@
         <source>Multiple selection</source>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.multiple.1">
-        <source>Allow visitors to select more than one option.</source>
+        <source>Allow to select more than one option.</source>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.size.0">
         <source>Size/Amount</source>
@@ -129,10 +129,10 @@
         <source>This option enables the usage of the "Chosen" JavaScript for the select field, which enables you to select multiple values via a search function.</source>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.extensions.0">
-        <source>Allowed file types</source>
+        <source>Allowed file extensions</source>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.extensions.1">
-        <source>A comma separated list of valid file extensions.</source>
+        <source>A comma separated list of valid file extensions. Leave this empty if you want to allow all files.</source>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.rte.0">
         <source>Use HTML editor</source>
