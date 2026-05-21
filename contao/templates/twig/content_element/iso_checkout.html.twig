@@ -11,33 +11,42 @@
 
 {% block content %}
     {% if collection.isEmpty %}
-        <p class="message empty">{{ 'MSC.noItemsInCart'|trans }}</p>
+        {% block empty_message %}
+            <p class="message empty">{{ 'MSC.noItemsInCart'|trans }}</p>
+        {% endblock %}
     {% else %}
-        <div class="steps{% if completed %} completed{% endif %}">
-            {% set continue = true %}
-            {% for step in steps|default %}
-                {% set step_attributes = attrs()
-                    .addClass('complete', continue and step.is_complete)
-                    .addClass('current', continue and not step.is_complete)
-                    .addClass('pending', not continue)
-                %}
-                <div{{ step_attributes }}>
-                    <h3>{{ loop.index }}. {{ step.title }}</h3>
-                    {% if continue %}{{ step.details }}{% endif %}
-                    {% if not step.is_complete %}{% set continue = false %}{% endif %}
-                </div>
-            {% endfor %}
-        </div>
+        {% block checkout_steps %}
+            <div class="steps{% if completed %} completed{% endif %}">
+                {% set continue = true %}
+                {% for step in steps|default %}
+                    {% block checkout_step %}
+                        {% set step_attributes = attrs()
+                            .addClass('complete', continue and step.is_complete)
+                            .addClass('current', continue and not step.is_complete)
+                            .addClass('pending', not continue)
+                            .mergeWith(step_attributes|default)
+                        %}
+                        <div{{ step_attributes }}>
+                            <h3>{{ loop.index }}. {{ step.title }}</h3>
+                            {% if continue %}{{ step.details }}{% endif %}
+                            {% if not step.is_complete %}{% set continue = false %}{% endif %}
+                        </div>
+                    {% endblock %}
+                {% endfor %}
+            </div>
+        {% endblock %}
 
-        <div class="summary">
-            <h3>{{ steps|length + 1 }}. {{ 'MSC.order_review'|trans }}</h3>
-            {{ block('product_collection') }}
+        {% block checkout_summary %}
+            <div class="summary">
+                <h3>{{ steps|length + 1 }}. {{ 'MSC.order_review'|trans }}</h3>
+                {{ block('product_collection') }}
 
-            <form method="POST">
-                <input type="hidden" name="REQUEST_TOKEN" value="{{ contao.request_token }}">
-                <input type="hidden" name="place_order" value="1">
-                <button type="submit"{% if not completed %} disabled{% endif %}>Bestellen</button>
-            </form>
-        </div>
+                <form method="POST">
+                    <input type="hidden" name="REQUEST_TOKEN" value="{{ contao.request_token }}">
+                    <input type="hidden" name="place_order" value="1">
+                    <button type="submit"{% if not completed %} disabled{% endif %}>Bestellen</button>
+                </form>
+            </div>
+        {% endblock %}
     {% endif %}
 {% endblock %}
