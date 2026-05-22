@@ -38,6 +38,8 @@
             {% endfor %}
         </fieldset>
 
-        <button type="submit" form="payment_method" name="submit_payment_step" value="1">{{ 'MSC.nextStep'|trans }}</button>
+        <div class="submit_container">
+            <button type="submit" class="submit" form="payment_method" name="submit_payment_step" value="1">{{ 'MSC.nextStep'|trans }}</button>
+        </div>
     {% endif %}
 {% endblock %}
