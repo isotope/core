@@ -52,23 +52,32 @@ class LabelListener
                     break;
 
                 case 'order_status':
-                    $args[$i] = sprintf(
-                        '<div>%s</div><div>%s: %s</div><div>%s: %s</div>',
-                        $this->formatStatus(
-                            $this->workflowManager->getOrderWorkflow(),
-                            $row['order_status'],
-                        ),
-                        $this->translator->trans('tl_iso_product_collection.transaction_status.2', [], 'contao_tl_iso_product_collection'),
-                        $this->formatStatus(
-                            $this->workflowManager->getTransactionWorkflow(),
-                            $row['transaction_status'],
-                        ),
-                        $this->translator->trans('tl_iso_product_collection.delivery_status.2', [], 'contao_tl_iso_product_collection'),
-                        $this->formatStatus(
-                            $this->workflowManager->getDeliveryWorkflow(),
-                            $row['delivery_status'],
-                        ),
-                    );
+                    $lines = ['<div>'.$this->formatStatus(
+                        $this->workflowManager->getOrderWorkflow(),
+                        $row['order_status'],
+                    ).'</div>'];
+
+                    if ($row['transaction_status']) {
+                        $lines[] = sprintf('<div>%s: %s</div>',
+                            $this->translator->trans('tl_iso_product_collection.transaction_status.2', [], 'contao_tl_iso_product_collection'),
+                            $this->formatStatus(
+                                $this->workflowManager->getTransactionWorkflow(),
+                                $row['transaction_status'],
+                            ),
+                        );
+                    }
+
+                    if ($row['delivery_status']) {
+                        $lines[] = sprintf('<div>%s: %s</div>',
+                            $this->translator->trans('tl_iso_product_collection.delivery_status.2', [], 'contao_tl_iso_product_collection'),
+                            $this->formatStatus(
+                                $this->workflowManager->getDeliveryWorkflow(),
+                                $row['delivery_status'],
+                            ),
+                        );
+                    }
+
+                    $args[$i] = implode('', $lines);
                     break;
             }
         }
