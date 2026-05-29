@@ -10,9 +10,9 @@ use Isotope\CoreBundle\Product\ProductBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PriorityTaggedServiceTrait;
 use Symfony\Component\DependencyInjection\Compiler\ServiceLocatorTagPass;
-use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Exception\LogicException;
 
 /**
  * @internal
@@ -31,7 +31,7 @@ class RegisterProductFactoryPass implements CompilerPassInterface
             $definition = $container->findDefinition((string) $reference);
 
             foreach ($definition->getTag(AsProductFactory::TAG_NAME) as $attributes) {
-                $type = $this->getType($definition, $attributes);
+                $type = $attributes['type'] ?? throw new LogicException('Tag '.AsProductFactory::TAG_NAME.' requires a type');
                 $types[] = $type;
                 $factories[$type] = $reference;
             }
@@ -45,23 +45,5 @@ class RegisterProductFactoryPass implements CompilerPassInterface
         $listener = new Definition(ModelTypeOptionsListener::class, [$types]);
         $listener->addTag('contao.callback', ['table' => 'tl_iso_producttype', 'target' => 'fields.class.options']);
         $container->setDefinition('isotope.listener.product_type_options', $listener);
-    }
-
-    private function getType(Definition $definition, array $attributes): string
-    {
-        if (isset($attributes['type'])) {
-            return (string) $attributes['type'];
-        }
-
-        $className = $definition->getClass();
-        $className = ltrim(strrchr((string) $className, '\\'), '\\');
-
-        if (str_ends_with($className, 'ProductFactory')) {
-            $className = substr($className, 0, -14);
-        } elseif (str_ends_with($className, 'Factory')) {
-            $className = substr($className, 0, -7);
-        }
-
-        return Container::underscore($className);
     }
 }

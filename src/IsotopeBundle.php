@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle;
 
 use Hashids\Hashids;
+use Isotope\CheckoutStep\CheckoutStep;
 use Isotope\CoreBundle\Attribute\AttributeFactoryInterface;
 use Isotope\CoreBundle\Backend\ShopConfig\ShopConfigInterface;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsAttribute;
@@ -20,6 +21,7 @@ use Isotope\CoreBundle\DependencyInjection\Attribute\AsProductFactory;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsProductFilter;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsRuleCondition;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsShipping;
+use Isotope\CoreBundle\DependencyInjection\Attribute\TypeAttributeInterface;
 use Isotope\CoreBundle\DependencyInjection\Compiler\RegisterActionPass;
 use Isotope\CoreBundle\DependencyInjection\Compiler\RegisterAttributePass;
 use Isotope\CoreBundle\DependencyInjection\Compiler\RegisterHookListenersPass;
@@ -160,6 +162,10 @@ class IsotopeBundle extends AbstractBundle
                         }
 
                         $tagAttributes['method'] = $reflector->getName();
+                    }
+
+                    if ($reflector instanceof \ReflectionClass && $attribute instanceof TypeAttributeInterface) {
+                        $tagAttributes['type'] = $attribute->getType($reflector->getName());
                     }
 
                     $definition->addTag($tag, $tagAttributes);

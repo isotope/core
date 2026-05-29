@@ -42,7 +42,11 @@ class RegisterModelTypePass implements CompilerPassInterface
             $definition = $container->findDefinition((string) $reference);
 
             foreach ($definition->getTag($this->tagName) as $attributes) {
-                $type = $this->getType($definition, $attributes);
+                if (!isset($attributes['type'])) {
+                    throw new LogicException('Tag '.$this->tagName.' requires a type');
+                }
+
+                $type = $attributes['type'];
 
                 if ($this->withCategory) {
                     $category = $attributes['category'] ?? 'miscellaneous';
@@ -75,25 +79,6 @@ class RegisterModelTypePass implements CompilerPassInterface
         [,$name] = explode('.', $this->tagName, 2);
 
         $container->setDefinition('isotope.listener.'.$name.'_type_options', $listener);
-    }
-
-    private function getType(Definition $definition, array $attributes): string
-    {
-        if (isset($attributes['type'])) {
-            return (string) $attributes['type'];
-        }
-
-        $className = $definition->getClass();
-        $className = ltrim(strrchr((string) $className, '\\'), '\\');
-        $suffix = preg_split('/[_.]/', $this->tagName);
-
-        foreach ($suffix as $key) {
-            if (str_ends_with($className, ucfirst($key))) {
-                $className = substr($className, 0, \strlen($key) * -1);
-            }
-        }
-
-        return Container::underscore($className);
     }
 
     private function getFactory(Definition $definition, array $attributes): string

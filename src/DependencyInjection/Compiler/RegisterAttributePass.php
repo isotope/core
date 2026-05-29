@@ -9,9 +9,9 @@ use Isotope\CoreBundle\DependencyInjection\Attribute\AsAttribute;
 use Isotope\CoreBundle\EventListener\DataContainer\ModelTypeOptionsListener;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PriorityTaggedServiceTrait;
-use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Exception\LogicException;
 
 /**
  * @internal
@@ -31,7 +31,7 @@ class RegisterAttributePass implements CompilerPassInterface
             $definition = $container->findDefinition((string) $reference);
 
             foreach ($definition->getTag(AsAttribute::TAG_NAME) as $attributes) {
-                $types[] = $this->getType($definition, $attributes);
+                $types[] = $attributes['type'] ?? throw new LogicException('Tag '.AsAttribute::TAG_NAME.' requires a type');
             }
 
             $this->registerContainer($reference, $definition, $container, $registry);
@@ -42,21 +42,5 @@ class RegisterAttributePass implements CompilerPassInterface
         $listener = new Definition(ModelTypeOptionsListener::class, [$types]);
         $listener->addTag('contao.callback', ['table' => 'tl_iso_attribute', 'target' => 'fields.type.options']);
         $container->setDefinition('isotope.listener.attribute_type_options', $listener);
-    }
-
-    private function getType(Definition $definition, array $attributes): string
-    {
-        if (isset($attributes['type'])) {
-            return (string) $attributes['type'];
-        }
-
-        $className = $definition->getClass();
-        $className = ltrim(strrchr((string) $className, '\\'), '\\');
-
-        if (str_ends_with($className, 'Attribute')) {
-            $className = substr($className, 0, -9);
-        }
-
-        return lcfirst(Container::camelize($className));
     }
 }
