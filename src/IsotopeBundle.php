@@ -91,45 +91,45 @@ class IsotopeBundle extends AbstractBundle
         ;
     }
 
-    public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
+    public function loadExtension(array $config, ContainerConfigurator $configurator, ContainerBuilder $container): void
     {
-        $container->parameters()->set('isotope.cart_timeout', $config['cart_timeout']);
-        $container->parameters()->set('isotope.order_timeout', $config['order_timeout']);
+        $configurator->parameters()->set('isotope.cart_timeout', $config['cart_timeout']);
+        $configurator->parameters()->set('isotope.order_timeout', $config['order_timeout']);
 
-        $container
+        $configurator
             ->services()
             ->load(__NAMESPACE__.'\\', '../src/')
             ->autoconfigure()
             ->autowire()
         ;
 
-        $container
+        $configurator
             ->services()
             ->set('isotope.hashids', Hashids::class)
             ->args(['%kernel.secret%', 8])
         ;
 
-        $builder
+        $container
             ->registerForAutoconfiguration(ShopConfigInterface::class)
             ->addTag('isotope.shop_config')
         ;
 
-        $builder
+        $container
             ->registerForAutoconfiguration(AttributeFactoryInterface::class)
             ->addTag('isotope.attribute_factory')
         ;
 
-        $builder
+        $container
             ->registerForAutoconfiguration(ProductActionInterface::class)
             ->addTag('isotope.product_action')
         ;
 
-        $builder
+        $container
             ->registerForAutoconfiguration(ProductCollectionActionInterface::class)
             ->addTag('isotope.product_collection_action')
         ;
 
-        $builder
+        $container
             ->registerForAutoconfiguration(ProductCollectionItemActionInterface::class)
             ->addTag('isotope.product_collection_item_action')
         ;
@@ -151,7 +151,7 @@ class IsotopeBundle extends AbstractBundle
         ];
 
         foreach ($attributesForAutoconfiguration as $attributeClass => $tag) {
-            $builder->registerAttributeForAutoconfiguration(
+            $container->registerAttributeForAutoconfiguration(
                 $attributeClass,
                 static function (ChildDefinition $definition, object $attribute, \Reflector $reflector) use ($attributeClass, $tag): void {
                     $tagAttributes = get_object_vars($attribute);

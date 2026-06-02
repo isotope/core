@@ -46,15 +46,6 @@ class ProductCollectionModel extends Model
      */
     protected static $strTable = 'tl_iso_product_collection';
 
-    public function __construct($objResult = null)
-    {
-        parent::__construct($objResult);
-
-        if ($this->locked) {
-            $this->blnPreventSaving = true;
-        }
-    }
-
     public function getOrderStatus(): string|null
     {
         return $this->order_status;

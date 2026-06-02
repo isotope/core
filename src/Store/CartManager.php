@@ -148,8 +148,6 @@ class CartManager implements ResetInterface
             throw new \RuntimeException();
         }
 
-        // TODO: maybe send email?
-
         if (isset($this->cart[$context->getIdentifier()])) {
             unset($this->cart[$context->getIdentifier()]);
         }

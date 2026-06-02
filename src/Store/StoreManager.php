@@ -86,32 +86,6 @@ class StoreManager
         }
     }
 
-    /**
-     * @template T
-     *
-     * @param \Closure(): T $closure
-     *
-     * @return T
-     */
-    public function runWithCollection(ProductCollectionModel $collection, \Closure $closure): mixed
-    {
-        // TODO: remove this when unused
-
-        $context = $this->contextFactory->create(
-            $collection->store_id,
-            ConfigModel::findById($collection->config_id),
-            $collection->language ?? $GLOBALS['TL_LANGUAGE'], // TODO: a collection must always have a language!
-            $collection->uniqid ?? StringUtil::generateRandomId(), // TODO: a collection must always have an ID!
-            $collection->member ?: null,
-        );
-
-        if ($collection instanceof LockableCollectionInterface && $collection->getLockTime()) {
-            $context->setTimestamp($collection->getLockTime());
-        }
-
-        return $this->runWithContext($context, $closure);
-    }
-
     private function createForRequest(Request $request): StoreContext
     {
         $rootPage = $this->pageFinder->findRootPageForRequest($request);

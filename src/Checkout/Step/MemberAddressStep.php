@@ -51,7 +51,7 @@ class MemberAddressStep extends AbstractAddressStep
                     && !$request->request->has('delete_address_shipping')
                 )
             )
-            && !($hasError = $this->hasError($context))
+            && !$this->hasError($context)
         ) {
             return $this->generateSummary($context, $config);
         }

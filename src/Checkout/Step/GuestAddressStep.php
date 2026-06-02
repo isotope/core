@@ -39,7 +39,7 @@ class GuestAddressStep extends AbstractAddressStep
 
         if (
             (!$request->isMethod(Request::METHOD_POST) || !$request->request->has('edit_address_step'))
-            && !($hasError = $this->hasError($context))
+            && !$this->hasError($context)
         ) {
             return $this->generateSummary($context, $config);
         }

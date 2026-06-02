@@ -133,7 +133,7 @@ class ShippingStep implements CheckoutStepInterface
 
         return array_filter(
             $shippings,
-            static fn (ShippingInterface $shipping) => $shipping->isAvailable($context),
+            static fn (ShippingInterface $shipping) => $shipping->isAvailable(),
         );
     }
 

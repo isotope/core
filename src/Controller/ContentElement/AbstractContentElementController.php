@@ -21,10 +21,6 @@ abstract class AbstractContentElementController extends CoreContentElementContro
 {
     public function __invoke(Request $request, ContentModel $model, string $section, ?array $classes = null): Response
     {
-        //if ($this->isBackendScope($request)) {
-        //    return $this->getBackendWildcard($model);
-        //}
-
         $fragmentId = $this->getFragmentId($model->row());
         $isFragmentRequest = $request->isXmlHttpRequest() && $request->headers->has('Isotope-Fragment');
         $isCurrentFragment = $request->headers->get('Isotope-Fragment') === $fragmentId;
