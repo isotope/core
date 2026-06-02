@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Store\Context;
 
 use Contao\CoreBundle\Framework\ContaoFramework;
+use Contao\CoreBundle\InsertTag\InsertTagParser;
 use Contao\MemberModel;
 use Contao\StringUtil;
 use Doctrine\DBAL\ArrayParameterType;
@@ -33,6 +34,7 @@ class StoreContextFactory
         private readonly Connection $connection,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly AddressConfigFactory $addressConfigFactory,
+        private readonly InsertTagParser $insertTagParser,
     ) {
     }
 
@@ -69,6 +71,8 @@ class StoreContextFactory
         $context->setDefaultShippingAddress($shippingAddress);
         $context->setShippingIds(array_filter(explode(',', (string) $config->shipping_ids)));
         $context->setPaymentIds(array_filter(explode(',', (string) $config->payment_ids)));
+        $context->setDocumentNumberPrefix($config->orderPrefix ? $this->insertTagParser->replaceInline($config->orderPrefix) : '');
+        $context->setDocumentNumberDigits((int) $config->orderDigits);
 
         $this->eventDispatcher->dispatch(new ContextCreatedEvent($context, $config));
 

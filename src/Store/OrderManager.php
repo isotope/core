@@ -126,11 +126,8 @@ class OrderManager
             $documentNumber = $collection->document_number;
 
             if (!$documentNumber) {
-                // TODO: load from store config / context
-                $prefix = '';
-                $length = 6;
                 $documentNumber = $this->transactionDispatcher->dispatch(
-                    new DocumentNumberTransaction($prefix, $length, $context->getStoreId()),
+                    new DocumentNumberTransaction($context->getDocumentNumberPrefix(), $context->getDocumentNumberDigits(), $context->getStoreId()),
                     $this->generateDocumentNumber(...),
                 );
             }

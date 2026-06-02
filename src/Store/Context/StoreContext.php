@@ -26,6 +26,10 @@ final class StoreContext
      */
     private array $properties = [];
 
+    private string $documentNumberPrefix = '';
+
+    private int $documentNumberDigits = 4;
+
     private \DateTimeImmutable $timestamp;
 
     private AddressModel|null $defaultBillingAddress = null;
@@ -130,6 +134,30 @@ final class StoreContext
     public function getLocale(): string
     {
         return $this->locale;
+    }
+
+    public function getDocumentNumberPrefix(): string
+    {
+        return $this->documentNumberPrefix;
+    }
+
+    public function setDocumentNumberPrefix(string $documentNumberPrefix): self
+    {
+        $this->documentNumberPrefix = $documentNumberPrefix;
+
+        return $this;
+    }
+
+    public function getDocumentNumberDigits(): int
+    {
+        return $this->documentNumberDigits;
+    }
+
+    public function setDocumentNumberDigits(int $documentNumberDigits): self
+    {
+        $this->documentNumberDigits = $documentNumberDigits;
+
+        return $this;
     }
 
     public function getTimestamp(): \DateTimeImmutable
