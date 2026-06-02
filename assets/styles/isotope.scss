@@ -11,6 +11,6 @@
     }
 }
 
-.content-iso-checkout fieldset:disabled {
+.content-iso-checkout fieldset.hide-disabled:disabled {
     display: none;
 }

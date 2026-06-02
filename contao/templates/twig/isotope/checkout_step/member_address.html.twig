@@ -99,7 +99,7 @@
                             <label for="ctrl_add_shipping_address_1">{{ 'MSC.differentShippingAddress'|trans }}</label>
                         </span>
                     </fieldset>
-                    <fieldset data-isotope--toggle-attribute-target="receiver"{% if not add_shipping_address %} disabled{% endif %}>
+                    <fieldset class="hide-disabled" data-isotope--toggle-attribute-target="receiver"{% if not add_shipping_address %} disabled{% endif %}>
                         {% embed '@Contao/isotope/address_manager.html.twig' with shipping_address_manager|merge({ current: shipping_address }) only %}
                             {% block address %}
                                 <div class="address">

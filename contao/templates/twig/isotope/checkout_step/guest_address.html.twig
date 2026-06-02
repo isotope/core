@@ -28,52 +28,52 @@
             {{ billing_address_form.fields|raw }}
         </fieldset>
 
-        {% if requires_shipping %}
-            <fieldset class="shipping_address" data-controller="isotope--toggle-attribute">
-                <legend>
-                    <h4>{{ 'MSC.shipping_address'|trans }}</h4>
-                </legend>
-                <p>{{ 'MSC.shipping_address_guest_message'|trans }}</p>
-                <fieldset class="radio_container">
-                    <span>
-                        <input
-                            id="ctrl_add_shipping_address_0"
-                            type="radio"
-                            name="add_shipping_address"
-                            class="radio"
-                            value=""
-                            required
-                            data-action="isotope--toggle-attribute#disable"
-                            {% if not add_shipping_address %} checked{% endif %}
-                        >
-                        <label for="ctrl_add_shipping_address_0">
-                            {% if requires_payment %}
-                                {{ 'MSC.useBillingAddress'|trans }}
-                            {% else %}
-                                {{ 'MSC.useCustomerAddress'|trans }}
-                            {% endif %}
-                        </label>
-                    </span>
-                    <span>
-                        <input
-                            id="ctrl_add_shipping_address_1"
-                            type="radio"
-                            name="add_shipping_address"
-                            class="radio"
-                            value="1"
-                            required
-                            data-action="isotope--toggle-attribute#enable"
-                            {% if add_shipping_address %} checked{% endif %}
-                        >
-                        <label for="ctrl_add_shipping_address_1">{{ 'MSC.differentShippingAddress'|trans }}</label>
-                    </span>
+            {% if requires_shipping %}
+                <fieldset class="shipping_address" data-controller="isotope--toggle-attribute">
+                    <legend>
+                        <h4>{{ 'MSC.shipping_address'|trans }}</h4>
+                    </legend>
+                    <p>{{ 'MSC.shipping_address_guest_message'|trans }}</p>
+                    <fieldset class="radio_container">
+                        <span>
+                            <input
+                                id="ctrl_add_shipping_address_0"
+                                type="radio"
+                                name="add_shipping_address"
+                                class="radio"
+                                value=""
+                                required
+                                data-action="isotope--toggle-attribute#disable"
+                                {% if not add_shipping_address %} checked{% endif %}
+                            >
+                            <label for="ctrl_add_shipping_address_0">
+                                {% if requires_payment %}
+                                    {{ 'MSC.useBillingAddress'|trans }}
+                                {% else %}
+                                    {{ 'MSC.useCustomerAddress'|trans }}
+                                {% endif %}
+                            </label>
+                        </span>
+                        <span>
+                            <input
+                                id="ctrl_add_shipping_address_1"
+                                type="radio"
+                                name="add_shipping_address"
+                                class="radio"
+                                value="1"
+                                required
+                                data-action="isotope--toggle-attribute#enable"
+                                {% if add_shipping_address %} checked{% endif %}
+                            >
+                            <label for="ctrl_add_shipping_address_1">{{ 'MSC.differentShippingAddress'|trans }}</label>
+                        </span>
+                    </fieldset>
+                    <fieldset class="shipping_address_input hide-disabled" data-isotope--toggle-attribute-target="receiver"{% if not add_shipping_address %} disabled{% endif %}>
+                        {{ shipping_address_form.hidden|raw }}
+                        {{ shipping_address_form.fields|raw }}
+                    </fieldset>
                 </fieldset>
-                <fieldset class="shipping_address_input" data-isotope--toggle-attribute-target="receiver"{% if not add_shipping_address %} disabled{% endif %}>
-                    {{ shipping_address_form.hidden|raw }}
-                    {{ shipping_address_form.fields|raw }}
-                </fieldset>
-            </fieldset>
-        {% endif %}
+            {% endif %}
 
         <div class="submit_container">
             <button type="submit" class="submit" name="submit_address_step" value="1">{{ 'MSC.nextStep'|trans }}</button>
