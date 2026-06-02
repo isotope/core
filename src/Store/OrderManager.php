@@ -176,17 +176,17 @@ class OrderManager
                     return $values;
                 }
 
-                if (isset($values['order_status'])) {
+                if (isset($values['order_status']) && $values['order_status'] !== $order->getOrderStatus()) {
                     $this->workflowManager->getOrderWorkflow()->apply($order, $values['order_status']);
                     $values['order_status'] = $order->getOrderStatus();
                 }
 
-                if (isset($values['transaction_status'])) {
+                if (isset($values['transaction_status']) && $values['transaction_status'] !== $order->getTransactionStatus()) {
                     $this->workflowManager->getTransactionWorkflow()->apply($order, $values['transaction_status']);
                     $values['transaction_status'] = $order->getTransactionStatus();
                 }
 
-                if (isset($values['delivery_status'])) {
+                if (isset($values['delivery_status']) && $values['delivery_status'] !== $order->getDeliveryStatus()) {
                     $this->workflowManager->getDeliveryWorkflow()->apply($order, $values['delivery_status']);
                     $values['delivery_status'] = $order->getDeliveryStatus();
                 }
