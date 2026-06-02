@@ -1,5 +1,6 @@
 {% extends '@Contao/isotope/checkout_step/summary/_base.html.twig' %}
 
 {% set attributes = attrs()
-    .set('class', 'payment_summary')
+    .addClass('payment_summary')
+    .mergeWith(attributes|default)
 %}

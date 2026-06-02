@@ -15,6 +15,7 @@ use Isotope\CoreBundle\Store\CartManager;
 use Isotope\CoreBundle\Store\Order\CreateOrderResult;
 use Isotope\CoreBundle\Store\Order\OrderNotifier;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -25,7 +26,7 @@ class CheckoutController extends AbstractContentElementController
      * @param array<CheckoutStepInterface> $checkoutSteps
      */
     public function __construct(
-        #[AutowireIterator('isotope.checkout_step')] private readonly iterable $checkoutSteps,
+        #[AutowireLocator('isotope.checkout_step', 'type')] private readonly iterable $checkoutSteps,
         private readonly CartManager $cartManager,
         private readonly OrderNotifier $orderNotifier,
     ) {
@@ -46,7 +47,7 @@ class CheckoutController extends AbstractContentElementController
         $config = $model->row();
         $allCompleted = true;
 
-        foreach ($this->checkoutSteps as $step) {
+        foreach ($this->checkoutSteps as $key => $step) {
             $stepContext = $step->getSummary($request, $context, $config);
 
             if (!$stepContext) {
@@ -55,10 +56,10 @@ class CheckoutController extends AbstractContentElementController
 
             $completed = $stepContext->isCompleted();
 
-            $steps[] = [
+            $steps[$key] = [
                 'title' => $stepContext->getTitle(),
                 'details' => $allCompleted ? $stepContext->getDetails() : '',
-                'class' => $stepContext->getClass(),
+                'class' => $stepContext->getClass(), // TODO: do we need class?
                 'is_complete' => $completed,
             ];
 

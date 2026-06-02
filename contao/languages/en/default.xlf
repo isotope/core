@@ -248,6 +248,12 @@
       <trans-unit id="MSC.differentShippingAddress">
         <source>Different shipping address</source>
       </trans-unit>
+      <trans-unit id="MSC.editAddressHeadline">
+        <source>Edit address</source>
+      </trans-unit>
+      <trans-unit id="MSC.createAddressHeadline">
+        <source>Add a new address</source>
+      </trans-unit>
       <trans-unit id="MSC.editAddressLabel">
         <source>Edit</source>
       </trans-unit>
@@ -342,22 +348,25 @@
         <source>%s Products</source>
       </trans-unit>
       <trans-unit id="MSC.shipping_address_message">
-        <source>Enter your shipping information or select an existing address.</source>
+        <source>Select an existing address or add a new address to your account.</source>
       </trans-unit>
       <trans-unit id="MSC.shipping_address_guest_message">
         <source>Enter your shipping information.</source>
       </trans-unit>
       <trans-unit id="MSC.billing_address_message">
-        <source>Enter your billing information or select an existing address.</source>
+        <source>Select an existing address or add a new address to your account.</source>
       </trans-unit>
       <trans-unit id="MSC.billing_address_guest_message">
-        <source>Enter your billing information</source>
+        <source>Enter your billing information.</source>
       </trans-unit>
       <trans-unit id="MSC.customer_address_message">
-        <source>Enter your customer information or select an existing address.</source>
+        <source>Select an existing address or add a new address to your account.</source>
       </trans-unit>
       <trans-unit id="MSC.customer_address_guest_message">
-        <source>Enter your customer information</source>
+        <source>Enter your customer information.</source>
+      </trans-unit>
+      <trans-unit id="MSC.address_error">
+        <source>This address cannot be used or is missing required information.</source>
       </trans-unit>
       <trans-unit id="MSC.shipping_method_message">
         <source>Select a shipping method.</source>

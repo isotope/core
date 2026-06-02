@@ -15,6 +15,7 @@ class AddressFormatter
     public function __construct(
         #[Autowire(service: 'contao.data_container.value_formatter')] private readonly ValueFormatter $formatter,
         private readonly TemplateMarkupFactory $markupFactory,
+        private readonly AddressValidator $addressValidator,
     ) {
     }
 
@@ -30,6 +31,10 @@ class AddressFormatter
         }
 
         $data['data'] = $address->row();
+
+        $validation = $this->addressValidator->validate($address, $config);
+        $data['isValid'] = !$validation->count();
+        $data['error'] = (string) $validation;
 
         // Use the default country if there is no country to format the address
         if (empty($data['data']['country'])) {

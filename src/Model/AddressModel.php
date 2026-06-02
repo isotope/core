@@ -48,4 +48,9 @@ class AddressModel extends Model
             $options
         );
     }
+
+    public function isMemberAddress(): bool
+    {
+        return 'tl_member' === $this->ptable;
+    }
 }

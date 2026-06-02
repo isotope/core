@@ -10,11 +10,11 @@
 {% block content %}
 
     <form method="POST" data-action="isotope--fragment#submit">
+        <input type="hidden" name="REQUEST_TOKEN" value="{{ contao.request_token }}">
         {% embed '@Contao/isotope/address_manager.html.twig' with address_manager only %}
             {% block form %}
                 {% trans_default_domain 'contao_default' %}
                 {{ parent() }}
-{#                <button type="button" data-action="isotope--shipping#select">{{ 'MSC.cancelBT'|trans }}</button>#}
                 <a href="{{ app.request.requestUri }}" data-action="isotope--fragment#update">{{ 'MSC.cancelBT'|trans }}</a>
             {% endblock %}
         {% endembed %}

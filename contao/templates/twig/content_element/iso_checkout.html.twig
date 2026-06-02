@@ -44,7 +44,9 @@
                 <form method="POST">
                     <input type="hidden" name="REQUEST_TOKEN" value="{{ contao.request_token }}">
                     <input type="hidden" name="place_order" value="1">
-                    <button type="submit"{% if not completed %} disabled{% endif %}>Bestellen</button>
+                    <div class="widget widget-submit">
+                        <button type="submit" class="submit"{% if not completed %} disabled{% endif %}>Bestellen</button>
+                    </div>
                 </form>
             </div>
         {% endblock %}

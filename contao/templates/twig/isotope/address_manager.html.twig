@@ -2,10 +2,13 @@
 
 {% if form|default %}
     {% block form %}
+        {% set form = form.with({ attributes: attrs()
+            .set('data-action', 'isotope--fragment#submit')
+            .mergeWith('attributes')
+        }) %}
         {{ form }}
     {% endblock %}
 {% else %}
-    <input type="hidden" name="REQUEST_TOKEN" value="{{ contao.request_token }}">
     {% if addresses is not empty %}
         <ul>
             {% for address in addresses %}

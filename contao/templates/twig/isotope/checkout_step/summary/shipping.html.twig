@@ -1,7 +1,8 @@
 {% extends '@Contao/isotope/checkout_step/summary/_base.html.twig' %}
 
 {% set attributes = attrs()
-    .set('class', 'shipping_summary')
+    .addClass('shipping_summary')
+    .mergeWith(attributes|default)
 %}
 
 {% set headline = ''|trans %}

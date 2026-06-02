@@ -42,6 +42,7 @@ abstract class AbstractAddressStep implements CheckoutStepInterface
 
         if (
             !$billingAddress
+            || ($context->getMemberId() > 0 ^ $billingAddress->isMemberAddress())
             || !$this->addressValidator->isValid($billingAddress, $context->getBillingAddressConfig())
         ) {
             return true;
@@ -51,7 +52,10 @@ abstract class AbstractAddressStep implements CheckoutStepInterface
 
         if (
             $shippingAddress
-            && !$this->addressValidator->isValid($shippingAddress, $context->getShippingAddressConfig())
+            && (
+                ($context->getMemberId() > 0 ^ $shippingAddress->isMemberAddress())
+                || !$this->addressValidator->isValid($shippingAddress, $context->getShippingAddressConfig())
+            )
         ) {
             return true;
         }

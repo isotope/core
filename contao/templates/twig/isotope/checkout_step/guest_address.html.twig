@@ -11,22 +11,23 @@
         <input type="hidden" name="REQUEST_TOKEN" value="{{ contao.request_token }}">
         <input type="hidden" name="edit_address_step" value="1">
 
-        <fieldset class="billing_address">
-            <legend>
+        <div class="formbody">
+            <fieldset class="billing_address">
+                <legend>
+                    {% if requires_payment %}
+                        <h4>{{ 'MSC.billing_address'|trans }}</h4>
+                    {% else %}
+                        <h4>{{ 'MSC.customer_address'|trans }}</h4>
+                    {% endif %}
+                </legend>
                 {% if requires_payment %}
-                    <h4>{{ 'MSC.billing_address'|trans }}</h4>
+                    <p>{{ 'MSC.billing_address_guest_message'|trans }}</p>
                 {% else %}
-                    <h4>{{ 'MSC.customer_address'|trans }}</h4>
+                    <p>{{ 'MSC.customer_address_guest_message'|trans }}</p>
                 {% endif %}
-            </legend>
-            {% if requires_payment %}
-                <p>{{ 'MSC.billing_address_guest_message'|trans }}</p>
-            {% else %}
-                <p>{{ 'MSC.customer_address_guest_message'|trans }}</p>
-            {% endif %}
-            {{ billing_address_form.hidden|raw }}
-            {{ billing_address_form.fields|raw }}
-        </fieldset>
+                {{ billing_address_form.hidden|raw }}
+                {{ billing_address_form.fields|raw }}
+            </fieldset>
 
             {% if requires_shipping %}
                 <fieldset class="shipping_address" data-controller="isotope--toggle-attribute">
@@ -74,6 +75,7 @@
                     </fieldset>
                 </fieldset>
             {% endif %}
+        </div>
 
         <div class="submit_container">
             <button type="submit" class="submit" name="submit_address_step" value="1">{{ 'MSC.nextStep'|trans }}</button>

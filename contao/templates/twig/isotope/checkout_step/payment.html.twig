@@ -1,6 +1,11 @@
 {% trans_default_domain 'contao_default' %}
 {% extends '@Contao/isotope/checkout_step/_base.html.twig' %}
 
+{% set attributes = attrs()
+    .addClass('payment')
+    .mergeWith(attributes|default)
+%}
+
 {% block content %}
     {% if options is empty %}
         <p>{{ 'MSC.noPaymentModules'|trans }}</p>
@@ -25,7 +30,7 @@
                         data-action="isotope--shipping#select"
                     >
                     <label for="opt_payment_{{ option.value }}">{{ option.label }}</label>
-                    {% if option.configurable %}
+                    {#{% if option.configurable %}
                         <form
                             action="{{ path('isotope_checkout_shipping', {id: option.value}) }}"
                             method="post"
@@ -33,7 +38,7 @@
                             data-isotope--shipping-option="{{ option.value }}"
                             data-action="isotope--shipping#submit"
                         ></form>
-                    {% endif %}
+                    {% endif %}#}
                 </span>
             {% endfor %}
         </fieldset>

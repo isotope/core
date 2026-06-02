@@ -10,9 +10,7 @@ use Doctrine\DBAL\Connection;
 use Isotope\CoreBundle\Model\AddressModel;
 use Isotope\CoreBundle\Store\Address\AddressConfig;
 use Isotope\CoreBundle\Store\Address\AddressFormatter;
-use Isotope\CoreBundle\Store\Address\AddressValidator;
 use Isotope\CoreBundle\Store\Address\FormBuilder;
-use Isotope\CoreBundle\Store\Context\StoreContext;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +20,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class AddressManager
 {
     public function __construct(
-        private readonly AddressValidator $addressValidator,
         private readonly AddressFormatter $addressFormatter,
         private readonly FormBuilder $formBuilder,
         private readonly Connection $connection,
@@ -42,7 +39,7 @@ class AddressManager
             return $this->generateForm($request, $address, $addressConfig, $identifier, 'create');
         }
 
-        $addresses = $this->getAddresses($memberId, $addressConfig, $storeId);
+        $addresses = AddressModel::findByMemberAndStoreId($memberId, $storeId)?->getModels() ?? [];
 
         if ($this->isAction($request, $identifier, 'edit')) {
             $id = $request->request->getInt('edit_address_'.$identifier);
@@ -99,6 +96,8 @@ class AddressManager
 
         return [
             'form' => $this->formBuilder->render($form),
+            'address' => $address,
+            'config' => $addressConfig,
         ];
     }
 
@@ -133,21 +132,5 @@ class AddressManager
     private function isAction(Request $request, string $identifier, string $action): bool
     {
         return $request->isMethod(Request::METHOD_POST) && $request->request->has($action.'_address_'.$identifier);
-    }
-
-    /**
-     * @return array<AddressModel>
-     */
-    private function getAddresses(int $memberId, AddressConfig $addressConfig, int $storeId): array
-    {
-        $addresses = AddressModel::findByMemberAndStoreId($memberId, $storeId)?->getModels() ?? [];
-
-        foreach ($addresses as $k => $address) {
-            if (!$this->addressValidator->isValid($address, $addressConfig)) {
-                unset($addresses[$k]);
-            }
-        }
-
-        return $addresses;
     }
 }
