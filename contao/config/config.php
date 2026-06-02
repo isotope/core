@@ -17,6 +17,8 @@ use Isotope\CoreBundle\Model\ConfigModel;
 use Isotope\CoreBundle\Model\DocumentModel;
 use Isotope\CoreBundle\Model\GalleryModel;
 use Isotope\CoreBundle\Model\OrderStatusModel;
+use Isotope\CoreBundle\Model\OrderTransactionEventModel;
+use Isotope\CoreBundle\Model\OrderTransactionModel;
 use Isotope\CoreBundle\Model\PaymentModel;
 use Isotope\CoreBundle\Model\ProductCategoryModel;
 use Isotope\CoreBundle\Model\ProductCollectionItemModel;
@@ -75,20 +77,22 @@ $GLOBALS['TL_MODELS'][ConfigModel::getTable()] = ConfigModel::class;
 $GLOBALS['TL_MODELS'][DocumentModel::getTable()] = DocumentModel::class;
 $GLOBALS['TL_MODELS'][GalleryModel::getTable()] = GalleryModel::class;
 $GLOBALS['TL_MODELS'][OrderStatusModel::getTable()] = OrderStatusModel::class;
+$GLOBALS['TL_MODELS'][OrderTransactionEventModel::getTable()] = OrderTransactionEventModel::class;
+$GLOBALS['TL_MODELS'][OrderTransactionModel::getTable()] = OrderTransactionModel::class;
 $GLOBALS['TL_MODELS'][PaymentModel::getTable()] = PaymentModel::class;
-$GLOBALS['TL_MODELS'][ProductModel::getTable()] = ProductModel::class;
 $GLOBALS['TL_MODELS'][ProductCategoryModel::getTable()] = ProductCategoryModel::class;
-$GLOBALS['TL_MODELS'][ProductCollectionModel::getTable()] = ProductCollectionModel::class;
 $GLOBALS['TL_MODELS'][ProductCollectionItemModel::getTable()] = ProductCollectionItemModel::class;
 $GLOBALS['TL_MODELS'][ProductCollectionLogModel::getTable()] = ProductCollectionLogModel::class;
+$GLOBALS['TL_MODELS'][ProductCollectionModel::getTable()] = ProductCollectionModel::class;
+$GLOBALS['TL_MODELS'][ProductModel::getTable()] = ProductModel::class;
 $GLOBALS['TL_MODELS'][ProductTypeModel::getTable()] = ProductTypeModel::class;
 $GLOBALS['TL_MODELS'][RelatedCategoryModel::getTable()] = RelatedCategoryModel::class;
 $GLOBALS['TL_MODELS'][RelatedProductModel::getTable()] = RelatedProductModel::class;
+$GLOBALS['TL_MODELS'][RuleConditionModel::getTable()] = RuleConditionModel::class;
+$GLOBALS['TL_MODELS'][RuleModel::getTable()] = RuleModel::class;
 $GLOBALS['TL_MODELS'][ShippingModel::getTable()] = ShippingModel::class;
 $GLOBALS['TL_MODELS'][TaxClassModel::getTable()] = TaxClassModel::class;
 $GLOBALS['TL_MODELS'][TaxRateModel::getTable()] = TaxRateModel::class;
-$GLOBALS['TL_MODELS'][RuleModel::getTable()] = RuleModel::class;
-$GLOBALS['TL_MODELS'][RuleConditionModel::getTable()] = RuleConditionModel::class;
 
 /*
  * Checkout steps

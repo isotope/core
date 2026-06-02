@@ -7,6 +7,7 @@ namespace Isotope\CoreBundle\Model;
 use Contao\Model;
 use Contao\System;
 use Isotope\CoreBundle\Store\Order\StatusType;
+use Isotope\CoreBundle\Store\Order\TransactionState;
 
 /**
  * @property int    $id
@@ -17,7 +18,7 @@ use Isotope\CoreBundle\Store\Order\StatusType;
  * @property string $name
  * @property string $label
  * @property string $color
- * @property bool   $paid
+ * @property string $transaction_state
  * @property bool   $welcomescreen
  */
 class OrderStatusModel extends Model
@@ -34,5 +35,10 @@ class OrderStatusModel extends Model
             [$alias, $type->value],
             $options,
         );
+    }
+
+    public function getTransactionState(): TransactionState|null
+    {
+        return TransactionState::tryFrom($this->transaction_state);
     }
 }

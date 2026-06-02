@@ -1,0 +1,34 @@
+{% trans_default_domain 'contao_tl_iso_order_transaction_event' %}
+{% extends '@Contao/be_main.html.twig' %}
+
+{% block main_content %}
+    {% if events is empty %}
+        <p>{{ 'MSC.noResult'|trans([], 'contao_default') }}</p>
+    {% else %}
+        {% for event in events %}
+            <table class="tl_show with-padding with-zebra">
+                <thead>
+                <tr>
+                    <th class="tl_label">{{ 'tl_iso_order_transaction_event.tstamp.0'|trans }}</th>
+                    <th>{{ event.tstamp }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% if event.payload is not empty %}
+                    <tr>
+                        <td class="tl_label">{{ 'tl_iso_order_transaction_event.payload.0'|trans }}</td>
+                        <td><pre>{{ event.payload }}</pre></td>
+                    </tr>
+                {% endif %}
+                {% for field, value in event.values %}
+                    <tr>
+                        <td class="tl_label">{{ "tl_iso_order_transaction_event.#{field}.0"|trans }}</td>
+                        <td>{{ value }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% if not loop.last %}<hr>{% endif %}
+        {% endfor %}
+    {% endif %}
+{% endblock %}

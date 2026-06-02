@@ -56,11 +56,29 @@
       <trans-unit id="tl_iso_orderstatus.color.1">
         <source>Here you can set a custom color for this status. The color will appear on the order list in back end.</source>
       </trans-unit>
-      <trans-unit id="tl_iso_orderstatus.paid.0">
-        <source>Order is paid</source>
+      <trans-unit id="tl_iso_orderstatus.transaction_state.0">
+        <source>Payment state</source>
       </trans-unit>
-      <trans-unit id="tl_iso_orderstatus.paid.1">
-        <source>Assume the order is paid when it has this status. This will for example allow files to be downloaded.</source>
+      <trans-unit id="tl_iso_orderstatus.transaction_state.1">
+        <source>Configure the payment state for orders with this status.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.transaction_state_options.pending.0">
+        <source>Pending</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.transaction_state_options.pending.1">
+        <source>If the transaction status is pending, it means the payment has not been attempted or should be attempted again. The user will be requested to complete the payment for the order.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.transaction_state_options.processing.0">
+        <source>Processing</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.transaction_state_options.processing.1">
+        <source>If the transaction status is processing, it means the payment is neither success nor failure. In this state, the user cannot change the order, but the order is also not considers done (e.g. downloads should not be available).</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.transaction_state_options.complete.0">
+        <source>Complete</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.transaction_state_options.complete.1">
+        <source>If the transaction is complete, the payment was successful. Shipping can be initiated and downloads should be available at this stage.</source>
       </trans-unit>
       <trans-unit id="tl_iso_orderstatus.welcomescreen.0">
         <source>Show on welcome screen</source>
@@ -70,6 +88,9 @@
       </trans-unit>
       <trans-unit id="tl_iso_orderstatus.name_legend">
         <source>Name</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.order_legend">
+        <source>Order state</source>
       </trans-unit>
       <trans-unit id="tl_iso_orderstatus.workflow_legend">
         <source>Workflow</source>

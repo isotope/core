@@ -4,25 +4,30 @@
         vertical-align: top;
     }
 
+    .col_status,
     .col_order_status {
-        padding: 0;
-    }
-
-    .col_order_status {
-        padding-top: 3px;
-
-        div {
-            margin: 2px 0;
-        }
-
         span {
             display: inline-block;
             padding: 2px 5px 3px;
             border-radius: 2px;
         }
+    }
+
+    .col_order_status {
+        padding: 3px 0 0;
+
+        div {
+            margin: 2px 0;
+        }
 
         div:first-child span {
             display: block;
+        }
+    }
+
+    .col_status {
+        span {
+            margin-block: -5px;
         }
     }
 }

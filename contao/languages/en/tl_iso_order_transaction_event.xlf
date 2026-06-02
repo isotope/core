@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="contao/languages/en/tl_iso_orderstatus.xlf" source-language="en">
+    <body>
+      <trans-unit id="tl_iso_order_transaction_event.id.0">
+        <source>ID</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_order_transaction_event.tstamp.0">
+        <source>Received on</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_order_transaction_event.payload.0">
+        <source>Payload</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

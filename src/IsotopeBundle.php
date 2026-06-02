@@ -39,6 +39,7 @@ use Isotope\CoreBundle\ProductCollection\Action\ProductCollectionActionInterface
 use Isotope\CoreBundle\ProductCollection\Action\ProductCollectionActionRegistry;
 use Isotope\CoreBundle\ProductCollection\ItemAction\ProductCollectionItemActionInterface;
 use Isotope\CoreBundle\ProductCollection\ItemAction\ProductCollectionItemActionRegistry;
+use Isotope\CoreBundle\ProductCollection\OrderTransaction\TransactionStatus;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -48,6 +49,12 @@ use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
 class IsotopeBundle extends AbstractBundle
 {
+    public function boot(): void
+    {
+        TransactionStatus::registerDefault('paid', '008c15');
+        TransactionStatus::registerDefault('cancelled', '000000');
+    }
+
     public function build(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new RegisterHookListenersPass());

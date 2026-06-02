@@ -10,7 +10,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
     'config' => [
         'dataContainer' => DC_Table::class,
         'enableVersioning' => false,
-        'ctable' => ['tl_iso_product_collection_item', 'tl_iso_product_collection_log', 'tl_iso_address'],
+        'ctable' => ['tl_iso_product_collection_item', 'tl_iso_product_collection_log', 'tl_iso_address', 'tl_iso_order_transaction'],
         'closed' => true,
         'notCreatable' => true,
         'notCopyable' => true,
@@ -56,7 +56,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
     ],
     'palettes' => [
         '__selector__' => ['sendNotification'],
-        'default' => '{status_legend},transaction_status,delivery_status,order_status,date_paid,date_shipped,notes,sendNotification,submit_buttons;{log_legend},order_log;{details_legend},details;{show_legend:hide},show;{email_legend:hide},email_data;{billing_address_legend:hide},billing_address_data;{shipping_address_legend:hide},shipping_address_data',
+        'default' => '{status_legend},transaction_status,delivery_status,order_status,date_paid,date_shipped,notes,sendNotification,submit_buttons;{log_legend},order_log;{details_legend},details;{show_legend:hide},show;{email_legend:hide},email_data;{transaction_legend:hide},transaction_data;{billing_address_legend:hide},billing_address_data;{shipping_address_legend:hide},shipping_address_data',
     ],
     'subpalettes' => [
         'sendNotification' => 'notification,notification_shipping_tracking,notification_customer_notes',
@@ -241,6 +241,10 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
         ],
         'email_data' => [
             'input_field_callback' => [Callback::class, 'generateEmailData'],
+            'eval' => ['doNotShow' => true],
+        ],
+        'transaction_data' => [
+            // input_field_callback from OrderDetailsListener
             'eval' => ['doNotShow' => true],
         ],
         'billing_address_data' => [

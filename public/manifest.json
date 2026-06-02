@@ -1,8 +1,8 @@
 {
-  "backend.css": "/bundles/isotope/backend.c3163146.css",
+  "backend.css": "/bundles/isotope/backend.0631a7ff.css",
   "backend.js": "/bundles/isotope/backend.ca7fb2c0.js",
-  "isotope.css": "/bundles/isotope/isotope.b1e54f29.css",
-  "isotope.js": "/bundles/isotope/isotope.5b8399e4.js",
+  "isotope.css": "/bundles/isotope/isotope.35cbb092.css",
+  "isotope.js": "/bundles/isotope/isotope.3571cb48.js",
   "plugins/noUiSlider/nouislider.min.js": "/bundles/isotope/plugins/noUiSlider/nouislider.min.js",
   "plugins/noUiSlider/nouislider.js": "/bundles/isotope/plugins/noUiSlider/nouislider.js",
   "images/isotope-logo.svg": "/bundles/isotope/images/isotope-logo.svg",
@@ -48,14 +48,15 @@
   "images/page--dark.svg": "/bundles/isotope/images/page--dark.svg",
   "images/page.svg": "/bundles/isotope/images/page.svg",
   "images/page_1--dark.svg": "/bundles/isotope/images/page_1--dark.svg",
+  "images/webhook--disabled.svg": "/bundles/isotope/images/webhook--disabled.svg",
+  "images/webhook.svg": "/bundles/isotope/images/webhook.svg",
   "images/order.svg": "/bundles/isotope/images/order.svg",
   "images/related.svg": "/bundles/isotope/images/related.svg",
   "plugins/noUiSlider/nouislider.tooltips.css": "/bundles/isotope/plugins/noUiSlider/nouislider.tooltips.css",
-  "images/paperclip.svg": "/bundles/isotope/images/paperclip.svg",
   "images/module.svg": "/bundles/isotope/images/module.svg",
   "images/picker.svg": "/bundles/isotope/images/picker.svg",
-  "backend.c3163146.css.map": "/bundles/isotope/backend.c3163146.css.map",
+  "backend.0631a7ff.css.map": "/bundles/isotope/backend.0631a7ff.css.map",
   "backend.ca7fb2c0.js.map": "/bundles/isotope/backend.ca7fb2c0.js.map",
-  "isotope.b1e54f29.css.map": "/bundles/isotope/isotope.b1e54f29.css.map",
-  "isotope.5b8399e4.js.map": "/bundles/isotope/isotope.5b8399e4.js.map"
+  "isotope.35cbb092.css.map": "/bundles/isotope/isotope.35cbb092.css.map",
+  "isotope.3571cb48.js.map": "/bundles/isotope/isotope.3571cb48.js.map"
 }
