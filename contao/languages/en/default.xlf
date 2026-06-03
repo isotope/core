@@ -89,6 +89,9 @@
       <trans-unit id="MSC.payment_processing">
         <source>Your payment is being processed. Please be patient...</source>
       </trans-unit>
+      <trans-unit id="MSC.payment_failed">
+        <source>Unfortunately, the payment was not successful. Please change your payment method or try again to complete your payment.</source>
+      </trans-unit>
       <trans-unit id="MSC.mmNoUploads">
         <source>No files uploaded.</source>
       </trans-unit>
@@ -230,8 +233,11 @@
       <trans-unit id="MSC.updateCartBT">
         <source>Update Cart</source>
       </trans-unit>
-      <trans-unit id="MSC.orderStatusHeadline">
-        <source>Order Status: %s</source>
+      <trans-unit id="MSC.transactionStatusHeadline">
+        <source>Payment Status: %s</source>
+      </trans-unit>
+      <trans-unit id="MSC.deliveryStatusHeadline">
+        <source>Delivery Status: %s</source>
       </trans-unit>
       <trans-unit id="MSC.checkboutStepBack">
         <source>Go back to step "%s"</source>
@@ -658,6 +664,12 @@
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.cash.1">
         <source>Use this for all offline processed payment.</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.paypal.0">
+        <source>PayPal Standard Checkout</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.paypal.1">
+        <source>This PayPal module supports IPN (Instant Payment Notifications).</source>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_document.standard.0">
         <source>Standard</source>

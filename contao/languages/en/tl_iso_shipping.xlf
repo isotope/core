@@ -5,17 +5,17 @@
       <trans-unit id="tl_iso_shipping.tableLabel">
         <source>Shipping Method</source>
       </trans-unit>
-      <trans-unit id="tl_iso_shipping.name.0">
-        <source>Shipping Method Name</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_shipping.name.1">
-        <source>Please enter a name for this shipping method.</source>
-      </trans-unit>
       <trans-unit id="tl_iso_shipping.type.0">
-        <source>Shipping Method Type</source>
+        <source>Type</source>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.type.1">
         <source>Please select the type of this shipping method</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.name.0">
+        <source>Name</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.name.1">
+        <source>Please enter a name for this shipping method.</source>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.label.0">
         <source>Label</source>

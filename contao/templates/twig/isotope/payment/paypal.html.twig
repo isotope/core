@@ -1,0 +1,49 @@
+{% trans_default_domain 'contao_default' %}
+<h2>{{ 'MSC.pay_with_redirect.0'|trans }}</h2>
+<p class="message">{{ 'MSC.pay_with_redirect.1'|trans }}</p>
+
+<form id="paypal{{ id }}" action="{{ action }}" method="post">
+    <input type="hidden" name="cmd" value="_cart">
+    <input type="hidden" name="upload" value="1">
+    <input type="hidden" name="charset" value="UTF-8">
+    <input type="hidden" name="business" value="{{ paypal_account }}">
+    <input type="hidden" name="lc" value="{{ app.request.locale|upper }}">
+
+    {% for k, v in data %}
+        <input type="hidden" name="{{ k }}" value="{{ v|e }}">
+    {% endfor %}
+
+    {% if discount > 0 %}
+        <input type="hidden" name="discount_amount_cart" value="{{ discount }}">
+    {% endif %}
+
+    <input type="hidden" name="no_shipping" value="1">
+    <input type="hidden" name="no_note" value="1">
+    <input type="hidden" name="currency_code" value="{{ currency }}">
+    <input type="hidden" name="button_subtype" value="services">
+    <input type="hidden" name="return" value="{{ return }}">
+    <input type="hidden" name="cancel_return" value="{{ cancel_return }}">
+    <input type="hidden" name="rm" value="1">
+    <input type="hidden" name="invoice" value="{{ invoice }}">
+    <input type="hidden" name="custom" value="{{ custom }}">
+
+    <input type="hidden" name="address_override" value="{{ debug ? '0' : '1' }}">
+    <input type="hidden" name="first_name" value="{{ address.firstname|e }}">
+    <input type="hidden" name="last_name" value="{{ address.lastname|e }}">
+    <input type="hidden" name="address1" value="{{ address.street_1|e }}">
+    <input type="hidden" name="address2" value="{{ address.street_2|e }}">
+    <input type="hidden" name="zip" value="{{ address.postal|e }}">
+    <input type="hidden" name="city" value="{{ address.city|e }}">
+    <input type="hidden" name="country" value="{{ address.country|upper }}">
+    <input type="hidden" name="email" value="{{ address.email|e }}">
+
+    <input type="hidden" name="notify_url" value="{{ notify_url }}">
+
+    <noscript>
+        <p>{{ 'MSC.pay_with_redirect.3'|trans }}</p>
+        <button type="submit">{{ 'MSC.pay_with_redirect.2'|trans }}</button>
+    </noscript>
+</form>
+<script>
+    document.getElementById('paypal{{ id }}').submit();
+</script>

@@ -113,7 +113,7 @@ abstract class AbstractProductCollection
         return $this->get($item->getIdentifier(), $item->getConfiguration());
     }
 
-    public function getSubtotal(int $level = PHP_INT_MAX): CalculatedPrice
+    public function getSubtotal(int $level = PHP_INT_MAX): CalculatedPrice|null
     {
         $totals = array_filter(
             $this->subtotals,
@@ -121,17 +121,14 @@ abstract class AbstractProductCollection
             ARRAY_FILTER_USE_KEY,
         );
 
-        if ([] === $totals) {
-            return new CalculatedPrice(0, 0, new CalculatedTaxCollection(), new TaxRateCollection());
-        }
+        ksort($totals);
 
-        if (\count($totals) < 2) {
-            return array_first($totals);
-        }
+        return array_last($totals);
+    }
 
-        $key = max(array_keys($totals));
-
-        return $totals[$key];
+    public function getSubtotals(): array
+    {
+        return $this->subtotals;
     }
 
     public function setSubtotals(array $subtotals): self

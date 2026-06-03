@@ -79,7 +79,7 @@ class CheckoutController extends AbstractContentElementController
                 $this->sendNotifications($result, explode(',', $model->iso_notifications));
             }
 
-            throw new RedirectResponseException($this->generateContentUrl(PageModel::findById($model->orderCompleteJumpTo), ['uid' => $result->getIdentifier()]));
+            throw new RedirectResponseException($this->generateContentUrl(PageModel::findById($model->orderCompleteJumpTo), ['uid' => $result->getIdentifier(), 'init_payment' => true]));
         }
 
         return $template->getResponse();

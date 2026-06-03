@@ -12,6 +12,7 @@ use Isotope\CoreBundle\Model\AddressModel;
 use Isotope\CoreBundle\Model\ProductCollectionModel;
 use Isotope\CoreBundle\Model\ProductCollectionItemModel;
 use Isotope\CoreBundle\Model\ProductCollectionLogModel;
+use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
 use Isotope\CoreBundle\ProductCollection\Order\Order;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Event\DocumentNumberTransaction;
@@ -209,6 +210,39 @@ class OrderManager
                 return $values;
             },
         );
+    }
+
+    public function updatePayment(int $orderId, array $data, StoreContext $context): array
+    {
+        $this->validateOrderData($data, $context);
+
+        if (isset($data['line_items'])) {
+            $this->connection->executeStatement("DELETE FROM tl_iso_product_collection_item WHERE pid=? AND type!=?", [$orderId, LineItem::TYPE_PRODUCT]);
+
+            foreach ($data['line_items'] as &$lineItem) {
+                if (LineItem::TYPE_PRODUCT === $lineItem['type']) {
+                    continue;
+                }
+
+                $item = new ProductCollectionItemModel();
+                $item->setRow($lineItem);
+                $item->pid = $orderId;
+                $item->tstamp = time();
+                $item->price_data = json_encode($item->price_data);
+                $item->save();
+
+                $lineItem['id'] = $item->id;
+            }
+
+            unset($lineItem);
+        }
+
+        return array_merge($data, $this->updateOrder($orderId, [
+            'payment_id' => $data['payment_id'],
+            'subtotal' => $data['subtotal'],
+            'total' => $data['total'],
+            'transaction_status' => array_key_first($this->workflowManager->getTransactionWorkflow()->getMarking(new ProductCollectionModel())->getPlaces()),
+        ]));
     }
 
     private function validateOrderData(array $data, StoreContext $context): void

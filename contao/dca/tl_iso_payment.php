@@ -32,7 +32,8 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = [
     'palettes' => [
         '__selector__' => ['type'],
         'default' => '{type_legend},name,label,type',
-        'cash' => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,shipping_modules,product_types,product_types_condition,rule;{price_legend:hide},price,tax_class;{enabled_legend},enabled',
+        'cash' => '{type_legend},type,name,label;{note_legend:hide},note;{checkout_legend},processing_status;{config_legend},shipping_modules,product_types,product_types_condition,rule;{price_legend:hide},price,tax_class;{enabled_legend},enabled',
+        'paypal' => '{type_legend},type,name,label;{note_legend:hide},note;{checkout_legend},processing_status,paid_status,failed_status;{config_legend},shipping_modules,product_types,product_types_condition,rule;{gateway_legend},paypal_account;{price_legend:hide},price,tax_class;{enabled_legend},enabled,debug,logging',
     ],
     'fields' => [
         'id' => [
@@ -40,6 +41,14 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = [
         ],
         'tstamp' => [
             'sql' => "int(10) unsigned NOT NULL default '0'",
+        ],
+        'type' => [
+            'filter' => true,
+            'inputType' => 'select',
+            'default' => 'cash',
+            'reference' => &$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment'],
+            'eval' => ['includeBlankOption' => true, 'helpwizard' => true, 'submitOnChange' => true, 'chosen' => true, 'tl_class' => 'w50'],
+            'sql' => "varchar(64) NOT NULL default ''",
         ],
         'name' => [
             'search' => true,
@@ -54,25 +63,31 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = [
             'translation' => ['domain' => 'isotope'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
-        'type' => [
-            'filter' => true,
-            'inputType' => 'select',
-            'default' => 'cash',
-            'reference' => &$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment'],
-            'eval' => ['includeBlankOption' => true, 'helpwizard' => true, 'submitOnChange' => true, 'chosen' => true, 'tl_class' => 'w50'],
-            'sql' => "varchar(64) NOT NULL default ''",
-        ],
         'note' => [
             'inputType' => 'textarea',
             'eval' => ['rte' => 'tinyMCE'],
             'translation' => ['domain' => 'isotope'],
             'sql' => 'text NULL',
         ],
-        'new_order_status' => [
+        'processing_status' => [
             'inputType' => 'select',
             'foreignKey' => 'tl_iso_orderstatus.name',
-            'eval' => ['mandatory' => true, 'includeBlankOption' => true, 'tl_class' => 'w50'],
-            'sql' => "int(10) NOT NULL default '0'",
+            'eval' => ['mandatory' => true, 'includeBlankOption' => true, 'tl_class' => 'w33'],
+            'sql' => 'varchar(32) NULL',
+            'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
+        ],
+        'paid_status' => [
+            'inputType' => 'select',
+            'foreignKey' => 'tl_iso_orderstatus.name',
+            'eval' => ['mandatory' => true, 'includeBlankOption' => true, 'tl_class' => 'w33'],
+            'sql' => 'varchar(32) NULL',
+            'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
+        ],
+        'failed_status' => [
+            'inputType' => 'select',
+            'foreignKey' => 'tl_iso_orderstatus.name',
+            'eval' => ['mandatory' => true, 'includeBlankOption' => true, 'tl_class' => 'w33'],
+            'sql' => 'varchar(32) NULL',
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
         ],
         'shipping_modules' => [
@@ -100,6 +115,10 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = [
             'enum' => ProductTypeCondition::class,
             'eval' => ['tl_class' => 'w50'],
             'sql' => "varchar(16) NOT NULL default ''",
+        ],
+        'paypal_account' => [
+            'inputType' => 'text',
+            'eval' => ['mandatory' => true, 'maxlength' => 255, 'rgxp' => 'email', 'tl_class' => 'w50'],
         ],
         'price' => [
             'inputType' => 'text',

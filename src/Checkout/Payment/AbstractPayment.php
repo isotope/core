@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Checkout\Payment;
 
 use Isotope\CoreBundle\Checkout\AbstractCheckoutMethod;
-use Isotope\CoreBundle\Store\Context\StoreContext;
+use Isotope\CoreBundle\Store\OrderManager;
 
 abstract class AbstractPayment extends AbstractCheckoutMethod implements PaymentInterface
 {
@@ -13,6 +13,14 @@ abstract class AbstractPayment extends AbstractCheckoutMethod implements Payment
      * @var array<int>|null
      */
     protected array|null $allowedShippings = null;
+
+    public static function getSubscribedServices(): array
+    {
+        return [
+            ...parent::getSubscribedServices(),
+            OrderManager::class,
+        ];
+    }
 
     public function setAllowedShippings(array|null $ids): static
     {
@@ -43,5 +51,12 @@ abstract class AbstractPayment extends AbstractCheckoutMethod implements Payment
         }
 
         return true;
+    }
+
+    protected function updateTransactionStatus(int $orderId, string $status): void
+    {
+        $this->get(OrderManager::class)->updateOrder($orderId, [
+            'transaction_status' => $status,
+        ]);
     }
 }

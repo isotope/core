@@ -43,9 +43,8 @@
 
                 <form method="POST">
                     <input type="hidden" name="REQUEST_TOKEN" value="{{ contao.request_token }}">
-                    <input type="hidden" name="place_order" value="1">
                     <div class="widget widget-submit">
-                        <button type="submit" class="submit"{% if not completed %} disabled{% endif %}>Bestellen</button>
+                        <button type="submit" class="submit" name="place_order" value="1"{% if not completed %} disabled{% endif %}>{{ 'MSC.confirmOrder'|trans }}</button>
                     </div>
                 </form>
             </div>

@@ -133,16 +133,10 @@ class CartManager implements ResetInterface
 
         $cart = $this->calculator->calculate($cart, $context);
 
+        // TODO: validate payment
+
         $data = $this->orderConverter->convertToOrder($cart, $context);
         $result = $this->orderManager->createOrder($data, $context);
-
-        if ($payment = $cart->getPaymentMethod()) {
-            if ($response = $payment->processPayment($result, $context)) {
-                $result->setResponse($response);
-
-                return $result;
-            }
-        }
 
         if (!$this->orderManager->lockOrder($result->getCollectionId(), $context)) {
             throw new \RuntimeException();

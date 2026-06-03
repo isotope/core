@@ -7,7 +7,9 @@ namespace Isotope\CoreBundle\Store\Order;
 use Isotope\CoreBundle\ProductCollection\Cart\Cart;
 use Isotope\CoreBundle\ProductCollection\Event\CartConvertedEvent;
 use Isotope\CoreBundle\ProductCollection\Event\LineItemConvertedEvent;
+use Isotope\CoreBundle\ProductCollection\Event\OrderConvertedEvent;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
+use Isotope\CoreBundle\ProductCollection\Order\Order;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Order\Transformer\AddressTransformer;
 use Isotope\CoreBundle\Store\Order\Transformer\CartTransformer;
@@ -39,6 +41,25 @@ class OrderConverter
         $this->eventDispatcher->dispatch($event);
 
         return $event->getConvertedCart();
+    }
+
+    public function convertToCart(Order $order, StoreContext $context): Cart
+    {
+        // TODO: do we need to clone things?
+        $cart = new Cart($order->getIdentifier());
+        $cart->setBillingAddress($order->getBillingAddress());
+        $cart->setShippingAddress($order->getShippingAddress());
+        $cart->setPaymentMethod($order->getPaymentMethod());
+        $cart->setShippingMethod($order->getShippingMethod());
+        $cart->setLineItems($order->getLineItems()->products());
+        $cart->setSubtotals($order->getSubtotals());
+        $cart->setTotal($order->getTotal());
+        $cart->setId(0); // TODO: should contain the orders' source_collection_id
+
+        $event = new OrderConvertedEvent($order, $cart, $context);
+        $this->eventDispatcher->dispatch($event);
+
+        return $cart;
     }
 
     /**

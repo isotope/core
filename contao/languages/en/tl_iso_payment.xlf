@@ -5,23 +5,23 @@
       <trans-unit id="tl_iso_payment.tableLabel">
         <source>Payment Method</source>
       </trans-unit>
-      <trans-unit id="tl_iso_payment.name.0">
-        <source>Payment Method Name</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.name.1">
-        <source>Enter a name for this payment method. This will only be used in the backend.</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.label.0">
-        <source>Payment Method Label</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.label.1">
-        <source>The label will be shown to customers on checkout.</source>
-      </trans-unit>
       <trans-unit id="tl_iso_payment.type.0">
         <source>Type of Payment Gateway</source>
       </trans-unit>
       <trans-unit id="tl_iso_payment.type.1">
         <source>Select a particular payment gateway</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.name.0">
+        <source>Name</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.name.1">
+        <source>Enter a name for this payment method.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.label.0">
+        <source>Label</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.label.1">
+        <source>This is displayed on the front end in association with the payment option.</source>
       </trans-unit>
       <trans-unit id="tl_iso_payment.note.0">
         <source>Payment Note</source>
@@ -29,11 +29,23 @@
       <trans-unit id="tl_iso_payment.note.1">
         <source>This note can be sent in confirmation mails (##payment_note##).</source>
       </trans-unit>
-      <trans-unit id="tl_iso_payment.new_order_status.0">
-        <source>Status for new orders</source>
+      <trans-unit id="tl_iso_payment.processing_status.0">
+        <source>Status for payment in progress</source>
       </trans-unit>
-      <trans-unit id="tl_iso_payment.new_order_status.1">
-        <source>Choose a matching status for new orders.</source>
+      <trans-unit id="tl_iso_payment.processing_status.1">
+        <source>Select the order status for when the payment is in progress.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paid_status.0">
+        <source>Status for paid orders</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paid_status.1">
+        <source>Select the order status for when the payment was successful.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.failed_status.0">
+        <source>Status for failed orders</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.failed_status.1">
+        <source>Select the order status for when the payment failed.</source>
       </trans-unit>
       <trans-unit id="tl_iso_payment.rule.0">
         <source>Rule condition</source>
@@ -58,6 +70,12 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.product_types_condition.1">
         <source>Select how the product type filter should be applied.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_account.0">
+        <source>PayPal Account</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_account.1">
+        <source>Enter the default email address from your PayPal-Account. Note: Check the correct spelling, and case-sensitive.</source>
       </trans-unit>
       <trans-unit id="tl_iso_payment.price.0">
         <source>Price</source>
@@ -110,11 +128,14 @@
       <trans-unit id="tl_iso_payment.note_legend">
         <source>Additional notes</source>
       </trans-unit>
+      <trans-unit id="tl_iso_payment.checkout_legend">
+        <source>Checkout</source>
+      </trans-unit>
       <trans-unit id="tl_iso_payment.config_legend">
-        <source>General configuration</source>
+        <source>Configuration</source>
       </trans-unit>
       <trans-unit id="tl_iso_payment.gateway_legend">
-        <source>Payment gateway configuration</source>
+        <source>Payment gateway</source>
       </trans-unit>
       <trans-unit id="tl_iso_payment.price_legend">
         <source>Price</source>

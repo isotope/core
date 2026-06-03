@@ -11,6 +11,9 @@
       <trans-unit id="tl_iso_order_transaction_event.payload.0">
         <source>Payload</source>
       </trans-unit>
+      <trans-unit id="tl_iso_order_transaction_event.paypal_txn_id.0">
+        <source>PayPal Transaction ID</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>

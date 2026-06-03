@@ -26,6 +26,9 @@
       <trans-unit id="tl_iso_order_transaction.status.paid">
         <source>Paid</source>
       </trans-unit>
+      <trans-unit id="tl_iso_order_transaction.status.failed">
+        <source>Failed</source>
+      </trans-unit>
       <trans-unit id="tl_iso_order_transaction.status.cancelled">
         <source>Cancelled</source>
       </trans-unit>

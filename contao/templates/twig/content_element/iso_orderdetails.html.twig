@@ -13,41 +13,106 @@
 {% block content %}
 
     <h2>{{ 'MSC.orderDetailsHeadline'|trans([order.documentNumber, order.locked|date(contao.page.datimFormat)]) }}</h2>
-    <div class="order_status {{ order.orderStatus.alias }}">{{ 'MSC.orderStatusHeadline'|trans([order.orderStatus.label|default(order.orderStatus.name)|trans([], 'isotope')]) }}</div>
+    <div class="transaction_status {{ order.transactionStatus.alias }}">{{ 'MSC.transactionStatusHeadline'|trans([order.transactionStatus.label|default(order.transactionStatus.name)|trans([], 'isotope')]) }}</div>
+    <div class="delivery_status {{ order.deliveryStatus.alias }}">{{ 'MSC.deliveryStatusHeadline'|trans([order.deliveryStatus.label|default(order.deliveryStatus.name)|trans([], 'isotope')]) }}</div>
 
-    {% if order.billingAddress %}
-        {% if order.shippingMethod and not order.shippingAddress %}
-            <h3>{{ 'MSC.billing_shipping_address'|trans }}</h3>
-        {% elseif order.paymentMethod %}
-            <h3>{{ 'MSC.billing_address'|trans }}</h3>
-        {% else %}
-            <h3>{{ 'MSC.customer_address'|trans }}</h3>
+    {% if payment_pending %}
+        <form id="order_payment" method="post" data-action="isotope--fragment#submit">
+            <input type="hidden" name="REQUEST_TOKEN" value="{{ contao.request_token }}">
+        </form>
+
+        <div class="payment_failed">
+            <p class="message">{{ 'MSC.payment_failed'|trans }}</p>
+            <button type="submit" class="change_payment" form="order_payment" name="change_payment" value="1">Change payment</button>
+            <a class="submit" href="{{ app.request.uri }}&init_payment=1">Complete payment</a>
+        </div>
+
+        {% if change_payment|default %}
+            <div class="payment_method">
+                <form method="post" data-action="isotope--fragment#submit">
+                    <input type="hidden" name="REQUEST_TOKEN" value="{{ contao.request_token }}">
+                    <input type="hidden" name="change_payment" value="1">
+
+                    <fieldset class="radio_container">
+                        {% for option in payment_options %}
+                            <span>
+                            <input
+                                id="opt_payment_{{ option.value }}"
+                                type="radio"
+                                name="payment_id"
+                                class="radio"
+                                value="{{ option.value }}"
+                                {% if option.active %} checked{% endif %}
+                            >
+                            <label for="opt_payment_{{ option.value }}">{{ option.label }}</label>
+                        </span>
+                        {% endfor %}
+                    </fieldset>
+                    <button type="submit">Select</button>
+                </form>
+            </div>
         {% endif %}
-        {{ isotope_address(order.billingAddress, order.context.billingAddressConfig) }}
     {% endif %}
 
-    {% if order.shippingAddress %}
-        <h3>{{ 'MSC.shipping_address'|trans }}</h3>
-        {{ isotope_address(order.shippingAddress, order.context.shippingAddressConfig) }}
-    {% endif %}
+    <div class="steps">
+        {% block steps %}
+            {% block billing_address %}
+                {% if order.billingAddress %}
+                    <div>
+                        {% if order.shippingMethod and not order.shippingAddress %}
+                            <h3>{{ 'MSC.billing_shipping_address'|trans }}</h3>
+                        {% elseif order.paymentMethod %}
+                            <h3>{{ 'MSC.billing_address'|trans }}</h3>
+                        {% else %}
+                            <h3>{{ 'MSC.customer_address'|trans }}</h3>
+                        {% endif %}
+                        {{ isotope_address(order.billingAddress, order.context.billingAddressConfig) }}
+                    </div>
+                {% endif %}
+            {% endblock %}
 
-    {% if order.shippingMethod %}
-        <h3>{{ 'MSC.shipping_method'|trans }}</h3>
-        {{ order.shippingMethod.label }}
-    {% endif %}
+            {% block shipping_address %}
+                {% if order.shippingAddress %}
+                    <div>
+                        <h3>{{ 'MSC.shipping_address'|trans }}</h3>
+                        {{ isotope_address(order.shippingAddress, order.context.shippingAddressConfig) }}
+                    </div>
+                {% endif %}
+            {% endblock %}
 
-    {% if order.paymentMethod %}
-        <h3>{{ 'MSC.payment_method'|trans }}</h3>
-        {{ order.paymentMethod.label }}
-    {% endif %}
+            <div>
+                <h3>Information</h3>
+                {% if order.shippingMethod %}
+                    <p>
+                        <strong>{{ 'MSC.shipping_method'|trans }}</strong>
+                        {{ order.shippingMethod.label }}
+                    </p>
+                {% endif %}
 
-    {% with {collection: order} %}
+                {% if order.paymentMethod %}
+                    <p>
+                        <strong>{{ 'MSC.payment_method'|trans }}</strong>
+                        {{ order.paymentMethod.label }}
+                    </p>
+                {% endif %}
+
+                {% block additional_information %}{% endblock %}
+            </div>
+        {% endblock %}
+    </div>
+
+    <div class="summary">
         <h3>{{ 'MSC.order_review'|trans }}</h3>
-        {{ block('product_collection') }}
-    {% endwith %}
+        {% with {collection: order} %}{{ block('product_collection') }}{% endwith %}
+    </div>
 
 {% endblock %}
 
 {% block product_collection_actions %}
+    {% if payment_pending %}
+        <a href="{{ app.request.uri }}&init_payment=1">Complete payment</a>
+        <button type="submit" form="order_payment" name="cancel_payment" value="1">Cancel order</button>
+    {% endif %}
+
     {{ isotope_product_collection_action('reorder') }}
 {% endblock %}

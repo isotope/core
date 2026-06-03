@@ -79,6 +79,7 @@ class TransactionsListener
             }
 
             $records[] = [
+                'id' => $transaction['id'],
                 'is_draft' => false,
                 'columns_colspan' => null,
                 'operations' => $operations,
@@ -96,6 +97,7 @@ class TransactionsListener
         return $this->twig->render(
             '@Contao/backend/data_container/table/view/list.html.twig',
             [
+                'table_name' => 'tl_iso_order_transaction',
                 'table_headers' => [
                     'uniqid' => $this->translator->trans('tl_iso_order_transaction.uniqid.0', [], 'contao_tl_iso_order_transaction'),
                     'created' => $this->translator->trans('tl_iso_order_transaction.created.0', [], 'contao_tl_iso_order_transaction'),
@@ -113,6 +115,7 @@ class TransactionsListener
                 'as_select' => false,
                 'panel_active' => '',
                 'order_by' => '',
+                'primary_only' => false,
             ],
         );
     }

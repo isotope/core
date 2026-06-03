@@ -53,6 +53,7 @@ class IsotopeBundle extends AbstractBundle
     public function boot(): void
     {
         TransactionStatus::registerDefault('paid', '008c15');
+        TransactionStatus::registerDefault('failed', 'ff0000');
         TransactionStatus::registerDefault('cancelled', '000000');
     }
 

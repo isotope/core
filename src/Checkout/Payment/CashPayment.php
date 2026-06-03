@@ -4,17 +4,22 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Checkout\Payment;
 
+use Contao\PageModel;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsPayment;
+use Isotope\CoreBundle\Model\OrderTransactionModel;
+use Isotope\CoreBundle\ProductCollection\Order\Order;
 use Isotope\CoreBundle\Store\Context\StoreContext;
-use Isotope\CoreBundle\Store\Order\CreateOrderResult;
 use Isotope\CoreBundle\Twig\TemplateMarkup;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-#[AsPayment]
+#[AsPayment(factory: CorePaymentFactory::class)]
 class CashPayment extends AbstractPayment
 {
     public function __construct(
         int $id,
-        private readonly int $newOrderStatus,
+        private readonly string $inProgressStatus,
         StoreContext $context,
     ) {
         parent::__construct($id, $context);
@@ -30,20 +35,20 @@ class CashPayment extends AbstractPayment
         return null;
     }
 
-
-
-
-
-
-    public function processPayment(/*IsotopeProductCollection */$order, /*Module */$objModule): bool
+    public function process(Order $order, OrderTransactionModel $transactionModel, string $returnUrl, string $errorUrl): Response|null
     {
-        //if (!$order instanceof IsotopePurchasableCollection) {
-        //    return false;
-        //}
+        $this->updateTransactionStatus($order->getId(), $this->inProgressStatus);
 
-        $order->checkout();
-        $order->updateOrderStatus($this->newOrderStatus);
+        return new RedirectResponse($returnUrl);
+    }
 
-        return true;
+    public function finalize(Order $order, OrderTransactionModel $transactionModel, Request $request): Response|null
+    {
+        return null;
+    }
+
+    public function failed(Order $order, OrderTransactionModel $transactionModel, Request $request): Response|null
+    {
+        return null;
     }
 }
