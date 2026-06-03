@@ -47,16 +47,11 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
                 'attributes' => 'data-contao--deeplink-target="primary"',
             ],
             'delete',
-            'print_document' => [
-                'href' => 'key=print_document',
-                'icon' => 'images/document-pdf-text.png',
-                'button_callback' => [Callback::class, 'printButton'],
-            ],
         ],
     ],
     'palettes' => [
         '__selector__' => ['sendNotification'],
-        'default' => '{status_legend},transaction_status,delivery_status,order_status,date_paid,date_shipped,notes,sendNotification,submit_buttons;{log_legend},order_log;{details_legend},details;{show_legend:hide},show;{email_legend:hide},email_data;{transaction_legend:hide},transaction_data;{billing_address_legend:hide},billing_address_data;{shipping_address_legend:hide},shipping_address_data',
+        'default' => '{status_legend},transaction_status,delivery_status,order_status,date_paid,date_shipped,notes,sendNotification,submit_buttons;{log_legend},order_log;{details_legend},details;{transaction_legend:hide},transaction_data;{billing_address_legend:hide},billing_address_data;{shipping_address_legend:hide},shipping_address_data',
     ],
     'subpalettes' => [
         'sendNotification' => 'notification,notification_shipping_tracking,notification_customer_notes',
@@ -232,15 +227,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
             'sql' => 'text NULL',
         ],
         'details' => [
-            'input_field_callback' => [Callback::class, 'generateOrderDetails'],
-            'eval' => ['doNotShow' => true],
-        ],
-        'show' => [
-            'input_field_callback' => [Callback::class, 'generateOrderShow'],
-            'eval' => ['doNotShow' => true],
-        ],
-        'email_data' => [
-            'input_field_callback' => [Callback::class, 'generateEmailData'],
+            // input_field_callback from OrderDetailsListener
             'eval' => ['doNotShow' => true],
         ],
         'transaction_data' => [
@@ -248,11 +235,11 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
             'eval' => ['doNotShow' => true],
         ],
         'billing_address_data' => [
-            'input_field_callback' => [Callback::class, 'generateBillingAddressData'],
+            // input_field_callback from OrderDetailsListener
             'eval' => ['doNotShow' => true],
         ],
         'shipping_address_data' => [
-            'input_field_callback' => [Callback::class, 'generateShippingAddressData'],
+            // input_field_callback from OrderDetailsListener
             'eval' => ['doNotShow' => true],
         ],
     ],
