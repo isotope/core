@@ -22,6 +22,7 @@ use Isotope\CoreBundle\DependencyInjection\Attribute\AsProductFilter;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsRuleCondition;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsShipping;
 use Isotope\CoreBundle\DependencyInjection\Attribute\TypeAttributeInterface;
+use Isotope\CoreBundle\DependencyInjection\Compiler\LoggerChannelFilePass;
 use Isotope\CoreBundle\DependencyInjection\Compiler\RegisterActionPass;
 use Isotope\CoreBundle\DependencyInjection\Compiler\RegisterAttributePass;
 use Isotope\CoreBundle\DependencyInjection\Compiler\RegisterHookListenersPass;
@@ -69,6 +70,7 @@ class IsotopeBundle extends AbstractBundle
         $container->addCompilerPass(new RegisterActionPass(AsProductAction::TAG_NAME, ProductActionRegistry::class));
         $container->addCompilerPass(new RegisterActionPass(AsProductCollectionAction::TAG_NAME, ProductCollectionActionRegistry::class));
         $container->addCompilerPass(new RegisterActionPass(AsProductCollectionItemAction::TAG_NAME, ProductCollectionItemActionRegistry::class));
+        $container->addCompilerPass(new LoggerChannelFilePass());
     }
 
     public function configure(DefinitionConfigurator $definition): void
