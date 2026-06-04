@@ -20,12 +20,6 @@
       <trans-unit id="tl_nc_notification.iso_gallery.1">
         <source>Select a gallery to render images.</source>
       </trans-unit>
-      <trans-unit id="tl_nc_notification.iso_document.0">
-        <source>Document</source>
-      </trans-unit>
-      <trans-unit id="tl_nc_notification.iso_document.1">
-        <source>If you would like to attach a document to the notification, choose one here and use the simple token in the notification center.</source>
-      </trans-unit>
       <trans-unit id="tl_nc_notification.type.iso_order.0">
         <source>New Order (Isotope eCommerce)</source>
       </trans-unit>

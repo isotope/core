@@ -131,21 +131,6 @@
       <trans-unit id="tl_iso_product_collection.details.1">
         <source>Show details of order ID %s</source>
       </trans-unit>
-      <trans-unit id="tl_iso_product_collection.print_document.0">
-        <source>Print a document</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_product_collection.print_document.1">
-        <source>Print order ID %s with a document of your choice</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_product_collection.document_choice.0">
-        <source>Document</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_product_collection.document_choice.1">
-        <source>Choose the document you would like to print the data with.</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_product_collection.print">
-        <source>Print</source>
-      </trans-unit>
       <trans-unit id="tl_iso_product_collection.orderStatusUpdate">
         <source>The status of your order has been updated.</source>
       </trans-unit>

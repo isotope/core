@@ -78,13 +78,6 @@ source_lang = en
 type = XLIFF
 resource_name = v3_0-core-tl_iso_config
 
-[o:terminal42:p:isotope:r:v3_0-core-tl_iso_document]
-file_filter = contao/languages/<lang>/tl_iso_document.xlf
-source_file = contao/languages/en/tl_iso_document.xlf
-source_lang = en
-type = XLIFF
-resource_name = v3_0-core-tl_iso_document
-
 [o:terminal42:p:isotope:r:v3_0-core-tl_iso_gallery]
 file_filter = contao/languages/<lang>/tl_iso_gallery.xlf
 source_file = contao/languages/en/tl_iso_gallery.xlf

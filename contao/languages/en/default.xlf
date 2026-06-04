@@ -671,12 +671,6 @@
       <trans-unit id="MODEL.tl_iso_payment.paypal.1">
         <source>This PayPal module supports IPN (Instant Payment Notifications).</source>
       </trans-unit>
-      <trans-unit id="MODEL.tl_iso_document.standard.0">
-        <source>Standard</source>
-      </trans-unit>
-      <trans-unit id="MODEL.tl_iso_document.standard.1">
-        <source>Prints a PDF document from HTML template.</source>
-      </trans-unit>
       <trans-unit id="MODEL.tl_iso_gallery.standard.0">
         <source>Default gallery</source>
       </trans-unit>

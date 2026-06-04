@@ -48,7 +48,6 @@ class OrderNotificationType implements NotificationTypeInterface
             $this->create(TextTokenDefinition::class, 'document_number'),
             $this->create(HtmlTokenDefinition::class, 'cart_html'),
             $this->create(TextTokenDefinition::class, 'cart_text'),
-            $this->create(TextTokenDefinition::class, 'document'),
             $this->create(TextTokenDefinition::class, 'bank_name'),
             $this->create(TextTokenDefinition::class, 'bank_account'),
             $this->create(TextTokenDefinition::class, 'bank_code'),

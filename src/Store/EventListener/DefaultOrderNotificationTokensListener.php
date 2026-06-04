@@ -114,9 +114,6 @@ class DefaultOrderNotificationTokensListener
             ],
         );
 
-        // TODO: render the document attachment
-        $tokens['document'] = '';
-
         $event->addTokens($tokens);
     }
 

@@ -34,8 +34,6 @@ final class IsotopeCorePermissions
 
     public const USER_CAN_ACCESS_ORDERSTATUS = 'contao_user.iso_modules.orderstatus';
 
-    public const USER_CAN_ACCESS_DOCUMENTS = 'contao_user.iso_modules.documents';
-
     public const USER_CAN_ACCESS_GALLERIES = 'contao_user.iso_modules.gallery';
 
     public const USER_CAN_EDIT_PRODUCTTYPE = 'contao_user.iso_producttypes';
