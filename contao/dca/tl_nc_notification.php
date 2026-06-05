@@ -1,20 +1,12 @@
 <?php
 
-$GLOBALS['TL_DCA']['tl_nc_notification']['palettes']['iso_order'] = '{title_legend},title,type;{config_legend},iso_collectionTpl,iso_orderCollectionBy,iso_gallery';
-$GLOBALS['TL_DCA']['tl_nc_notification']['palettes']['iso_order_update'] = '{title_legend},title,type;{config_legend},iso_collectionTpl,iso_orderCollectionBy,iso_gallery';
+$GLOBALS['TL_DCA']['tl_nc_notification']['palettes']['iso_order'] = '{title_legend},title,type;{config_legend},iso_collectionTpl,iso_gallery';
+$GLOBALS['TL_DCA']['tl_nc_notification']['palettes']['iso_order_update'] = '{title_legend},title,type;{config_legend},iso_collectionTpl,iso_gallery';
 
 $GLOBALS['TL_DCA']['tl_nc_notification']['fields']['iso_collectionTpl'] = [
     'inputType' => 'select',
     'eval' => ['chosen' => true, 'tl_class' => 'w50'],
     'sql' => "varchar(64) NOT NULL default ''",
-];
-
-$GLOBALS['TL_DCA']['tl_nc_notification']['fields']['iso_orderCollectionBy'] = [
-    'default' => 'asc_id',
-    'inputType' => 'select',
-    'options' => &$GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy'],
-    'eval' => ['mandatory' => true, 'tl_class' => 'w50'],
-    'sql' => "varchar(16) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_nc_notification']['fields']['iso_gallery'] = [

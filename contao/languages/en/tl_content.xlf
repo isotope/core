@@ -188,12 +188,6 @@
       <trans-unit id="tl_content.iso_order_conditions_position.after">
         <source>After products list</source>
       </trans-unit>
-      <trans-unit id="tl_content.iso_orderCollectionBy.0">
-        <source>Sorting</source>
-      </trans-unit>
-      <trans-unit id="tl_content.iso_orderCollectionBy.1">
-        <source>Define in what order the collection items should be listed.</source>
-      </trans-unit>
       <trans-unit id="tl_content.iso_emptyMessage.0">
         <source>Define empty message</source>
       </trans-unit>

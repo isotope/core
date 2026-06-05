@@ -512,30 +512,6 @@
       <trans-unit id="MSC.isotopeIntroduction.6">
         <source>Isotope is a product of terminal42 gmbh in association with the Isotope eCommerce Team.</source>
       </trans-unit>
-      <trans-unit id="MSC.iso_orderCollectionBy.asc_id">
-        <source>by date added (ascending)</source>
-      </trans-unit>
-      <trans-unit id="MSC.iso_orderCollectionBy.desc_id">
-        <source>by date added (descending)</source>
-      </trans-unit>
-      <trans-unit id="MSC.iso_orderCollectionBy.asc_tstamp">
-        <source>by date updated (ascending)</source>
-      </trans-unit>
-      <trans-unit id="MSC.iso_orderCollectionBy.desc_tstamp">
-        <source>by date updated (descending)</source>
-      </trans-unit>
-      <trans-unit id="MSC.iso_orderCollectionBy.asc_name">
-        <source>by product name (ascending)</source>
-      </trans-unit>
-      <trans-unit id="MSC.iso_orderCollectionBy.desc_name">
-        <source>by product name (descending)</source>
-      </trans-unit>
-      <trans-unit id="MSC.iso_orderCollectionBy.asc_price">
-        <source>by price (ascending)</source>
-      </trans-unit>
-      <trans-unit id="MSC.iso_orderCollectionBy.desc_price">
-        <source>by price (descending)</source>
-      </trans-unit>
       <trans-unit id="MSC.iso_priceDisplay.net.0">
         <source>Net</source>
       </trans-unit>
