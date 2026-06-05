@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle;
 
 use Hashids\Hashids;
-use Isotope\CheckoutStep\CheckoutStep;
 use Isotope\CoreBundle\Attribute\AttributeFactoryInterface;
 use Isotope\CoreBundle\Backend\ShopConfig\ShopConfigInterface;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsAttribute;
