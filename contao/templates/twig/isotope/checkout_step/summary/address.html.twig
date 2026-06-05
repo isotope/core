@@ -1,11 +1,6 @@
 {% trans_default_domain 'contao_default' %}
 {% extends '@Contao/isotope/checkout_step/summary/_base.html.twig' %}
 
-{% set attributes = attrs()
-    .addClass('address_summary')
-    .mergeWith(attributes|default)
-%}
-
 {% block content %}
     <div class="billing_address">
         {% if requires_shipping and not shipping_address %}

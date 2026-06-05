@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Twig;
 
 use Hashids\Hashids;
+use Isotope\CoreBundle\Checkout\Step\CheckoutStepSummary;
 use Isotope\CoreBundle\Store\Address\AddressFormatter;
 use Isotope\CoreBundle\Twig\Global\IsotopeVariable;
 use Isotope\CoreBundle\Twig\Runtime\ActionRuntime;
@@ -30,10 +31,9 @@ class IsotopeExtension extends AbstractExtension implements GlobalsInterface
         private readonly AddressFormatter $addressFormatter,
         #[Autowire(service: 'isotope.hashids')] private readonly Hashids $hashids,
     ) {
-        $this->twig
-            ->getRuntime(EscaperRuntime::class)
-            ->addSafeClass(TemplateMarkup::class, ['html', 'contao_html'])
-        ;
+        $runtime = $this->twig->getRuntime(EscaperRuntime::class);
+        $runtime->addSafeClass(TemplateMarkup::class, ['html', 'contao_html']);
+        $runtime->addSafeClass(CheckoutStepSummary::class, ['html', 'contao_html']);
     }
 
     public function getFilters(): array

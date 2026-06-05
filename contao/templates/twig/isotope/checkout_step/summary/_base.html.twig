@@ -1,19 +1,33 @@
 {% trans_default_domain 'contao_default' %}
 
-<div{{ attributes|default }}>
-    {% block content %}
-        {% if review %}
-            {{ review }}
-        {% else %}
-            <p>{{ label }}</p>
-        {% endif %}
-    {% endblock %}
+{% set attributes = attrs()
+    .addClass(type)
+    .mergeWith(attributes|default)
+%}
 
-    {% if edit_step|default %}
-        <form method="POST" data-action="isotope--fragment#submit">
-            <input type="hidden" name="{{ edit_step }}" value="1">
-            <input type="hidden" name="REQUEST_TOKEN" value="{{ contao.request_token }}">
-            <button type="submit" class="submit">{{ 'MSC.changeCheckoutInfo'|trans }}</button>
-        </form>
-    {% endif %}
-</div>
+{% block wrapper %}
+    <div{{ attributes }}>
+        {% block inner %}
+            {% block pre %}{{ pre|default|join }}{% endblock %}
+
+            {% block content %}
+                {% if review %}
+                    {{ review }}
+                {% else %}
+                    <p>{{ label }}</p>
+                {% endif %}
+            {% endblock %}
+
+            {% block post %}{{ post|default|join }}{% endblock %}
+
+            {% if editable|default %}
+                {% block form %}
+                    <form method="POST" data-action="isotope--fragment#submit">
+                        <input type="hidden" name="REQUEST_TOKEN" value="{{ contao.request_token }}">
+                        <button type="submit" class="submit" name="edit_{{ type }}_step" value="1">{{ 'MSC.changeCheckoutInfo'|trans }}</button>
+                    </form>
+                {% endblock %}
+            {% endif %}
+        {% endblock %}
+    </div>
+{% endblock %}

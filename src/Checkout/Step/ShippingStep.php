@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Checkout\Step;
 
 use Contao\CoreBundle\Exception\RedirectResponseException;
-use Contao\StringUtil;
 use Isotope\CoreBundle\Checkout\Shipping\ShippingInterface;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsCheckoutStep;
 use Isotope\CoreBundle\Model\ShippingModel;
@@ -16,17 +15,20 @@ use Isotope\CoreBundle\Store\CartManager;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Twig\TemplateMarkupFactory;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[AsCheckoutStep(priority: 60)]
-class ShippingStep implements CheckoutStepInterface
+class ShippingStep extends AbstractCheckoutStep
 {
     public function __construct(
         private readonly ShippingRegistry $shippingRegistry,
-        private readonly TemplateMarkupFactory $markupFactory,
         private readonly CartManager $cartManager,
         private readonly TranslatorInterface $translator,
+        TemplateMarkupFactory $markupFactory,
+        EventDispatcherInterface $eventDispatcher,
     ) {
+        parent::__construct($markupFactory, $eventDispatcher);
     }
 
     public function getSummary(Request $request, StoreContext $context, array $config): CheckoutStepSummary|null
@@ -41,66 +43,58 @@ class ShippingStep implements CheckoutStepInterface
 
         if (
             $current
-            && (!$request->isMethod(Request::METHOD_POST) || !$request->request->has('edit_shipping_step'))
-            && null !== array_find($shippings, fn (ShippingInterface $s) => $s->getId() === $current->getId())
+            && !$this->isEditing($request)
             && !$current->hasError()
+            && null !== array_find($shippings, fn (ShippingInterface $s) => $s->getId() === $current->getId())
         ) {
             $cart->setShippingMethod($current);
             $cart->setModified();
 
-            return new CheckoutStepSummary(
-                $this->translator->trans('MSC.checkout_shipping', [], 'contao_default'),
+            return $this->createSummary(
+                $this->dispatchEvent($request, true, $config),
                 'shipping',
-                true,
-                $this->markupFactory->create(
-                    '@Contao/isotope/checkout_step/summary/shipping.html.twig',
-                    [
-                        'label' => $current->getLabel(),
-                        'review' => $current->review(),
-                        'edit_step' => \count($shippings) > 1 ? 'edit_shipping_step' : null,
-                    ],
-                ),
+                [
+                    'label' => $current->getLabel(),
+                    'review' => $current->review(),
+                    'editable' => \count($shippings) > 1,
+                ],
             );
         }
 
         if (
-            $request->isMethod(Request::METHOD_POST)
-            && $request->request->has('submit_shipping_step')
+            $this->isSubmitted($request)
             && $newId = $request->request->getInt('shipping_id')
         ) {
-            if (null !== ($shipping = array_find($shippings, fn (ShippingInterface $s) => $s->getId() === $newId))) {
+            if (
+                $cart->getShippingMethod()?->getId() !== $newId
+                && null !== ($shipping = array_find($shippings, fn (ShippingInterface $s) => $s->getId() === $newId))
+            ) {
                 $cart->setShippingMethod($shipping);
                 $cart->setModified();
                 $this->cartManager->recalculate($cart, $context);
-
-                throw new RedirectResponseException($request->getRequestUri());
             }
+
+            throw new RedirectResponseException($request->getRequestUri());
         }
 
-        $options = [];
-
-        foreach ($shippings as $shipping) {
-            $options[] = [
-                'shipping' => $shipping,
-                'value' => $shipping->getId(),
-                'label' => $shipping->getLabel(),
-                'note' => $shipping->getNote(),
-                'configurable' => false, //$shipping instanceof ConfigurableShippingInterface,
-            ];
-        }
-
-        return new CheckoutStepSummary(
-            $this->translator->trans('MSC.checkout_shipping', [], 'contao_default'),
+        return $this->createSummary(
+            $this->dispatchEvent($request, false, $config),
             'shipping',
-            false,
-            $this->markupFactory->create(
-                '@Contao/isotope/checkout_step/shipping.html.twig',
-                [
-                    'current' => $current,
-                    'options' => $options,
-                ],
-            ),
+            [
+                'current' => $current,
+                'options' => $shippings,
+            ],
         );
+    }
+
+    protected function getType(): string
+    {
+        return 'shipping';
+    }
+
+    protected function getTitle(): string|null
+    {
+        return $this->translator->trans('MSC.checkout_shipping', [], 'contao_default');
     }
 
     private function getCurrent(Cart $cart, StoreContext $context, array $config): ShippingInterface|null

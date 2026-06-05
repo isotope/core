@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Twig;
 
 use Symfony\Component\DependencyInjection\Exception\RuntimeException;
-use Traversable;
 use Twig\Environment;
 
 final class TemplateMarkup implements \ArrayAccess, \IteratorAggregate, \Countable, \Stringable
@@ -37,7 +36,7 @@ final class TemplateMarkup implements \ArrayAccess, \IteratorAggregate, \Countab
         return $this->context;
     }
 
-    public function getIterator(): Traversable
+    public function getIterator(): \Traversable
     {
         return new \ArrayIterator($this->context);
     }

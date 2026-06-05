@@ -14,7 +14,6 @@ use Isotope\CoreBundle\Checkout\Step\CheckoutStepInterface;
 use Isotope\CoreBundle\Store\CartManager;
 use Isotope\CoreBundle\Store\Order\CreateOrderResult;
 use Isotope\CoreBundle\Store\Order\OrderNotifier;
-use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,22 +47,15 @@ class CheckoutController extends AbstractContentElementController
         $allCompleted = true;
 
         foreach ($this->checkoutSteps as $key => $step) {
-            $stepContext = $step->getSummary($request, $context, $config);
+            $summary = $step->getSummary($request, $context, $config);
 
-            if (!$stepContext) {
+            if (!$summary) {
                 continue;
             }
 
-            $completed = $stepContext->isCompleted();
+            $steps[$key] = $summary;
 
-            $steps[$key] = [
-                'title' => $stepContext->getTitle(),
-                'details' => $allCompleted ? $stepContext->getDetails() : '',
-                'class' => $stepContext->getClass(), // TODO: do we need class?
-                'is_complete' => $completed,
-            ];
-
-            if (!$completed) {
+            if (!$summary->isCompleted()) {
                 $allCompleted = false;
             }
         }

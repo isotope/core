@@ -16,20 +16,23 @@ use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Twig\TemplateMarkupFactory;
 use Isotope\CoreBundle\Util\CartUtil;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[AsCheckoutStep(priority: 80)]
-class AddressStep implements CheckoutStepInterface
+class AddressStep extends AbstractCheckoutStep
 {
     public function __construct(
+        private readonly AddressManager $addressManager,
         private readonly AddressValidator $addressValidator,
         private readonly AddressFormatter $addressFormatter,
-        private readonly TemplateMarkupFactory $markupFactory,
-        private readonly TranslatorInterface $translator,
-        private readonly AddressManager $addressManager,
         private readonly FormBuilder $formBuilder,
         private readonly CartManager $cartManager,
+        private readonly TranslatorInterface $translator,
+        TemplateMarkupFactory $markupFactory,
+        EventDispatcherInterface $eventDispatcher,
     ) {
+        parent::__construct($markupFactory, $eventDispatcher);
     }
 
     public function getSummary(Request $request, StoreContext $context, array $config): CheckoutStepSummary|null
@@ -37,13 +40,23 @@ class AddressStep implements CheckoutStepInterface
         return $context->getMemberId() ? $this->getMemberSummary($request, $context, $config) : $this->getGuestSummary($request, $context, $config);
     }
 
+    protected function getType(): string
+    {
+        return 'address';
+    }
+
+    protected function getTitle(): string|null
+    {
+        return $this->translator->trans('MSC.checkout_address', [], 'contao_default');
+    }
+
     private function getGuestSummary(Request $request, StoreContext $context, array $config): CheckoutStepSummary|null
     {
         if (
-            (!$request->isMethod(Request::METHOD_POST) || !$request->request->has('edit_address_step'))
+            !$this->isEditing($request)
             && !$this->hasError($context)
         ) {
-            return $this->generateSummary($context, $config);
+            return $this->generateSummary($request, $context, $config);
         }
 
         $cart = $context->getCart();
@@ -61,7 +74,7 @@ class AddressStep implements CheckoutStepInterface
         $shippingAddress = null;
         $shippingForm = null;
 
-        // TODO: validate that the existing address matches the requested config
+        // TODO: validate that the current cart address matches the requested config
 
         if ($requiresShipping && !$skipShipping) {
             $shippingAddress = $cart->getShippingAddress() ?? new AddressModel();
@@ -105,21 +118,17 @@ class AddressStep implements CheckoutStepInterface
             throw new RedirectResponseException($request->getRequestUri());
         }
 
-        return new CheckoutStepSummary(
-            $this->translator->trans('MSC.checkout_address', [], 'contao_default'),
-            'address',
-            false,
-            $this->markupFactory->create(
-                '@Contao/isotope/checkout_step/guest_address.html.twig',
-                [
-                    'billing_address_form' => $this->formBuilder->render($billingForm),
-                    'shipping_address_form' => $shippingForm ? $this->formBuilder->render($shippingForm) : null,
+        return $this->createSummary(
+            $this->dispatchEvent($request, false, $config),
+            'guest_address',
+            [
+                'billing_address_form' => $this->formBuilder->render($billingForm),
+                'shipping_address_form' => $shippingForm ? $this->formBuilder->render($shippingForm) : null,
 
-                    'requires_payment' => CartUtil::requiresPayment($cart),
-                    'requires_shipping' => $requiresShipping && !$skipShipping,
-                    'add_shipping_address' => $addShipping,
-                ],
-            ),
+                'requires_payment' => CartUtil::requiresPayment($cart),
+                'requires_shipping' => $requiresShipping && !$skipShipping,
+                'add_shipping_address' => $addShipping,
+            ],
         );
     }
 
@@ -140,7 +149,7 @@ class AddressStep implements CheckoutStepInterface
             )
             && !$this->hasError($context)
         ) {
-            return $this->generateSummary($context, $config);
+            return $this->generateSummary($request, $context, $config);
         }
 
         $cart = $context->getCart();
@@ -180,45 +189,33 @@ class AddressStep implements CheckoutStepInterface
         }
 
         if ($request->request->has('create_address_billing') || $request->request->has('edit_address_billing')) {
-            return $this->getResponse(
-                [
-                    'edit_address' => $billingAddressManager,
-                ],
+            return $this->createSummary(
+                $this->dispatchEvent($request, false, $config),
+                'member_address',
+                ['edit_address' => $billingAddressManager],
             );
         }
 
         if ($requiresShipping && !$skipShipping && ($request->request->has('create_address_shipping') || $request->request->has('edit_address_shipping'))) {
-            return $this->getResponse(
-                [
-                    'edit_address' => $shippingAddressManager,
-                ],
+            return $this->createSummary(
+                $this->dispatchEvent($request, false, $config),
+                'member_address',
+                ['edit_address' => $shippingAddressManager],
             );
         }
 
-        return $this->getResponse(
+        return $this->createSummary(
+            $this->dispatchEvent($request, false, $config),
+            'member_address',
             [
                 'billing_address_manager' => $billingAddressManager,
                 'shipping_address_manager' => $shippingAddressManager,
-
                 'billing_address' => $billingAddress,
                 'shipping_address' => $shippingAddress,
                 'add_shipping_address' => $addShipping,
                 'requires_payment' => CartUtil::requiresPayment($cart),
                 'requires_shipping' => $requiresShipping,
             ],
-        );
-    }
-
-    private function getResponse(array $context): CheckoutStepSummary
-    {
-        return new CheckoutStepSummary(
-            $this->translator->trans('MSC.checkout_address', [], 'contao_default'),
-            'address',
-            false,
-            $this->markupFactory->create(
-                '@Contao/isotope/checkout_step/member_address.html.twig',
-                $context,
-            ),
         );
     }
 
@@ -279,7 +276,7 @@ class AddressStep implements CheckoutStepInterface
         return false;
     }
 
-    private function generateSummary(StoreContext $context, array $config): CheckoutStepSummary
+    private function generateSummary(Request $request, StoreContext $context, array $config): CheckoutStepSummary
     {
         $cart = $context->getCart();
 
@@ -295,20 +292,16 @@ class AddressStep implements CheckoutStepInterface
             $shippingAddress = $cart->getBillingAddress();
         }
 
-        return new CheckoutStepSummary(
-            $this->translator->trans('MSC.checkout_address', [], 'contao_default'),
+        return $this->createSummary(
+            $this->dispatchEvent($request, true, $config),
             'address',
-            true,
-            $this->markupFactory->create(
-                '@Contao/isotope/checkout_step/summary/address.html.twig',
-                [
-                    'billing_address' => $this->addressFormatter->toHtml($billingAddress, $billingAddressConfig),
-                    'shipping_address' => $shippingAddress ? $this->addressFormatter->toHtml($shippingAddress, $shippingAddressConfig) : null,
-                    'requires_payment' => CartUtil::requiresPayment($cart),
-                    'requires_shipping' => $requiresShipping,
-                    'edit_step' => 'edit_address_step',
-                ],
-            ),
+            [
+                'billing_address' => $this->addressFormatter->toHtml($billingAddress, $billingAddressConfig),
+                'shipping_address' => $shippingAddress ? $this->addressFormatter->toHtml($shippingAddress, $shippingAddressConfig) : null,
+                'requires_payment' => CartUtil::requiresPayment($cart),
+                'requires_shipping' => $requiresShipping,
+                'editable' => true, // TODO: not editable if member address is enforced and shipping=billing is enforced
+            ],
         );
     }
 }

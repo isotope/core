@@ -18,20 +18,23 @@
         {% block checkout_steps %}
             <div class="steps{% if completed %} completed{% endif %}">
                 {% set continue = true %}
-                {% for step in steps|default %}
+                {% for key, step in steps|default %}
                     {% block checkout_step %}
                         {% set step_attributes = attrs()
-                            .addClass('complete', continue and step.is_complete)
-                            .addClass('current', continue and not step.is_complete)
+                            .addClass(key)
+                            .addClass('complete', continue and step.completed)
+                            .addClass('current', continue and not step.completed)
                             .addClass('pending', not continue)
                             .mergeWith(step_attributes|default)
                         %}
                         <div{{ step_attributes }}>
-                            <h3>{{ loop.index }}. {{ step.title }}</h3>
-                            {% if continue %}{{ step.details }}{% endif %}
-                            {% if not step.is_complete %}{% set continue = false %}{% endif %}
+                            {% if step.title %}
+                                <h3>{{ loop.index }}. {{ step.title }}</h3>
+                            {% endif %}
+                            {% if continue %}{{ step }}{% endif %}
                         </div>
                     {% endblock %}
+                    {% if not step.completed %}{% set continue = false %}{% endif %}
                 {% endfor %}
             </div>
         {% endblock %}

@@ -1,7 +1,7 @@
 {% extends '@Contao/content_element/iso_checkout.html.twig' %}
 
 {% block checkout_step %}
-    {% if completed or not step.is_complete %}
+    {% if completed or not step.completed %}
         {{ parent() }}
     {% endif %}
 {% endblock %}

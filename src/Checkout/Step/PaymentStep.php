@@ -14,17 +14,20 @@ use Isotope\CoreBundle\Store\CartManager;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Twig\TemplateMarkupFactory;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[AsCheckoutStep(priority: 40)]
-class PaymentStep implements CheckoutStepInterface
+class PaymentStep extends AbstractCheckoutStep
 {
     public function __construct(
         private readonly PaymentRegistry $paymentRegistry,
         private readonly CartManager $cartManager,
-        private readonly TemplateMarkupFactory $markupFactory,
         private readonly TranslatorInterface $translator,
+        TemplateMarkupFactory $markupFactory,
+        EventDispatcherInterface $eventDispatcher,
     ) {
+        parent::__construct($markupFactory, $eventDispatcher);
     }
 
     public function getSummary(Request $request, StoreContext $context, array $config): CheckoutStepSummary|null
@@ -39,66 +42,58 @@ class PaymentStep implements CheckoutStepInterface
 
         if (
             $current
-            && (!$request->isMethod(Request::METHOD_POST) || !$request->request->has('edit_payment_step'))
-            && null !== array_find($payments, fn (PaymentInterface $p) => $p->getId() === $current->getId())
+            && !$this->isEditing($request)
             && !$current->hasError()
+            && null !== array_find($payments, fn (PaymentInterface $p) => $p->getId() === $current->getId())
         ) {
             $cart->setPaymentMethod($current);
             $cart->setModified();
 
-            return new CheckoutStepSummary(
-                $this->translator->trans('MSC.checkout_payment', [], 'contao_default'),
+            return $this->createSummary(
+                $this->dispatchEvent($request, true, $config),
                 'payment',
-                true,
-                $this->markupFactory->create(
-                    '@Contao/isotope/checkout_step/summary/payment.html.twig',
-                    [
-                        'label' => $current->getLabel(),
-                        'review' => $current->review(),
-                        'edit_step' => \count($payments) > 1 ? 'edit_payment_step' : null,
-                    ],
-                ),
+                [
+                    'label' => $current->getLabel(),
+                    'review' => $current->review(),
+                    'editable' => \count($payments) > 1,
+                ],
             );
         }
 
         if (
-            $request->isMethod(Request::METHOD_POST)
-            && $request->request->has('submit_payment_step')
+            $this->isSubmitted($request)
             && $newId = $request->request->getInt('payment_id')
         ) {
-            if (null !== ($payment = array_find($payments, fn (PaymentInterface $s) => $s->getId() === $newId))) {
+            if (
+                $cart->getPaymentMethod()?->getId() !== $newId
+                && null !== ($payment = array_find($payments, fn (PaymentInterface $p) => $p->getId() === $newId))
+            ) {
                 $cart->setPaymentMethod($payment);
                 $cart->setModified();
                 $this->cartManager->recalculate($cart, $context);
-
-                throw new RedirectResponseException($request->getRequestUri());
             }
+
+            throw new RedirectResponseException($request->getRequestUri());
         }
 
-        $options = [];
-
-        foreach ($payments as $payment) {
-            $options[] = [
-                'payment' => $payment,
-                'value' => $payment->getId(),
-                'label' => $payment->getLabel(),
-                'note' => $payment->getNote(),
-                'configurable' => false, //$payment instanceof ConfigurableShippingInterface,
-            ];
-        }
-
-        return new CheckoutStepSummary(
-            $this->translator->trans('MSC.checkout_payment', [], 'contao_default'),
+        return $this->createSummary(
+            $this->dispatchEvent($request, false, $config),
             'payment',
-            false,
-            $this->markupFactory->create(
-                '@Contao/isotope/checkout_step/payment.html.twig',
-                [
-                    'current' => $current,
-                    'options' => $options,
-                ],
-            ),
+            [
+                'current' => $current,
+                'options' => $payments,
+            ],
         );
+    }
+
+    protected function getType(): string
+    {
+        return 'payment';
+    }
+
+    protected function getTitle(): string|null
+    {
+        return $this->translator->trans('MSC.checkout_payment', [], 'contao_default');
     }
 
     private function getCurrent(Cart $cart, StoreContext $context, array $config): PaymentInterface|null
