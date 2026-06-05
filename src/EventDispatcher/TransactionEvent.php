@@ -9,7 +9,7 @@ use Psr\EventDispatcher\StoppableEventInterface;
 /**
  * @template TTransactionResult
  */
-abstract class Transaction implements StoppableEventInterface
+abstract class TransactionEvent implements StoppableEventInterface
 {
     /**
      * @var TTransactionResult
@@ -20,7 +20,7 @@ abstract class Transaction implements StoppableEventInterface
 
     private bool $propagationStopped = false;
 
-    abstract public function getEventName(): string;
+    abstract public function getName(): string;
 
     /**
      * @return TTransactionResult

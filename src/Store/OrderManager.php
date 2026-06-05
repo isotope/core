@@ -7,7 +7,7 @@ namespace Isotope\CoreBundle\Store;
 use Contao\BackendUser;
 use Contao\CoreBundle\InsertTag\InsertTagParser;
 use Doctrine\DBAL\Connection;
-use Isotope\CoreBundle\EventDispatcher\TransactionDispatcher;
+use Isotope\CoreBundle\EventDispatcher\TransactionEventDispatcher;
 use Isotope\CoreBundle\Model\AddressModel;
 use Isotope\CoreBundle\Model\ProductCollectionModel;
 use Isotope\CoreBundle\Model\ProductCollectionItemModel;
@@ -15,9 +15,9 @@ use Isotope\CoreBundle\Model\ProductCollectionLogModel;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
 use Isotope\CoreBundle\ProductCollection\Order\Order;
 use Isotope\CoreBundle\Store\Context\StoreContext;
-use Isotope\CoreBundle\Store\Event\DocumentNumberTransaction;
-use Isotope\CoreBundle\Store\Event\OrderStatusTransaction;
-use Isotope\CoreBundle\Store\Event\OrderTransaction;
+use Isotope\CoreBundle\Store\Event\DocumentNumberTransactionEvent;
+use Isotope\CoreBundle\Store\Event\OrderStatusTransactionEvent;
+use Isotope\CoreBundle\Store\Event\OrderTransactionEvent;
 use Isotope\CoreBundle\Store\Event\OrderValidationEvent;
 use Isotope\CoreBundle\Store\Exception\CollectionTypeException;
 use Isotope\CoreBundle\Store\Order\CreateOrderResult;
@@ -35,7 +35,7 @@ class OrderManager
 {
     public function __construct(
         private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly TransactionDispatcher $transactionDispatcher,
+        private readonly TransactionEventDispatcher $transactionDispatcher,
         private readonly ValidatorInterface $validator,
         private readonly Connection $connection,
         private readonly InsertTagParser $insertTagParser,
@@ -52,10 +52,10 @@ class OrderManager
         $this->validateOrderData($data, $context);
 
         return $this->transactionDispatcher->dispatch(
-            new OrderTransaction($data, $context),
-            function (OrderTransaction $transaction): CreateOrderResult {
-                $data = $transaction->getData();
-                $context = $transaction->getStoreContext();
+            new OrderTransactionEvent($data, $context),
+            function (OrderTransactionEvent $event): CreateOrderResult {
+                $data = $event->getData();
+                $context = $event->getStoreContext();
 
                 $collection = new ProductCollectionModel();
                 $collection->tstamp = time();
@@ -101,7 +101,7 @@ class OrderManager
                 $collection->shipping_address_id = $shippingAddress?->id ?? 0;
                 $collection->save();
 
-                $transaction->setData($data);
+                $event->setData($data);
 
                 return new CreateOrderResult((int) $collection->id, $collection->uniqid);
             },
@@ -128,7 +128,7 @@ class OrderManager
 
             if (!$documentNumber) {
                 $documentNumber = $this->transactionDispatcher->dispatch(
-                    new DocumentNumberTransaction($context->getDocumentNumberPrefix(), $context->getDocumentNumberDigits(), $context->getStoreId()),
+                    new DocumentNumberTransactionEvent($context->getDocumentNumberPrefix(), $context->getDocumentNumberDigits(), $context->getStoreId()),
                     $this->generateDocumentNumber(...),
                 );
             }
@@ -161,10 +161,10 @@ class OrderManager
         }
 
         return $this->transactionDispatcher->dispatch(
-            new OrderStatusTransaction($order, $values),
-            function (OrderStatusTransaction $transaction) use ($updateDatabase): array {
-                $order = $transaction->getOrder();
-                $values = $transaction->getValues();
+            new OrderStatusTransactionEvent($order, $values),
+            function (OrderStatusTransactionEvent $event) use ($updateDatabase): array {
+                $order = $event->getOrder();
+                $values = $event->getValues();
 
                 $hasChanges = false;
                 foreach ($values as $k => $v) {
@@ -273,9 +273,9 @@ class OrderManager
         return $address;
     }
 
-    private function generateDocumentNumber(DocumentNumberTransaction $transaction): string
+    private function generateDocumentNumber(DocumentNumberTransactionEvent $event): string
     {
-        $prefix = $this->insertTagParser->replaceInline($transaction->getPrefix());
+        $prefix = $this->insertTagParser->replaceInline($event->getPrefix());
 
         $qb = $this->connection->createQueryBuilder();
         $qb
@@ -284,7 +284,7 @@ class OrderManager
             ->where('type=:type')
             ->andWhere('store_id=:storeId')
             ->setParameter('type', Order::getType())
-            ->setParameter('storeId', $transaction->getStoreId())
+            ->setParameter('storeId', $event->getStoreId())
             ->orderBy('document_number', 'DESC')
         ;
 
@@ -303,7 +303,7 @@ class OrderManager
             $max = (int) substr($result, mb_strlen($prefix));
         }
 
-        return $prefix.str_pad((string) ($max + 1), $transaction->getLength(), '0', STR_PAD_LEFT);
+        return $prefix.str_pad((string) ($max + 1), $event->getLength(), '0', STR_PAD_LEFT);
     }
 
     private function getUserId(): int

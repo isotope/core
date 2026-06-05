@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Store\Event;
 
-use Isotope\CoreBundle\EventDispatcher\Transaction;
+use Isotope\CoreBundle\EventDispatcher\TransactionEvent;
 use Isotope\CoreBundle\Model\ProductCollectionModel;
 
-class OrderStatusTransaction extends Transaction
+class OrderStatusTransactionEvent extends TransactionEvent
 {
     public const string NAME = 'isotope.order_status';
 
@@ -17,7 +17,7 @@ class OrderStatusTransaction extends Transaction
     ) {
     }
 
-    public function getEventName(): string
+    public function getName(): string
     {
         return self::NAME;
     }

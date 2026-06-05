@@ -8,14 +8,14 @@ use Contao\StringUtil;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
-use Isotope\CoreBundle\EventDispatcher\TransactionDispatcher;
+use Isotope\CoreBundle\EventDispatcher\TransactionEventDispatcher;
 use Isotope\CoreBundle\Model\ProductCollectionModel;
 use Isotope\CoreBundle\Model\ProductCollectionItemModel;
-use Isotope\CoreBundle\ProductCollection\Event\DeleteCollectionTransaction;
-use Isotope\CoreBundle\ProductCollection\Event\LoadCollectionTransaction;
-use Isotope\CoreBundle\ProductCollection\Event\LoadItemTransaction;
-use Isotope\CoreBundle\ProductCollection\Event\SaveCollectionTransaction;
-use Isotope\CoreBundle\ProductCollection\Event\SaveItemTransaction;
+use Isotope\CoreBundle\ProductCollection\Event\DeleteCollectionTransactionEvent;
+use Isotope\CoreBundle\ProductCollection\Event\LoadCollectionTransactionEvent;
+use Isotope\CoreBundle\ProductCollection\Event\LoadItemTransactionEvent;
+use Isotope\CoreBundle\ProductCollection\Event\SaveCollectionTransactionEvent;
+use Isotope\CoreBundle\ProductCollection\Event\SaveItemTransactionEvent;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Price\CalculatedPrice;
@@ -24,7 +24,7 @@ class ProductCollectionStorage
 {
     public function __construct(
         protected readonly Connection $connection,
-        protected readonly TransactionDispatcher $transactionDispatcher,
+        protected readonly TransactionEventDispatcher $transactionDispatcher,
     ) {
     }
 
@@ -40,11 +40,11 @@ class ProductCollectionStorage
         $collection->setId((int) $collectionModel->id);
 
         return $this->transactionDispatcher->dispatch(
-            new LoadCollectionTransaction($collection, $collectionModel, $context),
-            function (LoadCollectionTransaction $transaction) {
-                $this->loadLineItems($transaction->getCollection(), $transaction->getCollectionModel(), $transaction->getStoreContext());
+            new LoadCollectionTransactionEvent($collection, $collectionModel, $context),
+            function (LoadCollectionTransactionEvent $event) {
+                $this->loadLineItems($event->getCollection(), $event->getCollectionModel(), $event->getStoreContext());
 
-                return $transaction->getCollection();
+                return $event->getCollection();
             },
         );
     }
@@ -69,9 +69,9 @@ class ProductCollectionStorage
         // TODO: save price etc.
 
         $this->transactionDispatcher->dispatch(
-            new SaveCollectionTransaction($collection, $model),
-            function (SaveCollectionTransaction $transaction) {
-                $transaction->getCollectionModel()->save();
+            new SaveCollectionTransactionEvent($collection, $model),
+            function (SaveCollectionTransactionEvent $event) {
+                $event->getCollectionModel()->save();
             },
         );
 
@@ -84,9 +84,12 @@ class ProductCollectionStorage
             return false;
         }
 
-        $success = $this->transactionDispatcher->dispatch(new DeleteCollectionTransaction((int) $model->id, $model), function (DeleteCollectionTransaction $transaction) {
-            return $transaction->getCollectionModel()->delete() > 0;
-        });
+        $success = $this->transactionDispatcher->dispatch(
+            new DeleteCollectionTransactionEvent((int) $model->id, $model),
+            function (DeleteCollectionTransactionEvent $event) {
+                return $event->getCollectionModel()->delete() > 0;
+            },
+        );
 
         if ($success) {
             $this->connection->executeStatement(
@@ -131,9 +134,9 @@ class ProductCollectionStorage
             }
 
             $this->transactionDispatcher->dispatch(
-                new LoadItemTransaction($collection, $item, $itemModel, $context),
-                function (LoadItemTransaction $transaction) use (&$total, &$subtotals) {
-                    $lineItem = $transaction->getLineItem();
+                new LoadItemTransactionEvent($collection, $item, $itemModel, $context),
+                function (LoadItemTransactionEvent $event) use (&$total, &$subtotals) {
+                    $lineItem = $event->getLineItem();
 
                     switch ($lineItem->getType()) {
                         case LineItem::TYPE_TOTAL:
@@ -145,7 +148,7 @@ class ProductCollectionStorage
                             break;
 
                         default:
-                            $transaction->getCollection()->getLineItems()->add($lineItem);
+                            $event->getCollection()->getLineItems()->add($lineItem);
                             break;
                     }
                 },
@@ -190,9 +193,9 @@ class ProductCollectionStorage
             }
 
             $this->transactionDispatcher->dispatch(
-                new SaveItemTransaction($collection, $collectionModel, $lineItem, $itemModel),
-                function (SaveItemTransaction $transaction) {
-                    $transaction->getItemModel()->save();
+                new SaveItemTransactionEvent($collection, $collectionModel, $lineItem, $itemModel),
+                function (SaveItemTransactionEvent $event) {
+                    $event->getItemModel()->save();
                 },
             );
 

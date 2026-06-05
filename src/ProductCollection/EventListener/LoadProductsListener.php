@@ -8,12 +8,12 @@ use Isotope\CoreBundle\Product\DataCollector\ProductDto;
 use Isotope\CoreBundle\Product\DataCollector\ProductDtoCollection;
 use Isotope\CoreBundle\Product\Extension\ShippingExtension;
 use Isotope\CoreBundle\Product\ProductBuilder;
-use Isotope\CoreBundle\ProductCollection\Event\LoadCollectionTransaction;
+use Isotope\CoreBundle\ProductCollection\Event\LoadCollectionTransactionEvent;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Translation\TranslatableMessage;
 
-#[AsEventListener(LoadCollectionTransaction::NAME.'.post')]
+#[AsEventListener(LoadCollectionTransactionEvent::NAME.'.post')]
 class LoadProductsListener
 {
     public function __construct(
@@ -21,7 +21,7 @@ class LoadProductsListener
     ) {
     }
 
-    public function __invoke(LoadCollectionTransaction $event): void
+    public function __invoke(LoadCollectionTransactionEvent $event): void
     {
         $lineItems = $event->getCollection()->getLineItems()->whereType(LineItem::TYPE_PRODUCT);
         $identifiers = array_unique($lineItems->column('getIdentifier'));

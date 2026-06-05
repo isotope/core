@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Store\Event;
 
-use Isotope\CoreBundle\EventDispatcher\Transaction;
+use Isotope\CoreBundle\EventDispatcher\TransactionEvent;
 
-class DocumentNumberTransaction extends Transaction
+class DocumentNumberTransactionEvent extends TransactionEvent
 {
     public const string NAME = 'isotope.document_number';
 
@@ -17,7 +17,7 @@ class DocumentNumberTransaction extends Transaction
     ) {
     }
 
-    public function getEventName(): string
+    public function getName(): string
     {
         return self::NAME;
     }

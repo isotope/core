@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Store\Event;
 
-use Isotope\CoreBundle\EventDispatcher\Transaction;
+use Isotope\CoreBundle\EventDispatcher\TransactionEvent;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 
-class OrderTransaction extends Transaction
+class OrderTransactionEvent extends TransactionEvent
 {
     public const string NAME = 'isotope.order';
 
@@ -26,7 +26,7 @@ class OrderTransaction extends Transaction
         $this->data = $originalData;
     }
 
-    public function getEventName(): string
+    public function getName(): string
     {
         return self::NAME;
     }

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\ProductCollection\Event;
 
-use Isotope\CoreBundle\EventDispatcher\Transaction;
+use Isotope\CoreBundle\EventDispatcher\TransactionEvent;
 use Isotope\CoreBundle\Model\ProductCollectionModel;
 
 /**
- * @extends Transaction<bool>
+ * @extends TransactionEvent<bool>
  */
-final class DeleteCollectionTransaction extends Transaction
+final class DeleteCollectionTransactionEvent extends TransactionEvent
 {
     public const string NAME = 'isotope.product_collection.delete';
 
@@ -20,7 +20,7 @@ final class DeleteCollectionTransaction extends Transaction
     ) {
     }
 
-    public function getEventName(): string
+    public function getName(): string
     {
         return self::NAME;
     }

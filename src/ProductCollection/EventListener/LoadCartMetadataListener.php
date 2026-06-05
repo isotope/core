@@ -10,10 +10,10 @@ use Isotope\CoreBundle\Model\ShippingModel;
 use Isotope\CoreBundle\ModelType\PaymentRegistry;
 use Isotope\CoreBundle\ModelType\ShippingRegistry;
 use Isotope\CoreBundle\ProductCollection\Cart\Cart;
-use Isotope\CoreBundle\ProductCollection\Event\LoadCollectionTransaction;
+use Isotope\CoreBundle\ProductCollection\Event\LoadCollectionTransactionEvent;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
-#[AsEventListener(LoadCollectionTransaction::NAME.'.post')]
+#[AsEventListener(LoadCollectionTransactionEvent::NAME.'.post')]
 class LoadCartMetadataListener
 {
     public function __construct(
@@ -22,7 +22,7 @@ class LoadCartMetadataListener
     ) {
     }
 
-    public function __invoke(LoadCollectionTransaction $event): void
+    public function __invoke(LoadCollectionTransactionEvent $event): void
     {
         $cart = $event->getCollection();
         $cartModel = $event->getCollectionModel();

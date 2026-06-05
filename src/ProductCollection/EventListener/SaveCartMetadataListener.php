@@ -8,20 +8,20 @@ use Contao\FrontendUser;
 use Isotope\CoreBundle\Model\AddressModel;
 use Isotope\CoreBundle\Model\ProductCollectionModel;
 use Isotope\CoreBundle\ProductCollection\Cart\Cart;
-use Isotope\CoreBundle\ProductCollection\Event\SaveCollectionTransaction;
+use Isotope\CoreBundle\ProductCollection\Event\SaveCollectionTransactionEvent;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\StoreManager;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
-#[AsEventListener(SaveCollectionTransaction::NAME.'.pre')]
+#[AsEventListener(SaveCollectionTransactionEvent::NAME.'.pre')]
 class SaveCartMetadataListener
 {
     public function __construct(private readonly StoreManager $storeManager)
     {
     }
 
-    public function __invoke(SaveCollectionTransaction $event): void
+    public function __invoke(SaveCollectionTransactionEvent $event): void
     {
         $collection = $event->getCollection();
 

@@ -11,7 +11,7 @@ use Isotope\CoreBundle\Model\ShippingModel;
 use Isotope\CoreBundle\ModelType\PaymentRegistry;
 use Isotope\CoreBundle\ModelType\ShippingRegistry;
 use Isotope\CoreBundle\ProductCollection\Cart\Cart;
-use Isotope\CoreBundle\ProductCollection\Event\LoadCollectionTransaction;
+use Isotope\CoreBundle\ProductCollection\Event\LoadCollectionTransactionEvent;
 use Isotope\CoreBundle\ProductCollection\Order\Order;
 use Isotope\CoreBundle\Store\Order\StatusType;
 use Isotope\CoreBundle\Store\Price\CalculatedPrice;
@@ -20,7 +20,7 @@ use Isotope\CoreBundle\Store\Tax\TaxRateCollection;
 use Isotope\CoreBundle\Util\FloatComparator;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
-#[AsEventListener(LoadCollectionTransaction::NAME.'.post')]
+#[AsEventListener(LoadCollectionTransactionEvent::NAME.'.post')]
 class LoadOrderMetadataListener
 {
     public function __construct(
@@ -29,7 +29,7 @@ class LoadOrderMetadataListener
     ) {
     }
 
-    public function __invoke(LoadCollectionTransaction $event): void
+    public function __invoke(LoadCollectionTransactionEvent $event): void
     {
         $order = $event->getCollection();
         $model = $event->getCollectionModel();

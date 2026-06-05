@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\ProductCollection\Event;
 
-use Isotope\CoreBundle\EventDispatcher\Transaction;
+use Isotope\CoreBundle\EventDispatcher\TransactionEvent;
 use Isotope\CoreBundle\Model\ProductCollectionItemModel;
 use Isotope\CoreBundle\ProductCollection\AbstractProductCollection;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 
-class LoadItemTransaction extends Transaction
+class LoadItemTransactionEvent extends TransactionEvent
 {
     public const string NAME = 'isotope.product_collection_item.load';
 
@@ -22,7 +22,7 @@ class LoadItemTransaction extends Transaction
     ) {
     }
 
-    public function getEventName(): string
+    public function getName(): string
     {
         return self::NAME;
     }
