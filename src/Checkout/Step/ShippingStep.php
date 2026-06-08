@@ -18,12 +18,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+/**
+ * @internal
+ */
 #[AsCheckoutStep(priority: 60)]
 class ShippingStep extends AbstractCheckoutStep
 {
     public function __construct(
         private readonly ShippingRegistry $shippingRegistry,
-        private readonly CartManager $cartManager,
         private readonly TranslatorInterface $translator,
         TemplateMarkupFactory $markupFactory,
         EventDispatcherInterface $eventDispatcher,
@@ -37,6 +39,8 @@ class ShippingStep extends AbstractCheckoutStep
             return null;
         }
 
+        $event = $this->dispatchEvent($context, $request, $config);
+
         $cart = $context->getCart();
         $shippings = $this->getShippingMethods($context->getShippingIds(), $context);
         $current = $this->getCurrent($cart, $context, $config);
@@ -44,6 +48,7 @@ class ShippingStep extends AbstractCheckoutStep
         if (
             $current
             && !$this->isEditing($request)
+            && !$event->hasError()
             && !$current->hasError()
             && null !== array_find($shippings, fn (ShippingInterface $s) => $s->getId() === $current->getId())
         ) {
@@ -51,7 +56,8 @@ class ShippingStep extends AbstractCheckoutStep
             $cart->setModified();
 
             return $this->createSummary(
-                $this->dispatchEvent($request, true, $config),
+                $event,
+                true,
                 'shipping',
                 [
                     'label' => $current->getLabel(),
@@ -62,7 +68,8 @@ class ShippingStep extends AbstractCheckoutStep
         }
 
         if (
-            $this->isSubmitted($request)
+            !$event->hasError()
+            && $this->isSubmitted($request)
             && $newId = $request->request->getInt('shipping_id')
         ) {
             if (
@@ -71,14 +78,14 @@ class ShippingStep extends AbstractCheckoutStep
             ) {
                 $cart->setShippingMethod($shipping);
                 $cart->setModified();
-                $this->cartManager->recalculate($cart, $context);
             }
 
             throw new RedirectResponseException($request->getRequestUri());
         }
 
         return $this->createSummary(
-            $this->dispatchEvent($request, false, $config),
+            $event,
+            false,
             'shipping',
             [
                 'current' => $current,

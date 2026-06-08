@@ -17,12 +17,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+/**
+ * @internal
+ */
 #[AsCheckoutStep(priority: 40)]
 class PaymentStep extends AbstractCheckoutStep
 {
     public function __construct(
         private readonly PaymentRegistry $paymentRegistry,
-        private readonly CartManager $cartManager,
         private readonly TranslatorInterface $translator,
         TemplateMarkupFactory $markupFactory,
         EventDispatcherInterface $eventDispatcher,
@@ -40,17 +42,23 @@ class PaymentStep extends AbstractCheckoutStep
         $payments = $this->getPaymentMethods($context->getPaymentIds(), $context);
         $current = $this->getCurrent($cart, $context, $config);
 
+        $event = $this->dispatchEvent($context, $request, $config);
+
         if (
             $current
             && !$this->isEditing($request)
+            && !$event->hasError()
             && !$current->hasError()
             && null !== array_find($payments, fn (PaymentInterface $p) => $p->getId() === $current->getId())
         ) {
             $cart->setPaymentMethod($current);
             $cart->setModified();
 
+            // TODO: this sets the payment method on every run, should only be done if necessary
+
             return $this->createSummary(
-                $this->dispatchEvent($request, true, $config),
+                $event,
+                true,
                 'payment',
                 [
                     'label' => $current->getLabel(),
@@ -61,7 +69,8 @@ class PaymentStep extends AbstractCheckoutStep
         }
 
         if (
-            $this->isSubmitted($request)
+            !$event->hasError()
+            && $this->isSubmitted($request)
             && $newId = $request->request->getInt('payment_id')
         ) {
             if (
@@ -70,14 +79,14 @@ class PaymentStep extends AbstractCheckoutStep
             ) {
                 $cart->setPaymentMethod($payment);
                 $cart->setModified();
-                $this->cartManager->recalculate($cart, $context);
             }
 
             throw new RedirectResponseException($request->getRequestUri());
         }
 
         return $this->createSummary(
-            $this->dispatchEvent($request, false, $config),
+            $event,
+            false,
             'payment',
             [
                 'current' => $current,

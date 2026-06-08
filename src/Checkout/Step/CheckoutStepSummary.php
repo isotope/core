@@ -10,9 +10,9 @@ use Symfony\Component\DependencyInjection\Exception\RuntimeException;
 class CheckoutStepSummary implements \ArrayAccess, \IteratorAggregate, \Countable, \Stringable
 {
     public function __construct(
-        private readonly string|null $title,
-        private readonly bool $completed,
-        private readonly TemplateMarkup|null $details,
+        private string|null $title,
+        private bool $completed,
+        private TemplateMarkup|null $details = null,
     ) {
     }
 
@@ -21,9 +21,23 @@ class CheckoutStepSummary implements \ArrayAccess, \IteratorAggregate, \Countabl
         return $this->title;
     }
 
+    public function setTitle(?string $title): self
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
     public function isCompleted(): bool
     {
         return $this->completed;
+    }
+
+    public function setCompleted(bool $completed): self
+    {
+        $this->completed = $completed;
+
+        return $this;
     }
 
     public function __toString(): string
@@ -34,6 +48,13 @@ class CheckoutStepSummary implements \ArrayAccess, \IteratorAggregate, \Countabl
     public function getDetails(): TemplateMarkup|null
     {
         return $this->details;
+    }
+
+    public function setDetails(TemplateMarkup|null $details): self
+    {
+        $this->details = $details;
+
+        return $this;
     }
 
     public function getIterator(): \Traversable

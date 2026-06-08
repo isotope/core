@@ -4,6 +4,8 @@ use Contao\DataContainer;
 use Contao\DC_Table;
 use Contao\Input;
 use Contao\System;
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
+use Doctrine\DBAL\Types\Types;
 use Isotope\Backend\ProductCollection\Callback;
 
 $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
@@ -225,6 +227,9 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
             'inputType' => 'textarea',
             'eval' => ['style' => 'height:80px;', 'tl_class' => 'clr'],
             'sql' => 'text NULL',
+        ],
+        'extensions' => [
+            'sql' => ['type' => Types::BLOB, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_MEDIUMBLOB, 'notnull' => false],
         ],
         'details' => [
             // input_field_callback from OrderDetailsListener

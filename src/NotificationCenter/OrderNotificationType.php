@@ -59,7 +59,7 @@ class OrderNotificationType implements NotificationTypeInterface
             $this->create(TextTokenDefinition::class, 'shipping_address'), // Formatted shipping address
             $this->create(AnythingTokenDefinition::class, 'shipping_address_*'), // All the shipping address model fields
             $this->create(EmailTokenDefinition::class, 'shipping_address_email'),
-            //'form_*', // All the order condition form fields
+            $this->create(AnythingTokenDefinition::class, 'form_*'), // All the order condition form fields
             //'payment_id', // Payment method ID
             //'payment_label', // Payment method label
             //'payment_note', // Payment method note

@@ -10,7 +10,9 @@ use Contao\StringUtil;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Table;
+use Isotope\CoreBundle\Migration\Event\ModuleToElementMigrationEvent;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @internal
@@ -31,8 +33,10 @@ class ModuleToElementMigration extends AbstractMigration
         'iso_checkout' => [],
     ];
 
-    public function __construct(private readonly Connection $connection)
-    {
+    public function __construct(
+        private readonly Connection $connection,
+        private readonly EventDispatcherInterface $eventDispatcher,
+    ) {
     }
 
     public function shouldRun(): bool
@@ -93,9 +97,11 @@ class ModuleToElementMigration extends AbstractMigration
         $tableData['ptable'] = 'tl_theme';
         $tableData['title'] = $data['name'];
 
+        $event = $this->eventDispatcher->dispatch(new ModuleToElementMigrationEvent($data, $tableData, $jsonData));
+
         $this->connection->insert('tl_content', [
-            ...$tableData,
-            'jsonData' => json_encode($jsonData, JSON_THROW_ON_ERROR),
+            ...$event->tableData,
+            'jsonData' => json_encode($event->jsonData, JSON_THROW_ON_ERROR),
         ]);
 
         $contentId = $this->connection->lastInsertId();

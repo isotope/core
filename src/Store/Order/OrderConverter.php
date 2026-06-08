@@ -13,6 +13,7 @@ use Isotope\CoreBundle\ProductCollection\Order\Order;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Order\Transformer\AddressTransformer;
 use Isotope\CoreBundle\Store\Order\Transformer\CartTransformer;
+use Isotope\CoreBundle\Store\Order\Transformer\ExtensionTransformer;
 use Isotope\CoreBundle\Store\Order\Transformer\LineItemTransformer;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
@@ -37,6 +38,10 @@ class OrderConverter
             $data['shipping_address'] = AddressTransformer::transform($shippingAddress);
         }
 
+        if ($extensions = $cart->getExtensions()) {
+            $data['extensions'] = ExtensionTransformer::transform($extensions);
+        }
+
         $event = new CartConvertedEvent($cart, $data, $context);
         $this->eventDispatcher->dispatch($event);
 
@@ -54,6 +59,7 @@ class OrderConverter
         $cart->setLineItems($order->getLineItems()->products());
         $cart->setSubtotals($order->getSubtotals());
         $cart->setTotal($order->getTotal());
+        $cart->setExtensions($order->getExtensions());
         $cart->setId(0); // TODO: should contain the orders' source_collection_id
 
         $event = new OrderConvertedEvent($order, $cart, $context);

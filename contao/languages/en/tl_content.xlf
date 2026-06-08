@@ -149,6 +149,18 @@
       <trans-unit id="tl_content.iso_order_conditions.step.0">
         <source>Checkout Step</source>
       </trans-unit>
+      <trans-unit id="tl_content.iso_order_conditions.step.address">
+        <source>Address</source>
+      </trans-unit>
+      <trans-unit id="tl_content.iso_order_conditions.step.payment">
+        <source>Payment</source>
+      </trans-unit>
+      <trans-unit id="tl_content.iso_order_conditions.step.shipping">
+        <source>Shipping</source>
+      </trans-unit>
+      <trans-unit id="tl_content.iso_order_conditions.step._summary">
+        <source>Summary (Products in Cart)</source>
+      </trans-unit>
       <trans-unit id="tl_content.iso_order_conditions.position.0">
         <source>Position</source>
       </trans-unit>

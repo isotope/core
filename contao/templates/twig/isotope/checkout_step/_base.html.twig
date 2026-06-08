@@ -9,17 +9,24 @@
     <div{{ attributes }}>
         {% block inner %}
             {% block form %}
-                <form id="{{ type }}_step" method="POST" data-action="isotope--fragment#submit">
+                {% set form_attributes = attrs()
+                    .set('id', "#{type}_step")
+                    .set('method', 'POST')
+                    .set('enctype', enctype|default, enctype|default)
+                    .set('data-action', 'isotope--fragment#submit')
+                    .mergeWith(form_attributes|default)
+                %}
+                <form{{ form_attributes }}>
                     <input type="hidden" name="REQUEST_TOKEN" value="{{ contao.request_token }}">
                     <input type="hidden" name="edit_{{ type }}_step" value="1">
                 </form>
             {% endblock %}
 
-            {% block pre %}{{ pre|default|join }}{% endblock %}
+            {% block pre %}{% for markup in pre %}{{ markup }}{% endfor %}{% endblock %}
 
             {% block content %}{% endblock %}
 
-            {% block post %}{{ post|default|join }}{% endblock %}
+            {% block post %}{% for markup in post %}{{ markup }}{% endfor %}{% endblock %}
 
             {% block submit_container %}
                 <div class="submit_container">

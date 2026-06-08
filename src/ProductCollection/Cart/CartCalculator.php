@@ -10,8 +10,6 @@ use Isotope\CoreBundle\Store\Price\CalculatedPrice;
 use Isotope\CoreBundle\Store\Price\PriceCalculator;
 use Isotope\CoreBundle\Store\Price\PriceDisplay;
 use Isotope\CoreBundle\Store\Tax\CalculatedTax;
-use Isotope\CoreBundle\Store\Tax\CalculatedTaxCollection;
-use Isotope\CoreBundle\Store\Tax\TaxRateCollection;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 
 class CartCalculator
@@ -63,6 +61,7 @@ class CartCalculator
         $toCalculate->setShippingAddress($cart->getShippingAddress());
         $toCalculate->setShippingMethod($cart->getShippingMethod());
         $toCalculate->setPaymentMethod($cart->getPaymentMethod());
+        $toCalculate->setExtensions($cart->getExtensions());
 
         return $toCalculate;
     }

@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\ProductCollection;
 
+use Isotope\CoreBundle\ProductCollection\Extension\ProductCollectionExtensionInterface;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItemCollection;
 use Isotope\CoreBundle\Store\Price\CalculatedPrice;
-use Isotope\CoreBundle\Store\Tax\CalculatedTaxCollection;
-use Isotope\CoreBundle\Store\Tax\TaxRateCollection;
 use Ramsey\Collection\CollectionInterface;
 use Symfony\Contracts\Translation\TranslatableInterface;
 
@@ -25,11 +24,15 @@ abstract class AbstractProductCollection
 
     private CalculatedPrice|null $total = null;
 
-
     /**
      * @var array<TranslatableInterface>
      */
     private array $errors = [];
+
+    /**
+     * @var array<class-string, ProductCollectionExtensionInterface>
+     */
+    private array $extensions = [];
 
     public function __construct(
         private readonly string $identifier,
@@ -180,5 +183,66 @@ abstract class AbstractProductCollection
         return $this->lineItems->filter(
             static fn (LineItem $v) => $v->getIdentifier() === $identifier && $v->getConfiguration() === $configuration,
         );
+    }
+
+    public function hasExtension(string $className): bool
+    {
+        return isset($this->extensions[$className]);
+    }
+
+    public function addExtension(ProductCollectionExtensionInterface $extension): self
+    {
+        $this->extensions[$extension::class] = $extension;
+
+        return $this;
+    }
+
+    /**
+     * @template T of ProductCollectionExtensionInterface
+     *
+     * @param class-string<T> $className
+     *
+     * @return T|null
+     */
+    public function getExtension(string $className): ProductCollectionExtensionInterface|null
+    {
+        return $this->extensions[$className] ?? null;
+    }
+
+    public function removeExtension(string $className): self
+    {
+        unset($this->extensions[$className]);
+
+        return $this;
+    }
+
+    /**
+     * @return array<class-string, ProductCollectionExtensionInterface>
+     */
+    public function getExtensions(): array
+    {
+        return $this->extensions;
+    }
+
+    /**
+     * @param array<ProductCollectionExtensionInterface> $extensions
+     */
+    public function addExtensions(array $extensions): self
+    {
+        foreach ($extensions as $extension) {
+            $this->addExtension($extension);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param array<ProductCollectionExtensionInterface> $extensions
+     */
+    public function setExtensions(array $extensions): self
+    {
+        $this->extensions = [];
+
+        return $this->addExtensions($extensions);
     }
 }

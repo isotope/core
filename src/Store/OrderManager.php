@@ -71,6 +71,7 @@ class OrderManager
                 $collection->subtotal = $data['subtotal'];
                 $collection->total = $data['total'];
                 $collection->currency = $data['currency'];
+                $collection->extensions = isset($data['extensions']) ? json_encode($data['extensions'], JSON_THROW_ON_ERROR) : null;
 
                 $collection->save();
 

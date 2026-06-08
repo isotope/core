@@ -16,6 +16,7 @@ use Isotope\CoreBundle\ProductCollection\Event\LoadCollectionTransactionEvent;
 use Isotope\CoreBundle\ProductCollection\Event\LoadItemTransactionEvent;
 use Isotope\CoreBundle\ProductCollection\Event\SaveCollectionTransactionEvent;
 use Isotope\CoreBundle\ProductCollection\Event\SaveItemTransactionEvent;
+use Isotope\CoreBundle\ProductCollection\Extension\ProductCollectionExtensionInterface;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Price\CalculatedPrice;
@@ -38,6 +39,26 @@ class ProductCollectionStorage
     public function load(AbstractProductCollection $collection, ProductCollectionModel $collectionModel, StoreContext $context): AbstractProductCollection
     {
         $collection->setId((int) $collectionModel->id);
+
+        if ($collectionModel->extensions) {
+            try {
+                $json = json_decode($collectionModel->extensions, true, 512, JSON_THROW_ON_ERROR);
+
+                if (\is_array($json)) {
+                    $extensions = [];
+
+                    foreach ($json as $className => $data) {
+                        if (\is_a($className, ProductCollectionExtensionInterface::class, true)) {
+                            $extensions[$className] = $className::createFromJson($data);
+                        }
+                    }
+
+                    $collection->setExtensions($extensions);
+                }
+            } catch (\JsonException) {
+                // ignore extensions
+            }
+        }
 
         return $this->transactionDispatcher->dispatch(
             new LoadCollectionTransactionEvent($collection, $collectionModel, $context),
@@ -65,6 +86,7 @@ class ProductCollectionStorage
         $model->language = $context->getLocale();
         $model->currency = $context->getCurrency()->getCode();
         $model->member = (int) $context->getMemberId();
+        $model->extensions = json_encode($collection->getExtensions(), JSON_THROW_ON_ERROR);
 
         // TODO: save price etc.
 
@@ -106,7 +128,7 @@ class ProductCollectionStorage
         return $success;
     }
 
-    protected function loadLineItems(AbstractProductCollection $collection, ProductCollectionModel $collectionModel, StoreContext $context): void
+    private function loadLineItems(AbstractProductCollection $collection, ProductCollectionModel $collectionModel, StoreContext $context): void
     {
         $models = ProductCollectionItemModel::findByCollection($collectionModel->id)?->getModels() ?? [];
         $subtotals = [];
@@ -159,7 +181,7 @@ class ProductCollectionStorage
         $collection->setTotal($total);
     }
 
-    protected function saveLineItems(AbstractProductCollection $collection, ProductCollectionModel $collectionModel): void
+    private function saveLineItems(AbstractProductCollection $collection, ProductCollectionModel $collectionModel): void
     {
         $itemIds = [0];
 

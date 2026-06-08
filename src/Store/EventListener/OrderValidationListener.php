@@ -47,7 +47,7 @@ class OrderValidationListener
                 'date_paid' => new Assert\Optional([new Assert\NotBlank(), new Assert\DateTime()]),
                 'date_shipped' => new Assert\Optional([new Assert\NotBlank(), new Assert\DateTime()]),
 
-                'settings' => new Assert\Optional([new Assert\Type('array')])
+                'extensions' => new Assert\Optional([new Assert\Type('array')])
             ],
             allowExtraFields: true
         ));

@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Checkout\Step;
 
-use Isotope\CoreBundle\Checkout\Event\CreateSummaryEvent;
+use Isotope\CoreBundle\Checkout\Event\CheckoutStepEvent;
+use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Twig\TemplateMarkupFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
+/**
+ * @internal
+ */
 abstract class AbstractCheckoutStep implements CheckoutStepInterface
 {
     public function __construct(
@@ -17,23 +21,24 @@ abstract class AbstractCheckoutStep implements CheckoutStepInterface
     ) {
     }
 
-    protected function dispatchEvent(Request $request, bool $completed, array $config): CreateSummaryEvent
+    protected function dispatchEvent(StoreContext $context, Request $request, array $config): CheckoutStepEvent
     {
-        $event = new CreateSummaryEvent($this->getType(), $request, $this->isEditing($request), $this->isSubmitted($request), $completed, $config);
+        $event = new CheckoutStepEvent($context, $request, $this->getType(), $config);
 
         return $this->eventDispatcher->dispatch($event);
     }
 
-    protected function createSummary(CreateSummaryEvent $event, string|null $template = null, array $context = []): CheckoutStepSummary
+    protected function createSummary(CheckoutStepEvent $event, bool $completed, string|null $template = null, array $context = []): CheckoutStepSummary
     {
         return new CheckoutStepSummary(
             $this->getTitle(),
-            $event->isCompleted(),
+            $completed,
             $template ? $this->markupFactory->create(
-                '@Contao/isotope/checkout_step/'.($event->isCompleted() ? 'summary/' : '').$template.'.html.twig',
+                '@Contao/isotope/checkout_step/'.($completed ? 'summary/' : '').$template.'.html.twig',
                 [
                     'type' => $event->getType(),
                     'form_id' => $event->getType().'_step',
+                    'enctype' => $event->hasUploads() ? 'multipart/form-data' : null,
                     'pre' => $event->getPreMarkup(),
                     'post' => $event->getPostMarkup(),
                     ...$context

@@ -4,23 +4,22 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\EventListener\DataContainer\Content;
 
-use Contao\Backend;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 
 #[AsCallback('tl_content', 'fields.iso_order_conditions.fields.step.options')]
-class OrderConditionStepOptionsListener extends Backend
+class OrderConditionStepOptionsListener
 {
+    public function __construct(
+        #[AutowireLocator('isotope.checkout_step', 'type')] private readonly ServiceLocator $checkoutSteps,
+    ) {
+    }
+
     public function __invoke(): array
     {
-        $options = [];
-
-        foreach ($GLOBALS['ISO_CHECKOUTSTEP'] as $group => $steps) {
-            $groupLabel = $GLOBALS['TL_LANG']['MSC']['checkout_'.$group];
-
-            foreach ($steps as $step) {
-                $options[$groupLabel][$step] = $GLOBALS['TL_LANG']['CHECKOUT'][$step] ?? substr($step, strrpos($step, '\\') + 1);
-            }
-        }
+        $options = array_keys(iterator_to_array($this->checkoutSteps));
+        $options[] = '_summary';
 
         return $options;
     }

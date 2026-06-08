@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Checkout\Step;
 
 use Contao\CoreBundle\Exception\RedirectResponseException;
+use Isotope\CoreBundle\Checkout\Event\CheckoutStepEvent;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsCheckoutStep;
 use Isotope\CoreBundle\Model\AddressModel;
 use Isotope\CoreBundle\Store\Address\AddressFormatter;
@@ -19,6 +20,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+/**
+ * @internal
+ */
 #[AsCheckoutStep(priority: 80)]
 class AddressStep extends AbstractCheckoutStep
 {
@@ -27,7 +31,6 @@ class AddressStep extends AbstractCheckoutStep
         private readonly AddressValidator $addressValidator,
         private readonly AddressFormatter $addressFormatter,
         private readonly FormBuilder $formBuilder,
-        private readonly CartManager $cartManager,
         private readonly TranslatorInterface $translator,
         TemplateMarkupFactory $markupFactory,
         EventDispatcherInterface $eventDispatcher,
@@ -52,11 +55,14 @@ class AddressStep extends AbstractCheckoutStep
 
     private function getGuestSummary(Request $request, StoreContext $context, array $config): CheckoutStepSummary|null
     {
+        $event = $this->dispatchEvent($context, $request, $config);
+
         if (
-            !$this->isEditing($request)
+            !$event->hasError()
+            && !$this->isEditing($request)
             && !$this->hasError($context)
         ) {
-            return $this->generateSummary($request, $context, $config);
+            return $this->generateSummary($event, $context, $config);
         }
 
         $cart = $context->getCart();
@@ -87,7 +93,7 @@ class AddressStep extends AbstractCheckoutStep
             $shippingForm = $this->formBuilder->build($request, $shippingAddress, $context->getShippingAddressConfig(), 'shipping_');
         }
 
-        if ($request->isMethod(Request::METHOD_POST) && $request->request->has('submit_address_step')) {
+        if ($this->isSubmitted($request)) {
             $billingResult = $this->formBuilder->validate($billingForm, $context->getBillingAddressConfig());
             $addShipping = $requiresShipping && !$skipShipping && $request->request->getBoolean('add_shipping_address');
             $shippingResult = $addShipping ? $this->formBuilder->validate($shippingForm, $context->getShippingAddressConfig()) : false;
@@ -113,13 +119,15 @@ class AddressStep extends AbstractCheckoutStep
             }
 
             $cart->setModified();
-            $this->cartManager->recalculate($cart, $context);
 
-            throw new RedirectResponseException($request->getRequestUri());
+            if (!$event->hasError()) {
+                throw new RedirectResponseException($request->getRequestUri());
+            }
         }
 
         return $this->createSummary(
-            $this->dispatchEvent($request, false, $config),
+            $event,
+            false,
             'guest_address',
             [
                 'billing_address_form' => $this->formBuilder->render($billingForm),
@@ -134,8 +142,11 @@ class AddressStep extends AbstractCheckoutStep
 
     private function getMemberSummary(Request $request, StoreContext $context, array $config): CheckoutStepSummary|null
     {
+        $event = $this->dispatchEvent($context, $request, $config);
+
         if (
-            (
+            !$event->hasError()
+            && (
                 !$request->isMethod(Request::METHOD_POST)
                 || (
                     !$request->request->has('edit_address_step')
@@ -149,7 +160,7 @@ class AddressStep extends AbstractCheckoutStep
             )
             && !$this->hasError($context)
         ) {
-            return $this->generateSummary($request, $context, $config);
+            return $this->generateSummary($event, $context, $config);
         }
 
         $cart = $context->getCart();
@@ -183,14 +194,14 @@ class AddressStep extends AbstractCheckoutStep
             }
 
             $cart->setModified();
-            $this->cartManager->recalculate($cart, $context);
 
             throw new RedirectResponseException($request->getRequestUri());
         }
 
         if ($request->request->has('create_address_billing') || $request->request->has('edit_address_billing')) {
             return $this->createSummary(
-                $this->dispatchEvent($request, false, $config),
+                $event,
+                false,
                 'member_address',
                 ['edit_address' => $billingAddressManager],
             );
@@ -198,14 +209,16 @@ class AddressStep extends AbstractCheckoutStep
 
         if ($requiresShipping && !$skipShipping && ($request->request->has('create_address_shipping') || $request->request->has('edit_address_shipping'))) {
             return $this->createSummary(
-                $this->dispatchEvent($request, false, $config),
+                $event,
+                false,
                 'member_address',
                 ['edit_address' => $shippingAddressManager],
             );
         }
 
         return $this->createSummary(
-            $this->dispatchEvent($request, false, $config),
+            $event,
+            false,
             'member_address',
             [
                 'billing_address_manager' => $billingAddressManager,
@@ -276,7 +289,7 @@ class AddressStep extends AbstractCheckoutStep
         return false;
     }
 
-    private function generateSummary(Request $request, StoreContext $context, array $config): CheckoutStepSummary
+    private function generateSummary(CheckoutStepEvent $event, StoreContext $context, array $config): CheckoutStepSummary
     {
         $cart = $context->getCart();
 
@@ -293,7 +306,8 @@ class AddressStep extends AbstractCheckoutStep
         }
 
         return $this->createSummary(
-            $this->dispatchEvent($request, true, $config),
+            $event,
+            true,
             'address',
             [
                 'billing_address' => $this->addressFormatter->toHtml($billingAddress, $billingAddressConfig),

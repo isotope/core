@@ -92,16 +92,6 @@ $GLOBALS['TL_MODELS'][TaxClassModel::getTable()] = TaxClassModel::class;
 $GLOBALS['TL_MODELS'][TaxRateModel::getTable()] = TaxRateModel::class;
 
 /*
- * Checkout steps
- */
-$GLOBALS['ISO_CHECKOUTSTEP'] = [
-    'address' => [BillingAddress::class, ShippingAddress::class],
-    'shipping' => [ShippingMethod::class],
-    'payment' => [PaymentMethod::class],
-    'review' => [OrderInfo::class, OrderProducts::class],
-];
-
-/*
  * Permissions are access settings for user and groups (fields in tl_user and tl_user_group)
  */
 $GLOBALS['TL_PERMISSIONS'][] = 'iso_modules';

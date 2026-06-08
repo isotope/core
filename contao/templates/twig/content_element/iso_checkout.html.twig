@@ -42,9 +42,14 @@
         {% block checkout_summary %}
             <div class="summary">
                 <h3>{{ steps|length + 1 }}. {{ 'MSC.order_review'|trans }}</h3>
+
+                {% for markup in pre_summary %}{{ markup }}{% endfor %}
+
                 {{ block('product_collection') }}
 
-                <form method="POST">
+                {% for markup in post_summary %}{{ markup }}{% endfor %}
+
+                <form id="place_order" method="POST">
                     <input type="hidden" name="REQUEST_TOKEN" value="{{ contao.request_token }}">
                     <div class="widget widget-submit">
                         <button type="submit" class="submit" name="place_order" value="1"{% if not completed %} disabled{% endif %}>{{ 'MSC.confirmOrder'|trans }}</button>

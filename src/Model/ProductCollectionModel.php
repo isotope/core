@@ -14,7 +14,7 @@ use Contao\Model\Collection;
  * @property int    $member
  * @property int    $store_id
  * @property int    $locked
- * @property mixed  $settings
+ * @property string|null $extensions
  * @property int    $source_collection_id
  * @property string $uniqid
  * @property int    $config_id

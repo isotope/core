@@ -212,6 +212,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['iso_order_conditions'] = [
         'step' => [
             'label' => &$GLOBALS['TL_LANG']['tl_content']['iso_order_conditions']['step'],
             'inputType' => 'select',
+            'reference' => &$GLOBALS['TL_LANG']['tl_content']['iso_order_conditions']['step'],
             'eval' => [
                 'decodeEntities' => true,
                 'includeBlankOption' => true,
