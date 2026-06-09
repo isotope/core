@@ -13,6 +13,7 @@ use Isotope\CoreBundle\Store\Tax\TaxRate;
 use Isotope\CoreBundle\Store\Tax\TaxRateCollection;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class TaxCalculatorTest extends TestCase
 {
@@ -22,7 +23,7 @@ class TaxCalculatorTest extends TestCase
         $taxRates = new TaxRateCollection($taxes);
         $taxRates->setIncluded($included);
 
-        $calculator = new TaxCalculator($this->createStub(RuleMatcher::class));
+        $calculator = new TaxCalculator($this->createStub(RuleMatcher::class), $this->createStub(TranslatorInterface::class));
 
         $result = $calculator->calculateNetPrice($price, $taxRates, $priceDisplay);
 
@@ -131,7 +132,7 @@ class TaxCalculatorTest extends TestCase
     #[DataProvider('combineTaxRatesProvider')]
     public function testCombineTaxRates(TaxRateCollection $taxes1, TaxRateCollection $taxes2, float $price1, float $price2, array $expectedRates, array $expectedPercentages): void
     {
-        $calculator = new TaxCalculator($this->createStub(RuleMatcher::class));
+        $calculator = new TaxCalculator($this->createStub(RuleMatcher::class), $this->createStub(TranslatorInterface::class));
         $result = $calculator->combineTaxRates($taxes1, $taxes2, $price1, $price2);
 
         $this->assertCount(count($expectedRates), $result);
@@ -211,7 +212,7 @@ class TaxCalculatorTest extends TestCase
     #[DataProvider('combineCalculatedTaxesProvider')]
     public function testCombineCalculatedTaxes(CalculatedTaxCollection $taxes1, CalculatedTaxCollection $taxes2, array $expectedTaxes, array $expectedPrices, array $expectedNumbers): void
     {
-        $calculator = new TaxCalculator($this->createStub(RuleMatcher::class));
+        $calculator = new TaxCalculator($this->createStub(RuleMatcher::class), $this->createStub(TranslatorInterface::class));
         $result = $calculator->combineCalculatedTaxes($taxes1, $taxes2);
 
         $this->assertCount(\count($expectedTaxes), $result);

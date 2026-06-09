@@ -7,6 +7,7 @@ use Contao\System;
 use Isotope\CoreBundle\Model\AddressModel;
 use Isotope\CoreBundle\Store\Address\AddressConfig;
 use Isotope\CoreBundle\Store\Address\AddressFormatter;
+use Isotope\CoreBundle\Store\Address\AddressValidator;
 use Isotope\CoreBundle\Twig\TemplateMarkupFactory;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -36,7 +37,7 @@ class AddressFormatterTest extends KernelTestCase
             ->willReturnArgument(2)
         ;
 
-        $addressFormatter = new AddressFormatter($formatter, new TemplateMarkupFactory($twig));
+        $addressFormatter = new AddressFormatter($formatter, new TemplateMarkupFactory($twig), $this->createStub(AddressValidator::class));
 
         $address = new AddressModel();
         (new \ReflectionProperty(AddressModel::class, 'arrData'))->setValue($address, $data);

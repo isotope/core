@@ -87,7 +87,7 @@ class OrderConverter
                 $position++;
             }
 
-            $items[] = LineItemTransformer::transformSubtotal($level, $cart->getSubtotal($level), $position);
+            $items[] = LineItemTransformer::transformSubtotal($level, $cart->getSubtotal($level), $position++);
         }
 
         $items[] = [
