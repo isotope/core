@@ -129,6 +129,9 @@ abstract class AbstractProductCollection
         return array_last($totals);
     }
 
+    /**
+     * @return array<CalculatedPrice>
+     */
     public function getSubtotals(): array
     {
         return $this->subtotals;

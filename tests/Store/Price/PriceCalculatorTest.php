@@ -181,7 +181,7 @@ class PriceCalculatorTest extends TestCase
 
         $calculator = new PriceCalculator($taxCalculator);
 
-        $result = $calculator->sum($basePrice, $addedPrice, $this->createStoreContext());
+        $result = $calculator->sum($basePrice, $addedPrice, PriceDisplay::Gross);
 
         $this->assertPriceMatch($expected, $result);
 

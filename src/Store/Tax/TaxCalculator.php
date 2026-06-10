@@ -131,19 +131,15 @@ class TaxCalculator
 
     public function combineCalculatedTaxes(CalculatedTaxCollection $taxes1, CalculatedTaxCollection $taxes2): CalculatedTaxCollection
     {
-        $number = 1;
         $calculatedTaxes = new CalculatedTaxCollection();
 
         /** @var CalculatedTax $tax */
         foreach ([...$taxes1->toArray(), ...$taxes2->toArray()] as $tax) {
             /** @var CalculatedTax $newTax */
             if ($newTax = $calculatedTaxes->get($tax->getId())) {
-                $tax->setNumber($newTax->getNumber());
                 $newTax->increment($tax);
             } else {
                 $taxClone = clone $tax;
-                $taxClone->setNumber($number++);
-                $tax->setNumber($taxClone->getNumber());
                 $calculatedTaxes->put($taxClone->getId(), $taxClone);
             }
         }

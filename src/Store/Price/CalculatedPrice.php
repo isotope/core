@@ -40,6 +40,9 @@ class CalculatedPrice implements \JsonSerializable
         return $this->totalPrice;
     }
 
+    /**
+     * @return CalculatedTaxCollection<CalculatedTax>
+     */
     public function getCalculatedTaxes(): CalculatedTaxCollection
     {
         return $this->calculatedTaxes;

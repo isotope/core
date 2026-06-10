@@ -82,6 +82,7 @@ class CartCalculator
         }
 
         $cart->setTotal($total);
+        $this->updateTaxNumbers($cart);
     }
 
     private function hash(Cart $cart): string
@@ -120,5 +121,35 @@ class CartCalculator
         }
 
         return $levels;
+    }
+
+    /**
+     * @param array<CalculatedTax> $taxes
+     */
+    private function updateTaxNumbers(Cart $cart): void
+    {
+        $numbers = [];
+
+        foreach ($cart->getLineItems() as $lineItem) {
+            foreach ($lineItem->getPrice()->getCalculatedTaxes() as $tax) {
+                $number = $numbers[$tax->getId()] ?? \count($numbers) + 1;
+                $numbers[$tax->getId()] = $number;
+                $tax->setNumber($number);
+            }
+        }
+
+        foreach ($cart->getSubtotals() as $subtotal) {
+            foreach ($subtotal->getCalculatedTaxes() as $tax) {
+                $number = $numbers[$tax->getId()] ?? \count($numbers) + 1;
+                $numbers[$tax->getId()] = $number;
+                $tax->setNumber($number);
+            }
+        }
+
+        foreach ($cart->getTotal()->getCalculatedTaxes() as $tax) {
+            $number = $numbers[$tax->getId()] ?? \count($numbers) + 1;
+            $numbers[$tax->getId()] = $number;
+            $tax->setNumber($number);
+        }
     }
 }

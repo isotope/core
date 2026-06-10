@@ -23,7 +23,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class TaxCalculatorTest extends TestCase
 {
     #[DataProvider('getTaxRatesProvider')]
-    public function testGetTaxScope(int $taxClassId, array|null $taxClass, array|null $included, array $taxRates): void
+    public function testGetTaxRates(int $taxClassId, array|null $taxClass, array|null $included, array $taxRates): void
     {
         $taxClassAdapter = $this->createAdapterStub(['findById']);
         $taxClassAdapter->method('findById')->willReturn($taxClass ? $this->createClassWithPropertiesStub(TaxClassModel::class, $taxClass) : null);
@@ -326,7 +326,7 @@ class TaxCalculatorTest extends TestCase
     }
 
     #[DataProvider('combineCalculatedTaxesProvider')]
-    public function testCombineCalculatedTaxes(CalculatedTaxCollection $taxes1, CalculatedTaxCollection $taxes2, array $expectedTaxes, array $expectedPrices, array $expectedNumbers): void
+    public function testCombineCalculatedTaxes(CalculatedTaxCollection $taxes1, CalculatedTaxCollection $taxes2, array $expectedTaxes, array $expectedPrices): void
     {
         $calculator = new TaxCalculator(
             $this->createContaoFrameworkStub(),
@@ -344,7 +344,6 @@ class TaxCalculatorTest extends TestCase
         foreach ($result as $i => $tax) {
             $this->assertSame($tax->getAmount(), $expectedTaxes[$i]);
             $this->assertSame($tax->getPrice(), $expectedPrices[$i]);
-            $this->assertSame($tax->getNumber(), $expectedNumbers[$i]);
         }
     }
 
@@ -355,7 +354,6 @@ class TaxCalculatorTest extends TestCase
             new CalculatedTaxCollection(),
             [],
             [],
-            [],
         ];
 
         yield [
@@ -363,7 +361,6 @@ class TaxCalculatorTest extends TestCase
             new CalculatedTaxCollection(),
             ['1' => 10.0],
             ['1' => 100.0],
-            ['1' => 1],
         ];
 
         yield [
@@ -371,7 +368,6 @@ class TaxCalculatorTest extends TestCase
             new CalculatedTaxCollection([new CalculatedTax('1', 10.0, 19, 100.0)]),
             ['1' => 20.0],
             ['1' => 200.0],
-            ['1' => 1],
         ];
 
         yield [
@@ -379,7 +375,6 @@ class TaxCalculatorTest extends TestCase
             new CalculatedTaxCollection([new CalculatedTax('2', 10.0, 7, 100.0)]),
             ['1' => 10.0, '2' => 10.0],
             ['1' => 100.0, '2' => 100.0],
-            ['1' => 1, '2' => 2],
         ];
 
         yield [
@@ -387,7 +382,6 @@ class TaxCalculatorTest extends TestCase
             new CalculatedTaxCollection([new CalculatedTax('2', 10.0, 7, 100.0)]),
             ['1' => 10.0, '2' => 10.0],
             ['1' => 100.0, '2' => 100.0],
-            ['1' => 1, '2' => 2],
         ];
 
         yield [
@@ -395,7 +389,6 @@ class TaxCalculatorTest extends TestCase
             new CalculatedTaxCollection([new CalculatedTax('4', 10.0, 7, 100.0)]),
             ['1' => 10.0, '4' => 14.0],
             ['1' => 100.0, '4' => 142.0],
-            ['1' => 1, '4' => 2],
         ];
     }
 }
