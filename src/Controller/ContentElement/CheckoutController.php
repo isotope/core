@@ -15,6 +15,8 @@ use Isotope\CoreBundle\Checkout\Step\CheckoutStepInterface;
 use Isotope\CoreBundle\Store\CartManager;
 use Isotope\CoreBundle\Store\Order\CreateOrderResult;
 use Isotope\CoreBundle\Store\Order\OrderNotifier;
+use Isotope\CoreBundle\Store\Price\PriceDisplay;
+use Isotope\CoreBundle\Store\Price\TaxCalculation;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -72,12 +74,6 @@ class CheckoutController extends AbstractContentElementController
                 ->setSubmitted($isSubmitted)
         );
 
-        $template->steps = $steps;
-        $template->completed = $allCompleted;
-        $template->collection = $cart;
-        $template->pre_summary = $event->getPreMarkup();
-        $template->post_summary = $event->getPostMarkup();
-
         if ($allCompleted && $isSubmitted && !$event->hasError()) {
             $result = $this->cartManager->order($cart, $context);
 
@@ -87,6 +83,13 @@ class CheckoutController extends AbstractContentElementController
 
             throw new RedirectResponseException($this->generateContentUrl(PageModel::findById($model->orderCompleteJumpTo), ['uid' => $result->getIdentifier(), 'init_payment' => true]));
         }
+
+        $this->addCollectionToTemplate($template, $cart, $context);
+
+        $template->steps = $steps;
+        $template->completed = $allCompleted;
+        $template->pre_summary = $event->getPreMarkup();
+        $template->post_summary = $event->getPostMarkup();
 
         return $template->getResponse();
     }

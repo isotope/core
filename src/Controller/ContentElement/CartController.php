@@ -26,10 +26,7 @@ class CartController extends AbstractContentElementController
         $context = $this->getStoreContext();
         $collection = $context->getCart();
 
-        $template->collection = $collection;
-        $template->show_taxes = TaxCalculation::Horizontal === $context->getTaxCalculation();
-        $template->multiple_taxes = $collection->getTotal()?->getCalculatedTaxes()->count() > 1;
-        $template->is_gross = PriceDisplay::Net !== $context->getPriceDisplay();
+        $this->addCollectionToTemplate($template, $collection, $context);
 
         if (
             $request->isMethod(Request::METHOD_POST)

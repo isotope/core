@@ -12,9 +12,9 @@
 
 {% block content %}
 
-    <h2>{{ 'MSC.orderDetailsHeadline'|trans([order.documentNumber, order.locked|date(contao.page.datimFormat)]) }}</h2>
-    <div class="transaction_status {{ order.transactionStatus.alias }}">{{ 'MSC.transactionStatusHeadline'|trans([order.transactionStatus.label|default(order.transactionStatus.name)|trans([], 'isotope')]) }}</div>
-    <div class="delivery_status {{ order.deliveryStatus.alias }}">{{ 'MSC.deliveryStatusHeadline'|trans([order.deliveryStatus.label|default(order.deliveryStatus.name)|trans([], 'isotope')]) }}</div>
+    <h2>{{ 'MSC.orderDetailsHeadline'|trans([collection.documentNumber, collection.locked|date(contao.page.datimFormat)]) }}</h2>
+    <div class="transaction_status {{ collection.transactionStatus.alias }}">{{ 'MSC.transactionStatusHeadline'|trans([collection.transactionStatus.label|default(collection.transactionStatus.name)|trans([], 'isotope')]) }}</div>
+    <div class="delivery_status {{ collection.deliveryStatus.alias }}">{{ 'MSC.deliveryStatusHeadline'|trans([collection.deliveryStatus.label|default(collection.deliveryStatus.name)|trans([], 'isotope')]) }}</div>
 
     {% if payment_pending %}
         <form id="order_payment" method="post" data-action="isotope--fragment#submit">
@@ -57,42 +57,42 @@
     <div class="steps">
         {% block steps %}
             {% block billing_address %}
-                {% if order.billingAddress %}
+                {% if collection.billingAddress %}
                     <div>
-                        {% if order.shippingMethod and not order.shippingAddress %}
+                        {% if collection.shippingMethod and not collection.shippingAddress %}
                             <h3>{{ 'MSC.billing_shipping_address'|trans }}</h3>
-                        {% elseif order.paymentMethod %}
+                        {% elseif collection.paymentMethod %}
                             <h3>{{ 'MSC.billing_address'|trans }}</h3>
                         {% else %}
                             <h3>{{ 'MSC.customer_address'|trans }}</h3>
                         {% endif %}
-                        {{ isotope_address(order.billingAddress, order.context.billingAddressConfig) }}
+                        {{ isotope_address(collection.billingAddress, collection.context.billingAddressConfig) }}
                     </div>
                 {% endif %}
             {% endblock %}
 
             {% block shipping_address %}
-                {% if order.shippingAddress %}
+                {% if collection.shippingAddress %}
                     <div>
                         <h3>{{ 'MSC.shipping_address'|trans }}</h3>
-                        {{ isotope_address(order.shippingAddress, order.context.shippingAddressConfig) }}
+                        {{ isotope_address(collection.shippingAddress, collection.context.shippingAddressConfig) }}
                     </div>
                 {% endif %}
             {% endblock %}
 
             <div>
                 <h3>Information</h3>
-                {% if order.shippingMethod %}
+                {% if collection.shippingMethod %}
                     <p>
                         <strong>{{ 'MSC.shipping_method'|trans }}</strong>
-                        {{ order.shippingMethod.label }}
+                        {{ collection.shippingMethod.label }}
                     </p>
                 {% endif %}
 
-                {% if order.paymentMethod %}
+                {% if collection.paymentMethod %}
                     <p>
                         <strong>{{ 'MSC.payment_method'|trans }}</strong>
-                        {{ order.paymentMethod.label }}
+                        {{ collection.paymentMethod.label }}
                     </p>
                 {% endif %}
 
@@ -103,7 +103,7 @@
 
     <div class="summary">
         <h3>{{ 'MSC.order_review'|trans }}</h3>
-        {% with {collection: order} %}{{ block('product_collection') }}{% endwith %}
+        {{ block('product_collection') }}
     </div>
 
 {% endblock %}

@@ -9,7 +9,10 @@ use Contao\CoreBundle\Controller\ContentElement\AbstractContentElementController
 use Contao\CoreBundle\Exception\ResponseException;
 use Contao\CoreBundle\Twig\FragmentTemplate;
 use Isotope\CoreBundle\Product\Query\ProductQuery;
+use Isotope\CoreBundle\ProductCollection\AbstractProductCollection;
 use Isotope\CoreBundle\Store\Context\StoreContext;
+use Isotope\CoreBundle\Store\Price\PriceDisplay;
+use Isotope\CoreBundle\Store\Price\TaxCalculation;
 use Isotope\CoreBundle\Store\StoreManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -65,6 +68,14 @@ abstract class AbstractContentElementController extends CoreContentElementContro
         $storeManager = $this->container->get(StoreManager::class);
 
         return $storeManager->getCurrentContext();
+    }
+
+    protected function addCollectionToTemplate(FragmentTemplate $template, AbstractProductCollection $collection, StoreContext $context): void
+    {
+        $template->collection = $collection;
+        $template->show_taxes = TaxCalculation::Horizontal === $context->getTaxCalculation();
+        $template->multiple_taxes = $collection->getTotal()?->getCalculatedTaxes()->count() > 1;
+        $template->is_gross = PriceDisplay::Net !== $context->getPriceDisplay();
     }
 
     public static function getSubscribedServices(): array

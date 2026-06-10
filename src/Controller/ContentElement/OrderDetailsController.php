@@ -81,8 +81,7 @@ class OrderDetailsController extends AbstractContentElementController
             }
         }
 
-        $template->order = $order;
-
+        $this->addCollectionToTemplate($template, $order, $context);
         $this->setTransactionState($template, $order);
 
         if ($request->isMethod(Request::METHOD_POST) && $request->request->getBoolean('change_payment')) {
