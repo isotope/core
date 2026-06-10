@@ -23,7 +23,7 @@ class ShippingCollector implements ItemCollectorInterface
     {
         $shipping = $original->getShippingMethod();
 
-        if (!$shipping || !$shipping->isAvailable($context)) {
+        if (!$shipping || !$shipping->isAvailable()) {
             return;
         }
 

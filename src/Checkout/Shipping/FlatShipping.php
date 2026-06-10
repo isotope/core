@@ -27,7 +27,6 @@ class FlatShipping extends AbstractShipping
         int $id,
         StoreContext $context,
         private FlatCalculation|null $flatCalculation,
-        private readonly int $taxId,
     ) {
         parent::__construct($id, $context);
     }
@@ -68,12 +67,12 @@ class FlatShipping extends AbstractShipping
 
         $multiply = match ($this->flatCalculation) {
             FlatCalculation::perProduct,
-            FlatCalculation::perItem => $this->productMultiplier($this->getStoreContext()->getCart()->getLineItems()->products()),
-            FlatCalculation::perWeight => $this->weightMultiplier($this->getStoreContext()->getCart()->getLineItems()->products()),
+            FlatCalculation::perItem => $this->productMultiplier($this->getStoreContext()->getCart()?->getLineItems()->products()),
+            FlatCalculation::perWeight => $this->weightMultiplier($this->getStoreContext()->getCart()?->getLineItems()->products()),
             default => 1,
         };
 
-        return new PriceDefinition($priceDefinition->getAmount() * $multiply, $this->taxId);
+        return $priceDefinition->withAmount($priceDefinition->getAmount() * $multiply);
     }
 
     public function review(): TemplateMarkup|null
@@ -86,8 +85,12 @@ class FlatShipping extends AbstractShipping
         return false;
     }
 
-    private function productMultiplier(LineItemCollection $items): int
+    private function productMultiplier(LineItemCollection|null $items): int
     {
+        if (!$items) {
+            return 0;
+        }
+
         $multiply = 0;
 
         foreach ($items as $item) {
@@ -110,8 +113,12 @@ class FlatShipping extends AbstractShipping
         return $multiply;
     }
 
-    private function weightMultiplier(LineItemCollection $items): float
+    private function weightMultiplier(LineItemCollection|null $items): float
     {
+        if (!$items) {
+            return 0;
+        }
+
         $multiply = floor($this->flatWeight->getAmount());
 
         if ($multiply <= 1) {

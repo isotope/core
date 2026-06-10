@@ -24,7 +24,6 @@ class FlatShippingFactory extends AbstractShippingFactory
             $model->id,
             $context,
             FlatCalculation::tryFrom($model->flatCalculation),
-            (int) $model->tax_class,
         );
 
         $instance
