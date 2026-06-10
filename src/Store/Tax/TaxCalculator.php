@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Store\Tax;
 
+use Contao\CoreBundle\Framework\ContaoFramework;
 use Isotope\CoreBundle\Model\TaxClassModel;
-use Isotope\CoreBundle\Model\TaxRateModel as TaxRateModel;
+use Isotope\CoreBundle\Model\TaxRateModel;
 use Isotope\CoreBundle\RuleBuilder\RuleMatcher;
 use Isotope\CoreBundle\Store\Context\StoreContext;
+use Isotope\CoreBundle\Store\Price\MoneyFormat;
 use Isotope\CoreBundle\Store\Price\PriceDisplay;
 use Isotope\CoreBundle\Store\Price\TaxCalculation;
 use Isotope\CoreBundle\Util\FloatComparator;
@@ -16,20 +18,30 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class TaxCalculator
 {
     public function __construct(
+        private readonly ContaoFramework $framework,
         private readonly RuleMatcher $ruleMatcher,
         private readonly TranslatorInterface $translator,
     ) {
     }
 
-    public function getTaxRates(int|null $taxClassId, StoreContext $context): TaxRateCollection
+    /**
+     * @internal
+     * @todo probably move this to PriceCalculator
+     *
+     * @return array{0: TaxRateCollection, 1: TaxRateCollection}
+     */
+    public function getTaxRates(int|null $taxClassId, StoreContext $context): array
     {
-        if (!$taxClassId || !($taxClass = TaxClassModel::findById($taxClassId))) {
-            return new TaxRateCollection();
+        $taxClassAdapter = $this->framework->getAdapter(TaxClassModel::class);
+        $taxRateAdapter = $this->framework->getAdapter(TaxRateModel::class);
+
+        $result = [new TaxRateCollection(), new TaxRateCollection()];
+
+        if (!$taxClassId || !($taxClass = $taxClassAdapter->findById($taxClassId))) {
+            return $result;
         }
 
-        $taxCollection = new TaxRateCollection();
-
-        if ($taxClass->includes && ($taxRate = TaxRateModel::findById($taxClass->includes))) {
+        if ($taxClass->includes && ($taxRate = $taxRateAdapter->findById($taxClass->includes))) {
             $tax = new TaxRate(
                 (string) $taxRate->id,
                 (float) $taxRate->rate,
@@ -37,17 +49,17 @@ class TaxCalculator
                 $this->trans(PriceDisplay::Net === $context->getPriceDisplay() ? ($taxRate->label ?: null) : ($taxClass->label ?: $taxRate->label ?: null)),
             );
 
-            $taxCollection->setIncluded($tax);
+            $result[1]->add($tax);
 
             if (!$taxRate->rule || $this->ruleMatcher->isApplicable($taxRate->rule, $context)) {
-                $taxCollection->add($tax);
+                $result[0]->add($tax);
             }
         }
 
-        if ($taxClass->rates && ($taxRates = TaxRateModel::findMultipleByIds(explode(',', $taxClass->rates)))) {
+        if ($taxClass->rates && ($taxRates = $taxRateAdapter->findMultipleByIds(explode(',', $taxClass->rates)))) {
             foreach ($taxRates as $taxRate) {
                 if (!$taxRate->rule || $this->ruleMatcher->isApplicable($taxRate->rule, $context)) {
-                    $taxCollection->add(new TaxRate(
+                    $result[0]->add(new TaxRate(
                         (string) $taxRate->id,
                         (float) $taxRate->rate,
                         100,
@@ -57,34 +69,29 @@ class TaxCalculator
             }
         }
 
-        return $taxCollection;
+        return $result;
     }
 
-    public function calculateNetPrice(float $price, TaxRateCollection $taxRates, PriceDisplay $priceDisplay): float
+    public function calculateNetPrice(float $price, TaxRateCollection $taxRates): float
     {
-        if (PriceDisplay::Fixed === $priceDisplay) {
-            $tax = 0;
+        $tax = 0;
 
-            foreach ($taxRates as $taxRate) {
-                $tax += $this->calculateTaxFromGrossPrice($price, $taxRate)->getAmount();
-            }
+        foreach ($taxRates as $taxRate) {
+            $percentage = $taxRate->getPercentage() / 100;
+            $taxFactor = $taxRate->getTaxRate() / 100;
 
-            return $price - $tax;
+            $tax += $taxFactor * $percentage;
         }
 
-        if ($taxRates->getIncluded()) {
-            $price -= $this->calculateTaxFromGrossPrice($price, $taxRates->getIncluded())->getAmount();
-        }
-
-        return $price;
+        return $price / (1 + $tax);
     }
 
-    public function calculateTaxes(float $netPrice, TaxRateCollection $taxRates, StoreContext $context): CalculatedTaxCollection
+    public function calculateTaxes(float $netPrice, TaxRateCollection $taxRates, TaxCalculation $taxCalculation, MoneyFormat $moneyFormat): CalculatedTaxCollection
     {
         $taxes = [];
 
         foreach ($taxRates as $taxRate) {
-            $taxes[] = $this->calculateTaxFromNetPrice($netPrice, $taxRate, $context);
+            $taxes[] = $this->calculateTaxFromNetPrice($netPrice, $taxRate, $taxCalculation, $moneyFormat);
         }
 
         return new CalculatedTaxCollection($taxes);
@@ -127,49 +134,38 @@ class TaxCalculator
         $number = 1;
         $calculatedTaxes = new CalculatedTaxCollection();
 
-        foreach ([$taxes1, $taxes2] as $taxes) {
-            foreach ($taxes as $tax) {
-                /** @var CalculatedTax $newTax */
-                if ($newTax = $calculatedTaxes->get($tax->getId())) {
-                    $tax->setNumber($newTax->getNumber());
-                    $newTax->increment($tax);
-                } else {
-                    $taxClone = clone $tax;
-                    $taxClone->setNumber($number++);
-                    $tax->setNumber($taxClone->getNumber());
-                    $calculatedTaxes->put($taxClone->getId(), $taxClone);
-                }
+        /** @var CalculatedTax $tax */
+        foreach ([...$taxes1->toArray(), ...$taxes2->toArray()] as $tax) {
+            /** @var CalculatedTax $newTax */
+            if ($newTax = $calculatedTaxes->get($tax->getId())) {
+                $tax->setNumber($newTax->getNumber());
+                $newTax->increment($tax);
+            } else {
+                $taxClone = clone $tax;
+                $taxClone->setNumber($number++);
+                $tax->setNumber($taxClone->getNumber());
+                $calculatedTaxes->put($taxClone->getId(), $taxClone);
             }
         }
 
         return $calculatedTaxes;
     }
 
-    private function calculateTaxFromNetPrice(float $net, TaxRate $tax, StoreContext $context): CalculatedTax
+    private function calculateTaxFromNetPrice(float $net, TaxRate $tax, TaxCalculation $taxCalculation, MoneyFormat $moneyFormat): CalculatedTax
     {
         // calculate percentage value of net price
         $net = $net / 100 * $tax->getPercentage();
 
         $taxAmount = $net * $tax->getTaxRate() / 100;
 
-        if (TaxCalculation::Horizontal === $context->getTaxCalculation()) {
-            $taxAmount = $context->getMoneyFormat()->mathRound($taxAmount);
+        if (TaxCalculation::Horizontal === $taxCalculation) {
+            $taxAmount = $moneyFormat->mathRound($taxAmount);
         }
 
         $calculatedTax = new CalculatedTax($tax->getId(), $taxAmount, $tax->getTaxRate(), $net);
         $calculatedTax->setLabel($tax->getLabel());
 
         return $calculatedTax;
-    }
-
-    private function calculateTaxFromGrossPrice(float $gross, TaxRate $tax): CalculatedTax
-    {
-        // calculate percentage value of gross price
-        $gross = $gross / 100 * $tax->getPercentage();
-
-        $calculatedTax = $gross / ((100 + $tax->getTaxRate()) / 100) * $tax->getTaxRate() / 100;
-
-        return new CalculatedTax($tax->getId(), $calculatedTax, $tax->getTaxRate(), $gross);
     }
 
     /**

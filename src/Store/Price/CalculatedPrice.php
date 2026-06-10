@@ -23,6 +23,7 @@ class CalculatedPrice implements \JsonSerializable
         private float $totalPrice,
         private readonly CalculatedTaxCollection $calculatedTaxes = new CalculatedTaxCollection(),
         private readonly TaxRateCollection $taxRates = new TaxRateCollection(),
+        private readonly TaxRateCollection $includedTaxRates = new TaxRateCollection(),
         private readonly int $quantity = 1,
     ) {
         $this->unitPrice = FloatComparator::cast($unitPrice);
@@ -52,6 +53,11 @@ class CalculatedPrice implements \JsonSerializable
     public function getTaxRates(): TaxRateCollection
     {
         return $this->taxRates;
+    }
+
+    public function getIncludedTaxRates(): TaxRateCollection
+    {
+        return $this->includedTaxRates;
     }
 
     public function isRange(): bool
@@ -105,7 +111,7 @@ class CalculatedPrice implements \JsonSerializable
             $calculatedTaxes->put($new->getId(), $new);
         }
 
-        return (new CalculatedPrice($this->totalPrice, $this->totalPrice, $calculatedTaxes, $this->taxRates, 1))
+        return (new CalculatedPrice($this->totalPrice, $this->totalPrice, $calculatedTaxes, $this->taxRates, $this->includedTaxRates, 1))
             ->setRange($this->isRange)
             ->setUnitLabel($this->unitLabel)
             ->setBasePrice($this->basePrice)
@@ -121,7 +127,10 @@ class CalculatedPrice implements \JsonSerializable
             'unit_label' => $this->unitLabel,
             'is_range' => $this->isRange(),
             'calculated_taxes' => $this->calculatedTaxes->jsonSerialize(),
-            'tax_rates' => $this->taxRates->jsonSerialize(),
+            'tax_rates' => [
+                'rates' => $this->taxRates->jsonSerialize(),
+                'included' => $this->includedTaxRates->jsonSerialize(),
+            ],
         ];
     }
 
@@ -145,17 +154,16 @@ class CalculatedPrice implements \JsonSerializable
                 $tax['id'],
                 (new CalculatedTax($tax['id'], $tax['amount'], $tax['tax_rate'], $tax['price']))
                     ->setLabel($tax['label'])
-                    ->setNumber($tax['number'])
+                    ->setNumber((int) $tax['number'])
             );
         }
 
-        foreach (($data['tax_rates']['rates'] ?? []) as $tax) {
+        foreach ((array) ($data['tax_rates']['rates'] ?? []) as $tax) {
             $price->getTaxRates()->add(new TaxRate($tax['id'], $tax['tax_rate'], $tax['percentage'], $tax['label']));
         }
 
-        if (isset($data['tax_rates']['included'])) {
-            $tax = $data['tax_rates']['included'];
-            $price->getTaxRates()->setIncluded(new TaxRate($tax['id'], $tax['tax_rate'], $tax['percentage'], $tax['label']));
+        foreach ((array) ($data['tax_rates']['included'] ?? []) as $tax) {
+            $price->getIncludedTaxRates()->add(new TaxRate($tax['id'], $tax['tax_rate'], $tax['percentage'], $tax['label']));
         }
 
         return $price;

@@ -16,18 +16,18 @@ class OrderConverterTest extends TestCase
 {
     public function testConvertToOrder(): void
     {
-        $cart = new Cart('test');
+        $cart = new Cart('__identifier__');
         $cart->setBillingAddress(new AddressModel());
-        $cart->add((new LineItem(LineItem::TYPE_PRODUCT, 'tl_iso_product.42'))->setPrice($this->createPrice(10)));
-        $cart->add((new LineItem(LineItem::TYPE_PRODUCT, 'tl_iso_product.43'))->setPrice($this->createPrice(20)));
-        $cart->add((new LineItem(LineItem::TYPE_SHIPPING, 'tl_iso_shipping.1'))->setPrice($this->createPrice(30))->setLevel(1));
+        $cart->add((new LineItem(LineItem::TYPE_PRODUCT, 'tl_iso_product.42'))->setPrice(new CalculatedPrice(10, 10)));
+        $cart->add((new LineItem(LineItem::TYPE_PRODUCT, 'tl_iso_product.43'))->setPrice(new CalculatedPrice(20, 20)));
+        $cart->add((new LineItem(LineItem::TYPE_SHIPPING, 'tl_iso_shipping.1'))->setPrice(new CalculatedPrice(30, 30))->setLevel(1));
 
         $cart->setSubtotals([
-            0 => $this->createPrice(30),
-            1 => $this->createPrice(60),
+            0 => new CalculatedPrice(30, 30),
+            1 => new CalculatedPrice(60, 60),
         ]);
 
-        $cart->setTotal($this->createPrice(60));
+        $cart->setTotal(new CalculatedPrice(60, 60));
 
         $orderConverter = new OrderConverter($this->createStub(EventDispatcherInterface::class));
         $result = $orderConverter->convertToOrder($cart, $this->createStoreContext());
@@ -50,7 +50,7 @@ class OrderConverterTest extends TestCase
                         'unit_label' => null,
                         'is_range' => false,
                         'calculated_taxes' => [],
-                        'tax_rates' => ['rates' => [], 'included' => null],
+                        'tax_rates' => ['rates' => [], 'included' => []],
                     ],
                     'tax_free_price' => 0,
                     'tax_id' => '',
@@ -73,7 +73,7 @@ class OrderConverterTest extends TestCase
                         'unit_label' => null,
                         'is_range' => false,
                         'calculated_taxes' => [],
-                        'tax_rates' => ['rates' => [], 'included' => null],
+                        'tax_rates' => ['rates' => [], 'included' => []],
                     ],
                     'tax_free_price' => 0,
                     'tax_id' => '',
@@ -94,7 +94,7 @@ class OrderConverterTest extends TestCase
                         'unit_label' => null,
                         'is_range' => false,
                         'calculated_taxes' => [],
-                        'tax_rates' => ['rates' => [], 'included' => null],
+                        'tax_rates' => ['rates' => [], 'included' => []],
                     ],
                     'tax_id' => '',
                     'level' => 0,
@@ -115,7 +115,7 @@ class OrderConverterTest extends TestCase
                         'unit_label' => null,
                         'is_range' => false,
                         'calculated_taxes' => [],
-                        'tax_rates' => ['rates' => [], 'included' => null],
+                        'tax_rates' => ['rates' => [], 'included' => []],
                     ],
                     'tax_free_price' => 0,
                     'tax_id' => '',
@@ -136,7 +136,7 @@ class OrderConverterTest extends TestCase
                         'unit_label' => null,
                         'is_range' => false,
                         'calculated_taxes' => [],
-                        'tax_rates' => ['rates' => [], 'included' => null],
+                        'tax_rates' => ['rates' => [], 'included' => []],
                     ],
                     'tax_id' => '',
                     'level' => 1,
@@ -154,17 +154,12 @@ class OrderConverterTest extends TestCase
                         'unit_label' => null,
                         'is_range' => false,
                         'calculated_taxes' => [],
-                        'tax_rates' => ['rates' => [], 'included' => null],
+                        'tax_rates' => ['rates' => [], 'included' => []],
                     ],
                     'tax_id' => '',
                 ],
             ],
             $result['line_items'],
         );
-    }
-
-    private function createPrice(float $unitPrice, int $quantity = 1): CalculatedPrice
-    {
-        return new CalculatedPrice($unitPrice, $unitPrice * $quantity);
     }
 }

@@ -69,6 +69,22 @@ class PriceDefinition
         return $this;
     }
 
+    public function withAmount(float $amount): self
+    {
+        $definition = clone $this;
+        $definition->amount = $amount;
+
+        return $definition;
+    }
+
+    public function withQuantity(int $quantity): self
+    {
+        $definition = clone $this;
+        $definition->quantity = $quantity;
+
+        return $definition;
+    }
+
     public static function fromString(string $price, int $taxClass): self|null
     {
         if ('' === $price) {

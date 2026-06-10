@@ -48,7 +48,7 @@ class CalculatedTaxCollection extends AbstractMap implements \JsonSerializable
             $numbers[] = $tax->getNumber();
         }
 
-        return array_unique($numbers);
+        return array_values(array_unique($numbers));
     }
 
     public function jsonSerialize(): array

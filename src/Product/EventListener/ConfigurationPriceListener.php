@@ -56,7 +56,7 @@ class ConfigurationPriceListener
                     continue;
                 }
 
-                $productPrice = $this->priceCalculator->sum($productPrice, $optionPrice, $context);
+                $productPrice = $this->priceCalculator->sum($productPrice, $optionPrice, $context->getPriceDisplay());
             } catch (NoSuchElementException) {
                 continue;
             }

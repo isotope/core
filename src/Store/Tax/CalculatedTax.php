@@ -58,7 +58,7 @@ class CalculatedTax implements \JsonSerializable
         return $this->label;
     }
 
-    public function setLabel(?string $label): CalculatedTax
+    public function setLabel(?string $label): self
     {
         $this->label = $label;
 
@@ -70,9 +70,10 @@ class CalculatedTax implements \JsonSerializable
         return $this->number;
     }
 
-    public function setNumber(int $number): CalculatedTax
+    public function setNumber(int $number): self
     {
         $this->number = $number;
+
         return $this;
     }
 

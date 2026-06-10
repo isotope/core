@@ -69,7 +69,7 @@ class CartCalculator
     private function finalize(Cart $cart, StoreContext $context): void
     {
         $cart->setLineItems($cart->getLineItems()->sort('getLevel'));
-        $cart->setSubtotals($this->calculateSubtotals($cart));
+        $cart->setSubtotals($this->calculateSubtotals($cart, $context->getPriceDisplay()));
 
         $total = clone $cart->getSubtotal();
 
@@ -78,7 +78,7 @@ class CartCalculator
             $tax = array_reduce($total->getCalculatedTaxes()->toArray(), static fn (float $total, CalculatedTax $tax) => $total + $context->getMoneyFormat()->mathRound($tax->getAmount()), 0);
             $amount = $context->getMoneyFormat()->moneyRound($total->getUnitPrice() + $tax);
 
-            $total = new CalculatedPrice($amount, $amount, $total->getCalculatedTaxes(), $total->getTaxRates());
+            $total = new CalculatedPrice($amount, $amount, $total->getCalculatedTaxes(), $total->getTaxRates(), $total->getIncludedTaxRates());
         }
 
         $cart->setTotal($total);
@@ -100,7 +100,7 @@ class CartCalculator
         return hash('xxh3', json_encode($data, JSON_THROW_ON_ERROR));
     }
 
-    private function calculateSubtotals(Cart $cart): array
+    private function calculateSubtotals(Cart $cart, PriceDisplay $priceDisplay): array
     {
         $levels = [];
         $subtotal = new CalculatedPrice(0, 0);
@@ -108,7 +108,7 @@ class CartCalculator
         foreach ($cart->getLineItems()->byLevel() as $level => $items) {
             foreach ($items as $item) {
                 if ($price = $item->getPrice()) {
-                    $subtotal = $this->priceCalculator->sum($subtotal, $price->reduce());
+                    $subtotal = $this->priceCalculator->sum($subtotal, $price->reduce(), $priceDisplay);
                 }
             }
 

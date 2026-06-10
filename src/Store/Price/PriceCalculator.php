@@ -10,6 +10,7 @@ use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Tax\TaxCalculator;
 use Isotope\CoreBundle\Store\Tax\TaxRateCollection;
+use Isotope\CoreBundle\Store\Tax\TaxScope;
 use Isotope\CoreBundle\Util\FloatComparator;
 
 class PriceCalculator
@@ -55,8 +56,8 @@ class PriceCalculator
             $amount *= $context->getCurrencyFactor();
         }
 
-        $taxRates = $this->taxCalculator->getTaxRates($price->getTaxId(), $context);
-        $calculated = $this->calculate($amount, $taxRates, $context, $quantity, $showRange && $prices->hasRange());
+        [$taxRates, $includedTaxRates] = $this->taxCalculator->getTaxRates($price->getTaxId(), $context);
+        $calculated = $this->calculate($amount, $taxRates, $includedTaxRates, $context, $quantity)->setRange($showRange && $prices->hasRange());
 
         $calculated->setBasePrice($this->calculateBasePrice($product));
 
@@ -65,6 +66,16 @@ class PriceCalculator
 
     public function calculatePriceDefinition(PriceDefinition $priceDefinition, CalculatedPrice $base, StoreContext $context): CalculatedPrice
     {
+        if (PriceDefinition::SPLIT_TAX === $priceDefinition->getTaxId()) {
+            $taxRates = $base->getTaxRates();
+            $includedTaxRates = $base->getIncludedTaxRates();
+        } elseif ($priceDefinition->getTaxId() > 0) {
+            [$taxRates, $includedTaxRates] = $this->taxCalculator->getTaxRates($priceDefinition->getTaxId(), $context);
+        } else {
+            $taxRates = new TaxRateCollection();
+            $includedTaxRates = new TaxRateCollection();
+        }
+
         if ($priceDefinition->isPercentage()) {
             $amount = $base->getUnitPrice();
 
@@ -73,25 +84,42 @@ class PriceCalculator
             }
 
             $amount = $amount / 100 * $priceDefinition->getAmount();
+
+            $price = $this->calculate(
+                $amount,
+                $taxRates,
+                new TaxRateCollection(),
+                $context,
+                $priceDefinition->getQuantity(),
+                PriceDisplay::Net === $context->getPriceDisplay() ? PriceDisplay::Net : PriceDisplay::Gross,
+            );
         } else {
             $amount = $priceDefinition->getAmount();
+
+            if (1.0 !== $context->getCurrencyFactor()) {
+                $amount *= $context->getCurrencyFactor();
+            }
+
+            $price = $this->calculate($amount, $taxRates, $includedTaxRates, $context, $priceDefinition->getQuantity());
         }
 
-        if (PriceDefinition::SPLIT_TAX === $priceDefinition->getTaxId()) {
-            $taxRates = $base->getTaxRates();
-        } elseif ($priceDefinition->getTaxId() > 0) {
-            $taxRates = $this->taxCalculator->getTaxRates($priceDefinition->getTaxId(), $context);
-        } else {
-            $taxRates = new TaxRateCollection();
-        }
-
-        return $this->calculate($amount, $taxRates, $context)->setUnitLabel($priceDefinition->getUnitLabel());
+        return $price->setUnitLabel($priceDefinition->getUnitLabel());
     }
 
-    public function sum(CalculatedPrice $basePrice, CalculatedPrice $addedPrice): CalculatedPrice
+    public function sum(CalculatedPrice $basePrice, CalculatedPrice $addedPrice, PriceDisplay $priceDisplay): CalculatedPrice
     {
         $amount = FloatComparator::cast($basePrice->getUnitPrice() + $addedPrice->getUnitPrice());
-        $taxRates = $this->taxCalculator->combineTaxRates($basePrice->getTaxRates(), $addedPrice->getTaxRates(), $basePrice->getUnitPrice(), $addedPrice->getUnitPrice());
+
+        $baseUnitPrice = $basePrice->getUnitPrice();
+        $addedUnitPrice = $addedPrice->getUnitPrice();
+
+        if (PriceDisplay::Net !== $priceDisplay) {
+            $baseUnitPrice = $basePrice->getUnitPrice() - $basePrice->getCalculatedTaxes()->sum();
+            $addedUnitPrice = $addedPrice->getUnitPrice() - $addedPrice->getCalculatedTaxes()->sum();
+        }
+
+        $taxRates = $this->taxCalculator->combineTaxRates($basePrice->getTaxRates(), $addedPrice->getTaxRates(), $baseUnitPrice, $addedUnitPrice);
+        $includedTaxRates = $this->taxCalculator->combineTaxRates($basePrice->getIncludedTaxRates(), $addedPrice->getIncludedTaxRates(), $baseUnitPrice, $addedUnitPrice);
         $calculatedTaxes = $this->taxCalculator->combineCalculatedTaxes($basePrice->getCalculatedTaxes(), $addedPrice->getCalculatedTaxes());
 
         return new CalculatedPrice(
@@ -99,6 +127,7 @@ class PriceCalculator
             $amount * $basePrice->getQuantity(),
             $calculatedTaxes,
             $taxRates,
+            $includedTaxRates,
             $basePrice->getQuantity(),
         );
     }
@@ -120,39 +149,27 @@ class PriceCalculator
         return new BasePrice((float) $data['value'], (float) $basePrice->amount, $basePrice->label);
     }
 
-    private function amountFromPriceString(string $price, CalculatedPrice $base): float
+    private function calculate(float $amount, TaxRateCollection $taxRates, TaxRateCollection $includedTaxRates, StoreContext $context, int $quantity = 1, PriceDisplay|null $priceDisplay = null): CalculatedPrice
     {
-        if (str_ends_with($price, '%')) {
-            return $base->getUnitPrice() / 100 * substr($price, 0, -1);
-        }
-
-        return (float) $price;
-    }
-
-    private function calculate(float $amount, TaxRateCollection $taxRates, StoreContext $context, int $quantity = 1, bool $isRange = false): CalculatedPrice
-    {
-        $priceDisplay = $context->getPriceDisplay();
-        $netPrice = $this->taxCalculator->calculateNetPrice($amount, $taxRates, $priceDisplay);
+        $priceDisplay ??= $context->getPriceDisplay();
+        $netPrice = $this->taxCalculator->calculateNetPrice($amount, PriceDisplay::Fixed === $priceDisplay ? $taxRates : $includedTaxRates);
 
         if (PriceDisplay::Net === $priceDisplay) {
             $netPrice = $context->getMoneyFormat()->moneyRound($netPrice);
             $amount = $netPrice;
         }
 
-        $taxes = $this->taxCalculator->calculateTaxes($netPrice, $taxRates, $context);
+        $calculatedTaxes = $this->taxCalculator->calculateTaxes($netPrice, $taxRates, $context->getTaxCalculation(), $context->getMoneyFormat());
 
+        // Re-calculate net price and taxes from rounded gross price
         if (PriceDisplay::Gross === $priceDisplay) {
-            $taxTotal = $taxes->sum();
+            $taxTotal = $calculatedTaxes->sum();
             $amount = $context->getMoneyFormat()->moneyRound($netPrice + $taxTotal);
 
-            // Re-calculate net price and taxes from rounded gross price
-            $noIncluded = clone $taxRates;
-            $noIncluded->setIncluded(null);
-            $netPrice = $this->taxCalculator->calculateNetPrice($amount - $taxTotal, $noIncluded, $priceDisplay);
-            $taxes = $this->taxCalculator->calculateTaxes($netPrice, $taxRates, $context);
+            $netPrice = $this->taxCalculator->calculateNetPrice($amount, $taxRates);
+            $calculatedTaxes = $this->taxCalculator->calculateTaxes($netPrice, $taxRates, $context->getTaxCalculation(), $context->getMoneyFormat());
         }
 
-        return (new CalculatedPrice($amount, $amount * $quantity, $taxes, $taxRates, $quantity))
-            ->setRange($isRange);
+        return new CalculatedPrice($amount, $amount * $quantity, $calculatedTaxes, $taxRates, $includedTaxRates, $quantity);
     }
 }
