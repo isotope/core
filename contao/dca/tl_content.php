@@ -89,12 +89,14 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['iso_list_layout'] = [
     'default' => 'isotope/product/list',
     'inputType' => 'select',
     'eval' => ['includeBlankOption' => true, 'tl_class' => 'w50', 'chosen' => true],
+    'sql' => "varchar(64) NOT NULL default ''", // @see
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['iso_reader_layout'] = [
     'default' => 'isotope/product/reader',
     'inputType' => 'select',
     'eval' => ['includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'],
+    'sql' => "varchar(64) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['iso_gallery'] = [

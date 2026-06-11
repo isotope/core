@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="contao/languages/en/default.xlf" source-language="en">
+    <body>
+      <trans-unit id="template_studio.operation.create_product_variant.0">
+        <source>Create variant</source>
+      </trans-unit>
+      <trans-unit id="template_studio.operation.create_product_variant.1">
+        <source>Create a new variant template for products.</source>
+      </trans-unit>
+      <trans-unit id="template_studio.operation.create_product_collection_variant.0">
+        <source>Create variant</source>
+      </trans-unit>
+      <trans-unit id="template_studio.operation.create_product_collection_variant.1">
+        <source>Create a new variant template for product collections.</source>
+      </trans-unit>
+      <trans-unit id="template_studio.operation.rename_product_variant.0">
+        <source>Rename variant</source>
+      </trans-unit>
+      <trans-unit id="template_studio.operation.rename_product_variant.1">
+        <source>Rename the %s variant template</source>
+      </trans-unit>
+      <trans-unit id="template_studio.operation.rename_product_collection_variant.0">
+        <source>Rename variant</source>
+      </trans-unit>
+      <trans-unit id="template_studio.operation.rename_product_collection_variant.1">
+        <source>Rename the %s variant template</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
