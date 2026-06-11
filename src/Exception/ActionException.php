@@ -11,18 +11,18 @@ class ActionException extends RuntimeException
         return new self('A request is required to render a product action.');
     }
 
-    public static function unknownProductAction(string $name): self
+    public static function unknownProductAction(string $type): self
     {
-        return new self('Unknown product action "'.$name.'"');
+        return new self('Unknown product action "'.$type.'"');
     }
 
-    public static function unknownCollectionAction(string $name): self
+    public static function unknownCollectionAction(string $type): self
     {
-        return new self('Unknown product collection action "'.$name.'"');
+        return new self('Unknown product collection action "'.$type.'"');
     }
 
-    public static function unknownItemAction(string $name): self
+    public static function unknownItemAction(string $type): self
     {
-        return new self('Unknown product collection item action "'.$name.'"');
+        return new self('Unknown product collection item action "'.$type.'"');
     }
 }

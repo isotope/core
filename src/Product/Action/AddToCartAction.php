@@ -5,32 +5,35 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Product\Action;
 
 use Contao\CoreBundle\Routing\ContentUrlGenerator;
-use Contao\CoreBundle\Routing\PageFinder;
-use Contao\Input;
 use Contao\PageModel;
+use Isotope\CoreBundle\DependencyInjection\Attribute\AsProductAction;
 use Isotope\CoreBundle\HttpFoundation\ActionResult;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\Render\ViewInterface;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
 use Isotope\CoreBundle\Store\CartManager;
 use Isotope\CoreBundle\Store\StoreManager;
-use Isotope\Haste\Util\Url;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\UriSigner;
 use Symfony\Component\Routing\Exception\ExceptionInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
-class AddToCartAction implements ProductActionInterface
+#[AsProductAction]
+class AddToCartAction extends AbstractProductAction
 {
     public function __construct(
+        private readonly string $type,
         private readonly StoreManager $storeManager,
         private readonly CartManager $cartManager,
         private readonly RequestStack $requestStack,
         private readonly ContentUrlGenerator $urlGenerator,
         private readonly UriSigner $uriSigner,
-        private readonly Environment $twig,
+        private readonly TranslatorInterface $translator,
+        Environment $twig,
     ) {
+        parent::__construct($twig);
     }
 
     public function supports(CoreProduct $product, ViewInterface $view): bool
@@ -40,7 +43,8 @@ class AddToCartAction implements ProductActionInterface
 
     public function render(CoreProduct $product, ViewInterface $view): string
     {
-        return $this->twig->render('@Contao/isotope/product_action/add_to_cart.html.twig', [
+        return $this->renderView($this->type, [
+            'label' => $this->translator->trans('MSC.buttonLabel.add_to_cart', [], 'contao_default'),
             'disabled' => ($product->hasVariants() && !$product->isVariant()),
         ]);
     }

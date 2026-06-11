@@ -9,7 +9,7 @@
                 {% if block("product_collection_item_actions") is defined %}
                     <div class="actions">
                         {% block product_collection_item_actions %}
-                            {{ isotope_product_collection_item_action('remove_from_cart') }}
+                            {{ isotope_product_collection_item_action('remove') }}
                         {% endblock %}
                     </div>
                 {% endif %}
@@ -31,6 +31,6 @@
 {% endblock %}
 
 {% block product_collection_actions %}
-    <div class="cart">{{ isotope_product_collection_action('link_to_cart') }}</div>
-    <div class="checkout">{{ isotope_product_collection_action('link_to_checkout') }}</div>
+    <div class="cart">{{ isotope_product_collection_action('cart', { link: true }) }}</div>
+    <div class="checkout">{{ isotope_product_collection_action('checkout', { link: true }) }}</div>
 {% endblock %}

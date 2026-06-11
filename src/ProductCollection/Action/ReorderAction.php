@@ -6,6 +6,7 @@ namespace Isotope\CoreBundle\ProductCollection\Action;
 
 use Contao\CoreBundle\Routing\ContentUrlGenerator;
 use Contao\PageModel;
+use Isotope\CoreBundle\DependencyInjection\Attribute\AsProductCollectionAction;
 use Isotope\CoreBundle\HttpFoundation\ActionResult;
 use Isotope\CoreBundle\ProductCollection\AbstractProductCollection;
 use Isotope\CoreBundle\Store\CartManager;
@@ -14,31 +15,38 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\UriSigner;
 use Symfony\Component\Routing\Exception\ExceptionInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
-class ReorderAction implements ProductCollectionActionInterface
+#[AsProductCollectionAction]
+class ReorderAction extends AbstractProductCollectionAction
 {
     public function __construct(
+        private readonly string $type,
         private readonly StoreManager $storeManager,
         private readonly CartManager $cartManager,
-        private readonly Environment $twig,
         private readonly RequestStack $requestStack,
         private readonly ContentUrlGenerator $urlGenerator,
         private readonly UriSigner $uriSigner,
+        private readonly TranslatorInterface $translator,
+        Environment $twig,
     ) {
+        parent::__construct($twig);
     }
 
-    public function supports(AbstractProductCollection $collection, array $context): bool
+    public function supports(AbstractProductCollection $collection, array $context, array $options = []): bool
     {
         return true;
     }
 
-    public function render(AbstractProductCollection $collection, array $context): string
+    public function render(AbstractProductCollection $collection, array $context, array $options = []): string
     {
-        return $this->twig->render('@Contao/isotope/product_collection_action/reorder.html.twig');
+        return $this->renderView($this->type, [
+            'label' => $this->translator->trans('MSC.reorderLabel', [], 'contao_default'),
+        ]);
     }
 
-    public function handle(AbstractProductCollection $collection, array $context): ActionResult
+    public function handle(AbstractProductCollection $collection, array $context, array $options = []): ActionResult
     {
         $storeContext = $this->storeManager->getCurrentContext();
         $cart = $storeContext->getCart();

@@ -4,20 +4,22 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\ProductCollection\ItemAction;
 
+use Isotope\CoreBundle\DependencyInjection\Attribute\AsProductCollectionItemAction;
 use Symfony\Contracts\Service\ServiceProviderInterface;
 
+#[AsProductCollectionItemAction]
 class ProductCollectionItemActionRegistry
 {
     public function __construct(private readonly ServiceProviderInterface $actions)
     {
     }
 
-    public function get(string $name): ProductCollectionItemActionInterface|null
+    public function get(string $type): ProductCollectionItemActionInterface|null
     {
-        if (!$this->actions->has($name)) {
+        if (!$this->actions->has($type)) {
             return null;
         }
 
-        return $this->actions->get($name);
+        return $this->actions->get($type);
     }
 }

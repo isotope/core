@@ -22,12 +22,12 @@
 {% endblock %}
 
 {% block product_collection_actions %}
-    {{ isotope_product_collection_action('update_cart') }}
-    {{ isotope_product_collection_action('submit_to_cart') }}
-    {{ isotope_product_collection_action('submit_to_checkout') }}
+    {{ isotope_product_collection_action('update') }}
+    {{ isotope_product_collection_action('cart') }}
+    {{ isotope_product_collection_action('checkout') }}
     {{ isotope_product_collection_action('continue_shopping') }}
 {% endblock %}
 
 {% block product_collection_item_actions %}
-    {{ isotope_product_collection_item_action('remove_from_cart') }}
+    {{ isotope_product_collection_item_action('remove') }}
 {% endblock %}

@@ -1,0 +1,7 @@
+{% use '@Contao/component/_isotope_action.html.twig' %}
+
+{% if link|default %}
+    {{ block('link_component') }}
+{% else %}
+    {{ block('button_component') }}
+{% endif %}

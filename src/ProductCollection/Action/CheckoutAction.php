@@ -6,31 +6,42 @@ namespace Isotope\CoreBundle\ProductCollection\Action;
 
 use Contao\CoreBundle\Routing\ContentUrlGenerator;
 use Contao\PageModel;
+use Isotope\CoreBundle\DependencyInjection\Attribute\AsProductCollectionAction;
 use Isotope\CoreBundle\HttpFoundation\ActionResult;
 use Isotope\CoreBundle\ProductCollection\AbstractProductCollection;
 use Isotope\CoreBundle\Store\StoreManager;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
-class SubmitToCheckoutAction implements ProductCollectionActionInterface
+#[AsProductCollectionAction]
+class CheckoutAction extends AbstractProductCollectionAction
 {
     public function __construct(
-        private readonly Environment $twig,
+        private readonly string $type,
         private readonly ContentUrlGenerator $urlGenerator,
         private readonly StoreManager $storeManager,
+        private readonly TranslatorInterface $translator,
+        Environment $twig,
     ) {
+        parent::__construct($twig);
     }
 
-    public function supports(AbstractProductCollection $collection, array $context): bool
+    public function supports(AbstractProductCollection $collection, array $context, array $options = []): bool
     {
         return !$collection->hasErrors() && null !== $this->getPageModel($context);
     }
 
-    public function render(AbstractProductCollection $collection, array $context): string
+    public function render(AbstractProductCollection $collection, array $context, array $options = []): string
     {
-        return $this->twig->render('@Contao/isotope/product_collection_action/submit_to_checkout.html.twig');
+        return $this->renderView($this->type, [
+            'link' => (bool) ($options['link'] ?? false),
+            'label' => $options['label'] ?? $this->translator->trans('MSC.checkoutBT', [], 'contao_default'),
+            'href' => $this->urlGenerator->generate($this->getPageModel($context)),
+            ...$options,
+        ]);
     }
 
-    public function handle(AbstractProductCollection $collection, array $context): ActionResult
+    public function handle(AbstractProductCollection $collection, array $context, array $options = []): ActionResult
     {
         return new ActionResult(null, $this->urlGenerator->generate($this->getPageModel($context)));
     }

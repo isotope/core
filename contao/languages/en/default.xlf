@@ -146,12 +146,6 @@
       <trans-unit id="MSC.buttonLabel.add_to_cart">
         <source>Add To Cart</source>
       </trans-unit>
-      <trans-unit id="MSC.buttonLabel.add_all_to_cart">
-        <source>Add All To Cart</source>
-      </trans-unit>
-      <trans-unit id="MSC.buttonLabel.update_cart">
-        <source>Update Cart</source>
-      </trans-unit>
       <trans-unit id="MSC.orderByLabel">
         <source>Order By:</source>
       </trans-unit>
@@ -229,9 +223,6 @@
       </trans-unit>
       <trans-unit id="MSC.continueShoppingBT">
         <source>Continue shopping</source>
-      </trans-unit>
-      <trans-unit id="MSC.updateCartBT">
-        <source>Update Cart</source>
       </trans-unit>
       <trans-unit id="MSC.transactionStatusHeadline">
         <source>Payment Status: %s</source>

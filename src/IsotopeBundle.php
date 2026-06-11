@@ -125,21 +125,6 @@ class IsotopeBundle extends AbstractBundle
             ->addTag('isotope.attribute_factory')
         ;
 
-        $container
-            ->registerForAutoconfiguration(ProductActionInterface::class)
-            ->addTag('isotope.product_action')
-        ;
-
-        $container
-            ->registerForAutoconfiguration(ProductCollectionActionInterface::class)
-            ->addTag('isotope.product_collection_action')
-        ;
-
-        $container
-            ->registerForAutoconfiguration(ProductCollectionItemActionInterface::class)
-            ->addTag('isotope.product_collection_item_action')
-        ;
-
         $attributesForAutoconfiguration = [
             AsIsotopeHook::class => AsIsotopeHook::TAG_NAME,
             AsProductFilter::class => AsProductFilter::TAG_NAME,

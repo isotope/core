@@ -1,4 +1,8 @@
-{% trans_default_domain 'contao_default' %}
-{% from '@Contao/isotope/action_macros.html.twig' import button %}
+{% use '@Contao/component/_isotope_action.html.twig' %}
 
-{{ button('add_to_cart', 'MSC.buttonLabel.add_to_cart'|trans, attrs().set('disabled', disabled)) }}
+{% set button_attributes = attrs()
+    .set('disabled', disabled)
+    .mergeWith(button_attributes|default)
+%}
+
+{{ block('button_component') }}

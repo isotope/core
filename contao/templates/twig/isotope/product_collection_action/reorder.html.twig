@@ -1,4 +1,3 @@
-{% trans_default_domain 'contao_default' %}
-{% from '@Contao/isotope/action_macros.html.twig' import button %}
+{% use '@Contao/component/_isotope_action.html.twig' %}
 
-{{ button('reorder', 'MSC.reorderLabel'|trans) }}
+{{ block('button_component') }}

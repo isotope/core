@@ -1,0 +1,8 @@
+{% use '@Contao/component/_isotope_action.html.twig' %}
+
+{% set link_attributes = attrs()
+    .addClass('button')
+    .mergeWith(link_attributes|default)
+%}
+
+{{ block('link_component') }}

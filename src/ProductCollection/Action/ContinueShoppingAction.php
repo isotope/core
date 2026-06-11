@@ -4,33 +4,41 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\ProductCollection\Action;
 
+use Isotope\CoreBundle\DependencyInjection\Attribute\AsProductCollectionAction;
 use Isotope\CoreBundle\HttpFoundation\ActionResult;
 use Isotope\CoreBundle\ProductCollection\AbstractProductCollection;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\UriSigner;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
-class ContinueShoppingAction implements ProductCollectionActionInterface
+#[AsProductCollectionAction]
+class ContinueShoppingAction extends AbstractProductCollectionAction
 {
     public function __construct(
-        private readonly Environment $twig,
+        private readonly string $type,
         private readonly UriSigner $uriSigner,
+        private readonly TranslatorInterface $translator,
+        Environment $twig,
     ) {
+        parent::__construct($twig);
     }
 
-    public function supports(AbstractProductCollection $collection, array $context): bool
+    public function supports(AbstractProductCollection $collection, array $context, array $options = []): bool
     {
         return ($context['data']['iso_continueShopping'] ?? null) && null !== $this->getHref($context);
     }
 
-    public function render(AbstractProductCollection $collection, array $context): string
+    public function render(AbstractProductCollection $collection, array $context, array $options = []): string
     {
-        return $this->twig->render('@Contao/isotope/product_collection_action/continue_shopping.html.twig', [
+        return $this->renderView($this->type, [
+            'label' => $this->translator->trans('MSC.continueShoppingBT', [], 'contao_default'),
             'href' => $this->getHref($context),
+            ...$options,
         ]);
     }
 
-    public function handle(AbstractProductCollection $collection, array $context): ActionResult
+    public function handle(AbstractProductCollection $collection, array $context, array $options = []): ActionResult
     {
         return new ActionResult(null, $this->getHref($context));
     }

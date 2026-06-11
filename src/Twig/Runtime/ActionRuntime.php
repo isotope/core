@@ -31,13 +31,13 @@ class ActionRuntime implements RuntimeExtensionInterface
     ) {
     }
 
-    public function renderProductAction(string $name, CoreProduct $product, ViewInterface $view, ProductConfiguration|null $configuration = null): string
+    public function renderProductAction(string $type, CoreProduct $product, ViewInterface $view, ProductConfiguration|null $configuration = null): string
     {
         $request = $this->requestStack->getCurrentRequest();
-        $action = $this->productActionRegistry->get($name);
+        $action = $this->productActionRegistry->get($type);
 
         if (null === $action) {
-            throw ActionException::unknownProductAction($name);
+            throw ActionException::unknownProductAction($type);
         }
 
         if (!$request instanceof Request) {
@@ -48,7 +48,7 @@ class ActionRuntime implements RuntimeExtensionInterface
             return '';
         }
 
-        if ($request->request->get('FORM_SUBMIT') === $view->getFormId($product) /*&& !$this->doNotSubmit*/ && $request->request->get('_action') === $name) {
+        if ($request->request->get('FORM_SUBMIT') === $view->getFormId($product) /*&& !$this->doNotSubmit*/ && $request->request->get('_action') === $type) {
             $configData = $configuration instanceof ProductConfiguration ? $configuration->getData() : [];
 
             $result = $action->handle($product, $configData, $view);
@@ -59,48 +59,48 @@ class ActionRuntime implements RuntimeExtensionInterface
         return $action->render($product, $view);
     }
 
-    public function renderProductCollectionAction(array $context, string $name): string
+    public function renderProductCollectionAction(array $context, string $type, array $options = []): string
     {
         $collection = $context['collection'] ?? null;
         $fragmentId = $context['fragment_id'] ?? null;
         $request = $context['app']->getRequest();
-        $action = $this->collectionActionRegistry->get($name);
+        $action = $this->collectionActionRegistry->get($type);
 
         if (null === $action) {
-            throw ActionException::unknownCollectionAction($name);
+            throw ActionException::unknownCollectionAction($type);
         }
 
         if (
             !$collection instanceof AbstractProductCollection
             || !$fragmentId
             || !$request instanceof Request
-            || !$action->supports($collection, $context)
+            || !$action->supports($collection, $context, $options)
         ) {
             return '';
         }
 
         if (
             $request->request->get('FORM_SUBMIT') === $fragmentId
-            && $request->request->get('_action') === $name
+            && $request->request->get('_action') === $type
         ) {
-            $result = $action->handle($collection, $context);
+            $result = $action->handle($collection, $context, $options);
 
             $this->handleActionResult($request, $result);
         }
 
-        return $action->render($collection, $context);
+        return $action->render($collection, $context, $options);
     }
 
-    public function renderProductCollectionItemAction(array $context, string $name): string
+    public function renderProductCollectionItemAction(array $context, string $type): string
     {
         $collection = $context['collection'] ?? null;
         $fragmentId = $context['fragment_id'] ?? null;
         $item = $context['item'] ?? null;
         $request = $context['app']->getRequest();
-        $action = $this->itemActionRegistry->get($name);
+        $action = $this->itemActionRegistry->get($type);
 
         if (null === $action) {
-            throw ActionException::unknownItemAction($name);
+            throw ActionException::unknownItemAction($type);
         }
 
         if (
@@ -117,8 +117,8 @@ class ActionRuntime implements RuntimeExtensionInterface
         if (
             $request->isMethod(Request::METHOD_POST)
             && $request->request->get('FORM_SUBMIT') === $fragmentId
-            && $request->request->has($name)
-            && $request->request->getInt($name) === $item->getId()
+            && $request->request->has($type)
+            && $request->request->getInt($type) === $item->getId()
         ) {
             $result = $action->handle($collection, $item, $context);
 

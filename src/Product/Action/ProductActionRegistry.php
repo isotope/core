@@ -12,13 +12,13 @@ class ProductActionRegistry
     {
     }
 
-    public function get(string $name): ProductActionInterface|null
+    public function get(string $type): ProductActionInterface|null
     {
-        if (!$this->actions->has($name)) {
+        if (!$this->actions->has($type)) {
             return null;
         }
 
-        return $this->actions->get($name);
+        return $this->actions->get($type);
     }
 
     /**

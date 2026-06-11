@@ -1,0 +1,21 @@
+{% block button_component %}
+    {% set button_attributes = attrs()
+        .set('type', 'submit')
+        .set('name', name|default('_action'))
+        .set('title', title|default)
+        .set('value', value|default(type|default))
+        .addClass('submit')
+        .addClass(type|default)
+        .mergeWith(button_attributes|default)
+    %}
+    <button{{ button_attributes }}>{{ label }}</button>
+{% endblock %}
+
+{% block link_component %}
+    {% set link_attributes = attrs()
+        .set('href', href)
+        .addClass(type|default)
+        .mergeWith(link_attributes|default)
+    %}
+    <a{{ link_attributes}}>{{ label }}</a>
+{% endblock %}
