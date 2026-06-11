@@ -82,8 +82,6 @@ class ProductsPageController extends AbstractPageController
         $originalPageModel = $request->attributes->get('pageModel');
 
         $request->attributes->set('_content', $product);
-        $request->attributes->set('_product_query', $this->queryFactory->createFromRequest($request));
-        $request->attributes->set('_isotope_fragment', $fragmentId = $request->headers->get('Isotope-Fragment'));
 
         // Override page model in the request
         $request->attributes->set('originalPageModel', $originalPageModel);
@@ -115,7 +113,7 @@ class ProductsPageController extends AbstractPageController
         $response->setVary('Isotope-Fragment', false);
 
         // A response exception should have been thrown by the fragment on this page
-        if (null !== $fragmentId) {
+        if ($request->headers->has('Isotope-Fragment')) {
             throw new BadRequestException();
         }
 

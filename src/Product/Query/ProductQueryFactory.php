@@ -10,6 +10,7 @@ use Isotope\CoreBundle\Product\Exception\InvalidQueryAttributeException;
 use Isotope\CoreBundle\Product\Exception\InvalidQueryOperatorException;
 use Isotope\CoreBundle\Product\Query\Filter\FilterInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class ProductQueryFactory
 {
@@ -24,7 +25,27 @@ class ProductQueryFactory
         private readonly array $filters,
         private readonly AttributeRegistry $attributeRegistry,
         private readonly Connection $connection,
+        private readonly RequestStack $requestStack,
     ) {
+    }
+
+    public function getCurrent(Request|null $request = null): ProductQuery|null
+    {
+        $request ??= $this->requestStack->getCurrentRequest();
+
+        $productQuery = $request->attributes->get('_product_query');
+
+        if (false === $productQuery) {
+            return null;
+        }
+
+        if (!$productQuery instanceof ProductQuery) {
+            $productQuery = $this->createFromRequest($request);
+        }
+
+        $request->attributes->set('_product_query', $productQuery ?? false);
+
+        return $productQuery;
     }
 
     public function create(): ProductQuery

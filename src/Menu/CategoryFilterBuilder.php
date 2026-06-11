@@ -11,11 +11,11 @@ use Contao\Module;
 use Isotope\CoreBundle\Exception\RuntimeException;
 use Isotope\CoreBundle\Product\Query\Filter\CategoryFilter;
 use Isotope\CoreBundle\Product\Query\ProductQuery;
+use Isotope\CoreBundle\Product\Query\ProductQueryFactory;
 use Knp\Menu\Attribute\AsMenuBuilder;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * extends Contao\Module to have access to Module::getPublishedSubpagesByPid().
@@ -29,7 +29,7 @@ class CategoryFilterBuilder extends Module
     public function __construct(
         private readonly FactoryInterface $factory,
         private readonly Security $security,
-        private readonly RequestStack $requestStack,
+        private readonly ProductQueryFactory $productQueryFactory,
         private readonly UrlParser $urlParser,
     ) {
     }
@@ -112,7 +112,7 @@ class CategoryFilterBuilder extends Module
 
     private function getCurrentIds(string $filterKey): array
     {
-        $productQuery = $this->requestStack->getCurrentRequest()->attributes->get('_product_query');
+        $productQuery = $this->productQueryFactory->getCurrent();
 
         if (!$productQuery instanceof ProductQuery) {
             return [null, []];

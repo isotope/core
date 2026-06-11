@@ -9,12 +9,14 @@ use Contao\CoreBundle\Controller\ContentElement\AbstractContentElementController
 use Contao\CoreBundle\Exception\ResponseException;
 use Contao\CoreBundle\Twig\FragmentTemplate;
 use Isotope\CoreBundle\Product\Query\ProductQuery;
+use Isotope\CoreBundle\Product\Query\ProductQueryFactory;
 use Isotope\CoreBundle\ProductCollection\AbstractProductCollection;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Price\PriceDisplay;
 use Isotope\CoreBundle\Store\Price\TaxCalculation;
 use Isotope\CoreBundle\Store\StoreManager;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -52,9 +54,10 @@ abstract class AbstractContentElementController extends CoreContentElementContro
 
     protected function getProductQuery(Request $request): ProductQuery|null
     {
-        $productQuery = $request->attributes->get('_product_query');
+        /** @var ProductQueryFactory $factory */
+        $factory = $this->container->get(ProductQueryFactory::class);
 
-        return $productQuery instanceof ProductQuery ? $productQuery : null;
+        return $factory->getCurrent($request);
     }
 
     protected function getFragmentId(array $modelData): string
@@ -83,6 +86,7 @@ abstract class AbstractContentElementController extends CoreContentElementContro
         $services = parent::getSubscribedServices();
 
         $services[StoreManager::class] = StoreManager::class;
+        $services[ProductQueryFactory::class] = ProductQueryFactory::class;
 
         return $services;
     }
