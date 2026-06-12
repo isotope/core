@@ -7,6 +7,7 @@ use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Isotope\CoreBundle\Model\AddressModel;
 use Isotope\CoreBundle\Store\Address\AddressFormatter;
 use Isotope\CoreBundle\Store\StoreManager;
+use Twig\Environment;
 
 class LabelListener
 {
@@ -14,6 +15,7 @@ class LabelListener
         private readonly AddressFormatter $addressFormatter,
         private readonly StoreManager $storeManager,
         private readonly Formatter $formatter,
+        private readonly Environment $twig,
     ) {
     }
 
@@ -23,9 +25,12 @@ class LabelListener
         $address = new AddressModel();
         $address->setRow($row);
 
-        return (string) $this->addressFormatter->toHtml(
-            $address,
-            $this->storeManager->getCurrentContext()->getBillingAddressConfig(),
+        return $this->twig->render(
+            '@Contao/backend/isotope/address.html.twig',
+            $this->addressFormatter->getData(
+                $address,
+                $this->storeManager->getCurrentContext()->getBillingAddressConfig(),
+            ),
         );
     }
 

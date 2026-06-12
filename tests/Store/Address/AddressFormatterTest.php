@@ -3,6 +3,7 @@
 namespace Isotope\CoreBundle\Test\Store\Address;
 
 use Contao\CoreBundle\DataContainer\ValueFormatter;
+use Contao\CoreBundle\Intl\Countries;
 use Contao\System;
 use Isotope\CoreBundle\Model\AddressModel;
 use Isotope\CoreBundle\Store\Address\AddressConfig;
@@ -29,7 +30,7 @@ class AddressFormatterTest extends KernelTestCase
 
         System::setContainer($this->getContainer());
 
-        $twig = $this->getContainer()->get(Environment::class);
+        $markupFactory = new TemplateMarkupFactory($this->getContainer()->get('twig'));
 
         $formatter = $this->createStub(ValueFormatter::class);
         $formatter
@@ -37,7 +38,7 @@ class AddressFormatterTest extends KernelTestCase
             ->willReturnArgument(2)
         ;
 
-        $addressFormatter = new AddressFormatter($formatter, new TemplateMarkupFactory($twig), $this->createStub(AddressValidator::class));
+        $addressFormatter = new AddressFormatter($formatter, $markupFactory, $this->createStub(AddressValidator::class), $this->createStub(Countries::class));
 
         $address = new AddressModel();
         (new \ReflectionProperty(AddressModel::class, 'arrData'))->setValue($address, $data);
@@ -49,7 +50,7 @@ class AddressFormatterTest extends KernelTestCase
             $data['country'],
         );
 
-        $this->assertSame($expectedHTML, (string) $addressFormatter->toHtml($address, $config));
+        $this->assertSame($expectedHTML, $addressFormatter->toHtml($address, $config));
         $this->assertSame($expectedText, $addressFormatter->toText($address, $config));
     }
 
@@ -62,17 +63,26 @@ class AddressFormatterTest extends KernelTestCase
                 'firstname' => 'Max',
                 'lastname' => 'Muster',
                 'street_1' => 'Musterstrasse 1',
-                //'street_2' => 'Postfach',
+                'street_2' => 'Postfach',
                 'postal' => '10000',
                 'city' => 'Berlin',
                 'subdivision' => 'DE-BE',
                 'country' => 'DE',
             ],
-            'Musterfirma<br>Herr Max Muster<br>Musterstrasse 1<br>10000 Berlin<br>DE',
+            <<<'HTML'
+Musterfirma<br>
+Herr Max Muster<br>
+Musterstrasse 1<br>
+Postfach<br>
+10000 Berlin<br>
+DE
+HTML
+,
             <<<'TEXT'
 Musterfirma
 Herr Max Muster
 Musterstrasse 1
+Postfach
 10000 Berlin
 DE
 TEXT,
@@ -85,13 +95,19 @@ TEXT,
                 'firstname' => 'Max',
                 'lastname' => 'Muster',
                 'street_1' => 'Via Modello 42',
-                //'street_2' => 'Postfach',
                 'postal' => '20011',
                 'city' => 'Milano',
                 'subdivision' => 'IT-MI',
                 'country' => 'IT',
             ],
-            'Azienda modello<br>Signore Max Muster<br>Via Modello 42<br>20011 Milano (IT-MI)<br>IT',
+            <<<'HTML'
+Azienda modello<br>
+Signore Max Muster<br>
+Via Modello 42<br>
+20011 Milano (IT-MI)<br>
+IT
+HTML
+,
             <<<'TEXT'
 Azienda modello
 Signore Max Muster
@@ -108,13 +124,19 @@ TEXT,
                 'firstname' => 'John',
                 'lastname' => 'Doe',
                 'street_1' => '9169 Chester Road',
-                //'street_2' => 'Postfach',
                 'postal' => 'SE1 3AE',
                 'city' => 'East Central London',
-                //'subdivision' => 'GB-LND',
                 'country' => 'GB',
             ],
-            'Example company<br>Mr. John Doe<br>9169 Chester Road<br>East Central London<br>SE1 3AE<br>GB',
+            <<<'HTML'
+Example company<br>
+Mr. John Doe<br>
+9169 Chester Road<br>
+East Central London<br>
+SE1 3AE<br>
+GB
+HTML
+,
             <<<'TEXT'
 Example company
 Mr. John Doe
@@ -132,13 +154,19 @@ TEXT,
                 'firstname' => 'John',
                 'lastname' => 'Doe',
                 'street_1' => '417 Holly Drive',
-                //'street_2' => 'Postfach',
                 'postal' => '11203',
                 'city' => 'Brooklyn',
                 'subdivision' => 'US-NY',
                 'country' => 'US',
             ],
-            'Example company<br>Mr. John Doe<br>417 Holly Drive<br>Brooklyn, US-NY 11203<br>US',
+            <<<'HTML'
+Example company<br>
+Mr. John Doe<br>
+417 Holly Drive<br>
+Brooklyn, US-NY 11203<br>
+US
+HTML
+,
             <<<'TEXT'
 Example company
 Mr. John Doe
@@ -160,7 +188,15 @@ TEXT,
                 'subdivision' => 'EG-BA',
                 'country' => 'EG',
             ],
-            'Example company<br>Mr. John Doe<br>12 Al Tahrir Street, Apartment 4A<br>11511 Cairo<br>EG-BA<br>EG',
+            <<<'HTML'
+Example company<br>
+Mr. John Doe<br>
+12 Al Tahrir Street, Apartment 4A<br>
+11511 Cairo<br>
+EG-BA<br>
+EG
+HTML
+,
             <<<'TEXT'
 Example company
 Mr. John Doe
@@ -182,7 +218,16 @@ TEXT,
                 'city' => 'Klongtoey District, Bangkok',
                 'country' => 'TH',
             ],
-            'DSA CO. LTD<br>Somchai Subhani<br>Human Resource Department<br>431 Nayok Road, Prachathipat<br>Klongtoey District, Bangkok<br>13241<br>TH',
+            <<<'HTML'
+DSA CO. LTD<br>
+Somchai Subhani<br>
+Human Resource Department<br>
+431 Nayok Road, Prachathipat<br>
+Klongtoey District, Bangkok<br>
+13241<br>
+TH
+HTML
+,
             <<<'TEXT'
 DSA CO. LTD
 Somchai Subhani

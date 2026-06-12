@@ -18,6 +18,7 @@ use Isotope\CoreBundle\Store\Price\PriceFormatter;
 use Isotope\CoreBundle\Util\ColorUtil;
 use Symfony\Component\Workflow\Workflow;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Environment;
 
 #[AsCallback('tl_iso_product_collection', 'list.label.label')]
 class LabelListener
@@ -29,6 +30,7 @@ class LabelListener
         private readonly AddressConfigFactory $addressConfigFactory,
         private readonly WorkflowManager $workflowManager,
         private readonly TranslatorInterface $translator,
+        private readonly Environment $twig,
     ) {
     }
 
@@ -94,7 +96,10 @@ class LabelListener
         $fields = array_diff($addressConfig->getFields(), ['email', 'phone']);
         $addressConfig = new AddressConfig($fields, $addressConfig->getMandatory(), $addressConfig->getCountryCodes(), $addressConfig->getDefaultCountryCode());
 
-        return (string) $this->addressFormatter->toHtml(AddressModel::findById($row[$field]), $addressConfig);
+        return $this->twig->render(
+            '@Contao/backend/isotope/address.html.twig',
+            $this->addressFormatter->getData(AddressModel::findById($row[$field]), $addressConfig),
+        );
     }
 
     private function formatStatus(Workflow $workflow, string|null $value, string $element = 'span'): string

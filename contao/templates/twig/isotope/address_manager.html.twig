@@ -1,4 +1,5 @@
 {% trans_default_domain 'contao_default' %}
+{% use '@Contao/component/_isotope_address.html.twig' %}
 
 {% if form|default %}
     {% block form %}
@@ -14,7 +15,11 @@
             {% for address in addresses %}
                 <li>
                     {% block address %}
-                        <div class="address">{{ address }}</div>
+                        <div class="address">
+                            {% with address only %}
+                                {{ block('isotope_address_component') }}
+                            {% endwith %}
+                        </div>
                     {% endblock %}
                     {% block address_buttons %}
                         <div class="buttons">

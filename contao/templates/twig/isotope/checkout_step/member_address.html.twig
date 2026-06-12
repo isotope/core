@@ -1,5 +1,6 @@
 {% trans_default_domain 'contao_default' %}
 {% extends '@Contao/isotope/checkout_step/_base.html.twig' %}
+{% use '@Contao/component/_isotope_address.html.twig' %}
 
 {% set attributes = attrs()
     .addClass('member')
@@ -67,7 +68,9 @@
                                     checked
                                 {% endif %}
                             >
-                            <label for="opt_billing_address_{{ address.data.id }}">{{ address }}</label>
+                            <label for="opt_billing_address_{{ address.data.id }}">
+                                {% with address only %}{{ block('isotope_address_component') }}{% endwith %}
+                            </label>
                         </span>
                     {% endblock %}
                 {% endembed %}
@@ -138,7 +141,9 @@
                                     checked
                                 {% endif %}
                             >
-                            <label for="opt_shipping_address_{{ address.data.id }}">{{ address }}</label>
+                            <label for="opt_shipping_address_{{ address.data.id }}">
+                                {% with address only %}{{ block('isotope_address_component') }}{% endwith %}
+                            </label>
                         </span>
                         {% endblock %}
                     {% endembed %}

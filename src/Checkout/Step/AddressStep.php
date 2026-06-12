@@ -310,8 +310,8 @@ class AddressStep extends AbstractCheckoutStep
             true,
             'address',
             [
-                'billing_address' => $this->addressFormatter->toHtml($billingAddress, $billingAddressConfig),
-                'shipping_address' => $shippingAddress ? $this->addressFormatter->toHtml($shippingAddress, $shippingAddressConfig) : null,
+                'billing_address' => $this->addressFormatter->getData($billingAddress, $billingAddressConfig),
+                'shipping_address' => $shippingAddress ? $this->addressFormatter->getData($shippingAddress, $shippingAddressConfig) : null,
                 'requires_payment' => CartUtil::requiresPayment($cart),
                 'requires_shipping' => $requiresShipping,
                 'editable' => true, // TODO: not editable if member address is enforced and shipping=billing is enforced

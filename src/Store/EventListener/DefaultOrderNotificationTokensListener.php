@@ -84,7 +84,7 @@ class DefaultOrderNotificationTokensListener
                     $tokens[$type.'_address_'.$k] = $this->formatter->dcaValue(AddressModel::getTable(), $k, $v);
                 }
 
-                $tokens[$type.'_address'] = $this->addressFormatter->toHtmlString($address, $context->getBillingAddressConfig());
+                $tokens[$type.'_address'] = $this->addressFormatter->toHtml($address, $context->getBillingAddressConfig());
             }
         }
 

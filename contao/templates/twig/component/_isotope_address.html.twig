@@ -1,0 +1,73 @@
+{%- block isotope_address_component -%}
+    {% set company = company|default %}
+    {% set salutation = salutation|default %}
+    {% set firstname = firstname|default %}
+    {% set lastname = lastname|default %}
+    {% set postal = postal|default %}
+    {% set city = city|default %}
+    {% set subdivision = subdivision|default %}
+    {% set country = country|default %}
+
+    {%- block address_contact -%}
+        {%- if company -%}{{- company -}}<br>{%- endif -%}
+            {%- if firstname or lastname|default -%}
+            {%- if salutation -%}{{- salutation }} {% endif -%}
+            {%- if firstname -%}{{- firstname }} {% endif -%}
+            {%- if lastname -%}{{- lastname -}}{%- endif -%}
+            <br>
+        {%- endif -%}
+    {%- endblock -%}
+
+    {%- block address_street -%}
+        {%- if street_1|default -%}{{- street_1 -}}<br>{%- endif -%}
+        {%- if street_2|default -%}{{- street_2 -}}<br>{%- endif -%}
+        {%- if street_3|default -%}{{- street_3 -}}<br>{%- endif -%}
+    {%- endblock -%}
+
+    {%- block address_location -%}
+        {%- if data.country == 'IT' -%}
+
+            {{- postal }} {{ city }}{%- if subdivision %} ({{- subdivision -}}){%- endif -%}<br>
+            {{- country -}}
+
+        {%- elseif data.country == 'GB' -%}
+
+            {%- if subdivision -%}{{- subdivision -}}<br>{%- endif -%}
+            {%- if city -%}{{- city -}}<br>{%- endif -%}
+            {%- if postal -%}{{- postal -}}<br>{%- endif -%}
+            {{- country -}}
+
+        {%- elseif data.country == 'US' -%}
+
+            {{- city }}, {{ data.subdivision }} {{ postal }}<br>
+            {{- country -}}
+
+        {%- elseif data.country == 'EG' -%}
+
+            {{- postal }} {{ city -}}<br>
+            {%- if subdivision -%}{{- subdivision -}}<br>{%- endif -%}
+            {{- country -}}
+
+        {%- elseif data.country == 'TH' -%}
+
+            {{- city -}}<br>
+            {{- postal -}}<br>
+            {%- if subdivision -%}{{- subdivision -}}<br>{%- endif -%}
+            {{- country -}}
+
+        {%- else -%}
+
+            {%- block address_location_default -%}
+                {{- postal }} {{ city -}}<br>
+                {{- country -}}
+            {%- endblock -%}
+
+        {%- endif -%}
+    {%- endblock -%}
+
+    {%- block address_additional -%}
+        {%- if phone|default or email|default -%}<br><br>{%- endif -%}
+        {%- if phone|default -%}<a href="tel:{{- phone -}}">{{- phone -}}</a><br>{%- endif -%}
+        {%- if email|default -%}<a href="mailto:{{- email -}}">{{- email -}}</a><br>{%- endif -%}
+    {%- endblock -%}
+{%- endblock -%}

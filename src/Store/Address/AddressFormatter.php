@@ -5,24 +5,26 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Store\Address;
 
 use Contao\CoreBundle\DataContainer\ValueFormatter;
+use Contao\CoreBundle\Intl\Countries;
 use Isotope\CoreBundle\Model\AddressModel;
 use Isotope\CoreBundle\Twig\TemplateMarkup;
 use Isotope\CoreBundle\Twig\TemplateMarkupFactory;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Contracts\Service\ResetInterface;
 
-class AddressFormatter
+class AddressFormatter implements ResetInterface
 {
+    private array|null $countryLabels = null;
+
     public function __construct(
         #[Autowire(service: 'contao.data_container.value_formatter')] private readonly ValueFormatter $formatter,
         private readonly TemplateMarkupFactory $markupFactory,
         private readonly AddressValidator $addressValidator,
+        private readonly Countries $countries,
     ) {
     }
 
-    /**
-     * Format an address for an HTML template.
-     */
-    public function toHtml(AddressModel $address, AddressConfig $config): TemplateMarkup
+    public function getData(AddressModel $address, AddressConfig $config): array
     {
         $data = array_intersect_key($address->row(), array_flip($config->getFields()));
 
@@ -37,19 +39,24 @@ class AddressFormatter
         $data['error'] = (string) $validation;
 
         // Use the default country if there is no country to format the address
-        if (empty($data['data']['country'])) {
+        if (empty($address->country)) {
             $data['data']['country'] = $config->getDefaultCountryCode();
         }
 
-        return $this->markupFactory->create('@Contao/isotope/address.html.twig', $data);
+        $data['country'] = $this->getCountryLabel($data['data']['country']);
+
+        return $data;
     }
 
     /**
      * Format an address as HTML string, so that applying `strip_tags` results in the correct text representation.
      */
-    public function toHtmlString(AddressModel $address, AddressConfig $config): string
+    public function toHtml(AddressModel $address, AddressConfig $config): string
     {
-        $output = (string) $this->toHtml($address, $config);
+        $output = (string) $this->markupFactory->create(
+            '@Contao/component/_isotope_address.html.twig',
+            $this->getData($address, $config),
+        );
 
         $output = str_replace(array("\n", '<br>'), array('', "<br>\n"), $output);
 
@@ -61,6 +68,20 @@ class AddressFormatter
      */
     public function toText(AddressModel $address, AddressConfig $config): string
     {
-        return strip_tags($this->toHtmlString($address, $config));
+        return strip_tags($this->toHtml($address, $config));
+    }
+
+    public function reset(): void
+    {
+        $this->countryLabels = null;
+    }
+
+    private function getCountryLabel(string $code)
+    {
+        if (null === $this->countryLabels) {
+            $this->countryLabels = $this->countries->getCountries();
+        }
+
+        return $this->countryLabels[$code] ?? $code;
     }
 }

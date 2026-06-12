@@ -131,7 +131,7 @@ class ProductCollectionInsertTag implements InsertTagResolverNestedResolvedInter
         if (null === $attribute) {
             $context = $this->storeManager->getCurrentContext();
 
-            return (string) $this->addressFormatter->toHtml($address, $context->getBillingAddressConfig());
+            return $this->addressFormatter->toHtml($address, $context->getBillingAddressConfig());
         }
 
         return (string) ($address->$attribute ?? '');
