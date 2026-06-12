@@ -21,10 +21,13 @@
                             {% if data.iso_gallery|default %}
                                 <th class="image"></th>
                             {% endif %}
-                            <th class="name"></th>
-                            <th class="quantity">Quantity</th>
-                            <th class="price">Price</th>
-                            <th class="total">Total</th>
+                            <th class="name">{{ 'MSC.iso_order_description'|trans }}</th>
+                            <th class="quantity">{{ 'MSC.iso_order_quantity'|trans }}</th>
+                            <th class="price">{{ 'MSC.iso_order_price'|trans }}</th>
+                            {% if show_taxes|default %}
+                                <th class="tax">{{ 'MSC.iso_order_tax'|trans }}</th>
+                            {% endif %}
+                            <th class="total">{{ 'MSC.iso_order_total'|trans }}</th>
                             {% if multiple_taxes|default %}
                                 <th class="tax_id"></th>
                             {% endif %}
@@ -34,6 +37,7 @@
                         </tr>
                     </thead>
                     <tbody>
+                        {% set colspan = 2 + (data.iso_gallery|default ? 1 : 0) + (show_taxes|default ? 1 : 0) %}
                         {% for level,items in collection.lineItems.byLevel %}
                             {% for item in items %}
                                 {% block product_collection_item %}
@@ -78,15 +82,15 @@
                                         <td class="price">
                                             {% if price %}
                                                 {{ price }}
-                                                {% if show_taxes|default %}
-                                                    <div class="tax">
-                                                        {% if price.is_gross|default %}incl.{% else %}.excl{% endif %}
-                                                        {{ price.with({ amount: price.unit_tax }) }}
-                                                        VAT
-                                                    </div>
-                                                {% endif %}
                                             {% endif %}
                                         </td>
+                                        {% if show_taxes|default %}
+                                            <td class="tax">
+                                                {% if price %}
+                                                    {{ price.with({ amount: price.unit_tax }) }}
+                                                {% endif %}
+                                            </td>
+                                        {% endif %}
                                         <td class="total">
                                             {% if price %}
                                                 {{ price.with({ amount: price.total_price }) }}
@@ -103,7 +107,7 @@
                                     </tr>
                                     {% if item.hasErrors %}
                                         <tr>
-                                            <td colspan="5">
+                                            <td colspan="{{ colspan + 2 + (multiple_taxes|default ? 1 : 0) + (block("product_collection_item_actions") is defined ? 1 : 0) }}">
                                                 {% for error in item.errors %}
                                                     <p class="error">{{ error|trans }}</p>
                                                 {% endfor %}
@@ -117,7 +121,7 @@
                                     {% set price = isotope_price(collection.subtotal(level)) %}
                                     {% if price %}
                                         <tr class="subtotal">
-                                            <td class="name" colspan="{{ data.iso_gallery|default ? '3' : '2' }}">{{ 'MSC.subTotalLabel'|trans }}</td>
+                                            <td class="name" colspan="{{ colspan }}">{{ 'MSC.subTotalLabel'|trans }}</td>
                                             <td class="price">&nbsp;</td>
                                             <td class="price total">
                                                 {{ isotope_price(collection.subtotal(level)) }}
@@ -138,7 +142,7 @@
                             {% block product_collection_taxes %}
                                 {% for tax in total.calculated_taxes %}
                                     <tr class="tax">
-                                        <td class="name" colspan="{{ data.iso_gallery|default ? '3' : '2' }}">{{ tax.label }}</td>
+                                        <td class="name" colspan="{{ colspan }}">{{ tax.label }}</td>
                                         <td class="price">{{ tax.taxRate }}%</td>
                                         <td class="price total">
                                             {{ total.with({ amount: tax.amount }) }}
@@ -154,7 +158,7 @@
                             {% endblock %}
                             {% block product_collection_total %}
                                 <tr class="total">
-                                    <td class="name" colspan="{{ data.iso_gallery|default ? '3' : '2' }}">{{ 'MSC.grandTotalLabel'|trans }}</td>
+                                    <td class="name" colspan="{{ colspan }}">{{ 'MSC.grandTotalLabel'|trans }}</td>
                                     <td class="price">&nbsp;</td>
                                     <td class="price total">
                                         {{ total }}

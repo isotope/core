@@ -290,6 +290,9 @@
       <trans-unit id="MSC.iso_order_total">
         <source>Total</source>
       </trans-unit>
+      <trans-unit id="MSC.iso_order_tax">
+        <source>VAT</source>
+      </trans-unit>
       <trans-unit id="MSC.iso_order_locked">
         <source>Placed</source>
       </trans-unit>
