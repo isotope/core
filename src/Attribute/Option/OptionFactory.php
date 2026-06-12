@@ -118,7 +118,7 @@ class OptionFactory
                 $price = $this->priceCalculator->calculatePriceDefinition($priceDefinition, $productPrice, $context);
 
                 $option->setPrice($price);
-                $option->setLabel($this->twig->render('@Contao/isotope/option_price.html.twig', [
+                $option->setLabel($this->twig->render('@Contao/component/_isotope_option_price.html.twig', [
                     'label' => $option->getLabel(),
                     'price' => $model->price,
                     'amount' => $price->getUnitPrice(),

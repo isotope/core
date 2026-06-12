@@ -1,0 +1,8 @@
+{%- use '@Contao/component/_isotope_price.html.twig' -%}
+
+{% block isotope_option_price_component %}
+    {%- set sign = amount > 0 ? '+ ' : (amount < 0 ? '- ' : '') -%}
+    {%- with _context|merge({ html: false, amount: amount|abs }) -%}
+        {{- label }} ({{ sign }}{{ block('isotope_price_component') -}})
+    {%- endwith -%}
+{% endblock %}
