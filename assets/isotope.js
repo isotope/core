@@ -1,4 +1,3 @@
-import './scripts/isotope.js';
 import './styles/isotope.scss';
 
 import { Application } from '@hotwired/stimulus';

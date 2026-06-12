@@ -1,4 +1,3 @@
-import './scripts/backend.js';
 import './styles/backend.scss';
 
 import { Application } from '@hotwired/stimulus';
