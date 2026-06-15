@@ -1,6 +1,7 @@
 import Axios from 'axios';
 import '@bprogress/core/css';
 import { BProgress } from '@bprogress/core';
+import { extractScript } from './_dom';
 
 const instance = Axios.create({
     headers: {
@@ -42,7 +43,15 @@ instance.interceptors.response.use(response => {
     if (json.redirect) {
         window.location = json.redirect;
     } else if (json.message) {
-        alert(json.message);
+        const [txt, scripts] = extractScript(json.message);
+
+        document.body.insertAdjacentHTML('beforeend', txt);
+
+        if (scripts) {
+            const script = document.createElement('script');
+            script.text = scripts;
+            document.body.append(script);
+        }
     }
 
     return response;

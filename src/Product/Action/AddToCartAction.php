@@ -13,6 +13,8 @@ use Isotope\CoreBundle\Product\Render\ViewInterface;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
 use Isotope\CoreBundle\Store\CartManager;
 use Isotope\CoreBundle\Store\StoreManager;
+use Isotope\CoreBundle\Twig\TemplateMarkupFactory;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\UriSigner;
 use Symfony\Component\Routing\Exception\ExceptionInterface;
@@ -31,6 +33,7 @@ class AddToCartAction extends AbstractProductAction
         private readonly ContentUrlGenerator $urlGenerator,
         private readonly UriSigner $uriSigner,
         private readonly TranslatorInterface $translator,
+        private readonly TemplateMarkupFactory $markupFactory,
         Environment $twig,
     ) {
         parent::__construct($twig);
@@ -50,29 +53,6 @@ class AddToCartAction extends AbstractProductAction
     }
 
     public function handle(CoreProduct $product, array $configuration, ViewInterface $view): ActionResult
-    {
-        $request = $this->requestStack->getCurrentRequest();
-        $response = $this->handleAddToCart($product, $configuration, $view);
-
-        if ($request && $response->success && $view->get('iso_addProductJumpTo')) {
-            try {
-                return new ActionResult(
-                    null,
-                    $this->uriSigner->sign($this->urlGenerator->generate(
-                        PageModel::findById($view->get('iso_addProductJumpTo')),
-                        ['continue' => base64_encode($request->getRequestUri())],
-                        UrlGeneratorInterface::ABSOLUTE_URL,
-                    )),
-                );
-            } catch (ExceptionInterface) {
-                // ignore routing exception
-            }
-        }
-
-        return $response;
-    }
-
-    private function handleAddToCart(CoreProduct $product, array $configuration, ViewInterface $view): ActionResult
     {
         $quantity = 1;
         $request = $this->requestStack->getCurrentRequest();
@@ -110,6 +90,38 @@ class AddToCartAction extends AbstractProductAction
 
         $this->cartManager->add($context->getCart(), $item, $context);
 
-        return new ActionResult($GLOBALS['TL_LANG']['MSC']['addedToCart']);
+        return new ActionResult($this->markupFactory->create('@Contao/isotope/notification/added_to_cart.html.twig', [
+            'product' => $product,
+            'configuration' => $configuration,
+            'context' => $context,
+            'view' => $view,
+            'cart_url' => $this->buildUrl((int) $view->get('iso_addProductJumpTo'), $request),
+            'checkout_url' => $this->buildUrl((int) ($context->getMemberId() ? $view->get('iso_checkout_jumpTo') : ($view->get('iso_checkout_jumpTo') ?? $view->get('iso_checkout_jumpTo')))),
+        ]));
+    }
+
+    private function buildUrl(int $pageId, Request|null $request = null): string|null
+    {
+        if (!$pageId) {
+            return null;
+        }
+
+        try {
+            if ($request) {
+                return $this->uriSigner->sign($this->urlGenerator->generate(
+                    PageModel::findById($pageId),
+                    ['continue' => base64_encode($request->getRequestUri())],
+                    UrlGeneratorInterface::ABSOLUTE_URL,
+                ));
+            }
+
+            return $this->urlGenerator->generate(
+                PageModel::findById($pageId),
+                [],
+                UrlGeneratorInterface::ABSOLUTE_URL,
+            );
+        } catch (ExceptionInterface) {
+            return null;
+        }
     }
 }

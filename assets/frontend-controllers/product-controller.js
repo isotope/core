@@ -1,5 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 import axios from '../scripts/_axios';
+import { extractScript } from '../scripts/_dom';
 
 export default class extends Controller {
     static values = {
@@ -77,28 +78,14 @@ export default class extends Controller {
     }
 
     async #ajaxSuccess(axiosPromise) {
-        let txt = (await axiosPromise).data;
+        const [txt, scripts] = extractScript((await axiosPromise).data);
 
-        var div = document.createElement('div'),
-            scripts = '',
-            script, i;
-
-        txt = txt.replace(/<script([^>]*)>([\s\S]*?)<\/script>/gi, function(all, attr, code){
-            var type = attr.match(/type=['"]?([^"']+)/);
-
-            if (type !== null && type[1] !== 'text/javascript') {
-                return all;
-            }
-
-            scripts += code + '\n';
-            return '';
-        });
-
+        const div = document.createElement('div');
         div.innerHTML = txt;
 
         // Remove all error messages
-        var skip = 0;
-        var errors = div.getElementsByTagName('p');
+        let skip = 0;
+        const errors = div.getElementsByTagName('p');
         while (skip < errors.length) {
             if (errors[skip].className.search(/(^| )error( |$)/) !== -1) {
                 errors[skip].parentNode.removeChild(errors[skip]);
@@ -110,13 +97,11 @@ export default class extends Controller {
         this.element.replaceWith(...div.childNodes);
 
         if (scripts) {
-            script = document.createElement('script');
+            const script = document.createElement('script');
             script.text = scripts;
             document.head.appendChild(script);
             document.head.removeChild(script);
         }
-
-        // window.dispatchEvent(new CustomEvent('isotopeProductReload', { detail: config }));
     }
 
     #connectAttributes() {

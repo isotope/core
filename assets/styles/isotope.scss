@@ -14,3 +14,55 @@
 .content-iso-checkout fieldset.hide-disabled:disabled {
     display: none;
 }
+
+.isotope-notification {
+    position: fixed;
+    inset: 0;
+    background: var(--isotope-notification-overlay, rgba(0,0,0,.25));
+    z-index: 1000;
+
+    .inner {
+        position: absolute;
+        inset: 50% auto auto 50%;
+        padding: 25px 15px 15px;
+        background: var(--isotope-notification-backgrond, #fff);
+        border: 1px solid var(--isotope-notification-border, #000);
+        border-radius: var(--isotope-notification-radius, 12px);
+        transform: translate3d(-50%, -50%, 0);
+    }
+
+    .close {
+        position: absolute;
+        inset: 5px 5px auto auto;
+        width: 20px;
+        height: 20px;
+        padding: 0;
+        margin: 0;
+        border: none;
+        background: none;
+        text-indent: -999em;
+        cursor: pointer;
+
+        &::before,
+        &::after {
+            content: "";
+            position: absolute;
+            inset: 10px 5px auto auto;
+            width: 10px;
+            height: 2px;
+            background: var(--isotope-notification-close-color, #aaa);
+            transform: rotateZ(45deg);
+        }
+
+        &::after {
+            transform: rotateZ(-45deg);
+        }
+
+        &:hover {
+            &::before,
+            &::after {
+                background: var(--isotope-notification-close-hover-color, #000);
+            }
+        }
+    }
+}

@@ -69,11 +69,6 @@
     "autoload": {
         "psr-4": {
             "Isotope\\CoreBundle\\": "src/"
-        },
-        "psr-0": {
-            "Isotope\\": [
-                "system/modules/isotope/library"
-            ]
         }
     },
     "autoload-dev": {

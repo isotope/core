@@ -362,12 +362,6 @@
       <trans-unit id="tl_content.iso_related_categories.1">
         <source>Select the categories to show products of.</source>
       </trans-unit>
-      <trans-unit id="tl_content.iso_includeMessages.0">
-        <source>Include messaging</source>
-      </trans-unit>
-      <trans-unit id="tl_content.iso_includeMessages.1">
-        <source>This setting allows the module to include any errors, notifications, or confirmations the visitor should be aware of.</source>
-      </trans-unit>
       <trans-unit id="tl_content.iso_continueShopping.0">
         <source>Enable "Continue shopping" button</source>
       </trans-unit>

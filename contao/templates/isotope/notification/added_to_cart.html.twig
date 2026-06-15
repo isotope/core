@@ -1,0 +1,19 @@
+{% embed "@Contao/component/_isotope_notification.html.twig" %}
+    {% trans_default_domain 'contao_default' %}
+    {% set dialog_delay = 20000 %}
+    {% set closable = false %}
+
+    {% block notification_content %}
+        {% block notification_message %}
+            <p>{{ 'MSC.addedToCart'|trans }}</p>
+        {% endblock %}
+
+        {% if cart_url|default %}
+            <div class="cart"><a class="cart" href="{{ cart_url }}">{{ 'MSC.cartBT'|trans }}</a></div>
+        {% endif %}
+        {% if checkout_url|default %}
+            <div class="checkout"><a class="checkout" href="{{ checkout_url }}">{{ 'MSC.checkoutBT'|trans }}</a></div>
+        {% endif %}
+        <button class="continue_shopping" data-action="isotope--notification#hide">{{ 'MSC.continueShoppingBT'|trans }}</button>
+    {% endblock %}
+{% endembed %}
