@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[AsContentElement('iso_configswitcher', category: 'isotope')]
-class ConfigswitcherController extends AbstractContentElementController
+class ConfigSwitcherController extends AbstractContentElementController
 {
     public function __construct(
         private readonly CartManager $cartManager,
@@ -77,13 +77,12 @@ class ConfigswitcherController extends AbstractContentElementController
             return false;
         }
 
-        $newContext = clone $context;
-        $newContext->setConfigId($id);
+        $context->setConfigId($id);
 
         $cart = $context->getCart();
         $cart->setModified();
 
-        $this->cartManager->recalculate($cart, $newContext);
+        $this->cartManager->recalculate($cart, $context);
 
         return true;
     }

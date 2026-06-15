@@ -108,6 +108,8 @@ class CartManager implements ResetInterface
             $this->storage->save($cart, $context);
         }
 
+        $cart->setModified(false);
+
         return $cart;
     }
 
