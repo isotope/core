@@ -32,7 +32,7 @@ abstract class AbstractShippingFactory extends AbstractCheckoutMethodFactory
         /** @var AbstractShipping $shipping */
         $shipping = parent::create($model, $context);
         $shipping
-            ->setMinMaxWeight((float) $model->minimum_weight, (float) $model->maximum_weight)
+            ->setMinMaxWeight(Weight::createFromTimePeriod($model->minimum_weight), Weight::createFromTimePeriod($model->maximum_weight))
             ->setShippingWeight(Weight::createFromTimePeriod($model->shipping_weight))
         ;
 

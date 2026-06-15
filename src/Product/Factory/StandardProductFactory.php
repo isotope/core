@@ -56,7 +56,7 @@ class StandardProductFactory implements ProductFactoryInterface
             $product->shipping_exempt || '1' === $product->getProductType()->shipping_exempt,
             $product->shipping_pickup || '2' === $product->getProductType()->shipping_exempt,
             $product->shipping_weight ? Weight::createFromTimePeriod($product->shipping_weight) : null,
-            $product->shipping_price,
+            null === $product->shipping_price ? null : (float) $product->shipping_price,
         ));
 
         $this->eventDispatcher->dispatch(new ProductCreatedEvent($product, $dto, $context));

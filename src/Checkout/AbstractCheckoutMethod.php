@@ -178,14 +178,15 @@ abstract class AbstractCheckoutMethod extends AbstractModelType implements Conta
             return false;
         }
 
-        if ($this->rule) {
-            return $this->get(RuleMatcher::class)->isApplicable($this->rule, $this->context);
+        if (
+            $this->rule
+            && !$this->get(RuleMatcher::class)->isApplicable($this->rule, $this->context)
+        ) {
+            return false;
         }
 
-        $cart = $this->context->getCart();
-
-        if ($cart && null !== $this->allowedProductTypes) {
-            $items = $cart->getLineItems();
+        if (null !== $this->allowedProductTypes && ($cart = $this->context->getCart())) {
+            $items = $cart->getLineItems()->products();
             $types = [];
 
             foreach ($items as $item) {

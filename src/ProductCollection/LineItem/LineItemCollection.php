@@ -53,7 +53,9 @@ class LineItemCollection extends AbstractCollection
 
         foreach ($this as $item) {
             if ($weight = $item->getWeight()) {
-                $scale->add($weight);
+                for ($i = 0; $i < $item->getQuantity(); $i++) {
+                    $scale->add($weight);
+                }
             }
         }
 

@@ -56,7 +56,7 @@ class PriceCalculator
             $amount *= $context->getCurrencyFactor();
         }
 
-        [$taxRates, $includedTaxRates] = $this->taxCalculator->getTaxRates($price->getTaxId(), $context);
+        [$taxRates, $includedTaxRates] = $this->taxCalculator->getTaxRates($price->getTaxClassId(), $context);
         $calculated = $this->calculate($amount, $taxRates, $includedTaxRates, $context, $quantity)->setRange($showRange && $prices->hasRange());
 
         $calculated->setBasePrice($this->calculateBasePrice($product));
@@ -66,11 +66,11 @@ class PriceCalculator
 
     public function calculatePriceDefinition(PriceDefinition $priceDefinition, CalculatedPrice $base, StoreContext $context): CalculatedPrice
     {
-        if (PriceDefinition::SPLIT_TAX === $priceDefinition->getTaxId()) {
+        if (PriceDefinition::SPLIT_TAX === $priceDefinition->getTaxClassId()) {
             $taxRates = $base->getTaxRates();
             $includedTaxRates = $base->getIncludedTaxRates();
-        } elseif ($priceDefinition->getTaxId() > 0) {
-            [$taxRates, $includedTaxRates] = $this->taxCalculator->getTaxRates($priceDefinition->getTaxId(), $context);
+        } elseif ($priceDefinition->getTaxClassId() > 0) {
+            [$taxRates, $includedTaxRates] = $this->taxCalculator->getTaxRates($priceDefinition->getTaxClassId(), $context);
         } else {
             $taxRates = new TaxRateCollection();
             $includedTaxRates = new TaxRateCollection();

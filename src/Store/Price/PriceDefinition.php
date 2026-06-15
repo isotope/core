@@ -18,7 +18,7 @@ class PriceDefinition
 
     public function __construct(
         float $amount,
-        private int|null $taxId,
+        private int|null $taxClassId,
         private int $quantity = 1,
         private bool $percentage = false,
     ) {
@@ -35,9 +35,9 @@ class PriceDefinition
         return $this->quantity;
     }
 
-    public function getTaxId(): int|null
+    public function getTaxClassId(): int|null
     {
-        return $this->taxId;
+        return $this->taxClassId;
     }
 
     public function isPercentage(): bool

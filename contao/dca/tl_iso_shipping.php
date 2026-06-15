@@ -2,27 +2,15 @@
 
 use Contao\DataContainer;
 use Contao\DC_Table;
-use Contao\System;
-use Isotope\Backend\Shipping\Callback;
 use Isotope\CoreBundle\Checkout\ProductTypeCondition;
 use Isotope\CoreBundle\Checkout\Shipping\FlatCalculation;
 use Isotope\CoreBundle\Checkout\Shipping\GroupCalculation;
 use Isotope\CoreBundle\Checkout\Shipping\ProductCalculation;
-use Isotope\CoreBundle\Model\ShippingModel;
-
-/*
- * Load tl_iso_product data container and language files
- */
-$this->loadDataContainer('tl_iso_product');
-System::loadLanguageFile('tl_iso_product');
 
 $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
     'config' => [
         'dataContainer' => DC_Table::class,
         'enableVersioning' => true,
-        'onload_callback' => [
-            [Callback::class, 'hideLabelAndNotes'],
-        ],
         'markAsCopy' => 'name',
         'sql' => [
             'keys' => [
@@ -44,16 +32,18 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
         ],
     ],
     'palettes' => [
-        '__selector__' => ['type', 'flatCalculation'],
+        '__selector__' => ['type', 'flatCalculation', 'group_calculation', 'inherit'],
         'default' => '{title_legend},name,label,type',
         'flat' => '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},price,tax_class,shipping_weight,flatCalculation;{config_legend},minimum_weight,maximum_weight,product_types,product_types_condition,rule;{enabled_legend},enabled',
         'product_price' => '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},tax_class,shipping_weight,productCalculation;{config_legend},minimum_weight,maximum_weight,product_types,product_types_condition,rule;{enabled_legend},enabled',
-        'group' => '{title_legend},type,inherit,name,label;{note_legend:hide},note;{config_legend},group_methods,rule;{price_legend},group_calculation,tax_class;{enabled_legend},enabled',
+        'group' => '{title_legend},type,inherit,name,label;{note_legend:hide},note;{config_legend},group_methods,rule;{price_legend},group_calculation;{enabled_legend},enabled',
+        'groupinherit' => '{title_legend},type,inherit,name;{config_legend},group_methods,rule;{price_legend},group_calculation;{enabled_legend},enabled',
     ],
     'subpalettes' => [
         'flatCalculation_perProduct' => 'flatProductTypes',
         'flatCalculation_perItem' => 'flatProductTypes',
         'flatCalculation_perWeight' => 'flatWeight',
+        'group_calculation_summarize' => 'tax_class'
     ],
     'fields' => [
         'id' => [
@@ -78,7 +68,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
         'name' => [
             'search' => true,
             'inputType' => 'text',
-            'eval' => ['mandatory' => true, 'maxlength' => 255, 'tl_class' => 'w50'],
+            'eval' => ['mandatory' => true, 'maxlength' => 255, 'tl_class' => 'clr w50'],
             'translation' => ['domain' => 'isotope'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
@@ -182,18 +172,13 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
         ],
         'group_methods' => [
             'inputType' => 'checkboxWizard',
-            'options_callback' => static function ($dc) {
-                $objShipping = ShippingModel::findBy([$dc->table.'.id!=?'], $dc->id);
-
-                return null === $objShipping ? [] : $objShipping->fetchEach('name');
-            },
             'eval' => ['mandatory' => true, 'multiple' => true, 'tl_class' => 'clr w50'],
             'sql' => 'blob NULL',
         ],
         'group_calculation' => [
             'inputType' => 'select',
             'enum' => GroupCalculation::class,
-            'eval' => ['tl_class' => 'w50'],
+            'eval' => ['submitOnChange' => true, 'tl_class' => 'w50'],
             'sql' => "varchar(10) NOT NULL default ''",
         ],
         'debug' => [

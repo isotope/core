@@ -9,13 +9,13 @@ use Isotope\CoreBundle\Store\Weight\Weight;
 
 abstract class AbstractShipping extends AbstractCheckoutMethod implements ShippingInterface
 {
-    protected float $minWeight = 0;
+    protected Weight|null $minWeight = null;
 
-    protected float $maxWeight = 0;
+    protected Weight|null $maxWeight = null;
 
     protected Weight|null $shippingWeight = null;
 
-    public function setMinMaxWeight(float $minWeight, float $maxWeight): static
+    public function setMinMaxWeight(Weight|null $minWeight, Weight|null $maxWeight): static
     {
         $this->minWeight = $minWeight;
         $this->maxWeight = $maxWeight;
@@ -33,5 +33,24 @@ abstract class AbstractShipping extends AbstractCheckoutMethod implements Shippi
     public function getWeight(): Weight|null
     {
         return $this->shippingWeight;
+    }
+
+    public function isAvailable(): bool
+    {
+        if (!parent::isAvailable()) {
+            return false;
+        }
+
+        $items = $this->getStoreContext()->getCart()?->getLineItems()->products();
+
+        if (
+            (($this->minWeight || $this->maxWeight) && !$items)
+            || ($this->minWeight && $items->calculateWeight($this->minWeight->getUnit())->getAmount() < $this->minWeight->getAmount())
+            || ($this->maxWeight && $items->calculateWeight($this->maxWeight->getUnit())->getAmount() > $this->maxWeight->getAmount())
+        ) {
+            return false;
+        }
+
+        return true;
     }
 }

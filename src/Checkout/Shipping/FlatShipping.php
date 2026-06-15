@@ -115,7 +115,7 @@ class FlatShipping extends AbstractShipping
 
     private function weightMultiplier(LineItemCollection|null $items): float
     {
-        if (!$items) {
+        if (!$items || !$this->flatWeight) {
             return 0;
         }
 

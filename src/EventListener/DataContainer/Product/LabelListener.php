@@ -185,7 +185,7 @@ class LabelListener
                 $label = $this->translator->trans('MSC.priceRangeLabel', [$label], 'contao_default');
             }
 
-            $taxClass = $priceDefinition->getTaxId() ? TaxClassModel::findById($priceDefinition->getTaxId()) : null;
+            $taxClass = $priceDefinition->getTaxClassId() ? TaxClassModel::findById($priceDefinition->getTaxClassId()) : null;
             $label .= sprintf(' <span style="color:#999">[%s]</span>', $taxClass?->name ?? $this->translator->trans('MSC.taxFree', [], 'contao_default'));
 
             return $label;

@@ -40,6 +40,7 @@ class GroupShippingFactory extends AbstractShippingFactory
             $context,
             $this->shippingRegistry->get(ShippingModel::findMultipleByIds($ids), $context) ?? [],
             GroupCalculation::from($model->group_calculation),
+            (int) $model->tax_class,
             (bool) $model->inherit,
         );
     }

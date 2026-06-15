@@ -8,6 +8,7 @@ use Isotope\CoreBundle\DependencyInjection\Attribute\AsShipping;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\Extension\ShippingExtension;
 use Isotope\CoreBundle\Product\Product;
+use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Price\PriceDefinition;
 use Isotope\CoreBundle\Twig\TemplateMarkup;
@@ -28,16 +29,17 @@ class ProductPriceShipping extends AbstractShipping
 
     public function isAvailable(): bool
     {
-        if (!parent::isAvailable()) {
+        if (
+            !parent::isAvailable()
+            || (!$cart = $this->context->getCart())
+        ) {
             return false;
         }
 
-        $cart = $this->context->getCart();
-
         foreach ($cart->getLineItems() as $item) {
-            //if ($item->hasProduct() && $this->hasShippingPrice($item->getProduct())) {
-            //    return true;
-            //}
+            if (null !== $this->getShippingPrice($item)) {
+                return true;
+            }
         }
 
         return false;
@@ -48,14 +50,12 @@ class ProductPriceShipping extends AbstractShipping
         $isFirst = true;
         $price = 0;
 
-        foreach ($this->getStoreContext()->getCart()->getLineItems()->products() as $item) {
-            $cartProduct = $item->getProduct();
+        foreach (($this->getStoreContext()->getCart()?->getLineItems()->products() ?? []) as $item) {
+            $shippingPrice = $this->getShippingPrice($item);
 
-            if (null === $cartProduct || !$this->hasShippingPrice($cartProduct)) {
+            if (null === $shippingPrice) {
                 continue;
             }
-
-            $shippingPrice = $cartProduct->{self::ATTRIBUTE_NAME};
 
             switch ($this->calculation) {
                 case ProductCalculation::sumProducts:
@@ -111,15 +111,14 @@ class ProductPriceShipping extends AbstractShipping
         return null;
     }
 
-    private function hasShippingPrice(Product $product): bool
+    private function getShippingPrice(LineItem $item): float|null
     {
-        if (!$product instanceof CoreProduct) {
-            return false;
+        $extension = $item->getProduct()?->getExtension(ShippingExtension::class);
+
+        if (!$extension || $extension->isExemptFromShipping()) {
+            return null;
         }
 
-        $attributes = array_merge($product->getProductType()->getAttributes(), $product->getProductType()->getVariantAttributes());
-
-        return \in_array(self::ATTRIBUTE_NAME, $attributes, true)
-            && !$product->getExtension(ShippingExtension::class)?->isExemptFromShipping();
+        return $extension->getPrice();
     }
 }
