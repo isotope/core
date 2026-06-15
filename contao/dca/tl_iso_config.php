@@ -260,7 +260,6 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
         ],
         'currencyFormat' => [
             'inputType' => 'select',
-            'options' => \array_keys($GLOBALS['ISO_NUM']),
             'eval' => ['includeBlankOption' => true, 'decodeEntities' => true, 'mandatory' => true, 'tl_class' => 'clr w33'],
             'sql' => "varchar(20) NOT NULL default ''",
         ],

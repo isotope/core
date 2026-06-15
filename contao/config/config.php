@@ -95,11 +95,3 @@ $GLOBALS['TL_PERMISSIONS'][] = 'iso_tax_rates';
 $GLOBALS['TL_PERMISSIONS'][] = 'iso_tax_classes';
 $GLOBALS['TL_PERMISSIONS'][] = 'iso_configs';
 $GLOBALS['TL_PERMISSIONS'][] = 'iso_member_groups';
-
-/*
- * Number formatting
- */
-$GLOBALS['ISO_NUM']['10000.00'] = [2, '.', ''];
-$GLOBALS['ISO_NUM']['10,000.00'] = [2, '.', ','];
-$GLOBALS['ISO_NUM']['10.000,00'] = [2, ',', '.'];
-$GLOBALS['ISO_NUM']["10'000.00"] = [2, '.', "'"];

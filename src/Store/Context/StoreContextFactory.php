@@ -21,6 +21,7 @@ use Isotope\CoreBundle\Store\Price\PriceDisplay;
 use Isotope\CoreBundle\Store\Price\TaxCalculation;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Intl\Currencies;
 
 /**
@@ -35,6 +36,7 @@ class StoreContextFactory
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly AddressConfigFactory $addressConfigFactory,
         private readonly InsertTagParser $insertTagParser,
+        #[Autowire(param: 'isotope.currency_formats')] private readonly array $currencyFormats,
     ) {
     }
 
@@ -102,17 +104,16 @@ class StoreContextFactory
 
     private function getMoneyFormat(ConfigModel $config): MoneyFormat
     {
-        // TODO: ISO_NUM?
-        if (!isset($GLOBALS['ISO_NUM'][$config->currencyFormat])) {
+        if (!isset($this->currencyFormats[$config->currencyFormat])) {
             return new MoneyFormat();
         }
 
-        $format = $GLOBALS['ISO_NUM'][$config->currencyFormat];
+        $format = $this->currencyFormats[$config->currencyFormat];
 
         return new MoneyFormat(
-            (int) $format[0],
-            $format[1],
-            $format[2],
+            (int) $format['decimals'],
+            $format['decimal_separator'],
+            $format['thousands_separator'],
             (int) $config->priceRoundPrecision,
             (float) $config->priceRoundIncrement,
         );

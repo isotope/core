@@ -84,6 +84,40 @@ class IsotopeBundle extends AbstractBundle
                         ->thenInvalid('Enter a valid format that can be parsed by PHP strtotime().')
                     ->end()
                 ->end()
+                ->arrayNode('currency_formats')
+                    ->info('Define available formats for price formatting.')
+                    ->useAttributeAsKey('name')
+                    ->arrayPrototype()
+                        ->children()
+                            ->scalarNode('decimals')->isRequired()->end()
+                            ->scalarNode('decimal_separator')->isRequired()->cannotBeEmpty()->end()
+                            ->scalarNode('thousands_separator')->isRequired()->end()
+                        ->end()
+                    ->end()
+                    ->cannotBeEmpty()
+                    ->defaultValue([
+                        '10000.00' => [
+                            'decimals' => 2,
+                            'decimal_separator' => '.',
+                            'thousands_separator' => '',
+                        ],
+                        '10,000.00' => [
+                            'decimals' => 2,
+                            'decimal_separator' => '.',
+                            'thousands_separator' => ',',
+                        ],
+                        '10.000,00' => [
+                            'decimals' => 2,
+                            'decimal_separator' => ',',
+                            'thousands_separator' => '.',
+                        ],
+                        '10\'000.00' => [
+                            'decimals' => 2,
+                            'decimal_separator' => '.',
+                            'thousands_separator' => '\'',
+                        ],
+                    ])
+                ->end()
             ->end()
         ;
     }
@@ -91,6 +125,7 @@ class IsotopeBundle extends AbstractBundle
     public function loadExtension(array $config, ContainerConfigurator $configurator, ContainerBuilder $container): void
     {
         $configurator->parameters()->set('isotope.cart_timeout', $config['cart_timeout']);
+        $configurator->parameters()->set('isotope.currency_formats', $config['currency_formats']);
 
         $configurator
             ->services()
