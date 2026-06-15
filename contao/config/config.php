@@ -2,13 +2,6 @@
 
 use Contao\ArrayUtil;
 use Isotope\Automator;
-use Isotope\Backend\ProductCollection\Callback;
-use Isotope\CheckoutStep\BillingAddress;
-use Isotope\CheckoutStep\OrderInfo;
-use Isotope\CheckoutStep\OrderProducts;
-use Isotope\CheckoutStep\PaymentMethod;
-use Isotope\CheckoutStep\ShippingAddress;
-use Isotope\CheckoutStep\ShippingMethod;
 use Isotope\CoreBundle\Model\AddressModel;
 use Isotope\CoreBundle\Model\AttributeModel;
 use Isotope\CoreBundle\Model\AttributeOptionModel;
@@ -110,9 +103,3 @@ $GLOBALS['ISO_NUM']['10000.00'] = [2, '.', ''];
 $GLOBALS['ISO_NUM']['10,000.00'] = [2, '.', ','];
 $GLOBALS['ISO_NUM']['10.000,00'] = [2, ',', '.'];
 $GLOBALS['ISO_NUM']["10'000.00"] = [2, '.', "'"];
-
-/*
- * Cron Jobs
- */
-$GLOBALS['TL_CRON']['daily'][] = [Automator::class, 'deleteOldCarts'];
-$GLOBALS['TL_CRON']['daily'][] = [Automator::class, 'deleteOldOrders'];

@@ -84,15 +84,6 @@ class IsotopeBundle extends AbstractBundle
                         ->thenInvalid('Enter a valid format that can be parsed by PHP strtotime().')
                     ->end()
                 ->end()
-                ->scalarNode('order_timeout')
-                    ->info('Defines how long an order will stay in the database if the checkout was not successful.')
-                    ->cannotBeEmpty()
-                    ->defaultValue('7 days')
-                    ->validate()
-                        ->ifTrue(static fn (string $value) => false === strtotime($value))
-                        ->thenInvalid('Enter a valid format that can be parsed by PHP strtotime().')
-                    ->end()
-                ->end()
             ->end()
         ;
     }
@@ -100,7 +91,6 @@ class IsotopeBundle extends AbstractBundle
     public function loadExtension(array $config, ContainerConfigurator $configurator, ContainerBuilder $container): void
     {
         $configurator->parameters()->set('isotope.cart_timeout', $config['cart_timeout']);
-        $configurator->parameters()->set('isotope.order_timeout', $config['order_timeout']);
 
         $configurator
             ->services()
