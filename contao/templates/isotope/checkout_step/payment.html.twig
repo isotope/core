@@ -3,7 +3,7 @@
 
 {% block inner %}
     {% if options is empty %}
-        <p>{{ 'MSC.noPaymentModules'|trans }}</p>
+        <p class="message error">{{ 'MSC.noPaymentModules'|trans }}</p>
     {% else %}
         {{ parent() }}
     {% endif %}
