@@ -19,9 +19,11 @@ class ShippingOptionsListener
 
     public function __invoke(): array
     {
+        $groupLabel = $this->translator->trans('IMD.shipping.0', [], 'contao_modules');
+
         return [
             -1 => $this->translator->trans('tl_iso_payment.no_shipping', [], 'contao_tl_iso_payment'),
-            ...$this->connection->fetchAllKeyValue('SELECT id, name FROM tl_iso_shipping ORDER BY name'),
+            $groupLabel => $this->connection->fetchAllKeyValue('SELECT id, name FROM tl_iso_shipping ORDER BY name'),
         ];
     }
 }
