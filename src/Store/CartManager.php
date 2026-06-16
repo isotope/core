@@ -159,6 +159,8 @@ class CartManager implements ResetInterface
             $this->storage->delete($model);
         }
 
+        $context->setCart($newCart);
+
         return $result;
     }
 }
