@@ -48,7 +48,6 @@ class ProductTypeWizardListener
 
         return $this->twig->render('@Contao/backend/isotope/edit-wizard.html.twig', [
             'href' => $href,
-            'table' => 'tl_iso_producttype',
             'value' => $dc->value,
         ]);
     }

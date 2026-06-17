@@ -6,7 +6,6 @@ namespace Isotope\CoreBundle\EventListener\DataContainer\TaxClass;
 
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\DataContainer;
-use Isotope\CoreBundle\Controller\Backend\ShopConfigController;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
 
@@ -22,7 +21,7 @@ class IncludesEditWizardListener
     ) {
     }
 
-    public function __invoke(DataContainer $dc)
+    public function __invoke(DataContainer $dc): string
     {
         $href = null;
 
@@ -37,7 +36,6 @@ class IncludesEditWizardListener
 
         return $this->twig->render('@Contao/backend/isotope/edit-wizard.html.twig', [
             'href' => $href,
-            'table' => 'tl_iso_tax_rate',
             'value' => $dc->value,
         ]);
     }

@@ -331,7 +331,7 @@ class AttributeWizardListener
         $attributes = $this->connection->fetchAllKeyValue('SELECT field_name, id FROM tl_iso_attribute');
         $current = [];
 
-        return function () use (&$current, $values, $attributes) {
+        return function () use (&$current, $values, $attributes): string {
             if ([] === $current) {
                 $current = $values;
             }
@@ -352,7 +352,6 @@ class AttributeWizardListener
 
             return $this->twig->render('@Contao/backend/isotope/edit-wizard.html.twig', [
                 'href' => $href,
-                'table' => 'tl_iso_attribute',
                 'value' => $value,
             ]);
         };
