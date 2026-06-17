@@ -33,19 +33,20 @@
         <table>
             <thead>
             <tr aria-hidden="true">
-                <td class="col_0 col_first">{{ 'tl_iso_product.mmSrc'|trans }}</td>
-                <td class="col_1">{{ 'tl_iso_product.mmAlt'|trans }} / {{ 'tl_iso_product.mmLink'|trans }}</td>
-                <td class="col_2">{{ 'tl_iso_product.mmDesc'|trans }}</td>
-                <td class="col_3">{{ 'tl_iso_product.mmTranslate'|trans }}</td>
-                <td class="col_4 col_last">&nbsp;</td>
+                <td>&nbsp;</td>
+                <td class="image">{{ 'tl_iso_product.mmSrc'|trans }}</td>
+                <td>{{ 'tl_iso_product.mmAlt'|trans }} / {{ 'tl_iso_product.mmLink'|trans }}</td>
+                <td>{{ 'tl_iso_product.mmDesc'|trans }}</td>
+                <td>{{ 'tl_iso_product.mmTranslate'|trans }}</td>
+                <td class="tl_right">&nbsp;</td>
             </tr>
             </thead>
             <tbody
                 class="sortable"
-                data-controller="isotope--sortable"
-                data-isotope--sortable-handle-value=".drag-handle"
+                data-controller="contao--sortable"
+                data-contao--sortable-handle-value=".drag-handle"
                 data-isotope--mediamanager-target="body"
-                data-action="isotope--sortable:update->isotope--mediamanager#updateSorting"
+                data-action="contao--sortable:update->isotope--mediamanager#updateSorting"
             >
                 {% for file in files %}
                     {{ _self.row(name, file, loop.index0, isLanguage, dragIcon, deleteIcon) }}
@@ -66,7 +67,10 @@
 {% macro row(name, file, key, isLanguage, dragIcon, deleteIcon) %}
     {% set translate = file.translate|default('none') %}
     <tr>
-        <td class="col_0 col_first">
+        <td class="tl_right">
+            <button type="button" class="drag-handle">{{ dragIcon|raw }}</button>
+        </td>
+        <td class="image">
             <input type="hidden" name="{{ name }}[{{ key }}][src]" value="{{ file.src }}">
             {% if file.icon is defined %}
                 {% if file.isImage %}
@@ -95,18 +99,18 @@
                 </a>
             {% endif %}
         </td>
-        <td class="col_1">
+        <td>
             <label for="{{ name }}_{{ key }}_alt" class="invisible">{{ 'tl_iso_product.mmAlt'|trans }}</label>
             <input type="text" class="tl_text_2" id="{{ name }}_{{ key }}_alt" name="{{ name }}[{{ key }}][alt]" value="{{ file.alt|default }}"{% if isLanguage and translate == 'none' %} disabled{% endif %}>
             <br>
             <label for="{{ name }}_{{ key }}_link" class="invisible">{{ 'tl_iso_product.mmLink'|trans }}</label>
             <input type="text" class="tl_text_2" id="{{ name }}_{{ key }}_link" name="{{ name }}[{{ key }}][link]" value="{{ file.link|default }}"{% if isLanguage and translate != 'all' %} disabled{% endif %}>
         </td>
-        <td class="col_2">
+        <td>
             <label for="{{ name }}_{{ key }}_desc" class="invisible">{{ 'tl_iso_product.mmDesc'|trans }}</label>
             <textarea id="{{ name }}_{{ key }}_desc" name="{{ name }}[{{ key }}][desc]" cols="40" rows="3" class="tl_textarea" data-controller="contao--textarea-autogrow"{% if isLanguage and translate == 'none' %} disabled{% endif %}>{{ file.desc|default }}</textarea>
         </td>
-        <td class="col_3">
+        <td>
             {% if isLanguage %}<input type="hidden" name="{{ name }}[{{ key }}][translate]" value="{{ translate }}">{% endif %}
             <fieldset class="radio_container"{% if isLanguage %} disabled{% endif %}>
                 <span>
@@ -123,8 +127,7 @@
                 </span>
             </fieldset>
         </td>
-        <td class="col_4 col_last tl_right">
-            <button type="button" class="drag-handle">{{ dragIcon|raw }}</button>
+        <td class="tl_right">
             {% if not isLanguage or translate == 'all' %}
                 <button type="button" data-action="isotope--mediamanager#delete">{{ deleteIcon|raw }}</button>
             {% endif %}

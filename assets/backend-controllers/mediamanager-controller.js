@@ -99,9 +99,9 @@ export default class extends Controller {
             const data = await response.json();
 
             if (data.success) {
-                row.querySelector('.col_first img').src = data.file;
-                row.querySelector('.col_first a').href = data.file;
-                row.querySelector('.col_first input[type="hidden"]').value = data.file;
+                row.querySelector('td.image img').src = data.file;
+                row.querySelector('td.image a').href = data.file;
+                row.querySelector('td.image input[type="hidden"]').value = data.file;
             } else {
                 alert(data.error);
                 row.remove();
