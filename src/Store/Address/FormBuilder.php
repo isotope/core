@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Store\Address;
 
 use Codefog\HasteBundle\Form\Form;
+use Contao\Controller;
 use Contao\CoreBundle\Intl\Countries;
 use Isotope\CoreBundle\Model\AddressModel;
 use Isotope\CoreBundle\Twig\TemplateMarkup;
@@ -29,7 +30,18 @@ class FormBuilder
 
         $form = new Form($formId, 'POST', fn () => $request->isMethod(Request::METHOD_POST) && $request->request->has($formId));
         $form->setBoundModel($address);
-        $form->addFieldsFromDca('tl_iso_address', fn (string &$field, array &$config) => $this->addDcaField($field, $config, $addressConfig, $prefix));
+
+        Controller::loadDataContainer('tl_iso_address');
+
+        foreach ($addressConfig->getFields() as $fieldName) {
+            $config = $this->getFieldConfig($fieldName, $GLOBALS['TL_DCA']['tl_iso_address']['fields'][$fieldName] ?? null, $addressConfig, $prefix);
+
+            if (!$config) {
+                continue;
+            }
+
+            $form->addFormField($prefix.$fieldName, $config);
+        }
 
         $form->addFormField($formId, [
             'inputType' => 'hidden',
@@ -79,10 +91,10 @@ class FormBuilder
         return $this->markupFactory->create('@Contao/form_inline.html.twig', (array) $templateObject);
     }
 
-    private function addDcaField(string &$field, array &$config, AddressConfig $addressConfig, string $prefix): bool
+    private function getFieldConfig(string $field, array|null $config, AddressConfig $addressConfig, string $prefix): array|null
     {
-        if (!($config['eval']['feEditable'] ?? false) || !\in_array($field, $addressConfig->getFields(), true)) {
-            return false;
+        if (null === $config || !($config['eval']['feEditable'] ?? false)) {
+            return null;
         }
 
         $config['eval']['mandatory'] = $addressConfig->isMandatory($field);
@@ -98,8 +110,7 @@ class FormBuilder
         }
 
         $config['boundName'] = $field;
-        $field = $prefix.$field;
 
-        return true;
+        return $config;
     }
 }
