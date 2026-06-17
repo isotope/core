@@ -6,6 +6,9 @@ namespace Isotope\CoreBundle\Attribute\Option;
 
 use Ramsey\Collection\AbstractCollection;
 
+/**
+ * @extends AbstractCollection<Option>
+ */
 class OptionCollection extends AbstractCollection
 {
     public function getType(): string
@@ -20,24 +23,6 @@ class OptionCollection extends AbstractCollection
         } catch (\Exception) {
             return null;
         }
-    }
-
-    // TODO: maybe remove this?
-    public function asWidgetArray(): array
-    {
-        $options = [];
-
-        /** @var Option $option */
-        foreach ($this as $option) {
-            $options[] = [
-                'value' => $option->getValue(),
-                'label' => $option->getLabel(),
-                'group' => $option->isGroup(),
-                'default' => $option->isDefault(),
-            ];
-        }
-
-        return $options;
     }
 
     public function asDcaArray(): array

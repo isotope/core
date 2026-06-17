@@ -90,7 +90,7 @@ class ProductQuery implements \Stringable
 
                 $expr[] = $queryBuilder->expr()->like(
                     \sprintf('IFNULL(translation.%s, tl_iso_product.%s)', $field, $field),
-                    $param
+                    $param,
                 );
             }
 

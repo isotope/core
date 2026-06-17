@@ -105,7 +105,7 @@ class CategoryFilterBuilder extends Module
             }
 
             if ($hasSubpages) {
-                $this->renderTree($item, $subpage->id, $level + 1, $productQuery, $currentIds);
+                $this->renderTree($item, $subpage->id, $level + 1, $productQuery, $filterKey, $currentIds);
             }
         }
     }

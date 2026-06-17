@@ -11,9 +11,6 @@ use Isotope\CoreBundle\Store\Price\CalculatedPrice;
 use Ramsey\Collection\CollectionInterface;
 use Symfony\Contracts\Translation\TranslatableInterface;
 
-/**
- * @template TType
- */
 abstract class AbstractProductCollection
 {
     protected int|null $id = null;
@@ -34,9 +31,8 @@ abstract class AbstractProductCollection
      */
     private array $extensions = [];
 
-    public function __construct(
-        private readonly string $identifier,
-    ) {
+    public function __construct(private readonly string $identifier)
+    {
         $this->lineItems = new LineItemCollection();
     }
 
@@ -178,16 +174,6 @@ abstract class AbstractProductCollection
         return $this->errors;
     }
 
-    /**
-     * @return CollectionInterface<LineItem>
-     */
-    private function filter(string $identifier, array|null $configuration): CollectionInterface
-    {
-        return $this->lineItems->filter(
-            static fn (LineItem $v) => $v->getIdentifier() === $identifier && $v->getConfiguration() === $configuration,
-        );
-    }
-
     public function hasExtension(string $className): bool
     {
         return isset($this->extensions[$className]);
@@ -247,5 +233,15 @@ abstract class AbstractProductCollection
         $this->extensions = [];
 
         return $this->addExtensions($extensions);
+    }
+
+    /**
+     * @return CollectionInterface<LineItem>
+     */
+    private function filter(string $identifier, array|null $configuration): CollectionInterface
+    {
+        return $this->lineItems->filter(
+            static fn (LineItem $v) => $v->getIdentifier() === $identifier && $v->getConfiguration() === $configuration,
+        );
     }
 }

@@ -14,11 +14,13 @@ class OrderUpdateNotificationType extends OrderNotificationType
 {
     public const NAME = 'iso_order_update';
 
+    #[\Override]
     public function getName(): string
     {
         return self::NAME;
     }
 
+    #[\Override]
     public function getTokenDefinitions(): array
     {
         return [

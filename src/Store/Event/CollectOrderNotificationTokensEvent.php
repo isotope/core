@@ -35,6 +35,7 @@ class CollectOrderNotificationTokensEvent extends Event
     public function setTokens(array $tokens): self
     {
         $this->tokens = $tokens;
+
         return $this;
     }
 

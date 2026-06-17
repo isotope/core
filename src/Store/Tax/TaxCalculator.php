@@ -26,6 +26,7 @@ class TaxCalculator
 
     /**
      * @internal
+     *
      * @todo probably move this to PriceCalculator
      *
      * @return array{0: TaxRateCollection, 1: TaxRateCollection}

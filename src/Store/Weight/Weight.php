@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Isotope\CoreBundle\Store\Weight;
 
 use Contao\StringUtil;
@@ -11,7 +13,7 @@ final readonly class Weight
 
     public function __construct(
         float $amount,
-        private WeightUnit $unit
+        private WeightUnit $unit,
     ) {
         $this->amount = FloatComparator::cast($amount);
     }
@@ -32,14 +34,14 @@ final readonly class Weight
     }
 
     /**
-     * Create weight object from timePeriod widget value
+     * Create weight object from timePeriod widget value.
      */
     public static function createFromTimePeriod(string $value): self|null
     {
         $data = StringUtil::deserialize($value);
 
         if (
-            !is_array($data)
+            !\is_array($data)
             || empty($data['value'])
             || empty($data['unit'])
             || !($unit = WeightUnit::tryFrom($data['unit']))

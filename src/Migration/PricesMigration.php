@@ -32,6 +32,19 @@ class PricesMigration extends AbstractMigration
 
         $advancedPrices = [];
         $advancedTypes = $this->getProductTypePrices();
+
+        /** @var array{
+         *     tax_class: int,
+         *     config_id: int,
+         *     member_group: int,
+         *     start: string,
+         *     stop: string,
+         *     tier_keys: string,
+         *     tier_values: string,
+         *     type: int,
+         *     parent_type: int
+         * } $prices
+         */
         $prices = $this->connection->fetchAllAssociative(<<<'SQL'
             SELECT
                 tl_iso_product_price.*,
@@ -45,10 +58,10 @@ class PricesMigration extends AbstractMigration
             LEFT JOIN tl_iso_product pp ON pp.id=p.pid
             GROUP BY tl_iso_product_price.id
             ORDER BY config_id DESC, member_group DESC, start DESC, stop DESC
-        SQL);
+            SQL);
 
         foreach ($prices as $price) {
-            $tiers = array_combine(explode(',', $price['tier_keys']), explode(',', $price['tier_values']));
+            $tiers = array_combine(explode(',', (string) $price['tier_keys']), explode(',', (string) $price['tier_values']));
 
             if ($advancedTypes[$price['type'] ?: $price['parent_type']] ?? false) {
                 $advancedPrices[$price['pid']][] = [

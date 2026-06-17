@@ -8,7 +8,7 @@ class StringUtil
 {
     public static function generateRandomId(): string
     {
-        if (!function_exists('random_bytes')) {
+        if (!\function_exists('random_bytes')) {
             return uniqid('', true);
         }
 
@@ -21,7 +21,9 @@ class StringUtil
 
     /**
      * @template TReturn
+     *
      * @param (callable(mixed $value):TReturn)|null $callback
+     *
      * @return ($forceArray is true ? array<TReturn> : array<TReturn>|null)
      */
     public static function unserialize(string|null $value, callable|null $callback = null, bool $forceArray = false): array|null
@@ -41,7 +43,9 @@ class StringUtil
 
     /**
      * @template TReturn
+     *
      * @param (callable(mixed $value):TReturn)|null $callback
+     *
      * @return ($forceArray is true ? array<TReturn> : array<TReturn>|null)
      */
     public static function csv(string|null $value, callable|null $callback = null, bool $forceArray = false): array|null

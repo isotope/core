@@ -40,7 +40,7 @@ class ProductCollectionAccessVoter extends AbstractDataContainerVoter implements
         return 'tl_iso_product_collection';
     }
 
-    protected function hasAccess(TokenInterface $token, UpdateAction|CreateAction|ReadAction|DeleteAction $action): bool
+    protected function hasAccess(TokenInterface $token, CreateAction|DeleteAction|ReadAction|UpdateAction $action): bool
     {
         if ([Order::getType()] !== $this->getProperty('type', $action)) {
             return false;
@@ -78,9 +78,9 @@ class ProductCollectionAccessVoter extends AbstractDataContainerVoter implements
     /**
      * @return array{0: mixed, 1?: mixed}
      */
-    private function getProperty(string $field, UpdateAction|CreateAction|ReadAction|DeleteAction $action): array
+    private function getProperty(string $field, CreateAction|DeleteAction|ReadAction|UpdateAction $action): array
     {
-        $values = match(true) {
+        $values = match (true) {
             $action instanceof CreateAction => [$action->getNew()[$field] ?? null],
             $action instanceof UpdateAction => [$action->getCurrent()[$field] ?? null, $action->getNew()[$field] ?? null],
             $action instanceof ReadAction,

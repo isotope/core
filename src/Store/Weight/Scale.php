@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Isotope\CoreBundle\Store\Weight;
 
 use Isotope\CoreBundle\Util\FloatComparator;
@@ -17,7 +19,7 @@ class Scale extends AbstractCollection
 
     /**
      * Standardize and calculate the total of multiple weights.
-     * Based on formulas found at http://jumk.de/calc/gewicht.shtml
+     * Based on formulas found at http://jumk.de/calc/gewicht.shtml.
      */
     public function amountIn(WeightUnit $unit): Weight
     {
@@ -52,7 +54,7 @@ class Scale extends AbstractCollection
     {
         return FloatComparator::lessThanOrEquals(
             $this->amountIn($weight->getUnit())->getAmount(),
-            $weight->getAmount()
+            $weight->getAmount(),
         );
     }
 
@@ -63,7 +65,7 @@ class Scale extends AbstractCollection
     {
         return FloatComparator::greaterThan(
             $this->amountIn($weight->getUnit())->getAmount(),
-            $weight->getAmount()
+            $weight->getAmount(),
         );
     }
 
@@ -74,7 +76,7 @@ class Scale extends AbstractCollection
     {
         return FloatComparator::greaterThanOrEquals(
             $this->amountIn($weight->getUnit())->getAmount(),
-            $weight->getAmount()
+            $weight->getAmount(),
         );
     }
 }

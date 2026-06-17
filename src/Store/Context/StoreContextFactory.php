@@ -13,7 +13,6 @@ use Doctrine\DBAL\Connection;
 use Isotope\CoreBundle\Model\AddressModel;
 use Isotope\CoreBundle\Model\ConfigModel;
 use Isotope\CoreBundle\Store\Address\AddressConfigFactory;
-use Isotope\CoreBundle\Store\CartManager;
 use Isotope\CoreBundle\Store\Event\ContextCreatedEvent;
 use Isotope\CoreBundle\Store\Price\Currency;
 use Isotope\CoreBundle\Store\Price\MoneyFormat;
@@ -61,7 +60,7 @@ class StoreContextFactory
             locale: $locale,
             moneyFormat: fn () => $this->getMoneyFormat($config),
             priceDisplay: fn () => $this->getPriceDisplay($config, $memberId),
-            taxCalculation: fn () => TaxCalculation::from($config->taxCalculation),
+            taxCalculation: static fn () => TaxCalculation::from($config->taxCalculation),
             currency: fn () => $this->getCurrency($config),
             currencyFactor: (float) $config->priceCalculateFactor,
             billingAddressConfig: fn () => $this->addressConfigFactory->createFromConfig($config, 'billing'),

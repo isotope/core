@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Store\Order\Transformer;
 
-use Isotope\CoreBundle\ProductCollection\Cart\Cart;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
 use Isotope\CoreBundle\Store\Price\CalculatedPrice;
 
@@ -39,7 +38,7 @@ class LineItemTransformer
 
     public static function transformSubtotal(int $level, CalculatedPrice|null $price, int $position = 1): array
     {
-        $data = [
+        return [
             'type' => LineItem::TYPE_SUBTOTAL,
             'sorting' => $position,
             'identifier' => LineItem::TYPE_SUBTOTAL.'.'.$level,
@@ -50,7 +49,5 @@ class LineItemTransformer
             'tax_id' => '',
             'level' => $level,
         ];
-
-        return $data;
     }
 }

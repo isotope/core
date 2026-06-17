@@ -8,24 +8,23 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class TransactionEventDispatcher
 {
-    public function __construct(
-        private readonly EventDispatcherInterface $dispatcher
-    ) {
+    public function __construct(private readonly EventDispatcherInterface $dispatcher)
+    {
     }
 
     public static function pre(string $name): string
     {
-        return $name . '.pre';
+        return $name.'.pre';
     }
 
     public static function post(string $name): string
     {
-        return $name . '.post';
+        return $name.'.post';
     }
 
     public static function error(string $name): string
     {
-        return $name . '.error';
+        return $name.'.error';
     }
 
     /**

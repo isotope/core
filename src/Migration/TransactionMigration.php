@@ -30,24 +30,21 @@ class TransactionMigration extends AbstractMigration
             FROM tl_iso_product_collection c
             LEFT JOIN tl_iso_payment p ON c.payment_id=p.id
             WHERE c.type='order' AND c.locked IS NOT NULL
-        SQL);
+            SQL);
 
         foreach ($orders as $order) {
-            $this->connection->insert(
-                'tl_iso_order_transaction',
-                [
-                    'pid' => $order['id'],
-                    'tstamp' => $order['tstamp'],
-                    'payment_id' => (int) ($order['payment_id'] ?? 0),
-                    'created' => $order['tstamp'],
-                    'completed' => $order['tstamp'],
-                    'uniqid' => Uuid::v4()->toString(),
-                    'label' => $order['payment_name'] ?: ('ID '.$order['payment_id']),
-                    'amount' => $order['total'],
-                    'currency' => $order['currency'],
-                    'status' => 'paid',
-                ],
-            );
+            $this->connection->insert('tl_iso_order_transaction', [
+                'pid' => $order['id'],
+                'tstamp' => $order['tstamp'],
+                'payment_id' => (int) ($order['payment_id'] ?? 0),
+                'created' => $order['tstamp'],
+                'completed' => $order['tstamp'],
+                'uniqid' => Uuid::v4()->toString(),
+                'label' => $order['payment_name'] ?: 'ID '.$order['payment_id'],
+                'amount' => $order['total'],
+                'currency' => $order['currency'],
+                'status' => 'paid',
+            ]);
 
             if (null !== $order['payment_data']) {
                 // TODO: create event(s) for the payment data

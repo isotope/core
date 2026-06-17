@@ -9,9 +9,9 @@ use Contao\CoreBundle\InsertTag\InsertTagParser;
 use Doctrine\DBAL\Connection;
 use Isotope\CoreBundle\EventDispatcher\TransactionEventDispatcher;
 use Isotope\CoreBundle\Model\AddressModel;
-use Isotope\CoreBundle\Model\ProductCollectionModel;
 use Isotope\CoreBundle\Model\ProductCollectionItemModel;
 use Isotope\CoreBundle\Model\ProductCollectionLogModel;
+use Isotope\CoreBundle\Model\ProductCollectionModel;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
 use Isotope\CoreBundle\ProductCollection\Order\Order;
 use Isotope\CoreBundle\Store\Context\StoreContext;
@@ -26,6 +26,7 @@ use Isotope\CoreBundle\Util\StringUtil;
 use Isotope\CoreBundle\Validator\Exception\ConstraintViolationException;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\String\UnicodeString;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -93,7 +94,7 @@ class OrderManager
                     $lineItem['id'] = $item->id;
                 }
 
-                unset ($lineItem);
+                unset($lineItem);
 
                 $collection->order_status = array_key_first($this->workflowManager->getOrderWorkflow()->getMarking($collection)->getPlaces());
                 $collection->transaction_status = array_key_first($this->workflowManager->getTransactionWorkflow()->getMarking($collection)->getPlaces());
@@ -109,7 +110,7 @@ class OrderManager
         );
     }
 
-    public function lockOrder(int $orderId, StoreContext $context, \DateTimeInterface $locked = null): bool
+    public function lockOrder(int $orderId, StoreContext $context, \DateTimeInterface|null $locked = null): bool
     {
         $collection = ProductCollectionModel::findById($orderId);
 
@@ -152,9 +153,9 @@ class OrderManager
      *
      * Third argument $updateDatabase is @internal only for use in the DCA onbeforesubmit callback.
      */
-    public function updateOrder(int $orderId, array $values/*, bool $updateDatabase = true*/): array
+    public function updateOrder(int $orderId, array $values/* , bool $updateDatabase = true */): array
     {
-        $updateDatabase = (bool) (func_get_args()[2] ?? true);
+        $updateDatabase = (bool) (\func_get_args()[2] ?? true);
         $order = ProductCollectionModel::findById($orderId);
 
         if (Order::getType() !== $order?->type) {
@@ -168,6 +169,7 @@ class OrderManager
                 $values = $event->getValues();
 
                 $hasChanges = false;
+
                 foreach ($values as $k => $v) {
                     if ($hasChanges = ($v !== $order->{$k})) {
                         break;
@@ -218,7 +220,7 @@ class OrderManager
         $this->validateOrderData($data, $context);
 
         if (isset($data['line_items'])) {
-            $this->connection->executeStatement("DELETE FROM tl_iso_product_collection_item WHERE pid=? AND type!=?", [$orderId, LineItem::TYPE_PRODUCT]);
+            $this->connection->executeStatement('DELETE FROM tl_iso_product_collection_item WHERE pid=? AND type!=?', [$orderId, LineItem::TYPE_PRODUCT]);
 
             foreach ($data['line_items'] as &$lineItem) {
                 if (LineItem::TYPE_PRODUCT === $lineItem['type']) {
@@ -258,7 +260,7 @@ class OrderManager
         }
     }
 
-    private function saveAddress(array $data, int $pid, int $storeId): AddressModel|null
+    private function saveAddress(array $data, int $pid, int $storeId): AddressModel
     {
         unset($data['id']);
 
@@ -298,10 +300,10 @@ class OrderManager
 
         $result = $qb->fetchOne();
 
-        if (false === $result) {
+        if (!\is_string($result)) {
             $max = 0;
         } else {
-            $max = (int) substr($result, mb_strlen($prefix));
+            $max = (int) substr($result, (new UnicodeString($prefix))->length());
         }
 
         return $prefix.str_pad((string) ($max + 1), $event->getLength(), '0', STR_PAD_LEFT);

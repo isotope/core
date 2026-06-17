@@ -9,8 +9,8 @@ use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
 use Isotope\CoreBundle\EventDispatcher\TransactionEventDispatcher;
-use Isotope\CoreBundle\Model\ProductCollectionModel;
 use Isotope\CoreBundle\Model\ProductCollectionItemModel;
+use Isotope\CoreBundle\Model\ProductCollectionModel;
 use Isotope\CoreBundle\ProductCollection\Event\DeleteCollectionTransactionEvent;
 use Isotope\CoreBundle\ProductCollection\Event\LoadCollectionTransactionEvent;
 use Isotope\CoreBundle\ProductCollection\Event\LoadItemTransactionEvent;
@@ -32,9 +32,9 @@ class ProductCollectionStorage
     /**
      * @template TType of AbstractProductCollection
      *
-     * @param AbstractProductCollection<TType> $collection
+     * @param TType $collection
      *
-     * @return AbstractProductCollection<TType>
+     * @return TType
      */
     public function load(AbstractProductCollection $collection, ProductCollectionModel $collectionModel, StoreContext $context): AbstractProductCollection
     {
@@ -48,7 +48,7 @@ class ProductCollectionStorage
                     $extensions = [];
 
                     foreach ($json as $className => $data) {
-                        if (\is_a($className, ProductCollectionExtensionInterface::class, true)) {
+                        if (is_a($className, ProductCollectionExtensionInterface::class, true)) {
                             $extensions[$className] = $className::createFromJson($data);
                         }
                     }
@@ -62,7 +62,7 @@ class ProductCollectionStorage
 
         return $this->transactionDispatcher->dispatch(
             new LoadCollectionTransactionEvent($collection, $collectionModel, $context),
-            function (LoadCollectionTransactionEvent $event) {
+            function (LoadCollectionTransactionEvent $event): AbstractProductCollection {
                 $this->loadLineItems($event->getCollection(), $event->getCollectionModel(), $event->getStoreContext());
 
                 return $event->getCollection();
@@ -92,7 +92,7 @@ class ProductCollectionStorage
 
         $this->transactionDispatcher->dispatch(
             new SaveCollectionTransactionEvent($collection, $model),
-            function (SaveCollectionTransactionEvent $event) {
+            static function (SaveCollectionTransactionEvent $event): void {
                 $event->getCollectionModel()->save();
             },
         );
@@ -108,9 +108,7 @@ class ProductCollectionStorage
 
         $success = $this->transactionDispatcher->dispatch(
             new DeleteCollectionTransactionEvent((int) $model->id, $model),
-            function (DeleteCollectionTransactionEvent $event) {
-                return $event->getCollectionModel()->delete() > 0;
-            },
+            static fn (DeleteCollectionTransactionEvent $event) => $event->getCollectionModel()->delete() > 0,
         );
 
         if ($success) {
@@ -157,7 +155,7 @@ class ProductCollectionStorage
 
             $this->transactionDispatcher->dispatch(
                 new LoadItemTransactionEvent($collection, $item, $itemModel, $context),
-                function (LoadItemTransactionEvent $event) use (&$total, &$subtotals) {
+                static function (LoadItemTransactionEvent $event) use (&$total, &$subtotals): void {
                     $lineItem = $event->getLineItem();
 
                     switch ($lineItem->getType()) {
@@ -207,8 +205,6 @@ class ProductCollectionStorage
             $itemModel->referencePage = $lineItem->getReferencePageId();
 
             if ($product = $lineItem->getProduct()) {
-                //$itemModel->product_id = $product->getId();
-                //$itemModel->type = $product->getType();
                 $itemModel->label = $product->getName();
                 $itemModel->sku = $product->getSku();
                 // TODO: save price etc.
@@ -216,7 +212,7 @@ class ProductCollectionStorage
 
             $this->transactionDispatcher->dispatch(
                 new SaveItemTransactionEvent($collection, $collectionModel, $lineItem, $itemModel),
-                function (SaveItemTransactionEvent $event) {
+                static function (SaveItemTransactionEvent $event): void {
                     $event->getItemModel()->save();
                 },
             );

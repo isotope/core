@@ -32,7 +32,7 @@ abstract class AbstractOptionsAttribute extends AbstractAttribute implements Opt
         return $this instanceof VariantAttributeInterface && $this->variantOption;
     }
 
-    public function setVariantOption(bool $variantOption): self
+    public function setVariantOption(bool $variantOption): static
     {
         $this->variantOption = $variantOption;
 
@@ -62,6 +62,7 @@ abstract class AbstractOptionsAttribute extends AbstractAttribute implements Opt
         // return \in_array($this->field_name, Attribute::getPricedFields(), true);
     }
 
+    #[\Override]
     public function updateDcaField(array &$field, array &$keys): void
     {
         parent::updateDcaField($field, $keys);

@@ -55,6 +55,6 @@ class ContinueShoppingAction extends AbstractProductCollectionAction
             return null;
         }
 
-        return base64_decode($request->query->get('continue'), true);
+        return base64_decode($request->query->getString('continue'), true);
     }
 }

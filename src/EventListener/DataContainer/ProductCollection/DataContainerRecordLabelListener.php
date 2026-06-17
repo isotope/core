@@ -24,7 +24,7 @@ class DataContainerRecordLabelListener
         $event->setLabel($this->translator->trans(
             'tl_iso_product_collection.recordLabel',
             [$event->getData()['document_number']],
-            'contao_tl_iso_product_collection'
+            'contao_tl_iso_product_collection',
         ));
     }
 }

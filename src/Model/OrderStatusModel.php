@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Model;
 
 use Contao\Model;
-use Contao\System;
 use Isotope\CoreBundle\Store\Order\StatusType;
 use Isotope\CoreBundle\Store\Order\TransactionState;
 

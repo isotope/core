@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Twig\Runtime;
 
 use Codefog\HasteBundle\Formatter;
+use Isotope\CoreBundle\Attribute\AbstractAttribute;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
 use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -24,7 +25,7 @@ class AttributeRuntime implements RuntimeExtensionInterface
         $attribute = $this->attributeRegistry->get($attributeName);
 
         try {
-            if ($attribute) {
+            if ($attribute instanceof AbstractAttribute) {
                 // TODO: name only exists in the AbstractAttribute
                 return $this->translator->trans($attribute->getName(), [], 'isotope');
             }

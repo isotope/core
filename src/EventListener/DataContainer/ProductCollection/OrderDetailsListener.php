@@ -55,9 +55,9 @@ class OrderDetailsListener
     private function show(string $table, array|null $data, string $empty): string
     {
         if (!$data) {
-            return sprintf(
+            return \sprintf(
                 '<div class="tl_gerror">%s</div>',
-                $this->translator->trans('tl_iso_product_collection.'.$empty, [], 'contao_tl_iso_product_collection')
+                $this->translator->trans('tl_iso_product_collection.'.$empty, [], 'contao_tl_iso_product_collection'),
             );
         }
 

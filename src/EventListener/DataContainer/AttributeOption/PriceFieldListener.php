@@ -19,9 +19,8 @@ use Isotope\CoreBundle\Model\AttributeOptionModel;
 #[AsCallback('tl_iso_attribute_option', 'config.onload')]
 class PriceFieldListener
 {
-    public function __construct(
-        private readonly AttributeRegistry $attributeRegistry,
-    ) {
+    public function __construct(private readonly AttributeRegistry $attributeRegistry)
+    {
     }
 
     public function __invoke(DataContainer $dc): void

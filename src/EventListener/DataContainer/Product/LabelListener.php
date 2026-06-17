@@ -55,7 +55,7 @@ class LabelListener
                     break;
 
                 case 'variantFields':
-                    $args[$i] = $this->generateVariantFields($row, $dc);
+                    $args[$i] = $this->generateVariantFields($row);
                     break;
 
                 default:
@@ -186,9 +186,8 @@ class LabelListener
             }
 
             $taxClass = $priceDefinition->getTaxClassId() ? TaxClassModel::findById($priceDefinition->getTaxClassId()) : null;
-            $label .= sprintf(' <span style="color:#999">[%s]</span>', $taxClass?->name ?? $this->translator->trans('MSC.taxFree', [], 'contao_default'));
 
-            return $label;
+            return $label.\sprintf(' <span style="color:#999">[%s]</span>', $taxClass?->name ?? $this->translator->trans('MSC.taxFree', [], 'contao_default'));
         }
 
         return '';
@@ -197,7 +196,7 @@ class LabelListener
     /**
      * Generate variant fields for product.
      */
-    private function generateVariantFields(array $row, DataContainer $dc): string
+    private function generateVariantFields(array $row): string
     {
         $attributes = [];
 

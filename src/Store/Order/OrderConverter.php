@@ -22,9 +22,8 @@ use Psr\EventDispatcher\EventDispatcherInterface;
  */
 class OrderConverter
 {
-    public function __construct(
-        private readonly EventDispatcherInterface $eventDispatcher,
-    ) {
+    public function __construct(private readonly EventDispatcherInterface $eventDispatcher)
+    {
     }
 
     public function convertToOrder(Cart $cart, StoreContext $context): array
@@ -69,7 +68,7 @@ class OrderConverter
     }
 
     /**
-     * @return array<string, array<string, mixed>>
+     * @return list<array<string, mixed>>
      */
     private function convertLineItems(Cart $cart, StoreContext $context): array
     {
@@ -84,7 +83,7 @@ class OrderConverter
                 $this->eventDispatcher->dispatch($event);
 
                 $items[] = $event->getConvertedLineItem();
-                $position++;
+                ++$position;
             }
 
             $items[] = LineItemTransformer::transformSubtotal($level, $cart->getSubtotal($level), $position++);

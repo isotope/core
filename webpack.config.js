@@ -9,10 +9,5 @@ module.exports = Encore('assets')
         to: 'images/[path][name].[ext]',
     })
 
-    .copyFiles({
-        from: './assets/plugins',
-        to: 'plugins/[path][name].[ext]',
-    })
-
     .getWebpackConfig()
 ;

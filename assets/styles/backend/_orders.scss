@@ -32,9 +32,7 @@
     }
 }
 
-
 form#tl_iso_product_collection {
-
     > .tl_formbody_submit {
         display: none;
     }
@@ -46,8 +44,8 @@ form#tl_iso_product_collection {
             position: relative;
             padding-bottom: 50px;
 
-            &:before {
-                content: "";
+            &::before {
+                content: '';
                 display: block;
                 position: absolute;
                 inset: auto -1px calc(var(--border-radius-lg) * -1);
@@ -55,8 +53,8 @@ form#tl_iso_product_collection {
                 background: var(--body-bg);
             }
 
-            &:after {
-                content: "";
+            &::after {
+                content: '';
                 display: block;
                 position: absolute;
                 inset: auto -1px calc(var(--border-radius-lg) * -1);
@@ -89,9 +87,9 @@ form#tl_iso_product_collection {
         .widget-group {
             display: grid;
             grid-template:
-  "summary baddress saddress payment" auto
-  "summary baddress saddress shipping" auto
-  "details details  details  details" auto / auto auto auto auto;
+                'summary baddress saddress payment' auto
+                'summary baddress saddress shipping' auto
+                'details details  details  details' auto / auto auto auto auto;
             gap: 10px;
             padding: 0 30px;
 
@@ -127,7 +125,8 @@ form#tl_iso_product_collection {
                     margin-top: 10px;
                     width: 100%;
 
-                    th, td {
+                    th,
+                    td {
                         line-height: 18px;
                         padding: var(--row-padding) 6px;
                         border-top: solid var(--border);

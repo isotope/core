@@ -7,23 +7,48 @@ namespace Isotope\CoreBundle\Store\Price;
 use Symfony\Component\Intl\Currencies;
 use Symfony\Component\Intl\Exception\MissingResourceException;
 
-final class Currency
+final readonly class Currency
 {
     /**
      * @internal
      */
     public function __construct(
-        private readonly string $code,
+        private string $code,
         private bool $useSymbol,
-        public bool $space,
-        public bool $after,
-        public int $minorUnits,
+        private bool $space,
+        private bool $after,
+        private int $minorUnits,
     ) {
     }
 
     public function getCode(): string
     {
         return $this->code;
+    }
+
+    public function useSymbol(): bool
+    {
+        return $this->useSymbol;
+    }
+
+    public function hasSpace(): bool
+    {
+        return $this->space;
+    }
+
+    public function isBefore(): bool
+    {
+        return !$this->after;
+    }
+
+    public function isAfter(): bool
+    {
+        return $this->after;
+    }
+
+    public function getMinorUnits(): int
+    {
+        return $this->minorUnits;
     }
 
     public function getSymbol(): string|null

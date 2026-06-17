@@ -18,7 +18,7 @@ class LoggerChannelFilePass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        $channels = array_map(fn ($config) => $config['channels'] ?? [], $container->getExtensionConfig('monolog'));
+        $channels = array_map(static fn ($config) => $config['channels'] ?? [], $container->getExtensionConfig('monolog'));
 
         foreach ($container->findTaggedServiceIds('monolog.logger') as $tags) {
             $channels[] = array_column($tags, 'channel');
@@ -29,6 +29,7 @@ class LoggerChannelFilePass implements CompilerPassInterface
 
         $handlersToChannels = $container->getParameter('monolog.handlers_to_channels');
 
+        /** @var string $channel */
         foreach ($channels as $channel) {
             $id = 'monolog.handler.'.$channel;
             [$root, $type, $subchannel] = explode('.', $channel, 3) + [null, null, null];

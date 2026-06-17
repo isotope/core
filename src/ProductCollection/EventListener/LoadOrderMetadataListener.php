@@ -10,14 +10,9 @@ use Isotope\CoreBundle\Model\PaymentModel;
 use Isotope\CoreBundle\Model\ShippingModel;
 use Isotope\CoreBundle\ModelType\PaymentRegistry;
 use Isotope\CoreBundle\ModelType\ShippingRegistry;
-use Isotope\CoreBundle\ProductCollection\Cart\Cart;
 use Isotope\CoreBundle\ProductCollection\Event\LoadCollectionTransactionEvent;
 use Isotope\CoreBundle\ProductCollection\Order\Order;
 use Isotope\CoreBundle\Store\Order\StatusType;
-use Isotope\CoreBundle\Store\Price\CalculatedPrice;
-use Isotope\CoreBundle\Store\Tax\CalculatedTaxCollection;
-use Isotope\CoreBundle\Store\Tax\TaxRateCollection;
-use Isotope\CoreBundle\Util\FloatComparator;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
 #[AsEventListener(LoadCollectionTransactionEvent::NAME.'.post')]
@@ -59,8 +54,8 @@ class LoadOrderMetadataListener
             $order->setLocked(\DateTimeImmutable::createFromFormat('U', (string) $model->locked));
         }
 
-        $order->setBillingAddress(fn () => AddressModel::findById($model->billing_address_id));
-        $order->setShippingAddress(fn () => AddressModel::findById($model->shipping_address_id));
+        $order->setBillingAddress(static fn () => AddressModel::findById($model->billing_address_id));
+        $order->setShippingAddress(static fn () => AddressModel::findById($model->shipping_address_id));
 
         if ($paymentId = $model?->payment_id) {
             $order->setPaymentMethod(fn () => $this->paymentRegistry->get(PaymentModel::findById($paymentId), $context));

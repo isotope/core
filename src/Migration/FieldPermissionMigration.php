@@ -24,6 +24,7 @@ class FieldPermissionMigration extends AbstractFieldPermissionMigration
         parent::__construct($this->connection);
     }
 
+    #[\Override]
     public function run(): MigrationResult
     {
         $schemaManager = $this->connection->createSchemaManager();

@@ -14,7 +14,7 @@ use Doctrine\DBAL\Connection;
  */
 class UppercaseCountryMigration extends AbstractMigration
 {
-    private const FIELD_MAP = [
+    private const array FIELD_MAP = [
         'tl_iso_config' => ['country' => false, 'billing_country' => false, 'shipping_country' => false, 'billing_countries' => true, 'shipping_countries' => true],
         'tl_iso_payment' => ['countries' => true],
         'tl_iso_shipping' => ['countries' => true, 'subdivisions' => true],
@@ -113,7 +113,7 @@ class UppercaseCountryMigration extends AbstractMigration
                 $value = str_starts_with($value, 'a:') ? StringUtil::deserialize($value, true) : explode(',', $value);
                 $data[$field] = implode(',', array_map(strtoupper(...), $value));
             } else {
-                $data[$field] = strtoupper($result[$field]);
+                $data[$field] = strtoupper((string) $result[$field]);
             }
         }
 

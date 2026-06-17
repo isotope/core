@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Checkout\Shipping;
 
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsShipping;
-use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\Extension\ShippingExtension;
-use Isotope\CoreBundle\Product\Product;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Price\PriceDefinition;
@@ -16,8 +14,6 @@ use Isotope\CoreBundle\Twig\TemplateMarkup;
 #[AsShipping]
 class ProductPriceShipping extends AbstractShipping
 {
-    private const ATTRIBUTE_NAME = 'shipping_price';
-
     public function __construct(
         int $id,
         StoreContext $context,
@@ -27,6 +23,7 @@ class ProductPriceShipping extends AbstractShipping
         parent::__construct($id, $context);
     }
 
+    #[\Override]
     public function isAvailable(): bool
     {
         if (
@@ -45,6 +42,7 @@ class ProductPriceShipping extends AbstractShipping
         return false;
     }
 
+    #[\Override]
     public function getPriceDefinition(): PriceDefinition|null
     {
         $isFirst = true;

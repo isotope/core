@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Isotope\CoreBundle\Model;
 
 use Contao\Model;
@@ -14,7 +16,7 @@ use Contao\Model;
  * @property int    $date_shipped
  * @property string $notes
  * @property int    $notification
-*/
+ */
 class ProductCollectionLogModel extends Model
 {
     /**

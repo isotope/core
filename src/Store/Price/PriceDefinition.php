@@ -50,12 +50,12 @@ class PriceDefinition
         return $this->reference;
     }
 
-    public function getUnitLabel(): ?string
+    public function getUnitLabel(): string|null
     {
         return $this->unitLabel;
     }
 
-    public function setUnitLabel(?string $unitLabel): self
+    public function setUnitLabel(string|null $unitLabel): self
     {
         $this->unitLabel = $unitLabel;
 
@@ -94,7 +94,7 @@ class PriceDefinition
         $isPercentage = str_ends_with($price, '%');
         $amount = $isPercentage ? substr($price, 0, -1) : $price;
 
-        $definition = new PriceDefinition((float) $amount, $taxClass, percentage: $isPercentage);
+        $definition = new self((float) $amount, $taxClass, percentage: $isPercentage);
 
         if ($isPercentage) {
             $definition->setUnitLabel($price);

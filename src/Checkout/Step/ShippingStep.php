@@ -11,7 +11,6 @@ use Isotope\CoreBundle\Model\ShippingModel;
 use Isotope\CoreBundle\ModelType\ShippingRegistry;
 use Isotope\CoreBundle\Product\Extension\ShippingExtension;
 use Isotope\CoreBundle\ProductCollection\Cart\Cart;
-use Isotope\CoreBundle\Store\CartManager;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Twig\TemplateMarkupFactory;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,13 +34,14 @@ class ShippingStep extends AbstractCheckoutStep
 
     public function getSummary(Request $request, StoreContext $context, array $config): CheckoutStepSummary|null
     {
-        if (!$this->requiresShipping($context, $config)) {
+        $cart = $context->getCart();
+
+        if (!$cart || !$this->requiresShipping($cart)) {
             return null;
         }
 
         $event = $this->dispatchEvent($context, $request, $config);
 
-        $cart = $context->getCart();
         $shippings = $this->getShippingMethods($context->getShippingIds(), $context);
         $current = $this->getCurrent($cart, $context, $config);
 
@@ -50,7 +50,7 @@ class ShippingStep extends AbstractCheckoutStep
             && !$this->isEditing($request)
             && !$event->hasError()
             && !$current->hasError()
-            && null !== array_find($shippings, fn (ShippingInterface $s) => $s->getId() === $current->getId())
+            && null !== array_find($shippings, static fn (ShippingInterface $s) => $s->getId() === $current->getId())
         ) {
             $cart->setShippingMethod($current);
             $cart->setModified();
@@ -74,7 +74,7 @@ class ShippingStep extends AbstractCheckoutStep
         ) {
             if (
                 $cart->getShippingMethod()?->getId() !== $newId
-                && null !== ($shipping = array_find($shippings, fn (ShippingInterface $s) => $s->getId() === $newId))
+                && null !== ($shipping = array_find($shippings, static fn (ShippingInterface $s) => $s->getId() === $newId))
             ) {
                 $cart->setShippingMethod($shipping);
                 $cart->setModified();
@@ -121,6 +121,7 @@ class ShippingStep extends AbstractCheckoutStep
 
     /**
      * @param array<int> $ids
+     *
      * @return array<ShippingInterface>
      */
     private function getShippingMethods(array $ids, StoreContext $context): array
@@ -138,9 +139,9 @@ class ShippingStep extends AbstractCheckoutStep
         );
     }
 
-    private function requiresShipping(StoreContext $context, array $config): bool
+    private function requiresShipping(Cart $cart): bool
     {
-        foreach ($context->getCart()->getLineItems()->products() as $item) {
+        foreach ($cart->getLineItems()->products() as $item) {
             if (!$item->getProduct()?->getExtension(ShippingExtension::class)?->isExemptFromShipping()) {
                 return true;
             }

@@ -14,9 +14,8 @@ use Symfony\Component\HttpFoundation\Response;
 #[AsContentElement('iso_addressbook', category: 'isotope')]
 class AddressbookController extends AbstractContentElementController
 {
-    public function __construct(
-        private readonly AddressManager $addressManager,
-    ) {
+    public function __construct(private readonly AddressManager $addressManager)
+    {
     }
 
     protected function getResponse(FragmentTemplate $template, ContentModel $model, Request $request): Response

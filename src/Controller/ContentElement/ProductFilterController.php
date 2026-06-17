@@ -273,7 +273,7 @@ class ProductFilterController extends AbstractContentElementController
             && !empty($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$field]['eval']['csv'] ?? null);
 
         return array_unique(array_merge(...array_map(
-            static fn ($v) => $isCsv ? explode($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$field]['eval']['csv'], $v) : \Contao\StringUtil::deserialize($v, true),
+            static fn ($v) => $isCsv ? explode($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$field]['eval']['csv'], (string) $v) : \Contao\StringUtil::deserialize($v, true),
             $options,
         )));
     }
@@ -311,20 +311,14 @@ class ProductFilterController extends AbstractContentElementController
 
     private function getSortingLabels($field): array
     {
-        $arrData = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'][$field];
-
-        switch ($arrData['eval']['rgxp'] ?? null) {
-            case 'price':
-            case 'digit':
-                return [$GLOBALS['TL_LANG']['MSC']['low_to_high'], $GLOBALS['TL_LANG']['MSC']['high_to_low']];
-
-            case 'date':
-            case 'time':
-            case 'datim':
-                return [$GLOBALS['TL_LANG']['MSC']['old_to_new'], $GLOBALS['TL_LANG']['MSC']['new_to_old']];
-        }
-
-        return [$GLOBALS['TL_LANG']['MSC']['a_to_z'], $GLOBALS['TL_LANG']['MSC']['z_to_a']];
+        return match ($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$field]['eval']['rgxp'] ?? null) {
+            'price',
+            'digit' => [$GLOBALS['TL_LANG']['MSC']['low_to_high'], $GLOBALS['TL_LANG']['MSC']['high_to_low']],
+            'date',
+            'time',
+            'datim' => [$GLOBALS['TL_LANG']['MSC']['old_to_new'], $GLOBALS['TL_LANG']['MSC']['new_to_old']],
+            default => [$GLOBALS['TL_LANG']['MSC']['a_to_z'], $GLOBALS['TL_LANG']['MSC']['z_to_a']],
+        };
     }
 
     private function getCurrentFilterValues(ProductQuery|null $productQuery, string $key, array $fields): array

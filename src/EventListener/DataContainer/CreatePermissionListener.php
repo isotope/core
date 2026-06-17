@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 
 class CreatePermissionListener
 {
-    private const PERMISSIONS = [
+    private const array PERMISSIONS = [
         'tl_iso_config' => ['iso_configs', 'iso_configp'],
         'tl_iso_payment' => ['iso_payments', 'iso_paymentp'],
         'tl_iso_producttype' => ['iso_producttypes', 'iso_producttypep'],

@@ -1,9 +1,7 @@
-
 #tl_navigation .group-isotope {
-    background: url(../images/module.svg) 3px 1px no-repeat;
+    background: url('../images/module.svg') 3px 1px no-repeat;
     background-size: 14px 14px;
 }
-
 
 .iso_rule_conditions {
     padding: 0;
@@ -13,8 +11,8 @@
         display: block;
         list-style: none;
 
-        &:before {
-            content: "-";
+        &::before {
+            content: '-';
             margin-right: 5px;
         }
     }
@@ -24,7 +22,7 @@
     display: flex;
 
     > *:first-child {
-        width:50px;
+        width: 50px;
     }
 
     > *:last-child {

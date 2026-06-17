@@ -144,7 +144,7 @@ class CategoryListener extends AbstractSubtableListener
                     INSERT INTO tl_iso_product_category
                         (pid,tstamp,sorting,product_id,product_sorting)
                     VALUES (?, ?, (SELECT IFNULL(MAX(sorting), 0)+128 FROM (SELECT * FROM tl_iso_product_category WHERE pid=?) c), ?, ?)
-                SQL,
+                    SQL,
                 [$pageId, time(), $pageId, $pid, $sorting],
             );
 

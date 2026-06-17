@@ -43,7 +43,7 @@ class MemberConditionFactory implements ModelTypeFactoryInterface
             'member_authenticated' => new MemberAuthenticatedCondition(
                 $this->security,
                 $this->translator,
-                $model->operator
+                $model->operator,
             ),
             default => throw new InvalidTypeException($model->type, self::class),
         };

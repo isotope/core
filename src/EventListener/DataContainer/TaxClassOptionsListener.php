@@ -24,7 +24,7 @@ class TaxClassOptionsListener
 
         return [
             -1 => $this->translator->trans('MSC.splittedTaxRate', [], 'contao_default'),
-            $groupLabel => $this->connection->fetchAllKeyValue("SELECT id, name FROM tl_iso_tax_class ORDER BY name"),
+            $groupLabel => $this->connection->fetchAllKeyValue('SELECT id, name FROM tl_iso_tax_class ORDER BY name'),
         ];
     }
 }

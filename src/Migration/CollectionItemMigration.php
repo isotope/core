@@ -49,14 +49,13 @@ class CollectionItemMigration extends AbstractMigration
                 ADD COLUMN `unit_label` varchar(128) NULL,
                 CHANGE COLUMN `name` `label` varchar(255) NOT NULL default '',
                 CHANGE COLUMN `jumpTo` `referencePage` int(0) unsigned NOT NULL default 0
-        SQL);
+            SQL);
 
         $this->connection->executeStatement("UPDATE tl_iso_product_collection_item SET type='product', identifier=CONCAT('tl_iso_product.', product_id)");
 
         $surcharges = $this->connection->fetchAllAssociative('SELECT * FROM tl_iso_product_collection_surcharge ORDER BY pid, sorting');
 
         foreach ($surcharges as $surcharge) {
-
             $data = [
                 'pid' => $surcharge['pid'],
                 'sorting' => $surcharge['sorting'],
@@ -73,7 +72,7 @@ class CollectionItemMigration extends AbstractMigration
                 };
             }
 
-            if (\is_numeric($surcharge['price'])) {
+            if (is_numeric($surcharge['price'])) {
                 $data['price'] = $surcharge['price'];
             } else {
                 $data['unit_label'] = str_replace('&nbsp;', '', $surcharge['price']);

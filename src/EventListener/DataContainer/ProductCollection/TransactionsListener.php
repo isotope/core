@@ -18,11 +18,9 @@ use Isotope\CoreBundle\ProductCollection\Order\OrderFactory;
 use Isotope\CoreBundle\ProductCollection\OrderTransaction\TransactionStatus;
 use Isotope\CoreBundle\Store\Price\CalculatedPrice;
 use Isotope\CoreBundle\Store\Price\PriceFormatter;
-use Isotope\CoreBundle\Util\ColorUtil;
 use Symfony\Component\Asset\Packages;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Contracts\Translation\TranslatableInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
@@ -54,7 +52,7 @@ class TransactionsListener
                 WHERE t.pid=?
                 GROUP BY t.id
                 ORDER BY t.tstamp
-            SQL,
+                SQL,
             [$order->getId()],
         );
 
@@ -65,7 +63,7 @@ class TransactionsListener
                     'href' => $this->urlGenerator->generate(TransactionEventsController::class, ['transactionId' => $transaction['id']]),
                     'icon' => $this->packages->getUrl('images/webhook.svg', 'isotope'),
                     'label' => 'Webhooks',
-                    'attributes' => (new HtmlAttributes())->set('onclick', "Backend.openModalIframe({title:'Webhooks', url:this.href+'?popup=1'});return false")
+                    'attributes' => (new HtmlAttributes())->set('onclick', "Backend.openModalIframe({title:'Webhooks', url:this.href+'?popup=1'});return false"),
                 ]);
             } else {
                 $operations->append([
@@ -94,30 +92,27 @@ class TransactionsListener
             ];
         }
 
-        return $this->twig->render(
-            '@Contao/backend/data_container/table/view/list.html.twig',
-            [
-                'table_name' => 'tl_iso_order_transaction',
-                'table_headers' => [
-                    'uniqid' => $this->translator->trans('tl_iso_order_transaction.uniqid.0', [], 'contao_tl_iso_order_transaction'),
-                    'created' => $this->translator->trans('tl_iso_order_transaction.created.0', [], 'contao_tl_iso_order_transaction'),
-                    'completed' => $this->translator->trans('tl_iso_order_transaction.completed.0', [], 'contao_tl_iso_order_transaction'),
-                    'label' => $this->translator->trans('tl_iso_order_transaction.label.0', [], 'contao_tl_iso_order_transaction'),
-                    'status' => $this->translator->trans('tl_iso_order_transaction.status.0', [], 'contao_tl_iso_order_transaction'),
-                    'amount' => $this->translator->trans('tl_iso_order_transaction.amount.0', [], 'contao_tl_iso_order_transaction'),
-                ],
-                'records' => $records,
-                'show_columns' => true,
-                'as_picker' => false,
-                'limit_height' => false,
-                'message' => '<h3>'.$this->translator->trans('tl_iso_order_transaction.payments', [], 'contao_tl_iso_order_transaction').'</h3>',
-                'global_operations' => '',
-                'as_select' => false,
-                'panel_active' => '',
-                'order_by' => '',
-                'primary_only' => false,
+        return $this->twig->render('@Contao/backend/data_container/table/view/list.html.twig', [
+            'table_name' => 'tl_iso_order_transaction',
+            'table_headers' => [
+                'uniqid' => $this->translator->trans('tl_iso_order_transaction.uniqid.0', [], 'contao_tl_iso_order_transaction'),
+                'created' => $this->translator->trans('tl_iso_order_transaction.created.0', [], 'contao_tl_iso_order_transaction'),
+                'completed' => $this->translator->trans('tl_iso_order_transaction.completed.0', [], 'contao_tl_iso_order_transaction'),
+                'label' => $this->translator->trans('tl_iso_order_transaction.label.0', [], 'contao_tl_iso_order_transaction'),
+                'status' => $this->translator->trans('tl_iso_order_transaction.status.0', [], 'contao_tl_iso_order_transaction'),
+                'amount' => $this->translator->trans('tl_iso_order_transaction.amount.0', [], 'contao_tl_iso_order_transaction'),
             ],
-        );
+            'records' => $records,
+            'show_columns' => true,
+            'as_picker' => false,
+            'limit_height' => false,
+            'message' => '<h3>'.$this->translator->trans('tl_iso_order_transaction.payments', [], 'contao_tl_iso_order_transaction').'</h3>',
+            'global_operations' => '',
+            'as_select' => false,
+            'panel_active' => '',
+            'order_by' => '',
+            'primary_only' => false,
+        ]);
     }
 
     private function getOrder(DataContainer $dc): Order

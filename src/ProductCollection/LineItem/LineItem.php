@@ -50,7 +50,7 @@ class LineItem
     private array $errors = [];
 
     public function __construct(
-        private string $type,
+        private readonly string $type,
         private string|null $identifier,
         private int $quantity = 1,
     ) {

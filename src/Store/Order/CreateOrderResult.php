@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Store\Order;
 
-final class CreateOrderResult
+final readonly class CreateOrderResult
 {
     public function __construct(
-        private readonly int $collectionId,
-        private readonly string $identifier,
+        private int $collectionId,
+        private string $identifier,
     ) {
     }
 

@@ -9,6 +9,7 @@ use Contao\Model\Collection;
 use Contao\StringUtil;
 use Contao\Widget;
 use Doctrine\DBAL\Connection;
+use Isotope\CoreBundle\Attribute\AbstractAttribute;
 use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
 use Isotope\CoreBundle\Attribute\VariantAttributeInterface;
 use Isotope\CoreBundle\Exception\LogicException;
@@ -41,7 +42,12 @@ class OptionFactory
 
         switch ($source) {
             case OptionsSource::Name:
-                return new OptionCollection([new Option('1', $attribute->getName())]);
+                // TODO: getName() is only implemented by AbstractAttribute
+                if ($attribute instanceof AbstractAttribute) {
+                    return new OptionCollection([new Option('1', $attribute->getName())]);
+                }
+
+                return new OptionCollection([new Option('1', $attribute->getFieldName())]);
 
             case OptionsSource::Attribute:
                 return $this->createFromArray($attributeOptions ?? [], !$isVariant);
@@ -78,7 +84,7 @@ class OptionFactory
 
         foreach ($options as $option) {
             $data[] = new Option(
-                $option['value'],
+                (string) $option['value'],
                 $this->translator->trans($option['label'], [], 'isotope'),
                 (bool) ($option['group'] ?? null),
                 $canHaveDefault && ($option['default'] ?? null),
@@ -154,7 +160,7 @@ class OptionFactory
         );
 
         foreach ($results as $result) {
-            $data[] = new Option($result['value'], $result['label']);
+            $data[] = new Option((string) $result['value'], $result['label']);
         }
 
         return new OptionCollection($data);

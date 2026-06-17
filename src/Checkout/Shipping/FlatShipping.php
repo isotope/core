@@ -57,6 +57,7 @@ class FlatShipping extends AbstractShipping
         return $this;
     }
 
+    #[\Override]
     public function getPriceDefinition(): PriceDefinition|null
     {
         $priceDefinition = parent::getPriceDefinition();

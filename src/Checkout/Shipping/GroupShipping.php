@@ -21,11 +21,6 @@ class GroupShipping extends AbstractShipping
     private readonly array $inner;
 
     /**
-     * @var array<int, array<ShippingInterface>>
-     */
-    private array $cache = [];
-
-    /**
      * @param array<ShippingInterface> $methods,
      */
     public function __construct(
@@ -51,6 +46,7 @@ class GroupShipping extends AbstractShipping
         $this->inner = $inner;
     }
 
+    #[\Override]
     public static function getSubscribedServices(): array
     {
         return [
@@ -59,6 +55,7 @@ class GroupShipping extends AbstractShipping
         ];
     }
 
+    #[\Override]
     public function isAvailable(): bool
     {
         if (!parent::isAvailable()) {
@@ -75,6 +72,7 @@ class GroupShipping extends AbstractShipping
         return false;
     }
 
+    #[\Override]
     public function getLabel(): string
     {
         if ($this->inherit) {
@@ -88,6 +86,7 @@ class GroupShipping extends AbstractShipping
         return parent::getLabel();
     }
 
+    #[\Override]
     public function getNote(): string
     {
         if ($this->inherit) {
@@ -111,18 +110,12 @@ class GroupShipping extends AbstractShipping
         return null;
     }
 
+    #[\Override]
     public function getPriceDefinition(): PriceDefinition|null
     {
         if ([] === $this->inner) {
             return null;
         }
-
-        $cart = $this->getStoreContext()->getCart();
-        $calculator = $this->get(PriceCalculator::class);
-        $methods = array_filter(
-            $this->inner,
-            static fn (ShippingInterface $shipping) => $shipping->isAvailable(),
-        );
 
         switch ($this->groupCalculation) {
             default:
@@ -163,7 +156,7 @@ class GroupShipping extends AbstractShipping
     }
 
     /**
-     * @return array<array{0: PriceDefinition, 1: CalculatedPrice>>
+     * @return array<array{0: PriceDefinition, 1: CalculatedPrice}>
      */
     private function getPrices(bool $calculate = true): array
     {

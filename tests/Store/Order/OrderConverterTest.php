@@ -12,7 +12,7 @@ use Isotope\CoreBundle\Store\Price\CalculatedPrice;
 use Isotope\CoreBundle\Test\TestCase;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-class OrderConverterTest extends TestCase
+final class OrderConverterTest extends TestCase
 {
     public function testConvertToOrder(): void
     {

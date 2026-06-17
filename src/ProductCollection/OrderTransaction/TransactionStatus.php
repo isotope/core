@@ -29,7 +29,7 @@ class TransactionStatus
         $label = self::label($key, $translator);
 
         if ($color = self::color($key)) {
-            return sprintf(
+            return \sprintf(
                 '<span style="%s">%s</span>',
                 ColorUtil::getCssBackgroundStyles($color),
                 $label,

@@ -16,9 +16,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[AsEventListener('isotope.validation.order.create')]
 class OrderValidationListener
 {
-    public function __construct(
-        private readonly AddressValidator $addressValidator,
-    ) {
+    public function __construct(private readonly AddressValidator $addressValidator)
+    {
     }
 
     public function __invoke(OrderValidationEvent $event): void
@@ -47,9 +46,9 @@ class OrderValidationListener
                 'date_paid' => new Assert\Optional([new Assert\NotBlank(), new Assert\DateTime()]),
                 'date_shipped' => new Assert\Optional([new Assert\NotBlank(), new Assert\DateTime()]),
 
-                'extensions' => new Assert\Optional([new Assert\Type('array')])
+                'extensions' => new Assert\Optional([new Assert\Type('array')]),
             ],
-            allowExtraFields: true
+            allowExtraFields: true,
         ));
 
         $event->addConstraint(new NotHasKey('notes'));

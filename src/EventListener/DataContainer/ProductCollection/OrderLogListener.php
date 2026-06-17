@@ -59,7 +59,7 @@ class OrderLogListener
                 $log = [
                     'tstamp' => [
                         'label' => $this->formatter->dcaLabel($logTable, 'tstamp'),
-                        'value' => $logModel->tstamp ? $this->formatter->dcaValue($logTable, 'tstamp', $logModel->tstamp) : '–'
+                        'value' => $logModel->tstamp ? $this->formatter->dcaValue($logTable, 'tstamp', $logModel->tstamp) : '–',
                     ],
                 ];
 
@@ -67,7 +67,7 @@ class OrderLogListener
                 if ($logModel->author) {
                     $log['author'] = [
                         'label' => $this->formatter->dcaLabel($logTable, 'author'),
-                        'value' => $logModel->author ? $this->formatter->dcaValue($logTable, 'author', $logModel->author) : '–'
+                        'value' => $logModel->author ? $this->formatter->dcaValue($logTable, 'author', $logModel->author) : '–',
                     ];
                 }
 
@@ -83,17 +83,17 @@ class OrderLogListener
 
                 foreach ($logData as $field => $value) {
                     // Skip the empty values for the first log
-                    if (count($logs) === 0 && !$value) {
+                    if (0 === \count($logs) && !$value) {
                         continue;
                     }
 
                     // Skip the dependent fields if their parent is not set
-                    if (array_key_exists($field, $dependentFields) && (!isset($logData[$dependentFields[$field]]) || !$logData[$dependentFields[$field]])) {
+                    if (\array_key_exists($field, $dependentFields) && (!isset($logData[$dependentFields[$field]]) || !$logData[$dependentFields[$field]])) {
                         continue;
                     }
 
                     // Skip if the field is a dependency but does not have a value
-                    if (in_array($field, $dependentFields, true) && !$value) {
+                    if (\in_array($field, $dependentFields, true) && !$value) {
                         continue;
                     }
 
@@ -110,12 +110,12 @@ class OrderLogListener
 
                     $log[$field] = [
                         'label' => $this->formatter->dcaLabel($dc->table, $field),
-                        'value' => $value ? $this->formatter->dcaValue($dc->table, $field, $value) : '–'
+                        'value' => $value ? $this->formatter->dcaValue($dc->table, $field, $value) : '–',
                     ];
 
                     // Support line breaks for textareas
                     if ('textarea' === ($fieldConfig['inputType'] ?? null) && $value) {
-                        $log[$field]['value'] = nl2br($log[$field]['value']);
+                        $log[$field]['value'] = nl2br((string) $log[$field]['value']);
                     }
                 }
 
@@ -127,9 +127,7 @@ class OrderLogListener
             $logs = array_reverse($logs);
 
             // Filter out the log entries that contain only tstamp and author
-            $logs = array_filter($logs, function (array $entry) {
-                return array_keys($entry) !== ['tstamp', 'author'];
-            });
+            $logs = array_filter($logs, static fn (array $entry) => array_keys($entry) !== ['tstamp', 'author']);
         }
 
         return $this->twig->render('@Contao/backend/isotope/order-log.html.twig', ['logs' => $logs]);
@@ -165,7 +163,7 @@ class OrderLogListener
             foreach (StatusType::cases() as $type) {
                 if ($status = OrderStatusModel::findOneByAlias((string) $current[$type->value.'_status'], $type)) {
                     foreach ($status->row() as $k => $v) {
-                        $tokens['previous_'.$type->value.'_status_' . $k] = $this->formatter->dcaValue(OrderStatusModel::getTable(), $k, $v);
+                        $tokens['previous_'.$type->value.'_status_'.$k] = $this->formatter->dcaValue(OrderStatusModel::getTable(), $k, $v);
                     }
 
                     $tokens['previous_'.$type->value.'_status'] = $this->translator->trans($status->label ?: $status->name, [], 'isotope');
@@ -179,7 +177,7 @@ class OrderLogListener
 
             if (!$receipt->wereAllDelivered()) {
                 $blnNotificationError = true;
-                $this->contaoLogger->error('Error sending status update notification for order ID ' . $dc->id);
+                $this->contaoLogger->error('Error sending status update notification for order ID '.$dc->id);
             } elseif ($receipt->count() > 0) {
                 $blnNotificationError = false;
             }

@@ -46,7 +46,7 @@ class DefaultOrderNotificationTokensListener
         $tokens['order_id'] = $order->getId();
         $tokens['order_items'] = $order->getLineItems()->sumQuantity();
         $tokens['order_products'] = $order->getLineItems()->count();
-        $tokens['order_subtotal']  = $order->getSubtotal() ? $this->priceFormatter->toText($order->getSubtotal(), $context) : '';
+        $tokens['order_subtotal'] = $order->getSubtotal() ? $this->priceFormatter->toText($order->getSubtotal(), $context) : '';
         $tokens['order_total'] = $order->getTotal() ? $this->priceFormatter->toText($order->getTotal(), $context) : '';
 
         if ($config = ConfigModel::findById($context->getConfigId())) {
@@ -56,7 +56,7 @@ class DefaultOrderNotificationTokensListener
             $tokens['tax_number'] = $config->taxNumber;
 
             foreach ($config->row() as $k => $v) {
-                $tokens['config_' . $k] = $this->formatter->dcaValue(ConfigModel::getTable(), $k, $v);
+                $tokens['config_'.$k] = $this->formatter->dcaValue(ConfigModel::getTable(), $k, $v);
             }
         }
 
@@ -69,7 +69,7 @@ class DefaultOrderNotificationTokensListener
         foreach ($statuses as $type => $status) {
             if ($status) {
                 foreach ($status->row() as $k => $v) {
-                    $tokens[$type.'_status_' . $k] = $this->formatter->dcaValue(OrderStatusModel::getTable(), $k, $v);
+                    $tokens[$type.'_status_'.$k] = $this->formatter->dcaValue(OrderStatusModel::getTable(), $k, $v);
                 }
 
                 $tokens[$type.'_status'] = $this->translator->trans($status->label ?: $status->name, [], 'isotope');
@@ -90,29 +90,23 @@ class DefaultOrderNotificationTokensListener
 
         if ($member) {
             foreach ($member->row() as $k => $v) {
-                $tokens['member_' . $k] = $this->formatter->dcaValue(MemberModel::getTable(), $k, $v);
+                $tokens['member_'.$k] = $this->formatter->dcaValue(MemberModel::getTable(), $k, $v);
             }
         }
 
         $template = $event->getNotificationConfig()->get('iso_collectionTpl') ?: 'isotope/product_collection';
 
-        $tokens['cart_html'] = $this->twig->render(
-            '@Contao/'.$template.'.html.twig',
-            [
-                'collection' => $order,
-                'is_notification' => true,
-                'is_text' => false,
-            ],
-        );
+        $tokens['cart_html'] = $this->twig->render('@Contao/'.$template.'.html.twig', [
+            'collection' => $order,
+            'is_notification' => true,
+            'is_text' => false,
+        ]);
 
-        $tokens['cart_text'] = $this->twig->render(
-            '@Contao/'.$template.'.html.twig',
-            [
-                'collection' => $order,
-                'is_notification' => true,
-                'is_text' => true,
-            ],
-        );
+        $tokens['cart_text'] = $this->twig->render('@Contao/'.$template.'.html.twig', [
+            'collection' => $order,
+            'is_notification' => true,
+            'is_text' => true,
+        ]);
 
         $event->addTokens($tokens);
     }
@@ -136,7 +130,7 @@ class DefaultOrderNotificationTokensListener
                 $name = StringUtil::stripInsertTags($name);
                 $name = preg_replace('/[^A-Za-z0-9.!#$%&\'*+-\/=?^_ `{|}~]+/i', '_', $name);
 
-                return sprintf('"%s" <%s>', $name, $data['email']);
+                return \sprintf('"%s" <%s>', $name, $data['email']);
             }
 
             return $data['email'];

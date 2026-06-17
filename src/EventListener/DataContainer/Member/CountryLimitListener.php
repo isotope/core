@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class CountryLimitListener
 {
-    private const CONTEXT_PROPERTY = 'limitMemberCountries';
+    private const string CONTEXT_PROPERTY = 'limitMemberCountries';
 
     public function __construct(
         private readonly ScopeMatcher $scopeMatcher,

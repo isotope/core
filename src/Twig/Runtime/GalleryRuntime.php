@@ -25,7 +25,7 @@ class GalleryRuntime implements RuntimeExtensionInterface
     {
         $view = $context['view'] ?? null;
 
-        if (!$product instanceof CoreProduct || (!$galleryId && !$view instanceof ViewInterface)) {
+        if (!$galleryId && !$view instanceof ViewInterface) {
             return null;
         }
 

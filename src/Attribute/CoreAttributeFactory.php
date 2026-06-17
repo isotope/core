@@ -38,7 +38,7 @@ class CoreAttributeFactory implements AttributeFactoryInterface
         $attribute = $this->createInstance($class, $fieldName, $config, $dca)
             ->setName($this->trans($config['name'] ?? $dca['label'][0] ?? null))
             ->setDescription($this->trans($config['description'] ?? $dca['label'][1] ?? null))
-            ->setPlaceholder($this->trans($config['placeholder'] ?? $dca['eval']['placeholder'] ?? '', [], 'isotope'))
+            ->setPlaceholder($this->trans($config['placeholder'] ?? $dca['eval']['placeholder'] ?? ''))
             ->setCustomerDefined((bool) ($config['customer_defined'] ?? $dca['attributes']['customer_defined'] ?? false))
             ->setMandatory((bool) ($config['mandatory'] ?? $dca['eval']['mandatory'] ?? false))
             ->setBackendSearchable((bool) ($config['be_search'] ?? $dca['search'] ?? false))
@@ -92,7 +92,7 @@ class CoreAttributeFactory implements AttributeFactoryInterface
      *
      * @param class-string<T> $class
      *
-     * @return AbstractAttribute<T>
+     * @return T
      */
     private function createInstance(string $class, string $fieldName, array $config, array $dca): AbstractAttribute
     {

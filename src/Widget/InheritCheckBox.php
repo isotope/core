@@ -16,6 +16,7 @@ class InheritCheckBox extends CheckBox
     /**
      * Disable mandatory validation for inherited attributes.
      */
+    #[\Override]
     public function validate(): void
     {
         parent::validate();
@@ -27,6 +28,7 @@ class InheritCheckBox extends CheckBox
         }
     }
 
+    #[\Override]
     public function generate(): string
     {
         $options = [];

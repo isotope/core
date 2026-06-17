@@ -22,11 +22,11 @@ class Order extends AbstractProductCollection
 
     private string|null $documentNumber = null;
 
-    private OrderStatusModel|\Closure|null $orderStatus = null;
+    private \Closure|OrderStatusModel|null $orderStatus = null;
 
-    private OrderStatusModel|\Closure|null $transactionStatus = null;
+    private \Closure|OrderStatusModel|null $transactionStatus = null;
 
-    private OrderStatusModel|\Closure|null $deliveryStatus = null;
+    private \Closure|OrderStatusModel|null $deliveryStatus = null;
 
     private AddressModel|\Closure|null $billingAddress = null;
 
@@ -35,7 +35,6 @@ class Order extends AbstractProductCollection
     private \Closure|PaymentInterface|null $paymentMethod = null;
 
     private \Closure|ShippingInterface|null $shippingMethod = null;
-
 
     public function __construct(
         string $identifier,
@@ -54,23 +53,24 @@ class Order extends AbstractProductCollection
         return self::COLLECTION_TYPE;
     }
 
-    public function getLocked(): ?\DateTimeInterface
+    public function getLocked(): \DateTimeInterface|null
     {
         return $this->locked;
     }
 
-    public function setLocked(?\DateTimeInterface $locked): Order
+    public function setLocked(\DateTimeInterface|null $locked): self
     {
         $this->locked = $locked;
+
         return $this;
     }
 
-    public function getDocumentNumber(): ?string
+    public function getDocumentNumber(): string|null
     {
         return $this->documentNumber;
     }
 
-    public function setDocumentNumber(?string $documentNumber): self
+    public function setDocumentNumber(string|null $documentNumber): self
     {
         $this->documentNumber = $documentNumber;
 
@@ -84,7 +84,7 @@ class Order extends AbstractProductCollection
         return $this->orderStatus;
     }
 
-    public function setOrderStatus(OrderStatusModel|\Closure|null $status): self
+    public function setOrderStatus(\Closure|OrderStatusModel|null $status): self
     {
         $this->orderStatus = $status;
 
@@ -98,7 +98,7 @@ class Order extends AbstractProductCollection
         return $this->transactionStatus;
     }
 
-    public function setTransactionStatus(OrderStatusModel|\Closure|null $status): self
+    public function setTransactionStatus(\Closure|OrderStatusModel|null $status): self
     {
         $this->transactionStatus = $status;
 
@@ -112,7 +112,7 @@ class Order extends AbstractProductCollection
         return $this->deliveryStatus;
     }
 
-    public function setDeliveryStatus(OrderStatusModel|\Closure|null $status): self
+    public function setDeliveryStatus(\Closure|OrderStatusModel|null $status): self
     {
         $this->deliveryStatus = $status;
 

@@ -12,7 +12,7 @@ class TaxRate implements \JsonSerializable
         private readonly string $id,
         private float $taxRate,
         private float $percentage = 100.0,
-        private string|null $label = null,
+        private readonly string|null $label = null,
     ) {
         $this->taxRate = FloatComparator::cast($taxRate);
         $this->percentage = FloatComparator::cast($percentage);
@@ -33,7 +33,7 @@ class TaxRate implements \JsonSerializable
         return FloatComparator::cast($this->percentage);
     }
 
-    public function getLabel(): ?string
+    public function getLabel(): string|null
     {
         return $this->label;
     }

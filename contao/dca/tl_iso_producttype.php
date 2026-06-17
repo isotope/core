@@ -3,7 +3,6 @@
 use Contao\DataContainer;
 use Contao\DC_Table;
 use Contao\System;
-use Isotope\Backend\ProductType\Callback;
 
 $GLOBALS['TL_DCA']['tl_iso_producttype'] = [
     'config' => [

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Isotope\CoreBundle\Model;
 
 use Contao\Model;
@@ -40,12 +42,12 @@ class AddressModel extends Model
      *
      * @return Collection<AddressModel>|null
      */
-    public static function findByMemberAndStoreId(int $member, int $storeId, array $options = array()): Collection|null
+    public static function findByMemberAndStoreId(int $member, int $storeId, array $options = []): Collection|null
     {
         return static::findBy(
-            array('pid=?', 'ptable=?', 'store_id=?'),
-            array($member, 'tl_member', $storeId),
-            $options
+            ['pid=?', 'ptable=?', 'store_id=?'],
+            [$member, 'tl_member', $storeId],
+            $options,
         );
     }
 

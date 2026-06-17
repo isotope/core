@@ -19,7 +19,7 @@ class CorePaymentFactory extends AbstractPaymentFactory
      */
     public function doCreate(Model $model, StoreContext $context): AbstractPayment
     {
-        return match($model->type) {
+        return match ($model->type) {
             'cash' => new CashPayment($model->id, $model->processing_status, $context),
             'paypal' => new PaypalPayment(
                 $model->id,

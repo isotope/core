@@ -16,9 +16,8 @@ use Symfony\Component\Translation\TranslatableMessage;
 #[AsEventListener(LoadCollectionTransactionEvent::NAME.'.post')]
 class LoadProductsListener
 {
-    public function __construct(
-        private readonly ProductBuilder $productBuilder,
-    ) {
+    public function __construct(private readonly ProductBuilder $productBuilder)
+    {
     }
 
     public function __invoke(LoadCollectionTransactionEvent $event): void

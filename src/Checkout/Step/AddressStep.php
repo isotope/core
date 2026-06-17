@@ -12,7 +12,6 @@ use Isotope\CoreBundle\Store\Address\AddressFormatter;
 use Isotope\CoreBundle\Store\Address\AddressValidator;
 use Isotope\CoreBundle\Store\Address\FormBuilder;
 use Isotope\CoreBundle\Store\AddressManager;
-use Isotope\CoreBundle\Store\CartManager;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Twig\TemplateMarkupFactory;
 use Isotope\CoreBundle\Util\CartUtil;

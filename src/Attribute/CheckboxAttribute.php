@@ -12,6 +12,7 @@ use Isotope\CoreBundle\DependencyInjection\Attribute\AsAttribute;
 #[AsAttribute]
 class CheckboxAttribute extends AbstractOptionsAttribute
 {
+    #[\Override]
     public function updateDcaField(array &$field, array &$keys): void
     {
         parent::updateDcaField($field, $keys);

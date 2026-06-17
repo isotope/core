@@ -28,6 +28,7 @@ use Isotope\CoreBundle\Util\ClosureTrait;
  * @property string $meta_description
  * @property string $price
  * @property string $prices
+ * @property string $baseprice
  * @property string $shipping_weight
  * @property bool   $shipping_exempt
  * @property bool   $shipping_pickup

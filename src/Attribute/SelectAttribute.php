@@ -23,6 +23,7 @@ class SelectAttribute extends AbstractOptionsAttribute implements VariantAttribu
 
     private bool $chosen = false;
 
+    #[\Override]
     public static function getSubscribedServices(): array
     {
         return [...parent::getSubscribedServices(), TranslatorInterface::class];
@@ -88,6 +89,7 @@ class SelectAttribute extends AbstractOptionsAttribute implements VariantAttribu
         return $this;
     }
 
+    #[\Override]
     public function updateDcaField(array &$field, array &$keys): void
     {
         parent::updateDcaField($field, $keys);

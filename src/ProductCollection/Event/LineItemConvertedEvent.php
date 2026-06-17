@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Isotope\CoreBundle\ProductCollection\Event;
 
@@ -10,12 +12,12 @@ use Symfony\Contracts\EventDispatcher\Event;
 class LineItemConvertedEvent extends Event
 {
     /**
-     * @var array<mixed>
+     * @var array<string, mixed>
      */
     private array $convertedLineItem;
 
     /**
-     * @param array<mixed> $originalConvertedItem
+     * @param array<string, mixed> $originalConvertedItem
      */
     public function __construct(
         private readonly LineItem $lineItem,
@@ -32,7 +34,7 @@ class LineItemConvertedEvent extends Event
     }
 
     /**
-     * @var array<mixed>
+     * @return array<string, mixed>
      */
     public function getOriginalConvertedItem(): array
     {
@@ -40,7 +42,7 @@ class LineItemConvertedEvent extends Event
     }
 
     /**
-     * @var array<mixed>
+     * @return array<string, mixed>
      */
     public function getConvertedLineItem(): array
     {
@@ -48,7 +50,7 @@ class LineItemConvertedEvent extends Event
     }
 
     /**
-     * @var array<mixed>
+     * @param array<string, mixed> $convertedLineItem
      */
     public function setConvertedLineItem(array $convertedLineItem): void
     {

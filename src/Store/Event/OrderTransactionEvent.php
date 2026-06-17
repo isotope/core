@@ -6,7 +6,11 @@ namespace Isotope\CoreBundle\Store\Event;
 
 use Isotope\CoreBundle\EventDispatcher\TransactionEvent;
 use Isotope\CoreBundle\Store\Context\StoreContext;
+use Isotope\CoreBundle\Store\Order\CreateOrderResult;
 
+/**
+ * @extends TransactionEvent<CreateOrderResult>
+ */
 class OrderTransactionEvent extends TransactionEvent
 {
     public const string NAME = 'isotope.order';
@@ -17,10 +21,10 @@ class OrderTransactionEvent extends TransactionEvent
     private array $data;
 
     /**
-     * @param array<mixed> $data
+     * @param array<mixed> $originalData
      */
     public function __construct(
-        private array $originalData,
+        private readonly array $originalData,
         private readonly StoreContext $context,
     ) {
         $this->data = $originalData;

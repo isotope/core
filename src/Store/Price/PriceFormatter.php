@@ -10,9 +10,8 @@ use Isotope\CoreBundle\Twig\TemplateMarkupFactory;
 
 class PriceFormatter
 {
-    public function __construct(
-        private readonly TemplateMarkupFactory $markupFactory,
-    ) {
+    public function __construct(private readonly TemplateMarkupFactory $markupFactory)
+    {
     }
 
     public function toHtml(CalculatedPrice $price, StoreContext $context, string|null $key = null): TemplateMarkup
@@ -40,21 +39,18 @@ class PriceFormatter
         $amount = $productPrice->getUnitPrice() / $basePrice->getProductAmount() * $basePrice->getBaseAmount();
         $data = $this->getData(new CalculatedPrice($amount, $amount), $context);
 
-        return $this->markupFactory->create(
-            '@Contao/component/_isotope_base_price.html.twig',
-            [
-                ...$data,
-                'base_price' => $basePrice,
-                'html' => $html,
-            ],
-        );
+        return $this->markupFactory->create('@Contao/component/_isotope_base_price.html.twig', [
+            ...$data,
+            'base_price' => $basePrice,
+            'html' => $html,
+        ]);
     }
 
     private function getData(CalculatedPrice $price, StoreContext $context, string|null $key = null): array
     {
         $format = $context->getMoneyFormat();
 
-        $data =  [
+        $data = [
             'unit_price' => $price->getUnitPrice(),
             'unit_label' => $price->getUnitLabel(),
             'unit_tax' => $format->mathRound($price->getCalculatedTaxes()->sum()),

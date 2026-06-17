@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 #[AutoconfigureTag('container.service_subscriber', ['id' => 'contao.twig.studio.cache_invalidator'])]
 abstract class AbstractRenameVariantOperation extends CoreAbstractRenameVariantOperationAlias
 {
+    #[\Override]
     public function canExecute(OperationContext $context): bool
     {
         if (!$this->userTemplateExists($context) || $context->isThemeContext()) {
@@ -25,6 +26,7 @@ abstract class AbstractRenameVariantOperation extends CoreAbstractRenameVariantO
         return 1 === preg_match('%^'.preg_quote($this->getPrefix(), '%').'/.+$%', $context->getIdentifier());
     }
 
+    #[\Override]
     public function execute(Request $request, OperationContext $context): Response|null
     {
         preg_match('%^('.preg_quote($this->getPrefix(), '%').')/(.+)$%', $context->getIdentifier(), $matches);

@@ -10,6 +10,7 @@ use Symfony\Contracts\Service\ResetInterface;
 class Subdivisions implements ResetInterface
 {
     private array|null $options = null;
+
     private array|null $names = null;
 
     public function all(): array
@@ -36,7 +37,7 @@ class Subdivisions implements ResetInterface
 
         System::loadLanguageFile('subdivisions');
 
-        foreach ($GLOBALS['TL_LANG']['DIV'] as $country => $subdivisions) {
+        foreach ($GLOBALS['TL_LANG']['DIV'] as $subdivisions) {
             foreach ($subdivisions as $code => $name) {
                 if (\is_array($name)) {
                     $group = $name[''];
@@ -71,7 +72,7 @@ class Subdivisions implements ResetInterface
         System::loadLanguageFile('subdivisions');
 
         foreach ($GLOBALS['TL_LANG']['DIV'] as $country => $subdivisions) {
-            $country = strtoupper($country);
+            $country = strtoupper((string) $country);
 
             foreach ($subdivisions as $code => $name) {
                 if (\is_array($name)) {

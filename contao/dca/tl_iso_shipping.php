@@ -43,7 +43,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
         'flatCalculation_perProduct' => 'flatProductTypes',
         'flatCalculation_perItem' => 'flatProductTypes',
         'flatCalculation_perWeight' => 'flatWeight',
-        'group_calculation_summarize' => 'tax_class'
+        'group_calculation_summarize' => 'tax_class',
     ],
     'fields' => [
         'id' => [
@@ -90,7 +90,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
             'foreignKey' => 'tl_iso_rule.name',
             'eval' => ['tl_class' => 'clr'],
             'sql' => 'int(10) unsigned NOT NULL default 0',
-            'relation' => ['type' => 'hasOne']
+            'relation' => ['type' => 'hasOne'],
         ],
         'minimum_weight' => [
             'default' => ['unit' => 'kg'],

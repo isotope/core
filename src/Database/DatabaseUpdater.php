@@ -6,7 +6,6 @@ namespace Isotope\CoreBundle\Database;
 
 use Contao\CoreBundle\Migration\CommandCompiler;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Types\StringType;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;

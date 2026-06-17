@@ -6,15 +6,8 @@ namespace Isotope\CoreBundle\Migration;
 
 use Contao\CoreBundle\Migration\AbstractMigration;
 use Contao\CoreBundle\Migration\MigrationResult;
-use Contao\CoreBundle\Routing\ContentUrlGenerator;
 use Contao\StringUtil;
 use Doctrine\DBAL\Connection;
-use Isotope\CoreBundle\ProductCollection\Order\OrderFactory;
-use Isotope\CoreBundle\Store\OrderManager;
-use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
-use Symfony\Component\HttpFoundation\UriSigner;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Twig\Environment;
 
 abstract class AbstractVirtualFieldsMigration extends AbstractMigration
 {
@@ -40,7 +33,7 @@ abstract class AbstractVirtualFieldsMigration extends AbstractMigration
             $rows = $this->connection->fetchAllAssociative('SELECT id, jsonData, '.implode(', ', $columns)." FROM $table");
 
             foreach ($rows as $row) {
-                $data = is_string($row['jsonData']) ? json_decode($row['jsonData'], true, flags: JSON_THROW_ON_ERROR) : [];
+                $data = \is_string($row['jsonData']) ? json_decode($row['jsonData'], true, flags: JSON_THROW_ON_ERROR) : [];
 
                 if (!\is_array($data)) {
                     $data = [];

@@ -25,6 +25,7 @@ abstract class AbstractShippingFactory extends AbstractCheckoutMethodFactory
      *
      * @return TType
      */
+    #[\Override]
     public function create(Model $model, StoreContext $context): AbstractShipping
     {
         $this->validateInstanceOf($model, ShippingModel::class);

@@ -93,7 +93,7 @@ abstract class AbstractAttribute extends AbstractModelType implements AttributeI
 
     public function isMandatory(): bool
     {
-        return ($this instanceof VariantAttributeInterface && $this->isVariantOption()) ?: $this->mandatory;
+        return $this instanceof VariantAttributeInterface && $this->isVariantOption() ?: $this->mandatory;
     }
 
     public function setMandatory(bool $mandatory): self
@@ -209,7 +209,7 @@ abstract class AbstractAttribute extends AbstractModelType implements AttributeI
         throw AttributeException::guessFrontendWidget(static::class, __METHOD__);
     }
 
-    public function getValue(CoreProduct $product)
+    public function getValue(CoreProduct $product): mixed
     {
         return $product->{$this->fieldName};
     }

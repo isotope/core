@@ -12,8 +12,12 @@ class NotHasKey extends Constraint
     public string $message = 'The key "{{ key }}" should not be present in the array.';
 
     #[HasNamedArguments]
-    public function __construct(public string $key, ?array $groups = null, mixed $payload = null, mixed $options = null)
-    {
+    public function __construct(
+        public string $key,
+        array|null $groups = null,
+        mixed $payload = null,
+        mixed $options = null,
+    ) {
         parent::__construct($options, $groups, $payload);
     }
 }

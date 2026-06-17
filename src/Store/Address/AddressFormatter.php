@@ -7,7 +7,6 @@ namespace Isotope\CoreBundle\Store\Address;
 use Contao\CoreBundle\DataContainer\ValueFormatter;
 use Contao\CoreBundle\Intl\Countries;
 use Isotope\CoreBundle\Model\AddressModel;
-use Isotope\CoreBundle\Twig\TemplateMarkup;
 use Isotope\CoreBundle\Twig\TemplateMarkupFactory;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Contracts\Service\ResetInterface;
@@ -58,7 +57,7 @@ class AddressFormatter implements ResetInterface
             $this->getData($address, $config),
         );
 
-        $output = str_replace(array("\n", '<br>'), array('', "<br>\n"), $output);
+        $output = str_replace(["\n", '<br>'], ['', "<br>\n"], $output);
 
         return trim($output);
     }
@@ -76,7 +75,7 @@ class AddressFormatter implements ResetInterface
         $this->countryLabels = null;
     }
 
-    private function getCountryLabel(string $code)
+    private function getCountryLabel(string $code): string
     {
         if (null === $this->countryLabels) {
             $this->countryLabels = $this->countries->getCountries();

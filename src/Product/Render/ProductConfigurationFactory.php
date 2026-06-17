@@ -109,8 +109,8 @@ class ProductConfigurationFactory
                     $value = $widget->value;
 
                     // Trigger the save_callback
-                    if (\is_array($arrData['save_callback'] ?? null)) {
-                        foreach ($arrData['save_callback'] as $callback) {
+                    if (\is_array($dcaConfig['save_callback'] ?? null)) {
+                        foreach ($dcaConfig['save_callback'] as $callback) {
                             try {
                                 if (\is_array($callback)) {
                                     $varValue = System::importStatic($callback[0])->{$callback[1]}($varValue, $product, $widget);
@@ -133,7 +133,7 @@ class ProductConfigurationFactory
             $widgets[$attributeName] = $widget;
 
             if (
-                ($arrData['attributes']['ajax_option'] ?? null)
+                ($dcaConfig['attributes']['ajax_option'] ?? null)
                 || \in_array($attributeName, $pricedFields, true)
                 || ($attribute instanceof VariantAttributeInterface && $attribute->isVariantOption())
             ) {

@@ -12,7 +12,7 @@ trait DcaLabelTrait
             return $name;
         }
 
-        return sprintf(
+        return \sprintf(
             '%s <span class="label-info">[%s]</span>',
             $config['label'][0],
             $name,

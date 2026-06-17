@@ -19,9 +19,8 @@ class ProductAccessVoter extends AbstractDataContainerVoter implements ResetInte
 {
     private array $cache = [];
 
-    public function __construct(
-        private readonly Connection $connection,
-    ) {
+    public function __construct(private readonly Connection $connection)
+    {
     }
 
     public function reset(): void
@@ -34,7 +33,7 @@ class ProductAccessVoter extends AbstractDataContainerVoter implements ResetInte
         return 'tl_iso_product';
     }
 
-    protected function hasAccess(TokenInterface $token, UpdateAction|CreateAction|ReadAction|DeleteAction $action): bool
+    protected function hasAccess(TokenInterface $token, CreateAction|DeleteAction|ReadAction|UpdateAction $action): bool
     {
         $user = $token->getUser();
 
@@ -69,7 +68,7 @@ class ProductAccessVoter extends AbstractDataContainerVoter implements ResetInte
     private function getAllowedIds(array $productTypes, string $cacheKey): array
     {
         $productIds = $this->connection->fetchFirstColumn(
-            <<<SQL
+            <<<'SQL'
                 SELECT id
                 FROM tl_iso_product
                 WHERE pid=0 AND language='' AND type=0 OR type IN (?)
@@ -83,7 +82,7 @@ class ProductAccessVoter extends AbstractDataContainerVoter implements ResetInte
                     FROM tl_iso_product
                     WHERE pid=0 AND language='' AND type=0 OR type IN (?)
                 ) AND language=''
-            SQL,
+                SQL,
             [$productTypes, $productTypes],
             [ArrayParameterType::INTEGER, ArrayParameterType::INTEGER],
         );

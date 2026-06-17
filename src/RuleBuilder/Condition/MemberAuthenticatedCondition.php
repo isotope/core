@@ -38,12 +38,12 @@ class MemberAuthenticatedCondition implements RuleConditionInterface
 
     public function getBackendLabel(): string
     {
-        return match ($this->operator) {
-            'logged_in' => $this->translator->trans('tl_iso_rule_condition.operator.logged_in', [], 'contao_tl_iso_rule_condition'),
-            'not_logged_in' => $this->translator->trans('tl_iso_rule_condition.operator.not_logged_in', [], 'contao_tl_iso_rule_condition'),
-        };
+        return $this->getOperators()[$this->operator];
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function getOperators(): array
     {
         return [

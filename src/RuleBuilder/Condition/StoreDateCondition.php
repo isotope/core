@@ -8,7 +8,6 @@ use Contao\Config;
 use Contao\Date;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsRuleCondition;
 use Isotope\CoreBundle\Store\Context\StoreContext;
-use Isotope\CoreBundle\Store\StoreManager;
 
 #[AsRuleCondition(category: 'dates', factory: StoreConditionFactory::class)]
 class StoreDateCondition implements RuleConditionInterface

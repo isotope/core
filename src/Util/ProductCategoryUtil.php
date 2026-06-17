@@ -115,7 +115,7 @@ class ProductCategoryUtil implements ResetInterface
         }
 
         return array_map(
-            static fn ($v) => array_map(intval(...), explode(',', $v)),
+            static fn ($v) => array_map(intval(...), explode(',', (string) $v)),
             $qb->fetchAllKeyValue(),
         );
     }

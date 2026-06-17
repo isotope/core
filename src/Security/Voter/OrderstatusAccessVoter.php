@@ -20,9 +20,8 @@ class OrderstatusAccessVoter extends AbstractDataContainerVoter implements Reset
 {
     private array|null $used = null;
 
-    public function __construct(
-        private readonly Connection $connection,
-    ) {
+    public function __construct(private readonly Connection $connection)
+    {
     }
 
     public function reset(): void

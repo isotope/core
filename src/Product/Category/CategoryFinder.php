@@ -84,16 +84,6 @@ class CategoryFinder implements ResetInterface
                 return Database::getInstance()->getChildRecords([$pageModel->rootId], 'tl_page', false, [$pageModel->rootId], $where);
         }
 
-        //if (isset($GLOBALS['ISO_HOOKS']['findCategories']) && \is_array($GLOBALS['ISO_HOOKS']['findCategories'])) {
-        //    foreach ($GLOBALS['ISO_HOOKS']['findCategories'] as $callback) {
-        //        $arrCategories = System::importStatic($callback[0])->{$callback[1]}($this);
-        //
-        //        if ($arrCategories !== false) {
-        //            break;
-        //        }
-        //    }
-        //}
-
         throw new RuntimeException('Unable to determine categories for scope "'.$scope.'"');
     }
 }

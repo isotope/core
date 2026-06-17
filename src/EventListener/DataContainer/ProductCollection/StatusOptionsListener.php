@@ -12,9 +12,8 @@ use Symfony\Component\Workflow\Workflow;
 
 class StatusOptionsListener
 {
-    public function __construct(
-        private readonly WorkflowManager $workflowManager,
-    ) {
+    public function __construct(private readonly WorkflowManager $workflowManager)
+    {
     }
 
     #[AsCallback('tl_iso_product_collection', 'fields.order_status.options')]

@@ -8,9 +8,6 @@ use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\CoreBundle\Routing\PageFinder;
 use Contao\FrontendUser;
 use Isotope\CoreBundle\Model\ConfigModel;
-use Isotope\CoreBundle\Model\ProductCollectionModel;
-use Isotope\CoreBundle\ProductCollection\LockableCollectionInterface;
-use Isotope\CoreBundle\Store\CartManager;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Context\StoreContextException;
 use Isotope\CoreBundle\Store\Context\StoreContextFactory;
@@ -71,7 +68,7 @@ class StoreManager
     /**
      * @template T
      *
-     * @param \Closure(): T $closure
+     * @param \Closure(StoreContext $context): T $closure
      *
      * @return T
      */

@@ -33,10 +33,11 @@ class PermissionListener
 
         if ([] === $user->iso_producttypes) {
             $GLOBALS['TL_DCA']['tl_iso_product']['config']['closed'] = true;
-            $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['filter'][] = sprintf('type IN (0)');
+            $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['filter'][] = 'type IN (0)';
+
             return;
         }
 
-        $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['filter'][] = sprintf('type IN (0, %s)', implode(',', $user->iso_producttypes));
+        $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['filter'][] = \sprintf('type IN (0, %s)', implode(',', $user->iso_producttypes));
     }
 }

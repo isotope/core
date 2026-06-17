@@ -17,7 +17,7 @@ class OrderValidationEvent extends Event
 
     public function __construct(
         private readonly array $orderData,
-        private readonly StoreContext $context
+        private readonly StoreContext $context,
     ) {
     }
 

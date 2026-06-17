@@ -80,7 +80,7 @@ class OrderTransactionHandler
     /**
      * @param callable(Order, PaymentModel, OrderTransactionModel, OrderTransactionEventModel): void|null $callback
      */
-    public function handleEvent(OrderTransactionModel|null $transactionModel, string|array $payload, callable|null $callback = null): bool
+    public function handleEvent(OrderTransactionModel|null $transactionModel, array|string $payload, callable|null $callback = null): bool
     {
         if (!$transactionModel) {
             return false;

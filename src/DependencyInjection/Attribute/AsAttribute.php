@@ -23,7 +23,7 @@ class AsAttribute implements TypeAttributeInterface
             return $this->type;
         }
 
-        $className = ltrim(strrchr((string) $className, '\\'), '\\');
+        $className = ltrim(strrchr($className, '\\'), '\\');
 
         if (str_ends_with($className, 'Attribute')) {
             $className = substr($className, 0, -9);

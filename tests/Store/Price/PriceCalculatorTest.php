@@ -20,7 +20,7 @@ use Isotope\CoreBundle\Test\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class PriceCalculatorTest extends TestCase
+final class PriceCalculatorTest extends TestCase
 {
     #[DataProvider('calculatePriceDefinitionProvider')]
     public function testCalculatePercentagePriceDefinition(float $subtotal, PriceDisplay $priceDisplay, int $taxId, float $expectedTotal, float $expectedTaxes): void
@@ -53,25 +53,27 @@ class PriceCalculatorTest extends TestCase
 
         $taxRateAdapter
             ->method('findMultipleByIds')
-            ->willReturnCallback(function() use ($taxId) {
-                if (PriceDefinition::SPLIT_TAX === $taxId) {
-                    return [
-                        $this->createClassWithPropertiesStub(TaxRateModel::class, [
-                            'id' => 1,
-                            'rate' => 10,
-                        ]),
-                        $this->createClassWithPropertiesStub(TaxRateModel::class, [
-                            'id' => 2,
-                            'rate' => 20,
-                        ]),
-                    ];
-                }
+            ->willReturnCallback(
+                function () use ($taxId) {
+                    if (PriceDefinition::SPLIT_TAX === $taxId) {
+                        return [
+                            $this->createClassWithPropertiesStub(TaxRateModel::class, [
+                                'id' => 1,
+                                'rate' => 10,
+                            ]),
+                            $this->createClassWithPropertiesStub(TaxRateModel::class, [
+                                'id' => 2,
+                                'rate' => 20,
+                            ]),
+                        ];
+                    }
 
-                return [$this->createClassWithPropertiesStub(TaxRateModel::class, [
-                    'id' => 1,
-                    'rate' => 10,
-                ])];
-            })
+                    return [$this->createClassWithPropertiesStub(TaxRateModel::class, [
+                        'id' => 1,
+                        'rate' => 10,
+                    ])];
+                },
+            )
         ;
 
         $context = $this->createStoreContext(priceDisplay: $priceDisplay);
@@ -176,7 +178,7 @@ class PriceCalculatorTest extends TestCase
         $taxCalculator = new TaxCalculator(
             $this->createContaoFrameworkStub(),
             $this->createStub(RuleMatcher::class),
-            $this->createStub(TranslatorInterface::class)
+            $this->createStub(TranslatorInterface::class),
         );
 
         $calculator = new PriceCalculator($taxCalculator);

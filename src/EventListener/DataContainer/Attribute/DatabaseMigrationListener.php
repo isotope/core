@@ -7,7 +7,6 @@ namespace Isotope\CoreBundle\EventListener\DataContainer\Attribute;
 use Ausi\SlugGenerator\SlugOptions;
 use Contao\Controller;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
-use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 use Contao\CoreBundle\Slug\Slug;
 use Contao\DataContainer;
 use Contao\StringUtil;
@@ -65,7 +64,7 @@ class DatabaseMigrationListener
 
         if (
             ($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$value]['attributes']['systemColumn'] ?? false)
-            || $this->connection->getDatabasePlatform()?->getReservedKeywordsList()->isKeyword($value)
+            || $this->connection->getDatabasePlatform()->getReservedKeywordsList()->isKeyword($value)
         ) {
             throw new InvalidArgumentException(\sprintf($GLOBALS['TL_LANG']['ERR']['systemColumn'], $value));
         }

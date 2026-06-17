@@ -5,7 +5,6 @@ use Contao\DataContainer;
 use Contao\DC_Table;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Types\Types;
-use Isotope\Backend\Config\Callback;
 use Isotope\CoreBundle\Store\Price\PriceDisplay;
 use Isotope\CoreBundle\Store\Price\TaxCalculation;
 
@@ -198,7 +197,6 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
             ],
             'eval' => [
                 'tl_class' => 'clr',
-                'dragAndDrop' => true,
                 'actions' => [],
             ],
             'sql' => 'blob NULL',
@@ -312,7 +310,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
         'orderDigits' => [
             'default' => 4,
             'inputType' => 'select',
-            'options' => \range(1, 9),
+            'options' => range(1, 9),
             'eval' => ['tl_class' => 'w50'],
             'sql' => "int(1) unsigned NOT NULL default '4'",
         ],

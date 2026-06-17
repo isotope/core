@@ -14,9 +14,8 @@ use Doctrine\DBAL\Connection;
  */
 class LabelMigration extends AbstractMigration
 {
-    public function __construct(
-        private readonly Connection $connection,
-    ) {
+    public function __construct(private readonly Connection $connection)
+    {
     }
 
     public function shouldRun(): bool

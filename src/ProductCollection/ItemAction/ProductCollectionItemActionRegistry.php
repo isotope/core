@@ -10,6 +10,9 @@ use Symfony\Contracts\Service\ServiceProviderInterface;
 #[AsProductCollectionItemAction]
 class ProductCollectionItemActionRegistry
 {
+    /**
+     * @param ServiceProviderInterface<ProductCollectionItemActionInterface> $actions
+     */
     public function __construct(private readonly ServiceProviderInterface $actions)
     {
     }

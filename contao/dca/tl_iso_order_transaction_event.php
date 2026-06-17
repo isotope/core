@@ -33,6 +33,6 @@ $GLOBALS['TL_DCA']['tl_iso_order_transaction_event'] = [
         ],
         'paypal_txn_id' => [
             'sql' => ['type' => Types::STRING, 'length' => 32, 'notnull' => false],
-        ]
+        ],
     ],
 ];

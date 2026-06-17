@@ -16,18 +16,19 @@ class ConstraintViolationException extends RuntimeException
      */
     public function __construct(
         private readonly ConstraintViolationListInterface $violations,
-        private readonly array $inputData
+        private readonly array $inputData,
     ) {
         parent::__construct(\sprintf('Caught %s violation errors.', $violations->count()));
     }
 
-    public function getViolations(?string $propertyPath = null): ConstraintViolationListInterface
+    public function getViolations(string|null $propertyPath = null): ConstraintViolationListInterface
     {
         if (!$propertyPath) {
             return $this->violations;
         }
 
         $violations = new ConstraintViolationList();
+
         foreach ($this->violations as $violation) {
             if ($violation->getPropertyPath() === $propertyPath) {
                 $violations->add($violation);
@@ -55,7 +56,7 @@ class ConstraintViolationException extends RuntimeException
                 'title' => 'Constraint violation error',
                 'detail' => $violation->getMessage(),
                 'source' => [
-                    'pointer' => '/' . ltrim($violation->getPropertyPath(), '/'),
+                    'pointer' => '/'.ltrim($violation->getPropertyPath(), '/'),
                 ],
                 'meta' => [
                     'parameters' => $violation->getParameters(),

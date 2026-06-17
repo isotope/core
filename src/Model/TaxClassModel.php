@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Isotope\CoreBundle\Model;
 
 use Contao\Model;
@@ -20,7 +22,7 @@ class TaxClassModel extends Model
      */
     protected static $strTable = 'tl_iso_tax_class';
 
-    public static function findFallback(array $options = array()): self|null
+    public static function findFallback(array $options = []): self|null
     {
         return static::findOneBy('fallback', '1', $options);
     }

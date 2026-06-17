@@ -1,7 +1,6 @@
 <?php
 
 use Contao\ArrayUtil;
-use Isotope\Automator;
 use Isotope\CoreBundle\Model\AddressModel;
 use Isotope\CoreBundle\Model\AttributeModel;
 use Isotope\CoreBundle\Model\AttributeOptionModel;

@@ -11,6 +11,7 @@ use Isotope\CoreBundle\DependencyInjection\Attribute\AsAttribute;
 #[AsAttribute]
 class RadioAttribute extends AbstractOptionsAttribute implements VariantAttributeInterface
 {
+    #[\Override]
     public function updateDcaField(array &$field, array &$keys): void
     {
         parent::updateDcaField($field, $keys);

@@ -68,7 +68,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_item'] = [
         ],
         'referencePage' => [
             'foreignKey' => 'tl_page.title',
-            'sql' => "int(10) unsigned NULL",
+            'sql' => 'int(10) unsigned NULL',
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
         ],
     ],

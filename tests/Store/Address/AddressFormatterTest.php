@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Isotope\CoreBundle\Test\Store\Address;
 
 use Contao\CoreBundle\DataContainer\ValueFormatter;
@@ -12,15 +14,14 @@ use Isotope\CoreBundle\Store\Address\AddressValidator;
 use Isotope\CoreBundle\Twig\TemplateMarkupFactory;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Twig\Environment;
 
-class AddressFormatterTest extends KernelTestCase
+final class AddressFormatterTest extends KernelTestCase
 {
     protected function tearDown(): void
     {
         parent::tearDown();
 
-        \restore_exception_handler();
+        restore_exception_handler();
     }
 
     #[DataProvider('addressProvider')]
@@ -70,22 +71,21 @@ class AddressFormatterTest extends KernelTestCase
                 'country' => 'DE',
             ],
             <<<'HTML'
-Musterfirma<br>
-Herr Max Muster<br>
-Musterstrasse 1<br>
-Postfach<br>
-10000 Berlin<br>
-DE
-HTML
-,
+                Musterfirma<br>
+                Herr Max Muster<br>
+                Musterstrasse 1<br>
+                Postfach<br>
+                10000 Berlin<br>
+                DE
+                HTML,
             <<<'TEXT'
-Musterfirma
-Herr Max Muster
-Musterstrasse 1
-Postfach
-10000 Berlin
-DE
-TEXT,
+                Musterfirma
+                Herr Max Muster
+                Musterstrasse 1
+                Postfach
+                10000 Berlin
+                DE
+                TEXT,
         ];
 
         yield [
@@ -101,20 +101,19 @@ TEXT,
                 'country' => 'IT',
             ],
             <<<'HTML'
-Azienda modello<br>
-Signore Max Muster<br>
-Via Modello 42<br>
-20011 Milano (IT-MI)<br>
-IT
-HTML
-,
+                Azienda modello<br>
+                Signore Max Muster<br>
+                Via Modello 42<br>
+                20011 Milano (IT-MI)<br>
+                IT
+                HTML,
             <<<'TEXT'
-Azienda modello
-Signore Max Muster
-Via Modello 42
-20011 Milano (IT-MI)
-IT
-TEXT,
+                Azienda modello
+                Signore Max Muster
+                Via Modello 42
+                20011 Milano (IT-MI)
+                IT
+                TEXT,
         ];
 
         yield [
@@ -129,22 +128,21 @@ TEXT,
                 'country' => 'GB',
             ],
             <<<'HTML'
-Example company<br>
-Mr. John Doe<br>
-9169 Chester Road<br>
-East Central London<br>
-SE1 3AE<br>
-GB
-HTML
-,
+                Example company<br>
+                Mr. John Doe<br>
+                9169 Chester Road<br>
+                East Central London<br>
+                SE1 3AE<br>
+                GB
+                HTML,
             <<<'TEXT'
-Example company
-Mr. John Doe
-9169 Chester Road
-East Central London
-SE1 3AE
-GB
-TEXT,
+                Example company
+                Mr. John Doe
+                9169 Chester Road
+                East Central London
+                SE1 3AE
+                GB
+                TEXT,
         ];
 
         yield [
@@ -160,20 +158,19 @@ TEXT,
                 'country' => 'US',
             ],
             <<<'HTML'
-Example company<br>
-Mr. John Doe<br>
-417 Holly Drive<br>
-Brooklyn, US-NY 11203<br>
-US
-HTML
-,
+                Example company<br>
+                Mr. John Doe<br>
+                417 Holly Drive<br>
+                Brooklyn, US-NY 11203<br>
+                US
+                HTML,
             <<<'TEXT'
-Example company
-Mr. John Doe
-417 Holly Drive
-Brooklyn, US-NY 11203
-US
-TEXT,
+                Example company
+                Mr. John Doe
+                417 Holly Drive
+                Brooklyn, US-NY 11203
+                US
+                TEXT,
         ];
 
         yield [
@@ -189,22 +186,21 @@ TEXT,
                 'country' => 'EG',
             ],
             <<<'HTML'
-Example company<br>
-Mr. John Doe<br>
-12 Al Tahrir Street, Apartment 4A<br>
-11511 Cairo<br>
-EG-BA<br>
-EG
-HTML
-,
+                Example company<br>
+                Mr. John Doe<br>
+                12 Al Tahrir Street, Apartment 4A<br>
+                11511 Cairo<br>
+                EG-BA<br>
+                EG
+                HTML,
             <<<'TEXT'
-Example company
-Mr. John Doe
-12 Al Tahrir Street, Apartment 4A
-11511 Cairo
-EG-BA
-EG
-TEXT,
+                Example company
+                Mr. John Doe
+                12 Al Tahrir Street, Apartment 4A
+                11511 Cairo
+                EG-BA
+                EG
+                TEXT,
         ];
 
         yield [
@@ -219,24 +215,23 @@ TEXT,
                 'country' => 'TH',
             ],
             <<<'HTML'
-DSA CO. LTD<br>
-Somchai Subhani<br>
-Human Resource Department<br>
-431 Nayok Road, Prachathipat<br>
-Klongtoey District, Bangkok<br>
-13241<br>
-TH
-HTML
-,
+                DSA CO. LTD<br>
+                Somchai Subhani<br>
+                Human Resource Department<br>
+                431 Nayok Road, Prachathipat<br>
+                Klongtoey District, Bangkok<br>
+                13241<br>
+                TH
+                HTML,
             <<<'TEXT'
-DSA CO. LTD
-Somchai Subhani
-Human Resource Department
-431 Nayok Road, Prachathipat
-Klongtoey District, Bangkok
-13241
-TH
-TEXT,
+                DSA CO. LTD
+                Somchai Subhani
+                Human Resource Department
+                431 Nayok Road, Prachathipat
+                Klongtoey District, Bangkok
+                13241
+                TH
+                TEXT,
         ];
     }
 }

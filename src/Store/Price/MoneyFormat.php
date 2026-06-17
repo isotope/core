@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Store\Price;
 
-final class MoneyFormat
+final readonly class MoneyFormat
 {
     /**
      * @internal
      */
     public function __construct(
-        public readonly int $decimals = 2,
-        public readonly string $decimalSeparator = '.',
-        public readonly string $thousandsSeparator = '',
-        public readonly int $roundingPrecision = 2,
-        public readonly float $roundingIncrement = 0.01,
+        public int $decimals = 2,
+        public string $decimalSeparator = '.',
+        public string $thousandsSeparator = '',
+        public int $roundingPrecision = 2,
+        public float $roundingIncrement = 0.01,
     ) {
     }
 

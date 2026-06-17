@@ -23,6 +23,7 @@ abstract class AbstractPaymentFactory extends AbstractCheckoutMethodFactory
     /**
      * @param PaymentModel $model
      */
+    #[\Override]
     public function create(Model $model, StoreContext $context): AbstractPayment
     {
         $this->validateInstanceOf($model, PaymentModel::class);

@@ -25,7 +25,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 #[Route(
     path: '/_isotope/paypal-ipn',
     name: 'isotope_paypal_ipn',
-    defaults: ['_scope' => 'frontend', '_token_check' => false]
+    defaults: ['_scope' => 'frontend', '_token_check' => false],
 )]
 #[WithMonologChannel('isotope.payment.paypal')]
 class PaypalIpnController extends AbstractController
@@ -43,13 +43,13 @@ class PaypalIpnController extends AbstractController
         $this->initializeContaoFramework();
 
         if ('Completed' !== $request->request->get('payment_status')) {
-            $this->logger?->info('PayPal IPN: payment status "' . $request->request->get('payment_status') . '" not implemented.');
+            $this->logger?->info('PayPal IPN: payment status "'.$request->request->get('payment_status').'" not implemented.');
 
             return new Response();
         }
 
         if (null !== OrderTransactionEventModel::findOneBy('paypal_txn_id', $request->request->get('txn_id'))) {
-            $this->logger?->info('PayPal IPN: duplicate transaction ID "' . $request->request->get('txn_id') . '".');
+            $this->logger?->info('PayPal IPN: duplicate transaction ID "'.$request->request->get('txn_id').'".');
 
             return new Response();
         }
@@ -74,19 +74,23 @@ class PaypalIpnController extends AbstractController
     private function validateInput(Request $request): bool
     {
         try {
-            $url = 'https://ipnpb.' . ($request->request->getBoolean('test_ipn') ? 'sandbox.' : '') . 'paypal.com/cgi-bin/webscr?cmd=_notify-validate';
+            $url = 'https://ipnpb.'.($request->request->getBoolean('test_ipn') ? 'sandbox.' : '').'paypal.com/cgi-bin/webscr?cmd=_notify-validate';
 
-            $response = $this->httpClient->request('POST', $url, [
-                'body' => $request->getContent(),
-            ]);
+            $response = $this->httpClient->request(
+                'POST',
+                $url,
+                [
+                    'body' => $request->getContent(),
+                ],
+            );
 
             if ('VERIFIED' !== $response->getContent()) {
-                $this->logger?->error('PayPal IPN: data rejected (' . $response->getContent() . ')');
+                $this->logger?->error('PayPal IPN: data rejected ('.$response->getContent().')');
 
                 return false;
             }
         } catch (ExceptionInterface $exception) {
-            $this->logger?->error('PayPal IPN: Request Error (' . $exception->getMessage() . ')', ['exception' => $exception]);
+            $this->logger?->error('PayPal IPN: Request Error ('.$exception->getMessage().')', ['exception' => $exception]);
 
             return false;
         }

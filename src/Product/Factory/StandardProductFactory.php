@@ -81,9 +81,8 @@ class StandardProductFactory implements ProductFactoryInterface
         );
 
         $data = $this->translate($data, $originalData);
-        $data = $this->inherit($data, $originalData, $type);
 
-        return $data;
+        return $this->inherit($data, $originalData, $type);
     }
 
     private function translate(array $data, array $originalData): array
@@ -118,7 +117,7 @@ class StandardProductFactory implements ProductFactoryInterface
                 $data[$field] = $parent[$field];
             }
 
-            if (\in_array($field, $fallbackFields)) {
+            if (\in_array($field, $fallbackFields, true)) {
                 $data[$field.'_fallback'] = $parent[$field.'_fallback'] ?? null;
             }
         }

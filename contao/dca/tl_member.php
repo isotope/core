@@ -1,10 +1,5 @@
 <?php
 
-use Isotope\CompatibilityHelper;
-
-/*
- * Add a child table to tl_member
- */
 $GLOBALS['TL_DCA']['tl_member']['config']['ctable'][] = 'tl_iso_address';
 
 /*

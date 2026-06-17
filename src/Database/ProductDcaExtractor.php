@@ -43,6 +43,7 @@ class ProductDcaExtractor extends DcaExtractor
         $this->dumpCacheFile();
     }
 
+    #[\Override]
     public static function getInstance($strTable = null): void
     {
         throw new LogicException('Cannot create instance of '.self::class.', use the service instead');

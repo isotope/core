@@ -43,7 +43,7 @@ class AddressManager
 
         if ($this->isAction($request, $identifier, 'edit')) {
             $id = $request->request->getInt('edit_address_'.$identifier);
-            $address = array_find($addresses, fn (AddressModel $address) => (int) $address->id === $id);
+            $address = array_find($addresses, static fn (AddressModel $address) => (int) $address->id === $id);
 
             if (!$address) {
                 throw new BadRequestHttpException();
@@ -54,7 +54,7 @@ class AddressManager
 
         if ($this->isAction($request, $identifier, 'delete')) {
             $id = $request->request->getInt('delete_address_'.$identifier);
-            $address = array_find($addresses, fn (AddressModel $address) => (int) $address->id === $id);
+            $address = array_find($addresses, static fn (AddressModel $address) => (int) $address->id === $id);
 
             if (!$address) {
                 throw new BadRequestHttpException();
@@ -109,18 +109,15 @@ class AddressManager
         $addressId = $address->id;
 
         // Add an undo record so a backend admin could undo deleting the address
-        $this->connection->insert(
-            'tl_undo',
-            [
-                'pid' => 0,
-                'tstamp' => time(),
-                'fromTable' => 'tl_iso_address',
-                'query' => 'DELETE FROM tl_iso_address WHERE id='.$addressId,
-                'affectedRows' => 1,
-                'data' => serialize(['tl_iso_address' => [$address->row()]]),
-                'preview' => $this->addressFormatter->toHtml($address, $addressConfig),
-            ]
-        );
+        $this->connection->insert('tl_undo', [
+            'pid' => 0,
+            'tstamp' => time(),
+            'fromTable' => 'tl_iso_address',
+            'query' => 'DELETE FROM tl_iso_address WHERE id='.$addressId,
+            'affectedRows' => 1,
+            'data' => serialize(['tl_iso_address' => [$address->row()]]),
+            'preview' => $this->addressFormatter->toHtml($address, $addressConfig),
+        ]);
 
         $this->cacheTagManager->invalidateTagsForModelInstance($address);
 

@@ -19,7 +19,7 @@
                 color: #1899ad;
             }
 
-            html[data-color-scheme="dark"] & {
+            html[data-color-scheme='dark'] & {
                 background: var(--body-bg);
             }
         }
@@ -35,7 +35,7 @@
             margin-bottom: 18px;
         }
 
-        @media(max-width:600px) {
+        @media (width <=600px) {
             grid-template: auto auto/auto;
 
             .text {

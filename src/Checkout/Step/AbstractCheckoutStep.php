@@ -41,7 +41,7 @@ abstract class AbstractCheckoutStep implements CheckoutStepInterface
                     'enctype' => $event->hasUploads() ? 'multipart/form-data' : null,
                     'pre' => $event->getPreMarkup(),
                     'post' => $event->getPostMarkup(),
-                    ...$context
+                    ...$context,
                 ],
             ) : null,
         );

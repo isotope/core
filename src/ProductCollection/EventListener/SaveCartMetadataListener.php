@@ -4,14 +4,11 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\ProductCollection\EventListener;
 
-use Contao\FrontendUser;
 use Isotope\CoreBundle\Model\AddressModel;
 use Isotope\CoreBundle\Model\ProductCollectionModel;
 use Isotope\CoreBundle\ProductCollection\Cart\Cart;
 use Isotope\CoreBundle\ProductCollection\Event\SaveCollectionTransactionEvent;
-use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\StoreManager;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
 #[AsEventListener(SaveCollectionTransactionEvent::NAME.'.pre')]

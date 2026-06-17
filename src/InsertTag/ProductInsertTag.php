@@ -17,7 +17,6 @@ use Isotope\CoreBundle\Product\ProductBuilder;
 use Isotope\CoreBundle\Store\StoreManager;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Routing\Exception\ExceptionInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -42,7 +41,7 @@ class ProductInsertTag implements InsertTagResolverNestedResolvedInterface
         $first = $insertTag->getParameters()->get(0);
 
         if (
-            \is_numeric($first)
+            is_numeric($first)
             || 'product_open' === $insertTag->getName()
             || 'product_url' === $insertTag->getName()
         ) {
@@ -123,7 +122,7 @@ class ProductInsertTag implements InsertTagResolverNestedResolvedInterface
         } else {
             $product = $this->productBuilder->buildOne(
                 new ProductDto('tl_iso_product.'.$id),
-                $this->storeManager->getCurrentContext()
+                $this->storeManager->getCurrentContext(),
             );
         }
 

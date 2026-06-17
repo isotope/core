@@ -15,8 +15,6 @@ use Isotope\CoreBundle\Checkout\Step\CheckoutStepInterface;
 use Isotope\CoreBundle\Store\CartManager;
 use Isotope\CoreBundle\Store\Order\CreateOrderResult;
 use Isotope\CoreBundle\Store\Order\OrderNotifier;
-use Isotope\CoreBundle\Store\Price\PriceDisplay;
-use Isotope\CoreBundle\Store\Price\TaxCalculation;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -71,7 +69,7 @@ class CheckoutController extends AbstractContentElementController
             (new CheckoutStepEvent($context, $request, '_summary', $config))
                 ->setFormId('place_order')
                 ->setEditing(true)
-                ->setSubmitted($isSubmitted)
+                ->setSubmitted($isSubmitted),
         );
 
         if ($allCompleted && $isSubmitted && !$event->hasError()) {

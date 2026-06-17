@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Isotope\CoreBundle\Model;
 
 use Terminal42\DcMultilingualBundle\Model\Multilingual;
@@ -38,11 +40,6 @@ class ProductModel extends Multilingual
      */
     protected static $strTable = 'tl_iso_product';
 
-    protected static function getPidColumn(): string
-    {
-        return 'pid';
-    }
-
     /**
      * Find a model by its alias or ID when using multilingal aliases.
      *
@@ -52,6 +49,7 @@ class ProductModel extends Multilingual
      *
      * @return self
      */
+    #[\Override]
     public static function findByMultilingualAliasOrId($alias, $aliasColumnName = 'alias', $options = [])
     {
         $isAlias = !preg_match('/^[1-9]\d*$/', $alias);
@@ -73,5 +71,11 @@ class ProductModel extends Multilingual
         );
 
         return static::find($options);
+    }
+
+    #[\Override]
+    protected static function getPidColumn(): string
+    {
+        return 'pid';
     }
 }

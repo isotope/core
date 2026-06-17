@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Isotope\CoreBundle\Model;
 
 use Contao\Model;
@@ -8,11 +10,11 @@ use Isotope\CoreBundle\ProductCollection\Order\Order;
 use Symfony\Component\Uid\Uuid;
 
 /**
- * @property int    $pid
- * @property int    $tstamp
- * @property string $uniqid
- * @property int    $payment_id
- * @property int    $created
+ * @property int         $pid
+ * @property int         $tstamp
+ * @property string      $uniqid
+ * @property int         $payment_id
+ * @property int         $created
  * @property int|null    $completed
  * @property string|null $label
  * @property string|null $amount

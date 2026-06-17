@@ -45,17 +45,18 @@ class ConfigSwitcherController extends AbstractContentElementController
             throw new RedirectResponseException($request->getRequestUri());
         }
 
+        $configs = [];
         $configModels = ConfigModel::findMultipleByIds($configIds);
         $currentId = $this->getStoreContext()->getConfigId();
 
         if (null !== $configModels) {
             foreach ($configModels as $config) {
-                $configs[] = array (
+                $configs[] = [
                     'config' => $config,
                     'id' => $config->id,
                     'label' => $this->translator->trans($config->label ?: $config->name, [], 'isotope'),
                     'active' => $currentId === (int) $config->id,
-                );
+                ];
             }
         }
 

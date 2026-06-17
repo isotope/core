@@ -16,7 +16,6 @@ use Isotope\CoreBundle\Store\Price\PriceDisplay;
 use Isotope\CoreBundle\Store\Price\TaxCalculation;
 use Isotope\CoreBundle\Store\StoreManager;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -24,7 +23,8 @@ use Symfony\Component\HttpFoundation\Response;
  */
 abstract class AbstractContentElementController extends CoreContentElementController
 {
-    public function __invoke(Request $request, ContentModel $model, string $section, ?array $classes = null): Response
+    #[\Override]
+    public function __invoke(Request $request, ContentModel $model, string $section, array|null $classes = null): Response
     {
         $fragmentId = $this->getFragmentId($model->row());
         $isFragmentRequest = $request->isXmlHttpRequest() && $request->headers->has('Isotope-Fragment');
@@ -45,6 +45,18 @@ abstract class AbstractContentElementController extends CoreContentElementContro
         return $response;
     }
 
+    #[\Override]
+    public static function getSubscribedServices(): array
+    {
+        $services = parent::getSubscribedServices();
+
+        $services[StoreManager::class] = StoreManager::class;
+        $services[ProductQueryFactory::class] = ProductQueryFactory::class;
+
+        return $services;
+    }
+
+    #[\Override]
     protected function addDefaultDataToTemplate(FragmentTemplate $template, array $modelData = [], string $section = 'main', array $classes = [], array $properties = [], bool $asEditorView = false, array $nestedFragments = []): void
     {
         parent::addDefaultDataToTemplate($template, $modelData, $section, $classes, $properties, $asEditorView);
@@ -79,15 +91,5 @@ abstract class AbstractContentElementController extends CoreContentElementContro
         $template->show_taxes = TaxCalculation::Horizontal === $context->getTaxCalculation();
         $template->multiple_taxes = $collection->getTotal()?->getCalculatedTaxes()->count() > 1;
         $template->is_gross = PriceDisplay::Net !== $context->getPriceDisplay();
-    }
-
-    public static function getSubscribedServices(): array
-    {
-        $services = parent::getSubscribedServices();
-
-        $services[StoreManager::class] = StoreManager::class;
-        $services[ProductQueryFactory::class] = ProductQueryFactory::class;
-
-        return $services;
     }
 }

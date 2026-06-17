@@ -1,5 +1,4 @@
 .tl_listing_container.tl_iso_related_product {
-
     .tl_content_right {
         grid-column: 2/2;
         border-bottom: 1px solid var(--border);
@@ -44,7 +43,7 @@
         .cte_type {
             display: block;
             min-height: 18px;
-            border-bottom-left-radius: var(--border-radius)
+            border-bottom-left-radius: var(--border-radius);
         }
 
         &:has(.cte_type) {

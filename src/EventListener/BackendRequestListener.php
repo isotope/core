@@ -138,7 +138,7 @@ class ShopConfigCallback
         /** @var ShopConfigController $controller */
         $controller = System::getContainer()->get(ShopConfigController::class);
 
-        return $controller->__invoke(
+        return $controller(
             System::getContainer()->get('request_stack')->getCurrentRequest(),
         )->getContent();
     }

@@ -16,7 +16,7 @@ abstract class TransactionEvent implements StoppableEventInterface
      */
     public mixed $result = null;
 
-    public ?\Throwable $exception = null;
+    public \Throwable|null $exception = null;
 
     private bool $propagationStopped = false;
 

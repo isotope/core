@@ -7,6 +7,10 @@ namespace Isotope\CoreBundle\Checkout\Step;
 use Isotope\CoreBundle\Twig\TemplateMarkup;
 use Symfony\Component\DependencyInjection\Exception\RuntimeException;
 
+/**
+ * @implements \ArrayAccess<string, mixed>
+ * @implements \IteratorAggregate<string, mixed>
+ */
 class CheckoutStepSummary implements \ArrayAccess, \IteratorAggregate, \Countable, \Stringable
 {
     public function __construct(
@@ -16,12 +20,17 @@ class CheckoutStepSummary implements \ArrayAccess, \IteratorAggregate, \Countabl
     ) {
     }
 
+    public function __toString(): string
+    {
+        return (string) ($this->details ?? '');
+    }
+
     public function getTitle(): string|null
     {
         return $this->title;
     }
 
-    public function setTitle(?string $title): self
+    public function setTitle(string|null $title): self
     {
         $this->title = $title;
 
@@ -38,11 +47,6 @@ class CheckoutStepSummary implements \ArrayAccess, \IteratorAggregate, \Countabl
         $this->completed = $completed;
 
         return $this;
-    }
-
-    public function __toString(): string
-    {
-        return (string) ($this->details ?? '');
     }
 
     public function getDetails(): TemplateMarkup|null

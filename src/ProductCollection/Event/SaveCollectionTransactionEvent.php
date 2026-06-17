@@ -8,6 +8,9 @@ use Isotope\CoreBundle\EventDispatcher\TransactionEvent;
 use Isotope\CoreBundle\Model\ProductCollectionModel;
 use Isotope\CoreBundle\ProductCollection\AbstractProductCollection;
 
+/**
+ * @extends TransactionEvent<void>
+ */
 class SaveCollectionTransactionEvent extends TransactionEvent
 {
     public const string NAME = 'isotope.product_collection.save';

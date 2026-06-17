@@ -100,6 +100,11 @@ class CoreDataCollector implements DataCollectorInterface
         return $this->virtualFieldsHandler->expandFields($data, 'tl_iso_product');
     }
 
+    /**
+     * @param array<string, mixed> $data
+     *
+     * @return array<string, mixed>|null
+     */
     private function extract(array &$data, string $prefix): array|null
     {
         $extract = [];

@@ -10,6 +10,9 @@ use Isotope\CoreBundle\ProductCollection\AbstractProductCollection;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 
+/**
+ * @extends TransactionEvent<void>
+ */
 class LoadItemTransactionEvent extends TransactionEvent
 {
     public const string NAME = 'isotope.product_collection_item.load';

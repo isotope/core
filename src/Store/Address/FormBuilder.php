@@ -28,7 +28,7 @@ class FormBuilder
     {
         $formId = 'iso_'.$prefix.'address';
 
-        $form = new Form($formId, 'POST', fn () => $request->isMethod(Request::METHOD_POST) && $request->request->has($formId));
+        $form = new Form($formId, 'POST', static fn () => $request->isMethod(Request::METHOD_POST) && $request->request->has($formId));
         $form->setBoundModel($address);
 
         Controller::loadDataContainer('tl_iso_address');

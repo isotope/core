@@ -8,9 +8,7 @@ use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PriorityTaggedServiceTrait;
 use Symfony\Component\DependencyInjection\Compiler\ServiceLocatorTagPass;
-use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Exception\LogicException;
 use Symfony\Component\DependencyInjection\Reference;
 
@@ -47,7 +45,6 @@ class RegisterActionPass implements CompilerPassInterface
             foreach ($tags as $attributes) {
                 $type = $attributes['type'] ?? throw new LogicException('Tag '.$this->tagName.' requires a type');
 
-
                 if ($createChildDefinition) {
                     $serviceId = $this->tagName.'._'.$type;
                     $actionDefinition = new ChildDefinition((string) $reference);
@@ -60,7 +57,7 @@ class RegisterActionPass implements CompilerPassInterface
                     $actionReference = $reference;
                 }
 
-                 // Can only have one service per tag and type (highest priority wins)
+                // Can only have one service per tag and type (highest priority wins)
                 if (\in_array($type, $seenTypes, true)) {
                     $actionDefinition->clearTag($this->tagName);
                     continue;
@@ -68,9 +65,13 @@ class RegisterActionPass implements CompilerPassInterface
 
                 $seenTypes[] = $type;
 
-                $firstParam = (new \ReflectionClass($definition->getClass()))->getConstructor()->getParameters()[0];
+                $refParam = (new \ReflectionClass($definition->getClass()))->getConstructor()->getParameters()[0];
 
-                if ('type' === $firstParam->getName() && 'string' === $firstParam->getType()->getName()) {
+                if (
+                    'type' === $refParam->getName()
+                    && ($refType = $refParam->getType()) instanceof \ReflectionNamedType
+                    && 'string' === $refType->getName()
+                ) {
                     $actionDefinition->setArgument(0, $type);
                 }
 
@@ -80,21 +81,5 @@ class RegisterActionPass implements CompilerPassInterface
 
         $registry = $container->findDefinition($this->registryId);
         $registry->setArgument(0, ServiceLocatorTagPass::register($container, $actions));
-    }
-
-    private function getName(Definition $definition, array $attributes): string
-    {
-        if (isset($attributes['name'])) {
-            return (string) $attributes['name'];
-        }
-
-        $className = $definition->getClass();
-        $className = ltrim(strrchr((string) $className, '\\'), '\\');
-
-        if (str_ends_with($className, 'Action')) {
-            $className = substr($className, 0, -6);
-        }
-
-        return Container::underscore($className);
     }
 }

@@ -7,7 +7,6 @@ use Rector\Config\RectorConfig;
 return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->skip([
         __DIR__.'/contao/dca/*',
-        __DIR__.'/system/modules/*',
         __DIR__.'/src/DataContainer/*',
     ]);
 };

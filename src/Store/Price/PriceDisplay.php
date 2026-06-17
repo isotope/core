@@ -20,16 +20,16 @@ enum PriceDisplay: string implements TranslatableLabelInterface
 
     public function isNet(): bool
     {
-        return $this === self::Net;
+        return self::Net === $this;
     }
 
     public function isGross(): bool
     {
-        return $this === self::Gross;
+        return self::Gross === $this;
     }
 
     public function isFixed(): bool
     {
-        return $this === self::Fixed;
+        return self::Fixed === $this;
     }
 }

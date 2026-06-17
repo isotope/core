@@ -8,7 +8,6 @@ use Isotope\CoreBundle\Model\TaxClassModel;
 use Isotope\CoreBundle\Model\TaxRateModel;
 use Isotope\CoreBundle\RuleBuilder\RuleMatcher;
 use Isotope\CoreBundle\Store\Price\MoneyFormat;
-use Isotope\CoreBundle\Store\Price\PriceDisplay;
 use Isotope\CoreBundle\Store\Price\TaxCalculation;
 use Isotope\CoreBundle\Store\Tax\CalculatedTax;
 use Isotope\CoreBundle\Store\Tax\CalculatedTaxCollection;
@@ -16,24 +15,33 @@ use Isotope\CoreBundle\Store\Tax\TaxCalculator;
 use Isotope\CoreBundle\Store\Tax\TaxRate;
 use Isotope\CoreBundle\Store\Tax\TaxRateCollection;
 use Isotope\CoreBundle\Test\TestCase;
-use Isotope\CoreBundle\Util\FloatComparator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class TaxCalculatorTest extends TestCase
+final class TaxCalculatorTest extends TestCase
 {
     #[DataProvider('getTaxRatesProvider')]
     public function testGetTaxRates(int $taxClassId, array|null $taxClass, array|null $included, array $taxRates): void
     {
         $taxClassAdapter = $this->createAdapterStub(['findById']);
-        $taxClassAdapter->method('findById')->willReturn($taxClass ? $this->createClassWithPropertiesStub(TaxClassModel::class, $taxClass) : null);
+        $taxClassAdapter
+            ->method('findById')
+            ->willReturn($taxClass ? $this->createClassWithPropertiesStub(TaxClassModel::class, $taxClass) : null)
+        ;
 
         $includedModel = $included ? $this->createClassWithPropertiesStub(TaxRateModel::class, $included) : null;
         $taxRateModels = array_map(fn ($p) => $this->createClassWithPropertiesStub(TaxRateModel::class, $p), $taxRates);
 
         $taxRateAdapter = $this->createAdapterStub(['findById', 'findMultipleByIds']);
-        $taxRateAdapter->method('findById')->willReturn($includedModel);
-        $taxRateAdapter->method('findMultipleByIds')->willReturn($taxRateModels);
+        $taxRateAdapter
+            ->method('findById')
+            ->willReturn($includedModel)
+        ;
+
+        $taxRateAdapter
+            ->method('findMultipleByIds')
+            ->willReturn($taxRateModels)
+        ;
 
         $calculator = new TaxCalculator(
             $this->createContaoFrameworkStub([
@@ -41,7 +49,7 @@ class TaxCalculatorTest extends TestCase
                 TaxRateModel::class => $taxRateAdapter,
             ]),
             $this->createStub(RuleMatcher::class),
-            $this->createStub(TranslatorInterface::class)
+            $this->createStub(TranslatorInterface::class),
         );
 
         [$scope1, $scope2] = $calculator->getTaxRates($taxClassId, $this->createStoreContext());
@@ -50,7 +58,7 @@ class TaxCalculatorTest extends TestCase
             $this->assertInstanceOf(TaxRate::class, $scope2->first());
             $this->assertSame((string) $included['id'], $scope2->first()->getId());
             $this->assertSame($included['rate'], $scope2->first()->getTaxRate());
-            $this->assertSame(100.0, $scope2->first()->getPercentage());
+            $this->assertEqualsWithDelta(100.0, $scope2->first()->getPercentage(), PHP_FLOAT_EPSILON);
         } else {
             $this->assertEmpty($scope2);
         }
@@ -64,7 +72,7 @@ class TaxCalculatorTest extends TestCase
             $this->assertInstanceOf(TaxRate::class, $actualRate);
             $this->assertSame((string) $config['id'], $actualRate->getId());
             $this->assertSame($config['rate'], $actualRate->getTaxRate());
-            $this->assertSame(100.0, $actualRate->getPercentage());
+            $this->assertEqualsWithDelta(100.0, $actualRate->getPercentage(), PHP_FLOAT_EPSILON);
         }
     }
 
@@ -141,12 +149,12 @@ class TaxCalculatorTest extends TestCase
         $calculator = new TaxCalculator(
             $this->createContaoFrameworkStub(),
             $this->createStub(RuleMatcher::class),
-            $this->createStub(TranslatorInterface::class)
+            $this->createStub(TranslatorInterface::class),
         );
 
         $result = $calculator->calculateNetPrice($price, $taxRates);
 
-        $this->assertTrue(FloatComparator::equals($expected, $result), "Expected $expected, got $result");
+        $this->assertEqualsWithDelta($expected, $result, PHP_FLOAT_EPSILON);
     }
 
     public static function calculateNetPriceProvider(): iterable
@@ -197,7 +205,7 @@ class TaxCalculatorTest extends TestCase
         $calculator = new TaxCalculator(
             $this->createContaoFrameworkStub(),
             $this->createStub(RuleMatcher::class),
-            $this->createStub(TranslatorInterface::class)
+            $this->createStub(TranslatorInterface::class),
         );
 
         $result = $calculator->calculateTaxes($amount, $taxRates, TaxCalculation::Horizontal, new MoneyFormat());
@@ -244,12 +252,12 @@ class TaxCalculatorTest extends TestCase
         $calculator = new TaxCalculator(
             $this->createContaoFrameworkStub(),
             $this->createStub(RuleMatcher::class),
-            $this->createStub(TranslatorInterface::class)
+            $this->createStub(TranslatorInterface::class),
         );
 
         $result = $calculator->combineTaxRates($taxes1, $taxes2, $price1, $price2);
 
-        $this->assertCount(count($expectedRates), $result);
+        $this->assertCount(\count($expectedRates), $result);
 
         foreach ($result as $i => $tax) {
             $this->assertSame(round($tax->getTaxRate(), 8), round($expectedRates[$i]->getTaxRate(), 8));
@@ -317,7 +325,7 @@ class TaxCalculatorTest extends TestCase
 
         yield [
             new TaxRateCollection(),
-            (new TaxRateCollection([new TaxRate('1', 10)])),
+            new TaxRateCollection([new TaxRate('1', 10)]),
             100,
             100,
             ['1' => new TaxRate('1', 10, 50)],
@@ -331,7 +339,7 @@ class TaxCalculatorTest extends TestCase
         $calculator = new TaxCalculator(
             $this->createContaoFrameworkStub(),
             $this->createStub(RuleMatcher::class),
-            $this->createStub(TranslatorInterface::class)
+            $this->createStub(TranslatorInterface::class),
         );
 
         $result = $calculator->combineCalculatedTaxes($taxes1, $taxes2);

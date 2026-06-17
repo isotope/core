@@ -2,14 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of Contao.
- *
- * (c) Leo Feyer
- *
- * @license LGPL-3.0-or-later
- */
-
 namespace Isotope\CoreBundle\Migration;
 
 use Contao\CoreBundle\Migration\Version500\AbstractBasicEntitiesMigration;

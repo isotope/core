@@ -24,43 +24,43 @@ class AddressFieldsListener extends Backend
     }
 
     #[AsCallback('tl_iso_config', 'fields.address_fields.load')]
-    public function load($varValue): array
+    public function load($value): array
     {
         Controller::loadDataContainer(AddressModel::getTable());
 
-        $arrDCA = &$GLOBALS['TL_DCA'][AddressModel::getTable()]['fields'];
-        $arrFields = [];
-        $arrValues = StringUtil::deserialize($varValue);
+        $dca = &$GLOBALS['TL_DCA'][AddressModel::getTable()]['fields'];
+        $fields = [];
+        $values = StringUtil::deserialize($value);
 
-        if (!\is_array($arrValues)) {
-            $arrValues = [];
+        if (!\is_array($values)) {
+            $values = [];
         }
 
-        foreach ($arrValues as $arrField) {
-            $strName = $arrField['name'];
+        foreach ($values as $field) {
+            $name = $field['name'];
 
-            if ('' === $strName || !isset($arrDCA[$strName]) || !$arrDCA[$strName]['eval']['feEditable']) {
+            if ('' === $name || !isset($dca[$name]) || !$dca[$name]['eval']['feEditable']) {
                 continue;
             }
 
-            $arrFields[$arrField['name']] = $arrField;
+            $fields[$field['name']] = $field;
         }
 
-        foreach (array_diff_key($arrDCA, $arrFields) as $strName => $arrField) {
-            if (!($arrDCA[$strName]['eval']['feEditable'] ?? false)) {
+        foreach (array_diff_key($dca, $fields) as $name => $field) {
+            if (!($dca[$name]['eval']['feEditable'] ?? false)) {
                 continue;
             }
 
-            $mandatory = $arrField['eval']['mandatory'] ?? null;
+            $mandatory = $field['eval']['mandatory'] ?? null;
 
-            $arrFields[$strName] = [
-                'name' => $strName,
+            $fields[$name] = [
+                'name' => $name,
                 'billing' => true === $mandatory ? 'mandatory' : (false === $mandatory ? 'enabled' : 'disabled'),
                 'shipping' => true === $mandatory ? 'mandatory' : (false === $mandatory ? 'enabled' : 'disabled'),
             ];
         }
 
-        return array_values($arrFields);
+        return array_values($fields);
     }
 
     #[AsCallback('tl_iso_config', 'fields.address_fields.save')]
@@ -98,18 +98,18 @@ class AddressFieldsListener extends Backend
         $row = 0;
 
         return static function () use ($name, &$row, &$value) {
-            $arrField = array_shift($value);
-            $strName = $arrField['name'];
+            $field = array_shift($value);
+            $fieldName = $field['name'];
 
             return \sprintf(
-                '<input type="hidden" name="%s[%s][name]" id="ctrl_%s_row%s_name" value="%s"><div style="width:344px">%s <span class="label-info">[%s]</span></div>',
+                '<input type="hidden" name="%s[%s][name]" id="ctrl_%s_row%s_name" value="%s"><div>%s <span class="label-info">[%s]</span></div>',
                 $name,
                 $row,
                 $name,
                 $row++,
-                $strName,
-                $GLOBALS['TL_DCA'][AddressModel::getTable()]['fields'][$strName]['label'][0] ?: $strName,
-                $strName,
+                $fieldName,
+                $GLOBALS['TL_DCA'][AddressModel::getTable()]['fields'][$fieldName]['label'][0] ?: $fieldName,
+                $fieldName,
             );
         };
     }

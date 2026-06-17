@@ -9,7 +9,7 @@ use Isotope\CoreBundle\Store\Order\Transformer\LineItemTransformer;
 use Isotope\CoreBundle\Store\Price\CalculatedPrice;
 use PHPUnit\Framework\TestCase;
 
-class LineItemTransformerTest extends TestCase
+final class LineItemTransformerTest extends TestCase
 {
     public function testTransformCart(): void
     {

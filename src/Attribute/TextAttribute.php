@@ -68,6 +68,7 @@ class TextAttribute extends AbstractAttribute
         return $this;
     }
 
+    #[\Override]
     public function updateDcaField(array &$field, array &$keys): void
     {
         parent::updateDcaField($field, $keys);
@@ -87,7 +88,7 @@ class TextAttribute extends AbstractAttribute
         return [
             'type' => Types::STRING,
             'length' => $this->maxlength > 0 ? $this->maxlength : 255,
-            'options' => ['default' => '']
+            'options' => ['default' => ''],
         ];
     }
 }

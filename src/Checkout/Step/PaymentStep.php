@@ -10,7 +10,6 @@ use Isotope\CoreBundle\DependencyInjection\Attribute\AsCheckoutStep;
 use Isotope\CoreBundle\Model\PaymentModel;
 use Isotope\CoreBundle\ModelType\PaymentRegistry;
 use Isotope\CoreBundle\ProductCollection\Cart\Cart;
-use Isotope\CoreBundle\Store\CartManager;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Twig\TemplateMarkupFactory;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,11 +33,12 @@ class PaymentStep extends AbstractCheckoutStep
 
     public function getSummary(Request $request, StoreContext $context, array $config): CheckoutStepSummary|null
     {
-        if (!$this->requiresPayment($context, $config)) {
+        $cart = $context->getCart();
+
+        if (!$cart || !$this->requiresPayment($cart)) {
             return null;
         }
 
-        $cart = $context->getCart();
         $payments = $this->getPaymentMethods($context->getPaymentIds(), $context);
         $current = $this->getCurrent($cart, $context, $config);
 
@@ -49,7 +49,7 @@ class PaymentStep extends AbstractCheckoutStep
             && !$this->isEditing($request)
             && !$event->hasError()
             && !$current->hasError()
-            && null !== array_find($payments, fn (PaymentInterface $p) => $p->getId() === $current->getId())
+            && null !== array_find($payments, static fn (PaymentInterface $p) => $p->getId() === $current->getId())
         ) {
             $cart->setPaymentMethod($current);
             $cart->setModified();
@@ -75,7 +75,7 @@ class PaymentStep extends AbstractCheckoutStep
         ) {
             if (
                 $cart->getPaymentMethod()?->getId() !== $newId
-                && null !== ($payment = array_find($payments, fn (PaymentInterface $p) => $p->getId() === $newId))
+                && null !== ($payment = array_find($payments, static fn (PaymentInterface $p) => $p->getId() === $newId))
             ) {
                 $cart->setPaymentMethod($payment);
                 $cart->setModified();
@@ -122,6 +122,7 @@ class PaymentStep extends AbstractCheckoutStep
 
     /**
      * @param array<int> $ids
+     *
      * @return array<PaymentInterface>
      */
     private function getPaymentMethods(array $ids, StoreContext $context): array
@@ -134,12 +135,12 @@ class PaymentStep extends AbstractCheckoutStep
 
         return array_filter(
             $payments,
-            static fn (PaymentInterface $payment) => $payment->isAvailable($context),
+            static fn (PaymentInterface $payment) => $payment->isAvailable(),
         );
     }
 
-    private function requiresPayment(StoreContext $context, array $config): bool
+    private function requiresPayment(Cart $cart): bool
     {
-        return $context->getCart()->getTotal()?->getTotalPrice() > 0;
+        return $cart->getTotal()?->getTotalPrice() > 0;
     }
 }

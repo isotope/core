@@ -44,6 +44,7 @@ class ProductTypeModel extends Model
     /**
      * Initialize serialized values.
      */
+    #[\Override]
     public function setRow(array $arrData): self
     {
         parent::setRow($arrData);

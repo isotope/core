@@ -6,10 +6,9 @@ namespace Isotope\CoreBundle\ModelType;
 
 use Contao\Model;
 use Contao\Model\Collection;
-use Isotope\CoreBundle\Attribute\AttributeInterface;
 use Isotope\CoreBundle\ModelType\Exception\ContainerNotFoundException;
-use Isotope\CoreBundle\ModelType\Exception\InvalidInstanceException;
 use Isotope\CoreBundle\ModelType\Exception\FactoryNotFoundException;
+use Isotope\CoreBundle\ModelType\Exception\InvalidInstanceException;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerAwareInterface;

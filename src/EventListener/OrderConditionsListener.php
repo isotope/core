@@ -11,6 +11,7 @@ use Isotope\CoreBundle\Checkout\Event\CheckoutStepEvent;
 use Isotope\CoreBundle\ProductCollection\Extension\OrderConditionsExtension;
 use Isotope\CoreBundle\Twig\TemplateMarkup;
 use Isotope\CoreBundle\Twig\TemplateMarkupFactory;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
 #[AsEventListener]
@@ -18,6 +19,7 @@ class OrderConditionsListener
 {
     public function __construct(
         private readonly TemplateMarkupFactory $markupFactory,
+        #[Autowire(param: 'kernel.project_dir')] private readonly string $projectDir,
     ) {
     }
 
@@ -52,7 +54,7 @@ class OrderConditionsListener
      */
     private function getForm(CheckoutStepEvent $event, array $condition): TemplateMarkup|null
     {
-        $form = new Form($event->getFormId(), 'POST', fn () => $event->isSubmitted());
+        $form = new Form($event->getFormId(), 'POST', static fn () => $event->isSubmitted());
         $cart = $event->getContext()->getCart();
         $extension = $cart?->getExtension(OrderConditionsExtension::class);
 
@@ -64,12 +66,12 @@ class OrderConditionsListener
         try {
             $form->addFieldsFromFormGenerator(
                 (int) $condition['form'],
-                function ($strName, &$arrDca) use ($event, $extension) {
-                    $arrDca['form'] = $event->getFormId();
-                    $arrDca['value'] = $extension->get($strName) ?? $arrDca['value'] ?? null;
+                static function ($name, &$dca) use ($event, $extension) {
+                    $dca['form'] = $event->getFormId();
+                    $dca['value'] = $extension->get($name) ?? $dca['value'] ?? null;
 
                     return true;
-                }
+                },
             );
         } catch (\InvalidArgumentException) {
             return null;
@@ -91,35 +93,33 @@ class OrderConditionsListener
                 $hasError = true;
             }
 
-            foreach (array_keys($form->getFormFields()) as $strField) {
-                if ($form->getWidget($strField) instanceof UploadableWidgetInterface) {
-                    if (isset($_SESSION['FILES'][$strField])) {
-                        $arrFile = $_SESSION['FILES'][$strField];
-                        $varValue = str_replace(TL_ROOT . '/', '', \dirname($arrFile['tmp_name'])) . '/' . rawurlencode($arrFile['name']);
+            foreach (array_keys($form->getFormFields()) as $field) {
+                if ($form->getWidget($field) instanceof UploadableWidgetInterface) {
+                    if (isset($_SESSION['FILES'][$field])) {
+                        $file = $_SESSION['FILES'][$field];
+                        $value = str_replace($this->projectDir.'/', '', \dirname((string) $file['tmp_name'])).'/'.rawurlencode((string) $file['name']);
                     } else {
-                        $varValue = null;
+                        $value = null;
                     }
                 } else {
-                    $varValue = $form->fetch($strField);
+                    $value = $form->fetch($field);
                 }
 
-                $extension->set($strField, $varValue);
+                $extension->set($field, $value);
             }
-
         } else {
-            foreach (array_keys($form->getFormFields()) as $strField) {
-
+            foreach (array_keys($form->getFormFields()) as $field) {
                 // Clone widget because otherwise we add errors to the original widget instance
-                $objClone = clone $form->getWidget($strField);
-                if ($objClone instanceof UploadableWidgetInterface) {
-                    $_FILES[$strField] = $_SESSION['FILES'][$strField] ?? null;
+                $clone = clone $form->getWidget($field);
+                if ($clone instanceof UploadableWidgetInterface) {
+                    $_FILES[$field] = $_SESSION['FILES'][$field] ?? null;
                 } else {
-                    $objClone->setInputCallback(fn () => $extension->get($strField));
+                    $clone->setInputCallback(static fn () => $extension->get($field));
                 }
 
-                $objClone->validate();
+                $clone->validate();
 
-                if ($objClone->hasErrors()) {
+                if ($clone->hasErrors()) {
                     $hasError = true;
                     break;
                 }

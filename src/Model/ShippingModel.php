@@ -17,8 +17,8 @@ use Contao\Model;
  * @property int    $tax_class
  * @property int    $rule
  * @property string $shipping_weight
- * @property float  $minimum_weight
- * @property float  $maximum_weight
+ * @property string $minimum_weight
+ * @property string $maximum_weight
  * @property string $product_types
  * @property string $product_types_condition
  * @property bool   $debug

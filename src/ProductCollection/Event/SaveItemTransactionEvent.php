@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\ProductCollection\Event;
 
 use Isotope\CoreBundle\EventDispatcher\TransactionEvent;
-use Isotope\CoreBundle\Model\ProductCollectionModel;
 use Isotope\CoreBundle\Model\ProductCollectionItemModel;
+use Isotope\CoreBundle\Model\ProductCollectionModel;
 use Isotope\CoreBundle\ProductCollection\AbstractProductCollection;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
 
+/**
+ * @extends TransactionEvent<void>
+ */
 class SaveItemTransactionEvent extends TransactionEvent
 {
     public const string NAME = 'isotope.product_collection_item.save';

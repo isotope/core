@@ -13,9 +13,8 @@ final class QuantityExtension implements ProductExtensionInterface
     /**
      * @internal
      */
-    public function __construct(
-        private \Closure|int $minimum,
-    ) {
+    public function __construct(private \Closure|int $minimum)
+    {
     }
 
     public function getMinimum(): int
@@ -28,6 +27,4 @@ final class QuantityExtension implements ProductExtensionInterface
     // TODO: add maximum quantity
     // TODO: add purchase unit (e.g. price is per packs of 6)
     // TODO: add purchase steps (e.g. can only be sold in multiple of 6)
-
-
 }

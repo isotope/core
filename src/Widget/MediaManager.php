@@ -15,6 +15,9 @@ use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Terminal42\DcMultilingualBundle\Driver;
 
+/**
+ * @phpstan-type MediaFile array{src: string, link?: string, alt?: string, desc?: string}
+ */
 class MediaManager extends Widget implements UploadableWidgetInterface
 {
     public const TEMP_FOLDER = 'assets/images';
@@ -31,6 +34,7 @@ class MediaManager extends Widget implements UploadableWidgetInterface
 
     private array $validExtensions = [];
 
+    #[\Override]
     public function __set($strKey, $varValue): void
     {
         switch ($strKey) {
@@ -94,6 +98,9 @@ class MediaManager extends Widget implements UploadableWidgetInterface
         ]);
     }
 
+    /**
+     * @return array<MediaFile>
+     */
     public static function mergeMediaData(array $arrCurrent, array $arrParent): array
     {
         $arrTranslate = [];
@@ -132,6 +139,7 @@ class MediaManager extends Widget implements UploadableWidgetInterface
         return array_values($arrCurrent);
     }
 
+    #[\Override]
     protected function validator($varInput): array|null
     {
         if (!\is_array($varInput)) {
@@ -150,17 +158,21 @@ class MediaManager extends Widget implements UploadableWidgetInterface
             }
         }
 
-        // Check that image is not assigned in fallback language
-        foreach ($varInput as $k => $v) {
-            if (\is_array($arrFallback) && \in_array($v, $arrFallback, false)) {
-                $this->addError($GLOBALS['TL_LANG']['ERR']['imageInFallback']);
-            } elseif (null !== $arrFallback) {
-                $varInput[$k]['translate'] = 'all';
-            }
-        }
-
         // Move all temporary files
         foreach ($varInput as $k => $v) {
+            if (\is_array($arrFallback)/* && \in_array($v, $arrFallback, false) */) {
+                foreach ($arrFallback as $image) {
+                    if ($v['src'] === $image['src']) {
+                        $this->addError($GLOBALS['TL_LANG']['ERR']['imageInFallback']);
+                        continue 2;
+                    }
+                }
+            }
+
+            if (null !== $arrFallback) {
+                $varInput[$k]['translate'] = 'all';
+            }
+
             $pathinfo = pathinfo((string) $v['src']);
 
             if ([] !== $this->validExtensions && !\in_array($pathinfo['extension'], $this->validExtensions, true)) {
@@ -172,11 +184,11 @@ class MediaManager extends Widget implements UploadableWidgetInterface
                 $strFile = $this->getFilePath(basename((string) $v['src']));
 
                 if (
-                    is_file($projectDir . '/' . $strFile)
-                    && hash_file('xxh3', $projectDir . '/' .  $v['src']) !== ($hash = hash_file('xxh3', $projectDir . '/' . $strFile))
+                    is_file($projectDir.'/'.$strFile)
+                    && hash_file('xxh3', $projectDir.'/'.$v['src']) !== ($hash = hash_file('xxh3', $projectDir.'/'.$strFile))
                 ) {
                     $strFile = $this->getFilePath(
-                        StringUtil::standardize($pathinfo['filename']) . '-' . $hash . '.' . $pathinfo['extension']
+                        StringUtil::standardize($pathinfo['filename']).'-'.$hash.'.'.$pathinfo['extension'],
                     );
                 }
 
@@ -197,15 +209,16 @@ class MediaManager extends Widget implements UploadableWidgetInterface
         // Check if there are values
         if ($this->mandatory) {
             $hasFile = false;
+
             foreach ($varInput as $file) {
-                if (is_file($projectDir . '/' . $this->getFilePath($file['src']))) {
+                if (is_file($projectDir.'/'.$this->getFilePath($file['src']))) {
                     $hasFile = true;
                     break;
                 }
             }
 
             if (!$hasFile && (!\is_array($arrFallback) || empty($arrFallback))) {
-                $this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['mandatory'], $this->strLabel));
+                $this->addError(\sprintf($GLOBALS['TL_LANG']['ERR']['mandatory'], $this->strLabel));
             }
         }
 
@@ -230,6 +243,8 @@ class MediaManager extends Widget implements UploadableWidgetInterface
 
     /**
      * Retrieve image data from fallback language.
+     *
+     * @return array<MediaFile>|null
      */
     private function getFallbackData(): array|null
     {

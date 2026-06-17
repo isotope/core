@@ -46,7 +46,7 @@ class Cart extends AbstractProductCollection
         return false;
     }
 
-    public function setModified(bool $isModified = true): Cart
+    public function setModified(bool $isModified = true): self
     {
         $this->isModified = $isModified;
 

@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Store\Price;
 
 use Contao\StringUtil;
-use Isotope\CoreBundle\Model\BasePriceModel as BasePriceModel;
+use Isotope\CoreBundle\Model\BasePriceModel;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Tax\TaxCalculator;
 use Isotope\CoreBundle\Store\Tax\TaxRateCollection;
-use Isotope\CoreBundle\Store\Tax\TaxScope;
 use Isotope\CoreBundle\Util\FloatComparator;
 
 class PriceCalculator
@@ -47,7 +46,7 @@ class PriceCalculator
 
                 return $value->getAmount() < $price->getAmount() ? $value : $price;
             },
-            null
+            null,
         );
 
         $amount = $price->getAmount();

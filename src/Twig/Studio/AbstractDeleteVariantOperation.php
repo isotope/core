@@ -14,6 +14,7 @@ use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 #[AutoconfigureTag('container.service_subscriber', ['id' => 'contao.twig.studio.cache_invalidator'])]
 abstract class AbstractDeleteVariantOperation extends CoreAbstractDeleteVariantOperationAlias
 {
+    #[\Override]
     public function canExecute(OperationContext $context): bool
     {
         if (!$this->userTemplateExists($context) || $context->isThemeContext()) {

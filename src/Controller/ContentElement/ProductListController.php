@@ -51,7 +51,7 @@ class ProductListController extends AbstractContentElementController
 
         if ($model->iso_emptyFilter && null === $this->getProductQuery($request)) {
             $template->message = $model->iso_noFilter;
-            $template->products = array();
+            $template->products = [];
 
             return $template->getResponse();
         }

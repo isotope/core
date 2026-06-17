@@ -27,6 +27,7 @@ class TextareaAttribute extends AbstractAttribute
         return $this;
     }
 
+    #[\Override]
     public function updateDcaField(array &$field, array &$keys): void
     {
         parent::updateDcaField($field, $keys);

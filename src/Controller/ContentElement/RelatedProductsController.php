@@ -54,7 +54,6 @@ class RelatedProductsController extends AbstractContentElementController
     {
         $productIds = [];
 
-        /** @var array<RelatedProductModel> $relatedProducts */
         $relatedProducts = RelatedProductModel::findByProductAndCategories($product, $categories);
 
         if (null !== $relatedProducts) {
@@ -77,16 +76,5 @@ class RelatedProductsController extends AbstractContentElementController
         }
 
         return $products;
-
-        //$columns = [Product::getTable() . '.id IN (' . implode(',', array_map('intval', $productIds)) . ')'];
-        //$options = ['order' => Database::getInstance()->findInSet(Product::getTable() . '.id', $productIds)];
-        //
-        //if ($sortingField != '') {
-        //    $options['sorting'] = [$sortingField => 'DESC' === $sortingDirection ? 'desc' : 'asc'];
-        //}
-        //
-        //$objProducts = Product::findBy($columns, [], $options);
-        //
-        //return (null === $objProducts) ? [] : $objProducts->getModels();
     }
 }

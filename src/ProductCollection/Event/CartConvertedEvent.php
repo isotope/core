@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Isotope\CoreBundle\ProductCollection\Event;
 
@@ -30,7 +32,7 @@ class CartConvertedEvent extends Event
     }
 
     /**
-     * @var array<mixed>
+     * @return array<string, mixed>
      */
     public function getOriginalConvertedCart(): array
     {
@@ -38,7 +40,7 @@ class CartConvertedEvent extends Event
     }
 
     /**
-     * @var array<mixed>
+     * @return array<string, mixed>
      */
     public function getConvertedCart(): array
     {
@@ -46,7 +48,7 @@ class CartConvertedEvent extends Event
     }
 
     /**
-     * @var array<mixed>
+     * @param array<string, mixed> $convertedCart
      */
     public function setConvertedCart(array $convertedCart): void
     {

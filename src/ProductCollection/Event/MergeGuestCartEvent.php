@@ -4,14 +4,10 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\ProductCollection\Event;
 
-use Isotope\CoreBundle\EventDispatcher\TransactionEvent;
 use Isotope\CoreBundle\ProductCollection\AbstractProductCollection;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Symfony\Contracts\EventDispatcher\Event;
 
-/**
- * @extends TransactionEvent<AbstractProductCollection>
- */
 class MergeGuestCartEvent extends Event
 {
     public function __construct(

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Isotope\CoreBundle\Model;
 
 use Contao\Model\Collection;
@@ -51,10 +53,10 @@ class AttributeOptionModel extends Multilingual
             [
                 "$t.pid=(SELECT id FROM tl_iso_attribute WHERE field_name=?)",
                 "$t.ptable='tl_iso_attribute'",
-                "$t.published='1'"
+                "$t.published='1'",
             ],
             [$attribute->getFieldName()],
-            array_merge(['order' => "$t.sorting"], $options)
+            array_merge(['order' => "$t.sorting"], $options),
         );
     }
 
@@ -63,7 +65,7 @@ class AttributeOptionModel extends Multilingual
      *
      * @return Collection<AttributeOptionModel>|null
      *
-     * @throws AttributeException If attribute options source is not the product.
+     * @throws AttributeException if attribute options source is not the product
      */
     public static function findByProductAndAttribute(CoreProduct $product, OptionsAttributeInterface $attribute, array $options = []): Collection|null
     {
@@ -74,7 +76,7 @@ class AttributeOptionModel extends Multilingual
         $t = static::getTable();
         $productId = $product->id;
 
-        if ($product->isVariant() && !\in_array($attribute->getFieldName(), $product->getProductType()->getVariantAttributes())) {
+        if ($product->isVariant() && !\in_array($attribute->getFieldName(), $product->getProductType()->getVariantAttributes(), true)) {
             $productId = $product->getProductId();
         }
 
@@ -83,13 +85,13 @@ class AttributeOptionModel extends Multilingual
                 "$t.pid=?",
                 "$t.ptable='tl_iso_product'",
                 "$t.field_name=?",
-                "$t.published='1'"
+                "$t.published='1'",
             ],
             [
                 $productId,
-                $attribute->getFieldName()
+                $attribute->getFieldName(),
             ],
-            array_merge(['order' => "$t.sorting"], $options)
+            array_merge(['order' => "$t.sorting"], $options),
         );
     }
 
@@ -102,16 +104,13 @@ class AttributeOptionModel extends Multilingual
     {
         $t = static::getTable();
 
-        $arrOptions = array_merge(
-            $arrOptions,
-            [
-                'column' => [
-                    "$t.id IN (" . implode(',', array_map(intval(...), $arrIds)) . ")",
-                    "$t.published='1'"
-                ],
-                'order' => "$t.sorting"
-            ]
-        );
+        $arrOptions = array_merge($arrOptions, [
+            'column' => [
+                "$t.id IN (".implode(',', array_map(intval(...), $arrIds)).')',
+                "$t.published='1'",
+            ],
+            'order' => "$t.sorting",
+        ]);
 
         return static::find($arrOptions);
     }

@@ -13,7 +13,6 @@ use Contao\CoreBundle\Exception\ResponseException;
 use Contao\CoreBundle\Twig\FragmentTemplate;
 use Contao\FrontendUser;
 use Isotope\CoreBundle\Checkout\Payment\PaymentInterface;
-use Isotope\CoreBundle\Model\OrderTransactionModel;
 use Isotope\CoreBundle\Model\PaymentModel;
 use Isotope\CoreBundle\ModelType\PaymentRegistry;
 use Isotope\CoreBundle\ProductCollection\Cart\CartCalculator;
@@ -73,10 +72,12 @@ class OrderDetailsController extends AbstractContentElementController
             switch ($request->query->get('transaction_state')) {
                 case 'success':
                     $transactionModel = $this->orderTransactionHandler->switch($order, $request->query->get('transaction'));
+
                     return $this->handleResponse($payment->finalize($order, $transactionModel, $request), $order);
 
                 case 'failed':
                     $transactionModel = $this->orderTransactionHandler->switch($order, $request->query->get('transaction'));
+
                     return $this->handleResponse($payment->failed($order, $transactionModel, $request), $order);
             }
         }
@@ -118,7 +119,7 @@ class OrderDetailsController extends AbstractContentElementController
         $options = [];
 
         foreach ($payments as $payment) {
-            if (!$payment->isAvailable($context)) {
+            if (!$payment->isAvailable()) {
                 continue;
             }
 

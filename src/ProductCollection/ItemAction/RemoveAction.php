@@ -35,10 +35,14 @@ class RemoveAction extends AbstractProductCollectionItemAction
 
     public function render(AbstractProductCollection $collection, LineItem $item, array $context): string
     {
-        return $this->renderView($this->type, $item->getId(), [
-            'title' => $this->translator->trans('MSC.removeProductLinkTitle', [$item->getLabel()], 'contao_default'),
-            'label' => $this->translator->trans('MSC.removeProductLinkText', [], 'contao_default'),
-        ]);
+        return $this->renderView(
+            $this->type,
+            $item->getId(),
+            [
+                'title' => $this->translator->trans('MSC.removeProductLinkTitle', [$item->getLabel()], 'contao_default'),
+                'label' => $this->translator->trans('MSC.removeProductLinkText', [], 'contao_default'),
+            ],
+        );
     }
 
     public function handle(AbstractProductCollection $collection, LineItem $item, array $context, bool $isAjax = true): ActionResult

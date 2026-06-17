@@ -10,9 +10,8 @@ use Isotope\CoreBundle\Model\ConfigModel;
 
 class AddressConfigFactory
 {
-    public function __construct(
-        private readonly Countries $countries,
-    ) {
+    public function __construct(private readonly Countries $countries)
+    {
     }
 
     public function createFromConfig(ConfigModel $config, string $type): AddressConfig

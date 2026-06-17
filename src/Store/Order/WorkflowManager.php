@@ -19,7 +19,9 @@ use Symfony\Contracts\Service\ResetInterface;
 class WorkflowManager implements ResetInterface
 {
     private Workflow|null $order = null;
+
     private Workflow|null $transaction = null;
+
     private Workflow|null $delivery = null;
 
     public function __construct(
@@ -80,7 +82,7 @@ class WorkflowManager implements ResetInterface
 
             $definition = $definitions[$row['type']];
 
-            foreach (explode(',', $row['workflow']) as $to) {
+            foreach (explode(',', (string) $row['workflow']) as $to) {
                 $definition->addTransition(new Transition($to, $row['alias'], $to));
                 $metadata[$row['type']][$row['alias']] = $row;
             }

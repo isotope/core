@@ -75,12 +75,12 @@ class CalculatedPrice implements \JsonSerializable
         return $this;
     }
 
-    public function getUnitLabel(): ?string
+    public function getUnitLabel(): string|null
     {
         return $this->unitLabel;
     }
 
-    public function setUnitLabel(?string $unitLabel): self
+    public function setUnitLabel(string|null $unitLabel): self
     {
         $this->unitLabel = $unitLabel;
 
@@ -114,7 +114,7 @@ class CalculatedPrice implements \JsonSerializable
             $calculatedTaxes->put($new->getId(), $new);
         }
 
-        return (new CalculatedPrice($this->totalPrice, $this->totalPrice, $calculatedTaxes, $this->taxRates, $this->includedTaxRates, 1))
+        return (new self($this->totalPrice, $this->totalPrice, $calculatedTaxes, $this->taxRates, $this->includedTaxRates, 1))
             ->setRange($this->isRange)
             ->setUnitLabel($this->unitLabel)
             ->setBasePrice($this->basePrice)
@@ -157,7 +157,7 @@ class CalculatedPrice implements \JsonSerializable
                 $tax['id'],
                 (new CalculatedTax($tax['id'], $tax['amount'], $tax['tax_rate'], $tax['price']))
                     ->setLabel($tax['label'])
-                    ->setNumber((int) $tax['number'])
+                    ->setNumber((int) $tax['number']),
             );
         }
 

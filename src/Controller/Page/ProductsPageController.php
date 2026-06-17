@@ -20,7 +20,6 @@ use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\DataCollector\ProductDto;
 use Isotope\CoreBundle\Product\Extension\MetadataExtension;
 use Isotope\CoreBundle\Product\ProductBuilder;
-use Isotope\CoreBundle\Product\Query\ProductQueryFactory;
 use Isotope\CoreBundle\Routing\ProductReference;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Util\ProductCategoryUtil;
@@ -36,7 +35,6 @@ class ProductsPageController extends AbstractPageController
         private readonly HtmlDecoder $htmlDecoder,
         private readonly ProductCategoryUtil $productCategoryUtil,
         private readonly AttributeRegistry $attributeRegistry,
-        private readonly ProductQueryFactory $queryFactory,
         private readonly ProductBuilder $productBuilder,
     ) {
     }
@@ -109,7 +107,7 @@ class ProductsPageController extends AbstractPageController
             }
         }
 
-        $response = $this->renderPage($pageModel, $context);
+        $response = $this->renderPage($pageModel);
         $response->setVary('Isotope-Fragment', false);
 
         // A response exception should have been thrown by the fragment on this page

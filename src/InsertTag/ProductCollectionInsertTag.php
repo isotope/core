@@ -45,14 +45,14 @@ class ProductCollectionInsertTag implements InsertTagResolverNestedResolvedInter
 
     private function getCollection(string $type): AbstractProductCollection|null
     {
-        return match($type) {
+        return match ($type) {
             'cart' => $this->storeManager->getCurrentContext()->getCart(),
             'order' => null, // TODO: load order
             default => null,
         };
     }
 
-    private function resolve(AbstractProductCollection $collection, ResolvedParameters $parameters): string|int|float
+    private function resolve(AbstractProductCollection $collection, ResolvedParameters $parameters): float|int|string
     {
         switch ($parameters->get(0)) {
             case 'items':
@@ -75,7 +75,8 @@ class ProductCollectionInsertTag implements InsertTagResolverNestedResolvedInter
 
             case 'billing_address':
                 // TODO: support orders
-                if (!$collection instanceof Cart
+                if (
+                    !$collection instanceof Cart
                     || !($address = $collection->getBillingAddress())
                 ) {
                     return '';
@@ -85,7 +86,8 @@ class ProductCollectionInsertTag implements InsertTagResolverNestedResolvedInter
 
             case 'shipping_address':
                 // TODO: support orders
-                if (!$collection instanceof Cart
+                if (
+                    !$collection instanceof Cart
                     || !($address = $collection->getShippingAddress())
                 ) {
                     return '';
@@ -113,7 +115,7 @@ class ProductCollectionInsertTag implements InsertTagResolverNestedResolvedInter
 
     private function formatCount(int $count): string
     {
-        return match($count) {
+        return match ($count) {
             0 => '',
             1 => '('.$this->translator->trans('MSC.productSingle', [], 'contao_default').')',
             default => '('.$this->translator->trans('MSC.productMultiple', [$count], 'contao_default').')',

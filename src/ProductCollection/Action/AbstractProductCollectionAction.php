@@ -8,9 +8,8 @@ use Twig\Environment;
 
 abstract class AbstractProductCollectionAction implements ProductCollectionActionInterface
 {
-    public function __construct(
-        private readonly Environment $twig,
-    ) {
+    public function __construct(private readonly Environment $twig)
+    {
     }
 
     public function renderView(string $type, array $context = []): string

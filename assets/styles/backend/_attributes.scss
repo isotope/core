@@ -1,5 +1,4 @@
-
-body.popup a[href*="table=tl_iso_attribute_option"].header_back {
+body.popup a[href*='table=tl_iso_attribute_option'].header_back {
     display: none;
 }
 
@@ -15,5 +14,5 @@ body.popup a[href*="table=tl_iso_attribute_option"].header_back {
 #ctrl_attributes tr:hover td,
 #ctrl_variant_attributes tr:hover td,
 #ctrl_address_fields tr:hover td {
-    background-color: #EBFDD7;
+    background-color: #ebfdd7;
 }

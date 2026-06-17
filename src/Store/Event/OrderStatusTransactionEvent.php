@@ -7,6 +7,9 @@ namespace Isotope\CoreBundle\Store\Event;
 use Isotope\CoreBundle\EventDispatcher\TransactionEvent;
 use Isotope\CoreBundle\Model\ProductCollectionModel;
 
+/**
+ * @extends TransactionEvent<array<string, mixed>>
+ */
 class OrderStatusTransactionEvent extends TransactionEvent
 {
     public const string NAME = 'isotope.order_status';

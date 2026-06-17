@@ -7,7 +7,6 @@ namespace Isotope\CoreBundle\ProductCollection\LineItem;
 use Isotope\CoreBundle\Store\Weight\Scale;
 use Isotope\CoreBundle\Store\Weight\Weight;
 use Isotope\CoreBundle\Store\Weight\WeightUnit;
-use Isotope\CoreBundle\Util\FloatComparator;
 use Ramsey\Collection\AbstractCollection;
 use Ramsey\Collection\CollectionInterface;
 
@@ -53,7 +52,7 @@ class LineItemCollection extends AbstractCollection
 
         foreach ($this as $item) {
             if ($weight = $item->getWeight()) {
-                for ($i = 0; $i < $item->getQuantity(); $i++) {
+                for ($i = 0; $i < $item->getQuantity(); ++$i) {
                     $scale->add($weight);
                 }
             }
@@ -71,7 +70,7 @@ class LineItemCollection extends AbstractCollection
 
         foreach ($this as $item) {
             if (!isset($levels[$item->getLevel()])) {
-                $levels[$item->getLevel()] = new LineItemCollection();
+                $levels[$item->getLevel()] = new self();
             }
 
             $levels[$item->getLevel()]->add($item);
@@ -80,6 +79,7 @@ class LineItemCollection extends AbstractCollection
         return $levels;
     }
 
+    #[\Override]
     public function map(callable $callback): self
     {
         return new self(array_map($callback, $this->data));

@@ -109,7 +109,7 @@ class AttributeRegistry implements ResetInterface
     /**
      * @param string|Collection<AttributeModel>|AttributeModel|array<AttributeModel>|null $fieldOrModelOrCollection
      *
-     * @return ($fieldOrModelOrCollection is array|Collection<AttributeModel> ? array<AttributeInterface> : ($modelOrCollection is null ? null : AttributeInterface|null) )
+     * @return ($fieldOrModelOrCollection is array|Collection<AttributeModel> ? array<AttributeInterface> : ($fieldOrModelOrCollection is null ? null : AttributeInterface|null) )
      */
     public function get(Collection|Model|array|string|null $fieldOrModelOrCollection): AttributeInterface|array|null
     {
@@ -234,7 +234,7 @@ class AttributeRegistry implements ResetInterface
         }
 
         return $this->connection->fetchFirstColumn(
-            <<<SQL
+            <<<'SQL'
                 SELECT a.field_name
                 FROM tl_iso_attribute a
                 JOIN tl_iso_attribute_option o ON a.id=o.pid
@@ -256,7 +256,7 @@ class AttributeRegistry implements ResetInterface
                   AND o.ptable='tl_iso_product'
                   AND o.published='1'
                   AND o.price!=''
-            SQL,
+                SQL,
             ['attributes' => $attributes],
             ['attributes' => ArrayParameterType::STRING],
         );

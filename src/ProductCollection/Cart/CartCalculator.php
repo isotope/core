@@ -123,9 +123,6 @@ class CartCalculator
         return $levels;
     }
 
-    /**
-     * @param array<CalculatedTax> $taxes
-     */
     private function updateTaxNumbers(Cart $cart): void
     {
         $numbers = [];

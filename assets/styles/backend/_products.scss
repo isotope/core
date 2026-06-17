@@ -1,6 +1,5 @@
-
 #picker-menu a.productPicker {
-    background-image: url(../../images/picker.svg);
+    background-image: url('../../images/picker.svg');
     background-size: 16px;
 }
 
@@ -44,7 +43,7 @@
     }
 }
 
-.iso_listing_container  {
+.iso_listing_container {
     th.col_images {
         font-size: 0;
         width: 60px;
@@ -57,11 +56,10 @@
 }
 
 h3.inherit,
-.tl_checkbox_single_container.inherit
-{
+.tl_checkbox_single_container.inherit {
     background-color: #f8f8f8;
     padding: 2px 2px 2px 0;
-    margin: 11px 0 1px 0;
+    margin: 11px 0 1px;
 }
 
 .inherit-default {

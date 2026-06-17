@@ -20,7 +20,7 @@ abstract class AbstractCheckoutMethod extends AbstractModelType implements Conta
 
     protected string $note = '';
 
-    protected PriceDefinition|null $priceDefinition;
+    protected PriceDefinition|null $priceDefinition = null;
 
     protected float|null $price = null;
 
@@ -193,7 +193,7 @@ abstract class AbstractCheckoutMethod extends AbstractModelType implements Conta
                 $product = $item->getProduct();
 
                 if ($product instanceof CoreProduct) {
-                    $types[] = (int) $product->getProductType()?->id;
+                    $types[] = (int) $product->getProductType()->id;
                 } elseif (ProductTypeCondition::onlyAvailable === $this->productTypesCondition) {
                     // If one product in collection is not of given type, shipping method is not available
                     return false;
@@ -216,7 +216,7 @@ abstract class AbstractCheckoutMethod extends AbstractModelType implements Conta
         return true;
     }
 
-    protected function debugLog(string|\Stringable $message, array $context = []): void
+    protected function debugLog(\Stringable|string $message, array $context = []): void
     {
         if (!$this->isLogging() || !$this->logger) {
             return;

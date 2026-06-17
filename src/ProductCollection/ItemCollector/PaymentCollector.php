@@ -13,9 +13,8 @@ use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 #[AutoconfigureTag('isotope.item_collector')]
 class PaymentCollector implements ItemCollectorInterface
 {
-    public function __construct(
-        private readonly PriceCalculator $priceCalculator,
-    ) {
+    public function __construct(private readonly PriceCalculator $priceCalculator)
+    {
     }
 
     public function process(Cart $cart, Cart $original, StoreContext $context): void

@@ -9,7 +9,6 @@ use Isotope\CoreBundle\ProductCollection\Event\CartCreatedEvent;
 use Isotope\CoreBundle\ProductCollection\Event\MergeGuestCartEvent;
 use Isotope\CoreBundle\ProductCollection\ProductCollectionStorage;
 use Isotope\CoreBundle\Store\Context\StoreContext;
-use Isotope\CoreBundle\Util\StringUtil;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
 class CartFactory

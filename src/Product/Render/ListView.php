@@ -20,6 +20,7 @@ class ListView extends AbstractView
         return (int) ($this->gallery ?: $product->getProductType()->list_gallery);
     }
 
+    #[\Override]
     public function getProductReference(CoreProduct $product): ProductReference
     {
         return new ProductReference(

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Cron;
 
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCronJob;
-use Contao\CoreBundle\Monolog\ContaoContext;
 use Isotope\CoreBundle\Model\ProductCollectionModel;
 use Isotope\CoreBundle\ProductCollection\Cart\Cart;
 use Isotope\CoreBundle\ProductCollection\ProductCollectionStorage;
@@ -31,7 +30,7 @@ class PurgeCartsCron
 
         $carts = ProductCollectionModel::findBy(
             ["$t.type=? AND (($t.member=0 AND $t.tstamp<?) OR ($t.member > 0 AND $t.member NOT IN (SELECT id FROM tl_member)))"],
-            [Cart::getType(), time() - strtotime($this->cartTimeout, 0)]
+            [Cart::getType(), time() - strtotime($this->cartTimeout, 0)],
         );
 
         if (!$carts) {
@@ -46,6 +45,6 @@ class PurgeCartsCron
             }
         }
 
-        $this->contaoCronlogger->info('Deleted ' . $total . ' old guest carts.');
+        $this->contaoCronlogger->info('Deleted '.$total.' old guest carts.');
     }
 }

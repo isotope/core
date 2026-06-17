@@ -25,6 +25,7 @@ class CalculatedTaxCollection extends AbstractMap implements \JsonSerializable
         return CalculatedTax::class;
     }
 
+    #[\Override]
     public function offsetSet($offset, $value): void
     {
         if (!$value instanceof CalculatedTax) {

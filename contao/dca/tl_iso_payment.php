@@ -2,7 +2,6 @@
 
 use Contao\DataContainer;
 use Contao\DC_Table;
-use Isotope\Backend\Payment\Callback;
 use Isotope\CoreBundle\Checkout\ProductTypeCondition;
 
 $GLOBALS['TL_DCA']['tl_iso_payment'] = [
@@ -101,7 +100,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = [
             'foreignKey' => 'tl_iso_rule.name',
             'eval' => ['tl_class' => 'clr'],
             'sql' => 'int(10) unsigned NOT NULL default 0',
-            'relation' => ['type' => 'hasOne']
+            'relation' => ['type' => 'hasOne'],
         ],
         'product_types' => [
             'inputType' => 'select',

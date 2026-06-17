@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Checkout\Payment;
 
-use Contao\PageModel;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsPayment;
 use Isotope\CoreBundle\Model\OrderTransactionModel;
 use Isotope\CoreBundle\ProductCollection\Order\Order;

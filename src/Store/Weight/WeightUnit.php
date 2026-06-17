@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Isotope\CoreBundle\Store\Weight;
 
 use Isotope\CoreBundle\Util\FloatComparator;
@@ -17,7 +19,7 @@ enum WeightUnit: string
     case Grain = 'grain';
 
     /**
-     * Conversion factor from base unit
+     * Conversion factor from base unit.
      */
     private const array FACTORS = [
         'mg' => 1000000,
@@ -37,7 +39,7 @@ enum WeightUnit: string
     }
 
     /**
-     * Convert from one to another unit
+     * Convert from one to another unit.
      */
     public static function convert(float $value, WeightUnit $sourceUnit, WeightUnit $targetUnit): float
     {

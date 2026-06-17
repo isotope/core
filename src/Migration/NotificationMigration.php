@@ -6,7 +6,6 @@ namespace Isotope\CoreBundle\Migration;
 
 use Contao\CoreBundle\Migration\AbstractMigration;
 use Contao\CoreBundle\Migration\MigrationResult;
-use Contao\StringUtil;
 use Doctrine\DBAL\Connection;
 
 /**

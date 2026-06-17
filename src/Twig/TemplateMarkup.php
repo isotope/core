@@ -7,12 +7,16 @@ namespace Isotope\CoreBundle\Twig;
 use Symfony\Component\DependencyInjection\Exception\RuntimeException;
 use Twig\Environment;
 
-final class TemplateMarkup implements \ArrayAccess, \IteratorAggregate, \Countable, \Stringable
+/**
+ * @implements \ArrayAccess<string, mixed>
+ * @implements \IteratorAggregate<string, mixed>
+ */
+final readonly class TemplateMarkup implements \ArrayAccess, \IteratorAggregate, \Countable, \Stringable
 {
     public function __construct(
-        private readonly Environment $twig,
-        private readonly string $template,
-        private readonly array $context,
+        private Environment $twig,
+        private string $template,
+        private array $context,
     ) {
     }
 

@@ -8,36 +8,36 @@ use Contao\Model;
 use Contao\Model\Collection;
 
 /**
- * @property int    $id
- * @property int    $tstamp
- * @property string $type
- * @property int    $member
- * @property int    $store_id
- * @property int    $locked
+ * @property int         $id
+ * @property int         $tstamp
+ * @property string      $type
+ * @property int         $member
+ * @property int         $store_id
+ * @property int         $locked
  * @property string|null $extensions
- * @property int    $source_collection_id
- * @property string $uniqid
- * @property int    $config_id
- * @property int    $payment_id
- * @property int    $shipping_id
- * @property int    $billing_address_id
- * @property int    $shipping_address_id
- * @property float  $subtotal
- * @property float  $tax_free_subtotal
- * @property float  $total
- * @property float  $tax_free_total
- * @property string $currency
- * @property string $language
- * @property string $document_number
- * @property array $checkout_info
- * @property array $payment_data
- * @property array $shipping_data
+ * @property int         $source_collection_id
+ * @property string      $uniqid
+ * @property int         $config_id
+ * @property int         $payment_id
+ * @property int         $shipping_id
+ * @property int         $billing_address_id
+ * @property int         $shipping_address_id
+ * @property float       $subtotal
+ * @property float       $tax_free_subtotal
+ * @property float       $total
+ * @property float       $tax_free_total
+ * @property string      $currency
+ * @property string      $language
+ * @property string      $document_number
+ * @property array       $checkout_info
+ * @property array       $payment_data
+ * @property array       $shipping_data
  * @property string|null $order_status
  * @property string|null $transaction_status
  * @property string|null $delivery_status
- * @property int $date_paid
- * @property int $date_shipped
- * @property string $notes
+ * @property int         $date_paid
+ * @property int         $date_shipped
+ * @property string      $notes
  */
 class ProductCollectionModel extends Model
 {
@@ -103,7 +103,7 @@ class ProductCollectionModel extends Model
     /**
      * @return Collection<self>|null
      */
-    public static function findOneByMember(int $memberId, string $type, int $storeId = null, array $options = []): self|null
+    public static function findOneByMember(int $memberId, string $type, int|null $storeId = null, array $options = []): self|null
     {
         $t = self::$strTable;
 

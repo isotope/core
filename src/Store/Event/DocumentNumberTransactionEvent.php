@@ -6,6 +6,9 @@ namespace Isotope\CoreBundle\Store\Event;
 
 use Isotope\CoreBundle\EventDispatcher\TransactionEvent;
 
+/**
+ * @extends TransactionEvent<string>
+ */
 class DocumentNumberTransactionEvent extends TransactionEvent
 {
     public const string NAME = 'isotope.document_number';

@@ -4,17 +4,15 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\RuleBuilder;
 
-use Isotope\CoreBundle\Model\RuleModel;
 use Isotope\CoreBundle\Model\RuleConditionModel;
+use Isotope\CoreBundle\Model\RuleModel;
 use Isotope\CoreBundle\ModelType\RuleConditionRegistry;
 use Isotope\CoreBundle\Store\Context\StoreContext;
-use Isotope\CoreBundle\Store\StoreManager;
 
 class RuleMatcher
 {
-    public function __construct(
-        private readonly RuleConditionRegistry $conditionRegistry,
-    ) {
+    public function __construct(private readonly RuleConditionRegistry $conditionRegistry)
+    {
     }
 
     public function isApplicable(int $ruleId, StoreContext $context): bool

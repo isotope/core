@@ -21,7 +21,8 @@ class SearchFieldsOptionsListener
         $options = [];
 
         foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $name => $config) {
-            if (($config['attributes']['dynamic'] ?? false)
+            if (
+                ($config['attributes']['dynamic'] ?? false)
                 || (($config['eval']['multiple'] ?? false) && !($config['eval']['csv'] ?? false))
             ) {
                 // Cannot search for dynamic or serialized attributes

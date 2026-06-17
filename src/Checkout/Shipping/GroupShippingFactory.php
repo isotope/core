@@ -4,23 +4,19 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Checkout\Shipping;
 
-use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use Contao\Model;
 use Contao\StringUtil;
 use Isotope\CoreBundle\Model\ShippingModel;
 use Isotope\CoreBundle\ModelType\ShippingRegistry;
-use Isotope\CoreBundle\RuleBuilder\RuleMatcher;
 use Isotope\CoreBundle\Store\Context\StoreContext;
-use Twig\Environment;
 
 /**
  * @extends AbstractShippingFactory<GroupShipping>
  */
 class GroupShippingFactory extends AbstractShippingFactory
 {
-    public function __construct(
-        private readonly ShippingRegistry $shippingRegistry,
-    ) {
+    public function __construct(private readonly ShippingRegistry $shippingRegistry)
+    {
     }
 
     /**

@@ -24,7 +24,7 @@ class OrderConditionListener
         }
 
         foreach ($orderConditions as &$condition) {
-            $condition['step'] = match($condition['step']) {
+            $condition['step'] = match ($condition['step']) {
                 'BillingAddress',
                 'ShippingAddress' => 'address',
                 'ShippingMethod' => 'shipping',

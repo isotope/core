@@ -11,9 +11,8 @@ use Isotope\CoreBundle\Model\ProductTypeModel;
 
 class ButtonListener
 {
-    public function __construct(
-        private readonly Connection $connection,
-    ) {
+    public function __construct(private readonly Connection $connection)
+    {
     }
 
     #[AsCallback('tl_iso_product', 'list.operations.children.button')]

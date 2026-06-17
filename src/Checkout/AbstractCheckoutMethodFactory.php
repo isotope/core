@@ -41,7 +41,7 @@ abstract class AbstractCheckoutMethodFactory implements ModelTypeFactoryInterfac
     {
         $this->validateInstanceOf($model, [PaymentModel::class, ShippingModel::class]);
 
-        $instance = $this->doCreate($model, $context)
+        return $this->doCreate($model, $context)
             ->setLabel($this->get(TranslatorInterface::class)->trans($model->label ?: $model->name, [], 'isotope'))
             ->setNote((string) $model->note)
             ->setPriceDefinition(PriceDefinition::fromString((string) $model->price, (int) $model->tax_class))
@@ -51,8 +51,6 @@ abstract class AbstractCheckoutMethodFactory implements ModelTypeFactoryInterfac
             ->setLogging((bool) $model->logging)
             ->setEnabled((bool) $model->enabled)
         ;
-
-        return $instance;
     }
 
     /**

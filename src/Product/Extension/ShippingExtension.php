@@ -6,16 +6,16 @@ namespace Isotope\CoreBundle\Product\Extension;
 
 use Isotope\CoreBundle\Store\Weight\Weight;
 
-final class ShippingExtension implements ProductExtensionInterface
+final readonly class ShippingExtension implements ProductExtensionInterface
 {
     /**
      * @internal
      */
     public function __construct(
-        private readonly bool $exemptFromShipping,
-        private readonly bool $pickupOnly,
-        private readonly Weight|null $weight,
-        private readonly float|null $price,
+        private bool $exemptFromShipping,
+        private bool $pickupOnly,
+        private Weight|null $weight,
+        private float|null $price,
     ) {
     }
 
@@ -34,7 +34,7 @@ final class ShippingExtension implements ProductExtensionInterface
         return $this->weight;
     }
 
-    public function getPrice(): ?float
+    public function getPrice(): float|null
     {
         return $this->price;
     }

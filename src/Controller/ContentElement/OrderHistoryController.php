@@ -18,9 +18,8 @@ use Symfony\Component\HttpFoundation\Response;
 #[AsContentElement('iso_orderhistory', category: 'isotope')]
 class OrderHistoryController extends AbstractContentElementController
 {
-    public function __construct(
-        private readonly OrderFactory $orderFactory,
-    ) {
+    public function __construct(private readonly OrderFactory $orderFactory)
+    {
     }
 
     protected function getResponse(FragmentTemplate $template, ContentModel $model, Request $request): Response
@@ -39,10 +38,10 @@ class OrderHistoryController extends AbstractContentElementController
                 'locked IS NOT NULL',
                 'type = ?',
                 'member = ?',
-                'config_id IN (' . implode(',', $configIds) . ')'
+                'config_id IN ('.implode(',', $configIds).')',
             ],
             [Order::getType(), $user->id],
-            ['order' => 'locked DESC']
+            ['order' => 'locked DESC'],
         );
 
         if (null !== $models) {

@@ -27,7 +27,7 @@ class LabelListener
 
     public function __invoke(array $row, string $label, DataContainer $dc): array
     {
-        $label = sprintf(
+        $label = \sprintf(
             '<strong>%s:</strong> %s',
             $this->translator->trans('tl_iso_related_product.category.0', [], 'contao_tl_iso_related_product'),
             $label,
@@ -53,7 +53,7 @@ class LabelListener
 
         $details = $this->twig->render('@Contao/backend/isotope/related-products.html.twig', [
             'table_headers' => array_combine($fields, array_map(fn ($field) => $this->formatter->dcaLabel('tl_iso_product', $field), $fields)),
-            'records' => array_map(fn ($product) => array_combine($fields, $dc->generateRecordLabel($product, 'tl_iso_product')), $products),
+            'records' => array_map(static fn ($product) => array_combine($fields, $dc->generateRecordLabel($product, 'tl_iso_product')), $products),
         ]);
 
         return [$label, $details];

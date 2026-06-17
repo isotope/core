@@ -12,9 +12,8 @@ use Doctrine\DBAL\Connection;
 #[AsCallback('tl_iso_related_product', 'config.onload')]
 class CategoryOptionsListener
 {
-    public function __construct(
-        private readonly Connection $connection,
-    ) {
+    public function __construct(private readonly Connection $connection)
+    {
     }
 
     public function __invoke(DataContainer $dc): void

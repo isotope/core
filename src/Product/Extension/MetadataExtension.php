@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Product\Extension;
 
-final class MetadataExtension implements ProductExtensionInterface
+final readonly class MetadataExtension implements ProductExtensionInterface
 {
     /**
      * @internal
      */
     public function __construct(
-        private readonly string $title,
-        private readonly string $description,
+        private string $title,
+        private string $description,
     ) {
     }
 

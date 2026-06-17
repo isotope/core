@@ -8,14 +8,11 @@ use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\DataContainer;
 use Isotope\CoreBundle\Model\ProductCollectionModel;
 use Isotope\CoreBundle\Store\Order\WorkflowManager;
-use Symfony\Component\Workflow\Transition;
-use Symfony\Component\Workflow\Workflow;
 
 class StatusOptionsListener
 {
-    public function __construct(
-        private readonly WorkflowManager $workflowManager,
-    ) {
+    public function __construct(private readonly WorkflowManager $workflowManager)
+    {
     }
 
     #[AsCallback('tl_iso_payment', 'fields.processing_status.options')]

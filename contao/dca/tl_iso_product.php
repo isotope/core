@@ -3,7 +3,6 @@
 use Contao\DataContainer;
 use Contao\Input;
 use Contao\System;
-use Isotope\CompatibilityHelper;
 use Isotope\CoreBundle\DataContainer\ProductData;
 use Isotope\CoreBundle\Model\TaxClassModel;
 

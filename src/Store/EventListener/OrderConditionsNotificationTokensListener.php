@@ -15,9 +15,8 @@ use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 #[AsEventListener]
 class OrderConditionsNotificationTokensListener
 {
-    public function __construct(
-        private readonly StringParser $stringParser,
-    ) {
+    public function __construct(private readonly StringParser $stringParser)
+    {
     }
 
     public function __invoke(CollectOrderNotificationTokensEvent $event): void

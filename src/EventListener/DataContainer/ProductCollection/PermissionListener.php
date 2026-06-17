@@ -15,7 +15,7 @@ class PermissionListener
 {
     public function __construct(
         private readonly Security $security,
-        private readonly Connection $connection
+        private readonly Connection $connection,
     ) {
     }
 
@@ -45,6 +45,7 @@ class PermissionListener
 
     /**
      * @param array<int> $groupIds
+     *
      * @return array<int>
      */
     private function getMemberInGroups(array $groupIds): array

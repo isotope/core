@@ -25,12 +25,13 @@ class NotHasKeyValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, 'array');
         }
 
-        if (array_key_exists($constraint->key, $value)) {
+        if (\array_key_exists($constraint->key, $value)) {
             $this->context
                 ->buildViolation($constraint->message)
                 ->atPath('['.$constraint->key.']')
                 ->setParameter('{{ key }}', $constraint->key)
-                ->addViolation();
+                ->addViolation()
+            ;
         }
     }
 }

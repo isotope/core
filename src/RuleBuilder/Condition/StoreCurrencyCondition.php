@@ -7,7 +7,6 @@ namespace Isotope\CoreBundle\RuleBuilder\Condition;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsRuleCondition;
 use Isotope\CoreBundle\RuleBuilder\Exception\InvalidOperatorException;
 use Isotope\CoreBundle\Store\Context\StoreContext;
-use Isotope\CoreBundle\Store\StoreManager;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[AsRuleCondition(category: 'store', factory: StoreConditionFactory::class)]

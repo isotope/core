@@ -13,7 +13,7 @@ use Doctrine\DBAL\Connection;
  */
 class TemplateMigration extends AbstractMigration
 {
-    private const RESET = [
+    private const array RESET = [
         'tl_iso_producttype' => [
             'list_template' => 'iso_list_default',
             'reader_template' => 'iso_reader_default',

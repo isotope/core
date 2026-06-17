@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Checkout\Payment;
 
+use Codefog\HasteBundle\StringParser;
 use Isotope\CoreBundle\Controller\PaypalIpnController;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsPayment;
 use Isotope\CoreBundle\Model\OrderTransactionModel;
@@ -11,7 +12,6 @@ use Isotope\CoreBundle\ProductCollection\Order\Order;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Twig\TemplateMarkup;
 use Monolog\Attribute\WithMonologChannel;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -31,12 +31,14 @@ class PaypalPayment extends AbstractPayment
         parent::__construct($id, $context);
     }
 
+    #[\Override]
     public static function getSubscribedServices(): array
     {
         return [
             ...parent::getSubscribedServices(),
             Environment::class,
             UrlGeneratorInterface::class,
+            StringParser::class,
         ];
     }
 
@@ -52,9 +54,9 @@ class PaypalPayment extends AbstractPayment
 
     public function process(Order $order, OrderTransactionModel $transactionModel, string $returnUrl, string $errorUrl): Response|null
     {
-        $arrData     = array();
+        $arrData = [];
         $fltDiscount = 0;
-        $i           = 0;
+        $i = 0;
 
         foreach ($order->getLineItems() as $item) {
             if ($item->getPrice()->getTotalPrice() < 0) {
@@ -66,22 +68,20 @@ class PaypalPayment extends AbstractPayment
             $config = $item->getConfiguration();
 
             if (!empty($config)) {
-                //dd($config);
-                //$config = array_map(
-                //    static function(array $option) {
-                //        return $option['label'] . ': ' . $option;
-                //    },
-                //    $config,
-                //);
+                array_walk(
+                    $config,
+                    static function (&$value, $key): void {
+                        $value = $key.': '.$value;
+                    },
+                );
 
-                //$attributes = ' (' . implode(', ', $config) . ')';
+                $attributes = ' ('.implode(', ', $config).')';
             }
 
-            //$strName = HasteStringUtil::convertToText(
-            //    $item->getLabel() . $attributes,
-            //    HasteStringUtil::NO_TAGS | HasteStringUtil::NO_BREAKS | HasteStringUtil::NO_INSERTTAGS | HasteStringUtil::NO_ENTITIES
-            //);
-            $strName = $item->getLabel();
+            $strName = $this->get(StringParser::class)->convertToText(
+                $item->getLabel().$attributes,
+                StringParser::NO_TAGS | StringParser::NO_BREAKS | StringParser::NO_INSERTTAGS | StringParser::NO_ENTITIES,
+            );
 
             // Make sure name is not empty, otherwise PayPal ignores all subsequent products
             // @see https://github.com/isotope/core/issues/2176

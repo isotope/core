@@ -19,9 +19,8 @@ class OrderNotificationType implements NotificationTypeInterface
 {
     public const NAME = 'iso_order';
 
-    public function __construct(
-        private readonly TokenDefinitionFactoryInterface $factory,
-    ) {
+    public function __construct(private readonly TokenDefinitionFactoryInterface $factory)
+    {
     }
 
     public function getName(): string

@@ -46,5 +46,5 @@ interface AttributeInterface
     /**
      * Gets attribute value from given product.
      */
-    public function getValue(CoreProduct $product);
+    public function getValue(CoreProduct $product): mixed;
 }

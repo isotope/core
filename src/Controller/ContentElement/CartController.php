@@ -8,17 +8,14 @@ use Contao\ContentModel;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsContentElement;
 use Contao\CoreBundle\Twig\FragmentTemplate;
 use Isotope\CoreBundle\Store\CartManager;
-use Isotope\CoreBundle\Store\Price\PriceDisplay;
-use Isotope\CoreBundle\Store\Price\TaxCalculation;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 #[AsContentElement('iso_cart', category: 'isotope')]
 class CartController extends AbstractContentElementController
 {
-    public function __construct(
-        private readonly CartManager $cartManager,
-    ) {
+    public function __construct(private readonly CartManager $cartManager)
+    {
     }
 
     protected function getResponse(FragmentTemplate $template, ContentModel $model, Request $request): Response

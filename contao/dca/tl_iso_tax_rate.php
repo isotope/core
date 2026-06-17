@@ -60,7 +60,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = [
             'foreignKey' => 'tl_iso_rule.name',
             'eval' => ['tl_class' => 'w50'],
             'sql' => 'int(10) unsigned NOT NULL default 0',
-            'relation' => ['type' => 'hasOne']
+            'relation' => ['type' => 'hasOne'],
         ],
     ],
 ];

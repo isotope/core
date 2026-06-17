@@ -20,9 +20,8 @@ class PaymentAccessVoter extends AbstractDataContainerVoter implements ResetInte
 {
     private array|null $used = null;
 
-    public function __construct(
-        private readonly Connection $connection,
-    ) {
+    public function __construct(private readonly Connection $connection)
+    {
     }
 
     public function reset(): void
@@ -52,7 +51,7 @@ class PaymentAccessVoter extends AbstractDataContainerVoter implements ResetInte
                 SELECT payment_id FROM tl_iso_product_collection WHERE type='order'
                 UNION
                 SELECT payment_id FROM tl_iso_order_transaction
-            SQL));
+                SQL));
         }
 
         return !\in_array((int) $current['id'], $this->used, true);

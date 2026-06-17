@@ -14,6 +14,7 @@ abstract class AbstractPayment extends AbstractCheckoutMethod implements Payment
      */
     protected array|null $allowedShippings = null;
 
+    #[\Override]
     public static function getSubscribedServices(): array
     {
         return [
@@ -29,6 +30,7 @@ abstract class AbstractPayment extends AbstractCheckoutMethod implements Payment
         return $this;
     }
 
+    #[\Override]
     public function isAvailable(): bool
     {
         if (!parent::isAvailable()) {

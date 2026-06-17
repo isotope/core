@@ -1,6 +1,5 @@
 <?php
 
-use Contao\Controller;
 use Isotope\CoreBundle\Checkout\CheckoutMethod;
 use Isotope\CoreBundle\Product\Category\CategoryScope;
 

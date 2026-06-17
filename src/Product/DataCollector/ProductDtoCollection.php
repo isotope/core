@@ -25,6 +25,7 @@ class ProductDtoCollection extends AbstractMap
         return ProductDto::class;
     }
 
+    #[\Override]
     public function offsetSet($offset, $value): void
     {
         if (!$value instanceof ProductDto) {

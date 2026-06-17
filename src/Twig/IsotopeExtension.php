@@ -35,6 +35,7 @@ class IsotopeExtension extends AbstractExtension implements GlobalsInterface
         $runtime->addSafeClass(CheckoutStepSummary::class, ['html', 'contao_html']);
     }
 
+    #[\Override]
     public function getFilters(): array
     {
         return [
@@ -42,6 +43,7 @@ class IsotopeExtension extends AbstractExtension implements GlobalsInterface
         ];
     }
 
+    #[\Override]
     public function getFunctions(): array
     {
         return [

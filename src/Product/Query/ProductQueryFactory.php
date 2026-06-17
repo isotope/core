@@ -14,9 +14,9 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class ProductQueryFactory
 {
-    private const FILTER_REGEXP = '/^(\w*)(\([^)]+\)|\W)(.+)$/';
+    private const string FILTER_REGEXP = '/^(\w*)(\([^)]+\)|\W)(.+)$/';
 
-    private const SORTING_REGEXP = '/(\w+)(!?)/';
+    private const string SORTING_REGEXP = '/(\w+)(!?)/';
 
     /**
      * @param array<class-string<FilterInterface>> $filters,

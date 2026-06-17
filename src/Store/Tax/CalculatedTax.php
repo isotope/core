@@ -58,7 +58,7 @@ class CalculatedTax implements \JsonSerializable
         return $this->label;
     }
 
-    public function setLabel(?string $label): self
+    public function setLabel(string|null $label): self
     {
         $this->label = $label;
 

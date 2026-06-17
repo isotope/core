@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Test\Fixture;
 
+use Codefog\HasteBundle\CodefogHasteBundle;
 use Contao\CoreBundle\ContaoCoreBundle;
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
+use Isotope\CoreBundle\IsotopeBundle;
 use Knp\Bundle\MenuBundle\KnpMenuBundle;
 use Scheb\TwoFactorBundle\SchebTwoFactorBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
@@ -15,6 +17,7 @@ use Symfony\Bundle\SecurityBundle\SecurityBundle;
 use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpKernel\Kernel;
+use Terminal42\NotificationCenterBundle\Terminal42NotificationCenterBundle;
 
 class TestKernel extends Kernel
 {
@@ -31,11 +34,14 @@ class TestKernel extends Kernel
             new KnpMenuBundle(),
             new SchebTwoFactorBundle(),
             new ContaoCoreBundle(),
+            new CodefogHasteBundle(),
+            new Terminal42NotificationCenterBundle(),
+            new IsotopeBundle(),
         ];
     }
 
-    public function registerContainerConfiguration(LoaderInterface $loader)
+    public function registerContainerConfiguration(LoaderInterface $loader): void
     {
-        return $loader->load(__DIR__.'/config/config_test.yaml');
+        $loader->load(__DIR__.'/config/config_test.yaml');
     }
 }

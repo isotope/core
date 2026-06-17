@@ -17,6 +17,7 @@ class DeleteProductVariantOperation extends AbstractDeleteVariantOperation
         return 'isotope/product';
     }
 
+    #[\Override]
     protected function getDatabaseReferencesThatShouldBeMigrated(): array
     {
         return [

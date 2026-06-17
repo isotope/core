@@ -35,6 +35,7 @@ abstract class AbstractShipping extends AbstractCheckoutMethod implements Shippi
         return $this->shippingWeight;
     }
 
+    #[\Override]
     public function isAvailable(): bool
     {
         if (!parent::isAvailable()) {

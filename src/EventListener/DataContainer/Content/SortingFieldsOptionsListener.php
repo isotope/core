@@ -19,7 +19,7 @@ class SortingFieldsOptionsListener
         Controller::loadDataContainer('tl_iso_product');
         System::loadLanguageFile('tl_iso_product');
 
-        $options = array();
+        $options = [];
 
         foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $name => $config) {
             if ($config['attributes']['fe_sorting'] ?? false) {

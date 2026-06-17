@@ -6,7 +6,6 @@ use Contao\Input;
 use Contao\System;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Types\Types;
-use Isotope\Backend\ProductCollection\Callback;
 
 $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
     'config' => [
