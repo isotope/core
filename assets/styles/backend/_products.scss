@@ -75,3 +75,54 @@ h3.inherit,
         font-weight: normal;
     }
 }
+
+#tl_iso_product table#ctrl_prices {
+    > tbody > tr {
+        > td {
+            vertical-align: top;
+            padding-top: 4px;
+            padding-bottom: 15px;
+
+            &:first-child,
+            &.tl_right {
+                padding-top: 10px;
+            }
+
+            &:nth-child(2) {
+                width: 20%;
+                max-width: 200px;
+
+                td:nth-child(1) {
+                    width: 50px;
+
+                    input {
+                        text-align: center;
+                    }
+                }
+            }
+
+            td {
+                padding-top: 0;
+                vertical-align: middle;
+            }
+        }
+
+        &:last-child > td {
+            padding-bottom: 20px;
+        }
+    }
+
+    .row_wizard {
+        margin-top: 0 !important;
+    }
+
+    .row-wizard-ghost td {
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+    }
+
+    .tl_select_wrapper {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+}

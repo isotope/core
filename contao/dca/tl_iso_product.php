@@ -217,15 +217,15 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
                             'label' => '',
                             'default' => 1,
                             'inputType' => 'text',
-                            'eval' => ['mandatory' => true, 'rgxp' => 'digit', 'style' => 'width:50px'],
+                            'eval' => ['mandatory' => true, 'rgxp' => 'digit'],
                         ],
                         'price' => [
                             'label' => '',
                             'inputType' => 'text',
-                            'eval' => ['mandatory' => true, 'rgxp' => 'digit', 'style' => 'width:120px'],
+                            'eval' => ['mandatory' => true, 'rgxp' => 'digit'],
                         ],
                     ],
-                    'eval' => ['mandatory' => true, 'cell_style' => 'width:220px', 'sortable' => false],
+                    'eval' => ['mandatory' => true, 'sortable' => false],
                 ],
                 'tax_class' => [
                     'label' => &$GLOBALS['TL_LANG']['tl_iso_product']['prices']['tax_class'],
