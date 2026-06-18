@@ -368,6 +368,9 @@
       <trans-unit id="MSC.address_error">
         <source>This address cannot be used or is missing required information.</source>
       </trans-unit>
+      <trans-unit id="MSC.member_address_error">
+        <source>Your member address cannot be used or is missing required information.</source>
+      </trans-unit>
       <trans-unit id="MSC.shipping_method_message">
         <source>Select a shipping method.</source>
       </trans-unit>

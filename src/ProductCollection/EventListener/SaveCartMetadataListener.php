@@ -49,12 +49,14 @@ class SaveCartMetadataListener
             $collection->save();
         }
 
-        if ($memberId = $this->storeManager->getCurrentContext()->getMemberId()) {
-            $address->ptable = 'tl_member';
-            $address->pid = $memberId;
-        } else {
-            $address->ptable = 'tl_iso_product_collection';
-            $address->pid = $collection->id;
+        if (!$address->ptable || !$address->pid) {
+            if ($memberId = $this->storeManager->getCurrentContext()->getMemberId()) {
+                $address->ptable = 'tl_member';
+                $address->pid = $memberId;
+            } else {
+                $address->ptable = 'tl_iso_product_collection';
+                $address->pid = $collection->id;
+            }
         }
 
         $address->tstamp = time();

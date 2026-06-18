@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Checkout\Step;
 
 use Contao\CoreBundle\Exception\RedirectResponseException;
+use Contao\MemberModel;
 use Isotope\CoreBundle\Checkout\Event\CheckoutStepEvent;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsCheckoutStep;
 use Isotope\CoreBundle\Model\AddressModel;
@@ -52,14 +53,14 @@ class AddressStep extends AbstractCheckoutStep
         return $this->translator->trans('MSC.checkout_address', [], 'contao_default');
     }
 
-    private function getGuestSummary(Request $request, StoreContext $context, array $config): CheckoutStepSummary|null
+    private function getGuestSummary(Request $request, StoreContext $context, array $config): CheckoutStepSummary
     {
         $event = $this->dispatchEvent($context, $request, $config);
 
         if (
             !$event->hasError()
             && !$this->isEditing($request)
-            && !$this->hasError($context)
+            && !$this->hasError($context, $config)
         ) {
             return $this->generateSummary($event, $context, $config);
         }
@@ -78,8 +79,6 @@ class AddressStep extends AbstractCheckoutStep
         $addShipping = null !== $cart->getShippingAddress();
         $shippingAddress = null;
         $shippingForm = null;
-
-        // TODO: validate that the current cart address matches the requested config
 
         if ($requiresShipping && !$skipShipping) {
             $shippingAddress = $cart->getShippingAddress() ?? new AddressModel();
@@ -100,18 +99,20 @@ class AddressStep extends AbstractCheckoutStep
             if (true === $billingResult) {
                 $cart->setBillingAddress($billingAddress);
             } elseif (false === $billingResult) {
-
+                // TODO: handle error
             } else {
-                $errors = $billingResult;
+                // $errors = $billingResult;
+                // TODO: handle error
             }
 
             if ($addShipping) {
                 if (true === $shippingResult) {
                     $cart->setShippingAddress($shippingAddress);
                 } elseif (false === $billingResult) {
-
+                    // TODO: handle error
                 } else {
-                    $errors = $billingResult;
+                    // $errors = $billingResult;
+                    // TODO: handle error
                 }
             } else {
                 $cart->setShippingAddress(null);
@@ -139,7 +140,7 @@ class AddressStep extends AbstractCheckoutStep
         );
     }
 
-    private function getMemberSummary(Request $request, StoreContext $context, array $config): CheckoutStepSummary|null
+    private function getMemberSummary(Request $request, StoreContext $context, array $config): CheckoutStepSummary
     {
         $event = $this->dispatchEvent($context, $request, $config);
 
@@ -157,30 +158,34 @@ class AddressStep extends AbstractCheckoutStep
                     && !$request->request->has('delete_address_shipping')
                 )
             )
-            && !$this->hasError($context)
+            && !$this->hasError($context, $config)
         ) {
             return $this->generateSummary($event, $context, $config);
         }
 
         $cart = $context->getCart();
+        $billingAddress = $cart->getBillingAddress();
+        $shippingAddress = $cart->getShippingAddress();
+        $addShipping = null !== $shippingAddress;
         $requiresShipping = CartUtil::requiresShipping($cart);
         $billingAddressConfig = $context->getBillingAddressConfig();
+        $skipBilling = $this->skipBillingAddress($config);
+
+        if ($skipBilling) {
+            $billingAddress = $this->getMemberAddress($billingAddress, $context);
+        }
 
         if ($skipShipping = $this->skipShippingAddress($config)) {
             $billingAddressConfig = $billingAddressConfig->mergeWith($context->getShippingAddressConfig());
         }
 
-        $billingAddressManager = $this->addressManager->generate($request, $context->getMemberId(), $context->getStoreId(), $billingAddressConfig, 'billing');
+        $billingAddressManager = !$skipBilling ? $this->addressManager->generate($request, $context->getMemberId(), $context->getStoreId(), $billingAddressConfig, 'billing') : null;
         $shippingAddressManager = $requiresShipping && !$skipShipping ? $this->addressManager->generate($request, $context->getMemberId(), $context->getStoreId(), $context->getShippingAddressConfig(), 'shipping') : null;
 
-        $billingAddress = $cart->getBillingAddress();
-        $shippingAddress = $cart->getShippingAddress();
-        $addShipping = null !== $shippingAddress;
-
-        // TODO: validate that the existing address matches the requested config
-
         if ($request->isMethod(Request::METHOD_POST) && $request->request->has('submit_address_step')) {
-            if ($billingAddress = $this->getAddress($request->request->getInt('billing_address_id'), $context)) {
+            if ($skipBilling) {
+                $cart->setBillingAddress($billingAddress);
+            } elseif ($billingAddress = $this->getAddress($request->request->getInt('billing_address_id'), $context)) {
                 $cart->setBillingAddress($billingAddress);
             }
 
@@ -197,7 +202,7 @@ class AddressStep extends AbstractCheckoutStep
             throw new RedirectResponseException($request->getRequestUri());
         }
 
-        if ($request->request->has('create_address_billing') || $request->request->has('edit_address_billing')) {
+        if (!$skipBilling && ($request->request->has('create_address_billing') || $request->request->has('edit_address_billing'))) {
             return $this->createSummary(
                 $event,
                 false,
@@ -222,6 +227,8 @@ class AddressStep extends AbstractCheckoutStep
             [
                 'billing_address_manager' => $billingAddressManager,
                 'shipping_address_manager' => $shippingAddressManager,
+                'member_address' => $skipBilling ? $this->addressFormatter->getData($billingAddress, $billingAddressConfig) : null,
+                'member_address_error' => $skipBilling && !$this->addressValidator->isValid($billingAddress, $billingAddressConfig),
                 'billing_address' => $billingAddress,
                 'shipping_address' => $shippingAddress,
                 'add_shipping_address' => $addShipping,
@@ -247,7 +254,7 @@ class AddressStep extends AbstractCheckoutStep
         return $address;
     }
 
-    private function useMemberAddress(array $config): bool
+    private function skipBillingAddress(array $config): bool
     {
         $skippable = explode(',', $config['iso_checkout_skippable'] ?? '');
 
@@ -261,19 +268,24 @@ class AddressStep extends AbstractCheckoutStep
         return \in_array('shipping_address', $skippable, true);
     }
 
-    private function hasError(StoreContext $context): bool
+    private function hasError(StoreContext $context, array $config): bool
     {
+        $skipBilling = $this->skipBillingAddress($config);
+        $skipShipping = $this->skipShippingAddress($config);
         $billingAddress = $context->getCart()->getBillingAddress();
+        $shippingAddress = $context->getCart()->getShippingAddress();
+
+        if ($skipShipping || !$shippingAddress) {
+            $shippingAddress = $billingAddress;
+        }
 
         if (
             !$billingAddress
-            || ($context->getMemberId() > 0 ^ $billingAddress->isMemberAddress())
+            || (!$skipBilling && ($context->getMemberId() > 0 ^ $billingAddress->isMemberAddress()))
             || !$this->addressValidator->isValid($billingAddress, $context->getBillingAddressConfig())
         ) {
             return true;
         }
-
-        $shippingAddress = $context->getCart()->getShippingAddress();
 
         if (
             $shippingAddress
@@ -293,6 +305,7 @@ class AddressStep extends AbstractCheckoutStep
         $cart = $context->getCart();
 
         $requiresShipping = CartUtil::requiresShipping($cart);
+        $skipBilling = $this->skipBillingAddress($config);
         $skipShipping = $this->skipShippingAddress($config);
 
         $billingAddress = $cart->getBillingAddress();
@@ -301,7 +314,7 @@ class AddressStep extends AbstractCheckoutStep
         $shippingAddressConfig = $context->getShippingAddressConfig();
 
         if ($requiresShipping && $skipShipping && !$billingAddressConfig->isSameAs($shippingAddressConfig)) {
-            $shippingAddress = $cart->getBillingAddress();
+            $shippingAddress = $billingAddress;
         }
 
         return $this->createSummary(
@@ -313,8 +326,24 @@ class AddressStep extends AbstractCheckoutStep
                 'shipping_address' => $shippingAddress ? $this->addressFormatter->getData($shippingAddress, $shippingAddressConfig) : null,
                 'requires_payment' => CartUtil::requiresPayment($cart),
                 'requires_shipping' => $requiresShipping,
-                'editable' => true, // TODO: not editable if member address is enforced and shipping=billing is enforced
+                'editable' => !$skipBilling || !$skipShipping,
             ],
         );
+    }
+
+    private function getMemberAddress(AddressModel|null $address, StoreContext $context): AddressModel
+    {
+        if (!$address || $address->isMemberAddress()) {
+            $address = new AddressModel();
+        }
+
+        $address->setRow(MemberModel::findById($context->getMemberId())->row());
+        $address->street_1 = $address->street;
+        $address->ptable = 'tl_iso_product_collection';
+        $address->pid = $context->getCart()->getId();
+
+        $address->save();
+
+        return $address;
     }
 }

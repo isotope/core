@@ -12,7 +12,7 @@
         {% embed '@Contao/isotope/address_manager.html.twig' with edit_address only %}
             {% block form %}
                 {% trans_default_domain 'contao_default' %}
-                {% if address.id %}
+                {% if address.id|default %}
                     <h3>{{ 'MSC.editAddressHeadline'|trans }}</h3>
                 {% else %}
                     <h3>{{ 'MSC.createAddressHeadline'|trans }}</h3>
@@ -31,6 +31,12 @@
     {% endif %}
 {% endblock %}
 
+{% block submit_container %}
+    {% if not member_address_error|default %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
 {% block content %}
     <form method="POST" data-action="isotope--fragment#submit" class="billing_address">
         <input type="hidden" name="REQUEST_TOKEN" value="{{ contao.request_token }}">
@@ -42,39 +48,47 @@
                     <h4>{{ 'MSC.customer_address'|trans }}</h4>
                 {% endif %}
             </legend>
-            {% if requires_payment %}
-                <p>{{ 'MSC.billing_address_message'|trans }}</p>
-            {% else %}
-                <p>{{ 'MSC.customer_address_message'|trans }}</p>
-            {% endif %}
+            {% if member_address|default %}
+                {% if member_address_error|default %}
+                    <p class="message error">{{ 'MSC.member_address_error'|trans }}</p>
+                {% endif %}
 
-            <fieldset>
-                {% embed '@Contao/isotope/address_manager.html.twig' with billing_address_manager|merge({ current: billing_address }) %}
-                    {% trans_default_domain 'contao_default' %}
-                    {% block address %}
-                        {% if not address.isValid %}<p class="message error">{{ 'MSC.address_error'|trans }}</p>{% endif %}
-                        <span>
-                            <input
-                                id="opt_billing_address_{{ address.data.id }}"
-                                type="radio"
-                                form="{{ form_id }}"
-                                name="billing_address_id"
-                                class="radio"
-                                value="{{ address.data.id }}"
-                                required
-                                {% if not address.isValid %}
-                                    disabled
-                                {% elseif (addresses|length == 1 or address.data.id == current.id|default) %}
-                                    checked
-                                {% endif %}
-                            >
-                            <label for="opt_billing_address_{{ address.data.id }}">
-                                {% with address only %}{{ block('isotope_address_component') }}{% endwith %}
-                            </label>
-                        </span>
-                    {% endblock %}
-                {% endembed %}
-            </fieldset>
+                {% with member_address only %}{{ block('isotope_address_component') }}{% endwith %}
+            {% else %}
+                {% if requires_payment %}
+                    <p>{{ 'MSC.billing_address_message'|trans }}</p>
+                {% else %}
+                    <p>{{ 'MSC.customer_address_message'|trans }}</p>
+                {% endif %}
+
+                <fieldset>
+                    {% embed '@Contao/isotope/address_manager.html.twig' with billing_address_manager|merge({ current: billing_address }) %}
+                        {% trans_default_domain 'contao_default' %}
+                        {% block address %}
+                            {% if not address.isValid %}<p class="message error">{{ 'MSC.address_error'|trans }}</p>{% endif %}
+                            <span>
+                                <input
+                                    id="opt_billing_address_{{ address.data.id }}"
+                                    type="radio"
+                                    form="{{ form_id }}"
+                                    name="billing_address_id"
+                                    class="radio"
+                                    value="{{ address.data.id }}"
+                                    required
+                                    {% if not address.isValid %}
+                                        disabled
+                                    {% elseif (addresses|length == 1 or address.data.id == current.id|default) %}
+                                        checked
+                                    {% endif %}
+                                >
+                                <label for="opt_billing_address_{{ address.data.id }}">
+                                    {% with address only %}{{ block('isotope_address_component') }}{% endwith %}
+                                </label>
+                            </span>
+                        {% endblock %}
+                    {% endembed %}
+                </fieldset>
+            {% endif %}
         </fieldset>
     </form>
 
