@@ -14,6 +14,7 @@ use Isotope\CoreBundle\Model\ProductModel;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\DataCollector\ProductDto;
 use Isotope\CoreBundle\Product\ProductBuilder;
+use Isotope\CoreBundle\Store\Price\PriceFormatter;
 use Isotope\CoreBundle\Store\StoreManager;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
@@ -33,6 +34,7 @@ class ProductInsertTag implements InsertTagResolverNestedResolvedInterface
         private readonly ProductBuilder $productBuilder,
         private readonly StoreManager $storeManager,
         private readonly PropertyAccessorInterface $propertyAccessor,
+        private readonly PriceFormatter $priceFormatter,
     ) {
     }
 
@@ -92,9 +94,17 @@ class ProductInsertTag implements InsertTagResolverNestedResolvedInterface
             return new InsertTagResult('');
         }
 
-        // TODO: previously supported net or gross amount through $attribute and returned a formatted price
+        $key = match ($attribute) {
+            'net_amount' => 'net_unit_price',
+            'gross_amount' => 'gross_unit_price',
+            'amount',
+            'original_amount',
+            'html',
+            '' => null,
+            default => $attribute,
+        };
 
-        return new InsertTagResult((string) $price->getUnitPrice());
+        return new InsertTagResult($this->priceFormatter->toHtml($price, $this->storeManager->getCurrentContext(), $key));
     }
 
     private function resolveAttribute(string $attribute, int|null $id): InsertTagResult
