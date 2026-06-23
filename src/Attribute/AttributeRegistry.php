@@ -49,7 +49,7 @@ class AttributeRegistry implements ResetInterface
         $this->subscribedServices[$attributeClass] = $container;
     }
 
-    public function load(bool $reload = false): void
+    public function load(bool $reload = false, bool $throw = true): void
     {
         if (null !== $this->attributes && !$reload) {
             return;
@@ -75,6 +75,10 @@ class AttributeRegistry implements ResetInterface
                 $attribute = $this->create($name, $config, $dca['fields'][$name] ?? []);
 
                 if (null === $attribute) {
+                    if (!$throw) {
+                        continue;
+                    }
+
                     throw new MissingAttributeClassException($name, $config, $dca['fields'][$name] ?? []);
                 }
 

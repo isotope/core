@@ -41,7 +41,7 @@ class AttributeListener
         }
 
         // TODO: this should not force reload
-        $this->attributeRegistry->load(true);
+        $this->attributeRegistry->load(true, false);
     }
 
     /**
