@@ -85,6 +85,9 @@ class ModuleToElementMigration extends AbstractMigration
         $tableData = [];
         $jsonData = [];
 
+        // Remove template fields that cannot work after migration
+        unset($data['customTpl'], $data['iso_list_layout'], $data['iso_reader_layout']);
+
         foreach ($data as $key => $value) {
             if ($table->hasColumn($key)) {
                 $tableData[$key] = $value;
