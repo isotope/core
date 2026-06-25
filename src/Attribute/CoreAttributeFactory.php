@@ -68,6 +68,7 @@ class CoreAttributeFactory implements AttributeFactoryInterface
         } elseif ($attribute instanceof SelectAttribute) {
             $attribute
                 ->setVariantOption((bool) ($config['variant_option'] ?? false))
+                ->setCustomerDefined($attribute->isCustomerDefined() && !$attribute->isVariantOption())
                 ->setIncludeBlankOption((bool) ($config['includeBlankOption'] ?? $dca['eval']['includeBlankOption'] ?? false))
                 ->setBlankOptionLabel($config['blankOptionLabel'] ?? $dca['eval']['blankOptionLabel'] ?? null)
                 ->setMultiple((bool) ($config['multiple'] ?? $dca['eval']['multiple'] ?? false))
@@ -77,6 +78,7 @@ class CoreAttributeFactory implements AttributeFactoryInterface
         } elseif ($attribute instanceof RadioAttribute) {
             $attribute
                 ->setVariantOption((bool) ($config['variant_option'] ?? false))
+                ->setCustomerDefined($attribute->isCustomerDefined() && !$attribute->isVariantOption())
             ;
         } elseif ($attribute instanceof MediaManagerAttribute) {
             $attribute
