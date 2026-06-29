@@ -178,6 +178,10 @@
       <trans-unit id="tl_iso_payment.paypal_secret.1">
         <source>Enter your PayPal API secret.</source>
       </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_enable_funding_options.paylater">
+        <source>Pay Later (US, UK), Pay in 4 (AU)</source>
+        <target>4X PayPal</target>
+      </trans-unit>
       <trans-unit id="tl_iso_payment.psp_pspid.0">
         <source>PSPID</source>
         <target>PSPID</target>

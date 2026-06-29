@@ -193,6 +193,26 @@
         <source>Enter your PayPal API secret.</source>
         <target>Geben Sie Ihren PayPal API Schlüssel ein.</target>
       </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_enable_funding.0">
+        <source>Enable funding</source>
+        <target>Finanzierungsquellen aktivieren</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_enable_funding.1">
+        <source>The enabled funding sources for the transaction. By default, funding source eligibility is determined based on a variety of factors. Enable funding can be used to ensure a funding source is rendered, if eligible.</source>
+        <target>Geben Sie die Finanzierungsquellen an die Sie aktivieren möchten. Standardmäßig wird die Zulässigkeit von Finanzierungsquellen auf der Grundlage einer Reihe von Faktoren bestimmt. Mit der Option "Finanzierung aktivieren" kann sichergestellt werden, dass eine Finanzierungsquelle genutzt wird, wenn sie in Frage kommt.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_enable_funding_options.card">
+        <source>Credit or debit cards</source>
+        <target>Kredit- oder Debitkarten</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_enable_funding_options.credit">
+        <source>PayPal Credit (US, UK)</source>
+        <target>PayPal Credit (US, UK)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_enable_funding_options.paylater">
+        <source>Pay Later (US, UK), Pay in 4 (AU)</source>
+        <target>Später Bezahlen</target>
+      </trans-unit>
       <trans-unit id="tl_iso_payment.psp_pspid.0">
         <source>PSPID</source>
         <target>PSPID</target>

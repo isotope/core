@@ -193,6 +193,10 @@
         <source>Enter your PayPal API secret.</source>
         <target>Inserire il vostro segreto API PayPal.</target>
       </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_enable_funding_options.paylater">
+        <source>Pay Later (US, UK), Pay in 4 (AU)</source>
+        <target>Paga in 3 rate</target>
+      </trans-unit>
       <trans-unit id="tl_iso_payment.psp_pspid.0">
         <source>PSPID</source>
         <target>PSPID</target>

@@ -24,6 +24,27 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class PaypalCheckout extends PaypalApi
 {
+    /**
+     * List of parameters to enable funding
+     * @var array
+     */
+    public static $enableFundingParameters = array(
+        'card',
+        'credit',
+        'paylater',
+        'venmo',
+        'bancontact',
+        'blik',
+        'eps',
+        'giropay',
+        'ideal',
+        'mercadopago',
+        'mybank',
+        'p24',
+        'sepa',
+        'sofort'
+    );
+
     public function isAvailable(): bool
     {
         if (!in_array(Isotope::getConfig()->currency, ['AUD', 'BRL', 'CAD', 'CZK', 'DKK', 'EUR', 'HKD', 'HUF', 'ILS', 'JPY', 'MYR', 'MXN', 'TWD', 'NZD', 'NOK', 'PHP', 'PLN', 'GBP', 'RUB', 'SGD', 'SEK', 'CHF', 'THB', 'USD'])) {
@@ -63,6 +84,7 @@ class PaypalCheckout extends PaypalApi
 
                     $template->client_id = $this->paypal_client;
                     $template->currency = $objOrder->getCurrency();
+                    $template->enable_funding = $this->getEnableFundingParameters();
 
                     parse_str(parse_url($link['href'], PHP_URL_QUERY), $params);
                     $template->token = $params['token'];
@@ -121,5 +143,45 @@ class PaypalCheckout extends PaypalApi
         $objOrder->save();
 
         return true;
+    }
+
+    /**
+     * Get list of model types
+     *
+     * @return array
+     */
+    public static function getFundingParameters()
+    {
+        return static::$enableFundingParameters;
+    }
+
+    /**
+     * Return options list of model types
+     *
+     * @return array
+     */
+    public static function getEnableFundingOptions()
+    {
+        $arrOptions = array();
+
+        foreach (static::getFundingParameters() as $strName => $strClass) {
+            $arrOptions[$strClass] = $GLOBALS['TL_LANG']['tl_iso_payment']['paypal_enable_funding_options'][$strClass] ?? $strClass;
+        }
+
+        return $arrOptions;
+    }
+
+    /**
+     * Get enable funding parameters
+     *
+     * @return null|string
+     */
+    public function getEnableFundingParameters()
+    {
+        if (isset($this->paypal_enable_funding)) {
+            return implode(',', array_values(unserialize($this->paypal_enable_funding)));
+        }
+
+        return null;
     }
 }
