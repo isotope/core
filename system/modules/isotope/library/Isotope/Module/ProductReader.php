@@ -127,6 +127,12 @@ class ProductReader extends Module
         $this->Template->product_class = $objProduct->getCssClass();
         $this->Template->referer       = 'javascript:history.go(-1)';
         $this->Template->back          = $GLOBALS['TL_LANG']['MSC']['goBack'];
+
+        // Add cache tag
+        if (System::getContainer()->has('fos_http_cache.http.symfony_response_tagger')) {
+            $responseTagger = System::getContainer()->get('fos_http_cache.http.symfony_response_tagger');
+            $responseTagger->addTags(['contao.db.tl_iso_product.'.$objProduct->id]);
+        }
     }
 
     /**
