@@ -580,6 +580,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
             $objTax->label                  = $label;
             $objTax->price                  = $price . ($isPercentage ? '%' : '');
             $objTax->total_price            = $total;
+            $objTax->tax_free_total_price   = 0;
             $objTax->addToTotal             = $addToTotal;
             $objTax->applyRoundingIncrement = $applyRoundingIncrement;
 
