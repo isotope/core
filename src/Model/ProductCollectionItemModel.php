@@ -14,7 +14,7 @@ use Contao\Model\Collection;
  * @property string      $type
  * @property string      $identifier
  * @property mixed       $configuration
- * @property string      $sku
+ * @property string|null $sku
  * @property string      $label
  * @property int         $quantity
  * @property int         $level

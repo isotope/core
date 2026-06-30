@@ -41,7 +41,7 @@ abstract class Product
 
     abstract public function getName(): string;
 
-    abstract public function getSku(): string;
+    abstract public function getSku(): string|null;
 
     public function hasExtension(string $className): bool
     {

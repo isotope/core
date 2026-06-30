@@ -11,35 +11,35 @@ use Isotope\CoreBundle\Store\Price\PriceDefinitionCollection;
 use Isotope\CoreBundle\Util\ClosureTrait;
 
 /**
- * @property int    $id
- * @property int    $pid
- * @property int    $tstamp
- * @property string $language
- * @property int    $dateAdded
- * @property int    $type
- * @property array  $inherit
- * @property bool   $fallback
- * @property string $alias
- * @property string $sku
- * @property string $name
- * @property string $teaser
- * @property string $description
- * @property string $meta_title
- * @property string $meta_description
- * @property string $price
- * @property string $prices
- * @property string $baseprice
- * @property string $shipping_weight
- * @property bool   $shipping_exempt
- * @property bool   $shipping_pickup
- * @property float  $shipping_price
- * @property array  $images
- * @property bool   $protected
- * @property array  $groups
- * @property array  $cssID
- * @property bool   $published
- * @property string $start
- * @property string $stop
+ * @property int         $id
+ * @property int         $pid
+ * @property int         $tstamp
+ * @property string      $language
+ * @property int         $dateAdded
+ * @property int         $type
+ * @property array       $inherit
+ * @property bool        $fallback
+ * @property string      $alias
+ * @property string|null $sku
+ * @property string      $name
+ * @property string      $teaser
+ * @property string      $description
+ * @property string      $meta_title
+ * @property string      $meta_description
+ * @property string      $price
+ * @property string      $prices
+ * @property string      $baseprice
+ * @property string      $shipping_weight
+ * @property bool        $shipping_exempt
+ * @property bool        $shipping_pickup
+ * @property float       $shipping_price
+ * @property array       $images
+ * @property bool        $protected
+ * @property array       $groups
+ * @property array       $cssID
+ * @property bool        $published
+ * @property string      $start
+ * @property string      $stop
  */
 class CoreProduct extends Product
 {
@@ -87,7 +87,7 @@ class CoreProduct extends Product
         return $this->name;
     }
 
-    public function getSku(): string
+    public function getSku(): string|null
     {
         return $this->sku;
     }
