@@ -7,7 +7,7 @@ namespace Isotope\CoreBundle\Attribute;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsAttribute;
 
 #[AsAttribute]
-class MediaManagerAttribute extends AbstractAttribute implements TranslatableAttributeInterface
+class MediaManagerAttribute extends AbstractAttribute implements TranslationFallbackAttributeInterface
 {
     private array|null $extensions = null;
 
@@ -21,16 +21,6 @@ class MediaManagerAttribute extends AbstractAttribute implements TranslatableAtt
         $this->extensions = $extensions;
 
         return $this;
-    }
-
-    public function isTranslatable(): bool
-    {
-        return true;
-    }
-
-    public function fetchTranslationFallback(): bool
-    {
-        return true;
     }
 
     protected function getSqlDefinition(): array|string

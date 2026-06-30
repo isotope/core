@@ -87,7 +87,7 @@ class StandardProductFactory implements ProductFactoryInterface
 
     private function translate(array $data, array $originalData): array
     {
-        $fallbackFields = $this->attributeRegistry->getFetchTranslationFallbackFields();
+        $fallbackFields = $this->attributeRegistry->getTranslationFallbackFields();
 
         foreach ($fallbackFields as $field) {
             $data[$field.'_fallback'] = $originalData[$field];
@@ -108,7 +108,7 @@ class StandardProductFactory implements ProductFactoryInterface
             return $data;
         }
 
-        $fallbackFields = $this->attributeRegistry->getFetchTranslationFallbackFields();
+        $fallbackFields = $this->attributeRegistry->getTranslationFallbackFields();
         $parent = $this->translate($originalData['__parent'], $originalData['__parent']);
         $data['alias'] = $parent['alias'] ?? $originalData['alias'] ?? '';
 
