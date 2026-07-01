@@ -38,9 +38,6 @@ class StoreManager
 
     public function getCurrentContext(): StoreContext
     {
-        // TODO: StoreContext contains data from shop config and cart;
-        //  current member, price calculation, currency, country, shipping and payment, tax etc.
-
         if ($this->runWithContext) {
             return $this->runWithContext;
         }
@@ -55,6 +52,11 @@ class StoreManager
             throw StoreContextException::noRequestAvailable();
         }
 
+        return $this->getContextForRequest($request);
+    }
+
+    public function getContextForRequest(Request $request): StoreContext
+    {
         if (($context = $request->attributes->get(self::CONTEXT_ATTRIBUTE)) instanceof StoreContext) {
             return $context;
         }
