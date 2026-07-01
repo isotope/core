@@ -65,7 +65,7 @@
 </div>
 
 {% macro row(name, file, key, isLanguage, dragIcon, deleteIcon) %}
-    {% set translate = file.translate|default('none') %}
+    {% set translate = file.translate|default(isLanguage ? 'all' : 'none') %}
     <tr>
         <td class="tl_right">
             <button type="button" class="drag-handle">{{ dragIcon|raw }}</button>

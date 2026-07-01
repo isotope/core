@@ -160,9 +160,9 @@ class MediaManager extends Widget implements UploadableWidgetInterface
 
         // Move all temporary files
         foreach ($varInput as $k => $v) {
-            if (\is_array($arrFallback)/* && \in_array($v, $arrFallback, false) */) {
+            if (\is_array($arrFallback)) {
                 foreach ($arrFallback as $image) {
-                    if ($v['src'] === $image['src']) {
+                    if ($v['src'] === $image['src'] && $v['translate'] !== $image['translate']) {
                         $this->addError($GLOBALS['TL_LANG']['ERR']['imageInFallback']);
                         continue 2;
                     }
