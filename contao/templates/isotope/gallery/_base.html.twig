@@ -12,8 +12,9 @@
 {% for file in files %}
     {% do figure_builder.from(file.src) %}
     {% block build_figure %}
-        {% with {figure: figure_builder.build()} %}
+        {% set figure = figure_builder.buildIfResourceExists() %}
+        {% if figure %}
             {{ block('figure_component') }}
-        {% endwith %}
+        {% endif %}
     {% endblock %}
 {% endfor %}
