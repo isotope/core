@@ -7,12 +7,17 @@ namespace Isotope\CoreBundle\EventListener;
 use Contao\CoreBundle\Event\SitemapEvent;
 use Contao\CoreBundle\Routing\ContentUrlGenerator;
 use Contao\Database;
+use Contao\PageModel;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
+use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\DataCollector\ProductDto;
 use Isotope\CoreBundle\Product\DataCollector\ProductDtoCollection;
 use Isotope\CoreBundle\Product\ProductBuilder;
+use Isotope\CoreBundle\Routing\ProductReference;
+use Isotope\CoreBundle\Routing\ProductResolver;
 use Isotope\CoreBundle\Store\StoreManager;
+use Isotope\CoreBundle\Util\ProductCategoryUtil;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Routing\Exception\ExceptionInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -23,6 +28,7 @@ class SitemapListener
     public function __construct(
         private readonly Connection $connection,
         private readonly ProductBuilder $productBuilder,
+        private readonly ProductCategoryUtil $productCategoryUtil,
         private readonly StoreManager $storeManager,
         private readonly ContentUrlGenerator $urlGenerator,
     ) {
@@ -41,23 +47,55 @@ class SitemapListener
         $context = $this->storeManager->getContextForRequest($event->getRequest());
 
         $products = $this->productBuilder->build($dtoCollection, $context);
-        $sitemap = $event->getDocument();
-        $urlSet = $sitemap->firstElementChild;
 
         foreach ($products as $product) {
-            try {
-                $url = $this->urlGenerator->generate($product, [], UrlGeneratorInterface::ABSOLUTE_URL);
+            if (!$product instanceof CoreProduct) {
+                continue;
+            }
 
-                $loc = $sitemap->createElementNS($urlSet->namespaceURI, 'loc');
-                $loc->appendChild($sitemap->createTextNode($url));
+            $categories = array_intersect($this->productCategoryUtil->getPublishedForProduct($product), $pageIds);
 
-                $urlEl = $sitemap->createElementNS($urlSet->namespaceURI, 'url');
-                $urlEl->appendChild($loc);
-                $urlSet->appendChild($urlEl);
-            } catch (ExceptionInterface) {
-                // ignore product if URL cannot be generated
+            if ([] === $categories) {
+                continue;
+            }
+
+            foreach ($categories as $category) {
+                $pageModel = PageModel::findById($category);
+
+                if (ProductResolver::canLinkToPage($pageModel)) {
+                    $reference = new ProductReference($product, $pageModel);
+                    $reference->resolveVariant = (bool) $pageModel->iso_sitemapVariants;
+
+                    if (!$product->hasVariants() || !$pageModel->iso_sitemapVariants) {
+                        $this->addToSitemap($reference, $event->getDocument());
+                        break;
+                    }
+
+                    foreach ($product->getVariants() as $variant) {
+                        $reference->product = $variant;
+                        $this->addToSitemap($reference, $event->getDocument());
+                    }
+
+                    break;
+                }
             }
         }
+    }
 
+    private function addToSitemap(ProductReference $content, \DOMDocument $sitemap): void
+    {
+        try {
+            $url = $this->urlGenerator->generate($content, [], UrlGeneratorInterface::ABSOLUTE_URL);
+
+            $urlSet = $sitemap->firstElementChild;
+            $loc = $sitemap->createElementNS($urlSet->namespaceURI, 'loc');
+            $loc->appendChild($sitemap->createTextNode($url));
+
+            $urlEl = $sitemap->createElementNS($urlSet->namespaceURI, 'url');
+            $urlEl->appendChild($loc);
+            $urlSet->appendChild($urlEl);
+        } catch (ExceptionInterface) {
+            // ignore product if URL cannot be generated
+        }
     }
 }

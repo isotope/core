@@ -45,7 +45,8 @@ $GLOBALS['TL_DCA']['tl_page']['palettes']['__selector__'][] = 'iso_readerMode';
 /*
  * Add subpalettes to tl_page
  */
-$GLOBALS['TL_DCA']['tl_page']['subpalettes']['iso_readerMode_page'] = 'iso_readerJumpTo';
+$GLOBALS['TL_DCA']['tl_page']['subpalettes']['iso_readerMode_current'] = 'iso_sitemapVariants';
+$GLOBALS['TL_DCA']['tl_page']['subpalettes']['iso_readerMode_page'] = 'iso_readerJumpTo,iso_sitemapVariants';
 
 /*
  * Add fields to tl_page
@@ -79,6 +80,12 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['iso_readerJumpTo'] = [
     'eval' => ['fieldType' => 'radio', 'mandatory' => true, 'tl_class' => 'clr w50'],
     'sql' => "int(10) unsigned NOT NULL default '0'",
     'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
+];
+
+$GLOBALS['TL_DCA']['tl_page']['fields']['iso_sitemapVariants'] = [
+    'inputType' => 'checkbox',
+    'eval' => ['tl_class' => 'w50'],
+    'sql' => ['type' => 'boolean', 'default' => false],
 ];
 
 /*
