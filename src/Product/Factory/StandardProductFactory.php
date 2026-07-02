@@ -6,6 +6,7 @@ namespace Isotope\CoreBundle\Product\Factory;
 
 use Contao\StringUtil;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
+use Isotope\CoreBundle\Attribute\VariantAttributeInterface;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsProductFactory;
 use Isotope\CoreBundle\Model\ProductTypeModel;
 use Isotope\CoreBundle\Product\AvailabilityChecker;
@@ -46,6 +47,7 @@ class StandardProductFactory implements ProductFactoryInterface
             ->setVariantIds(array_values(array_map(static fn (array $variant) => $variant['id'], $dto['__variants'] ?? [])))
             ->setVariants(fn () => $this->getVariants($dto, $context))
             ->setDefaultVariant(fn () => $this->getDefaultVariant($dto, $context))
+            ->setVariantConfiguration(fn () => $this->getVariantConfiguration($product, $type))
             ->setPrices(fn () => $this->priceFactory->create($dto, $type, $context))
             ->setPrice(fn () => $this->calculator->calculateProduct($product, $dto->getQuantity(), true, $context))
             ->setAvailable(fn () => $this->availabilityChecker->isAvailable($product, $context))
@@ -167,5 +169,28 @@ class StandardProductFactory implements ProductFactoryInterface
         }
 
         return null;
+    }
+
+    private function getVariantConfiguration(CoreProduct $product, ProductTypeModel $type): array|null
+    {
+        if (!$product->isVariant()) {
+            return null;
+        }
+
+        $configuration = [];
+
+        foreach ($type->getVariantAttributes() as $attributeName) {
+            $attribute = $this->attributeRegistry->get($attributeName);
+
+            if (
+                $attribute instanceof VariantAttributeInterface
+                && $attribute->isVariantOption()
+                && ($value = $product->get($attributeName))
+            ) {
+                $configuration[$attributeName] = $value;
+            }
+        }
+
+        return $configuration;
     }
 }

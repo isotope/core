@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Product;
 
+use Isotope\CoreBundle\Attribute\VariantAttributeInterface;
 use Isotope\CoreBundle\Model\ProductTypeModel;
 use Isotope\CoreBundle\Product\Render\ProductRendererInterface;
 use Isotope\CoreBundle\Store\Price\CalculatedPrice;
@@ -52,6 +53,8 @@ class CoreProduct extends Product
     private \Closure|ProductCollection|null $variants = null;
 
     private \Closure|CoreProduct|null $defaultVariant = null;
+
+    private \Closure|array|null $variantConfiguration = null;
 
     private \Closure|PriceDefinitionCollection|null $prices = null;
 
@@ -153,6 +156,20 @@ class CoreProduct extends Product
     public function setDefaultVariant(\Closure|self|null $defaultVariant): self
     {
         $this->defaultVariant = $defaultVariant;
+
+        return $this;
+    }
+
+    public function getVariantConfiguration(): array|null
+    {
+        $this->resolveClosure($this->variantConfiguration);
+
+        return $this->variantConfiguration;
+    }
+
+    public function setVariantConfiguration(\Closure|array|null $variantConfiguration): self
+    {
+        $this->variantConfiguration = $variantConfiguration;
 
         return $this;
     }

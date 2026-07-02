@@ -51,6 +51,7 @@ class ProductItemResolver implements ContentUrlResolverInterface
         }
 
         $content = new ProductReference($product, $referencePage ?: null);
+        $content->resolveVariant = !$id;
 
         return ContentUrlResult::url($this->urlGenerator->generate(
             $content,

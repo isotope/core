@@ -6,14 +6,18 @@ namespace Isotope\CoreBundle\Routing;
 
 use Contao\CoreBundle\Routing\Content\ContentUrlResolverInterface;
 use Contao\CoreBundle\Routing\Content\ContentUrlResult;
+use Contao\CoreBundle\Routing\ContentUrlGenerator;
 use Contao\CoreBundle\Routing\PageFinder;
 use Contao\PageModel;
+use Isotope\CoreBundle\Attribute\AttributeRegistry;
+use Isotope\CoreBundle\Attribute\VariantAttributeInterface;
 use Isotope\CoreBundle\Model\ProductModel;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\DataCollector\ProductDto;
 use Isotope\CoreBundle\Product\ProductBuilder;
 use Isotope\CoreBundle\Store\StoreManager;
 use Isotope\CoreBundle\Util\ProductCategoryUtil;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ProductResolver implements ContentUrlResolverInterface
 {
@@ -22,6 +26,8 @@ class ProductResolver implements ContentUrlResolverInterface
         private readonly PageFinder $pageFinder,
         private readonly ProductBuilder $productBuilder,
         private readonly StoreManager $storeManager,
+        private readonly AttributeRegistry $attributeRegistry,
+        private readonly ContentUrlGenerator $urlGenerator,
     ) {
     }
 
@@ -36,11 +42,13 @@ class ProductResolver implements ContentUrlResolverInterface
             return null;
         }
 
+        $resolveVariant = $content instanceof ProductReference ? $content->resolveVariant : true;
+
         if ($content instanceof ProductReference && $content->referencePage) {
             $referencePage = $content->referencePage instanceof PageModel ? $content->referencePage : PageModel::findById($content->referencePage);
 
             if (self::canLinkToPage($referencePage)) {
-                return ContentUrlResult::resolve($referencePage);
+                return $this->resolveProduct($content->product, $referencePage, $resolveVariant);
             }
         }
 
@@ -49,7 +57,7 @@ class ProductResolver implements ContentUrlResolverInterface
             && ($currentPage = $this->pageFinder->getCurrentPage())
             && self::canLinkToPage($currentPage)
         ) {
-            return ContentUrlResult::resolve($currentPage);
+            return $this->resolveProduct($product, $currentPage, $resolveVariant);
         }
 
         $categories = $this->productCategoryUtil->getPublishedForProductInCurrentRoot($product);
@@ -62,7 +70,7 @@ class ProductResolver implements ContentUrlResolverInterface
             $pageModel = PageModel::findById($category);
 
             if (self::canLinkToPage($pageModel)) {
-                return ContentUrlResult::resolve($pageModel);
+                return $this->resolveProduct($product, $pageModel, $resolveVariant);
             }
         }
 
@@ -100,5 +108,21 @@ class ProductResolver implements ContentUrlResolverInterface
         }
 
         return null;
+    }
+
+    private function resolveProduct(CoreProduct $product, PageModel $referencePage, bool $resolveVariant = true): ContentUrlResult
+    {
+        if (!$resolveVariant || !$product->isVariant()) {
+            return ContentUrlResult::resolve($referencePage);
+        }
+
+        $content = new ProductReference($product, $referencePage ?: null);
+        $content->resolveVariant = false;
+
+        return ContentUrlResult::url($this->urlGenerator->generate(
+            $content,
+            $product->getVariantConfiguration() ?? [],
+            UrlGeneratorInterface::ABSOLUTE_URL,
+        ));
     }
 }
