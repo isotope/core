@@ -12,7 +12,7 @@
             <h4>{{ 'MSC.customer_address'|trans }}</h4>
         {% endif %}
         <div class="address">
-            {% with billing_address only %}{{ block('isotope_address_component') }}{% endwith %}
+            {% with billing_address only %}{{ block('address_component') }}{% endwith %}
         </div>
     </div>
 
@@ -20,7 +20,7 @@
         <div class="shipping_address">
             <h4>{{ 'MSC.shipping_address'|trans }}</h4>
             <div class="address">
-                {% with shipping_address only %}{{ block('isotope_address_component') }}{% endwith %}
+                {% with shipping_address only %}{{ block('address_component') }}{% endwith %}
             </div>
         </div>
     {% endif %}

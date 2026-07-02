@@ -1,10 +1,10 @@
-{% embed "@Contao/component/_isotope_notification.html.twig" %}
+{% embed "@Contao/component/_isotope_message.html.twig" %}
     {% trans_default_domain 'contao_default' %}
     {% set dialog_delay = 20000 %}
     {% set closable = false %}
 
-    {% block notification_content %}
-        {% block notification_message %}
+    {% block message_content %}
+        {% block message_text %}
             <p>{{ 'MSC.addedToCart'|trans }}</p>
         {% endblock %}
 
@@ -14,6 +14,6 @@
         {% if checkout_url|default %}
             <div class="checkout"><a class="checkout" href="{{ checkout_url }}">{{ 'MSC.checkoutBT'|trans }}</a></div>
         {% endif %}
-        <button class="continue_shopping" data-action="isotope--notification#hide">{{ 'MSC.continueShoppingBT'|trans }}</button>
+        <button class="continue_shopping" data-action="isotope--message#hide">{{ 'MSC.continueShoppingBT'|trans }}</button>
     {% endblock %}
 {% endembed %}

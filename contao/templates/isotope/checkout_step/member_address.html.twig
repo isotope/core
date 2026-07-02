@@ -53,7 +53,7 @@
                     <p class="message error">{{ 'MSC.member_address_error'|trans }}</p>
                 {% endif %}
 
-                {% with member_address only %}{{ block('isotope_address_component') }}{% endwith %}
+                {% with member_address only %}{{ block('address_component') }}{% endwith %}
             {% else %}
                 {% if requires_payment %}
                     <p>{{ 'MSC.billing_address_message'|trans }}</p>
@@ -82,7 +82,7 @@
                                     {% endif %}
                                 >
                                 <label for="opt_billing_address_{{ address.data.id }}">
-                                    {% with address only %}{{ block('isotope_address_component') }}{% endwith %}
+                                    {% with address only %}{{ block('address_component') }}{% endwith %}
                                 </label>
                             </span>
                         {% endblock %}
@@ -156,7 +156,7 @@
                                 {% endif %}
                             >
                             <label for="opt_shipping_address_{{ address.data.id }}">
-                                {% with address only %}{{ block('isotope_address_component') }}{% endwith %}
+                                {% with address only %}{{ block('address_component') }}{% endwith %}
                             </label>
                         </span>
                         {% endblock %}

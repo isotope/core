@@ -1,6 +1,6 @@
 {% extends '@Contao/content_element/_base.html.twig' %}
 {% use "@Contao/component/_stylesheet.html.twig" %}
-{% use "@Contao/component/_isotope_notification.html.twig" %}
+{% use "@Contao/component/_isotope_message.html.twig" %}
 
 {% block wrapper %}
     {{ parent() }}
@@ -16,7 +16,7 @@
                             .addClass(type|slice(8))
                             .mergeWith(notification_attributes|default)
                         %}
-                        {{ block('notification_component') }}
+                        {{ block('message_component') }}
                     {% endwith %}
                 {% endif %}
             {% endfor %}

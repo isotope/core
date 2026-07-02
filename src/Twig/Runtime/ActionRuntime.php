@@ -166,7 +166,7 @@ class ActionRuntime implements RuntimeExtensionInterface
         if ($result->message instanceof TemplateMarkup) {
             $message = (string) $result->message;
         } elseif ($result->message) {
-            $message = $this->twig->render('@Contao/component/_isotope_notification.html.twig', [
+            $message = $this->twig->render('@Contao/component/_isotope_message.html.twig', [
                 'type' => $type,
                 'message' => $result->message,
             ]);

@@ -1,0 +1,20 @@
+{% block message_component %}
+    {% set dialog_id = dialog_id|default("iso-message-#{random()}") %}
+    {% set closable = closable is defined ? closable : true %}
+    {% set message_attributes = attrs()
+        .addClass('isotope-message')
+        .set('id', dialog_id)
+        .set('data-controller', 'isotope--message')
+        .set('data-isotope--message-delay-value', dialog_delay|default(5000))
+        .set('data-action', 'click->isotope--message#hide', closable)
+        .mergeWith(message_attributes|default)
+    %}
+    <div{{ message_attributes }}>
+        <div class="inner"{% if closable %} data-action="click->isotope--message#stop"{% endif %}>
+            {% if closable %}
+                {% block message_close %}<button class="close" data-action="isotope--message#hide">Close</button>{% endblock %}
+            {% endif %}
+            {% block message_content %}<p>{{ message|default }}</p>{% endblock %}
+        </div>
+    </div>
+{% endblock %}
