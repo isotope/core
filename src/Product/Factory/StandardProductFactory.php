@@ -128,7 +128,7 @@ class StandardProductFactory implements ProductFactoryInterface
 
         if (!empty($inherit) && \is_array($inherit)) {
             foreach ($inherit as $field) {
-                $data[$field] = $parent[$field];
+                $data[$field] = $parent[$field] ?? null;
 
                 if (\in_array($field, $fallbackFields, true)) {
                     $data[$field.'_fallback'] = $parent[$field.'_fallback'] ?? null;
