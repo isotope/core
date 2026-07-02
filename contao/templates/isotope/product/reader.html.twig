@@ -1,4 +1,5 @@
 {% extends '@Contao/isotope/product.html.twig' %}
+{% use '@Contao/component/_isotope_jsonld_product.html.twig' %}
 
 {% set gallery = isotope_gallery(product, 'images') %}
 
@@ -20,4 +21,17 @@
     {{ block('product_price') }}
     {{ block('product_actions') }}
 
+{% endblock %}
+
+{% block product_jsonld %}
+    {% if product.hasVariants %}
+        {{ block('jsonld_product_group_component') }}
+        {% for variant in product.getVariants %}
+            {% with { product: variant } %}
+                {{ block('jsonld_product_component') }}
+            {% endwith %}
+        {% endfor %}
+    {% else %}
+        {{ block('jsonld_product_component') }}
+    {% endif %}
 {% endblock %}
