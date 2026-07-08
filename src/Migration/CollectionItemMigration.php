@@ -40,16 +40,20 @@ class CollectionItemMigration extends AbstractMigration
 
     public function run(): MigrationResult
     {
-        // TODO: type is no longer the prefix to product collection item
+        $this->connection->executeStatement(
+            <<<'SQL'
+                ALTER TABLE tl_iso_product_collection_item
+                    ADD COLUMN `identifier` varchar(64) NOT NULL,
+                    ADD COLUMN `level` tinyint unsigned NOT NULL default 0,
+                    ADD COLUMN `unit_label` varchar(128) NULL,
+                    CHANGE COLUMN `name` `label` varchar(255) NOT NULL default '',
+                    CHANGE COLUMN `jumpTo` `referencePage` int(0) unsigned NOT NULL default 0
+                SQL,
+        );
 
-        $this->connection->executeStatement(<<<'SQL'
-            ALTER TABLE tl_iso_product_collection_item
-                ADD COLUMN `identifier` varchar(64) NOT NULL,
-                ADD COLUMN `level` tinyint unsigned NOT NULL default 0,
-                ADD COLUMN `unit_label` varchar(128) NULL,
-                CHANGE COLUMN `name` `label` varchar(255) NOT NULL default '',
-                CHANGE COLUMN `jumpTo` `referencePage` int(0) unsigned NOT NULL default 0
-            SQL);
+        if (!$this->connection->createSchemaManager()->introspectTableByUnquotedName('tl_iso_product_collection_item')->hasColumn('sortin')) {
+            $this->connection->executeStatement('ALTER TABLE tl_iso_product_collection_item ADD COLUMN `sorting` int(10) unsigned NOT NULL default 0');
+        }
 
         $this->connection->executeStatement("UPDATE tl_iso_product_collection_item SET type='product', identifier=CONCAT('tl_iso_product.', product_id)");
 
