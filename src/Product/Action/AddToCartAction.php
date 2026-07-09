@@ -96,7 +96,7 @@ class AddToCartAction extends AbstractProductAction
             'context' => $context,
             'view' => $view,
             'cart_url' => $this->buildUrl((int) $view->get('iso_addProductJumpTo'), $request),
-            'checkout_url' => $this->buildUrl((int) ($context->getMemberId() ? $view->get('iso_checkout_jumpTo') : ($view->get('iso_checkout_jumpTo') ?? $view->get('iso_checkout_jumpTo')))),
+            'checkout_url' => $this->buildUrl((int) ($context->getMemberId() ? $view->get('iso_checkout_jumpTo') : ($view->get('iso_checkout_guest_jumpTo') ?? $view->get('iso_checkout_jumpTo')))),
         ]));
     }
 
