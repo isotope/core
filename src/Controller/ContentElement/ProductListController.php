@@ -18,6 +18,7 @@ use Isotope\CoreBundle\Product\Category\CategoryScope;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\DataCollector\ProductDto;
 use Isotope\CoreBundle\Product\DataCollector\ProductDtoCollection;
+use Isotope\CoreBundle\Product\Exception\InvalidCategoryScopeException;
 use Isotope\CoreBundle\Product\ProductBuilder;
 use Isotope\CoreBundle\Product\ProductCollection;
 use Isotope\CoreBundle\Product\Query\ProductQueryFactory;
@@ -169,6 +170,10 @@ class ProductListController extends AbstractContentElementController
             // TODO: this won't work for nested elements
             $pageId = $this->connection->fetchOne('SELECT pid FROM tl_article WHERE id=?', [$request->query->getInt('id')]);
             $pageModel = PageModel::findWithDetails($pageId);
+
+            if (!$pageModel) {
+                return [];
+            }
         }
 
         return $this->categoryFinder->getIds(
