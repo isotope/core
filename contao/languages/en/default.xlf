@@ -92,6 +92,15 @@
       <trans-unit id="MSC.payment_failed">
         <source>Unfortunately, the payment was not successful. Please change your payment method or try again to complete your payment.</source>
       </trans-unit>
+      <trans-unit id="MSC.payment_change">
+        <source>Change payment</source>
+      </trans-unit>
+      <trans-unit id="MSC.payment_complete">
+        <source>Complete payment</source>
+      </trans-unit>
+      <trans-unit id="MSC.payment_cancel">
+        <source>Cancel order</source>
+      </trans-unit>
       <trans-unit id="MSC.mmNoUploads">
         <source>No files uploaded.</source>
       </trans-unit>

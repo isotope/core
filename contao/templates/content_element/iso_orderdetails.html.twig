@@ -23,8 +23,8 @@
 
         <div class="payment_failed">
             <p class="message">{{ 'MSC.payment_failed'|trans }}</p>
-            <button type="submit" class="change_payment" form="order_payment" name="change_payment" value="1">Change payment</button>
-            <a class="submit" href="{{ app.request.uri }}&init_payment=1">Complete payment</a>
+            <button type="submit" class="change_payment" form="order_payment" name="change_payment" value="1">{{ 'MSC.payment_change'|trans }}</button>
+            <a class="submit" href="{{ app.request.uri }}&init_payment=1">{{ 'MSC.payment_complete'|trans }}</a>
         </div>
 
         {% if change_payment|default %}
@@ -110,8 +110,8 @@
 
 {% block product_collection_actions %}
     {% if payment_pending %}
-        <a href="{{ app.request.uri }}&init_payment=1">Complete payment</a>
-        <button type="submit" form="order_payment" name="cancel_payment" value="1">Cancel order</button>
+        <a href="{{ app.request.uri }}&init_payment=1">{{ 'MSC.payment_complete'|trans }}</a>
+        <button type="submit" form="order_payment" name="cancel_payment" value="1">{{ 'MSC.payment_cancel'|trans }}</button>
     {% endif %}
 
     {{ isotope_product_collection_action('reorder') }}
