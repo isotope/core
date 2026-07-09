@@ -4,6 +4,7 @@
 
 {% set attributes = attrs()
     .addClass('member')
+    .addClass('editor', edit_address|default)
     .mergeWith(attributes|default)
 %}
 

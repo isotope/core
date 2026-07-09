@@ -5,7 +5,7 @@
     {% block form %}
         {% set form = form.with({ attributes: attrs()
             .set('data-action', 'isotope--fragment#submit')
-            .mergeWith('attributes')
+            .mergeWith(form_attributes|default)
         }) %}
         {{ form }}
     {% endblock %}
