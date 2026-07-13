@@ -28,6 +28,8 @@ class ProductReaderController extends AbstractContentElementController
             return new Response();
         }
 
+        $this->tagResponse($product);
+
         $template->product = $product;
         $template->view = ReaderView::createFromContent($model);
 

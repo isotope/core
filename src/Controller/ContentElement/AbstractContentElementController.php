@@ -8,6 +8,7 @@ use Contao\ContentModel;
 use Contao\CoreBundle\Controller\ContentElement\AbstractContentElementController as CoreContentElementController;
 use Contao\CoreBundle\Exception\ResponseException;
 use Contao\CoreBundle\Twig\FragmentTemplate;
+use Isotope\CoreBundle\Product\Product;
 use Isotope\CoreBundle\Product\Query\ProductQuery;
 use Isotope\CoreBundle\Product\Query\ProductQueryFactory;
 use Isotope\CoreBundle\ProductCollection\AbstractProductCollection;
@@ -91,5 +92,26 @@ abstract class AbstractContentElementController extends CoreContentElementContro
         $template->show_taxes = TaxCalculation::Horizontal === $context->getTaxCalculation();
         $template->multiple_taxes = $collection->getTotal()?->getCalculatedTaxes()->count() > 1;
         $template->is_gross = PriceDisplay::Net !== $context->getPriceDisplay();
+    }
+
+    protected function tagResponse(object|array|string|null $tags): void
+    {
+        if ($tags instanceof Product) {
+            $tags = $tags->getIdentifier();
+        } elseif (is_iterable($tags)) {
+            $identifiers = [];
+
+            foreach ($tags as $k => $v) {
+                if ($v instanceof Product) {
+                    $identifiers[$k] = $v->getIdentifier();
+                } else {
+                    $identifiers[$k] = $v;
+                }
+            }
+
+            $tags = $identifiers;
+        }
+
+        parent::tagResponse($tags);
     }
 }

@@ -44,6 +44,8 @@ class RelatedProductsController extends AbstractContentElementController
             return new Response('');
         }
 
+        $this->tagResponse($products);
+
         $template->products = $products;
         $template->view = ListView::createFromContent($model);
 
