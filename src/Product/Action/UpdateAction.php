@@ -22,12 +22,12 @@ class UpdateAction extends AbstractProductAction
         parent::__construct($twig);
     }
 
-    public function supports(CoreProduct $product, ViewInterface $view): bool
+    public function supports(CoreProduct $product, array $configuration, ViewInterface $view): bool
     {
         return true;
     }
 
-    public function render(CoreProduct $product, ViewInterface $view): string
+    public function render(CoreProduct $product, array $configuration, ViewInterface $view): string
     {
         return $this->renderView($this->type, [
             'label' => $this->translator->trans('MSC.buttonLabel.update', [], 'contao_default'),

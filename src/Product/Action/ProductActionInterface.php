@@ -13,12 +13,12 @@ interface ProductActionInterface
     /**
      * Returns whether the action is supported for the given product.
      */
-    public function supports(CoreProduct $product, ViewInterface $view): bool;
+    public function supports(CoreProduct $product, array $configuration, ViewInterface $view): bool;
 
     /**
      * Generates HTML content for this action.
      */
-    public function render(CoreProduct $product, ViewInterface $view): string;
+    public function render(CoreProduct $product, array $configuration, ViewInterface $view): string;
 
     /**
      * Handles submit of the product action.

@@ -48,19 +48,19 @@ class ActionRuntime implements RuntimeExtensionInterface
             throw ActionException::missingRequest();
         }
 
-        if (!$action->supports($product, $view)) {
+        $configData = $configuration instanceof ProductConfiguration ? $configuration->getData() : [];
+
+        if (!$action->supports($product, $configData, $view)) {
             return '';
         }
 
-        if ($request->request->get('FORM_SUBMIT') === $view->getFormId($product) /*&& !$this->doNotSubmit*/ && $request->request->get('_action') === $type) {
-            $configData = $configuration instanceof ProductConfiguration ? $configuration->getData() : [];
-
+        if ($request->request->get('FORM_SUBMIT') === $view->getFormId($product) && $request->request->get('_action') === $type) {
             $result = $action->handle($product, $configData, $view);
 
             $this->handleActionResult($type, $request, $result);
         }
 
-        return $action->render($product, $view);
+        return $action->render($product, $configData, $view);
     }
 
     public function renderProductCollectionAction(array $context, string $type, array $options = []): string
