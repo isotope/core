@@ -16,7 +16,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 #[AsProductCollectionItemAction]
-class RemoveAction extends AbstractProductCollectionItemAction
+class RemoveFromCartAction extends AbstractProductCollectionItemAction
 {
     public function __construct(
         private readonly string $type,

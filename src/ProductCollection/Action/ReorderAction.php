@@ -9,6 +9,7 @@ use Contao\PageModel;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsProductCollectionAction;
 use Isotope\CoreBundle\HttpFoundation\ActionResult;
 use Isotope\CoreBundle\ProductCollection\AbstractProductCollection;
+use Isotope\CoreBundle\ProductCollection\Order\Order;
 use Isotope\CoreBundle\Store\CartManager;
 use Isotope\CoreBundle\Store\StoreManager;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -36,7 +37,7 @@ class ReorderAction extends AbstractProductCollectionAction
 
     public function supports(AbstractProductCollection $collection, array $context, array $options = []): bool
     {
-        return true;
+        return $collection instanceof Order;
     }
 
     public function render(AbstractProductCollection $collection, array $context, array $options = []): string

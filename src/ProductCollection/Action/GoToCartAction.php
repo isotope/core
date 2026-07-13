@@ -13,7 +13,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 #[AsProductCollectionAction]
-class CartAction extends AbstractProductCollectionAction
+class GoToCartAction extends AbstractProductCollectionAction
 {
     public function __construct(
         private readonly string $type,

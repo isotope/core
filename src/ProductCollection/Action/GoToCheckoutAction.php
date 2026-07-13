@@ -14,7 +14,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 #[AsProductCollectionAction]
-class CheckoutAction extends AbstractProductCollectionAction
+class GoToCheckoutAction extends AbstractProductCollectionAction
 {
     public function __construct(
         private readonly string $type,

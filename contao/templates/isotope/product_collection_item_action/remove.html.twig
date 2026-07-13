@@ -1,8 +1,0 @@
-{% use '@Contao/component/_isotope_action.html.twig' %}
-
-{% set link_attributes = attrs()
-    .addClass('remove_from_cart')
-    .mergeWith(link_attributes|default)
-%}
-
-{{ block('button_component') }}
