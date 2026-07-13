@@ -62,10 +62,8 @@ class AddToCartAction extends AbstractProductAction
         }
 
         // Do not add parent of variant product to the cart
-        if (($product->hasVariants() && !$product->isVariant())
-            //|| !Isotope::getCart()->addProduct($product, $quantity, $configuration, $view->toArray($product))
-        ) {
-            return new ActionResult('Das Produkt konnte nicht in den Warenkorb gelegt werden', success: false);
+        if ($product->hasVariants() && !$product->isVariant()) {
+            return new ActionResult(success: false);
         }
 
         $context = $this->storeManager->getCurrentContext();

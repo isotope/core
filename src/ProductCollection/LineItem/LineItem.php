@@ -56,6 +56,12 @@ class LineItem
     ) {
     }
 
+    public function __clone(): void
+    {
+        $this->id = 0;
+        $this->errors = [];
+    }
+
     public function getType(): string
     {
         return $this->type;

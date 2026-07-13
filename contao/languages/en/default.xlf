@@ -155,6 +155,9 @@
       <trans-unit id="MSC.buttonLabel.add_to_cart">
         <source>Add To Cart</source>
       </trans-unit>
+      <trans-unit id="MSC.buttonLabel.add_all_to_cart">
+        <source>Add All To Cart</source>
+      </trans-unit>
       <trans-unit id="MSC.orderByLabel">
         <source>Order By:</source>
       </trans-unit>
@@ -186,7 +189,7 @@
         <source>The products from your last visit have been readded. Please review your shopping cart items.</source>
       </trans-unit>
       <trans-unit id="MSC.reorderConfirmation">
-        <source>The products of the selected order have been added to your shopping cart.</source>
+        <source>The products have been added to your shopping cart.</source>
       </trans-unit>
       <trans-unit id="MSC.editProductLinkTitle">
         <source>Edit %s</source>
