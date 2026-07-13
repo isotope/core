@@ -25,7 +25,8 @@ class ContextCookieListener
             return;
         }
 
-        $context = $event->getRequest()->attributes->get(StoreManager::CONTEXT_ATTRIBUTE);
+        $request = $event->getRequest();
+        $context = $request->attributes->get(StoreManager::CONTEXT_ATTRIBUTE);
 
         if (!$context instanceof StoreContext) {
             return;
@@ -33,10 +34,10 @@ class ContextCookieListener
 
         $response = $event->getResponse();
 
-        if (null !== $context->getMemberId()) {
-            $response->headers->clearCookie(StoreManager::CONTEXT_COOKIE);
-        } else {
+        if (!$context->getMemberId()) {
             $response->headers->setCookie(Cookie::create(StoreManager::CONTEXT_COOKIE, $context->getIdentifier(), $this->cartTimeout));
+        } elseif ($request->cookies->has(StoreManager::CONTEXT_COOKIE)) {
+            $response->headers->clearCookie(StoreManager::CONTEXT_COOKIE);
         }
     }
 }
