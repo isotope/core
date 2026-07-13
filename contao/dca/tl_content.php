@@ -88,14 +88,14 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['iso_list_layout'] = [
     'default' => 'isotope/product/list',
     'inputType' => 'select',
     'eval' => ['includeBlankOption' => true, 'tl_class' => 'w50', 'chosen' => true],
-    'sql' => "varchar(64) NOT NULL default ''", // @see
+    'sql' => "varchar(64) NOT NULL default ''", // cannot use virtual fields, @see https://github.com/contao/contao/issues/9905
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['iso_reader_layout'] = [
     'default' => 'isotope/product/reader',
     'inputType' => 'select',
     'eval' => ['includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'],
-    'sql' => "varchar(64) NOT NULL default ''",
+    'sql' => "varchar(64) NOT NULL default ''", // cannot use virtual fields, @see https://github.com/contao/contao/issues/9905
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['iso_gallery'] = [
