@@ -6,7 +6,7 @@ namespace Isotope\CoreBundle\ProductCollection\Cart;
 
 use Isotope\CoreBundle\Model\ProductCollectionModel;
 use Isotope\CoreBundle\ProductCollection\Event\CartCreatedEvent;
-use Isotope\CoreBundle\ProductCollection\Event\MergeGuestCartEvent;
+use Isotope\CoreBundle\ProductCollection\Event\MergeCollectionEvent;
 use Isotope\CoreBundle\ProductCollection\ProductCollectionStorage;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -40,7 +40,7 @@ class CartFactory
             $cart->setLineItems($cart->getLineItems()->merge($guestCart->getLineItems()));
             $cart->setModified();
 
-            $this->eventDispatcher->dispatch(new MergeGuestCartEvent($cart, $guestCart, $context));
+            $this->eventDispatcher->dispatch(new MergeCollectionEvent($guestCart, $cart, $context));
         }
 
         if ($cart->isModified() || $cartModel->member !== (int) $context->getMemberId()) {
