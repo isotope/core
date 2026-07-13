@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @internal
+ * @experimental
  */
 abstract class AbstractContentElementController extends CoreContentElementController
 {
