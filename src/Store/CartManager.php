@@ -17,13 +17,8 @@ use Isotope\CoreBundle\Store\Order\CreateOrderResult;
 use Isotope\CoreBundle\Store\Order\OrderConverter;
 use Symfony\Contracts\Service\ResetInterface;
 
-class CartManager implements ResetInterface
+class CartManager
 {
-    /**
-     * @var array<Cart>
-     */
-    private array $cart = [];
-
     /**
      * @internal
      */
@@ -34,11 +29,6 @@ class CartManager implements ResetInterface
         private readonly OrderManager $orderManager,
         private readonly OrderConverter $orderConverter,
     ) {
-    }
-
-    public function setCart(Cart $cart, StoreContext $context): void
-    {
-        $this->cart[$context->getIdentifier()] = $cart;
     }
 
     public function getCart(StoreContext $context): Cart
@@ -122,11 +112,6 @@ class CartManager implements ResetInterface
         }
     }
 
-    public function reset(): void
-    {
-        $this->cart = [];
-    }
-
     public function order(Cart $cart, StoreContext $context): CreateOrderResult
     {
         if ($cart->isEmpty()) {
@@ -142,10 +127,6 @@ class CartManager implements ResetInterface
 
         if (!$this->orderManager->lockOrder($result->getCollectionId(), $context)) {
             throw new \RuntimeException();
-        }
-
-        if (isset($this->cart[$context->getIdentifier()])) {
-            unset($this->cart[$context->getIdentifier()]);
         }
 
         // TODO: duplicate the same way we duplicate on recalculate
