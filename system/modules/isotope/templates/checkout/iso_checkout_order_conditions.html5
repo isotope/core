@@ -1,8 +1,2 @@
 <?= $this->hidden ?>
-<?php if (!$this->tableless): ?>
-<table>
-    <?= $this->fields ?>
-</table>
-<?php else: ?>
 <?= $this->fields ?>
-<?php endif; ?>
