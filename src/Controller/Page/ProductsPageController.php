@@ -86,7 +86,7 @@ class ProductsPageController extends AbstractPageController
         $request->attributes->set('pageModel', $pageModel);
 
         if ($product) {
-            $pageModel->trail = $originalPageModel->trail;
+            $pageModel->trail = [...$originalPageModel->trail, $pageModel->id];
             $pageModel->title = $product->name;
         }
 
