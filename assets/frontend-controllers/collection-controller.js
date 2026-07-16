@@ -6,8 +6,7 @@ export default class extends Controller {
         id: {
             type: String,
             required: true,
-        },
-        type: String,
+        }
     };
 
     static targets = ['form'];
@@ -36,7 +35,6 @@ export default class extends Controller {
         }
 
         this.#setBusy(false);
-
     }
 
     async linkAction(event) {
@@ -85,11 +83,11 @@ export default class extends Controller {
         });
     }
 
-    #dispatchSubmit(options, type) {
+    #dispatchSubmit(options) {
         let isPrevented = this.dispatch('submit', options).defaultPrevented;
 
-        if (this.hasTypeValue) {
-            isPrevented = this.dispatch(`submit.${this.typeValue}`, options).defaultPrevented || isPrevented;
+        if (options.detail?.submitter?.name) {
+            isPrevented = this.dispatch(`submit.${options.detail.submitter.name}`, options).defaultPrevented || isPrevented;
         }
 
         return isPrevented;

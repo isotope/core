@@ -22,7 +22,8 @@ export default class extends Controller {
         this.#abortController?.abort();
     }
 
-    update() {
+    update(e) {
+        e.preventDefault();
         this.#abortController?.abort();
 
         this.element.setAttribute('aria-busy', 'true');

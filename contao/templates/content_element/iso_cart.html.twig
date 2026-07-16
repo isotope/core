@@ -5,9 +5,8 @@
 {% set attributes = attrs()
     .set('data-controller', 'isotope--collection isotope--fragment')
     .set('data-isotope--collection-id-value', fragment_id)
-    .set('data-isotope--collection-type-value', 'cart')
     .set('data-isotope--fragment-id-value', fragment_id)
-    .set('data-action', 'isotope--product:submit.add_to_cart@window->isotope--fragment#update isotope--collection:submit.cart@window->isotope--fragment#update isotope--collection:submit.order@window->isotope--fragment#update')
+    .set('data-action', 'isotope--product:submit.add_to_cart@window->isotope--fragment#update isotope--collection:submit.add_to_cart@window->isotope--fragment#update isotope--collection:submit.remove_from_cart@window->isotope--fragment#update')
     .mergeWith(attributes|default)
 %}
 
