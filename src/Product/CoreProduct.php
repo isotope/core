@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Product;
 
-use Isotope\CoreBundle\Attribute\VariantAttributeInterface;
 use Isotope\CoreBundle\Model\ProductTypeModel;
 use Isotope\CoreBundle\Product\Render\ProductRendererInterface;
 use Isotope\CoreBundle\Store\Price\CalculatedPrice;

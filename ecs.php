@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
+use SlevomatCodingStandard\Sniffs\Namespaces\ReferenceUsedNamesOnlySniff;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
 
-return static function (ECSConfig $ecsConfig): void {
-    $ecsConfig->skip([
-        './contao/templates',
+return ECSConfig::configure()
+    ->withSkip([
         './src/DataContainer/*'
-    ]);
-};
+    ])
+;

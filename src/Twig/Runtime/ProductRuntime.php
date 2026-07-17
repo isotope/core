@@ -36,11 +36,12 @@ class ProductRuntime implements RuntimeExtensionInterface
 
     public function generatePrice(CalculatedPrice|LineItem|Product|null $productOrItem, string|null $key = null, bool $html = true): TemplateMarkup|null
     {
-        $price = $productOrItem instanceof CalculatedPrice ? $productOrItem : null;
-
-        if ($productOrItem instanceof CoreProduct || $productOrItem instanceof LineItem) {
-            $price = $productOrItem->getPrice();
-        }
+        $price = match (true) {
+            $productOrItem instanceof CalculatedPrice => $productOrItem,
+            $productOrItem instanceof CoreProduct,
+            $productOrItem instanceof LineItem => $productOrItem->getPrice(),
+            default => null,
+        };
 
         if (!$price instanceof CalculatedPrice) {
             return null;

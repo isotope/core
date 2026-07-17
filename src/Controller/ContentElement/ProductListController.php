@@ -18,7 +18,6 @@ use Isotope\CoreBundle\Product\Category\CategoryScope;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\DataCollector\ProductDto;
 use Isotope\CoreBundle\Product\DataCollector\ProductDtoCollection;
-use Isotope\CoreBundle\Product\Exception\InvalidCategoryScopeException;
 use Isotope\CoreBundle\Product\ProductBuilder;
 use Isotope\CoreBundle\Product\ProductCollection;
 use Isotope\CoreBundle\Product\Query\ProductQueryFactory;

@@ -9,8 +9,6 @@ use Contao\CoreBundle\Routing\Content\ContentUrlResult;
 use Contao\CoreBundle\Routing\ContentUrlGenerator;
 use Contao\CoreBundle\Routing\PageFinder;
 use Contao\PageModel;
-use Isotope\CoreBundle\Attribute\AttributeRegistry;
-use Isotope\CoreBundle\Attribute\VariantAttributeInterface;
 use Isotope\CoreBundle\Model\ProductModel;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\DataCollector\ProductDto;
@@ -26,7 +24,6 @@ class ProductResolver implements ContentUrlResolverInterface
         private readonly PageFinder $pageFinder,
         private readonly ProductBuilder $productBuilder,
         private readonly StoreManager $storeManager,
-        private readonly AttributeRegistry $attributeRegistry,
         private readonly ContentUrlGenerator $urlGenerator,
     ) {
     }

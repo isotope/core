@@ -22,7 +22,6 @@ use Contao\Database;
 use Contao\DataContainer;
 use Contao\Date;
 use Contao\Environment;
-use Contao\FilesModel;
 use Contao\Input;
 use Contao\Message;
 use Contao\StringUtil;

@@ -29,6 +29,7 @@ abstract class AbstractCollectionCalculator
 
     /**
      * @param T $collection
+     *
      * @return T
      */
     public function calculate(AbstractProductCollection $collection, StoreContext $context): AbstractProductCollection
@@ -61,6 +62,7 @@ abstract class AbstractCollectionCalculator
 
     /**
      * @param T $collection
+     *
      * @return T
      */
     abstract protected function createNewInstance(AbstractProductCollection $collection, StoreContext $context): AbstractProductCollection;

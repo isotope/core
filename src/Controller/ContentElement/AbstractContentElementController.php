@@ -94,7 +94,8 @@ abstract class AbstractContentElementController extends CoreContentElementContro
         $template->is_gross = PriceDisplay::Net !== $context->getPriceDisplay();
     }
 
-    protected function tagResponse(object|array|string|null $tags): void
+    #[\Override]
+    protected function tagResponse(array|object|string|null $tags): void
     {
         if ($tags instanceof Product) {
             $tags = $tags->getIdentifier();
