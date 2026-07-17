@@ -2485,7 +2485,11 @@ System::getContainer()->get('contao.data_container.global_operations_builder')->
 			);
 		}
 
-        $namespace = str_starts_with($component, 'edit/') ? 'productdata' : 'table';
+        $namespace = match ($component) {
+            'multiple',
+            'single' => 'productdata',
+            default => 'table',
+        };
 
 		return System::getContainer()
 			->get('twig')
