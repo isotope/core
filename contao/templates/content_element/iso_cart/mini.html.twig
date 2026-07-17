@@ -1,36 +1,12 @@
 {% trans_default_domain 'contao_default' %}
 {% extends '@Contao/content_element/iso_cart.html.twig' %}
-{% use '@Contao/isotope/product_collection.html.twig' %}
-
-{% block product_collection_inner %}
-    {% for item in collection.lineItems %}
-        {% block product_collection_item %}
-            <div class="product">
-                {% if block("product_collection_item_actions") is defined %}
-                    <div class="actions">
-                        {% block product_collection_item_actions %}
-                            {{ isotope_product_collection_item_action('remove_from_cart') }}
-                        {% endblock %}
-                    </div>
-                {% endif %}
-                <div class="name">{{ block('item_name') }}</div>
-                <div class="info">
-                    {{ block('item_attributes') }}
-                    {% set price = isotope_price(item) %}
-                    {% if price %}
-                        <div class="price">{{ item.quantity }} x {{ price }}= <span class="total">{{ price.with({ amount: price.total_price }) }}</span></div>
-                    {% endif %}
-                </div>
-            </div>
-        {% endblock %}
-    {% endfor %}
-    <div class="subtotal">
-        <span class="label">{{ 'MSC.subTotalLabel'|trans }}</span>
-        {{ isotope_price(collection.subtotal) }}
-    </div>
-{% endblock %}
+{% use '@Contao/isotope/product_collection/mini.html.twig' %}
 
 {% block product_collection_actions %}
     <div class="cart">{{ isotope_product_collection_action('go_to_cart', { link: true }) }}</div>
     <div class="checkout">{{ isotope_product_collection_action('go_to_checkout', { link: true }) }}</div>
+{% endblock %}
+
+{% block product_collection_item_actions %}
+    {{ isotope_product_collection_item_action('remove_from_cart') }}
 {% endblock %}

@@ -1,0 +1,31 @@
+{% trans_default_domain 'contao_default' %}
+{% use '@Contao/isotope/product_collection.html.twig' %}
+
+{% block product_collection_inner %}
+    {% for item in collection.lineItems %}
+        {% block product_collection_item %}
+            <div class="product">
+                <div class="name">{{ block('item_name') }}</div>
+                <div class="info">
+                    {{ block('item_attributes') }}
+                    {% set price = isotope_price(item) %}
+                    {% if price %}
+                        <div class="price">{{ item.quantity }} x {{ price }}= <span class="total">{{ price.with({ amount: price.total_price }) }}</span></div>
+                    {% endif %}
+                </div>
+                {% if block("product_collection_item_actions") is defined %}
+                    <div class="actions">
+                        {{ block('product_collection_item_actions') }}
+                    </div>
+                {% endif %}
+            </div>
+        {% endblock %}
+    {% endfor %}
+
+    {% block product_collection_subtotal %}
+        <div class="subtotal">
+            <span class="label">{{ 'MSC.subTotalLabel'|trans }}</span>
+            {{ isotope_price(collection.subtotal) }}
+        </div>
+    {% endblock %}
+{% endblock %}
