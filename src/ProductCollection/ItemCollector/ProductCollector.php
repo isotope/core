@@ -6,8 +6,7 @@ namespace Isotope\CoreBundle\ProductCollection\ItemCollector;
 
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\Event\ProductPriceEvent;
-use Isotope\CoreBundle\ProductCollection\Cart\Cart;
-use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
+use Isotope\CoreBundle\ProductCollection\AbstractProductCollection;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Price\PriceCalculator;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
@@ -22,9 +21,9 @@ class ProductCollector implements ItemCollectorInterface
     ) {
     }
 
-    public function process(Cart $cart, Cart $original, StoreContext $context): void
+    public function process(AbstractProductCollection $collection, AbstractProductCollection $original, StoreContext $context): void
     {
-        $items = $original->getLineItems()->whereType(LineItem::TYPE_PRODUCT);
+        $items = $original->getLineItems()->products();
 
         foreach ($items as $item) {
             $product = $item->getProduct();
@@ -40,7 +39,7 @@ class ProductCollector implements ItemCollectorInterface
 
             $item->setPrice($event->getPrice());
 
-            $cart->add($item);
+            $collection->add($item);
         }
     }
 }

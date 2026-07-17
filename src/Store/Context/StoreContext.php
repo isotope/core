@@ -46,8 +46,6 @@ final class StoreContext
      */
     private array $paymentIds = [];
 
-    private Cart|null $cart = null;
-
     /**
      * @internal use the StoreContextFactory to create a new instance
      */
@@ -298,12 +296,12 @@ final class StoreContext
 
     public function getCart(): Cart|null
     {
-        return $this->cart;
+        return $this->get(Cart::class);
     }
 
     public function setCart(Cart|null $cart): self
     {
-        $this->cart = $cart;
+        $this->set(Cart::class, $cart);
 
         return $this;
     }

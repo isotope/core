@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\ProductCollection\ItemCollector;
 
 use Isotope\CoreBundle\Checkout\Shipping\AbstractShipping;
+use Isotope\CoreBundle\ProductCollection\AbstractProductCollection;
 use Isotope\CoreBundle\ProductCollection\Cart\Cart;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
 use Isotope\CoreBundle\Store\Context\StoreContext;
@@ -18,8 +19,12 @@ class ShippingCollector implements ItemCollectorInterface
     {
     }
 
-    public function process(Cart $cart, Cart $original, StoreContext $context): void
+    public function process(AbstractProductCollection $collection, AbstractProductCollection $original, StoreContext $context): void
     {
+        if (!$collection instanceof Cart || !$original instanceof Cart) {
+            return;
+        }
+
         $shipping = $original->getShippingMethod();
 
         if (!$shipping || !$shipping->isAvailable()) {
@@ -46,6 +51,6 @@ class ShippingCollector implements ItemCollectorInterface
             $item->setWeight($shipping->getWeight());
         }
 
-        $cart->add($item);
+        $collection->add($item);
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\ProductCollection\ItemCollector;
 
+use Isotope\CoreBundle\ProductCollection\AbstractProductCollection;
 use Isotope\CoreBundle\ProductCollection\Cart\Cart;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
 use Isotope\CoreBundle\Store\Context\StoreContext;
@@ -17,11 +18,15 @@ class PaymentCollector implements ItemCollectorInterface
     {
     }
 
-    public function process(Cart $cart, Cart $original, StoreContext $context): void
+    public function process(AbstractProductCollection $collection, AbstractProductCollection $original, StoreContext $context): void
     {
+        if (!$collection instanceof Cart || !$original instanceof Cart) {
+            return;
+        }
+
         $payment = $original->getPaymentMethod();
 
-        if (!$payment || !$payment->isAvailable($context)) {
+        if (!$payment || !$payment->isAvailable()) {
             return;
         }
 
@@ -39,6 +44,6 @@ class PaymentCollector implements ItemCollectorInterface
         $item->setLevel($payment->getLevel());
         $item->setDynamic(true);
         $item->setPrice($price);
-        $cart->add($item);
+        $collection->add($item);
     }
 }
