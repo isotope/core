@@ -20,7 +20,7 @@ abstract class AbstractView implements ViewInterface
 
     public function getFormId(CoreProduct $product): string
     {
-        return $this->prefix.'_product'.$product->id;
+        return $this->prefix.'_product'.$product->getProductId();
     }
 
     public function getProductReference(CoreProduct $product): ProductReference
