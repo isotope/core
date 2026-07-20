@@ -1,7 +1,11 @@
 <?php
 
+use Contao\System;
 use Isotope\CoreBundle\Checkout\CheckoutMethod;
 use Isotope\CoreBundle\Product\Category\CategoryScope;
+
+// Load labels for fields that are originating from modules
+System::loadLanguageFile('tl_module');
 
 $GLOBALS['TL_DCA']['tl_content']['palettes']['__selector__'][] = 'iso_checkout_method';
 $GLOBALS['TL_DCA']['tl_content']['palettes']['__selector__'][] = 'iso_enableLimit';
