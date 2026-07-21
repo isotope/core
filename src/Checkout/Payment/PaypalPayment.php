@@ -59,7 +59,7 @@ class PaypalPayment extends AbstractPayment
         $i = 0;
 
         foreach ($order->getLineItems() as $item) {
-            if ($item->getPrice()->getTotalPrice() < 0) {
+            if ($item->getPrice()?->getTotalPrice() < 0) {
                 $fltDiscount -= abs($item->getPrice()->getTotalPrice());
                 continue;
             }
@@ -91,7 +91,7 @@ class PaypalPayment extends AbstractPayment
 
             $arrData['item_number_'.++$i] = $item->getSku();
             $arrData['item_name_'.$i] = $strName;
-            $arrData['amount_'.$i] = $item->getPrice()->getTotalPrice();
+            $arrData['amount_'.$i] = $item->getPrice()?->getTotalPrice() ?? 0.0;
             $arrData['quantity_'.$i] = $item->getQuantity();
         }
 

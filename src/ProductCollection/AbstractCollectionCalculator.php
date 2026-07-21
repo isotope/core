@@ -113,10 +113,12 @@ abstract class AbstractCollectionCalculator
         $numbers = [];
 
         foreach ($collection->getLineItems() as $lineItem) {
-            foreach ($lineItem->getPrice()->getCalculatedTaxes() as $tax) {
-                $number = $numbers[$tax->getId()] ?? \count($numbers) + 1;
-                $numbers[$tax->getId()] = $number;
-                $tax->setNumber($number);
+            if ($price = $lineItem->getPrice()) {
+                foreach ($price->getCalculatedTaxes() as $tax) {
+                    $number = $numbers[$tax->getId()] ?? \count($numbers) + 1;
+                    $numbers[$tax->getId()] = $number;
+                    $tax->setNumber($number);
+                }
             }
         }
 
