@@ -117,7 +117,7 @@ class SelectAttribute extends AbstractOptionsAttribute implements VariantAttribu
             $field['eval']['includeBlankOption'] = true;
         }
 
-        if (!isset($keys[$this->fieldName]) && $this->isFrontendFilterable()) {
+        if (!isset($keys[$this->fieldName]) && $this->isFrontendFilterable() && !$this->isCustomerDefined()) {
             $keys[$this->fieldName] = 'index';
         }
     }

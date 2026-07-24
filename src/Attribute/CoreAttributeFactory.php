@@ -35,18 +35,20 @@ class CoreAttributeFactory implements AttributeFactoryInterface
             return null;
         }
 
+        $customerDefined = (bool) ($config['customer_defined'] ?? $dca['attributes']['customer_defined'] ?? false);
+
         $attribute = $this->createInstance($class, $fieldName, $config, $dca)
             ->setName($this->trans($config['name'] ?? $dca['label'][0] ?? null))
             ->setDescription($this->trans($config['description'] ?? $dca['label'][1] ?? null))
             ->setPlaceholder($this->trans($config['placeholder'] ?? $dca['eval']['placeholder'] ?? ''))
-            ->setCustomerDefined((bool) ($config['customer_defined'] ?? $dca['attributes']['customer_defined'] ?? false))
+            ->setCustomerDefined($customerDefined)
             ->setMandatory((bool) ($config['mandatory'] ?? $dca['eval']['mandatory'] ?? false))
-            ->setBackendSearchable((bool) ($config['be_search'] ?? $dca['search'] ?? false))
-            ->setBackendFilterable((bool) ($config['be_filter'] ?? $dca['filter'] ?? false))
-            ->setBackendColumn((bool) ($config['be_column'] ?? $dca['attributes']['be_column'] ?? false))
-            ->setFrontendSearchable((bool) ($config['fe_search'] ?? $dca['attributes']['fe_search'] ?? false))
-            ->setFrontendFilterable((bool) ($config['fe_filter'] ?? $dca['attributes']['fe_filter'] ?? false))
-            ->setFrontendSortable((bool) ($config['fe_sorting'] ?? $dca['attributes']['fe_sorting'] ?? false))
+            ->setBackendSearchable(!$customerDefined && ($config['be_search'] ?? $dca['search'] ?? false))
+            ->setBackendFilterable(!$customerDefined && ($config['be_filter'] ?? $dca['filter'] ?? false))
+            ->setBackendColumn(!$customerDefined && ($config['be_column'] ?? $dca['attributes']['be_column'] ?? false))
+            ->setFrontendSearchable(!$customerDefined && ($config['fe_search'] ?? $dca['attributes']['fe_search'] ?? false))
+            ->setFrontendFilterable(!$customerDefined && ($config['fe_filter'] ?? $dca['attributes']['fe_filter'] ?? false))
+            ->setFrontendSortable(!$customerDefined && ($config['fe_sorting'] ?? $dca['attributes']['fe_sorting'] ?? false))
             ->setCustomTemplate($config['customTpl'] ?? $dca['attributes']['customTpl'] ?? null)
         ;
 
