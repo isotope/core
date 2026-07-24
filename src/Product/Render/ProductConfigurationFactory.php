@@ -76,7 +76,8 @@ class ProductConfigurationFactory
                 }
 
                 if ($value) {
-                    $variants = $variants->where($attributeName, $value);
+                    // Convert all values to strings to handle int/string comparison
+                    $variants = $variants->filter(static fn (CoreProduct $product) => (string) $product->$attributeName === (string) $value);
                     $configuration[$attributeName] = $value;
                 }
 
