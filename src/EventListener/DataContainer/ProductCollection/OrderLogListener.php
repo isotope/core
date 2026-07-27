@@ -14,6 +14,8 @@ use Contao\StringUtil;
 use Contao\System;
 use Isotope\CoreBundle\Model\OrderStatusModel;
 use Isotope\CoreBundle\Model\ProductCollectionLogModel;
+use Isotope\CoreBundle\ModelType\ShippingRegistry;
+use Isotope\CoreBundle\ProductCollection\Order\OrderFactory;
 use Isotope\CoreBundle\Store\Order\OrderNotifier;
 use Isotope\CoreBundle\Store\Order\StatusType;
 use Isotope\CoreBundle\Store\OrderManager;
@@ -27,6 +29,7 @@ class OrderLogListener
 {
     public function __construct(
         private readonly OrderManager $orderManager,
+        private readonly OrderFactory $orderFactory,
         private readonly RequestStack $requestStack,
         private readonly Security $security,
         private readonly Formatter $formatter,
@@ -170,8 +173,22 @@ class OrderLogListener
                 }
             }
 
-            $tokens['tracking_numbers'] = str_replace("\n", '<br>', trim($values['notification_shipping_tracking'] ?? ''));
-            $tokens['customer_notes'] = str_replace("\n", '<br>', trim($values['notification_customer_notes'] ?? ''));
+            $tokens['order_status_tracking_numbers'] = str_replace("\n", "<br>\n", trim($values['notification_shipping_tracking'] ?? ''));
+            $tokens['order_status_tracking_urls'] = '';
+            $tokens['order_status_notes'] = str_replace("\n", "<br>\n", trim($values['notification_customer_notes'] ?? ''));
+
+            $order = $this->orderFactory->loadFromId((int) $dc->id);
+
+            if (
+                ($trackingUrl = $order?->getShippingMethod()?->getTrackingUrl())
+                && !empty($trackingIds = array_filter(explode("\n", trim($values['notification_shipping_tracking'] ?? ''))))
+            ) {
+                if (str_contains($trackingUrl, '%s')) {
+                    $tokens['order_status_tracking_urls'] = implode("<br>\n", array_map(static fn (string $id) => \sprintf($trackingUrl, $id), $trackingIds));
+                } else {
+                    $tokens['order_status_tracking_urls'] = $trackingUrl;
+                }
+            }
 
             $receipt = $this->orderNotifier->sendNotification((int) $dc->id, (int) $values['notification'], $tokens);
 

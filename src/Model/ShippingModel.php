@@ -16,6 +16,7 @@ use Contao\Model;
  * @property string $price
  * @property int    $tax_class
  * @property int    $rule
+ * @property string $tracking_url
  * @property string $shipping_weight
  * @property string $minimum_weight
  * @property string $maximum_weight

@@ -78,7 +78,7 @@
         <source>Tracking numbers</source>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.notification_shipping_tracking.1">
-        <source>Here you can enter the shipping tracking information. Use the &lt;em&gt;##order_status_tracking_numbers##&lt;/em&gt; simple token in the notification.</source>
+        <source>Here you can enter the shipping tracking information. Use the &lt;em&gt;##order_status_tracking_numbers##&lt;/em&gt; and/or &lt;em&gt;##order_status_tracking_urls##&lt;/em&gt; simple token in the notification.</source>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.notification_customer_notes.0">
         <source>Customer notes</source>

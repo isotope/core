@@ -39,4 +39,6 @@ interface ShippingInterface
     public function getPriceDefinition(): PriceDefinition|null;
 
     public function review(): TemplateMarkup|null;
+
+    public function getTrackingUrl(): string|null;
 }

@@ -15,6 +15,8 @@ abstract class AbstractShipping extends AbstractCheckoutMethod implements Shippi
 
     protected Weight|null $shippingWeight = null;
 
+    protected string|null $trackingUrl = null;
+
     public function setMinMaxWeight(Weight|null $minWeight, Weight|null $maxWeight): static
     {
         $this->minWeight = $minWeight;
@@ -33,6 +35,18 @@ abstract class AbstractShipping extends AbstractCheckoutMethod implements Shippi
     public function getWeight(): Weight|null
     {
         return $this->shippingWeight;
+    }
+
+    public function setTrackingUrl(string|null $trackingUrl): static
+    {
+        $this->trackingUrl = $trackingUrl;
+
+        return $this;
+    }
+
+    public function getTrackingUrl(): string|null
+    {
+        return $this->trackingUrl;
     }
 
     #[\Override]

@@ -35,6 +35,7 @@ abstract class AbstractShippingFactory extends AbstractCheckoutMethodFactory
         $shipping
             ->setMinMaxWeight(Weight::createFromTimePeriod($model->minimum_weight), Weight::createFromTimePeriod($model->maximum_weight))
             ->setShippingWeight(Weight::createFromTimePeriod($model->shipping_weight))
+            ->setTrackingUrl(empty($model->tracking_url) ? null : $model->tracking_url)
         ;
 
         return $shipping;

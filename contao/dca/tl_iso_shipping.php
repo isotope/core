@@ -34,8 +34,8 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
     'palettes' => [
         '__selector__' => ['type', 'flatCalculation', 'group_calculation', 'inherit'],
         'default' => '{title_legend},name,label,type',
-        'flat' => '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},price,tax_class,shipping_weight,flatCalculation;{config_legend},minimum_weight,maximum_weight,product_types,product_types_condition,rule;{enabled_legend},enabled',
-        'product_price' => '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},tax_class,shipping_weight,productCalculation;{config_legend},minimum_weight,maximum_weight,product_types,product_types_condition,rule;{enabled_legend},enabled',
+        'flat' => '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},price,tax_class,shipping_weight,flatCalculation;{config_legend},minimum_weight,maximum_weight,product_types,product_types_condition,rule;{order_legend},tracking_url;{enabled_legend},enabled',
+        'product_price' => '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},tax_class,shipping_weight,productCalculation;{config_legend},minimum_weight,maximum_weight,product_types,product_types_condition,rule;{order_legend},tracking_url;{enabled_legend},enabled',
         'group' => '{title_legend},type,inherit,name,label;{note_legend:hide},note;{config_legend},group_methods,rule;{price_legend},group_calculation;{enabled_legend},enabled',
         'groupinherit' => '{title_legend},type,inherit,name;{config_legend},group_methods,rule;{price_legend},group_calculation;{enabled_legend},enabled',
     ],
@@ -83,6 +83,10 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
             'eval' => ['rte' => 'tinyMCE', 'decodeEntities' => true],
             'translation' => ['domain' => 'isotope'],
             'sql' => 'text NULL',
+        ],
+        'tracking_url' => [
+            'inputType' => 'text',
+            'eval' => ['tl_class' => 'clr long'],
         ],
         'rule' => [
             'filter' => true,

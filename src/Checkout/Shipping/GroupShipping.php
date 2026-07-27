@@ -100,6 +100,20 @@ class GroupShipping extends AbstractShipping
         return parent::getNote();
     }
 
+    #[\Override]
+    public function getTrackingUrl(): string|null
+    {
+        if ($this->inherit) {
+            foreach ($this->inner as $shipping) {
+                if ($shipping->isAvailable()) {
+                    return $shipping->getTrackingUrl();
+                }
+            }
+        }
+
+        return parent::getTrackingUrl();
+    }
+
     public function hasError(): bool
     {
         return false;
