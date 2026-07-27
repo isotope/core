@@ -62,7 +62,7 @@ class OptionFactory
                 $product = $productContext?->getProduct();
 
                 if (!$product instanceof CoreProduct) {
-                    throw new LogicException('Must pass product to '.__METHOD__.' if optionsSource is "product"');
+                    return new OptionCollection();
                 }
 
                 return $this->createFromModels(AttributeOptionModel::findByProductAndAttribute($product, $attribute), !$isVariant, $productContext);

@@ -7,11 +7,11 @@ namespace Isotope\CoreBundle\EventListener\DataContainer\AttributeOption;
 use Contao\CoreBundle\DataContainer\PaletteManipulator;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\DataContainer;
-use Contao\Input;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
 use Isotope\CoreBundle\Attribute\VariantAttributeInterface;
 use Isotope\CoreBundle\Model\AttributeModel;
 use Isotope\CoreBundle\Model\AttributeOptionModel;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Price is not available for an attribute option if the attribute is a variant option attribute.
@@ -19,13 +19,15 @@ use Isotope\CoreBundle\Model\AttributeOptionModel;
 #[AsCallback('tl_iso_attribute_option', 'config.onload')]
 class PriceFieldListener
 {
-    public function __construct(private readonly AttributeRegistry $attributeRegistry)
-    {
+    public function __construct(
+        private readonly RequestStack $requestStack,
+        private readonly AttributeRegistry $attributeRegistry
+    ) {
     }
 
     public function __invoke(DataContainer $dc): void
     {
-        if ('iso_products' === Input::get('do')) {
+        if ('iso_products' === $this->requestStack->getCurrentRequest()?->query->get('do')) {
             return;
         }
 

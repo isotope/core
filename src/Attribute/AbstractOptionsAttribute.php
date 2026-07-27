@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Attribute;
 
+use Contao\Controller;
+use Contao\System;
 use Doctrine\DBAL\Connection;
 use Isotope\CoreBundle\Attribute\Option\OptionCollection;
 use Isotope\CoreBundle\Attribute\Option\OptionsSource;
@@ -68,5 +70,26 @@ abstract class AbstractOptionsAttribute extends AbstractAttribute implements Opt
         parent::updateDcaField($field, $keys);
 
         $field['options_callback'] = fn (mixed $dc) => $this->getOptions($dc instanceof ProductContext ? $dc : null)->asDcaArray();
+
+        if (
+            $this->isBackendFilterable()
+            && OptionsSource::Table === $this->optionsSource
+        ) {
+            $field['foreignKey'] = 'tl_iso_attribute_option.label';
+        }
+
+        if (OptionsSource::Product === $this->optionsSource && $this->isCustomerDefined()) {
+            Controller::loadDataContainer('tl_iso_attribute');
+            System::loadLanguageFile('tl_iso_attribute');
+
+            $fieldTemplate = $GLOBALS['TL_DCA']['tl_iso_attribute']['fields']['optionsTable'];
+            unset($fieldTemplate['label']);
+
+            $field = array_replace_recursive($field, $fieldTemplate);
+
+            $field['attributes']['dynamic'] = true;
+            $field['foreignKey'] = 'tl_iso_attribute_option.label';
+            $field['eval']['whereCondition'] = "field_name='{$this->getFieldName()}'";
+        }
     }
 }

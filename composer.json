@@ -41,7 +41,7 @@
         "ramsey/collection": "^2.0",
         "terminal42/contao-conditionalselectmenu": "^4.1",
         "terminal42/dc_multilingual": "^4.7",
-        "terminal42/dcawizard": "^3.1",
+        "terminal42/dcawizard": "^5.0",
         "terminal42/notification_center": "^2.7",
 
         "ausi/slug-generator": "^1.1",

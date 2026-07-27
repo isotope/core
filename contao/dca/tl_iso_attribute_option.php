@@ -8,7 +8,6 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = [
     'config' => [
         'dataContainer' => Driver::class,
         'enableVersioning' => true,
-        'ptable' => 'tl_iso_attribute',
         'dynamicPtable' => true,
         'sql' => [
             'keys' => [
@@ -115,10 +114,3 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = [
         ],
     ],
 ];
-
-// Using onload_callback is too late
-if ('iso_products' === Input::get('do')) {
-    $GLOBALS['TL_DCA']['tl_iso_attribute_option']['config']['ptable'] = 'tl_iso_product';
-    $GLOBALS['TL_DCA']['tl_iso_attribute_option']['list']['sorting']['filter'] = [['field_name=?', Input::get('field')]];
-    $GLOBALS['TL_DCA']['tl_iso_attribute_option']['list']['sorting']['headerFields'] = ['name', 'type', 'alias', 'published'];
-}
