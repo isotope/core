@@ -24,6 +24,7 @@ class PaypalPayment extends AbstractPayment
         private readonly string $account,
         private readonly string $processingStatus,
         private readonly string $failedStatus,
+        private readonly string $paidStatus,
         StoreContext $context,
     ) {
         parent::__construct($id, $context);
@@ -38,6 +39,26 @@ class PaypalPayment extends AbstractPayment
             UrlGeneratorInterface::class,
             StringParser::class,
         ];
+    }
+
+    public function getAccount(): string
+    {
+        return $this->account;
+    }
+
+    public function getProcessingStatus(): string
+    {
+        return $this->processingStatus;
+    }
+
+    public function getFailedStatus(): string
+    {
+        return $this->failedStatus;
+    }
+
+    public function getPaidStatus(): string
+    {
+        return $this->paidStatus;
     }
 
     public function hasError(): bool

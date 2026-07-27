@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Controller;
 
 use Contao\CoreBundle\Controller\AbstractController;
+use Isotope\CoreBundle\Checkout\Payment\PaypalPayment;
 use Isotope\CoreBundle\Model\OrderTransactionEventModel;
 use Isotope\CoreBundle\Model\OrderTransactionModel;
-use Isotope\CoreBundle\Model\PaymentModel;
 use Isotope\CoreBundle\ProductCollection\Order\Order;
 use Isotope\CoreBundle\ProductCollection\OrderTransaction\OrderTransactionHandler;
 use Isotope\CoreBundle\Store\OrderManager;
@@ -98,10 +98,18 @@ class PaypalIpnController extends AbstractController
         return true;
     }
 
-    private function handleTransaction(Request $request, Order $order, PaymentModel $paymentModel, OrderTransactionModel $transactionModel, OrderTransactionEventModel $eventModel): void
+    private function handleTransaction(Request $request, Order $order, OrderTransactionModel $transactionModel, OrderTransactionEventModel $eventModel): void
     {
-        if (!$paymentModel->debug && 0 !== strcasecmp($request->request->getString('receiver_email'), $paymentModel->paypal_account)) {
-            $this->logger?->error('PayPal IPN: Account email does not match (got '.$request->request->getString('receiver_email').', expected '.$paymentModel->paypal_account.')');
+        $payment = $order->getPaymentMethod();
+
+        if (!$payment instanceof PaypalPayment) {
+            $this->logger?->error('PayPal IPN: invalid payment method (got '.($payment ? $payment::class : 'NULL').', expected '.PaypalPayment::class.')');
+
+            return;
+        }
+
+        if (!$payment->isDebug() && 0 !== strcasecmp($request->request->getString('receiver_email'), $payment->getAccount())) {
+            $this->logger?->error('PayPal IPN: Account email does not match (got '.$request->request->getString('receiver_email').', expected '.$payment->getAccount().')');
 
             return;
         }
@@ -115,7 +123,7 @@ class PaypalIpnController extends AbstractController
             return;
         }
 
-        if ($transactionModel->status && $paymentModel->processing_status !== $transactionModel->status) {
+        if ($transactionModel->status && $payment->getProcessingStatus() !== $transactionModel->status) {
             $this->logger?->info('PayPal IPN: checkout for Order ID "'.$order->getId().'" already completed.');
 
             return;
@@ -126,7 +134,7 @@ class PaypalIpnController extends AbstractController
         $transactionModel->save();
 
         $this->orderManager->updateOrder($order->getId(), [
-            'transaction_status' => $paymentModel->paid_status,
+            'transaction_status' => $payment->getPaidStatus(),
             'date_paid' => time(),
         ]);
 

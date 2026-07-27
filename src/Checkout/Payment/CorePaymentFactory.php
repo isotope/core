@@ -26,6 +26,7 @@ class CorePaymentFactory extends AbstractPaymentFactory
                 (string) $model->paypal_account,
                 $model->processing_status,
                 $model->failed_status,
+                $model->paid_status,
                 $context,
             ),
             default => throw new InvalidTypeException($model->type, self::class),

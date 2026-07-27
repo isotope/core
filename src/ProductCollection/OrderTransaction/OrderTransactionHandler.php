@@ -6,7 +6,6 @@ namespace Isotope\CoreBundle\ProductCollection\OrderTransaction;
 
 use Isotope\CoreBundle\Model\OrderTransactionEventModel;
 use Isotope\CoreBundle\Model\OrderTransactionModel;
-use Isotope\CoreBundle\Model\PaymentModel;
 use Isotope\CoreBundle\ProductCollection\Order\Order;
 use Isotope\CoreBundle\ProductCollection\Order\OrderFactory;
 use Symfony\Component\Lock\LockFactory;
@@ -78,7 +77,7 @@ class OrderTransactionHandler
     }
 
     /**
-     * @param callable(Order, PaymentModel, OrderTransactionModel, OrderTransactionEventModel): void|null $callback
+     * @param callable(Order, OrderTransactionModel, OrderTransactionEventModel): void|null $callback
      */
     public function handleEvent(OrderTransactionModel|null $transactionModel, array|string $payload, callable|null $callback = null): bool
     {
@@ -98,17 +97,13 @@ class OrderTransactionHandler
             try {
                 $lock->acquire(true);
 
-                if (!$paymentModel = PaymentModel::findById($transactionModel->payment_id)) {
-                    return false;
-                }
-
                 $order = $this->orderFactory->loadFromId((int) $transactionModel->pid);
 
                 if (!$order) {
                     return false;
                 }
 
-                $callback($order, $paymentModel, $transactionModel, $eventModel);
+                $callback($order, $transactionModel, $eventModel);
             } finally {
                 $lock->release();
             }
