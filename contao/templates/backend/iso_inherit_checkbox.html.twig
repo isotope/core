@@ -3,7 +3,7 @@
 {% set fields = options|map(o => o.value) %}
 
 {% set attributes = attrs()
-    .set('id', 'ctrl_'~id)
+    .set('id', 'ctrl_' ~ id)
     .addClass('tl_checkbox_container')
     .addClass(class|default)
     .set('data-controller', 'contao--check-all')
@@ -25,8 +25,8 @@
         {% for option in options %}
             {% set option_attributes = attrs()
                 .set('type', 'checkbox')
-                .set('name', name~'[]')
-                .set('id', 'opt_'~id~'_'~loop.index)
+                .set('name', name ~ '[]')
+                .set('id', 'opt_' ~ id ~ '_' ~ loop.index)
                 .addClass('tl_checkbox')
                 .set('value', option.value)
                 .setIfExists('checked', option.checked)

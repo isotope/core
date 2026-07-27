@@ -2,7 +2,7 @@
     {% if gallery is not defined %}{% set gallery = isotope_gallery(product, 'images') %}{% endif %}
     {% set weight = product.extension('Isotope\\CoreBundle\\Product\\Extension\\ShippingExtension')?.weight %}
 
-    {% set schemaOrg = {
+    {% set schema_org = {
         '@type': 'Product',
         identifier: "#/schema/products/#{product.id}",
         sku: product.sku,
@@ -16,7 +16,7 @@
         depth: product.get('depth'),
         weight: weight ? "#{weight.amount} #{weight.unit.value}" : null,
         image: gallery.files.0.src ? {
-            "@type": "ImageObject",
+            '@type': 'ImageObject',
             identifier: gallery.files.0.src,
             contentUrl: app.request.schemeAndHttpHost ~ '/' ~ gallery.files.0.src,
         },
@@ -28,8 +28,8 @@
     } %}
 
     {% if product.isVariant %}
-        {% set schemaOrg = schemaOrg|merge({
-            'isVariantOf': "#/schema/products/#{product.productId}",
+        {% set schema_org = schema_org|merge({
+            isVariantOf: "#/schema/products/#{product.productId}",
         }) %}
 
         {% if product.variantConfiguration is iterable %}
@@ -37,28 +37,28 @@
             {% for name, value in product.variantConfiguration %}
                 {% if name not in ['color', 'size', 'width', 'height', 'depth'] %}
                     {% set properties = properties|merge([{
-                        "@type": "PropertyValue",
+                        '@type': 'PropertyValue',
                         name: isotope_attribute_label(name),
                         value: isotope_attribute_value(name, value)|join(', '),
                     }]) %}
                 {% endif %}
             {% endfor %}
             {% if properties is not empty %}
-                {% set schemaOrg = schemaOrg|merge({ additionalProperty: properties }) %}
+                {% set schema_org = schema_org|merge({additionalProperty: properties}) %}
             {% endif %}
         {% endif %}
     {% endif %}
 
-    {% do add_schema_org(schemaOrg) %}
+    {% do add_schema_org(schema_org) %}
 {% endblock %}
 
 {% block jsonld_product_group_component %}
-    {% set schemaOrg = {
+    {% set schema_org = {
         '@type': 'ProductGroup',
         identifier: "#/schema/products/#{product.id}",
         name: product.name,
         description: product.get('description')|striptags,
         url: content_url(product),
     } %}
-    {% do add_schema_org(schemaOrg) %}
+    {% do add_schema_org(schema_org) %}
 {% endblock %}

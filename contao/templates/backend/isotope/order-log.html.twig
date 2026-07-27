@@ -3,10 +3,10 @@
     {% if not loop.first %}<hr>{% endif %}
     <table class="tl_show with-padding with-zebra">
         <tbody>
-        {% for logEntry in log %}
+        {% for entry in log %}
             <tr>
-                <td class="tl_label">{{ logEntry.label }}</td>
-                <td>{{ logEntry.value }}</td>
+                <td class="tl_label">{{ entry.label }}</td>
+                <td>{{ entry.value }}</td>
             </tr>
         {% endfor %}
         </tbody>

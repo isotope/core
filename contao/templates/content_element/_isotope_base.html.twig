@@ -1,6 +1,6 @@
 {% extends '@Contao/content_element/_base.html.twig' %}
-{% use "@Contao/component/_stylesheet.html.twig" %}
-{% use "@Contao/component/_isotope_message.html.twig" %}
+{% use '@Contao/component/_stylesheet.html.twig' %}
+{% use '@Contao/component/_isotope_message.html.twig' %}
 
 {% block wrapper %}
     {{ parent() }}
@@ -11,7 +11,7 @@
                 {% if type == 'isotope.raw' %}
                     {{ message|raw }}
                 {% else %}
-                    {% with { message, type } only %}
+                    {% with {message, type} only %}
                         {% set notification_attributes = attrs()
                             .addClass(type|slice(8))
                             .mergeWith(notification_attributes|default)
@@ -25,7 +25,7 @@
 {% endblock %}
 
 {% block style %}
-    {% add "isotope_css" to stylesheets %}
+    {% add 'isotope_css' to stylesheets %}
         {% with {file: asset('isotope.css', 'isotope')} %}
             {{ block('stylesheet_component') }}
         {% endwith %}
@@ -33,7 +33,7 @@
 {% endblock %}
 
 {% block script %}
-    {% add "isotope_js" to head %}
+    {% add 'isotope_js' to head %}
         <script src="{{ asset('isotope.js', 'isotope') }}"></script>
     {% endadd %}
 {% endblock %}

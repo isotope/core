@@ -70,11 +70,11 @@
 
 {% endblock %}
 
-{% macro select(attributes, options, label, blankOption = false) %}
+{% macro select(attributes, options, label, blank_option = false) %}
     {% set attributes = attrs(attributes).addClass('select') %}
     {% if attributes.id|default and label %}<label for="{{ attributes.id }}">{{ label }}</label>{% endif %}
-    <select{{ attributes}}>
-        {% if blankOption %}<option value="">{{ blankOption|default('-') }}</option>{% endif %}
+    <select{{ attributes }}>
+        {% if blank_option %}<option value="">{{ blank_option|default('-') }}</option>{% endif %}
         {% for option in options %}
             <option value="{{ option.value }}"{% if option.default|default %} selected="selected"{% endif %}>{{ option.label }}</option>
         {% endfor %}

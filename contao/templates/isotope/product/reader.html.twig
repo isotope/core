@@ -5,7 +5,7 @@
 
 {% block formbody %}
 
-    <img src="{{ path('isotope_product_hits', { hashid: product.id|hashid }) }}" alt="" width="1" height="1" aria-hidden="true" style="position:absolute">
+    <img src="{{ path('isotope_product_hits', {hashid: product.id|hashid}) }}" alt="" width="1" height="1" aria-hidden="true" style="position:absolute">
 
     <h2>{{ product.name }}</h2>
 
@@ -27,7 +27,7 @@
     {% if product.hasVariants %}
         {{ block('jsonld_product_group_component') }}
         {% for variant in product.getVariants %}
-            {% with { product: variant } %}
+            {% with {product: variant} %}
                 {{ block('jsonld_product_component') }}
             {% endwith %}
         {% endfor %}

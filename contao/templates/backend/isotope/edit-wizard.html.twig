@@ -1,5 +1,5 @@
 {% if href %}
-    {% set title = "DCA.edit.1"|trans([value], "contao_default") %}
+    {% set title = 'DCA.edit.1'|trans([value], 'contao_default') %}
     <a href="{{ href }}" onclick="Backend.openModalIframe({title:'{{ title }}',url:`${this.href}&popup=1&nb=1`});return false">
         {{ backend_icon('edit.svg', title) }}
     </a>

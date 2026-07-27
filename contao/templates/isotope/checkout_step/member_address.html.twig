@@ -63,7 +63,7 @@
                 {% endif %}
 
                 <fieldset>
-                    {% embed '@Contao/isotope/address_manager.html.twig' with billing_address_manager|merge({ current: billing_address }) %}
+                    {% embed '@Contao/isotope/address_manager.html.twig' with billing_address_manager|merge({current: billing_address}) %}
                         {% trans_default_domain 'contao_default' %}
                         {% block address %}
                             {% if not address.isValid %}<p class="message error">{{ 'MSC.address_error'|trans }}</p>{% endif %}
@@ -137,7 +137,7 @@
                     </span>
                 </fieldset>
                 <fieldset class="hide-disabled" data-isotope--toggle-attribute-target="receiver"{% if not add_shipping_address %} disabled{% endif %}>
-                    {% embed '@Contao/isotope/address_manager.html.twig' with shipping_address_manager|merge({ current: shipping_address }) %}
+                    {% embed '@Contao/isotope/address_manager.html.twig' with shipping_address_manager|merge({current: shipping_address}) %}
                         {% trans_default_domain 'contao_default' %}
                         {% block address %}
                             {% if not address.isValid %}<p class="message error">{{ 'MSC.address_error'|trans }}</p>{% endif %}

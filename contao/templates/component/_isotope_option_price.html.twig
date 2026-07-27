@@ -2,7 +2,7 @@
 
 {% block option_price_component %}
     {%- set sign = amount > 0 ? '+ ' : (amount < 0 ? '- ' : '') -%}
-    {%- with _context|merge({ html: false, amount: amount|abs }) -%}
+    {%- with _context|merge({html: false, amount: amount|abs}) -%}
         {{- label }} ({{ sign }}{{ block('price_component') -}})
     {%- endwith -%}
 {% endblock %}

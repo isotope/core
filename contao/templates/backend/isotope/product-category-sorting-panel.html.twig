@@ -17,7 +17,7 @@
                         do: 'iso_products',
                         table: 'tl_iso_product_category',
                         id: '_value_',
-                        rt: contao.request_token
+                        rt: contao.request_token,
                     }) %}
                     window.location.href = "{{ target|raw }}".replace('_value_', value[0]);
                 }

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Widget;
 
 use Contao\File;
-use Contao\Image;
 use Contao\StringUtil;
 use Contao\System;
 use Contao\UploadableWidgetInterface;
@@ -90,9 +89,7 @@ class MediaManager extends Widget implements UploadableWidgetInterface
             'id' => 'ctrl_'.$this->strId,
             'name' => $this->strName,
             'accept' => array_map(static fn ($v) => '.'.$v, $this->validExtensions),
-            'isLanguage' => $blnLanguage,
-            'dragIcon' => Image::getHtml('drag.svg', $GLOBALS['TL_LANG']['MSC']['move'] ?? ''),
-            'deleteIcon' => Image::getHtml('delete.svg', $GLOBALS['TL_LANG']['MSC']['lw_delete'] ?? ''),
+            'is_language' => $blnLanguage,
             'files' => $files,
             'attributes' => $this->getAttributes(),
         ]);

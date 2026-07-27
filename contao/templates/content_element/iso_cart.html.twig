@@ -14,7 +14,7 @@
     {% if collection.isEmpty %}
         <p class="message empty">{{ data.iso_emptyMessage|default ? data.iso_noProducts|default : 'MSC.noItemsInCart'|trans }}</p>
     {% else %}
-        {% with { editable: true } %}
+        {% with {editable: true} %}
             {{ block('product_collection') }}
         {% endwith %}
     {% endif %}

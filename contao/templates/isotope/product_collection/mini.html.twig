@@ -10,10 +10,10 @@
                     {{ block('item_attributes') }}
                     {% set price = isotope_price(item) %}
                     {% if price %}
-                        <div class="price">{{ item.quantity }} x {{ price }}= <span class="total">{{ price.with({ amount: price.total_price }) }}</span></div>
+                        <div class="price">{{ item.quantity }} x {{ price }}= <span class="total">{{ price.with({amount: price.total_price}) }}</span></div>
                     {% endif %}
                 </div>
-                {% if block("product_collection_item_actions") is defined %}
+                {% if block('product_collection_item_actions') is defined %}
                     <div class="actions">
                         {{ block('product_collection_item_actions') }}
                     </div>

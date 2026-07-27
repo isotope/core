@@ -3,7 +3,7 @@
 <div class="isotope-shop-config">
     <div class="intro">
         <div class="text">
-            <h2>{{ 'MSC.isotopeIntroduction.0'|trans({ '%version%': version }) }}</h2>
+            <h2>{{ 'MSC.isotopeIntroduction.0'|trans({'%version%': version}) }}</h2>
             <p>{{ 'MSC.isotopeIntroduction.1'|trans }}</p>
             <p>{{ 'MSC.isotopeIntroduction.2'|trans }} <strong>{{ 'MSC.isotopeIntroduction.3'|trans }}</strong></p>
             <p>{{ 'MSC.isotopeIntroduction.4'|trans }}</p>
@@ -19,9 +19,9 @@
     <div class="tl_listing_container list_view" id="tl_listing">
         <table class="tl_listing">
             <tbody>
-            {% for group,modules in links %}
+            {% for group, modules in links %}
                 <tr>
-                    <td colspan="3" class="{{ loop.first ? 'tl_folder_tlist' : 'tl_folder_list' }}">{{ ('IMD.'~group)|trans([], 'contao_modules') }}</td>
+                    <td colspan="3" class="{{ loop.first ? 'tl_folder_tlist' : 'tl_folder_list' }}">{{ ('IMD.' ~ group)|trans([], 'contao_modules') }}</td>
                 </tr>
                 {% for link in modules %}
                     <tr class="click2edit hover-row">
@@ -31,12 +31,12 @@
                             {% endif %}
                         </td>
                         <td class="tl_file_list">
-                            <p>{{ ('IMD.'~link.name~'.0')|trans([], 'contao_modules') }}</p>
-                            <p class="tl_help">{{ ('IMD.'~link.name~'.1')|trans([], 'contao_modules') }}</p>
+                            <p>{{ ('IMD.' ~ link.name ~ '.0')|trans([], 'contao_modules') }}</p>
+                            <p class="tl_help">{{ ('IMD.' ~ link.name ~ '.1')|trans([], 'contao_modules') }}</p>
                         </td>
                         <td class="tl_file_list tl_right_nowrap">
                             {% if link.url %}
-                                <a href="{{ link.url }}" class="edit">{{ backend_icon('children.svg', ('IMD.'~link.name~'.1')|trans([], 'contao_modules')) }}</a>
+                                <a href="{{ link.url }}" class="edit">{{ backend_icon('children.svg', ('IMD.' ~ link.name ~ '.1')|trans([], 'contao_modules')) }}</a>
                             {% else %}
                                 {{ backend_icon('edit--disabled.svg') }}
                             {% endif %}

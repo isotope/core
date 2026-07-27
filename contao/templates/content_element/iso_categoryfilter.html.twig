@@ -13,5 +13,5 @@
 {% block wrapper_tag %}nav{% endblock %}
 {% block content %}
     {% set menu = knp_menu_get('isotope_categoryfilter', [], menuOptions) %}
-    {{ knp_menu_render(menu, { currentClass: 'active', ancestorClass: 'trail' }) }}
+    {{ knp_menu_render(menu, {currentClass: 'active', ancestorClass: 'trail'}) }}
 {% endblock %}

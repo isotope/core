@@ -31,14 +31,14 @@
                             {% if multiple_taxes|default %}
                                 <th class="tax_id"></th>
                             {% endif %}
-                            {% if block("product_collection_item_actions") is defined %}
+                            {% if block('product_collection_item_actions') is defined %}
                                 <th class="actions"></th>
                             {% endif %}
                         </tr>
                     </thead>
                     <tbody>
                         {% set colspan = 2 + (data.iso_gallery|default ? 1 : 0) + (show_taxes|default ? 1 : 0) %}
-                        {% for level,items in collection.lineItems.byLevel %}
+                        {% for level, items in collection.lineItems.byLevel %}
                             {% for item in items %}
                                 {% block product_collection_item %}
                                     {% set href = item.productReference ? content_url(item.productReference) : null %}
@@ -87,13 +87,13 @@
                                         {% if show_taxes|default %}
                                             <td class="tax">
                                                 {% if price %}
-                                                    {{ price.with({ amount: price.unit_tax }) }}
+                                                    {{ price.with({amount: price.unit_tax}) }}
                                                 {% endif %}
                                             </td>
                                         {% endif %}
                                         <td class="total">
                                             {% if price %}
-                                                {{ price.with({ amount: price.total_price }) }}
+                                                {{ price.with({amount: price.total_price}) }}
                                             {% endif %}
                                         </td>
                                         {% if multiple_taxes|default %}
@@ -107,7 +107,7 @@
                                     </tr>
                                     {% if item.hasErrors %}
                                         <tr>
-                                            <td colspan="{{ colspan + 2 + (multiple_taxes|default ? 1 : 0) + (block("product_collection_item_actions") is defined ? 1 : 0) }}">
+                                            <td colspan="{{ colspan + 2 + (multiple_taxes|default ? 1 : 0) + (block('product_collection_item_actions') is defined ? 1 : 0) }}">
                                                 {% for error in item.errors %}
                                                     <p class="error">{{ error|trans }}</p>
                                                 {% endfor %}
@@ -129,7 +129,7 @@
                                             {% if multiple_taxes|default %}
                                                 <td class="tax_id">&nbsp;</td>
                                             {% endif %}
-                                            {% if block("product_collection_item_actions") is defined %}
+                                            {% if block('product_collection_item_actions') is defined %}
                                                 <td class="actions">&nbsp;</td>
                                             {% endif %}
                                         </tr>
@@ -145,12 +145,12 @@
                                         <td class="name" colspan="{{ colspan }}">{{ tax.label }}</td>
                                         <td class="price">{{ tax.taxRate }}%</td>
                                         <td class="price total">
-                                            {{ total.with({ amount: tax.amount }) }}
+                                            {{ total.with({amount: tax.amount}) }}
                                         </td>
                                         {% if multiple_taxes|default %}
                                             <td class="tax_id">{{ tax.number }}</td>
                                         {% endif %}
-                                        {% if block("product_collection_item_actions") is defined %}
+                                        {% if block('product_collection_item_actions') is defined %}
                                             <td class="actions">&nbsp;</td>
                                         {% endif %}
                                     </tr>
@@ -166,7 +166,7 @@
                                     {% if multiple_taxes|default %}
                                         <td class="tax_id">&nbsp;</td>
                                     {% endif %}
-                                    {% if block("product_collection_item_actions") is defined %}
+                                    {% if block('product_collection_item_actions') is defined %}
                                         <td class="actions">&nbsp;</td>
                                     {% endif %}
                                 </tr>
@@ -176,10 +176,10 @@
                 </table>
     {% endblock %}
 
-    {% if block("product_collection_actions") is defined %}
+    {% if block('product_collection_actions') is defined %}
             </div>
             <div class="submit_container">
-                {{ block("product_collection_actions") }}
+                {{ block('product_collection_actions') }}
             </div>
         </form>
     {% endif %}

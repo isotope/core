@@ -37,12 +37,12 @@
 
                     {% block main_image %}
                         {% if gallery is not defined %}{% set gallery = isotope_gallery(product, 'images') %}{% endif %}
-                        {{ gallery?.with({ type: 'main' }) }}
+                        {{ gallery?.with({type: 'main'}) }}
                     {% endblock %}
 
                     {% block gallery_images %}
                         {% if gallery is not defined %}{% set gallery = isotope_gallery(product, 'images') %}{% endif %}
-                        {{ gallery?.with({ type: 'gallery' }) }}
+                        {{ gallery?.with({type: 'gallery'}) }}
                     {% endblock %}
 
                     {% block product_options %}
@@ -77,7 +77,7 @@
                                     {% if view.useQuantity(product) %}
                                         <div class="quantity_container">
                                             <label for="quantity_requested_{{ product.id }}">{{ 'MSC.quantity'|trans }}:</label>
-                                            <input type="number" class="text" id="quantity_requested_{{ product.id }}" name="quantity_requested" placeholder="{{ product.extension('Isotope\\CoreBundle\\Product\\Extension\\QuantityExtension').minimum|default(1) }}" value="{#<?= \Contao\StringUtil::specialchars(\Contao\Input::post('quantity_requested')); ?>#}" maxlength="10">
+                                            <input type="number" class="text" id="quantity_requested_{{ product.id }}" name="quantity_requested" placeholder="{{ product.extension('Isotope\\CoreBundle\\Product\\Extension\\QuantityExtension').minimum|default(1) }}" value="{# <?= \Contao\StringUtil::specialchars(\Contao\Input::post('quantity_requested')); ?> #}" maxlength="10">
                                         </div>
                                     {% endif %}
                                 {% endblock %}
