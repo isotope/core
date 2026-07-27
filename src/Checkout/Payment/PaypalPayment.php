@@ -11,14 +11,12 @@ use Isotope\CoreBundle\Model\OrderTransactionModel;
 use Isotope\CoreBundle\ProductCollection\Order\Order;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Twig\TemplateMarkup;
-use Monolog\Attribute\WithMonologChannel;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
 
 #[AsPayment(factory: CorePaymentFactory::class)]
-#[WithMonologChannel('isotope.payment.paypal')]
 class PaypalPayment extends AbstractPayment
 {
     public function __construct(

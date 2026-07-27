@@ -22,9 +22,8 @@ use Contao\Model;
  * @property string $product_types_condition
  * @property string $price
  * @property int    $tax_class
- * @property bool   $debug
- * @property bool   $logging
  * @property bool   $enabled
+ * @property bool   $debug
  * @property string $paypal_account
  */
 class PaymentModel extends Model

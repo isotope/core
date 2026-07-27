@@ -190,11 +190,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
             'eval' => ['tl_class' => 'clr w50'],
             'sql' => ['type' => 'boolean', 'default' => false],
         ],
-        'logging' => [
-            'inputType' => 'checkbox',
-            'eval' => ['tl_class' => 'w50'],
-            'sql' => ['type' => 'boolean', 'default' => false],
-        ],
         'enabled' => [
             'toggle' => true,
             'inputType' => 'checkbox',

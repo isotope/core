@@ -167,12 +167,6 @@
       <trans-unit id="tl_iso_shipping.debug.1">
         <source>Use test platform for shipping.</source>
       </trans-unit>
-      <trans-unit id="tl_iso_shipping.logging.0">
-        <source>Enable logging</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_shipping.logging.1">
-        <source>Write transaction information to the system log files.</source>
-      </trans-unit>
       <trans-unit id="tl_iso_shipping.enabled.0">
         <source>Enabled</source>
       </trans-unit>

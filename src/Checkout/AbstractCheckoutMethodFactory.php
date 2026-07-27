@@ -48,7 +48,6 @@ abstract class AbstractCheckoutMethodFactory implements ModelTypeFactoryInterfac
             ->setRule((int) $model->rule)
             ->setAllowedProductTypes(StringUtil::csv($model->product_types, intval(...)), ProductTypeCondition::from($model->product_types_condition))
             ->setDebug((bool) $model->debug)
-            ->setLogging((bool) $model->logging)
             ->setEnabled((bool) $model->enabled)
         ;
     }

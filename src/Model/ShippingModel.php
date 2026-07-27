@@ -22,9 +22,8 @@ use Contao\Model;
  * @property string $maximum_weight
  * @property string $product_types
  * @property string $product_types_condition
- * @property bool   $debug
- * @property bool   $logging
  * @property bool   $enabled
+ * @property bool   $debug
  * @property bool   $inherit
  * @property string $group_methods
  * @property string $group_calculation

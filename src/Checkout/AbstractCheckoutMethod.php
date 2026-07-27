@@ -11,10 +11,8 @@ use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\RuleBuilder\RuleMatcher;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Price\PriceDefinition;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerInterface;
 
-abstract class AbstractCheckoutMethod extends AbstractModelType implements ContainerAwareInterface, LoggerAwareInterface
+abstract class AbstractCheckoutMethod extends AbstractModelType implements ContainerAwareInterface
 {
     protected string $label;
 
@@ -37,11 +35,7 @@ abstract class AbstractCheckoutMethod extends AbstractModelType implements Conta
 
     protected bool $debug = false;
 
-    protected bool $logging = false;
-
     protected bool $enabled = true;
-
-    private LoggerInterface|null $logger = null;
 
     public function __construct(
         protected readonly int $id,
@@ -55,13 +49,7 @@ abstract class AbstractCheckoutMethod extends AbstractModelType implements Conta
         return [
             TokenChecker::class,
             RuleMatcher::class,
-            LoggerInterface::class,
         ];
-    }
-
-    public function setLogger(LoggerInterface $logger): void
-    {
-        $this->logger = $logger;
     }
 
     public function getId(): int
@@ -126,18 +114,6 @@ abstract class AbstractCheckoutMethod extends AbstractModelType implements Conta
     public function setDebug(bool $debug): static
     {
         $this->debug = $debug;
-
-        return $this;
-    }
-
-    public function isLogging(): bool
-    {
-        return $this->logging;
-    }
-
-    public function setLogging(bool $logging): static
-    {
-        $this->logging = $logging;
 
         return $this;
     }
@@ -214,14 +190,5 @@ abstract class AbstractCheckoutMethod extends AbstractModelType implements Conta
         }
 
         return true;
-    }
-
-    protected function debugLog(\Stringable|string $message, array $context = []): void
-    {
-        if (!$this->isLogging() || !$this->logger) {
-            return;
-        }
-
-        $this->logger->info($message, $context);
     }
 }

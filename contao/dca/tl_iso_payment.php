@@ -32,7 +32,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = [
         '__selector__' => ['type'],
         'default' => '{type_legend},name,label,type',
         'cash' => '{type_legend},type,name,label;{note_legend:hide},note;{checkout_legend},processing_status;{config_legend},shipping_modules,product_types,product_types_condition,rule;{price_legend:hide},price,tax_class;{enabled_legend},enabled',
-        'paypal' => '{type_legend},type,name,label;{note_legend:hide},note;{checkout_legend},processing_status,paid_status,failed_status;{config_legend},shipping_modules,product_types,product_types_condition,rule;{gateway_legend},paypal_account;{price_legend:hide},price,tax_class;{enabled_legend},enabled,debug,logging',
+        'paypal' => '{type_legend},type,name,label;{note_legend:hide},note;{checkout_legend},processing_status,paid_status,failed_status;{config_legend},shipping_modules,product_types,product_types_condition,rule;{gateway_legend},paypal_account;{price_legend:hide},price,tax_class;{enabled_legend},enabled,debug',
     ],
     'fields' => [
         'id' => [
@@ -132,18 +132,13 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = [
             'sql' => "int(10) NOT NULL default '0'",
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
         ],
-        'debug' => [
-            'inputType' => 'checkbox',
-            'eval' => ['tl_class' => 'clr w50'],
-            'sql' => ['type' => 'boolean', 'default' => false],
-        ],
-        'logging' => [
+        'enabled' => [
+            'toggle' => true,
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
             'sql' => ['type' => 'boolean', 'default' => false],
         ],
-        'enabled' => [
-            'toggle' => true,
+        'debug' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
             'sql' => ['type' => 'boolean', 'default' => false],
