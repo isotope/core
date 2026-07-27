@@ -9,6 +9,7 @@ use Contao\CoreBundle\ContaoCoreBundle;
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use Isotope\CoreBundle\IsotopeBundle;
 use Knp\Bundle\MenuBundle\KnpMenuBundle;
+use League\FlysystemBundle\FlysystemBundle;
 use Scheb\TwoFactorBundle\SchebTwoFactorBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
@@ -33,6 +34,7 @@ class TestKernel extends Kernel
             new DoctrineBundle(),
             new KnpMenuBundle(),
             new SchebTwoFactorBundle(),
+            new FlysystemBundle(),
             new ContaoCoreBundle(),
             new CodefogHasteBundle(),
             new Terminal42NotificationCenterBundle(),

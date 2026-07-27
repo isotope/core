@@ -1,0 +1,44 @@
+name: CI
+
+on:
+    push:
+        branches:
+            - main
+    pull_request: ~
+
+permissions: read-all
+
+jobs:
+    build-tools:
+        uses: 'terminal42/contao-build-tools/.github/workflows/build-tools.yml@main'
+
+    tests:
+        name: PHP ${{ matrix.php }} / Contao ${{ matrix.contao }}
+        runs-on: ubuntu-latest
+        strategy:
+            fail-fast: false
+            matrix:
+                php: [8.3, 8.4, 8.5]
+                contao: [5.7]
+        steps:
+            - name: Set up PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ matrix.php }}
+                  extensions: dom, fileinfo, filter, gd, hash, intl, json, mbstring, mysqli, pcre, pdo_mysql, zlib
+                  coverage: none
+
+            - name: Checkout
+              uses: actions/checkout@v6
+              with:
+                  show-progress: false
+                  persist-credentials: false
+
+            - name: Require Contao version for tests
+              run: composer require contao/core-bundle:${{ matrix.contao }}.* --dev --no-update
+
+            - name: Install dependencies
+              uses: ramsey/composer-install@v4
+
+            - name: Run the unit tests
+              run: composer run unit-tests

@@ -15,6 +15,7 @@ use Isotope\CoreBundle\Store\Tax\TaxCalculator;
 use Isotope\CoreBundle\Store\Tax\TaxRate;
 use Isotope\CoreBundle\Store\Tax\TaxRateCollection;
 use Isotope\CoreBundle\Test\TestCase;
+use Isotope\CoreBundle\Util\FloatComparator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -154,7 +155,7 @@ final class TaxCalculatorTest extends TestCase
 
         $result = $calculator->calculateNetPrice($price, $taxRates);
 
-        $this->assertEqualsWithDelta($expected, $result, PHP_FLOAT_EPSILON);
+        $this->assertTrue(FloatComparator::equals($expected, $result));
     }
 
     public static function calculateNetPriceProvider(): iterable
