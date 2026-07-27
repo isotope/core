@@ -1,0 +1,81 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="contao/languages/en/tl_user.xlf" source-language="en" target-language="pl">
+    <body>
+      <trans-unit id="tl_user.iso_modules.0">
+        <source>Isotope modules</source>
+        <target>Moduły Isotope</target>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_modules.1">
+        <source>Select which store configuration modules user of this group can access.</source>
+        <target>Wybierz dla których konfiguracji sklepów ten użytkownik ma dostęp.</target>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_producttypes.0">
+        <source>Allowed product types</source>
+        <target>Typy produktów</target>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_producttypes.1">
+        <source>Here you can grant access to one or more product types.</source>
+        <target>Użytkownik może zobaczyć i edytować tylko produkty i typy produktów, które udostępnisz.</target>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_payments.0">
+        <source>Allowed payment modules</source>
+        <target>Dozwolone moduły płatności</target>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_payments.1">
+        <source>Here you can grant access to one or more payment modules.</source>
+        <target>Tutaj możesz nadać dostęp do jednego lub więcej modułów płatności.</target>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_shippings.0">
+        <source>Allowed shipping modules</source>
+        <target>Dozwolone moduły dostawy</target>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_shippings.1">
+        <source>Here you can grant access to one or more shipping modules.</source>
+        <target>Tutaj możesz nadać dostęp do jednego lub więcej modułów dostawy.</target>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_tax_classes.0">
+        <source>Allowed tax classes</source>
+        <target>Dozwolone klasy podatków</target>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_tax_classes.1">
+        <source>Here you can grant access to one or more tax classes.</source>
+        <target>Tutaj możesz nadać dostęp do jednego lub więcej klas podatków.</target>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_tax_rates.0">
+        <source>Allowed tax rates</source>
+        <target>Dozwolone stawki podatkowe</target>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_tax_rates.1">
+        <source>Here you can grant access to one or more tax rates.</source>
+        <target>Tutaj możesz nadać dostęp do jednego lub więcej stawek podatków.</target>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_configs.0">
+        <source>Allowed store configurations</source>
+        <target>Konfiguracje sklepu</target>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_configs.1">
+        <source>Here you can grant access to one or more store configurations.</source>
+        <target>Użytkownik może widzieć zamówienia z tych konfiguracji sklepów.</target>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_member_groups.0">
+        <source>Allowed member groups</source>
+        <target>Grupy produktów</target>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_member_groups.1">
+        <source>Back end users can only see orders of these member groups.</source>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_member_groups.2">
+        <source>Guests</source>
+        <target>Goście</target>
+      </trans-unit>
+      <trans-unit id="tl_user.isotope_legend">
+        <source>Isotope eCommerce</source>
+        <target>Isotope eCommerce</target>
+      </trans-unit>
+      <trans-unit id="MSC.rootPaste">
+        <source>Access to root node</source>
+        <target>Dostęp do głównego węzła</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -22,19 +22,26 @@ source_lang = en
 type = XLIFF
 resource_name = v3_0-core-explain
 
-[o:terminal42:p:isotope:r:v3_0-core-iso_upgrade]
-file_filter = contao/languages/<lang>/iso_upgrade.xlf
-source_file = contao/languages/en/iso_upgrade.xlf
-source_lang = en
-type = XLIFF
-resource_name = v3_0-core-iso_upgrade
-
 [o:terminal42:p:isotope:r:v3_0-core-modules]
 file_filter = contao/languages/<lang>/modules.xlf
 source_file = contao/languages/en/modules.xlf
 source_lang = en
 type = XLIFF
 resource_name = v3_0-core-modules
+
+[o:terminal42:p:isotope:r:v3_0-core-nc_tokens]
+file_filter = contao/languages/<lang>/nc_tokens.xlf
+source_file = contao/languages/en/nc_tokens.xlf
+source_lang = en
+type = XLIFF
+resource_name = v3_0-core-nc_tokens
+
+[o:terminal42:p:isotope:r:v3_0-core-template_studio]
+file_filter = contao/languages/<lang>/template_studio.xlf
+source_file = contao/languages/en/template_studio.xlf
+source_lang = en
+type = XLIFF
+resource_name = v3_0-core-template_studio
 
 [o:terminal42:p:isotope:r:v3_0-core-tl_content]
 file_filter = contao/languages/<lang>/tl_content.xlf
@@ -127,13 +134,6 @@ source_lang = en
 type = XLIFF
 resource_name = v3_0-core-tl_iso_product_collection_log
 
-[o:terminal42:p:isotope:r:v3_0-core-tl_iso_product_price]
-file_filter = contao/languages/<lang>/tl_iso_product_price.xlf
-source_file = contao/languages/en/tl_iso_product_price.xlf
-source_lang = en
-type = XLIFF
-resource_name = v3_0-core-tl_iso_product_price
-
 [o:terminal42:p:isotope:r:v3_0-core-tl_iso_producttype]
 file_filter = contao/languages/<lang>/tl_iso_producttype.xlf
 source_file = contao/languages/en/tl_iso_producttype.xlf
@@ -190,13 +190,6 @@ source_lang = en
 type = XLIFF
 resource_name = v3_0-core-tl_iso_tax_rate
 
-[o:terminal42:p:isotope:r:v3_0-core-tl_maintenance]
-file_filter = contao/languages/<lang>/tl_maintenance.xlf
-source_file = contao/languages/en/tl_maintenance.xlf
-source_lang = en
-type = XLIFF
-resource_name = v3_0-core-tl_maintenance
-
 [o:terminal42:p:isotope:r:v3_0-core-tl_member]
 file_filter = contao/languages/<lang>/tl_member.xlf
 source_file = contao/languages/en/tl_member.xlf
@@ -238,10 +231,3 @@ source_file = contao/languages/en/tl_user_group.xlf
 source_lang = en
 type = XLIFF
 resource_name = v3_0-core-tl_user_group
-
-[o:terminal42:p:isotope:r:v3_0-core-tokens]
-file_filter = contao/languages/<lang>/tokens.xlf
-source_file = contao/languages/en/tokens.xlf
-source_lang = en
-type = XLIFF
-resource_name = v3_0-core-tokens

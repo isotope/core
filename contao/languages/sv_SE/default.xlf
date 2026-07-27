@@ -1,0 +1,993 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="contao/languages/en/default.xlf" source-language="en" target-language="sv-SE">
+    <body>
+      <trans-unit id="ERR.systemColumn">
+        <source>Name &quot;%s&quot; is reserved for system use. Please choose a different name.</source>
+        <target>Namnet `%s` är reserverat av systemet. Välj ett annat namn.</target>
+      </trans-unit>
+      <trans-unit id="ERR.invalidColumn">
+        <source>&quot;%s&quot; cannot be used as a database column. Suggestion: &quot;%s&quot;</source>
+      </trans-unit>
+      <trans-unit id="ERR.noStoreConfigurationSet">
+        <source>No store configuration available</source>
+        <target>Ingen shop-konfiguration tillgänglig</target>
+      </trans-unit>
+      <trans-unit id="ERR.noDefaultStoreConfiguration">
+        <source>Please create a default store configuration.</source>
+        <target>Vänligen skapa en standardbutikskonfiguration.</target>
+      </trans-unit>
+      <trans-unit id="ERR.emptyOrderHistory">
+        <source>You have not yet placed any orders.</source>
+        <target>Du har inte lagt några beställningar än.</target>
+      </trans-unit>
+      <trans-unit id="ERR.orderNotFound">
+        <source>The requested order was not found.</source>
+        <target>Den begärda beställningen hittades inte.</target>
+      </trans-unit>
+      <trans-unit id="ERR.isoLoginRequired">
+        <source>You must be logged in to checkout.</source>
+        <target>Du måste vara inloggad för betalningsprocessen.</target>
+      </trans-unit>
+      <trans-unit id="ERR.variantDuplicate">
+        <source>A variant with this attributes is already available. Please select another combination.</source>
+        <target>En variant med dessa attribut finns redan. Välj en annan kombination.</target>
+      </trans-unit>
+      <trans-unit id="ERR.discount">
+        <source>Please enter whole numbers or decimals signed with + or - and optionally with a percentage.</source>
+        <target>Ange heltal eller decimaltal kopplade till + eller - och eventuellt med en procentsats.</target>
+      </trans-unit>
+      <trans-unit id="ERR.surcharge">
+        <source>Please enter whole numbers or decimals optionally with a percentage.</source>
+        <target>Vänligen ange heltal eller decimaler valfritt med en procentsats.</target>
+      </trans-unit>
+      <trans-unit id="ERR.orderFailed">
+        <source>Checkout failed. Please try again or choose another payment method.</source>
+        <target>Utcheckningen misslyckades. Försök igen eller välj en annan betalningsmetod.</target>
+      </trans-unit>
+      <trans-unit id="ERR.noAddressBookEntries">
+        <source>You have no address book entries.</source>
+        <target>Du har inga adressboksposter.</target>
+      </trans-unit>
+      <trans-unit id="ERR.productMinimumQuantity">
+        <source>The minimum quantity for &quot;%s&quot; is %s items. Please check your shopping cart.</source>
+        <target>Minsta beställningskvantitet för &quot;%s&quot; är %s stycke. Kontrollera din varukorg.</target>
+      </trans-unit>
+      <trans-unit id="ERR.imageInFallback">
+        <source>This image has already been assigned to the fallback language.</source>
+        <target>Den här bilden har redan tilldelats reservspråket.</target>
+      </trans-unit>
+      <trans-unit id="ERR.datepickerRgxp">
+        <source>Select an appropriate field validation (date, time, date and time) to enable the date picker.</source>
+        <target>Välj en specifik fältvalidering (datum, tid, datum och tid) för att aktivera datumval.</target>
+      </trans-unit>
+      <trans-unit id="ERR.checkoutNotAllowed">
+        <source>User checkout not allowed</source>
+        <target>Användarutcheckning är inte tillåten</target>
+      </trans-unit>
+      <trans-unit id="ERR.collectionItemNotAvailable">
+        <source>This product is no longer available.</source>
+        <target>Denna produkt är inte längre tillgänglig.</target>
+      </trans-unit>
+      <trans-unit id="ERR.collectionErrorInItems">
+        <source>There are errors in your products.</source>
+        <target>Det finns fel i dina produkter.</target>
+      </trans-unit>
+      <trans-unit id="ERR.cartErrorInItems">
+        <source>Please resolve the errors in your cart before checking out.</source>
+        <target>Vänligen åtgärda felen i din kundvagn innan du checkar ut.</target>
+      </trans-unit>
+      <trans-unit id="ERR.cumulativeDuplicateAttribute">
+        <source>You cannot configure the same attribute multiple times.</source>
+        <target>Du kan inte konfigurera samma attribut flera gånger.</target>
+      </trans-unit>
+      <trans-unit id="ERR.rangeAttributeMax">
+        <source>Please select an &quot;Attribute to&quot; on row %s.</source>
+        <target>Välj ett &quot;Attribut till&quot; på rad %s.</target>
+      </trans-unit>
+      <trans-unit id="PTY.iso_products.0">
+        <source>Isotope Products</source>
+      </trans-unit>
+      <trans-unit id="PTY.iso_products.1">
+        <source>Select this page type if your want to display a product list and product reader.</source>
+      </trans-unit>
+      <trans-unit id="MSC.productPicker">
+        <source>Products</source>
+        <target>Produkter</target>
+      </trans-unit>
+      <trans-unit id="MSC.filterByPages">
+        <source>Products of category</source>
+      </trans-unit>
+      <trans-unit id="MSC.noVariants">
+        <source>There are no variants for this product.</source>
+        <target>Det finns inga varianter för denna produkt.</target>
+      </trans-unit>
+      <trans-unit id="MSC.copyFallback">
+        <source>Duplicate Fallback</source>
+        <target>Duplicera reserv</target>
+      </trans-unit>
+      <trans-unit id="MSC.orderDetailsHeadline">
+        <source>Order no %s / %s</source>
+        <target>Beställningsnummer %s / %s</target>
+      </trans-unit>
+      <trans-unit id="MSC.payment_processing">
+        <source>Your payment is being processed. Please be patient...</source>
+        <target>Din betalning behandlas. Var tålmodig...</target>
+      </trans-unit>
+      <trans-unit id="MSC.payment_failed">
+        <source>Unfortunately, the payment was not successful. Please change your payment method or try again to complete your payment.</source>
+      </trans-unit>
+      <trans-unit id="MSC.payment_change">
+        <source>Change payment</source>
+      </trans-unit>
+      <trans-unit id="MSC.payment_complete">
+        <source>Complete payment</source>
+      </trans-unit>
+      <trans-unit id="MSC.payment_cancel">
+        <source>Cancel order</source>
+      </trans-unit>
+      <trans-unit id="MSC.mmNoUploads">
+        <source>No files uploaded.</source>
+        <target>Inga filer laddade upp.</target>
+      </trans-unit>
+      <trans-unit id="MSC.mmUnknownError">
+        <source>The file could not be uploaded for unknown reason. Please check the system log.</source>
+        <target>Filen kunde inte laddas upp av okänd anledning. Kontrollera systemloggen.</target>
+      </trans-unit>
+      <trans-unit id="MSC.mmDrop">
+        <source>Drop files here to upload</source>
+        <target>Släpp filer här för att ladda upp</target>
+      </trans-unit>
+      <trans-unit id="MSC.mmUpload">
+        <source>Upload files</source>
+        <target>Ladda upp filer</target>
+      </trans-unit>
+      <trans-unit id="MSC.undeletableRecords">
+        <source>Some records could not be deleted.</source>
+        <target>Vissa poster kunde inte raderas.</target>
+      </trans-unit>
+      <trans-unit id="MSC.undeletableUnpublished">
+        <source>Some records could not be deleted and have been unpublished instead.</source>
+        <target>Vissa poster kunde inte raderas och har avpublicerats istället.</target>
+      </trans-unit>
+      <trans-unit id="MSC.quantity">
+        <source>Quantity</source>
+        <target>Kvantitet</target>
+      </trans-unit>
+      <trans-unit id="MSC.taxFree">
+        <source>Tax-free</source>
+        <target>Skattefri</target>
+      </trans-unit>
+      <trans-unit id="MSC.defaultSearchText">
+        <source>search products</source>
+        <target>Sök produkter</target>
+      </trans-unit>
+      <trans-unit id="MSC.priceRangeLabel">
+        <source>&lt;span class=&quot;from&quot;&gt;From&lt;/span&gt; %s</source>
+        <target>&lt;span class=&quot;from&quot;&gt;från&lt;/span&gt; %s</target>
+      </trans-unit>
+      <trans-unit id="MSC.detailLabel">
+        <source>View Details</source>
+        <target>Visa detaljer</target>
+      </trans-unit>
+      <trans-unit id="MSC.reorderLabel">
+        <source>Reorder</source>
+        <target>Beställa om</target>
+      </trans-unit>
+      <trans-unit id="MSC.perPageLabel">
+        <source>Products Per Page</source>
+        <target>Produkter per sida</target>
+      </trans-unit>
+      <trans-unit id="MSC.searchTermsLabel">
+        <source>Keywords</source>
+        <target>Nyckelord</target>
+      </trans-unit>
+      <trans-unit id="MSC.submitLabel">
+        <source>Submit</source>
+        <target>Skicka</target>
+      </trans-unit>
+      <trans-unit id="MSC.clearFiltersLabel">
+        <source>Clear Filters</source>
+        <target>Rensa filter</target>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.update">
+        <source>Update</source>
+        <target>Uppdatering</target>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.add_to_cart">
+        <source>Add To Cart</source>
+        <target>Lägg i varukorgen</target>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.add_all_to_cart">
+        <source>Add All To Cart</source>
+        <target>Lägg alla i varukorgen</target>
+      </trans-unit>
+      <trans-unit id="MSC.orderByLabel">
+        <source>Order By:</source>
+        <target>Sortera efter:</target>
+      </trans-unit>
+      <trans-unit id="MSC.noProducts">
+        <source>No products have been found.</source>
+        <target>Inga produkter har hittats.</target>
+      </trans-unit>
+      <trans-unit id="MSC.previousStep">
+        <source>Back</source>
+        <target>Tillbaka</target>
+      </trans-unit>
+      <trans-unit id="MSC.nextStep">
+        <source>Continue</source>
+        <target>Fortsätta</target>
+      </trans-unit>
+      <trans-unit id="MSC.confirmOrder">
+        <source>Order</source>
+        <target>Beställ</target>
+      </trans-unit>
+      <trans-unit id="MSC.noCategoriesAssociated">
+        <source>No categories are associated with this product.</source>
+        <target>Inga kategorier är associerade med denna produkt.</target>
+      </trans-unit>
+      <trans-unit id="MSC.labelSubmit">
+        <source>Submit</source>
+        <target>Skicka</target>
+      </trans-unit>
+      <trans-unit id="MSC.noItemsInCart">
+        <source>There are no items in your cart.</source>
+        <target>Din varukorg är tom.</target>
+      </trans-unit>
+      <trans-unit id="MSC.addedToCart">
+        <source>The selected product has been added to your shopping cart.</source>
+        <target>Den valda produkten har lagts till i din varukorg.</target>
+      </trans-unit>
+      <trans-unit id="MSC.cartMerged">
+        <source>The products from your last visit have been readded. Please review your shopping cart items.</source>
+        <target>Produkterna från ditt senaste besök har lästs. Vänligen granska dina varukorgsartiklar.</target>
+      </trans-unit>
+      <trans-unit id="MSC.reorderConfirmation">
+        <source>The products have been added to your shopping cart.</source>
+      </trans-unit>
+      <trans-unit id="MSC.editProductLinkTitle">
+        <source>Edit %s</source>
+        <target>Redigera %s</target>
+      </trans-unit>
+      <trans-unit id="MSC.editProductLinkText">
+        <source>Edit</source>
+        <target>Redigera</target>
+      </trans-unit>
+      <trans-unit id="MSC.removeProductLinkText">
+        <source>Remove</source>
+        <target>Ta bort</target>
+      </trans-unit>
+      <trans-unit id="MSC.removeProductLinkTitle">
+        <source>Remove %s from your cart</source>
+        <target>Ta bort %s från din kundvagn</target>
+      </trans-unit>
+      <trans-unit id="MSC.subTotalLabel">
+        <source>Order Subtotal: </source>
+        <target>Beställningens delsumma:</target>
+      </trans-unit>
+      <trans-unit id="MSC.shippingLabel">
+        <source>Shipping (%s)</source>
+        <target>Frakt (%s)</target>
+      </trans-unit>
+      <trans-unit id="MSC.paymentLabel">
+        <source>Payment (%s)</source>
+        <target>Betalning (%s)</target>
+      </trans-unit>
+      <trans-unit id="MSC.grandTotalLabel">
+        <source>Order Total: </source>
+        <target>Ordersumma:</target>
+      </trans-unit>
+      <trans-unit id="MSC.noPaymentModules">
+        <source>No payment options are currently available</source>
+        <target>Inga betalningsalternativ finns för närvarande tillgängliga.</target>
+      </trans-unit>
+      <trans-unit id="MSC.noShippingModules">
+        <source>No shipping options are currently available.</source>
+        <target>Inga fraktalternativ finns för närvarande tillgängliga.</target>
+      </trans-unit>
+      <trans-unit id="MSC.noOrderEmails">
+        <source>No orders emails found.</source>
+        <target>Inga e-postmeddelanden för beställningar hittades.</target>
+      </trans-unit>
+      <trans-unit id="MSC.noOrders">
+        <source>No orders found.</source>
+        <target>Inga beställningar hittades.</target>
+      </trans-unit>
+      <trans-unit id="MSC.cartBT">
+        <source>Shopping Cart</source>
+        <target>Kundvagn</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkoutBT">
+        <source>Proceed to Checkout</source>
+        <target>Fortsätt till utcheckningen</target>
+      </trans-unit>
+      <trans-unit id="MSC.continueShoppingBT">
+        <source>Continue shopping</source>
+        <target>Fortsätt handla</target>
+      </trans-unit>
+      <trans-unit id="MSC.transactionStatusHeadline">
+        <source>Payment Status: %s</source>
+      </trans-unit>
+      <trans-unit id="MSC.deliveryStatusHeadline">
+        <source>Delivery Status: %s</source>
+      </trans-unit>
+      <trans-unit id="MSC.checkboutStepBack">
+        <source>Go back to step &quot;%s&quot;</source>
+        <target>Gå tillbaka till steget &quot;%s&quot;</target>
+      </trans-unit>
+      <trans-unit id="MSC.createNewAddressLabel">
+        <source>Create New Address</source>
+        <target>Skapa ny adress</target>
+      </trans-unit>
+      <trans-unit id="MSC.useBillingAddress">
+        <source>Use billing address</source>
+        <target>Använd faktureringsadress</target>
+      </trans-unit>
+      <trans-unit id="MSC.useCustomerAddress">
+        <source>Use customer address</source>
+        <target>Använd kundadress</target>
+      </trans-unit>
+      <trans-unit id="MSC.differentShippingAddress">
+        <source>Different shipping address</source>
+        <target>Annan leveransadress</target>
+      </trans-unit>
+      <trans-unit id="MSC.editAddressHeadline">
+        <source>Edit address</source>
+        <target>Redigera adress</target>
+      </trans-unit>
+      <trans-unit id="MSC.createAddressHeadline">
+        <source>Add a new address</source>
+      </trans-unit>
+      <trans-unit id="MSC.editAddressLabel">
+        <source>Edit</source>
+        <target>Redigera</target>
+      </trans-unit>
+      <trans-unit id="MSC.deleteAddressLabel">
+        <source>Delete</source>
+        <target>Ta bort</target>
+      </trans-unit>
+      <trans-unit id="MSC.deleteAddressConfirm">
+        <source>Do you really want to delete this address? This cannot be undone.</source>
+        <target>Vill du verkligen ta bort den här adressen? Detta kan inte göras ogjort.</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_invoice_title">
+        <source>Invoice</source>
+        <target>Faktura</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_date">
+        <source>Order date</source>
+        <target>Orderdatum</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_document_number">
+        <source>Order number</source>
+        <target>Ordernummer</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_status">
+        <source>Order status</source>
+        <target>Orderstatus</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_transaction_status">
+        <source>Payment status</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_delivery_status">
+        <source>Shipping status</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_description">
+        <source>Description</source>
+        <target>Beskrivning</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_quantity">
+        <source>Quantity</source>
+        <target>Kvantitet</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_price">
+        <source>Price</source>
+        <target>Pris</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_total">
+        <source>Total</source>
+        <target>Total</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_tax">
+        <source>VAT</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_locked">
+        <source>Placed</source>
+        <target>Placerad</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_currency">
+        <source>Currency</source>
+        <target>Valuta</target>
+      </trans-unit>
+      <trans-unit id="MSC.low_to_high">
+        <source>lo to hi</source>
+        <target>lågt till högt</target>
+      </trans-unit>
+      <trans-unit id="MSC.high_to_low">
+        <source>hi to lo</source>
+        <target>högt till lågt</target>
+      </trans-unit>
+      <trans-unit id="MSC.a_to_z">
+        <source>A to Z</source>
+        <target>A - Z</target>
+      </trans-unit>
+      <trans-unit id="MSC.z_to_a">
+        <source>Z to A</source>
+        <target>Z - A</target>
+      </trans-unit>
+      <trans-unit id="MSC.old_to_new">
+        <source>earlier to later</source>
+        <target>tidigare till senare</target>
+      </trans-unit>
+      <trans-unit id="MSC.new_to_old">
+        <source>later to earlier</source>
+        <target>senare till tidigare</target>
+      </trans-unit>
+      <trans-unit id="MSC.pay_with_redirect.0">
+        <source>Processing payment</source>
+        <target>Bearbetar betalning</target>
+      </trans-unit>
+      <trans-unit id="MSC.pay_with_redirect.1">
+        <source>You will be redirected to the payment gateway website.</source>
+        <target>Du kommer att omdirigeras till betalningsportens webbplats.</target>
+      </trans-unit>
+      <trans-unit id="MSC.pay_with_redirect.2">
+        <source>Pay now</source>
+        <target>Betala nu</target>
+      </trans-unit>
+      <trans-unit id="MSC.pay_with_redirect.3">
+        <source>Please click on the &quot;Pay now&quot; button to continue.</source>
+        <target>Klicka på &quot;Betala nu&quot; för att fortsätta.</target>
+      </trans-unit>
+      <trans-unit id="MSC.paypalTransaction">
+        <source>Transaction ID: %s</source>
+        <target>Transaktions-ID: %s</target>
+      </trans-unit>
+      <trans-unit id="MSC.paypalTransactionOnline">
+        <source>You can view this PayPal transaction online.</source>
+        <target>Du kan se denna PayPal-transaktion online.</target>
+      </trans-unit>
+      <trans-unit id="MSC.paypalTransactionButton">
+        <source>Open Website</source>
+        <target>Öppna webbplatsen</target>
+      </trans-unit>
+      <trans-unit id="MSC.paypalTransactionDetails">
+        <source>PayPal transaction from %s</source>
+        <target>PayPal transaktion från %s</target>
+      </trans-unit>
+      <trans-unit id="MSC.productSingle">
+        <source>1 Product</source>
+        <target>1 produkt</target>
+      </trans-unit>
+      <trans-unit id="MSC.productMultiple">
+        <source>%s Products</source>
+        <target>%s Produkter</target>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_address_message">
+        <source>Select an existing address or add a new address to your account.</source>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_address_guest_message">
+        <source>Enter your shipping information.</source>
+      </trans-unit>
+      <trans-unit id="MSC.billing_address_message">
+        <source>Select an existing address or add a new address to your account.</source>
+      </trans-unit>
+      <trans-unit id="MSC.billing_address_guest_message">
+        <source>Enter your billing information.</source>
+      </trans-unit>
+      <trans-unit id="MSC.customer_address_message">
+        <source>Select an existing address or add a new address to your account.</source>
+      </trans-unit>
+      <trans-unit id="MSC.customer_address_guest_message">
+        <source>Enter your customer information.</source>
+      </trans-unit>
+      <trans-unit id="MSC.address_error">
+        <source>This address cannot be used or is missing required information.</source>
+      </trans-unit>
+      <trans-unit id="MSC.member_address_error">
+        <source>Your member address cannot be used or is missing required information.</source>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_method_message">
+        <source>Select a shipping method.</source>
+        <target>Välj en fraktmetod.</target>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_method_missing">
+        <source>Please select a shipping method.</source>
+        <target>Välj en fraktmetod.</target>
+      </trans-unit>
+      <trans-unit id="MSC.payment_method_message">
+        <source>Enter your payment information.</source>
+        <target>Ange din betalningsinformation.</target>
+      </trans-unit>
+      <trans-unit id="MSC.payment_method_missing">
+        <source>Please select a payment method.</source>
+        <target>Vänligen välj en betalningsmetod.</target>
+      </trans-unit>
+      <trans-unit id="MSC.order_review_message">
+        <source>Review and confirm your order details.</source>
+        <target>Granska och bekräfta dina beställningsuppgifter.</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkout_address">
+        <source>Address</source>
+        <target>Adress</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkout_shipping">
+        <source>Shipping</source>
+        <target>Frakt</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkout_payment">
+        <source>Payment</source>
+        <target>Betalning</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkout_review">
+        <source>Review</source>
+        <target>Granska</target>
+      </trans-unit>
+      <trans-unit id="MSC.billing_address">
+        <source>Billing Address</source>
+        <target>Fakturaadress</target>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_address">
+        <source>Shipping Address</source>
+        <target>Leveransadress</target>
+      </trans-unit>
+      <trans-unit id="MSC.billing_shipping_address">
+        <source>Billing &amp; Shipping Address</source>
+        <target>Fakturering &amp; leveransadress</target>
+      </trans-unit>
+      <trans-unit id="MSC.customer_address">
+        <source>Customer Address</source>
+        <target>Kundadress</target>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_method">
+        <source>Shipping Method</source>
+        <target>Frakt metod</target>
+      </trans-unit>
+      <trans-unit id="MSC.payment_method">
+        <source>Payment Method</source>
+        <target>Betalningsmetod</target>
+      </trans-unit>
+      <trans-unit id="MSC.order_review">
+        <source>Order Review</source>
+        <target>Beställningsgranskning</target>
+      </trans-unit>
+      <trans-unit id="MSC.changeCheckoutInfo">
+        <source>Change</source>
+        <target>Ändra</target>
+      </trans-unit>
+      <trans-unit id="MSC.cc_num">
+        <source>Credit card number</source>
+        <target>Kreditkortsnummer</target>
+      </trans-unit>
+      <trans-unit id="MSC.cc_type">
+        <source>Credit card type</source>
+        <target>Typ av kreditkort</target>
+      </trans-unit>
+      <trans-unit id="MSC.cc_ccv">
+        <source>CCV number (3 or 4 digit code)</source>
+        <target>CCV-nummer (3- eller 4-siffrig kod)</target>
+      </trans-unit>
+      <trans-unit id="MSC.cc_exp_month">
+        <source>Expiration month</source>
+        <target>Utgångs Månad</target>
+      </trans-unit>
+      <trans-unit id="MSC.cc_exp_year">
+        <source>Expiration year</source>
+        <target>Utgångsår</target>
+      </trans-unit>
+      <trans-unit id="MSC.backendPaymentNotFound">
+        <source>Payment module not found!</source>
+        <target>Betalningsmodulen hittades inte!</target>
+      </trans-unit>
+      <trans-unit id="MSC.backendShippingNotFound">
+        <source>Shipping module not found!</source>
+        <target>Fraktmodul hittades inte!</target>
+      </trans-unit>
+      <trans-unit id="MSC.backendPaymentNoInfo">
+        <source>This payment module does not provide additional information.</source>
+        <target>Denna betalningsmodul ger ingen ytterligare information.</target>
+      </trans-unit>
+      <trans-unit id="MSC.backendShippingNoInfo">
+        <source>This shipping module does not provide additional information.</source>
+        <target>Denna fraktmodul ger ingen ytterligare information.</target>
+      </trans-unit>
+      <trans-unit id="MSC.useDefault">
+        <source>Use default value</source>
+        <target>Använd standardvärde</target>
+      </trans-unit>
+      <trans-unit id="MSC.activeStep">
+        <source>active step: </source>
+        <target>aktivt steg:</target>
+      </trans-unit>
+      <trans-unit id="MSC.loadingProductData">
+        <source>Loading product data …</source>
+        <target>Laddar produktdata …</target>
+      </trans-unit>
+      <trans-unit id="MSC.templatesConfig">
+        <source>Store Config &quot;%s&quot;</source>
+        <target>Shop-Konfiguration &quot;%s&quot;</target>
+      </trans-unit>
+      <trans-unit id="MSC.splittedTaxRate">
+        <source>Splitted</source>
+        <target>Delad</target>
+      </trans-unit>
+      <trans-unit id="MSC.newOrders">
+        <source>You have %s order(s) with status &quot;%s&quot;</source>
+        <target>Du har %s beställning(er) med status &quot;%s&quot;</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkoutStep">
+        <source>Step %s of %s (%s) - </source>
+        <target>Steg %s av %s (%s) - </target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.minutes">
+        <source>Minutes</source>
+        <target>Minuter</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.hours">
+        <source>Hours</source>
+        <target>Timmar</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.days">
+        <source>Days</source>
+        <target>Dagar</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.weeks">
+        <source>Weeks</source>
+        <target>Veckor</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.months">
+        <source>Months</source>
+        <target>Månader</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.years">
+        <source>Years</source>
+        <target>År</target>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroduction.0">
+        <source>Welcome to Isotope eCommerce (Version: %s)</source>
+        <target>Välkommen till Isotope eCommerce (Version %s)</target>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroduction.1">
+        <source>Isotope is the premier open source eCommerce solution for Contao.</source>
+        <target>Isotope är den främsta e-handelslösningen med öppen källkod för Contao.</target>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroduction.2">
+        <source>This is the page where most of the configuration will take place.</source>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroduction.3">
+        <source>For initial setup, you should start from the bottom of this page and work your way upward.</source>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroduction.4">
+        <source>Visit the official Isotope eCommerce website for the latest news, configuration manuals and professional support. Thank you so much for considering giving something back!</source>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroduction.5">
+        <source>The Isotope eCommerce Team</source>
+        <target>Isotope eCommerce Team</target>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroduction.6">
+        <source>Isotope is a product of terminal42 gmbh in association with the Isotope eCommerce Team.</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_priceDisplay.net.0">
+        <source>Net</source>
+        <target>Netto</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_priceDisplay.net.1">
+        <source>Show net prices to all customers. Taxes included in the product price (tax rate configuration) will be deducted.</source>
+        <target>Visa nettopriser för alla kunder. Skatter som ingår i produktpriset (skattesatskonfiguration) kommer att dras av.</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_priceDisplay.gross.0">
+        <source>Gross (recommended)</source>
+        <target>Brutto (rekommenderas)</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_priceDisplay.gross.1">
+        <source>Show gross prices to all customers. Applicable taxes will be added to the product price display.</source>
+        <target>Visa bruttopriser för alla kunder. Tillämpliga skatter kommer att läggas till produktprisdisplayen.</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_priceDisplay.fixed.0">
+        <source>Fixed</source>
+        <target>Fast</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_priceDisplay.fixed.1">
+        <source>The product price will always be shown as in the product setting. Taxes are always calculated as &quot;included&quot;. This means the shop owner&apos;s profit varies depending on the applicable taxes.</source>
+        <target>Produktpriset kommer alltid att visas som i produktinställningen. Skatter beräknas alltid som &quot;ingår&quot;. Detta innebär att butiksägarens vinst varierar beroende på gällande skatter.</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_taxCalculation.horizontal.0">
+        <source>horizontal</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_taxCalculation.horizontal.1">
+        <source>VAT is calculated individually for each line item – that is, item price × quantity, then the tax is calculated and rounded per item. At the end, all tax amounts are summed.</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_taxCalculation.vertical.0">
+        <source>vertical</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_taxCalculation.vertical.1">
+        <source>VAT is calculated only after summing all net amounts. Then the tax is applied to the total net amount and rounded once.</source>
+      </trans-unit>
+      <trans-unit id="CTE.isotope">
+        <source>Isotope eCommerce</source>
+        <target>Isotope eCommerce</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_productfilter.0">
+        <source>Product Filter</source>
+        <target>Produktfilter</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_productfilter.1">
+        <source>Define individual filters for Isotope such as category trees and product attribute filters.</source>
+        <target>Definiera individuella filter för isotop som kategoriträd och produktattributfilter.</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_categoryfilter.0">
+        <source>Category Filter</source>
+        <target>Kategorifilter</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_categoryfilter.1">
+        <source>Provides a filter by product category (page tree).</source>
+        <target>Ger ett filter efter produktkategori (sidträd).</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_productlist.0">
+        <source>Product List</source>
+        <target>Produktlista</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_productlist.1">
+        <source>General Listing module. Can be used to list products or values of attributes. May be combined with other modules (i.e. the Filter Module) to provide further drill-down capabilities.</source>
+        <target>Allmän listamodul. Kan användas för att lista produkter eller värden på attribut. Kan kombineras med andra moduler (d.v.s. filtermodulen) för att ge ytterligare möjligheter till borrning.</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_productreader.0">
+        <source>Product Reader</source>
+        <target>Produktläsare</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_productreader.1">
+        <source>Product reader module. This is used to display product details.</source>
+        <target>Produktläsarmodul. Detta används för att visa produktdetaljer.</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_cart.0">
+        <source>Shopping Cart</source>
+        <target>Kundvagn</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_cart.1">
+        <source>A fully-featured shopping cart module.  Box or Full Display can be set by template selection.</source>
+        <target>En fullutrustad kundvagnsmodul. Box eller Full Display kan ställas in genom val av mall.</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_checkout.0">
+        <source>Checkout</source>
+        <target>Kassa</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_checkout.1">
+        <source>Allow store customers to complete their transactions.</source>
+        <target>Tillåt butikskunder att slutföra sina transaktioner.</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_addressbook.0">
+        <source>Address Book</source>
+        <target>Adressbok</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_addressbook.1">
+        <source>Allow customers to manage their address book.</source>
+        <target>Tillåt kunder att hantera sin adressbok.</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_orderhistory.0">
+        <source>Order History</source>
+        <target>Beställningshistorik</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_orderhistory.1">
+        <source>Order lister that allows customers to view their order history</source>
+        <target>Beställningslista som låter kunder se sin beställningshistorik</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_orderdetails.0">
+        <source>Order Details</source>
+        <target>Orderdetaljer</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_orderdetails.1">
+        <source>Order reader that allows customers to view order history details</source>
+        <target>Beställningsläsare som låter kunder se detaljer om beställningshistorik</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_configswitcher.0">
+        <source>Store Config Switcher</source>
+        <target>Shop konfiguraton växlare</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_configswitcher.1">
+        <source>Switch between store configuration to change currency and other settings.</source>
+        <target>Växla mellan butikskonfiguration för att ändra valuta och andra inställningar.</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_relatedproducts.0">
+        <source>Related products</source>
+        <target>Relaterade produkter</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_relatedproducts.1">
+        <source>List products related to the current one.</source>
+        <target>Lista produkter relaterade till den aktuella.</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_messages.0">
+        <source>Messages</source>
+        <target>Meddelanden</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_messages.1">
+        <source>Displays all Isotope messages if they have not been displayed elsewhere.</source>
+        <target>Visar alla Isotopmeddelanden om de inte har visats någon annanstans.</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_shipping.flat.0">
+        <source>Flat-price shipping</source>
+        <target>Fast pris frakt</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_shipping.flat.1">
+        <source>This is the default shipping method for regular shipping.</source>
+        <target>Detta är standardleveransmetoden för vanlig frakt.</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_shipping.group.0">
+        <source>Shipping group</source>
+        <target>Fraktgrupp</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_shipping.group.1">
+        <source>With this method, you can group multiple shipping methods into one and calculate the price based on them.</source>
+        <target>Med den här metoden kan du gruppera flera fraktmetoder till en och beräkna priset baserat på dem.</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_shipping.product_price.0">
+        <source>Product-price shipping</source>
+        <target>Produkt-pris frakt</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_shipping.product_price.1">
+        <source>In this method the shipping costs are based on the products individual shipping price. Make sure to have the Shipping Price attribute enabled per each product.</source>
+        <target>I denna metod baseras fraktkostnaderna på produktens individuella fraktpris. Se till att ha attributet Fraktpris aktiverat för varje produkt.</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.cash.0">
+        <source>Cash</source>
+        <target>Kontanter</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.cash.1">
+        <source>Use this for all offline processed payment.</source>
+        <target>Använd detta för all offlinebearbetad betalning.</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.paypal.0">
+        <source>PayPal Standard Checkout</source>
+        <target>PayPal Standard Checkout</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.paypal.1">
+        <source>This PayPal module supports IPN (Instant Payment Notifications).</source>
+        <target>Denna PayPal-modul stöder IPN (Instant Payment Notifications).</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_gallery.standard.0">
+        <source>Default gallery</source>
+        <target>Standardgalleri</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_gallery.standard.1">
+        <source>&lt;p&gt;Uses the lightbox/mediabox for full size images. Make sure you select the appropriate &quot;moo_&quot; template in your page layout configuration.&lt;/p&gt;&lt;p&gt;You can supply a &quot;rel&quot; attribute to the link target by using a pipe (e.g. &quot;tl_files/video.mov|lightbox[400 300]&quot;). If no &quot;rel&quot; attribute is supplied, the link will be opened in a new window.&lt;/p&gt;</source>
+        <target>&lt;p&gt;Använder lightbox/mediabox för bilder i full storlek. Se till att du väljer lämplig &quot;moo_&quot; mall i din sidlayoutkonfiguration.&lt;/p&gt;&lt;p&gt;Du kan ange en &quot;rel&quot; attribut till länkmålet genom att använda ett rör (t.ex. &quot;tl_files/video.mov|lightbox[400 300]&quot;). Om ingen &quot;rel&quot; attributet tillhandahålls, kommer länken att öppnas i ett nytt fönster.&lt;/p&gt;</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_product.standard.0">
+        <source>Standard product</source>
+        <target>Standard-Produkt</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_product.standard.1">
+        <source>A default product. Select this if nothing else matches.</source>
+        <target>En standardprodukt. Välj detta om inget annat matchar.</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.miscellaneous">
+        <source>Miscellaneous</source>
+        <target>Diverse</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.cart">
+        <source>Cart</source>
+        <target>Varukorg</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.cart_total.0">
+        <source>Cart total</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.cart_total.1">
+        <source>Match on the total amount of the cart.</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.cart_address.0">
+        <source>Cart address</source>
+        <target>Kundvagnens adress</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.cart_address.1">
+        <source>Match on country, subdivision or postal codes of the billing or shipping address.</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.cart_quantity.0">
+        <source>Total quantity in cart</source>
+        <target>Total kvantitet i varukorgen</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.cart_quantity.1">
+        <source>Compares the given value to the sum of all quantities of all products.</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.cart_products.0">
+        <source>Total products in cart</source>
+        <target>Totalt antal produkter i varukorgen</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.cart_products.1">
+        <source>Compares the given value to the total products in the cart (regardless of their quantity).</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.member">
+        <source>Member</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.member_authenticated.0">
+        <source>Login status</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.member_authenticated.1">
+        <source>Checks whether a customer is logged in or not.</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.member_group.0">
+        <source>Member groups (current user)</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.member_group.1">
+        <source>Checks whether the currently logged-in user has or does not have certain member groups.</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.store">
+        <source>Store</source>
+        <target>Spara</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.store_config.0">
+        <source>Store config</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.store_config.1">
+        <source>Checks for the current store configuration.</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.store_currency.0">
+        <source>Currency</source>
+        <target>Valuta</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.store_currency.1">
+        <source>Match on the current currency.</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.dates">
+        <source>Date &amp; time</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.store_date.0">
+        <source>Date &amp; time</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.store_date.1">
+        <source>Checks for the current date and time.</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.store_time.0">
+        <source>Time of day</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.store_time.1">
+        <source>Checks the time of the current day.</source>
+      </trans-unit>
+      <trans-unit id="ATTR.text.0">
+        <source>Text field</source>
+        <target>Textfält</target>
+      </trans-unit>
+      <trans-unit id="ATTR.text.1">
+        <source>A single-line input field for a short or medium text.</source>
+        <target>Ett enrads inmatningsfält för en kort eller medelstor text.</target>
+      </trans-unit>
+      <trans-unit id="ATTR.textarea.0">
+        <source>Textarea</source>
+        <target>Textarea</target>
+      </trans-unit>
+      <trans-unit id="ATTR.textarea.1">
+        <source>A multi-line input field for a medium or long text.</source>
+        <target>Ett inmatningsfält med flera rader för en medellång eller lång text.</target>
+      </trans-unit>
+      <trans-unit id="ATTR.select.0">
+        <source>Select menu</source>
+        <target>Select-Meny</target>
+      </trans-unit>
+      <trans-unit id="ATTR.select.1">
+        <source>A single- or multi-line drop-down menu.&lt;br /&gt;&lt;i&gt;This field type is suitable for product variants.&lt;/i&gt;</source>
+        <target>En rullgardinsmeny med en eller flera rader.&lt;br /&gt;&lt;i&gt;Denna fälttyp är lämplig för produktvarianter.&lt;/i&gt;</target>
+      </trans-unit>
+      <trans-unit id="ATTR.radio.0">
+        <source>Radio button menu</source>
+        <target>Radio-Button-Meny</target>
+      </trans-unit>
+      <trans-unit id="ATTR.radio.1">
+        <source>A list of multiple options from which one can be selected.&lt;br /&gt;&lt;i&gt;This field type is suitable for product variants.&lt;/i&gt;</source>
+        <target>En lista med flera alternativ från vilka ett kan väljas.&lt;br /&gt;&lt;i&gt;Denna fälttyp är lämplig för produktvarianter.&lt;/i&gt;</target>
+      </trans-unit>
+      <trans-unit id="ATTR.checkbox.0">
+        <source>Checkbox menu</source>
+        <target>Checkbox-Meny</target>
+      </trans-unit>
+      <trans-unit id="ATTR.checkbox.1">
+        <source>A list of multiple options from which any can be selected.</source>
+        <target>En lista med flera alternativ där alla kan väljas.</target>
+      </trans-unit>
+      <trans-unit id="ATTR.mediaManager.0">
+        <source>Media Manager</source>
+        <target>Media Manager</target>
+      </trans-unit>
+      <trans-unit id="ATTR.mediaManager.1">
+        <source>Upload images and other files to the Isotope eCommerce file system. Output is processed trough an IsotopeGallery class.</source>
+        <target>Ladda upp bilder och andra filer till Isotope eCommerce filsystem. Utdata bearbetas genom en IsotopeGallery-klass.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

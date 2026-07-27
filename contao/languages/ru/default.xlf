@@ -1,0 +1,952 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="contao/languages/en/default.xlf" source-language="en" target-language="ru">
+    <body>
+      <trans-unit id="ERR.systemColumn">
+        <source>Name &quot;%s&quot; is reserved for system use. Please choose a different name.</source>
+        <target>Имя `%s` зарезервировано системой. Пожалуйста, выберите другое имя.</target>
+      </trans-unit>
+      <trans-unit id="ERR.invalidColumn">
+        <source>&quot;%s&quot; cannot be used as a database column. Suggestion: &quot;%s&quot;</source>
+      </trans-unit>
+      <trans-unit id="ERR.noStoreConfigurationSet">
+        <source>No store configuration available</source>
+        <target>Конфигурация магазина недоступна</target>
+      </trans-unit>
+      <trans-unit id="ERR.noDefaultStoreConfiguration">
+        <source>Please create a default store configuration.</source>
+        <target>Пожалуйста, создайте конфигурацию магазина по умолчанию.</target>
+      </trans-unit>
+      <trans-unit id="ERR.emptyOrderHistory">
+        <source>You have not yet placed any orders.</source>
+        <target>Вы еще не разместили ни одного заказа.</target>
+      </trans-unit>
+      <trans-unit id="ERR.orderNotFound">
+        <source>The requested order was not found.</source>
+        <target>Запрашиваемый заказ не найден.</target>
+      </trans-unit>
+      <trans-unit id="ERR.isoLoginRequired">
+        <source>You must be logged in to checkout.</source>
+        <target>Вы должны войти в систему для оформления заказа.</target>
+      </trans-unit>
+      <trans-unit id="ERR.variantDuplicate">
+        <source>A variant with this attributes is already available. Please select another combination.</source>
+        <target>Вариант с этими атрибутами уже есть.
+Пожалуйста, выберите другую комбинацию.</target>
+      </trans-unit>
+      <trans-unit id="ERR.discount">
+        <source>Please enter whole numbers or decimals signed with + or - and optionally with a percentage.</source>
+        <target>Пожалуйста, введите целые или десятичные со знаком + или - числа, или со знаком процента.</target>
+      </trans-unit>
+      <trans-unit id="ERR.surcharge">
+        <source>Please enter whole numbers or decimals optionally with a percentage.</source>
+        <target>Пожалуйста, введите целые или десятичные числа, или со знаком процента.</target>
+      </trans-unit>
+      <trans-unit id="ERR.orderFailed">
+        <source>Checkout failed. Please try again or choose another payment method.</source>
+        <target>Оформление заказа не удалось. Попробуйте еще раз позднее или выберите другой способ оплаты.</target>
+      </trans-unit>
+      <trans-unit id="ERR.noAddressBookEntries">
+        <source>You have no address book entries.</source>
+        <target>Ваша адресная книга пуста.</target>
+      </trans-unit>
+      <trans-unit id="ERR.productMinimumQuantity">
+        <source>The minimum quantity for &quot;%s&quot; is %s items. Please check your shopping cart.</source>
+        <target>Минимальное количество для &quot;%s&quot; - %s товаров. Пожалуйста, проверьте корзину.</target>
+      </trans-unit>
+      <trans-unit id="ERR.imageInFallback">
+        <source>This image has already been assigned to the fallback language.</source>
+      </trans-unit>
+      <trans-unit id="ERR.datepickerRgxp">
+        <source>Select an appropriate field validation (date, time, date and time) to enable the date picker.</source>
+      </trans-unit>
+      <trans-unit id="ERR.checkoutNotAllowed">
+        <source>User checkout not allowed</source>
+      </trans-unit>
+      <trans-unit id="ERR.collectionItemNotAvailable">
+        <source>This product is no longer available.</source>
+        <target>Товар недоступен.</target>
+      </trans-unit>
+      <trans-unit id="ERR.collectionErrorInItems">
+        <source>There are errors in your products.</source>
+        <target>Ошибки в товарах</target>
+      </trans-unit>
+      <trans-unit id="ERR.cartErrorInItems">
+        <source>Please resolve the errors in your cart before checking out.</source>
+        <target>Пожалуйста, исправьте ошибки в корзине перед оформлением заказа.</target>
+      </trans-unit>
+      <trans-unit id="ERR.cumulativeDuplicateAttribute">
+        <source>You cannot configure the same attribute multiple times.</source>
+      </trans-unit>
+      <trans-unit id="ERR.rangeAttributeMax">
+        <source>Please select an &quot;Attribute to&quot; on row %s.</source>
+      </trans-unit>
+      <trans-unit id="PTY.iso_products.0">
+        <source>Isotope Products</source>
+      </trans-unit>
+      <trans-unit id="PTY.iso_products.1">
+        <source>Select this page type if your want to display a product list and product reader.</source>
+      </trans-unit>
+      <trans-unit id="MSC.productPicker">
+        <source>Products</source>
+        <target>Товары</target>
+      </trans-unit>
+      <trans-unit id="MSC.filterByPages">
+        <source>Products of category</source>
+      </trans-unit>
+      <trans-unit id="MSC.noVariants">
+        <source>There are no variants for this product.</source>
+        <target>Других вариантов товара не найдено.</target>
+      </trans-unit>
+      <trans-unit id="MSC.copyFallback">
+        <source>Duplicate Fallback</source>
+        <target>Удвоенный запас</target>
+      </trans-unit>
+      <trans-unit id="MSC.orderDetailsHeadline">
+        <source>Order no %s / %s</source>
+        <target>Заказ № %s / %s</target>
+      </trans-unit>
+      <trans-unit id="MSC.payment_processing">
+        <source>Your payment is being processed. Please be patient...</source>
+        <target>Ваш платеж обрабатывается. Пожалуйста, подождите...</target>
+      </trans-unit>
+      <trans-unit id="MSC.payment_failed">
+        <source>Unfortunately, the payment was not successful. Please change your payment method or try again to complete your payment.</source>
+      </trans-unit>
+      <trans-unit id="MSC.payment_change">
+        <source>Change payment</source>
+      </trans-unit>
+      <trans-unit id="MSC.payment_complete">
+        <source>Complete payment</source>
+      </trans-unit>
+      <trans-unit id="MSC.payment_cancel">
+        <source>Cancel order</source>
+      </trans-unit>
+      <trans-unit id="MSC.mmNoUploads">
+        <source>No files uploaded.</source>
+        <target>Файлы не загружены.</target>
+      </trans-unit>
+      <trans-unit id="MSC.mmUnknownError">
+        <source>The file could not be uploaded for unknown reason. Please check the system log.</source>
+      </trans-unit>
+      <trans-unit id="MSC.mmDrop">
+        <source>Drop files here to upload</source>
+        <target>Бросьте файлы сюда для загрузки</target>
+      </trans-unit>
+      <trans-unit id="MSC.mmUpload">
+        <source>Upload files</source>
+        <target>Загруженные файлы</target>
+      </trans-unit>
+      <trans-unit id="MSC.undeletableRecords">
+        <source>Some records could not be deleted.</source>
+        <target>Некоторые записи не могут быть удалены.</target>
+      </trans-unit>
+      <trans-unit id="MSC.undeletableUnpublished">
+        <source>Some records could not be deleted and have been unpublished instead.</source>
+      </trans-unit>
+      <trans-unit id="MSC.quantity">
+        <source>Quantity</source>
+        <target>Количество</target>
+      </trans-unit>
+      <trans-unit id="MSC.taxFree">
+        <source>Tax-free</source>
+        <target>Tax-free</target>
+      </trans-unit>
+      <trans-unit id="MSC.defaultSearchText">
+        <source>search products</source>
+        <target>Найти товары</target>
+      </trans-unit>
+      <trans-unit id="MSC.priceRangeLabel">
+        <source>&lt;span class=&quot;from&quot;&gt;From&lt;/span&gt; %s</source>
+        <target>&lt;span class=&quot;from&quot;&gt;От&lt;/span&gt; %s</target>
+      </trans-unit>
+      <trans-unit id="MSC.detailLabel">
+        <source>View Details</source>
+        <target>Подробнее</target>
+      </trans-unit>
+      <trans-unit id="MSC.reorderLabel">
+        <source>Reorder</source>
+        <target>Переупорядочить</target>
+      </trans-unit>
+      <trans-unit id="MSC.perPageLabel">
+        <source>Products Per Page</source>
+        <target>Товаров на странице</target>
+      </trans-unit>
+      <trans-unit id="MSC.searchTermsLabel">
+        <source>Keywords</source>
+        <target>Ключевые слова</target>
+      </trans-unit>
+      <trans-unit id="MSC.submitLabel">
+        <source>Submit</source>
+        <target>Отправить</target>
+      </trans-unit>
+      <trans-unit id="MSC.clearFiltersLabel">
+        <source>Clear Filters</source>
+        <target>Очистить фильтры</target>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.update">
+        <source>Update</source>
+        <target>Обновить</target>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.add_to_cart">
+        <source>Add To Cart</source>
+        <target>Добавить в корзину</target>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.add_all_to_cart">
+        <source>Add All To Cart</source>
+        <target>Добавить все в корзину</target>
+      </trans-unit>
+      <trans-unit id="MSC.orderByLabel">
+        <source>Order By:</source>
+        <target>Сортировать по:</target>
+      </trans-unit>
+      <trans-unit id="MSC.noProducts">
+        <source>No products have been found.</source>
+        <target>Товаров не найдено.</target>
+      </trans-unit>
+      <trans-unit id="MSC.previousStep">
+        <source>Back</source>
+        <target>Назад</target>
+      </trans-unit>
+      <trans-unit id="MSC.nextStep">
+        <source>Continue</source>
+        <target>Продолжить</target>
+      </trans-unit>
+      <trans-unit id="MSC.confirmOrder">
+        <source>Order</source>
+        <target>Заказ</target>
+      </trans-unit>
+      <trans-unit id="MSC.noCategoriesAssociated">
+        <source>No categories are associated with this product.</source>
+        <target>Категории не связаны с этим товаром.</target>
+      </trans-unit>
+      <trans-unit id="MSC.labelSubmit">
+        <source>Submit</source>
+        <target>Отправить</target>
+      </trans-unit>
+      <trans-unit id="MSC.noItemsInCart">
+        <source>There are no items in your cart.</source>
+        <target>Ваша корзина пуста.</target>
+      </trans-unit>
+      <trans-unit id="MSC.addedToCart">
+        <source>The selected product has been added to your shopping cart.</source>
+        <target>Выбранный товар добавлен в корзину</target>
+      </trans-unit>
+      <trans-unit id="MSC.cartMerged">
+        <source>The products from your last visit have been readded. Please review your shopping cart items.</source>
+      </trans-unit>
+      <trans-unit id="MSC.reorderConfirmation">
+        <source>The products have been added to your shopping cart.</source>
+      </trans-unit>
+      <trans-unit id="MSC.editProductLinkTitle">
+        <source>Edit %s</source>
+        <target>Изменить %s</target>
+      </trans-unit>
+      <trans-unit id="MSC.editProductLinkText">
+        <source>Edit</source>
+        <target>Изменить</target>
+      </trans-unit>
+      <trans-unit id="MSC.removeProductLinkText">
+        <source>Remove</source>
+        <target>Удалить</target>
+      </trans-unit>
+      <trans-unit id="MSC.removeProductLinkTitle">
+        <source>Remove %s from your cart</source>
+        <target>Удалить %s из корзины</target>
+      </trans-unit>
+      <trans-unit id="MSC.subTotalLabel">
+        <source>Order Subtotal: </source>
+        <target>Предварительный итог заказа:</target>
+      </trans-unit>
+      <trans-unit id="MSC.shippingLabel">
+        <source>Shipping (%s)</source>
+        <target>Доставка (%s)</target>
+      </trans-unit>
+      <trans-unit id="MSC.paymentLabel">
+        <source>Payment (%s)</source>
+        <target>Оплата (%s)</target>
+      </trans-unit>
+      <trans-unit id="MSC.grandTotalLabel">
+        <source>Order Total: </source>
+        <target>Итого:</target>
+      </trans-unit>
+      <trans-unit id="MSC.noPaymentModules">
+        <source>No payment options are currently available</source>
+        <target>Опции оплаты сейчас недоступны.</target>
+      </trans-unit>
+      <trans-unit id="MSC.noShippingModules">
+        <source>No shipping options are currently available.</source>
+        <target>Опции доставки сейчас недоступны.</target>
+      </trans-unit>
+      <trans-unit id="MSC.noOrderEmails">
+        <source>No orders emails found.</source>
+        <target>Электронные письма заказов не найдены.</target>
+      </trans-unit>
+      <trans-unit id="MSC.noOrders">
+        <source>No orders found.</source>
+        <target>Заказов не найдено.</target>
+      </trans-unit>
+      <trans-unit id="MSC.cartBT">
+        <source>Shopping Cart</source>
+        <target>Корзина</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkoutBT">
+        <source>Proceed to Checkout</source>
+        <target>Оформить заказ</target>
+      </trans-unit>
+      <trans-unit id="MSC.continueShoppingBT">
+        <source>Continue shopping</source>
+        <target>Продолжить покупки</target>
+      </trans-unit>
+      <trans-unit id="MSC.transactionStatusHeadline">
+        <source>Payment Status: %s</source>
+      </trans-unit>
+      <trans-unit id="MSC.deliveryStatusHeadline">
+        <source>Delivery Status: %s</source>
+      </trans-unit>
+      <trans-unit id="MSC.checkboutStepBack">
+        <source>Go back to step &quot;%s&quot;</source>
+        <target>Вернуться к шагу &quot;%s&quot;</target>
+      </trans-unit>
+      <trans-unit id="MSC.createNewAddressLabel">
+        <source>Create New Address</source>
+        <target>Создать новый адрес</target>
+      </trans-unit>
+      <trans-unit id="MSC.useBillingAddress">
+        <source>Use billing address</source>
+        <target>Использовать адрес для выставления счета</target>
+      </trans-unit>
+      <trans-unit id="MSC.useCustomerAddress">
+        <source>Use customer address</source>
+        <target>Использовать адрес покупателя</target>
+      </trans-unit>
+      <trans-unit id="MSC.differentShippingAddress">
+        <source>Different shipping address</source>
+        <target>Разные адреса доставки</target>
+      </trans-unit>
+      <trans-unit id="MSC.editAddressHeadline">
+        <source>Edit address</source>
+        <target>Изменить адрес</target>
+      </trans-unit>
+      <trans-unit id="MSC.createAddressHeadline">
+        <source>Add a new address</source>
+      </trans-unit>
+      <trans-unit id="MSC.editAddressLabel">
+        <source>Edit</source>
+        <target>Изменить</target>
+      </trans-unit>
+      <trans-unit id="MSC.deleteAddressLabel">
+        <source>Delete</source>
+        <target>Удалить</target>
+      </trans-unit>
+      <trans-unit id="MSC.deleteAddressConfirm">
+        <source>Do you really want to delete this address? This cannot be undone.</source>
+        <target>Вы действительно хотите удалить этот адрес? Действие не может быть отменено.</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_invoice_title">
+        <source>Invoice</source>
+        <target>Счет</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_date">
+        <source>Order date</source>
+        <target>Дата заказа</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_document_number">
+        <source>Order number</source>
+        <target>Номер заказа</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_status">
+        <source>Order status</source>
+        <target>Статус заказа</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_transaction_status">
+        <source>Payment status</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_delivery_status">
+        <source>Shipping status</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_description">
+        <source>Description</source>
+        <target>Описание</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_quantity">
+        <source>Quantity</source>
+        <target>Количество</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_price">
+        <source>Price</source>
+        <target>Цена</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_total">
+        <source>Total</source>
+        <target>Всего</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_tax">
+        <source>VAT</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_locked">
+        <source>Placed</source>
+        <target>Размещено</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_currency">
+        <source>Currency</source>
+        <target>Валюта</target>
+      </trans-unit>
+      <trans-unit id="MSC.low_to_high">
+        <source>lo to hi</source>
+        <target>мал. к больш.</target>
+      </trans-unit>
+      <trans-unit id="MSC.high_to_low">
+        <source>hi to lo</source>
+        <target>больш. к мал.</target>
+      </trans-unit>
+      <trans-unit id="MSC.a_to_z">
+        <source>A to Z</source>
+        <target>от А до Я</target>
+      </trans-unit>
+      <trans-unit id="MSC.z_to_a">
+        <source>Z to A</source>
+        <target>от Я до А</target>
+      </trans-unit>
+      <trans-unit id="MSC.old_to_new">
+        <source>earlier to later</source>
+        <target>от раннего до позднего</target>
+      </trans-unit>
+      <trans-unit id="MSC.new_to_old">
+        <source>later to earlier</source>
+        <target>от позднего к раннему</target>
+      </trans-unit>
+      <trans-unit id="MSC.pay_with_redirect.0">
+        <source>Processing payment</source>
+        <target>Обработка платежа</target>
+      </trans-unit>
+      <trans-unit id="MSC.pay_with_redirect.1">
+        <source>You will be redirected to the payment gateway website.</source>
+        <target>Вы будете перенаправлены на веб-сайт платежного шлюза.</target>
+      </trans-unit>
+      <trans-unit id="MSC.pay_with_redirect.2">
+        <source>Pay now</source>
+        <target>Оплатить сейчас</target>
+      </trans-unit>
+      <trans-unit id="MSC.pay_with_redirect.3">
+        <source>Please click on the &quot;Pay now&quot; button to continue.</source>
+        <target>Пожалуйста, нажмите на кнопку &quot;Оплатить сейчас&quot;, чтобы продолжить.</target>
+      </trans-unit>
+      <trans-unit id="MSC.paypalTransaction">
+        <source>Transaction ID: %s</source>
+        <target>ID транзакции: %s</target>
+      </trans-unit>
+      <trans-unit id="MSC.paypalTransactionOnline">
+        <source>You can view this PayPal transaction online.</source>
+      </trans-unit>
+      <trans-unit id="MSC.paypalTransactionButton">
+        <source>Open Website</source>
+        <target>Открыть сайт</target>
+      </trans-unit>
+      <trans-unit id="MSC.paypalTransactionDetails">
+        <source>PayPal transaction from %s</source>
+      </trans-unit>
+      <trans-unit id="MSC.productSingle">
+        <source>1 Product</source>
+        <target>1 товар</target>
+      </trans-unit>
+      <trans-unit id="MSC.productMultiple">
+        <source>%s Products</source>
+        <target>%s Товаров</target>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_address_message">
+        <source>Select an existing address or add a new address to your account.</source>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_address_guest_message">
+        <source>Enter your shipping information.</source>
+      </trans-unit>
+      <trans-unit id="MSC.billing_address_message">
+        <source>Select an existing address or add a new address to your account.</source>
+      </trans-unit>
+      <trans-unit id="MSC.billing_address_guest_message">
+        <source>Enter your billing information.</source>
+      </trans-unit>
+      <trans-unit id="MSC.customer_address_message">
+        <source>Select an existing address or add a new address to your account.</source>
+      </trans-unit>
+      <trans-unit id="MSC.customer_address_guest_message">
+        <source>Enter your customer information.</source>
+      </trans-unit>
+      <trans-unit id="MSC.address_error">
+        <source>This address cannot be used or is missing required information.</source>
+      </trans-unit>
+      <trans-unit id="MSC.member_address_error">
+        <source>Your member address cannot be used or is missing required information.</source>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_method_message">
+        <source>Select a shipping method.</source>
+        <target>Выберите метод доставки.</target>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_method_missing">
+        <source>Please select a shipping method.</source>
+        <target>Выберите метод доставки</target>
+      </trans-unit>
+      <trans-unit id="MSC.payment_method_message">
+        <source>Enter your payment information.</source>
+        <target>Введите вашу платежную информацию.</target>
+      </trans-unit>
+      <trans-unit id="MSC.payment_method_missing">
+        <source>Please select a payment method.</source>
+        <target>Пожалуйста, выберите способ оплаты.</target>
+      </trans-unit>
+      <trans-unit id="MSC.order_review_message">
+        <source>Review and confirm your order details.</source>
+        <target>Просмотрите и подтвердите детали заказа.</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkout_address">
+        <source>Address</source>
+        <target>Адрес</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkout_shipping">
+        <source>Shipping</source>
+        <target>Доставка</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkout_payment">
+        <source>Payment</source>
+        <target>Оплата</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkout_review">
+        <source>Review</source>
+        <target>Обзор</target>
+      </trans-unit>
+      <trans-unit id="MSC.billing_address">
+        <source>Billing Address</source>
+        <target>Платежный адрес</target>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_address">
+        <source>Shipping Address</source>
+        <target>Адрес доставки</target>
+      </trans-unit>
+      <trans-unit id="MSC.billing_shipping_address">
+        <source>Billing &amp; Shipping Address</source>
+        <target>Платежный адрес и адрес доставки</target>
+      </trans-unit>
+      <trans-unit id="MSC.customer_address">
+        <source>Customer Address</source>
+        <target>Адрес покупателя</target>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_method">
+        <source>Shipping Method</source>
+        <target>Метод доставки</target>
+      </trans-unit>
+      <trans-unit id="MSC.payment_method">
+        <source>Payment Method</source>
+        <target>Метод оплаты</target>
+      </trans-unit>
+      <trans-unit id="MSC.order_review">
+        <source>Order Review</source>
+        <target>Обзор заказа</target>
+      </trans-unit>
+      <trans-unit id="MSC.changeCheckoutInfo">
+        <source>Change</source>
+        <target>Изменить</target>
+      </trans-unit>
+      <trans-unit id="MSC.cc_num">
+        <source>Credit card number</source>
+        <target>номер кредитной карты</target>
+      </trans-unit>
+      <trans-unit id="MSC.cc_type">
+        <source>Credit card type</source>
+        <target>Тип кредитной карты</target>
+      </trans-unit>
+      <trans-unit id="MSC.cc_ccv">
+        <source>CCV number (3 or 4 digit code)</source>
+        <target>номер CCV (3-х или 4-хзначный код)</target>
+      </trans-unit>
+      <trans-unit id="MSC.cc_exp_month">
+        <source>Expiration month</source>
+        <target>Месяц истечения</target>
+      </trans-unit>
+      <trans-unit id="MSC.cc_exp_year">
+        <source>Expiration year</source>
+        <target>Год истечения</target>
+      </trans-unit>
+      <trans-unit id="MSC.backendPaymentNotFound">
+        <source>Payment module not found!</source>
+        <target>Платежный модуль не найден!</target>
+      </trans-unit>
+      <trans-unit id="MSC.backendShippingNotFound">
+        <source>Shipping module not found!</source>
+        <target>Модуль доставки не найден!</target>
+      </trans-unit>
+      <trans-unit id="MSC.backendPaymentNoInfo">
+        <source>This payment module does not provide additional information.</source>
+      </trans-unit>
+      <trans-unit id="MSC.backendShippingNoInfo">
+        <source>This shipping module does not provide additional information.</source>
+      </trans-unit>
+      <trans-unit id="MSC.useDefault">
+        <source>Use default value</source>
+        <target>Использовать значение по умолчанию</target>
+      </trans-unit>
+      <trans-unit id="MSC.activeStep">
+        <source>active step: </source>
+      </trans-unit>
+      <trans-unit id="MSC.loadingProductData">
+        <source>Loading product data …</source>
+        <target>Загрузка данных о товаре...</target>
+      </trans-unit>
+      <trans-unit id="MSC.templatesConfig">
+        <source>Store Config &quot;%s&quot;</source>
+      </trans-unit>
+      <trans-unit id="MSC.splittedTaxRate">
+        <source>Splitted</source>
+      </trans-unit>
+      <trans-unit id="MSC.newOrders">
+        <source>You have %s order(s) with status &quot;%s&quot;</source>
+        <target>У вас %s заказ(ов) со статусом &quot;%s&quot;</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkoutStep">
+        <source>Step %s of %s (%s) - </source>
+        <target>Шаг %s из %s (%s) -</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.minutes">
+        <source>Minutes</source>
+        <target>Минуты</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.hours">
+        <source>Hours</source>
+        <target>Часы</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.days">
+        <source>Days</source>
+        <target>Дни</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.weeks">
+        <source>Weeks</source>
+        <target>Недели</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.months">
+        <source>Months</source>
+        <target>Месяцы</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.years">
+        <source>Years</source>
+        <target>Годы</target>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroduction.0">
+        <source>Welcome to Isotope eCommerce (Version: %s)</source>
+        <target>Добро пожаловать в Isotope eCommerce (Version: %s)</target>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroduction.1">
+        <source>Isotope is the premier open source eCommerce solution for Contao.</source>
+        <target>Isotope это первичное опен-сорс eCommerce решение для Contao.</target>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroduction.2">
+        <source>This is the page where most of the configuration will take place.</source>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroduction.3">
+        <source>For initial setup, you should start from the bottom of this page and work your way upward.</source>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroduction.4">
+        <source>Visit the official Isotope eCommerce website for the latest news, configuration manuals and professional support. Thank you so much for considering giving something back!</source>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroduction.5">
+        <source>The Isotope eCommerce Team</source>
+        <target>Команда Isotope eCommerce</target>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroduction.6">
+        <source>Isotope is a product of terminal42 gmbh in association with the Isotope eCommerce Team.</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_priceDisplay.net.0">
+        <source>Net</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_priceDisplay.net.1">
+        <source>Show net prices to all customers. Taxes included in the product price (tax rate configuration) will be deducted.</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_priceDisplay.gross.0">
+        <source>Gross (recommended)</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_priceDisplay.gross.1">
+        <source>Show gross prices to all customers. Applicable taxes will be added to the product price display.</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_priceDisplay.fixed.0">
+        <source>Fixed</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_priceDisplay.fixed.1">
+        <source>The product price will always be shown as in the product setting. Taxes are always calculated as &quot;included&quot;. This means the shop owner&apos;s profit varies depending on the applicable taxes.</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_taxCalculation.horizontal.0">
+        <source>horizontal</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_taxCalculation.horizontal.1">
+        <source>VAT is calculated individually for each line item – that is, item price × quantity, then the tax is calculated and rounded per item. At the end, all tax amounts are summed.</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_taxCalculation.vertical.0">
+        <source>vertical</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_taxCalculation.vertical.1">
+        <source>VAT is calculated only after summing all net amounts. Then the tax is applied to the total net amount and rounded once.</source>
+      </trans-unit>
+      <trans-unit id="CTE.isotope">
+        <source>Isotope eCommerce</source>
+        <target>Isotope eCommerce</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_productfilter.0">
+        <source>Product Filter</source>
+        <target>Фильтр товаров</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_productfilter.1">
+        <source>Define individual filters for Isotope such as category trees and product attribute filters.</source>
+        <target>Определите названия отдельных фильтров для Isotope, таких как деревья категорий и фильтры атрибутов товара.</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_categoryfilter.0">
+        <source>Category Filter</source>
+        <target>Фильтр категорий</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_categoryfilter.1">
+        <source>Provides a filter by product category (page tree).</source>
+      </trans-unit>
+      <trans-unit id="CTE.iso_productlist.0">
+        <source>Product List</source>
+        <target>Список продуктов</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_productlist.1">
+        <source>General Listing module. Can be used to list products or values of attributes. May be combined with other modules (i.e. the Filter Module) to provide further drill-down capabilities.</source>
+        <target>Общий модуль списков. Может быть использован для вывода списка товаров или их атрибутов. Может комбинироваться с другими модулями (например Модуль Фильтр) для предоставления более широких возможностей.</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_productreader.0">
+        <source>Product Reader</source>
+        <target>Средство отображения товара</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_productreader.1">
+        <source>Product reader module. This is used to display product details.</source>
+        <target>Средство отображения товара. Модуль, используемый для отображения дополнительной информации о товаре.</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_cart.0">
+        <source>Shopping Cart</source>
+        <target>Корзина</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_cart.1">
+        <source>A fully-featured shopping cart module.  Box or Full Display can be set by template selection.</source>
+        <target>Полнофункциональный модуль корзины покупателя. Тип отображения может быть установлен выбором шаблона: Блок или Показ целиком.</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_checkout.0">
+        <source>Checkout</source>
+        <target>Оформить заказ</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_checkout.1">
+        <source>Allow store customers to complete their transactions.</source>
+        <target>Позволяет покупателям магазина завершить их транзакции.</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_addressbook.0">
+        <source>Address Book</source>
+        <target>Адресная книга</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_addressbook.1">
+        <source>Allow customers to manage their address book.</source>
+        <target>Позволяет покупателям управлять своей адресной книгой.</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_orderhistory.0">
+        <source>Order History</source>
+        <target>История заказов</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_orderhistory.1">
+        <source>Order lister that allows customers to view their order history</source>
+        <target>Позволяет покупателям просматривать свою историю заказов</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_orderdetails.0">
+        <source>Order Details</source>
+        <target>Детали заказа</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_orderdetails.1">
+        <source>Order reader that allows customers to view order history details</source>
+        <target>Позволяет подробно просматривать покупателям историю заказов.</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_configswitcher.0">
+        <source>Store Config Switcher</source>
+        <target>Переключатель конфигураций магазина</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_configswitcher.1">
+        <source>Switch between store configuration to change currency and other settings.</source>
+        <target>Переключение между конфигурациями магазина для изменения валюты и других настроек.</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_relatedproducts.0">
+        <source>Related products</source>
+        <target>Сопутствующие товары</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_relatedproducts.1">
+        <source>List products related to the current one.</source>
+        <target>Список товаров, сопутствующих текущему товару.</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_messages.0">
+        <source>Messages</source>
+        <target>Сообщения</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_messages.1">
+        <source>Displays all Isotope messages if they have not been displayed elsewhere.</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_shipping.flat.0">
+        <source>Flat-price shipping</source>
+        <target>Доставка по фиксированной цене</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_shipping.flat.1">
+        <source>This is the default shipping method for regular shipping.</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_shipping.group.0">
+        <source>Shipping group</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_shipping.group.1">
+        <source>With this method, you can group multiple shipping methods into one and calculate the price based on them.</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_shipping.product_price.0">
+        <source>Product-price shipping</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_shipping.product_price.1">
+        <source>In this method the shipping costs are based on the products individual shipping price. Make sure to have the Shipping Price attribute enabled per each product.</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.cash.0">
+        <source>Cash</source>
+        <target>Наличные</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.cash.1">
+        <source>Use this for all offline processed payment.</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.paypal.0">
+        <source>PayPal Standard Checkout</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.paypal.1">
+        <source>This PayPal module supports IPN (Instant Payment Notifications).</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_gallery.standard.0">
+        <source>Default gallery</source>
+        <target>Галерея по умолчанию</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_gallery.standard.1">
+        <source>&lt;p&gt;Uses the lightbox/mediabox for full size images. Make sure you select the appropriate &quot;moo_&quot; template in your page layout configuration.&lt;/p&gt;&lt;p&gt;You can supply a &quot;rel&quot; attribute to the link target by using a pipe (e.g. &quot;tl_files/video.mov|lightbox[400 300]&quot;). If no &quot;rel&quot; attribute is supplied, the link will be opened in a new window.&lt;/p&gt;</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_product.standard.0">
+        <source>Standard product</source>
+        <target>Стандартный товар</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_product.standard.1">
+        <source>A default product. Select this if nothing else matches.</source>
+        <target>Товар по умолчанию. Выберите его, если больше ничего не подходит.</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.miscellaneous">
+        <source>Miscellaneous</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.cart">
+        <source>Cart</source>
+        <target>Корзина</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.cart_total.0">
+        <source>Cart total</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.cart_total.1">
+        <source>Match on the total amount of the cart.</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.cart_address.0">
+        <source>Cart address</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.cart_address.1">
+        <source>Match on country, subdivision or postal codes of the billing or shipping address.</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.cart_quantity.0">
+        <source>Total quantity in cart</source>
+        <target>Общее количество в корзине</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.cart_quantity.1">
+        <source>Compares the given value to the sum of all quantities of all products.</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.cart_products.0">
+        <source>Total products in cart</source>
+        <target>Всего товаров в корзине</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.cart_products.1">
+        <source>Compares the given value to the total products in the cart (regardless of their quantity).</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.member">
+        <source>Member</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.member_authenticated.0">
+        <source>Login status</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.member_authenticated.1">
+        <source>Checks whether a customer is logged in or not.</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.member_group.0">
+        <source>Member groups (current user)</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.member_group.1">
+        <source>Checks whether the currently logged-in user has or does not have certain member groups.</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.store">
+        <source>Store</source>
+        <target>Магазин</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.store_config.0">
+        <source>Store config</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.store_config.1">
+        <source>Checks for the current store configuration.</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.store_currency.0">
+        <source>Currency</source>
+        <target>Валюта</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.store_currency.1">
+        <source>Match on the current currency.</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.dates">
+        <source>Date &amp; time</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.store_date.0">
+        <source>Date &amp; time</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.store_date.1">
+        <source>Checks for the current date and time.</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.store_time.0">
+        <source>Time of day</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.store_time.1">
+        <source>Checks the time of the current day.</source>
+      </trans-unit>
+      <trans-unit id="ATTR.text.0">
+        <source>Text field</source>
+        <target>Текстовое поле</target>
+      </trans-unit>
+      <trans-unit id="ATTR.text.1">
+        <source>A single-line input field for a short or medium text.</source>
+      </trans-unit>
+      <trans-unit id="ATTR.textarea.0">
+        <source>Textarea</source>
+      </trans-unit>
+      <trans-unit id="ATTR.textarea.1">
+        <source>A multi-line input field for a medium or long text.</source>
+      </trans-unit>
+      <trans-unit id="ATTR.select.0">
+        <source>Select menu</source>
+        <target>Выбрать меню</target>
+      </trans-unit>
+      <trans-unit id="ATTR.select.1">
+        <source>A single- or multi-line drop-down menu.&lt;br /&gt;&lt;i&gt;This field type is suitable for product variants.&lt;/i&gt;</source>
+      </trans-unit>
+      <trans-unit id="ATTR.radio.0">
+        <source>Radio button menu</source>
+        <target>Радио-кнопка</target>
+      </trans-unit>
+      <trans-unit id="ATTR.radio.1">
+        <source>A list of multiple options from which one can be selected.&lt;br /&gt;&lt;i&gt;This field type is suitable for product variants.&lt;/i&gt;</source>
+      </trans-unit>
+      <trans-unit id="ATTR.checkbox.0">
+        <source>Checkbox menu</source>
+      </trans-unit>
+      <trans-unit id="ATTR.checkbox.1">
+        <source>A list of multiple options from which any can be selected.</source>
+      </trans-unit>
+      <trans-unit id="ATTR.mediaManager.0">
+        <source>Media Manager</source>
+        <target>Медиа-менеджер</target>
+      </trans-unit>
+      <trans-unit id="ATTR.mediaManager.1">
+        <source>Upload images and other files to the Isotope eCommerce file system. Output is processed trough an IsotopeGallery class.</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,58 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="contao/languages/en/tl_iso_tax_class.xlf" source-language="en" target-language="nl">
+    <body>
+      <trans-unit id="tl_iso_tax_class.tableLabel">
+        <source>Tax Class</source>
+        <target>Belastingklasse</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.name.0">
+        <source>Name</source>
+        <target>Naam</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.name.1">
+        <source>Give this tax class a name that explains what it is used for.</source>
+        <target>Geef deze belastingcategorie een naam die verklaart waarvoor deze gebruikt wordt.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.fallback.0">
+        <source>Default</source>
+        <target>Standaard</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.fallback.1">
+        <source>Check here if this is the default tax class.</source>
+        <target>Selecteer om dit als standaard belastingcategorie te gebruiken.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.includes.0">
+        <source>Tax rate included with product price</source>
+        <target>Product prijs inclusief BTW</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.includes.1">
+        <source>Select if prices of products with this tax class contain a tax rate. This tax rate will be subtracted from product price if it does not match.</source>
+        <target>Selecteer als de prijs van de producten met deze belastingklasse een belastingtarief bevatten. Het belastingtarief wordt van het totaal van de productprijs afgetrokken als het niet overeen komt.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.label.0">
+        <source>Include label</source>
+        <target>Label toevoegen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.label.1">
+        <source>A label for orders to present for subtracted taxes (if included tax does not match). Default tax rate label will be used if this is blank.</source>
+        <target>Een label voor in bestellingen voor afgetrokken belastingen. (Wanneer toegevoegde belasting niet overeen komt). Standaard belastingcategorie label wordt gebruikt wanneer u het veld leeg laat.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.rates.0">
+        <source>Apply tax rates</source>
+        <target>Pas belasting toe</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.rates.1">
+        <source>Add these tax rates to products with this tax class.</source>
+        <target>Voeg deze belasting tos aan producten met deze belasting categorie</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.name_legend">
+        <source>Name</source>
+        <target>Naam</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.rate_legend">
+        <source>Tax rates</source>
+        <target>Belastingtarief</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

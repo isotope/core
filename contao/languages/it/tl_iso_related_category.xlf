@@ -1,0 +1,25 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="contao/languages/en/tl_iso_related_category.xlf" source-language="en" target-language="it">
+    <body>
+      <trans-unit id="tl_iso_related_category.tableLabel">
+        <source>Related Category</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_category.name.0">
+        <source>Category name</source>
+        <target>Nome categoria</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_category.name.1">
+        <source>Please enter a name for this category.</source>
+        <target>Per cortesia inserisca un nome per questa categoria.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_category.show.1">
+        <source>Show details of category ID %s</source>
+        <target>Visualizza i dettagli categoria ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_category.name_legend">
+        <source>Name</source>
+        <target>Nome</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

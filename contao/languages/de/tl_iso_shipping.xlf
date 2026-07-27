@@ -1,0 +1,298 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="contao/languages/en/tl_iso_shipping.xlf" source-language="en" target-language="de">
+    <body>
+      <trans-unit id="tl_iso_shipping.tableLabel">
+        <source>Shipping Method</source>
+        <target>Versandart</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.type.0">
+        <source>Type</source>
+        <target>Typ</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.type.1">
+        <source>Please select the type of this shipping method</source>
+        <target>Wählen Sie einen Versandart-Typ</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.name.0">
+        <source>Name</source>
+        <target>Name</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.name.1">
+        <source>Please enter a name for this shipping method.</source>
+        <target>Bitte geben Sie einen Namen für die Versandart ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.label.0">
+        <source>Label</source>
+        <target>Bezeichnung</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.label.1">
+        <source>This is displayed on the front end in association with the shipping option.</source>
+        <target>Wird im Frontend in Verbindung mit der Versandoption angezeigt.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.inherit.0">
+        <source>Inherit label and notes</source>
+        <target>Label und Notizen übernehmen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.inherit.1">
+        <source>Check here to inherit the label and description from the first available shipping method.</source>
+        <target>Aktivieren Sie dieses Kontrollkästchen, um das Etikett und die Beschreibung der ersten verfügbaren Versandmethode zu übernehmen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.note.0">
+        <source>Shipping Method Notes</source>
+        <target>Versandart-Hinweise</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.note.1">
+        <source>These will be displayed on the front end in association with this shipping option.</source>
+        <target>Diese werden im Frontend in Verbindung mit der Versandoption angezeigt.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.price.0">
+        <source>Price</source>
+        <target>Preis</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.price.1">
+        <source>Optionally enter a price for this shipping method.</source>
+        <target>Geben Sie hier optional einen Preis für diese Versandart ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.tax_class.0">
+        <source>Tax Class</source>
+        <target>Steuerklasse</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.tax_class.1">
+        <source>Select a tax class that applies to the shipping price.</source>
+        <target>Wählen Sie eine Steuerklasse aus, die dem Versandpreis hinzugefügt wird.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.flatCalculation.0">
+        <source>Flat calculation</source>
+        <target>Pauschalpreis-Berechnung</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.flatCalculation.1">
+        <source>Select the mode of price calculation.</source>
+        <target>Wählen Sie den Modus der Preisberechnung.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.flatWeight.0">
+        <source>Price per weight</source>
+        <target>Preis pro Gewicht</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.flatWeight.1">
+        <source>Enter the weight amound the price should be multiplied by (without floating points).</source>
+        <target>Gebe das Gewicht ein, mit dem der Preis multipliziert werden soll (ohne Kommastellen).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.flatProductTypes.0">
+        <source>Calculate for product types</source>
+        <target>Preis für Produkttypen berechnen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.flatProductTypes.1">
+        <source>Calculate price for these product types only.</source>
+        <target>Preis nur für diese Produkttypen berechnen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.shipping_weight.0">
+        <source>Shipping weight</source>
+        <target>Versandgewicht</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.shipping_weight.1">
+        <source>Adds additional weight to the shipping to account for packaging material.</source>
+        <target>Fügt dem Versand zusätzliches Gewicht hinzu, um Verpackungsmaterial zu berücksichtigen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.productCalculation.0">
+        <source>Price calculation</source>
+        <target>Preisberechnung</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.productCalculation.1">
+        <source>Select how the shipping price should be calculated.</source>
+        <target>Wählen Sie aus, wie der Versandpreis berechnet werden soll.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.productCalculationOptions.highestProduct.0">
+        <source>Highest price of product</source>
+        <target>Höchster Preis des Produktes</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.productCalculationOptions.highestProduct.1">
+        <source>Uses the highest shipping price of one product in the cart.</source>
+        <target>Verwendet den höchsten Versandpreis für ein Produkt im Warenkorb.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.productCalculationOptions.lowestProduct.0">
+        <source>Lowest price of product</source>
+        <target>Niedrigster Preis des Produktes</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.productCalculationOptions.lowestProduct.1">
+        <source>Uses the lowest shipping price of one product in the cart.</source>
+        <target>Verwendet den niedrigsten Versandpreis für ein Produkt im Warenkorb.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.productCalculationOptions.sumProducts.0">
+        <source>Sum of price per product</source>
+        <target>Summe der Preise pro Produkt</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.productCalculationOptions.sumProducts.1">
+        <source>Uses a summary of all shipping prices of all products in the cart.</source>
+        <target>Verwendet eine Zusammenfassung aller Versandpreise der Produkte im Warenkorb.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.productCalculationOptions.highestItem.0">
+        <source>Highest price of items</source>
+        <target>Höchster Preis der Artikel</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.productCalculationOptions.highestItem.1">
+        <source>Uses the highest shipping price of one product item (shipping price multiplied by quantity in cart).</source>
+        <target>Verwendet den höchsten Versandpreis eines Produktartikels (Versandpreis multipliziert mit der Menge im Warenkorb).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.productCalculationOptions.lowestItem.0">
+        <source>Lowest price of items</source>
+        <target>Niedrigster Preis der Artikel</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.productCalculationOptions.lowestItem.1">
+        <source>Uses the lowest shipping price of one product item (shipping price multiplied by quantity in cart).</source>
+        <target>Verwendet den niedrigsten Versandpreis eines Produktartikels (Versandpreis multipliziert mit der Menge im Warenkorb).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.productCalculationOptions.sumItems.0">
+        <source>Sum of price per items</source>
+        <target>Summe der Preise pro Artikel</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.productCalculationOptions.sumItems.1">
+        <source>Uses a summary of all shipping prices of all product items (shipping price multiplied by quantity in cart).</source>
+        <target>Verwendet eine Zusammenfassung aller Versandpreise der Produktartikel (Versandpreis multipliziert mit der Menge im Warenkorb).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.minimum_weight.0">
+        <source>Minimum weight</source>
+        <target>Mindestgewicht</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.minimum_weight.1">
+        <source>Enter a minimum weight to control availability based on the products in cart.</source>
+        <target>Geben Sie ein Mindestgewicht für die Verfügbarkeit dieser Versandart ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.maximum_weight.0">
+        <source>Maximum weight</source>
+        <target>Höchstgewicht</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.maximum_weight.1">
+        <source>Enter a maximum weight to control availability based on the products in cart.</source>
+        <target>Geben Sie ein Maximalgewicht für die Verfügbarkeit dieser Versandart ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.product_types.0">
+        <source>Product types</source>
+        <target>Produkttypen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.product_types.1">
+        <source>You can restrict this shipping method to certain product types. If the cart contains a product type you have not selected, the shipping module is not available.</source>
+        <target>Sie können diese Versandart auf bestimmte Produkttypen einschränken. Wenn der Warenkorb einen Produkttyp enthält, den Sie hier nicht ausgewählt haben, steht das Versandmodul nicht zur Verfügung.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.product_types_condition.0">
+        <source>Product type condition</source>
+        <target>Produkttyp-Bedingungen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.product_types_condition.1">
+        <source>Select how the product type filter should be applied.</source>
+        <target>Wählen Sie aus, wie der Produkttyp-Filter angewandt werden soll.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.group_methods.0">
+        <source>Shipping methods</source>
+        <target>Versandarten</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.group_methods.1">
+        <source>Select the shipping methods to group in this method.</source>
+        <target>Wählen Sie die Versandarten aus, die gruppiert werden sollen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.group_calculation.0">
+        <source>Group calculation</source>
+        <target>Gruppen-Berechnung</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.group_calculation.1">
+        <source>Select how the price of this shipping method should be calculated.</source>
+        <target>Wählen Sie wie der Preis dieser Versandart berechnet werden soll.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.rule.0">
+        <source>Rule condition</source>
+        <target>Regel-Bedingung</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.rule.1">
+        <source>Allow shipping method if this rule matches.</source>
+        <target>Versandart erlauben, wenn diese Regel zutrifft.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.tracking_url.0">
+        <source>Tracking URL</source>
+        <target>Tracking-URL</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.tracking_url.1">
+        <source>Enter a tracking URL for this shipping. Use %s as placeholder for the tracking number.</source>
+        <target>Gib eine URL zum Versanddienstleister ein. Verwende %s als Platzhalter für die Tracking-Nummer.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.debug.0">
+        <source>Debug mode</source>
+        <target>Testsystem verwenden</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.debug.1">
+        <source>Use test platform for shipping.</source>
+        <target>Verwenden Sie die Testplattform für den Versand.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.enabled.0">
+        <source>Enabled</source>
+        <target>Aktiv</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.enabled.1">
+        <source>Is the module available for use in the store?</source>
+        <target>Wählen Sie ob dieses Modul für den Shop verfügbar ist.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.title_legend">
+        <source>Title and type</source>
+        <target>Titel und Typ</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.note_legend">
+        <source>Shipping note</source>
+        <target>Versandhinweis</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.api_legend">
+        <source>API Configuration</source>
+        <target>API Konfiguration</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.config_legend">
+        <source>Configuration</source>
+        <target>Konfiguration</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.order_legend">
+        <source>Order settings</source>
+        <target>Bestellungen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.price_legend">
+        <source>Price and Weight</source>
+        <target>Preis und Gewicht</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.expert_legend">
+        <source>Expert settings</source>
+        <target>Experten-Einstellungen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.enabled_legend">
+        <source>Approval</source>
+        <target>Freigabe</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.flat">
+        <source>Flat</source>
+        <target>Pauschal</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.perProduct">
+        <source>Per Product</source>
+        <target>Pro Produkt</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.perItem">
+        <source>Per Item</source>
+        <target>Pro Stück</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.perWeight">
+        <source>Per Weight</source>
+        <target>Pro Gewicht</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.first">
+        <source>Price of the first available method</source>
+        <target>Preis der ersten verfügbaren Methode</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.lowest">
+        <source>Lowest price of available methods</source>
+        <target>Niedrigster Preis der verfügbaren Versandarten</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.highest">
+        <source>Highest price of available methods</source>
+        <target>Höchster Preis der verfügbaren Versandarten</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.summarize">
+        <source>Summed price of available methods</source>
+        <target>Summierter Preis der verfügbaren Versandarten</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,291 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="contao/languages/en/tl_iso_shipping.xlf" source-language="en" target-language="sv-SE">
+    <body>
+      <trans-unit id="tl_iso_shipping.tableLabel">
+        <source>Shipping Method</source>
+        <target>Frakt metod</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.type.0">
+        <source>Type</source>
+        <target>Typ</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.type.1">
+        <source>Please select the type of this shipping method</source>
+        <target>Välj typ av denna fraktmetod</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.name.0">
+        <source>Name</source>
+        <target>Namn</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.name.1">
+        <source>Please enter a name for this shipping method.</source>
+        <target>Ange ett namn för denna fraktmetod.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.label.0">
+        <source>Label</source>
+        <target>Etikett</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.label.1">
+        <source>This is displayed on the front end in association with the shipping option.</source>
+        <target>Detta visas på front end i samband med fraktalternativet.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.inherit.0">
+        <source>Inherit label and notes</source>
+        <target>Ärva etikett och anteckningar</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.inherit.1">
+        <source>Check here to inherit the label and description from the first available shipping method.</source>
+        <target>Markera här för att ärva etiketten och beskrivningen från den första tillgängliga fraktmetoden.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.note.0">
+        <source>Shipping Method Notes</source>
+        <target>Anmärkningar om fraktmetoder</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.note.1">
+        <source>These will be displayed on the front end in association with this shipping option.</source>
+        <target>Dessa kommer att visas på front end i samband med detta fraktalternativ.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.price.0">
+        <source>Price</source>
+        <target>Pris</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.price.1">
+        <source>Optionally enter a price for this shipping method.</source>
+        <target>Ange eventuellt ett pris för denna fraktmetod.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.tax_class.0">
+        <source>Tax Class</source>
+        <target>Skatteklass</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.tax_class.1">
+        <source>Select a tax class that applies to the shipping price.</source>
+        <target>Välj en skatteklass som gäller för fraktpriset.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.flatCalculation.0">
+        <source>Flat calculation</source>
+        <target>Fast beräkning</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.flatCalculation.1">
+        <source>Select the mode of price calculation.</source>
+        <target>Välj läge för prisberäkning.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.flatWeight.0">
+        <source>Price per weight</source>
+        <target>Pris per vikt</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.flatWeight.1">
+        <source>Enter the weight amound the price should be multiplied by (without floating points).</source>
+        <target>Ange vikten som priset ska multipliceras med (utan flyttal).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.flatProductTypes.0">
+        <source>Calculate for product types</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.flatProductTypes.1">
+        <source>Calculate price for these product types only.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.shipping_weight.0">
+        <source>Shipping weight</source>
+        <target>Fraktvikt</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.shipping_weight.1">
+        <source>Adds additional weight to the shipping to account for packaging material.</source>
+        <target>Lägger till extra vikt till frakten för att ta hänsyn till förpackningsmaterial.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.productCalculation.0">
+        <source>Price calculation</source>
+        <target>Prisberäkning</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.productCalculation.1">
+        <source>Select how the shipping price should be calculated.</source>
+        <target>Välj hur fraktpriset ska beräknas.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.productCalculationOptions.highestProduct.0">
+        <source>Highest price of product</source>
+        <target>Högsta pris på produkten</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.productCalculationOptions.highestProduct.1">
+        <source>Uses the highest shipping price of one product in the cart.</source>
+        <target>Använder det högsta fraktpriset för en produkt i varukorgen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.productCalculationOptions.lowestProduct.0">
+        <source>Lowest price of product</source>
+        <target>Lägsta pris på produkten</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.productCalculationOptions.lowestProduct.1">
+        <source>Uses the lowest shipping price of one product in the cart.</source>
+        <target>Använder det lägsta fraktpriset för en produkt i varukorgen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.productCalculationOptions.sumProducts.0">
+        <source>Sum of price per product</source>
+        <target>Summan av pris per produkt</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.productCalculationOptions.sumProducts.1">
+        <source>Uses a summary of all shipping prices of all products in the cart.</source>
+        <target>Använder en sammanfattning av alla fraktpriser på alla produkter i varukorgen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.productCalculationOptions.highestItem.0">
+        <source>Highest price of items</source>
+        <target>Högsta pris på varor</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.productCalculationOptions.highestItem.1">
+        <source>Uses the highest shipping price of one product item (shipping price multiplied by quantity in cart).</source>
+        <target>Använder det högsta fraktpriset för en produktartikel (fraktpris multiplicerat med kvantitet i varukorgen).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.productCalculationOptions.lowestItem.0">
+        <source>Lowest price of items</source>
+        <target>Lägsta pris på varor</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.productCalculationOptions.lowestItem.1">
+        <source>Uses the lowest shipping price of one product item (shipping price multiplied by quantity in cart).</source>
+        <target>Använder det lägsta fraktpriset för en produktartikel (fraktpris multiplicerat med kvantitet i varukorgen).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.productCalculationOptions.sumItems.0">
+        <source>Sum of price per items</source>
+        <target>Summan av pris per artikel</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.productCalculationOptions.sumItems.1">
+        <source>Uses a summary of all shipping prices of all product items (shipping price multiplied by quantity in cart).</source>
+        <target>Använder en sammanfattning av alla fraktpriser för alla produktartiklar (fraktpris multiplicerat med kvantitet i varukorgen).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.minimum_weight.0">
+        <source>Minimum weight</source>
+        <target>Minsta vikt</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.minimum_weight.1">
+        <source>Enter a minimum weight to control availability based on the products in cart.</source>
+        <target>Ange en minimivikt för att kontrollera tillgängligheten baserat på produkterna i kundvagnen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.maximum_weight.0">
+        <source>Maximum weight</source>
+        <target>Maxvikt</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.maximum_weight.1">
+        <source>Enter a maximum weight to control availability based on the products in cart.</source>
+        <target>Ange en maxvikt för att kontrollera tillgängligheten baserat på produkterna i kundvagnen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.product_types.0">
+        <source>Product types</source>
+        <target>Produkttyper</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.product_types.1">
+        <source>You can restrict this shipping method to certain product types. If the cart contains a product type you have not selected, the shipping module is not available.</source>
+        <target>Du kan begränsa denna fraktmetod till vissa produkttyper. Om varukorgen innehåller en produkttyp som du inte har valt är fraktmodulen inte tillgänglig.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.product_types_condition.0">
+        <source>Product type condition</source>
+        <target>Produkttyp skick</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.product_types_condition.1">
+        <source>Select how the product type filter should be applied.</source>
+        <target>Välj hur produkttypfiltret ska tillämpas.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.group_methods.0">
+        <source>Shipping methods</source>
+        <target>Fraktmetoder</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.group_methods.1">
+        <source>Select the shipping methods to group in this method.</source>
+        <target>Välj de fraktmetoder som ska grupperas i den här metoden.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.group_calculation.0">
+        <source>Group calculation</source>
+        <target>Gruppberäkning</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.group_calculation.1">
+        <source>Select how the price of this shipping method should be calculated.</source>
+        <target>Välj hur priset för denna fraktmetod ska beräknas.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.rule.0">
+        <source>Rule condition</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.rule.1">
+        <source>Allow shipping method if this rule matches.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.tracking_url.0">
+        <source>Tracking URL</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.tracking_url.1">
+        <source>Enter a tracking URL for this shipping. Use %s as placeholder for the tracking number.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.debug.0">
+        <source>Debug mode</source>
+        <target>Felsökningsläge</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.debug.1">
+        <source>Use test platform for shipping.</source>
+        <target>Använd testplattform för frakt.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.enabled.0">
+        <source>Enabled</source>
+        <target>Aktiverad</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.enabled.1">
+        <source>Is the module available for use in the store?</source>
+        <target>Finns modulen tillgänglig för användning i butiken?</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.title_legend">
+        <source>Title and type</source>
+        <target>Titel och typ</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.note_legend">
+        <source>Shipping note</source>
+        <target>Fraktsedel</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.api_legend">
+        <source>API Configuration</source>
+        <target>API-konfiguration</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.config_legend">
+        <source>Configuration</source>
+        <target>Konfiguration</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.order_legend">
+        <source>Order settings</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.price_legend">
+        <source>Price and Weight</source>
+        <target>Pris och vikt</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.expert_legend">
+        <source>Expert settings</source>
+        <target>Expertinställningar</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.enabled_legend">
+        <source>Approval</source>
+        <target>Godkännande</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.flat">
+        <source>Flat</source>
+        <target>Platt</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.perProduct">
+        <source>Per Product</source>
+        <target>Per produkt</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.perItem">
+        <source>Per Item</source>
+        <target>Per styck</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.perWeight">
+        <source>Per Weight</source>
+        <target>Per vikt</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.first">
+        <source>Price of the first available method</source>
+        <target>Priset för den första tillgängliga metoden</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.lowest">
+        <source>Lowest price of available methods</source>
+        <target>Lägsta pris på tillgängliga metoder</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.highest">
+        <source>Highest price of available methods</source>
+        <target>Högsta pris på tillgängliga metoder</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.summarize">
+        <source>Summed price of available methods</source>
+        <target>Summerat pris på tillgängliga metoder</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

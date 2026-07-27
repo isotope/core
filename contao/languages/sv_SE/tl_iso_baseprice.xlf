@@ -1,0 +1,37 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="contao/languages/en/tl_iso_baseprice.xlf" source-language="en" target-language="sv-SE">
+    <body>
+      <trans-unit id="tl_iso_baseprice.tableLabel">
+        <source>Base Price</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_baseprice.name.0">
+        <source>Name</source>
+        <target>Namn</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_baseprice.name.1">
+        <source>Enter a name for this base price.</source>
+        <target>Ange ett namn för detta baspris.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_baseprice.amount.0">
+        <source>Base amount</source>
+        <target>Basbelopp</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_baseprice.amount.1">
+        <source>Enter the base amount (e.g. &quot;100&quot;).</source>
+        <target>Ange basbeloppet (t.ex. &quot;100&quot;).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_baseprice.label.0">
+        <source>Label</source>
+        <target>Etikett</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_baseprice.label.1">
+        <source>Enter a label for this base price (e.g. &quot;%s per 100g&quot;.)</source>
+        <target>Ange en etikett för detta baspris (t.ex. &quot;%s per 100g&quot;).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_baseprice.name_legend">
+        <source>Base price</source>
+        <target>Baspris</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

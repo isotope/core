@@ -1,0 +1,132 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="contao/languages/en/explain.xlf" source-language="en" target-language="sv-SE">
+    <body>
+      <trans-unit id="XPL.isoReaderJumpTo">
+        <source>
+&lt;p class=&quot;tl_help_table&quot;&gt;
+    Unlike any other Contao module, a user is not redirected to the reader page when viewing the product details. To solve the issue of nice aliases and to know the detail page of a product, we came up with a new solution.&lt;br&gt;
+    &lt;br&gt;
+    The reader page (alias) will always be the same page as you selected as a category for the product. The following options are available for the detail page:&lt;br&gt;
+&lt;/p&gt;</source>
+        <target>
+&lt;p class=&quot;tl_help_table&quot;&gt;
+Till skillnad från alla andra Contao-moduler omdirigeras en användare inte till läsarsidan när han tittar på produktinformationen. För att lösa problemet med snygga alias och för att känna till detaljsidan för en produkt kom vi på en ny lösning.&lt;br&gt;
+&lt;br&gt;
+Läsarsidan (alias) kommer alltid att vara samma sida som du valde som kategori för produkten. Följande alternativ är tillgängliga för detaljsidan:&lt;br&gt;
+&lt;/p&gt;</target>
+      </trans-unit>
+      <trans-unit id="XPL.mediaManager">
+        <source>&lt;p class=&quot;tl_help_table&quot;&gt;To upload a new picture, select the file and save the product. After successfully uploading, a preview of the image is displayed and next to it you can enter its alternative text and a description. For multiple pictures, you can click on the arrows to the right and change their order, the top image is used as the main image of each product.&lt;/p&gt;</source>
+        <target>&lt;p class=&quot;tl_help_table&quot;&gt;För att ladda upp en ny bild, välj filen och spara produkten. Efter framgångsrik uppladdning visas en förhandsgranskning av bilden och bredvid den kan du ange dess alternativa text och en beskrivning. För flera bilder kan du klicka på pilarna till höger och ändra deras ordning, den översta bilden används som huvudbild för varje produkt.&lt;/p&gt;</target>
+      </trans-unit>
+      <trans-unit id="XPL.noVariantAttributes">
+        <source>To use product variants with Isotope eCommerce, you must first configure the attributes.&lt;br&gt;Please refer to &lt;a href=&quot;https://docs.isotopeecommerce.org/&quot; target=&quot;_blank&quot; style=&quot;text-decoration:underline&quot;&gt;the manual&lt;/a&gt; for more information about attribute setup.</source>
+        <target>För att använda produktvarianter med Isotope eCommerce måste du först konfigurera attributen.&lt;br&gt;Se &lt;a href=&quot;https://docs.isotopeecommerce.org/&quot; target=&quot;_blank&quot; style=&quot;text-decoration:underline&quot;&gt;manualen&lt;/a&gt; för mer information om attributinställningar.</target>
+      </trans-unit>
+      <trans-unit id="XPL.shippingExempt">
+        <source>
+&lt;p class=&quot;tl_help_table&quot;&gt;
+  Configures shipping handling in the checkout process.
+  &lt;br&gt;&lt;br&gt;
+  &lt;strong&gt;Exempted:&lt;/strong&gt;&lt;br&gt;
+  If the cart only contains products exempted from shipping, the checkout process will not ask for a shipping address nor a shipping method.
+  This is useful for download or other types of digital product.&lt;br&gt;
+  If there is at least one non-exempted product in the cart, the process is as normal, but exempted products are ignored (e.g. from shipping price calculation).
+  &lt;br&gt;&lt;br&gt;
+  &lt;strong&gt;Pick up:&lt;/strong&gt;&lt;br&gt;
+  If at least one product type in the cart has this option enabled, the shipping address in the checkout step will not be collected.
+  You can still use the shipping methods to e.g. offer different pickup options. Make sure to setup the shipping methods correctly to not
+  offer real shipping for these product types.
+&lt;/p&gt;
+        </source>
+        <target>
+&lt;p class=&quot;tl_help_table&quot;&gt;
+Konfigurerar frakthantering i kassaprocessen.
+&lt;br&gt;&lt;br&gt;
+&lt;strong&gt;Undantagen:&lt;/strong&gt;&lt;br&gt;
+Om varukorgen endast innehåller produkter som är befriade från frakt kommer kassaprocessen inte att fråga efter en leveransadress eller en fraktmetod.
+Detta är användbart för nedladdning eller andra typer av digitala produkter.&lt;br&gt;
+Om det finns minst en icke-befriad produkt i varukorgen är processen som vanligt, men undantagna produkter ignoreras (t.ex. från fraktprisberäkning).
+&lt;br&gt;&lt;br&gt;
+&lt;strong&gt;Plocka upp:&lt;/strong&gt;&lt;br&gt;
+Om minst en produkttyp i varukorgen har detta alternativ aktiverat, kommer leveransadressen i kassasteget inte att samlas in.
+Du kan fortfarande använda fraktmetoderna för att t.ex. erbjuda olika hämtningsalternativ. Se till att ställa in fraktmetoderna korrekt för att inte
+erbjuda verklig frakt för dessa produkttyper.
+&lt;/p&gt;</target>
+      </trans-unit>
+      <trans-unit id="XPL.iso_category_scope">
+        <source><![CDATA[
+            Select which product categories (pages) should be considered for the products.<br><br><u>If this is a product list element and you configured a category filter element, the category filter selection will override this configuration!</u><br><br>
+        ]]></source>
+      </trans-unit>
+      <trans-unit id="XPL.iso_filterQuery">
+      <source><![CDATA[
+            <p class="tl_help_table">Isotope includes a custom «Product Query» syntax to filter, search and limit products through simplified URL parameters.<br>
+            You can enter a filter query to limit the products that should be listed/matched here.</p>
+
+            <h3 class="tl_help_table">Example</h3>
+            <p class="tl_help_table">
+              Each filter query segment consists of an attribute name, an operator and a value. Here&apos;s a very simple example:<br><br>
+              <code>type:1</code><br><br>
+              <code>[type]</code> is the attribute, <code>[:]</code> is the operator for "equals", and <code>[1]</code> is the value.<br>
+              The example above will only match product types with ID 1. The SQL equivalent would be <code>WHERE type=1</code>.
+            </p>
+            <p class="tl_help_table">
+              You can build a lot more complex filters.<br><br>
+              <code>color!red,blue;size:M|L;</code><br><br>
+              The SQL equivalent of this would be <code>WHERE (color != "red" AND color != "blue") AND (size = "M" OR size = "L")</code><br>
+              For most operators, you can pass multiple values as comma-separated (<code>AND</code>) or pipe-separated (<code>OR</code>) condition.
+            </p>
+
+            <h3 class="tl_help_table">Simple Operators</h3>
+            <p>
+              Simple operators cosist of a unique value that can never be used in an attribute name. Isotope ships with a few useful simple operators.
+            <p/>
+            <table class="tl_help_table">
+              <tr>
+                <th>Operator</th>
+                <th>Description</td>
+                <th>SQL equivalent</th>
+              </tr>
+              <tr><td><code>:</code></td><td>equal</td><td><code>=</code></td></tr>
+              <tr><td><code>!</code></td><td>not equal</td><td><code>!=</code></td></tr>
+              <tr><td><code>&lt;</code></td><td>lesser than</td><td><code>&lt;</code></td></tr>
+              <tr><td><code>≤</code></td><td>lesser than or equal</td><td><code>&lt;=</code></td></tr>
+              <tr><td><code>&gt;</code></td><td>greater than</td><td><code>&gt;</code></td></tr>
+              <tr><td><code>≥</code></td><td>greater than or equal</td><td><code>&gt;=</code></td></tr>
+            </table>
+
+            <h3 class="tl_help_table">Complex Operators</h3>
+            <p class="tl_help_table">
+              Since there&apos;s only a limited number of characters that can be useful, operators can also have a regular string name. In this case,
+              the operator has to be encapsulated in brackets like this: <code>id(modulo)1</code><br>
+              Assuming an imaginary <code>modulo</code> operator, this would probably match product types where the ID matches the modulo of 1.
+            <p/>
+            <p class="tl_help_table">
+              Operators can perform any special query or manual filtering of a product list. Sometimes, this means an operator does not need an attribute
+              name, e.g. if the operator already knows which attribute or relational table it needs to operate on.
+            </p>
+            <p class="tl_help_table">
+              Here&apos;s a list of Isotope core filters, please consult extension documentation about additional filters provided by extensions.
+            </p>
+            <table class="tl_help_table">
+              <tr>
+                <th>Operator</th>
+                <th>Description</td>
+                <th>Needs attribute</td>
+              </tr>
+              <tr><td><code>(cat)</cat></td><td>Filter products by category.</td><td>no</td></tr>
+            </table>
+        ]]></source>
+      </trans-unit>
+      <trans-unit id="XPL.checkoutTargetFile">
+        <source>&lt;p class=&quot;tl_help_table&quot;&gt;Use these simple tokens to generate a dynamic file name.&lt;/p&gt;</source>
+        <target>&lt;p class=&quot;tl_help_table&quot;&gt;Använd dessa enkla tokens för att skapa ett dynamiskt filnamn.&lt;/p&gt;</target>
+      </trans-unit>
+      <trans-unit id="XPL.checkoutTargetFolder">
+        <source>&lt;p class=&quot;tl_help_table&quot;&gt;Use these simple tokens to generate a dynamic folder name.&lt;/p&gt;</source>
+        <target>&lt;p class=&quot;tl_help_table&quot;&gt;Använd dessa enkla tokens för att skapa ett dynamiskt mappnamn.&lt;/p&gt;</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

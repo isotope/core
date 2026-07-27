@@ -1,0 +1,33 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="contao/languages/en/tl_iso_related_product.xlf" source-language="en" target-language="pl">
+    <body>
+      <trans-unit id="tl_iso_related_product.category.0">
+        <source>Category</source>
+        <target>Kategoria</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_product.category.1">
+        <source>Select a category.</source>
+        <target>Wybierz kategorię.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_product.products.0">
+        <source>Products</source>
+        <target>Produkty</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_product.products.1">
+        <source>Enter a comma-separated list of product or variant IDs to show as related products.</source>
+        <target>Wprowadź listę produktów po przecinku lub ID wariantów, które pokażą się jako produkty powiązane.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_product.category_legend">
+        <source>Category</source>
+        <target>Kategoria</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_product.products_legend">
+        <source>Related products</source>
+        <target>Powiązane produkty</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_product.empty">
+        <source>No products selected for this category.</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

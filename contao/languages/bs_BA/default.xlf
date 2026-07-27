@@ -1,0 +1,980 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="contao/languages/en/default.xlf" source-language="en" target-language="bs-BA">
+    <body>
+      <trans-unit id="ERR.systemColumn">
+        <source>Name &quot;%s&quot; is reserved for system use. Please choose a different name.</source>
+        <target>Ime &quot;%s&quot; rezervisano je za upotrebu sistema. Molimo odaberite drugo ime.</target>
+      </trans-unit>
+      <trans-unit id="ERR.invalidColumn">
+        <source>&quot;%s&quot; cannot be used as a database column. Suggestion: &quot;%s&quot;</source>
+      </trans-unit>
+      <trans-unit id="ERR.noStoreConfigurationSet">
+        <source>No store configuration available</source>
+        <target>Konfiguracija trgovine nije dostupna</target>
+      </trans-unit>
+      <trans-unit id="ERR.noDefaultStoreConfiguration">
+        <source>Please create a default store configuration.</source>
+        <target>Molimo kreirajte zadanu konfiguraciju trgovine.</target>
+      </trans-unit>
+      <trans-unit id="ERR.emptyOrderHistory">
+        <source>You have not yet placed any orders.</source>
+        <target>Još niste poslali nijednu narudžbu.</target>
+      </trans-unit>
+      <trans-unit id="ERR.orderNotFound">
+        <source>The requested order was not found.</source>
+        <target>Zahtjevana narudžba nije pronađena.</target>
+      </trans-unit>
+      <trans-unit id="ERR.isoLoginRequired">
+        <source>You must be logged in to checkout.</source>
+        <target>Za plaćanje morate biti prijavljeni.</target>
+      </trans-unit>
+      <trans-unit id="ERR.variantDuplicate">
+        <source>A variant with this attributes is already available. Please select another combination.</source>
+        <target>Varijanta s ovim atributima je već dostupna. Molimo odaberite drugu kombinaciju.</target>
+      </trans-unit>
+      <trans-unit id="ERR.discount">
+        <source>Please enter whole numbers or decimals signed with + or - and optionally with a percentage.</source>
+        <target>Molimo unesite cijele brojeve, ili decimale potpisane sa &quot;+&quot; ili &quot;-&quot;, i po želji sa procentom.</target>
+      </trans-unit>
+      <trans-unit id="ERR.surcharge">
+        <source>Please enter whole numbers or decimals optionally with a percentage.</source>
+        <target>Molimo unesite cijele brojeve ili decimale, po želji s procentom.</target>
+      </trans-unit>
+      <trans-unit id="ERR.orderFailed">
+        <source>Checkout failed. Please try again or choose another payment method.</source>
+        <target>Plaćanje nije uspjelo. Pokušajte ponovo ili odaberite drugi način plaćanja.</target>
+      </trans-unit>
+      <trans-unit id="ERR.noAddressBookEntries">
+        <source>You have no address book entries.</source>
+        <target>U adresaru nemate unosa.</target>
+      </trans-unit>
+      <trans-unit id="ERR.productMinimumQuantity">
+        <source>The minimum quantity for &quot;%s&quot; is %s items. Please check your shopping cart.</source>
+        <target>Minimalna količina za &quot; %s &quot; je %s artikala. Molimo provjerite svoju košaricu.</target>
+      </trans-unit>
+      <trans-unit id="ERR.imageInFallback">
+        <source>This image has already been assigned to the fallback language.</source>
+        <target>Slika je već dodijeljena rezervnom jeziku.</target>
+      </trans-unit>
+      <trans-unit id="ERR.datepickerRgxp">
+        <source>Select an appropriate field validation (date, time, date and time) to enable the date picker.</source>
+        <target>Da omogućite odabir datuma, molimo odaberite odgovarajuće polje validacije (datum, vrijeme, datum i vrijeme).</target>
+      </trans-unit>
+      <trans-unit id="ERR.checkoutNotAllowed">
+        <source>User checkout not allowed</source>
+        <target>Provjera korisnika nije dozvoljena</target>
+      </trans-unit>
+      <trans-unit id="ERR.collectionItemNotAvailable">
+        <source>This product is no longer available.</source>
+        <target>Proizvod više nije dostupan.</target>
+      </trans-unit>
+      <trans-unit id="ERR.collectionErrorInItems">
+        <source>There are errors in your products.</source>
+        <target>Postoje greške u vašim proizvodima.</target>
+      </trans-unit>
+      <trans-unit id="ERR.cartErrorInItems">
+        <source>Please resolve the errors in your cart before checking out.</source>
+        <target>Molimo prije odjave riješite greške u vašoj korpi.</target>
+      </trans-unit>
+      <trans-unit id="ERR.cumulativeDuplicateAttribute">
+        <source>You cannot configure the same attribute multiple times.</source>
+        <target>Ne možete konfigurirati isti atribut više puta.</target>
+      </trans-unit>
+      <trans-unit id="ERR.rangeAttributeMax">
+        <source>Please select an &quot;Attribute to&quot; on row %s.</source>
+      </trans-unit>
+      <trans-unit id="PTY.iso_products.0">
+        <source>Isotope Products</source>
+      </trans-unit>
+      <trans-unit id="PTY.iso_products.1">
+        <source>Select this page type if your want to display a product list and product reader.</source>
+      </trans-unit>
+      <trans-unit id="MSC.productPicker">
+        <source>Products</source>
+        <target>Proizvodi</target>
+      </trans-unit>
+      <trans-unit id="MSC.filterByPages">
+        <source>Products of category</source>
+      </trans-unit>
+      <trans-unit id="MSC.noVariants">
+        <source>There are no variants for this product.</source>
+        <target>Nema varijanti za ovaj proizvod.</target>
+      </trans-unit>
+      <trans-unit id="MSC.copyFallback">
+        <source>Duplicate Fallback</source>
+        <target>Duplikat rezervnog (Fallback)</target>
+      </trans-unit>
+      <trans-unit id="MSC.orderDetailsHeadline">
+        <source>Order no %s / %s</source>
+        <target>Narudžba broj %s / %s</target>
+      </trans-unit>
+      <trans-unit id="MSC.payment_processing">
+        <source>Your payment is being processed. Please be patient...</source>
+        <target>Vaša uplata se obrađuje. Molimo vas za strpljenje ...</target>
+      </trans-unit>
+      <trans-unit id="MSC.payment_failed">
+        <source>Unfortunately, the payment was not successful. Please change your payment method or try again to complete your payment.</source>
+      </trans-unit>
+      <trans-unit id="MSC.payment_change">
+        <source>Change payment</source>
+      </trans-unit>
+      <trans-unit id="MSC.payment_complete">
+        <source>Complete payment</source>
+      </trans-unit>
+      <trans-unit id="MSC.payment_cancel">
+        <source>Cancel order</source>
+      </trans-unit>
+      <trans-unit id="MSC.mmNoUploads">
+        <source>No files uploaded.</source>
+        <target>Nije prenesena nijedna datoteka.</target>
+      </trans-unit>
+      <trans-unit id="MSC.mmUnknownError">
+        <source>The file could not be uploaded for unknown reason. Please check the system log.</source>
+        <target>Datoteka se nije mogla prenijeti iz nepoznatog razloga. Molimo provjerite zapisnik sistema.</target>
+      </trans-unit>
+      <trans-unit id="MSC.mmDrop">
+        <source>Drop files here to upload</source>
+        <target>Ovdje ispustite datoteke za prijenos</target>
+      </trans-unit>
+      <trans-unit id="MSC.mmUpload">
+        <source>Upload files</source>
+        <target>Prenesi datoteke</target>
+      </trans-unit>
+      <trans-unit id="MSC.undeletableRecords">
+        <source>Some records could not be deleted.</source>
+        <target>Neke zapise nije moguće izbrisati.</target>
+      </trans-unit>
+      <trans-unit id="MSC.undeletableUnpublished">
+        <source>Some records could not be deleted and have been unpublished instead.</source>
+        <target>Neke zapise nije moguće izbrisati i umjesto toga su neobjavljeni.</target>
+      </trans-unit>
+      <trans-unit id="MSC.quantity">
+        <source>Quantity</source>
+        <target>Količina</target>
+      </trans-unit>
+      <trans-unit id="MSC.taxFree">
+        <source>Tax-free</source>
+        <target>Bez poreza</target>
+      </trans-unit>
+      <trans-unit id="MSC.defaultSearchText">
+        <source>search products</source>
+        <target>pretraga proizvoda</target>
+      </trans-unit>
+      <trans-unit id="MSC.priceRangeLabel">
+        <source>&lt;span class=&quot;from&quot;&gt;From&lt;/span&gt; %s</source>
+        <target>1 od 1 %s</target>
+      </trans-unit>
+      <trans-unit id="MSC.detailLabel">
+        <source>View Details</source>
+        <target>Pogledajte detalje</target>
+      </trans-unit>
+      <trans-unit id="MSC.reorderLabel">
+        <source>Reorder</source>
+        <target>Preurediti</target>
+      </trans-unit>
+      <trans-unit id="MSC.perPageLabel">
+        <source>Products Per Page</source>
+        <target>Proizvodi po stranici</target>
+      </trans-unit>
+      <trans-unit id="MSC.searchTermsLabel">
+        <source>Keywords</source>
+        <target>Ključne riječi</target>
+      </trans-unit>
+      <trans-unit id="MSC.submitLabel">
+        <source>Submit</source>
+        <target>Pošalji</target>
+      </trans-unit>
+      <trans-unit id="MSC.clearFiltersLabel">
+        <source>Clear Filters</source>
+        <target>Pobriši filtere</target>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.update">
+        <source>Update</source>
+        <target>Ažurirati</target>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.add_to_cart">
+        <source>Add To Cart</source>
+        <target>Dodaj u korpu</target>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.add_all_to_cart">
+        <source>Add All To Cart</source>
+        <target>Dodaj sve u korpu</target>
+      </trans-unit>
+      <trans-unit id="MSC.orderByLabel">
+        <source>Order By:</source>
+        <target>Sortiranje:</target>
+      </trans-unit>
+      <trans-unit id="MSC.noProducts">
+        <source>No products have been found.</source>
+        <target>Nije pronađen nijedan proizvod.</target>
+      </trans-unit>
+      <trans-unit id="MSC.previousStep">
+        <source>Back</source>
+        <target>Natrag</target>
+      </trans-unit>
+      <trans-unit id="MSC.nextStep">
+        <source>Continue</source>
+        <target>Nastavi</target>
+      </trans-unit>
+      <trans-unit id="MSC.confirmOrder">
+        <source>Order</source>
+        <target>Narudžba</target>
+      </trans-unit>
+      <trans-unit id="MSC.noCategoriesAssociated">
+        <source>No categories are associated with this product.</source>
+        <target>Nijedna kategorija nije povezana s ovim proizvodom.</target>
+      </trans-unit>
+      <trans-unit id="MSC.labelSubmit">
+        <source>Submit</source>
+        <target>Pošalji</target>
+      </trans-unit>
+      <trans-unit id="MSC.noItemsInCart">
+        <source>There are no items in your cart.</source>
+        <target>Nema proizvoda u korpi.</target>
+      </trans-unit>
+      <trans-unit id="MSC.addedToCart">
+        <source>The selected product has been added to your shopping cart.</source>
+        <target>Odabrani proizvod je dodan u vašu korpu.</target>
+      </trans-unit>
+      <trans-unit id="MSC.cartMerged">
+        <source>The products from your last visit have been readded. Please review your shopping cart items.</source>
+        <target>Proizvodi iz vaše posljednje posjete su ponovo dodani. Molimo pregledajte proizvode u vašoj korpi.</target>
+      </trans-unit>
+      <trans-unit id="MSC.reorderConfirmation">
+        <source>The products have been added to your shopping cart.</source>
+      </trans-unit>
+      <trans-unit id="MSC.editProductLinkTitle">
+        <source>Edit %s</source>
+        <target>Uredi %s</target>
+      </trans-unit>
+      <trans-unit id="MSC.editProductLinkText">
+        <source>Edit</source>
+        <target>Uredi</target>
+      </trans-unit>
+      <trans-unit id="MSC.removeProductLinkText">
+        <source>Remove</source>
+        <target>Ukloni</target>
+      </trans-unit>
+      <trans-unit id="MSC.removeProductLinkTitle">
+        <source>Remove %s from your cart</source>
+        <target>Ukloni %s iz korpe</target>
+      </trans-unit>
+      <trans-unit id="MSC.subTotalLabel">
+        <source>Order Subtotal: </source>
+        <target>Međuzbroj narudžbe:</target>
+      </trans-unit>
+      <trans-unit id="MSC.shippingLabel">
+        <source>Shipping (%s)</source>
+        <target>Dostava (%s)</target>
+      </trans-unit>
+      <trans-unit id="MSC.paymentLabel">
+        <source>Payment (%s)</source>
+        <target>Plaćanje (%s)</target>
+      </trans-unit>
+      <trans-unit id="MSC.grandTotalLabel">
+        <source>Order Total: </source>
+        <target>Ukupno narudžbe:</target>
+      </trans-unit>
+      <trans-unit id="MSC.noPaymentModules">
+        <source>No payment options are currently available</source>
+        <target>Trenutno nisu dostupne opcije plaćanja</target>
+      </trans-unit>
+      <trans-unit id="MSC.noShippingModules">
+        <source>No shipping options are currently available.</source>
+        <target>Trenutno nisu dostupne opcije dostave.</target>
+      </trans-unit>
+      <trans-unit id="MSC.noOrderEmails">
+        <source>No orders emails found.</source>
+        <target>Nije pronađena email adresa narudžbe.</target>
+      </trans-unit>
+      <trans-unit id="MSC.noOrders">
+        <source>No orders found.</source>
+        <target>Narudžba nije pronađena.</target>
+      </trans-unit>
+      <trans-unit id="MSC.cartBT">
+        <source>Shopping Cart</source>
+        <target>Korpa za kupovinu</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkoutBT">
+        <source>Proceed to Checkout</source>
+        <target>Nastavite za plaćanje</target>
+      </trans-unit>
+      <trans-unit id="MSC.continueShoppingBT">
+        <source>Continue shopping</source>
+        <target>Nastaviti s kupovinom</target>
+      </trans-unit>
+      <trans-unit id="MSC.transactionStatusHeadline">
+        <source>Payment Status: %s</source>
+      </trans-unit>
+      <trans-unit id="MSC.deliveryStatusHeadline">
+        <source>Delivery Status: %s</source>
+      </trans-unit>
+      <trans-unit id="MSC.checkboutStepBack">
+        <source>Go back to step &quot;%s&quot;</source>
+        <target>Vrati se na korak &quot;%s&quot;</target>
+      </trans-unit>
+      <trans-unit id="MSC.createNewAddressLabel">
+        <source>Create New Address</source>
+        <target>Kreirajte novu adresu</target>
+      </trans-unit>
+      <trans-unit id="MSC.useBillingAddress">
+        <source>Use billing address</source>
+        <target>Koristite adresu za naplatu</target>
+      </trans-unit>
+      <trans-unit id="MSC.useCustomerAddress">
+        <source>Use customer address</source>
+        <target>Koristite adresu kupca</target>
+      </trans-unit>
+      <trans-unit id="MSC.differentShippingAddress">
+        <source>Different shipping address</source>
+        <target>Drugačija adresa za dostavu</target>
+      </trans-unit>
+      <trans-unit id="MSC.editAddressHeadline">
+        <source>Edit address</source>
+        <target>Uredite adresu</target>
+      </trans-unit>
+      <trans-unit id="MSC.createAddressHeadline">
+        <source>Add a new address</source>
+      </trans-unit>
+      <trans-unit id="MSC.editAddressLabel">
+        <source>Edit</source>
+        <target>Uredi</target>
+      </trans-unit>
+      <trans-unit id="MSC.deleteAddressLabel">
+        <source>Delete</source>
+        <target>Izbriši</target>
+      </trans-unit>
+      <trans-unit id="MSC.deleteAddressConfirm">
+        <source>Do you really want to delete this address? This cannot be undone.</source>
+        <target>Da li stvarno želite izbrisati ovu adresu? Ovo se ne može poništiti.</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_invoice_title">
+        <source>Invoice</source>
+        <target>Faktura</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_date">
+        <source>Order date</source>
+        <target>Datum narudžbe</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_document_number">
+        <source>Order number</source>
+        <target>Broj narudžbe</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_status">
+        <source>Order status</source>
+        <target>Status narudžbe</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_transaction_status">
+        <source>Payment status</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_delivery_status">
+        <source>Shipping status</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_description">
+        <source>Description</source>
+        <target>Opis</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_quantity">
+        <source>Quantity</source>
+        <target>Količina</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_price">
+        <source>Price</source>
+        <target>Cijena</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_total">
+        <source>Total</source>
+        <target>Ukupno</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_tax">
+        <source>VAT</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_locked">
+        <source>Placed</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_currency">
+        <source>Currency</source>
+      </trans-unit>
+      <trans-unit id="MSC.low_to_high">
+        <source>lo to hi</source>
+        <target>lo prema hi</target>
+      </trans-unit>
+      <trans-unit id="MSC.high_to_low">
+        <source>hi to lo</source>
+        <target>hi prema lo</target>
+      </trans-unit>
+      <trans-unit id="MSC.a_to_z">
+        <source>A to Z</source>
+        <target>A prema Z</target>
+      </trans-unit>
+      <trans-unit id="MSC.z_to_a">
+        <source>Z to A</source>
+        <target>Z prema A</target>
+      </trans-unit>
+      <trans-unit id="MSC.old_to_new">
+        <source>earlier to later</source>
+        <target>ranije do kasnije</target>
+      </trans-unit>
+      <trans-unit id="MSC.new_to_old">
+        <source>later to earlier</source>
+        <target>kasnije do ranije</target>
+      </trans-unit>
+      <trans-unit id="MSC.pay_with_redirect.0">
+        <source>Processing payment</source>
+        <target>Obrada plaćanja</target>
+      </trans-unit>
+      <trans-unit id="MSC.pay_with_redirect.1">
+        <source>You will be redirected to the payment gateway website.</source>
+        <target>Bit ćete preusmjereni na web stranicu mrežnog prolaza za plaćanje.</target>
+      </trans-unit>
+      <trans-unit id="MSC.pay_with_redirect.2">
+        <source>Pay now</source>
+        <target>Plati odmah</target>
+      </trans-unit>
+      <trans-unit id="MSC.pay_with_redirect.3">
+        <source>Please click on the &quot;Pay now&quot; button to continue.</source>
+        <target>Da biste nastavili kliknite na tipku &quot;Plati odmah&quot;.</target>
+      </trans-unit>
+      <trans-unit id="MSC.paypalTransaction">
+        <source>Transaction ID: %s</source>
+        <target>ID Transakcije: %s</target>
+      </trans-unit>
+      <trans-unit id="MSC.paypalTransactionOnline">
+        <source>You can view this PayPal transaction online.</source>
+        <target>Ovu PayPal transakciju možete pogledati na mreži.</target>
+      </trans-unit>
+      <trans-unit id="MSC.paypalTransactionButton">
+        <source>Open Website</source>
+        <target>Otvorite web stranicu</target>
+      </trans-unit>
+      <trans-unit id="MSC.paypalTransactionDetails">
+        <source>PayPal transaction from %s</source>
+        <target>PayPal transakcija od %s</target>
+      </trans-unit>
+      <trans-unit id="MSC.productSingle">
+        <source>1 Product</source>
+        <target>1 proizvod</target>
+      </trans-unit>
+      <trans-unit id="MSC.productMultiple">
+        <source>%s Products</source>
+        <target>%s proizvodi</target>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_address_message">
+        <source>Select an existing address or add a new address to your account.</source>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_address_guest_message">
+        <source>Enter your shipping information.</source>
+      </trans-unit>
+      <trans-unit id="MSC.billing_address_message">
+        <source>Select an existing address or add a new address to your account.</source>
+      </trans-unit>
+      <trans-unit id="MSC.billing_address_guest_message">
+        <source>Enter your billing information.</source>
+      </trans-unit>
+      <trans-unit id="MSC.customer_address_message">
+        <source>Select an existing address or add a new address to your account.</source>
+      </trans-unit>
+      <trans-unit id="MSC.customer_address_guest_message">
+        <source>Enter your customer information.</source>
+      </trans-unit>
+      <trans-unit id="MSC.address_error">
+        <source>This address cannot be used or is missing required information.</source>
+      </trans-unit>
+      <trans-unit id="MSC.member_address_error">
+        <source>Your member address cannot be used or is missing required information.</source>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_method_message">
+        <source>Select a shipping method.</source>
+        <target>Odaberite način dostave.</target>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_method_missing">
+        <source>Please select a shipping method.</source>
+        <target>Odaberite način dostave.</target>
+      </trans-unit>
+      <trans-unit id="MSC.payment_method_message">
+        <source>Enter your payment information.</source>
+        <target>Unesite podatke o plaćanju.</target>
+      </trans-unit>
+      <trans-unit id="MSC.payment_method_missing">
+        <source>Please select a payment method.</source>
+        <target>Odaberite način plaćanja.</target>
+      </trans-unit>
+      <trans-unit id="MSC.order_review_message">
+        <source>Review and confirm your order details.</source>
+        <target>Pregledajte i potvrdite detalje narudžbe.</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkout_address">
+        <source>Address</source>
+        <target>Adresa</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkout_shipping">
+        <source>Shipping</source>
+        <target>Dostava</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkout_payment">
+        <source>Payment</source>
+        <target>Plaćanje</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkout_review">
+        <source>Review</source>
+        <target>Pregled</target>
+      </trans-unit>
+      <trans-unit id="MSC.billing_address">
+        <source>Billing Address</source>
+        <target>Adresa za račun</target>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_address">
+        <source>Shipping Address</source>
+        <target>Adresa za dostavu</target>
+      </trans-unit>
+      <trans-unit id="MSC.billing_shipping_address">
+        <source>Billing &amp; Shipping Address</source>
+        <target>Adresa za račun i dostavu</target>
+      </trans-unit>
+      <trans-unit id="MSC.customer_address">
+        <source>Customer Address</source>
+        <target>Adresa kupca</target>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_method">
+        <source>Shipping Method</source>
+        <target>Način dostave</target>
+      </trans-unit>
+      <trans-unit id="MSC.payment_method">
+        <source>Payment Method</source>
+        <target>Način plaćanja</target>
+      </trans-unit>
+      <trans-unit id="MSC.order_review">
+        <source>Order Review</source>
+        <target>Pregled narudžbe</target>
+      </trans-unit>
+      <trans-unit id="MSC.changeCheckoutInfo">
+        <source>Change</source>
+        <target>Promjena</target>
+      </trans-unit>
+      <trans-unit id="MSC.cc_num">
+        <source>Credit card number</source>
+        <target>Broj kreditne kartice</target>
+      </trans-unit>
+      <trans-unit id="MSC.cc_type">
+        <source>Credit card type</source>
+        <target>Vrsta kreditne kartice</target>
+      </trans-unit>
+      <trans-unit id="MSC.cc_ccv">
+        <source>CCV number (3 or 4 digit code)</source>
+        <target>CCV broj (3 ili 4 cifre)</target>
+      </trans-unit>
+      <trans-unit id="MSC.cc_exp_month">
+        <source>Expiration month</source>
+        <target>Mjesec isteka</target>
+      </trans-unit>
+      <trans-unit id="MSC.cc_exp_year">
+        <source>Expiration year</source>
+        <target>Godina isteka</target>
+      </trans-unit>
+      <trans-unit id="MSC.backendPaymentNotFound">
+        <source>Payment module not found!</source>
+        <target>Modul plaćanja nije pronađen!</target>
+      </trans-unit>
+      <trans-unit id="MSC.backendShippingNotFound">
+        <source>Shipping module not found!</source>
+        <target>Modul dostave nije pronađen!</target>
+      </trans-unit>
+      <trans-unit id="MSC.backendPaymentNoInfo">
+        <source>This payment module does not provide additional information.</source>
+        <target>Ovaj modul plaćanja ne pruža dodatne informacije.</target>
+      </trans-unit>
+      <trans-unit id="MSC.backendShippingNoInfo">
+        <source>This shipping module does not provide additional information.</source>
+        <target>Ovaj modul dostave ne pruža dodatne informacije.</target>
+      </trans-unit>
+      <trans-unit id="MSC.useDefault">
+        <source>Use default value</source>
+        <target>Koristite zadanu vrijednost</target>
+      </trans-unit>
+      <trans-unit id="MSC.activeStep">
+        <source>active step: </source>
+        <target>aktivni korak:</target>
+      </trans-unit>
+      <trans-unit id="MSC.loadingProductData">
+        <source>Loading product data …</source>
+        <target>Učitavanje podataka o proizvodu…</target>
+      </trans-unit>
+      <trans-unit id="MSC.templatesConfig">
+        <source>Store Config &quot;%s&quot;</source>
+        <target>Konfiguracija trgovine &quot;%s&quot;</target>
+      </trans-unit>
+      <trans-unit id="MSC.splittedTaxRate">
+        <source>Splitted</source>
+        <target>Podijeljeno</target>
+      </trans-unit>
+      <trans-unit id="MSC.newOrders">
+        <source>You have %s order(s) with status &quot;%s&quot;</source>
+        <target>Imate %s narudžbu(e) sa statusom &quot;%s&quot;</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkoutStep">
+        <source>Step %s of %s (%s) - </source>
+        <target>Korak %s od %s (%s) -</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.minutes">
+        <source>Minutes</source>
+        <target>Minute</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.hours">
+        <source>Hours</source>
+        <target>Sati</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.days">
+        <source>Days</source>
+        <target>Dani</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.weeks">
+        <source>Weeks</source>
+        <target>Sedmice</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.months">
+        <source>Months</source>
+        <target>Mjeseci</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.years">
+        <source>Years</source>
+        <target>Godine</target>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroduction.0">
+        <source>Welcome to Isotope eCommerce (Version: %s)</source>
+        <target>Dobrodošli u Isotope eCommerce (verzija: %s)</target>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroduction.1">
+        <source>Isotope is the premier open source eCommerce solution for Contao.</source>
+        <target>Isotope je glavno rješenje za e-trgovinu s otvorenim kodom za Contao.</target>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroduction.2">
+        <source>This is the page where most of the configuration will take place.</source>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroduction.3">
+        <source>For initial setup, you should start from the bottom of this page and work your way upward.</source>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroduction.4">
+        <source>Visit the official Isotope eCommerce website for the latest news, configuration manuals and professional support. Thank you so much for considering giving something back!</source>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroduction.5">
+        <source>The Isotope eCommerce Team</source>
+        <target>Isotope eCommerce Team</target>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroduction.6">
+        <source>Isotope is a product of terminal42 gmbh in association with the Isotope eCommerce Team.</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_priceDisplay.net.0">
+        <source>Net</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_priceDisplay.net.1">
+        <source>Show net prices to all customers. Taxes included in the product price (tax rate configuration) will be deducted.</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_priceDisplay.gross.0">
+        <source>Gross (recommended)</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_priceDisplay.gross.1">
+        <source>Show gross prices to all customers. Applicable taxes will be added to the product price display.</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_priceDisplay.fixed.0">
+        <source>Fixed</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_priceDisplay.fixed.1">
+        <source>The product price will always be shown as in the product setting. Taxes are always calculated as &quot;included&quot;. This means the shop owner&apos;s profit varies depending on the applicable taxes.</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_taxCalculation.horizontal.0">
+        <source>horizontal</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_taxCalculation.horizontal.1">
+        <source>VAT is calculated individually for each line item – that is, item price × quantity, then the tax is calculated and rounded per item. At the end, all tax amounts are summed.</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_taxCalculation.vertical.0">
+        <source>vertical</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_taxCalculation.vertical.1">
+        <source>VAT is calculated only after summing all net amounts. Then the tax is applied to the total net amount and rounded once.</source>
+      </trans-unit>
+      <trans-unit id="CTE.isotope">
+        <source>Isotope eCommerce</source>
+        <target>Isotope eCommerce</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_productfilter.0">
+        <source>Product Filter</source>
+        <target>Filter proizvoda</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_productfilter.1">
+        <source>Define individual filters for Isotope such as category trees and product attribute filters.</source>
+        <target>Definišite pojedinačne filtere za Isotope eCommerce kao što su stabla kategorija i filteri atributa proizvoda.</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_categoryfilter.0">
+        <source>Category Filter</source>
+        <target>Filter kategorije</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_categoryfilter.1">
+        <source>Provides a filter by product category (page tree).</source>
+        <target>Pruža filter prema kategoriji proizvoda (stablo stranice).</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_productlist.0">
+        <source>Product List</source>
+        <target>Lista proizvoda</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_productlist.1">
+        <source>General Listing module. Can be used to list products or values of attributes. May be combined with other modules (i.e. the Filter Module) to provide further drill-down capabilities.</source>
+        <target>Modul općeg popisa. Može se koristiti za popis proizvoda ili vrijednosti atributa. Može se kombinovati s drugim modulima (tj. Modulom za filtriranje) kako bi se osigurale daljnje drill-down mogućnosti.</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_productreader.0">
+        <source>Product Reader</source>
+        <target>Čitač proizvoda</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_productreader.1">
+        <source>Product reader module. This is used to display product details.</source>
+        <target>Modul za učitavanje proizvoda. Ovo se koristi za prikaz detalja o proizvodu.</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_cart.0">
+        <source>Shopping Cart</source>
+        <target>Korpa za kupovinu</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_cart.1">
+        <source>A fully-featured shopping cart module.  Box or Full Display can be set by template selection.</source>
+        <target>Potpuno opremljeni modul korpe. Okvir ili puni prikaz mogu se postaviti odabirom templejta.</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_checkout.0">
+        <source>Checkout</source>
+        <target>Provjera</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_checkout.1">
+        <source>Allow store customers to complete their transactions.</source>
+        <target>Omogućite kupcima da dovrše svoje transakcije.</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_addressbook.0">
+        <source>Address Book</source>
+        <target>Adresar</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_addressbook.1">
+        <source>Allow customers to manage their address book.</source>
+        <target>Omogućite kupcima upravljanje njihovim adresarima.</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_orderhistory.0">
+        <source>Order History</source>
+        <target>Istorija narudžbi</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_orderhistory.1">
+        <source>Order lister that allows customers to view their order history</source>
+        <target>Omogućava kupcima da vide historiju svojih narudžbi</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_orderdetails.0">
+        <source>Order Details</source>
+        <target>Detalji narudžbe</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_orderdetails.1">
+        <source>Order reader that allows customers to view order history details</source>
+        <target>Omogućava kupcima da pogledaju detalje narudžbi u historiji.</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_configswitcher.0">
+        <source>Store Config Switcher</source>
+        <target>Store Config Switcher</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_configswitcher.1">
+        <source>Switch between store configuration to change currency and other settings.</source>
+        <target>Prebacivanje između konfiguracije trgovine radi promijene valute i drugih postavki.</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_relatedproducts.0">
+        <source>Related products</source>
+        <target>Povezani proizvodi</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_relatedproducts.1">
+        <source>List products related to the current one.</source>
+        <target>Popis proizvoda koji su povezani sa trenutnim.</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_messages.0">
+        <source>Messages</source>
+        <target>Poruke</target>
+      </trans-unit>
+      <trans-unit id="CTE.iso_messages.1">
+        <source>Displays all Isotope messages if they have not been displayed elsewhere.</source>
+        <target>Prikazuje sve Isotope poruke ako već nisu prikazane na drugom mjestu.</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_shipping.flat.0">
+        <source>Flat-price shipping</source>
+        <target>Fiksna cijena dostave</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_shipping.flat.1">
+        <source>This is the default shipping method for regular shipping.</source>
+        <target>Ovo je zadani način dostave za standardnu dostavu.</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_shipping.group.0">
+        <source>Shipping group</source>
+        <target>Grupa dostave</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_shipping.group.1">
+        <source>With this method, you can group multiple shipping methods into one and calculate the price based on them.</source>
+        <target>Ovom metodom možete grupisati više načina dostave u jedan, i na temelju njih izračunati cijenu.</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_shipping.product_price.0">
+        <source>Product-price shipping</source>
+        <target>Dostava po cijeni proizvoda</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_shipping.product_price.1">
+        <source>In this method the shipping costs are based on the products individual shipping price. Make sure to have the Shipping Price attribute enabled per each product.</source>
+        <target>U ovoj metodi troškovi dostave se temelje na pojedinačnoj cijeni dostave proizvoda. Obavezno omogućite atribut cijene dostave za svaki proizvod.</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.cash.0">
+        <source>Cash</source>
+        <target>Gotovina</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.cash.1">
+        <source>Use this for all offline processed payment.</source>
+        <target>Koristite ovo za sva izvanmrežno obrađena plaćanja.</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.paypal.0">
+        <source>PayPal Standard Checkout</source>
+        <target>PayPal standardno plaćanje</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.paypal.1">
+        <source>This PayPal module supports IPN (Instant Payment Notifications).</source>
+        <target>Ovaj PayPal modul podržava IPN (Obavijesti o trenutnom plaćanju).</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_gallery.standard.0">
+        <source>Default gallery</source>
+        <target>Zadana galerija</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_gallery.standard.1">
+        <source>&lt;p&gt;Uses the lightbox/mediabox for full size images. Make sure you select the appropriate &quot;moo_&quot; template in your page layout configuration.&lt;/p&gt;&lt;p&gt;You can supply a &quot;rel&quot; attribute to the link target by using a pipe (e.g. &quot;tl_files/video.mov|lightbox[400 300]&quot;). If no &quot;rel&quot; attribute is supplied, the link will be opened in a new window.&lt;/p&gt;</source>
+        <target>&lt;p&gt;Koristi lightbox / mediabox za slike u punoj veličini. Obavezno odaberite odgovarajući predložak &quot;moo_&quot; u konfiguraciji izgleda stranice.&lt;/p&gt;&lt;p&gt; Možete dodati atribut &quot;rel&quot; na cilj veze pomoću cijevi (npr. &quot;Tl_files / video.mov | lightbox [400 300]&quot;). Ako nije naveden atribut &quot;rel&quot;, veza će se otvoriti u novom prozoru.&lt;/p&gt;</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_product.standard.0">
+        <source>Standard product</source>
+        <target>Standardni proizvod</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_product.standard.1">
+        <source>A default product. Select this if nothing else matches.</source>
+        <target>Zadani proizvod. Odaberite ovo ako se ništa drugo ne podudara.</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.miscellaneous">
+        <source>Miscellaneous</source>
+        <target>Razno</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.cart">
+        <source>Cart</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.cart_total.0">
+        <source>Cart total</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.cart_total.1">
+        <source>Match on the total amount of the cart.</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.cart_address.0">
+        <source>Cart address</source>
+        <target>Adresa korpe</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.cart_address.1">
+        <source>Match on country, subdivision or postal codes of the billing or shipping address.</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.cart_quantity.0">
+        <source>Total quantity in cart</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.cart_quantity.1">
+        <source>Compares the given value to the sum of all quantities of all products.</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.cart_products.0">
+        <source>Total products in cart</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.cart_products.1">
+        <source>Compares the given value to the total products in the cart (regardless of their quantity).</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.member">
+        <source>Member</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.member_authenticated.0">
+        <source>Login status</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.member_authenticated.1">
+        <source>Checks whether a customer is logged in or not.</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.member_group.0">
+        <source>Member groups (current user)</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.member_group.1">
+        <source>Checks whether the currently logged-in user has or does not have certain member groups.</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.store">
+        <source>Store</source>
+        <target>Trgovina</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.store_config.0">
+        <source>Store config</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.store_config.1">
+        <source>Checks for the current store configuration.</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.store_currency.0">
+        <source>Currency</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.store_currency.1">
+        <source>Match on the current currency.</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.dates">
+        <source>Date &amp; time</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.store_date.0">
+        <source>Date &amp; time</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.store_date.1">
+        <source>Checks for the current date and time.</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.store_time.0">
+        <source>Time of day</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.store_time.1">
+        <source>Checks the time of the current day.</source>
+      </trans-unit>
+      <trans-unit id="ATTR.text.0">
+        <source>Text field</source>
+        <target>Tekstualno polje</target>
+      </trans-unit>
+      <trans-unit id="ATTR.text.1">
+        <source>A single-line input field for a short or medium text.</source>
+        <target>Polje za unos u jednom redu za kratki ili srednje dug tekst.</target>
+      </trans-unit>
+      <trans-unit id="ATTR.textarea.0">
+        <source>Textarea</source>
+        <target>Textarea</target>
+      </trans-unit>
+      <trans-unit id="ATTR.textarea.1">
+        <source>A multi-line input field for a medium or long text.</source>
+        <target>Polje za unos u više redova za srednji ili duži tekst.</target>
+      </trans-unit>
+      <trans-unit id="ATTR.select.0">
+        <source>Select menu</source>
+        <target>Select menu</target>
+      </trans-unit>
+      <trans-unit id="ATTR.select.1">
+        <source>A single- or multi-line drop-down menu.&lt;br /&gt;&lt;i&gt;This field type is suitable for product variants.&lt;/i&gt;</source>
+        <target>Padajući izbornik s jednim ili više redova. &lt;br /&gt;&lt;i&gt;Ovaj tip polja pogodan je za varijante proizvoda.&lt;/i&gt;</target>
+      </trans-unit>
+      <trans-unit id="ATTR.radio.0">
+        <source>Radio button menu</source>
+        <target>Radio button menu</target>
+      </trans-unit>
+      <trans-unit id="ATTR.radio.1">
+        <source>A list of multiple options from which one can be selected.&lt;br /&gt;&lt;i&gt;This field type is suitable for product variants.&lt;/i&gt;</source>
+        <target>Lista više opcija iz kojih se jedna može odabrati. &lt;br /&gt;&lt;i&gt;Ovaj tip polja pogodan je za varijante proizvoda.&lt;/i&gt;</target>
+      </trans-unit>
+      <trans-unit id="ATTR.checkbox.0">
+        <source>Checkbox menu</source>
+        <target>Checkbox menu</target>
+      </trans-unit>
+      <trans-unit id="ATTR.checkbox.1">
+        <source>A list of multiple options from which any can be selected.</source>
+        <target>Lista više opcija iz kojih se može odabrati jedna ili više njih.</target>
+      </trans-unit>
+      <trans-unit id="ATTR.mediaManager.0">
+        <source>Media Manager</source>
+        <target>Media Manager</target>
+      </trans-unit>
+      <trans-unit id="ATTR.mediaManager.1">
+        <source>Upload images and other files to the Isotope eCommerce file system. Output is processed trough an IsotopeGallery class.</source>
+        <target>Prenesite slike i druge datoteke u sistem datoteka Isotope eCommerce. Izlaz se obrađuje kroz klasu Isotope Gallery.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,82 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="contao/languages/en/tl_user.xlf" source-language="en" target-language="de">
+    <body>
+      <trans-unit id="tl_user.iso_modules.0">
+        <source>Isotope modules</source>
+        <target>Isotope-Module</target>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_modules.1">
+        <source>Select which store configuration modules user of this group can access.</source>
+        <target>Wählen Sie auf welche Shop-Konfigurationsmodule die Benutzer Zugriff haben.</target>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_producttypes.0">
+        <source>Allowed product types</source>
+        <target>Produkttypen</target>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_producttypes.1">
+        <source>Here you can grant access to one or more product types.</source>
+        <target>Benutzer können nur Produkte und Produkttypen sehen, die Sie aktivieren.</target>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_payments.0">
+        <source>Allowed payment modules</source>
+        <target>Erlaubte Zahlungsarten</target>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_payments.1">
+        <source>Here you can grant access to one or more payment modules.</source>
+        <target>Hier können Sie den Zugriff auf ein oder mehrere Zahlungsarten erlauben.</target>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_shippings.0">
+        <source>Allowed shipping modules</source>
+        <target>Erlaubte Versandarten</target>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_shippings.1">
+        <source>Here you can grant access to one or more shipping modules.</source>
+        <target>Hier können Sie den Zugriff auf eine oder mehrere Versandarten erlauben.</target>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_tax_classes.0">
+        <source>Allowed tax classes</source>
+        <target>Erlaubte Steuerklassen</target>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_tax_classes.1">
+        <source>Here you can grant access to one or more tax classes.</source>
+        <target>Hier können Sie den Zugriff auf eine oder mehrere Steuerklassen erlauben.</target>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_tax_rates.0">
+        <source>Allowed tax rates</source>
+        <target>Erlaubte Steuersätze</target>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_tax_rates.1">
+        <source>Here you can grant access to one or more tax rates.</source>
+        <target>Hier können Sie den Zugriff auf eine oder mehrere Steuersätze erlauben.</target>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_configs.0">
+        <source>Allowed store configurations</source>
+        <target>Shop-Konfigurationen</target>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_configs.1">
+        <source>Here you can grant access to one or more store configurations.</source>
+        <target>Benutzer können Bestellungen aus diesen Shop-Konfigurationen sehen.</target>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_member_groups.0">
+        <source>Allowed member groups</source>
+        <target>Erlaubte Mitgliedergruppen</target>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_member_groups.1">
+        <source>Back end users can only see orders of these member groups.</source>
+        <target>Backend-Benutzer können nur Bestellungen dieser Mitgliedergruppen sehen.</target>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_member_groups.2">
+        <source>Guests</source>
+        <target>Nur für Gäste</target>
+      </trans-unit>
+      <trans-unit id="tl_user.isotope_legend">
+        <source>Isotope eCommerce</source>
+        <target>Isotope eCommerce</target>
+      </trans-unit>
+      <trans-unit id="MSC.rootPaste">
+        <source>Access to root node</source>
+        <target>Zugriff auf oberste Ebene</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

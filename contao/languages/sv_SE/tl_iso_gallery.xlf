@@ -1,0 +1,97 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="contao/languages/en/tl_iso_gallery.xlf" source-language="en" target-language="sv-SE">
+    <body>
+      <trans-unit id="tl_iso_gallery.tableLabel">
+        <source>Gallery</source>
+        <target>Galleri</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.name.0">
+        <source>Name</source>
+        <target>Namn</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.name.1">
+        <source>Enter a name for this gallery.</source>
+        <target>Ange ett namn för detta galleri.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.type.0">
+        <source>Type</source>
+        <target>Typ</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.type.1">
+        <source>Please select a gallery type.</source>
+        <target>Välj en gallerityp.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.anchor.0">
+        <source>Image anchor</source>
+        <target>Image anchor</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.anchor.1">
+        <source>Select what anchor type should be generated on the image.</source>
+        <target>Välj vilken ankartyp som ska genereras på bilden.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.placeholder.0">
+        <source>Placeholder image</source>
+        <target>Platshållarbild</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.placeholder.1">
+        <source>This image will be used if an image file cannot be found or none are associated with a product.</source>
+        <target>Den här bilden kommer att användas om en bildfil inte kan hittas eller om ingen är associerad med en produkt.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.main_size.0">
+        <source>Main image size</source>
+        <target>Huvudbild storlek</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.main_size.1">
+        <source>Please enter a width and height for the main product image.</source>
+        <target>Ange en bredd och höjd för huvudproduktbilden.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.gallery_size.0">
+        <source>Gallery image size</source>
+        <target>Galleriets bildstorlek</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.gallery_size.1">
+        <source>Please enter a width and height for the additional images.</source>
+        <target>Ange en bredd och höjd för de ytterligare bilderna.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.lightbox_size.0">
+        <source>Lightbox image size</source>
+        <target>Lightbox bildstorlek</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.lightbox_size.1">
+        <source>Please enter a width and height for lightbox images.</source>
+        <target>Ange en bredd och höjd för ljusbordsbilder.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.customTpl.0">
+        <source>Custom gallery template</source>
+        <target>Anpassad gallerimall</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.customTpl.1">
+        <source>Here you can overwrite the default gallery template.</source>
+        <target>Här kan du skriva över standardgallerimallen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.name_legend">
+        <source>Name &amp; Type</source>
+        <target>Namn &amp; Typ</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.size_legend">
+        <source>Image sizes</source>
+        <target>Bildstorlekar</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.template_legend">
+        <source>Template settings</source>
+        <target>Mallinställningar</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.anchor.none">
+        <source>No link action</source>
+        <target>Ingen länkåtgärd</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.anchor.reader">
+        <source>Link to the product reader</source>
+        <target>Länk till produktläsaren</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.anchor.lightbox">
+        <source>Link to the image (e.g. for lightbox)</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

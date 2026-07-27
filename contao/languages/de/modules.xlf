@@ -1,0 +1,154 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="contao/languages/en/modules.xlf" source-language="en" target-language="de">
+    <body>
+      <trans-unit id="MOD.isotope">
+        <source>Isotope eCommerce</source>
+        <target>Isotope eCommerce</target>
+      </trans-unit>
+      <trans-unit id="MOD.iso_products.0">
+        <source>Products</source>
+        <target>Produkte</target>
+      </trans-unit>
+      <trans-unit id="MOD.iso_products.1">
+        <source>Manage products for your Isotope eCommerce shop.</source>
+        <target>Produkte und Produkt-Varianten verwalten</target>
+      </trans-unit>
+      <trans-unit id="MOD.iso_orders.0">
+        <source>Orders</source>
+        <target>Bestellungen</target>
+      </trans-unit>
+      <trans-unit id="MOD.iso_orders.1">
+        <source>See and manage orders for your shop.</source>
+        <target>Alle Bestellungen in Ihrem Online-Shop sind hier ersichtlich.</target>
+      </trans-unit>
+      <trans-unit id="MOD.iso_rules.0">
+        <source>Rules</source>
+        <target>Regeln</target>
+      </trans-unit>
+      <trans-unit id="MOD.iso_rules.1">
+        <source>Create rules to influence the store frontend.</source>
+        <target>Erstelle Regeln um die Shop-Anzeige im Frontend zu beeinflussen.</target>
+      </trans-unit>
+      <trans-unit id="MOD.iso_setup.0">
+        <source>Configuration</source>
+        <target>Konfiguration</target>
+      </trans-unit>
+      <trans-unit id="MOD.iso_setup.1">
+        <source>Setup and configure Isotope eCommerce to your needs.</source>
+        <target>Hier können Sie Isotope eCommerce konfigurieren.</target>
+      </trans-unit>
+      <trans-unit id="FMD.isotope">
+        <source>Isotope eCommerce</source>
+        <target>Isotope eCommerce</target>
+      </trans-unit>
+      <trans-unit id="IMD.product">
+        <source>Products</source>
+        <target>Produkte</target>
+      </trans-unit>
+      <trans-unit id="IMD.attributes.0">
+        <source>Attributes</source>
+        <target>Attribute</target>
+      </trans-unit>
+      <trans-unit id="IMD.attributes.1">
+        <source>Manage and create product attributes such as size, color, etc.</source>
+        <target>In der Attributverewaltung können Sie eigene Felder für Ihre Produkte anlegen. Dies ist z.B. hilfreich wenn Ihr Produkt einen Untertitel haben soll. Beachten Sie dass die entsprechenden Felder dann manuell im Template ausgegeben werden müssen (=Template-Anpassung).</target>
+      </trans-unit>
+      <trans-unit id="IMD.producttypes.0">
+        <source>Product types</source>
+        <target>Produkttypen</target>
+      </trans-unit>
+      <trans-unit id="IMD.producttypes.1">
+        <source>Manage and create product types from sets of attributes.</source>
+        <target>Mittels Produkttypen können Sie Ihre Produkte gruppieren. Verschiedene Produttypen können verschiedene Felder und Funktionen (z.B. Downloads aktivieren) enthalten.</target>
+      </trans-unit>
+      <trans-unit id="IMD.related_categories.0">
+        <source>Related categories</source>
+        <target>Verknüpfte Kategorien</target>
+      </trans-unit>
+      <trans-unit id="IMD.related_categories.1">
+        <source>Define categories for product relations.</source>
+        <target>Legen Sie hier Kategorien an, mit deren Gruppierung Sie später Produkte miteinander verknüpfen können.</target>
+      </trans-unit>
+      <trans-unit id="IMD.gallery.0">
+        <source>Galleries</source>
+        <target>Galerien</target>
+      </trans-unit>
+      <trans-unit id="IMD.gallery.1">
+        <source>Define how you want the images in your product to be rendered.</source>
+        <target>Definieren Sie, wie die Bilder in Ihrem Produkt gerendert werden sollen.</target>
+      </trans-unit>
+      <trans-unit id="IMD.baseprice.0">
+        <source>Base prices</source>
+        <target>Grundpreis</target>
+      </trans-unit>
+      <trans-unit id="IMD.baseprice.1">
+        <source>Define base price.</source>
+        <target>Grundpreis festlegen.</target>
+      </trans-unit>
+      <trans-unit id="IMD.checkout">
+        <source>Checkout Flow</source>
+        <target>Bestellablauf</target>
+      </trans-unit>
+      <trans-unit id="IMD.shipping.0">
+        <source>Shipping methods</source>
+        <target>Versandarten</target>
+      </trans-unit>
+      <trans-unit id="IMD.shipping.1">
+        <source>Set up shipping methods.</source>
+        <target>Legen Sie Versandarten für verschiedene Regionen an, welche Sie beliefern. Wenn im Warenkorb nur Artikel enthalten sind, welche keinen Versand erfordern, wird die Versandart in der Kasse nicht berücksichtigt.</target>
+      </trans-unit>
+      <trans-unit id="IMD.payment.0">
+        <source>Payment methods</source>
+        <target>Zahlungsarten</target>
+      </trans-unit>
+      <trans-unit id="IMD.payment.1">
+        <source>Set up payment methods.</source>
+        <target>Hier definieren Sie die für Ihren Shop erlaubten Zahlungsarten. Es werden verschiedene Zahlungsmodule unterstützt (z.B. PayPal, Barzahlung usw). Zahlungsmodule können bezüglich Produkttypen, Versandarten, Ländern und anderen Einstellungen eingeschränkt werden. Es ist gut möglich dass Sie für dieselbe Zahlungsart mehrere Module anlegen müssen, um die volle Flexibilität zu erreichen.</target>
+      </trans-unit>
+      <trans-unit id="IMD.tax_class.0">
+        <source>Tax classes</source>
+        <target>Steuerklassen</target>
+      </trans-unit>
+      <trans-unit id="IMD.tax_class.1">
+        <source>Set up Tax classes, which contain sets of Tax rates.</source>
+        <target>In Steuerklassen gruppieren Sie mehrere Steuersätze, um diesen dann den entsprechenden Produkten zuzuweisen. In Steuerklassen können Sie auch festlegen ob ein Produktpreis bereits Steuern enthält (welche dann ggf. beim Versand ins Ausland abgezogen werden).</target>
+      </trans-unit>
+      <trans-unit id="IMD.tax_rate.0">
+        <source>Tax rates</source>
+        <target>Steuersätze</target>
+      </trans-unit>
+      <trans-unit id="IMD.tax_rate.1">
+        <source>Set up tax rates based on things like shipping/billing location and order total.</source>
+        <target>Steuersätze definieren die Gebühren welche zum Preis hinzugerechnet werden sollen. Dies muss nicht zwingend eine Umsatzsteuer sein, sondern z.B. auch ein Zuschlag bei Verwendung einer bestimmten Zahlungsart (Kreditkarte).</target>
+      </trans-unit>
+      <trans-unit id="IMD.config">
+        <source>General settings</source>
+        <target>Allgemeine Einstellungen</target>
+      </trans-unit>
+      <trans-unit id="IMD.configs.0">
+        <source>Store configurations</source>
+        <target>Konfigurationen</target>
+      </trans-unit>
+      <trans-unit id="IMD.configs.1">
+        <source>Configure general settings for this store.</source>
+        <target>Konfigurationen umfassen Einstellungen bezüglich Währung, Preisberechnung, Adressaufbereitung, Produktbildgrössen und anderem. Sie können mehrere Konfigurationen anlegen und diese im Shop-Betrieb (über das entsprechende Frontend-Modul) wechseln, um z.B. eine Umschaltung zwischen mehreren Währungen zu ermöglichen.</target>
+      </trans-unit>
+      <trans-unit id="IMD.orderstatus.0">
+        <source>Order status</source>
+        <target>Bestellstatus</target>
+      </trans-unit>
+      <trans-unit id="IMD.orderstatus.1">
+        <source>Define order status.</source>
+        <target>Verschiedene Statusbezeichnungen für die Bestellungen anlegen.</target>
+      </trans-unit>
+      <trans-unit id="IMD.documents.0">
+        <source>Documents</source>
+        <target>Dokumente</target>
+      </trans-unit>
+      <trans-unit id="IMD.documents.1">
+        <source>Define documents.</source>
+        <target>Dokumente definieren.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

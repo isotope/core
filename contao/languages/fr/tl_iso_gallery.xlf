@@ -1,0 +1,94 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="contao/languages/en/tl_iso_gallery.xlf" source-language="en" target-language="fr">
+    <body>
+      <trans-unit id="tl_iso_gallery.tableLabel">
+        <source>Gallery</source>
+        <target>Galerie</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.name.0">
+        <source>Name</source>
+        <target>Nom</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.name.1">
+        <source>Enter a name for this gallery.</source>
+        <target>Saisir un nom pour cette galerie.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.type.0">
+        <source>Type</source>
+        <target>Type</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.type.1">
+        <source>Please select a gallery type.</source>
+        <target>Sélectionner un type de galerie.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.anchor.0">
+        <source>Image anchor</source>
+        <target>Ancre d&apos;image</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.anchor.1">
+        <source>Select what anchor type should be generated on the image.</source>
+        <target>Sélectionner quel type d&apos;ancrage doit être généré sur l&apos;image.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.placeholder.0">
+        <source>Placeholder image</source>
+        <target>Image de substitution</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.placeholder.1">
+        <source>This image will be used if an image file cannot be found or none are associated with a product.</source>
+        <target>Cette image sera utilisée si un fichier image ne peut être trouvé ou si aucune image n&apos;est associée à un produit.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.main_size.0">
+        <source>Main image size</source>
+        <target>Taille de l&apos;image principale </target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.main_size.1">
+        <source>Please enter a width and height for the main product image.</source>
+        <target>Saisir une largeur et une hauteur de l&apos;image principale du produit.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.gallery_size.0">
+        <source>Gallery image size</source>
+        <target>Taille de la galerie d&apos;images</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.gallery_size.1">
+        <source>Please enter a width and height for the additional images.</source>
+        <target>Saisir une largeur et une hauteur pour les images supplémentaires.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.lightbox_size.0">
+        <source>Lightbox image size</source>
+        <target>Taille de l&apos;image Lightbox</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.lightbox_size.1">
+        <source>Please enter a width and height for lightbox images.</source>
+        <target>Saisir une largeur et une hauteur pour l&apos;image Lightbox.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.customTpl.0">
+        <source>Custom gallery template</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.customTpl.1">
+        <source>Here you can overwrite the default gallery template.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.name_legend">
+        <source>Name &amp; Type</source>
+        <target>Nom &amp; Type</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.size_legend">
+        <source>Image sizes</source>
+        <target>Tailles des images</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.template_legend">
+        <source>Template settings</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.anchor.none">
+        <source>No link action</source>
+        <target>Aucune action de lien</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.anchor.reader">
+        <source>Link to the product reader</source>
+        <target>Lien vers le lecteur de produit</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.anchor.lightbox">
+        <source>Link to the image (e.g. for lightbox)</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

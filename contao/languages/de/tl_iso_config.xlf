@@ -1,0 +1,433 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="contao/languages/en/tl_iso_config.xlf" source-language="en" target-language="de">
+    <body>
+      <trans-unit id="tl_iso_config.tableLabel">
+        <source>Shop Configuration</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.name.0">
+        <source>Configuration Name</source>
+        <target>Name der Shop-Konfiguration</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.name.1">
+        <source>Please enter a name for your configuration. This is only used for back end reference.</source>
+        <target>Geben Sie einen eindeutigen Namen ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.label.0">
+        <source>Label</source>
+        <target>Bezeichnung</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.label.1">
+        <source>The label is used in frontend, e.g. for config switcher.</source>
+        <target>Die Bezeichnung wird im Frontend z.B. für den Konfigurationswechsler verwendet.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.firstname.0">
+        <source>First name</source>
+        <target>Vorname</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.firstname.1">
+        <source>Please enter the first name (if applicable).</source>
+        <target>Bitte geben Sie den Vornamen ein (falls anwendbar).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.lastname.0">
+        <source>Last name</source>
+        <target>Nachname</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.lastname.1">
+        <source>Please enter the last name (if applicable).</source>
+        <target>Bitte geben Sie den Nachnamenen (falls anwendbar).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.company.0">
+        <source>Company</source>
+        <target>Firma</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.company.1">
+        <source>You can enter a company name here (if applicable).</source>
+        <target>Sie können hier einen Unternehmensnamen angeben (falls anwendbar).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.vat_no.0">
+        <source>VAT No.</source>
+        <target>USt-ID-Nr.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.vat_no.1">
+        <source>Please enter a VAT number.</source>
+        <target>Bitte geben Sie Ihre Umsatzsteuer-Identifikationsnummer ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_1.0">
+        <source>Street</source>
+        <target>Straße</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_1.1">
+        <source>Please enter the street name and the street number.</source>
+        <target>Bitte geben Sie den Straßennamen und die Hausnummer ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_2.0">
+        <source>Street 2</source>
+        <target>Straße 2</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_2.1">
+        <source>Enter a second street info if there&apos;s any.</source>
+        <target>Geben Sie eine zweite Zeile für die Straße ein falls nötig.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_3.0">
+        <source>Street 3</source>
+        <target>Straße 3</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_3.1">
+        <source>Enter a third street info if there&apos;s any.</source>
+        <target>Geben Sie eine dritte Zeile für die Straße ein falls nötig.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.postal.0">
+        <source>Postal code</source>
+        <target>Postleitzahl</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.postal.1">
+        <source>Please enter the postal code.</source>
+        <target>Bitte geben Sie die Postleitzahl ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.city.0">
+        <source>City</source>
+        <target>Ort</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.city.1">
+        <source>Please enter the name of the city.</source>
+        <target>Bitte geben Sie den Namen der Stadt ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.subdivision.0">
+        <source>State</source>
+        <target>Staat</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.subdivision.1">
+        <source>Please enter the name of the state.</source>
+        <target>Bitte geben Sie den Namen des Bundeslandes/Kantons ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.country.0">
+        <source>Country</source>
+        <target>Land</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.country.1">
+        <source>Please select a country. This is also the default for custom shipping/billing addresses.</source>
+        <target>Bitte wählen Sie das Land. Dies ist auch die Standardeinstellung für individuelle Versand-/Rechnungs-Adressen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.phone.0">
+        <source>Phone number</source>
+        <target>Telefonnummer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.phone.1">
+        <source>Please enter the phone number.</source>
+        <target>Bitte geben Sie die Telefonnummer ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.email.0">
+        <source>E-mail address</source>
+        <target>E-Mail-Adresse</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.email.1">
+        <source>Please enter a valid e-mail address.</source>
+        <target>Bitte geben Sie eine gültige E-Mail-Adresse ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.bankName.0">
+        <source>Bank name</source>
+        <target>Bank Name</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.bankName.1">
+        <source>Please enter your bank name.</source>
+        <target>Bitte geben Sie Ihren Bank-Namen ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.bankAccount.0">
+        <source>Bank account number (IBAN)</source>
+        <target>Bankkontonummer (z. B. IBAN)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.bankAccount.1">
+        <source>Please enter your bank account number (IBAN).</source>
+        <target>Bitte geben Sie Ihre Bankkontonummer (z. B. IBAN) ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.bankCode.0">
+        <source>Bank code (BIC/SWIFT)</source>
+        <target>Bankleitzahl (BIC / SWIFT)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.bankCode.1">
+        <source>Please enter your bank code (BIC/SWIFT).</source>
+        <target>Bitte geben Sie Ihre Bankleitzahl ein (BIC / SWIFT).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.taxNumber.0">
+        <source>Tax number</source>
+        <target>Steuernummer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.taxNumber.1">
+        <source>Here you can enter your tax number.</source>
+        <target>Hier können Sie Ihre Steuernummer eingeben.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.address_fields.0">
+        <source>Address fields</source>
+        <target>Adressfelder</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.address_fields.1">
+        <source>Select the fields for a billing and shipping address when checking out.</source>
+        <target>Wählen Sie die Felder für die Rechnungs- und Versandadresse beim Bezahlen aus.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.address_fields.billing.0">
+        <source>For billing address</source>
+        <target>Für Rechnungs-Adresse</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.address_fields.shipping.0">
+        <source>For shipping address</source>
+        <target>Für Versand-Adresse</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.address_fields.disabled">
+        <source>Disabled</source>
+        <target>Deaktiviert</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.address_fields.enabled">
+        <source>Enabled (not mandatory)</source>
+        <target>Aktiviert (Nicht verpflichtend)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.address_fields.mandatory">
+        <source>Enabled (mandatory)</source>
+        <target>Aktiviert (Verpflichtend)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.billing_country.0">
+        <source>Default billing country</source>
+        <target>Standard Rechnungsland</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.billing_country.1">
+        <source>Select a default country for new billing addresses.</source>
+        <target>Wählen Sie das Standard-Land für neue Rechnungsadressen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.shipping_country.0">
+        <source>Default shipping country</source>
+        <target>Standard Versandland</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.shipping_country.1">
+        <source>Select a default country for new shipping addresses.</source>
+        <target>Wählen Sie das Standard-Land für neue Versandadressen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.billing_countries.0">
+        <source>Available billing countries</source>
+        <target>Rechnungs-Länder</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.billing_countries.1">
+        <source>Select the countries you want to allow for checkout billing address. Select none to allow all countries.</source>
+        <target>Wählen Sie die Länder, welche beim Bestellvorgang als Rechnungs-Adressen erlaubt sind.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.shipping_countries.0">
+        <source>Available shipping countries</source>
+        <target>Versand-Länder</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.shipping_countries.1">
+        <source>Select the countries you want to allow for checkout shipping address. Select none to allow all countries.</source>
+        <target>Wählen Sie die Länder, welche beim Bestellvorgang als Versand-Adressen erlaubt sind.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.limitMemberCountries.0">
+        <source>Limit member countries</source>
+        <target>Mitgliederländer einschränken</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.limitMemberCountries.1">
+        <source>Limit member countries (Registration, Personal Data) to the combined list of billing and shipping countries.</source>
+        <target>Schränken Sie die Mitgliederländer (Registrierung, Persönliche Daten) auf der kombinierten Liste der Rechnungs- und Versand-Länder ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.shipping_ids.0">
+        <source>Shipping methods</source>
+        <target>Versandarten</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.shipping_ids.1">
+        <source>Select one or more shipping methods for the checkout.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.payment_ids.0">
+        <source>Payment methods</source>
+        <target>Zahlungsarten</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.payment_ids.1">
+        <source>Select one or more payment methods for the checkout.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.default_shipping.0">
+        <source>Default shipping method</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.default_shipping.1">
+        <source>Optionally select a default shipping method that should be applied to new carts.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.default_payment.0">
+        <source>Default payment method</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.default_payment.1">
+        <source>Optionally select a default payment method that should be applied to new carts.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.priceDisplay.0">
+        <source>Price display</source>
+        <target>Preisanzeige</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.priceDisplay.1">
+        <source>Select if you want to display net or gross prices in your shop. See the help wizard for more information.</source>
+        <target>Wählen Sie aus, ob Sie Netto- oder Bruttopreise in Ihrem Shop anzeigen möchten. Weiterführende Informationen finden Sie im Help-Wizard.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.taxCalculation.0">
+        <source>Tax calculation</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.taxCalculation.1">
+        <source>Select the tax calculation mode.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencyFormat.0">
+        <source>Price formatting</source>
+        <target>Preisformatierung</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencyFormat.1">
+        <source>Choose a formatting for prices.</source>
+        <target>Wählen Sie eine Formatierung für Preise.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.priceRoundPrecision.0">
+        <source>Rounding precision</source>
+        <target>Rundungspräzision</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.priceRoundPrecision.1">
+        <source>How much decimal precision to have. You should set something between 0 and 2 for all payment gateways to work correctly. See PHP manual for round().</source>
+        <target>Wählen Sie die Dezimal-Präzision. Sie sollten einen Wert zwischen 0 und 2 verwenden, um Kompatibilität mit allen Zahlungsmodulen zu gewährleisten.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.priceRoundIncrement.0">
+        <source>Rounding increment</source>
+        <target>Rundungszuschlag</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.priceRoundIncrement.1">
+        <source>Some currencies (e.g. swiss francs) do not support 0.01 precision.</source>
+        <target>Einige Währungen (z.B. Schweizer Franken) erlauben keine 0.01 Beträge.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currency.0">
+        <source>Currency</source>
+        <target>Währung</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currency.1">
+        <source>Please select a currency for this store.</source>
+        <target>Wählen Sie eine Währung für diesen Shop.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencyPosition.0">
+        <source>Position of currency code/symbol</source>
+        <target>Position der Währungsbezeichnung/-symbol</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencyPosition.1">
+        <source>Select if you want to show currency on the left or right side of the price.</source>
+        <target>Wählen Sie ob die Währung links oder rechts des Preises angezeigt werden soll.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencySymbol.0">
+        <source>Use currency symbol</source>
+        <target>Währungssymbol verwenden</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencySymbol.1">
+        <source>Use a currency symbol ($, €) if available.</source>
+        <target>Das Währungssymbol verwenden ($, €) falls möglich.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencySpace.0">
+        <source>Include blank space</source>
+        <target>Leerzeichen einfügen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencySpace.1">
+        <source>Add space between price and currency symbol.</source>
+        <target>Zwischen dem Preis und dem Währungssymbol ein Leerzeichen einfügen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.priceCalculateFactor.0">
+        <source>Price factor</source>
+        <target>Berechnungsfaktor</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.priceCalculateFactor.1">
+        <source>Defaults should be 1. You can use this to convert between multiple currencies.</source>
+        <target>Standardmässig auf 1. Wählen Sie einen anderen Faktor für eine Umrechnung.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.orderPrefix.0">
+        <source>Order number prefix</source>
+        <target>Bestellnummer-Präfix</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.orderPrefix.1">
+        <source>You can add a prefix (e.g. fiscal year) to the auto-incrementing order number.</source>
+        <target>Sie können für die automatisch hochzählende Bestellnummer einen Präfix (z. B. Fiskaljahr) hinzufügen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.orderDigits.0">
+        <source>Order number length</source>
+        <target>Bestellnummern-Länge</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.orderDigits.1">
+        <source>Select the minimum length of the order number (not including order prefix).</source>
+        <target>Wählen sie die minimale Länge für die Bestellnummer (den Bestellnummer-Präfix nicht mitgezählt).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.left">
+        <source>To the left of price</source>
+        <target>Links vom Preis</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.right">
+        <source>To the right of price</source>
+        <target>Rechts vom Preis</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.iwName.0">
+        <source>Name</source>
+        <target>Name</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.iwWidth.0">
+        <source>Width</source>
+        <target>Breite</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.iwHeight.0">
+        <source>Height</source>
+        <target>Höhe</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.iwMode.0">
+        <source>Mode</source>
+        <target>Modus</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.ecb_int">
+        <source>European Central Bank</source>
+        <target>European Central Bank</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.admin_ch">
+        <source>Swiss Federal Department of Finance</source>
+        <target>Swiss Federal Department of Finance</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.name_legend">
+        <source>Name</source>
+        <target>Name</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.address_legend">
+        <source>Address configuration</source>
+        <target>Adresse</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.config_legend">
+        <source>Configuration</source>
+        <target>Konfiguration</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.checkout_legend">
+        <source>Checkout – Address</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.shipping_legend">
+        <source>Checkout – Shipping</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.payment_legend">
+        <source>Checkout – Payment</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.bank_legend">
+        <source>Bank details</source>
+        <target>Bankdaten</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.price_legend">
+        <source>Price display &amp; currency formatting</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.converter_legend">
+        <source>Currency conversion</source>
+        <target>Währungs-Umrechnung</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.order_legend">
+        <source>Orders</source>
+        <target>Bestellungen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.images_legend">
+        <source>Images</source>
+        <target>Bilder</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.url_legend">
+        <source>URL settings</source>
+        <target>URL-Einstellungen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.products_legend">
+        <source>Products</source>
+        <target>Produkte</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.analytics_legend">
+        <source>Analytics</source>
+        <target>Analysen</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,228 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="contao/languages/en/tl_iso_producttype.xlf" source-language="en" target-language="it">
+    <body>
+      <trans-unit id="tl_iso_producttype.tableLabel">
+        <source>Product Type</source>
+        <target>Tipi Prodotto</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.name.0">
+        <source>Name</source>
+        <target>Nome</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.name.1">
+        <source>Please enter a name for this product type.</source>
+        <target>Per cortesia inserisca un nome per questo tipo di prodotto.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.class.0">
+        <source>Product Class</source>
+        <target>Classe Prodotto</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.class.1">
+        <source>Please select a product class. Different product classes will handle products differently.</source>
+        <target>Per cortesia selezioni una classe prodotto. Classi prodotto diverse gestiranno i prodotti in maniera diversa.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.fallback.0">
+        <source>Default</source>
+        <target>Preimpostato</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.fallback.1">
+        <source>Check here if this is the default product type.</source>
+        <target>Spunti qui se questo è il prodotto preimpostato.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.description.0">
+        <source>Description</source>
+        <target>Descrizione</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.description.1">
+        <source>A hint to product managers what this product type is for.</source>
+        <target>Un suggerimento per i gestori prodotti sull&apos;utilizzo di questo tipo di prodotto.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.prices.0">
+        <source>Advanced pricing</source>
+        <target>Prezzamento avanzato</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.prices.1">
+        <source>Allow to define multiple prices per product, e.g. for different store configs, member groups or dates.</source>
+        <target>Permetta di definire più di un prezzo per un prodotto, ad esempio per configurazioni diverse di negozio, gruppi membri o date.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.show_price_tiers.0">
+        <source>Show price tiers</source>
+        <target>Mostra livelli di prezzo</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.show_price_tiers.1">
+        <source>Show highest tier as lowest product price.</source>
+        <target>Mostra il livello più alto come prezzo più basso del prodotto.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.list_template.0">
+        <source>List template</source>
+        <target>Template Elenco</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.list_template.1">
+        <source>Select a template for product listing.</source>
+        <target>Selezioni una template per l&apos;elenco dei prodotti</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.reader_template.0">
+        <source>Reader template</source>
+        <target>Template Lettore</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.reader_template.1">
+        <source>Select a template for product details.</source>
+        <target>Selezioni una template per i dettagli prodotto.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.list_gallery.0">
+        <source>List gallery</source>
+        <target>Elenco galleria</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.list_gallery.1">
+        <source>Select a gallery for product listing.</source>
+        <target>Selezionare una galleria per l&apos;elenco dei prodotti.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.reader_gallery.0">
+        <source>Reader gallery</source>
+        <target>Galleria lettori</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.reader_gallery.1">
+        <source>Select a gallery for product details.</source>
+        <target>Selezionare una galleria per i dettagli del prodotto.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.cssClass.0">
+        <source>CSS class</source>
+        <target>Classe CSS</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.cssClass.1">
+        <source>The class(es) will be added to the product list and reader templates.</source>
+        <target>La classe o le classi saranno aggiunte all&apos;elenco dei prodotti e ai modelli di lettore.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.attributes.0">
+        <source>Attributes</source>
+        <target>Attributi</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.attributes.1">
+        <source>Select the collection of attributes that should be included for this product type.</source>
+        <target>Selezioni la collezione di attributi che dovrebbero essere inclusi in questo tipo prodotto.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.attributes.legend.0">
+        <source>Grouping</source>
+        <target>Raggruppamento</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.attributes.legend.1">
+        <source>Group fields by topic (legends)</source>
+        <target>Campi del raggruppamento per argomento (leggende)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.attributes.tl_class.0">
+        <source>Alignment</source>
+        <target>Allineamento</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.attributes.tl_class.1">
+        <source>Enter a tl_class to override alignment for this attribute.</source>
+        <target>Inserire una tl_classe per sovrascrivere l&apos;allineamento per questo attributo.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.attributes.mandatory.0">
+        <source>Mandatory</source>
+        <target>Obbligatorio</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.attributes.mandatory.1">
+        <source>You can override the default mandatory-ness here.</source>
+        <target>Qui è possibile sovrascrivere l&apos;obbligatorietà di default.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.attributes.default">
+        <source>Default</source>
+        <target>Preimpostato</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.variants.0">
+        <source>Enable variants</source>
+        <target>Abilita versioni</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.variants.1">
+        <source>Check here if this product type has variants.</source>
+        <target>Spunti qui se questo prodotto ha versioni.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.variant_attributes.0">
+        <source>Variant attributes</source>
+        <target>Versioni attricuti</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.variant_attributes.1">
+        <source>Select the collection of variant attributes that should be included for this product type. Those that are not selected will be hidden from view and inherited from the parent product.</source>
+        <target>Selezioni la collezione di attributi versione che dovrebbero essere inclusi per questo tipo prodotto. Quelli che non sono state selezionati saranno nascosti alla vista ed ereditati dal prodotto genitore.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.force_variant_options.0">
+        <source>Always show variant attributes</source>
+        <target>Mostra sempre gli attributi della variante</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.force_variant_options.1">
+        <source>Show a variant attribute (select, radio) even if there is only one choice.</source>
+        <target>Mostra un attributo della variante (select, radio) anche se c&apos;è una sola scelta.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.validAliasCharacters.0">
+      <source>Valid alias characters</source>
+    </trans-unit>
+      <trans-unit id="tl_iso_producttype.validAliasCharacters.1">
+        <source>Here you can select a custom character set for auto-generated product aliases.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.shipping_exempt.0">
+        <source>Shipping handling</source>
+        <target>Gestione della spedizione</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.shipping_exempt.1">
+        <source>Check if items of this product type are not a shipped item (such as downloadable products).</source>
+        <target>Controlla se gli articoli di questo tipo di prodotto non sono un articolo spedito (come i prodotti scaricabili).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.shipping_exempt.default">
+        <source>Default</source>
+        <target>Preimpostato</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.shipping_exempt.exempt">
+        <source>Exempted (e.g. digital products/downloads)</source>
+        <target>Esentato (ad esempio prodotti digitali/download)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.shipping_exempt.pickup">
+        <source>Pick up (disables shipping address)</source>
+        <target>Ritiro (disabilita l&apos;indirizzo di spedizione)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.edit.1">
+        <source>Edit product type ID %s</source>
+        <target>Modifica il tipo prodotto ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.delete.1">
+        <source>Delete product type ID %s</source>
+        <target>Cancella tipo prodotto ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.name_legend">
+        <source>Product type settings</source>
+        <target>Impostazioni tipo prodotto</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.description_legend">
+        <source>Description</source>
+        <target>Descrizione</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.prices_legend">
+        <source>Prices</source>
+        <target>Prezzi</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.template_legend">
+        <source>Templates</source>
+        <target>Template</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.attributes_legend">
+        <source>Product attributes</source>
+        <target>Attributi prodotto</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.variants_legend">
+        <source>Variant attributes</source>
+        <target>Versioni attricuti</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.expert_legend">
+        <source>Expert settings</source>
+        <target>Impostazioni esperto</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.noVariantAttributes">
+        <source>You must select at least one variant option (one of those: %s).</source>
+        <target>È necessario selezionare almeno una variante (una di queste: %s).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.singularAttributes">
+        <source>Attribute(s) &quot;%s&quot; cannot be enabled for both attributes and variant attributes.</source>
+        <target>L&apos;attributo o gli attributi &quot;%s&quot; non possono essere abilitati sia per gli attributi che per gli attributi della variante.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

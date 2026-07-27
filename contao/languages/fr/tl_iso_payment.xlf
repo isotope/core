@@ -1,0 +1,169 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="contao/languages/en/tl_iso_payment.xlf" source-language="en" target-language="fr">
+    <body>
+      <trans-unit id="tl_iso_payment.tableLabel">
+        <source>Payment Method</source>
+        <target>Mode de paiement</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.type.0">
+        <source>Type of Payment Gateway</source>
+        <target>Type de passerelle de paiement</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.type.1">
+        <source>Select a particular payment gateway</source>
+        <target>Sélectionner une passerelle de paiement particulière (par exemple Authorize.net)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.name.0">
+        <source>Name</source>
+        <target>Nom</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.name.1">
+        <source>Enter a name for this payment method.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.label.0">
+        <source>Label</source>
+        <target>Libellé</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.label.1">
+        <source>This is displayed on the front end in association with the payment option.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.note.0">
+        <source>Payment Note</source>
+        <target>Note relative au paiement</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.note.1">
+        <source>This note can be sent in confirmation mails (##payment_note##).</source>
+        <target>Cette note peut être envoyée dans les mails de confirmation (##payment_note##).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.processing_status.0">
+        <source>Status for payment in progress</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.processing_status.1">
+        <source>Select the order status for when the payment is in progress.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paid_status.0">
+        <source>Status for paid orders</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paid_status.1">
+        <source>Select the order status for when the payment was successful.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.failed_status.0">
+        <source>Status for failed orders</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.failed_status.1">
+        <source>Select the order status for when the payment failed.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.rule.0">
+        <source>Rule condition</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.rule.1">
+        <source>Allow payment method if this rule matches.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.shipping_modules.0">
+        <source>Shipping methods</source>
+        <target>Modes de livraison</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.shipping_modules.1">
+        <source>You can restrict this payment method to certain shipping methods (e.g. Cash only when picking up).</source>
+        <target>Vous pouvez limiter ce mode de paiement à certains modes de livraison (par exemple, en espèces uniquement lors du ramassage).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.product_types.0">
+        <source>Product types</source>
+        <target>Types de produits</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.product_types.1">
+        <source>You can restrict this payment method to certain product types. If the cart contains a product type you have not selected, the payment method is not available.</source>
+        <target>Limiter ce mode de paiement pour certains types de produits. Si le panier contient un type de produit que vous n&apos;avez pas sélectionné, le module de paiement n&apos;est pas disponible.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.product_types_condition.0">
+        <source>Product type condition</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.product_types_condition.1">
+        <source>Select how the product type filter should be applied.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_account.0">
+        <source>PayPal Account</source>
+        <target>Compte PayPal</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_account.1">
+        <source>Enter the default email address from your PayPal-Account. Note: Check the correct spelling, and case-sensitive.</source>
+        <target>Entrez votre nom d&apos;utilisateur PayPal (adresse e-mail).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.price.0">
+        <source>Price</source>
+        <target>Prix</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.price.1">
+        <source>Enter a price or percent value (e.g. &quot;10&quot; or &quot;10%&quot;).</source>
+        <target>Entrez un prix ou une valeur en pourcentage (ex: &quot;10&quot; ou &quot;10%&quot;).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.tax_class.0">
+        <source>Tax Class</source>
+        <target>Taxe</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.tax_class.1">
+        <source>Please select a tax class for the price.</source>
+        <target>Sélectionner une taxe pour le prix.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.debug.0">
+        <source>Debug mode</source>
+        <target>Mode debug</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.debug.1">
+        <source>For testing without actually capturing for payment.</source>
+        <target>Pour les tests sans paiement réel.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.enabled.0">
+        <source>Enabled</source>
+        <target>Activé</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.enabled.1">
+        <source>Check here if the payment method should be enabled in the store.</source>
+        <target>Cochez cette case si le module de paiement doit être activé dans la boutique.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.no_shipping">
+        <source>Orders without shipping</source>
+        <target>Commandes sans livraison</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.onlyAvailable">
+        <source>Enable if only these product types are in cart</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.notAvailable">
+        <source>Disable if one of these product types are in cart</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.allAvailable">
+        <source>Enable if all these product types are in cart</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.oneAvailable">
+        <source>Enable if one of these product types is in cart</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.type_legend">
+        <source>Name &amp; Type</source>
+        <target>Nom &amp; Type</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.note_legend">
+        <source>Additional notes</source>
+        <target>Notes complémentaires</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.checkout_legend">
+        <source>Checkout</source>
+        <target>Commander</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.config_legend">
+        <source>Configuration</source>
+        <target>Configuration</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.gateway_legend">
+        <source>Payment gateway</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.price_legend">
+        <source>Price</source>
+        <target>Prix</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.enabled_legend">
+        <source>Approval</source>
+        <target>Approbation</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

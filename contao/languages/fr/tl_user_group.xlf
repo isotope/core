@@ -1,0 +1,73 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="contao/languages/en/tl_user_group.xlf" source-language="en" target-language="fr">
+    <body>
+      <trans-unit id="tl_user_group.isotope_legend">
+        <source>Isotope eCommerce</source>
+        <target>Isotope eCommerce</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_modules.0">
+        <source>Isotope modules</source>
+        <target>Modules Isotope</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_modules.1">
+        <source>Select which store configuration modules user of this group can access.</source>
+        <target>Sélectionner les modules dont cet utilisateur peut accéder.</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_producttypes.0">
+        <source>Allowed product types</source>
+        <target>Types de produits</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_producttypes.1">
+        <source>Here you can grant access to one or more product types.</source>
+        <target>Les utilisateurs peuvent seulement voir et modifier les produits et les types de produits activés.</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_payments.0">
+        <source>Allowed payment modules</source>
+        <target>Allowed payment modules</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_payments.1">
+        <source>Here you can grant access to one or more payment modules.</source>
+        <target>Here you can grant access to one or more payment modules.</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_shippings.0">
+        <source>Allowed shipping modules</source>
+        <target>Allowed shipping modules</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_shippings.1">
+        <source>Here you can grant access to one or more shipping modules.</source>
+        <target>Here you can grant access to one or more shipping modules.</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_tax_classes.0">
+        <source>Allowed tax classes</source>
+        <target>Taxes autorisées</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_tax_classes.1">
+        <source>Here you can grant access to one or more tax classes.</source>
+        <target>Ici vous pouvez accorder l&apos;accès à une ou plusieurs taxes.</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_tax_rates.0">
+        <source>Allowed tax rates</source>
+        <target>Taux de taxe autorisés</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_tax_rates.1">
+        <source>Here you can grant access to one or more tax rates.</source>
+        <target>Ici vous pouvez accorder l&apos;accès à un ou plusieurs taux de taxe.</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_configs.0">
+        <source>Allowed store configurations</source>
+        <target>Configurations de boutique autorisées</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_configs.1">
+        <source>Here you can grant access to one or more store configurations.</source>
+        <target>Ici, vous pouvez accorder l&apos;accès à une ou plusieurs configurations de boutique.</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_member_groups.0">
+        <source>Allowed member groups</source>
+        <target>Groupes de produits</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_member_groups.1">
+        <source>Back end users can only see orders of these member groups.</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

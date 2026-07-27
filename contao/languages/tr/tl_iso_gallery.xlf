@@ -1,0 +1,97 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="contao/languages/en/tl_iso_gallery.xlf" source-language="en" target-language="tr">
+    <body>
+      <trans-unit id="tl_iso_gallery.tableLabel">
+        <source>Gallery</source>
+        <target>Galeri</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.name.0">
+        <source>Name</source>
+        <target>Ad </target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.name.1">
+        <source>Enter a name for this gallery.</source>
+        <target>Bu galeri için bir ad girin</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.type.0">
+        <source>Type</source>
+        <target>Tip</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.type.1">
+        <source>Please select a gallery type.</source>
+        <target>Bir galeri tipi seçin</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.anchor.0">
+        <source>Image anchor</source>
+        <target>Resim dayanağı</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.anchor.1">
+        <source>Select what anchor type should be generated on the image.</source>
+        <target>Görüntüye hangi dayanak türünün oluşturulması gerektiğini seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.placeholder.0">
+        <source>Placeholder image</source>
+        <target>Yer tutucu - placeholder resim</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.placeholder.1">
+        <source>This image will be used if an image file cannot be found or none are associated with a product.</source>
+        <target>Bu resim, bir resim dosyası bulunamazsa veya hiç bir ürünle ilişkilendirilmemişse kullanılacaktır.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.main_size.0">
+        <source>Main image size</source>
+        <target>Ana resim boyutu</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.main_size.1">
+        <source>Please enter a width and height for the main product image.</source>
+        <target>Lütfen ana ürün resmi için bir genişlik ve yükseklik girin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.gallery_size.0">
+        <source>Gallery image size</source>
+        <target>Galeri resim boyutu</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.gallery_size.1">
+        <source>Please enter a width and height for the additional images.</source>
+        <target>Lütfen ek resimler için bir genişlik ve yükseklik girin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.lightbox_size.0">
+        <source>Lightbox image size</source>
+        <target>Lightbox resim boyutu</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.lightbox_size.1">
+        <source>Please enter a width and height for lightbox images.</source>
+        <target>Lütfen lightbox resimleri için bir genişlik ve yükseklik girin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.customTpl.0">
+        <source>Custom gallery template</source>
+        <target>Özel galeri şablonu</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.customTpl.1">
+        <source>Here you can overwrite the default gallery template.</source>
+        <target>Burada varsayılan galeri şablonunun üzerine yazabilirsiniz.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.name_legend">
+        <source>Name &amp; Type</source>
+        <target>İsim &amp;  tip</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.size_legend">
+        <source>Image sizes</source>
+        <target>Resim boyutları</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.template_legend">
+        <source>Template settings</source>
+        <target>Şablon ayarları</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.anchor.none">
+        <source>No link action</source>
+        <target>Link eylemi yok</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.anchor.reader">
+        <source>Link to the product reader</source>
+        <target>Ürün okuyucusuna bağla</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.anchor.lightbox">
+        <source>Link to the image (e.g. for lightbox)</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

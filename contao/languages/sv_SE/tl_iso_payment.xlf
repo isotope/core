@@ -1,0 +1,175 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="contao/languages/en/tl_iso_payment.xlf" source-language="en" target-language="sv-SE">
+    <body>
+      <trans-unit id="tl_iso_payment.tableLabel">
+        <source>Payment Method</source>
+        <target>Betalningsmetod</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.type.0">
+        <source>Type of Payment Gateway</source>
+        <target>Typ av betalningsgateway</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.type.1">
+        <source>Select a particular payment gateway</source>
+        <target>Välj en viss betalningsgateway</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.name.0">
+        <source>Name</source>
+        <target>Namn</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.name.1">
+        <source>Enter a name for this payment method.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.label.0">
+        <source>Label</source>
+        <target>Etikett</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.label.1">
+        <source>This is displayed on the front end in association with the payment option.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.note.0">
+        <source>Payment Note</source>
+        <target>Betalningsanmärkning</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.note.1">
+        <source>This note can be sent in confirmation mails (##payment_note##).</source>
+        <target>Denna notering kan skickas i bekräftelsemail (##payment_note##).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.processing_status.0">
+        <source>Status for payment in progress</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.processing_status.1">
+        <source>Select the order status for when the payment is in progress.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paid_status.0">
+        <source>Status for paid orders</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paid_status.1">
+        <source>Select the order status for when the payment was successful.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.failed_status.0">
+        <source>Status for failed orders</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.failed_status.1">
+        <source>Select the order status for when the payment failed.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.rule.0">
+        <source>Rule condition</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.rule.1">
+        <source>Allow payment method if this rule matches.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.shipping_modules.0">
+        <source>Shipping methods</source>
+        <target>Fraktmetoder</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.shipping_modules.1">
+        <source>You can restrict this payment method to certain shipping methods (e.g. Cash only when picking up).</source>
+        <target>Du kan begränsa denna betalningsmetod till vissa fraktmetoder (t.ex. endast kontanter vid hämtning).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.product_types.0">
+        <source>Product types</source>
+        <target>Produkttyper</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.product_types.1">
+        <source>You can restrict this payment method to certain product types. If the cart contains a product type you have not selected, the payment method is not available.</source>
+        <target>Du kan begränsa denna betalningsmetod till vissa produkttyper. Om varukorgen innehåller en produkttyp som du inte har valt är betalningsmetoden inte tillgänglig.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.product_types_condition.0">
+        <source>Product type condition</source>
+        <target>Produkttyp skick</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.product_types_condition.1">
+        <source>Select how the product type filter should be applied.</source>
+        <target>Välj hur produkttypfiltret ska tillämpas.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_account.0">
+        <source>PayPal Account</source>
+        <target>PayPal Account</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_account.1">
+        <source>Enter the default email address from your PayPal-Account. Note: Check the correct spelling, and case-sensitive.</source>
+        <target>Ange standard-e-postadressen från ditt PayPal-konto. Obs: Kontrollera rätt stavning och versaler och gemener..</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.price.0">
+        <source>Price</source>
+        <target>Pris</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.price.1">
+        <source>Enter a price or percent value (e.g. &quot;10&quot; or &quot;10%&quot;).</source>
+        <target>Ange ett pris eller procentvärde (t.ex. &quot;10&quot; eller &quot;10 %&quot;).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.tax_class.0">
+        <source>Tax Class</source>
+        <target>Skatteklass</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.tax_class.1">
+        <source>Please select a tax class for the price.</source>
+        <target>Vänligen välj en skatteklass för priset.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.debug.0">
+        <source>Debug mode</source>
+        <target>Felsökningsläge</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.debug.1">
+        <source>For testing without actually capturing for payment.</source>
+        <target>För att testa utan att faktiskt registrera betalning.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.enabled.0">
+        <source>Enabled</source>
+        <target>Aktiverad</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.enabled.1">
+        <source>Check here if the payment method should be enabled in the store.</source>
+        <target>Markera här om betalningsmetoden ska vara aktiverad i butiken.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.no_shipping">
+        <source>Orders without shipping</source>
+        <target>Beställningar utan frakt</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.onlyAvailable">
+        <source>Enable if only these product types are in cart</source>
+        <target>Enable if only these product types are in cart</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.notAvailable">
+        <source>Disable if one of these product types are in cart</source>
+        <target>Inaktivera om någon av dessa produkttyper finns i kundvagnen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.allAvailable">
+        <source>Enable if all these product types are in cart</source>
+        <target>Aktivera om alla dessa produkttyper finns i kundvagnen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.oneAvailable">
+        <source>Enable if one of these product types is in cart</source>
+        <target>Aktivera om en av dessa produkttyper finns i kundvagnen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.type_legend">
+        <source>Name &amp; Type</source>
+        <target>Namn &amp; Typ</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.note_legend">
+        <source>Additional notes</source>
+        <target>Ytterligare anmärkningar</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.checkout_legend">
+        <source>Checkout</source>
+        <target>Kassa</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.config_legend">
+        <source>Configuration</source>
+        <target>Konfiguration</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.gateway_legend">
+        <source>Payment gateway</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.price_legend">
+        <source>Price</source>
+        <target>Pris</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.enabled_legend">
+        <source>Approval</source>
+        <target>Godkännande</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

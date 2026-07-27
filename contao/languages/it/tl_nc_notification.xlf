@@ -1,0 +1,34 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="contao/languages/en/tl_nc_notification.xlf" source-language="en" target-language="it">
+    <body>
+      <trans-unit id="tl_nc_notification.iso_collectionTpl.0">
+        <source>Product collection template</source>
+        <target>Modulo per la raccolta del prodotto </target>
+      </trans-unit>
+      <trans-unit id="tl_nc_notification.iso_collectionTpl.1">
+        <source>Please choose a template to render the products for the notification content.</source>
+        <target>Si prega di scegliere un modello per presentare i prodotti per il contenuto di notifica.</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_notification.iso_gallery.0">
+        <source>Gallery</source>
+        <target>Galleria </target>
+      </trans-unit>
+      <trans-unit id="tl_nc_notification.iso_gallery.1">
+        <source>Select a gallery to render images.</source>
+        <target>Seleziona una galleria per renderizzare immagini.</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_notification.type.iso_order.0">
+        <source>New Order (Isotope eCommerce)</source>
+      </trans-unit>
+      <trans-unit id="tl_nc_notification.type.iso_order.1">
+        <source>This notification type can be sent for new orders in Isotope eCommerce.</source>
+      </trans-unit>
+      <trans-unit id="tl_nc_notification.type.iso_order_update.0">
+        <source>Order Update (Isotope eCommerce)</source>
+      </trans-unit>
+      <trans-unit id="tl_nc_notification.type.iso_order_update.1">
+        <source>This notification type can be sent when order status is updated in the backend.</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

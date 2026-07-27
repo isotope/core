@@ -1,0 +1,162 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="contao/languages/en/nc_tokens.xlf" source-language="en" target-language="tr">
+    <body>
+      <trans-unit id="nc_tokens.iso_order.uniqid">
+        <source>The order&apos;s unique ID.</source>
+        <target>Siparişin benzersiz ID&apos;si.</target>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.order_status">
+        <source>The label of the order&apos;s current status.</source>
+        <target>Siparişin geçerli durumu etiketi.</target>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.order_status_*">
+        <source>Fields of the current order status.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.transaction_status">
+        <source>The label of the order&apos;s transaction status.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.transaction_status_*">
+        <source>Fields of the current transaction status.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.delivery_status">
+        <source>The label of the order&apos;s delivery status.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.delivery_status_*">
+        <source>Fields of the current delivery status.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.recipient_email">
+        <source>The email address of the recipient.</source>
+        <target>Alıcının e-posta adresi.</target>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.order_id">
+        <source>The ID of the order.</source>
+        <target>Siparişin ID&apos;si.</target>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.order_items">
+        <source>The number of items (quantities summed up) in the order.</source>
+        <target>Siparişteki öğelerin sayısı (toplam miktarlar).</target>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.order_products">
+        <source>The number of individual products in the order.</source>
+        <target>Siparişteki ürünlerin tek tek sayıları.</target>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.order_subtotal">
+        <source>The order&apos;s subtotal.</source>
+        <target>Siparişin ara toplamı.</target>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.order_total">
+        <source>The order&apos;s total.</source>
+        <target>Sipariş toplamı.</target>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.document_number">
+        <source>The order document number.</source>
+        <target>Sipariş belge numarası.</target>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.cart_text">
+        <source>Order/Cart as text.</source>
+        <target>Metin şeklinde Sipariş/Sepet.</target>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.cart_html">
+        <source>Order/Cart as HTML.</source>
+        <target>HTML olarak Sipariş/Sepet.</target>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.document">
+        <source>The document that should be attached (e.g. an invoice).</source>
+        <target>Eklenmesi gereken belge (ör. Fatura).</target>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.bank_name">
+        <source>Bank name entered in store config.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.bank_account">
+        <source>Bank account number (IBAN) entered in store config.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.bank_code">
+        <source>Bank code (BIC/SWIFT) entered in store config.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.tax_number">
+        <source>Tax number entered in store config.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.log_shipping_tracking">
+        <source>Shipping tracking entered in order status log.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.log_customer_notes">
+        <source>Customer notes entered in order status log.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.collection_*">
+        <source>All the collection/order column fields as stored in the database</source>
+        <target>Veritabanın da saklandığı gibi tüm koleksiyon/sipariş sütunları</target>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.billing_address">
+        <source>Formatted billing address.</source>
+        <target>Biçimlendirilmiş fatura adresi.</target>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.billing_address_*">
+        <source>All the billing address model fields.</source>
+        <target>Tüm fatura adresi model alanları.</target>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.shipping_address">
+        <source>Formatted shipping address.</source>
+        <target>Biçimlendirilmiş nakliye adresi.</target>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.shipping_address_*">
+        <source>All the shipping address model fields.</source>
+        <target>Tüm nakliye adresi model alanları.</target>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.form_*">
+        <source>All the order condition form fields.</source>
+        <target>Tüm sipariş koşulları alanları.</target>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.payment_id">
+        <source>Payment method ID.</source>
+        <target>Ödeme şekli ID&apos;si.</target>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.payment_label">
+        <source>Payment method label.</source>
+        <target>Ödeme şekli etiketi.</target>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.payment_note">
+        <source>Payment method note.</source>
+        <target>Ödeme şekli notu.</target>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.shipping_id">
+        <source>Shipping method ID.</source>
+        <target>Nakliye şekli ID&apos;si.</target>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.shipping_label">
+        <source>Shipping method label.</source>
+        <target>Nakliye şekli etiketi.</target>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.shipping_note">
+        <source>Shipping method note.</source>
+        <target>Nakliye şekli notu.</target>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.config_*">
+        <source>All the store configuration fields.</source>
+        <target>Tüm mağaza yapılandırma alanları.</target>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.member_*">
+        <source>All the member fields if it was a member checkout.</source>
+        <target>Üyelik işlemi olan tüm üye alanları.</target>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.previous_order_status">
+        <source>The label of the order&apos;s previous status. Useful for things like &quot;order status changed from x to y&quot;.</source>
+        <target>Siparişin önceki durumunun etiketi. &quot;Sipariş durumu x&apos;ten y&apos;ye değiştirildi&quot; gibi şeyler için kullanışlı.</target>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.previous_order_status_*">
+        <source>Fields of the previous order status.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.previous_transaction_status">
+        <source>The label of the previous transaction status.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.previous_transaction_status_*">
+        <source>Fields of the previous transaction status.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.previous_delivery_status">
+        <source>The label of the previous delivery status.</source>
+      </trans-unit>
+      <trans-unit id="nc_tokens.iso_order.previous_delivery_status_*">
+        <source>Fields of the previous delivery status.</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
