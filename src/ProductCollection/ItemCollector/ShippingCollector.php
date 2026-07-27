@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\ProductCollection\ItemCollector;
 
-use Isotope\CoreBundle\Checkout\Shipping\AbstractShipping;
 use Isotope\CoreBundle\ProductCollection\AbstractProductCollection;
 use Isotope\CoreBundle\ProductCollection\Cart\Cart;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
@@ -45,11 +44,7 @@ class ShippingCollector implements ItemCollectorInterface
         $item->setLevel($shipping->getLevel());
         $item->setDynamic(true);
         $item->setPrice($price);
-
-        // TODO: do not check for abstract class
-        if ($shipping instanceof AbstractShipping) {
-            $item->setWeight($shipping->getWeight());
-        }
+        $item->setWeight($shipping->getShippingWeight());
 
         $collection->add($item);
     }

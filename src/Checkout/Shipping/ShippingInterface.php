@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Checkout\Shipping;
 
 use Isotope\CoreBundle\Store\Price\PriceDefinition;
+use Isotope\CoreBundle\Store\Weight\Weight;
 use Isotope\CoreBundle\Twig\TemplateMarkup;
 
 /**
@@ -39,6 +40,8 @@ interface ShippingInterface
     public function getPriceDefinition(): PriceDefinition|null;
 
     public function review(): TemplateMarkup|null;
+
+    public function getShippingWeight(): Weight|null;
 
     public function getTrackingUrl(): string|null;
 }

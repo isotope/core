@@ -32,7 +32,7 @@ abstract class AbstractShipping extends AbstractCheckoutMethod implements Shippi
         return $this;
     }
 
-    public function getWeight(): Weight|null
+    public function getShippingWeight(): Weight|null
     {
         return $this->shippingWeight;
     }
