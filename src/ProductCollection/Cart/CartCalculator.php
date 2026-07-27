@@ -12,6 +12,9 @@ use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Price\PriceCalculator;
 use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 
+/**
+ * @extends AbstractCollectionCalculator<Cart>
+ */
 class CartCalculator extends AbstractCollectionCalculator
 {
     /**

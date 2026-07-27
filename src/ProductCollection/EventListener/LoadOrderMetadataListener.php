@@ -57,11 +57,11 @@ class LoadOrderMetadataListener
         $order->setBillingAddress(static fn () => AddressModel::findById($model->billing_address_id));
         $order->setShippingAddress(static fn () => AddressModel::findById($model->shipping_address_id));
 
-        if ($paymentId = $model?->payment_id) {
+        if ($paymentId = $model->payment_id) {
             $order->setPaymentMethod(fn () => $this->paymentRegistry->get(PaymentModel::findById($paymentId), $context));
         }
 
-        if ($shippingId = $model?->shipping_id) {
+        if ($shippingId = $model->shipping_id) {
             $order->setShippingMethod(fn () => $this->shippingRegistry->get(ShippingModel::findById($shippingId), $context));
         }
     }

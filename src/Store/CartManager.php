@@ -15,7 +15,6 @@ use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Exception\EmptyCartException;
 use Isotope\CoreBundle\Store\Order\CreateOrderResult;
 use Isotope\CoreBundle\Store\Order\OrderConverter;
-use Symfony\Contracts\Service\ResetInterface;
 
 class CartManager
 {

@@ -5,9 +5,15 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Store\Price;
 
 use Ramsey\Collection\AbstractCollection;
+use Ramsey\Collection\Sort;
 
 /**
  * @extends AbstractCollection<PriceDefinition>
+ *
+ * @method static where(?string $propertyOrMethod, mixed $value)
+ * @method static sort(?string $propertyOrMethod = null, Sort $order = Sort::Ascending)
+ * @method static merge(PriceDefinitionCollection ...$collections)
+ * @method static filter(callable $callback)
  */
 class PriceDefinitionCollection extends AbstractCollection
 {

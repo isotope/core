@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Product\DataCollector;
 
+/**
+ * @extends \ArrayObject<string, mixed>
+ */
 class ProductDto extends \ArrayObject
 {
     private string|null $type = null;

@@ -9,7 +9,7 @@ use Ramsey\Collection\Map\AbstractMap;
 use Ramsey\Collection\Tool\ValueToStringTrait;
 
 /**
- * @extends AbstractMap<ProductDto>
+ * @extends AbstractMap<string|int, ProductDto>
  */
 class ProductDtoCollection extends AbstractMap
 {

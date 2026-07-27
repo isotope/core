@@ -11,6 +11,7 @@ use Isotope\CoreBundle\Model\RelatedProductModel;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\DataCollector\ProductDto;
 use Isotope\CoreBundle\Product\DataCollector\ProductDtoCollection;
+use Isotope\CoreBundle\Product\Product;
 use Isotope\CoreBundle\Product\ProductBuilder;
 use Isotope\CoreBundle\Product\ProductCollection;
 use Isotope\CoreBundle\Product\Render\ListView;
@@ -71,7 +72,7 @@ class RelatedProductsController extends AbstractContentElementController
         $dtoCollection = new ProductDtoCollection(array_map(static fn (int|string $id) => new ProductDto('tl_iso_product.'.$id), $productIds));
 
         $products = $this->productBuilder->build($dtoCollection, $this->storeManager->getCurrentContext());
-        $products = $products->filter(static fn (CoreProduct $product) => $product->isAvailable());
+        $products = $products->filter(static fn (Product $product) => $product instanceof CoreProduct && $product->isAvailable());
 
         if ($sortingField) {
             $products = $products->sort($sortingField, 'DESC' === $sortingDirection ? Sort::Descending : Sort::Ascending);

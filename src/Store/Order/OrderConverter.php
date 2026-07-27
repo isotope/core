@@ -15,7 +15,7 @@ use Isotope\CoreBundle\Store\Order\Transformer\AddressTransformer;
 use Isotope\CoreBundle\Store\Order\Transformer\CartTransformer;
 use Isotope\CoreBundle\Store\Order\Transformer\ExtensionTransformer;
 use Isotope\CoreBundle\Store\Order\Transformer\LineItemTransformer;
-use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @experimental

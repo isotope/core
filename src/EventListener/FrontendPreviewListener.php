@@ -52,6 +52,6 @@ class FrontendPreviewListener
             return;
         }
 
-        $event->setUrl($this->urlGenerator->generate(ProductModel::findById($request?->query->get('product')), [], UrlGeneratorInterface::ABSOLUTE_URL));
+        $event->setUrl($this->urlGenerator->generate(ProductModel::findById($request->query->get('product')), [], UrlGeneratorInterface::ABSOLUTE_URL));
     }
 }

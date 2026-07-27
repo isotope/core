@@ -24,7 +24,7 @@ class StringUtil
      *
      * @param (callable(mixed $value):TReturn)|null $callback
      *
-     * @return ($forceArray is true ? array<TReturn> : array<TReturn>|null)
+     * @return ($forceArray is true ? ($callback is null ? array<string> : array<TReturn>) : ($callback is null ? array<string>|null : array<TReturn>|null))
      */
     public static function unserialize(string|null $value, callable|null $callback = null, bool $forceArray = false): array|null
     {
@@ -46,7 +46,7 @@ class StringUtil
      *
      * @param (callable(mixed $value):TReturn)|null $callback
      *
-     * @return ($forceArray is true ? array<TReturn> : array<TReturn>|null)
+     * @return ($forceArray is true ? ($callback is null ? array<string> : array<TReturn>) : ($callback is null ? array<string>|null : array<TReturn>|null))
      */
     public static function csv(string|null $value, callable|null $callback = null, bool $forceArray = false): array|null
     {

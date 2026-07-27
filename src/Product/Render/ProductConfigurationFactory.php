@@ -16,8 +16,8 @@ use Isotope\CoreBundle\Model\ProductCollectionItemModel;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\Event\ProductConfigurationEvent;
 use Isotope\CoreBundle\Store\Context\ProductContext;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class ProductConfigurationFactory
 {
@@ -97,7 +97,7 @@ class ProductConfigurationFactory
 
             /** @var Widget $widget */
             $widget = new $widgetClass($fieldConfig);
-            $widget->storeValues = true;
+            $widget->storeValues = 1;
             $widget->value = $value ?? $defaults[$attributeName] ?? null;
 
             if (
@@ -114,9 +114,9 @@ class ProductConfigurationFactory
                         foreach ($dcaConfig['save_callback'] as $callback) {
                             try {
                                 if (\is_array($callback)) {
-                                    $varValue = System::importStatic($callback[0])->{$callback[1]}($varValue, $product, $widget);
+                                    $value = System::importStatic($callback[0])->{$callback[1]}($value, $product, $widget);
                                 } else {
-                                    $varValue = $callback($varValue, $product, $widget);
+                                    $value = $callback($value, $product, $widget);
                                 }
                             } catch (\Exception $e) {
                                 $widget->class = 'error';
@@ -142,8 +142,11 @@ class ProductConfigurationFactory
             }
         }
 
+        /** @var CoreProduct $variant */
+        $variant = 1 === $variants->count() ? $variants->first() : $product;
+
         $event = new ProductConfigurationEvent(
-            1 === $variants->count() ? $variants->first() : $product,
+            $variant,
             $productContext->getContext(),
             $configuration,
             $widgets,

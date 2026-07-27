@@ -72,8 +72,10 @@ class SitemapListener
                     }
 
                     foreach ($product->getVariants() as $variant) {
-                        $reference->product = $variant;
-                        $this->addToSitemap($reference, $event->getDocument());
+                        if ($variant instanceof CoreProduct) {
+                            $reference->product = $variant;
+                            $this->addToSitemap($reference, $event->getDocument());
+                        }
                     }
 
                     break;

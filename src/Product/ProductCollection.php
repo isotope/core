@@ -5,9 +5,15 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Product;
 
 use Ramsey\Collection\AbstractCollection;
+use Ramsey\Collection\Sort;
 
 /**
  * @extends AbstractCollection<Product>
+ *
+ * @method static where(?string $propertyOrMethod, mixed $value)
+ * @method static sort(?string $propertyOrMethod = null, Sort $order = Sort::Ascending)
+ * @method static merge(ProductCollection ...$collections)
+ * @method static filter(callable $callback)
  */
 class ProductCollection extends AbstractCollection
 {
@@ -25,16 +31,5 @@ class ProductCollection extends AbstractCollection
         }
 
         return null;
-    }
-
-    public function findByConfiguration(array $configuration): Product|null
-    {
-        $collection = $this;
-
-        foreach ($configuration as $k => $v) {
-            $collection = $collection->filter(static fn (Product $product) => $product->{$k} === $v);
-        }
-
-        return 1 === $collection->count() ? $collection->first() : null;
     }
 }

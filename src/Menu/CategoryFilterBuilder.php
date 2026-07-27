@@ -42,7 +42,7 @@ class CategoryFilterBuilder extends Module
         $menu = $this->factory->createItem('root');
         [$productQuery, $currentIds] = $this->getCurrentIds($options['filterKey']);
 
-        $this->renderTree($menu, $options['rootPage'], 1, $productQuery, $options['filterKey'], $currentIds);
+        $this->renderTree($menu, (int) $options['rootPage'], 1, $productQuery, $options['filterKey'], $currentIds);
 
         return $menu;
     }
@@ -52,7 +52,7 @@ class CategoryFilterBuilder extends Module
         throw new RuntimeException('Invalid call to '.__METHOD__);
     }
 
-    private function renderTree(ItemInterface $menu, $pid, $level, ProductQuery|null $productQuery, string $filterKey, array $currentIds): void
+    private function renderTree(ItemInterface $menu, int $pid, int $level, ProductQuery|null $productQuery, string $filterKey, array $currentIds): void
     {
         $database = Database::getInstance();
         $pages = static::getPublishedSubpagesByPid($pid, $this->showHidden);
@@ -105,7 +105,7 @@ class CategoryFilterBuilder extends Module
             }
 
             if ($hasSubpages) {
-                $this->renderTree($item, $subpage->id, $level + 1, $productQuery, $filterKey, $currentIds);
+                $this->renderTree($item, (int) $subpage->id, $level + 1, $productQuery, $filterKey, $currentIds);
             }
         }
     }

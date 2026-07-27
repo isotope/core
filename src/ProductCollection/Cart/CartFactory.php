@@ -9,7 +9,7 @@ use Isotope\CoreBundle\ProductCollection\Event\CartCreatedEvent;
 use Isotope\CoreBundle\ProductCollection\Event\MergeCollectionEvent;
 use Isotope\CoreBundle\ProductCollection\ProductCollectionStorage;
 use Isotope\CoreBundle\Store\Context\StoreContext;
-use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class CartFactory
 {

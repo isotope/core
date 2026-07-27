@@ -22,6 +22,9 @@ class OptionsWizardListener
     {
     }
 
+    /**
+     * @param DataContainer|mixed $dc
+     */
     public function __invoke(array $attributes, $dc): array
     {
         if (!$dc instanceof DataContainer) {

@@ -8,6 +8,9 @@ use Symfony\Contracts\Service\ServiceProviderInterface;
 
 class ProductActionRegistry
 {
+    /**
+     * @param ServiceProviderInterface<ProductActionInterface> $actions
+     */
     public function __construct(private readonly ServiceProviderInterface $actions)
     {
     }

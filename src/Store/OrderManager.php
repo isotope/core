@@ -24,10 +24,10 @@ use Isotope\CoreBundle\Store\Order\CreateOrderResult;
 use Isotope\CoreBundle\Store\Order\WorkflowManager;
 use Isotope\CoreBundle\Util\StringUtil;
 use Isotope\CoreBundle\Validator\Exception\ConstraintViolationException;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\String\UnicodeString;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @experimental
@@ -100,7 +100,7 @@ class OrderManager
                 $collection->transaction_status = array_key_first($this->workflowManager->getTransactionWorkflow()->getMarking($collection)->getPlaces());
                 $collection->delivery_status = array_key_first($this->workflowManager->getDeliveryWorkflow()->getMarking($collection)->getPlaces());
                 $collection->billing_address_id = $billingAddress->id ?? 0;
-                $collection->shipping_address_id = $shippingAddress?->id ?? 0;
+                $collection->shipping_address_id = $shippingAddress->id ?? 0;
                 $collection->save();
 
                 $event->setData($data);

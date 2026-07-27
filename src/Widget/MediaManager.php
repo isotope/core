@@ -16,7 +16,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Terminal42\DcMultilingualBundle\Driver;
 
 /**
- * @phpstan-type MediaFile array{src: string, link?: string, alt?: string, desc?: string}
+ * @phpstan-type MediaFile array{src: string, link?: string, alt?: string, desc?: string, translate?: "all"|"text"|"none"}
  */
 class MediaManager extends Widget implements UploadableWidgetInterface
 {

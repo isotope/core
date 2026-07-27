@@ -23,6 +23,11 @@ class AddressFieldsListener extends Backend
         return $attributes;
     }
 
+    /**
+     * @param string $value
+     *
+     * @return array<array<mixed>>
+     */
     #[AsCallback('tl_iso_config', 'fields.address_fields.load')]
     public function load($value): array
     {
@@ -63,6 +68,9 @@ class AddressFieldsListener extends Backend
         return array_values($fields);
     }
 
+    /**
+     * @param string $value
+     */
     #[AsCallback('tl_iso_config', 'fields.address_fields.save')]
     public function save($value, DataContainer $dc): string
     {

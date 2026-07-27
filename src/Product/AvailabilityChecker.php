@@ -39,7 +39,7 @@ class AvailabilityChecker
 
     private function hasAccess(CoreProduct $product, StoreContext $context): bool
     {
-        $attributes = $product->getProductType()->getAttributes() ?? [];
+        $attributes = $product->getProductType()->getAttributes();
 
         if (
             !\in_array('protected', $attributes, true)

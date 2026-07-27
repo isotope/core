@@ -164,9 +164,10 @@ class LabelListener
                 return '';
             }
 
+            $data = array_map(fn (array $variant) => $this->priceFactory->createFromArray($variant, $type->hasAdvancedPrices(), $context), $variants);
+
             /** @var PriceDefinitionCollection $prices */
-            $prices = array_map(fn (array $variant) => $this->priceFactory->createFromArray($variant, $type->hasAdvancedPrices(), $context), $variants);
-            $prices = (new PriceDefinitionCollection())->merge(...$prices);
+            $prices = (new PriceDefinitionCollection())->merge(...$data);
 
             $priceDefinition = $prices->getLowest();
             $fromPrice = $prices->hasRange();
@@ -187,7 +188,7 @@ class LabelListener
 
             $taxClass = $priceDefinition->getTaxClassId() ? TaxClassModel::findById($priceDefinition->getTaxClassId()) : null;
 
-            return $label.\sprintf(' <span style="color:#999">[%s]</span>', $taxClass?->name ?? $this->translator->trans('MSC.taxFree', [], 'contao_default'));
+            return $label.\sprintf(' <span style="color:#999">[%s]</span>', $taxClass->name ?? $this->translator->trans('MSC.taxFree', [], 'contao_default'));
         }
 
         return '';

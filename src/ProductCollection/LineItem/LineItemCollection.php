@@ -8,10 +8,15 @@ use Isotope\CoreBundle\Store\Weight\Scale;
 use Isotope\CoreBundle\Store\Weight\Weight;
 use Isotope\CoreBundle\Store\Weight\WeightUnit;
 use Ramsey\Collection\AbstractCollection;
-use Ramsey\Collection\CollectionInterface;
+use Ramsey\Collection\Sort;
 
 /**
  * @extends AbstractCollection<LineItem>
+ *
+ * @method static where(?string $propertyOrMethod, mixed $value)
+ * @method static sort(?string $propertyOrMethod = null, Sort $order = Sort::Ascending)
+ * @method static merge(LineItemCollection ...$collections)
+ * @method static filter(callable $callback)
  */
 class LineItemCollection extends AbstractCollection
 {
@@ -20,15 +25,12 @@ class LineItemCollection extends AbstractCollection
         return LineItem::class;
     }
 
-    /**
-     * @return LineItemCollection
-     */
-    public function whereType(string $type): CollectionInterface
+    public function whereType(string $type): static
     {
         return $this->where('getType', $type);
     }
 
-    public function products(): self
+    public function products(): static
     {
         return $this->where('getType', LineItem::TYPE_PRODUCT);
     }

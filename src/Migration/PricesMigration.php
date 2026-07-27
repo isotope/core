@@ -33,7 +33,8 @@ class PricesMigration extends AbstractMigration
         $advancedPrices = [];
         $advancedTypes = $this->getProductTypePrices();
 
-        /** @var array{
+        /** @var list<array{
+         *     pid: int,
          *     tax_class: int,
          *     config_id: int,
          *     member_group: int,
@@ -43,7 +44,7 @@ class PricesMigration extends AbstractMigration
          *     tier_values: string,
          *     type: int,
          *     parent_type: int
-         * } $prices
+         * }> $prices
          */
         $prices = $this->connection->fetchAllAssociative(<<<'SQL'
             SELECT

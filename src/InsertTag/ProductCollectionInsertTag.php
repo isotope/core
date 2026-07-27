@@ -96,7 +96,7 @@ class ProductCollectionInsertTag implements InsertTagResolverNestedResolvedInter
                 return $this->formatAddress($address, $parameters->get(1));
 
             case 'weight':
-                $unit = WeightUnit::tryFrom($parameters[2]);
+                $unit = WeightUnit::tryFrom($parameters->get(2));
 
                 if (!$unit) {
                     return '';

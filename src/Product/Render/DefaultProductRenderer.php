@@ -11,9 +11,9 @@ use Isotope\CoreBundle\Product\Event\ProductPriceEvent;
 use Isotope\CoreBundle\Store\Context\ProductContext;
 use Isotope\CoreBundle\Twig\TemplateMarkup;
 use Isotope\CoreBundle\Twig\TemplateMarkupFactory;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class DefaultProductRenderer implements ProductRendererInterface
 {

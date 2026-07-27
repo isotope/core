@@ -23,12 +23,12 @@ use Symfony\Contracts\Service\ServiceProviderInterface;
 class AbstractModelTypeRegistry
 {
     /**
-     * @var array<class-string<ModelTypeInterface::class>, ContainerInterface|null>
+     * @var array<class-string<TType>, ContainerInterface>
      */
     protected array $subscribedServices = [];
 
     /**
-     * @var array<class-string, LoggerAwareInterface>
+     * @var array<class-string, LoggerInterface>
      */
     protected array $loggers = [];
 

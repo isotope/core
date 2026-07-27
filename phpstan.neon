@@ -1,5 +1,6 @@
 parameters:
-    level: 0
+    excludePaths:
+        - 'src/DataContainer/ProductData.php'
     ignoreErrors:
-        - '#Unsafe usage of new static\(\)\.#'
-        - '#Function file_exists is unsafe to use#'
+        - '#no value type specified in iterable type#'
+        - '#\$objDca of static method Contao\\Widget::getAttributesFromDca\(\) expects Contao\\DataContainer|Contao\\Module\|null#'

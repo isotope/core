@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\ModelType;
 
 use Psr\Container\ContainerInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface as SymfonyContainerInterface;
 use Symfony\Contracts\Service\Attribute\Required;
 
 trait ContainerAwareTrait
@@ -19,7 +18,7 @@ trait ContainerAwareTrait
     }
 
     /**
-     * @template T
+     * @template T of object
      *
      * @param class-string<T> $id
      *
@@ -27,6 +26,6 @@ trait ContainerAwareTrait
      */
     protected function get(string $id): object
     {
-        return $this->container->get($id, SymfonyContainerInterface::EXCEPTION_ON_INVALID_REFERENCE);
+        return $this->container->get($id);
     }
 }

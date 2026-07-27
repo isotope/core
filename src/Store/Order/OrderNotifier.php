@@ -8,7 +8,7 @@ use Isotope\CoreBundle\ProductCollection\Order\Order;
 use Isotope\CoreBundle\ProductCollection\Order\OrderFactory;
 use Isotope\CoreBundle\Store\Event\CollectOrderNotificationTokensEvent;
 use Isotope\CoreBundle\Store\Exception\CollectionTypeException;
-use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Terminal42\NotificationCenterBundle\Config\ConfigLoader;
 use Terminal42\NotificationCenterBundle\Exception\Parcel\CouldNotCreateParcelException;
 use Terminal42\NotificationCenterBundle\NotificationCenter;

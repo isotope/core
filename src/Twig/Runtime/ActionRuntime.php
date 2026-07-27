@@ -140,8 +140,7 @@ class ActionRuntime implements RuntimeExtensionInterface
 
         if (
             $result->message
-            && ($session = $request->getSession())
-            && $session instanceof FlashBagAwareSessionInterface
+            && ($session = $request->getSession()) instanceof FlashBagAwareSessionInterface
         ) {
             $type = match (true) {
                 $result->message instanceof TemplateMarkup => 'isotope.raw',

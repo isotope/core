@@ -367,7 +367,7 @@ class AttributeListener
     /**
      * @return array{
      *     0: ProductTypeModel|null,
-     *     2: bool
+     *     1: bool
      * }
      */
     private function getCurrent(ProductData $dc): array

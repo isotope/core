@@ -46,7 +46,7 @@ class FormBuilder
         $form->addFormField($formId, [
             'inputType' => 'hidden',
             'ignoreModelValue' => true,
-            'value' => $address?->id ?? '1',
+            'value' => $address->id ?? 1,
         ]);
 
         return $form;

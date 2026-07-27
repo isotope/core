@@ -14,7 +14,6 @@ use Contao\StringUtil;
 use Contao\System;
 use Isotope\CoreBundle\Model\OrderStatusModel;
 use Isotope\CoreBundle\Model\ProductCollectionLogModel;
-use Isotope\CoreBundle\ModelType\ShippingRegistry;
 use Isotope\CoreBundle\ProductCollection\Order\OrderFactory;
 use Isotope\CoreBundle\Store\Order\OrderNotifier;
 use Isotope\CoreBundle\Store\Order\StatusType;
@@ -70,7 +69,7 @@ class OrderLogListener
                 if ($logModel->author) {
                     $log['author'] = [
                         'label' => $this->formatter->dcaLabel($logTable, 'author'),
-                        'value' => $logModel->author ? $this->formatter->dcaValue($logTable, 'author', $logModel->author) : '–',
+                        'value' => $this->formatter->dcaValue($logTable, 'author', $logModel->author),
                     ];
                 }
 

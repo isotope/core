@@ -30,7 +30,7 @@ class ProductResolver implements ContentUrlResolverInterface
 
     public static function canLinkToPage(PageModel|null $pageModel): bool
     {
-        return 'iso_products' === $pageModel?->type && 'none' !== $pageModel?->iso_readerMode;
+        return $pageModel && 'iso_products' === $pageModel->type && 'none' !== $pageModel->iso_readerMode;
     }
 
     public function resolve(object $content): ContentUrlResult|null
@@ -113,7 +113,7 @@ class ProductResolver implements ContentUrlResolverInterface
             return ContentUrlResult::resolve($referencePage);
         }
 
-        $content = new ProductReference($product, $referencePage ?: null);
+        $content = new ProductReference($product, $referencePage);
         $content->resolveVariant = false;
 
         return ContentUrlResult::url($this->urlGenerator->generate(

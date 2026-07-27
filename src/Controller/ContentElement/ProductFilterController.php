@@ -139,6 +139,15 @@ class ProductFilterController extends AbstractContentElementController
         return $widgets;
     }
 
+    /**
+     * @param array<string> $fields
+     *
+     * @return array<array{
+     *     label: string,
+     *     value: string,
+     *     default: bool
+     * }>
+     */
     private function getSortingOptions(array $fields, Sorting|null $current): array
     {
         $options = [];
@@ -203,7 +212,7 @@ class ProductFilterController extends AbstractContentElementController
      *
      * @return array<string>
      */
-    private function getUsedValuesForField(string $field, array $categories, array $attributeTypes, $variantTypes): array
+    private function getUsedValuesForField(string $field, array $categories, array $attributeTypes, array $variantTypes): array
     {
         if ([] === $attributeTypes && [] === $variantTypes) {
             return [];
@@ -309,7 +318,7 @@ class ProductFilterController extends AbstractContentElementController
         return [$attributes, $variantAttributes];
     }
 
-    private function getSortingLabels($field): array
+    private function getSortingLabels(string $field): array
     {
         return match ($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$field]['eval']['rgxp'] ?? null) {
             'price',

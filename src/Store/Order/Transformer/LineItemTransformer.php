@@ -13,7 +13,7 @@ use Isotope\CoreBundle\Store\Price\CalculatedPrice;
 class LineItemTransformer
 {
     /**
-     * @return array<string, array<string, mixed>>
+     * @return array<string, mixed>
      */
     public static function transform(LineItem $lineItem, int $position = 1): array
     {

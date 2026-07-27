@@ -48,7 +48,7 @@ class CategoryFinder implements ResetInterface
     }
 
     /**
-     * @return array<int>|null
+     * @return array<int>
      */
     private function doFind(CategoryScope|string $scope, PageModel $pageModel, CoreProduct|null $product): array
     {

@@ -8,5 +8,5 @@ use Isotope\CoreBundle\Store\Context\StoreContext;
 
 interface DataCollectorInterface
 {
-    public function collect(ProductDtoCollection $collection, StoreContext $context);
+    public function collect(ProductDtoCollection $collection, StoreContext $context): void;
 }

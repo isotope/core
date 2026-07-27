@@ -8,6 +8,7 @@ use Contao\CoreBundle\Migration\AbstractMigration;
 use Contao\CoreBundle\Migration\MigrationResult;
 use Contao\StringUtil;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Types\StringType;
 
@@ -124,6 +125,9 @@ class OrderstatusMigration extends AbstractMigration
         }
     }
 
+    /**
+     * @param AbstractSchemaManager<MySQLPlatform> $schemaManager
+     */
     private function addAliases(AbstractSchemaManager $schemaManager): void
     {
         $this->connection->executeStatement("ALTER TABLE tl_iso_orderstatus ADD COLUMN `alias` varchar(32) NOT NULL default ''");
@@ -150,6 +154,9 @@ class OrderstatusMigration extends AbstractMigration
         }
     }
 
+    /**
+     * @param AbstractSchemaManager<MySQLPlatform> $schemaManager
+     */
     private function migrateOrders(AbstractSchemaManager $schemaManager): void
     {
         if (!$schemaManager->tableExists('tl_iso_product_collection')) {

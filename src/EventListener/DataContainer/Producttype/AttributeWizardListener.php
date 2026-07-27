@@ -39,10 +39,6 @@ class AttributeWizardListener
 
         $values = $this->load($currentRecord[$dc->field], $dc);
 
-        if (!\is_array($values)) {
-            $values = [];
-        }
-
         $fixed = [] !== $values ? $this->getFixedFields($this->isVariants($dc->field), $currentRecord['class'] ?? null) : [];
         $enabledConfig = $values;
         $mandatoryConfig = $values;
@@ -228,7 +224,7 @@ class AttributeWizardListener
 
         $values = [];
 
-        foreach (array_values($value) as $pos => $config) {
+        foreach ($value as $pos => $config) {
             if (!$config['name']) {
                 continue;
             }

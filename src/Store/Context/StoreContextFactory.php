@@ -18,10 +18,10 @@ use Isotope\CoreBundle\Store\Price\Currency;
 use Isotope\CoreBundle\Store\Price\MoneyFormat;
 use Isotope\CoreBundle\Store\Price\PriceDisplay;
 use Isotope\CoreBundle\Store\Price\TaxCalculation;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Intl\Currencies;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @internal
@@ -70,8 +70,8 @@ class StoreContextFactory
 
         $context->setDefaultBillingAddress($billingAddress);
         $context->setDefaultShippingAddress($shippingAddress);
-        $context->setShippingIds(array_filter(explode(',', (string) $config->shipping_ids)));
-        $context->setPaymentIds(array_filter(explode(',', (string) $config->payment_ids)));
+        $context->setShippingIds(array_map(intval(...), array_filter(explode(',', (string) $config->shipping_ids))));
+        $context->setPaymentIds(array_map(intval(...), array_filter(explode(',', (string) $config->payment_ids))));
         $context->setDocumentNumberPrefix($config->orderPrefix ? $this->insertTagParser->replaceInline($config->orderPrefix) : '');
         $context->setDocumentNumberDigits((int) $config->orderDigits);
 
@@ -182,7 +182,7 @@ class StoreContextFactory
 
         return static fn () => array_map(
             intval(...),
-            StringUtil::deserialize(MemberModel::findById($memberId)?->groups ?? [], true),
+            StringUtil::deserialize(MemberModel::findById($memberId)->groups ?? [], true),
         );
     }
 }

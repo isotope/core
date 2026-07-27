@@ -38,6 +38,7 @@ class OrderDetailsListener
             ]),
             'billing_address_data' => $this->show('tl_iso_address', $order->getBillingAddress()->row(), 'billing_address_empty'),
             'shipping_address_data' => $this->show('tl_iso_address', $order->getShippingAddress()?->row(), 'shipping_address_empty'),
+            default => throw new \LogicException(),
         };
     }
 

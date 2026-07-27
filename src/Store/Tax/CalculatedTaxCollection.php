@@ -9,7 +9,7 @@ use Ramsey\Collection\Map\AbstractMap;
 use Ramsey\Collection\Tool\ValueToStringTrait;
 
 /**
- * @extends AbstractMap<CalculatedTax>
+ * @extends AbstractMap<string|int, CalculatedTax>
  */
 class CalculatedTaxCollection extends AbstractMap implements \JsonSerializable
 {

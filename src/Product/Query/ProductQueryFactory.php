@@ -64,9 +64,9 @@ class ProductQueryFactory
                 continue;
             }
 
-            $id = $match[2] ?? '';
+            [,$type,$id] = $match;
 
-            switch ($match[1]) {
+            switch ($type) {
                 case 'f':
                     $instance->setFilters($id, $this->parseFilters($v, $validAttributes ??= $this->attributeRegistry->getNames()));
                     $isActive = true;

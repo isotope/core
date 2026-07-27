@@ -7,6 +7,7 @@ namespace Isotope\CoreBundle\Model;
 use Contao\Model;
 use Contao\Model\Collection;
 use Isotope\CoreBundle\ProductCollection\Order\Order;
+use Isotope\CoreBundle\Util\PriceUtil;
 use Symfony\Component\Uid\Uuid;
 
 /**
@@ -60,7 +61,7 @@ class OrderTransactionModel extends Model
         $instance->payment_id = $payment->getId();
         $instance->created = time();
         $instance->label = $payment->getLabel();
-        $instance->amount = $order->getTotal()->getTotalPrice();
+        $instance->amount = PriceUtil::roundBackendPrice($order->getTotal()->getTotalPrice());
         $instance->currency = $order->getContext()->getCurrency()->getCode();
 
         return $instance;

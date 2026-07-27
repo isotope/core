@@ -21,7 +21,7 @@ use Isotope\CoreBundle\Product\Render\DefaultProductRenderer;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Price\PriceCalculator;
 use Isotope\CoreBundle\Store\Weight\Weight;
-use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 #[AsProductFactory('standard')]
 class StandardProductFactory implements ProductFactoryInterface
