@@ -1,5 +1,4 @@
-import { Controller } from "@hotwired/stimulus";
-import axios from '../scripts/_axios';
+import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
     static targets = ['receiver'];

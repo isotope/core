@@ -1,0 +1,6 @@
+{
+    "rules": {
+        "no-alert": "off",
+        "no-restricted-syntax": "off"
+    }
+}

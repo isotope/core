@@ -1,4 +1,4 @@
-import { Controller } from "@hotwired/stimulus"
+import { Controller } from '@hotwired/stimulus';
 import axios from '../scripts/_axios';
 import { extractScript } from '../scripts/_dom';
 
@@ -12,7 +12,7 @@ export default class extends Controller {
 
     #abortController = null;
 
-    connect () {
+    connect() {
         if (!this.hasFormTarget) return;
 
         this.#connectAttributes();
@@ -51,16 +51,16 @@ export default class extends Controller {
         this.element.setAttribute('aria-busy', 'false');
         this.formTarget.disabled = false;
 
-        this.dispatch(
-            'submit',
-            { target: event.submitter, detail: { form: this.formTarget, submitter: event.submitter, data }/*, cancelable: true*/ }
-        );
+        this.dispatch('submit', {
+            target: event.submitter,
+            detail: { form: this.formTarget, submitter: event.submitter, data } /* , cancelable: true */,
+        });
 
         if (event.submitter?.value) {
-            this.dispatch(
-                `submit.${event.submitter.value}`,
-                { target: event.submitter, detail: { form: this.formTarget, submitter: event.submitter, data }/*, cancelable: true*/ }
-            );
+            this.dispatch(`submit.${event.submitter.value}`, {
+                target: event.submitter,
+                detail: { form: this.formTarget, submitter: event.submitter, data } /* , cancelable: true */,
+            });
         }
     }
 
@@ -91,7 +91,7 @@ export default class extends Controller {
             if (errors[skip].className.search(/(^| )error( |$)/) !== -1) {
                 errors[skip].parentNode.removeChild(errors[skip]);
             } else {
-                skip++;
+                skip += 1;
             }
         }
 
@@ -116,7 +116,7 @@ export default class extends Controller {
                 `)
                 .forEach((input) => {
                     input.setAttribute('data-action', `${this.identifier}#update`);
-                })
-        })
+                });
+        });
     }
 }

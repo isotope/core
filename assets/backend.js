@@ -10,11 +10,13 @@ application.debug = process.env.NODE_ENV === 'development';
 // Register all controllers with `isotope--` prefix
 const context = require.context('./backend-controllers', true, /\.js$/);
 
-application.load(context.keys()
-    .map((key) => {
-        const identifier = identifierForContextKey(key);
-        if (identifier) {
-            return definitionForModuleAndIdentifier(context(key), `isotope--${ identifier }`);
-        }
-    }).filter((value) => value)
+application.load(
+    context
+        .keys()
+        .map((key) => {
+            const identifier = identifierForContextKey(key);
+
+            return identifier ? definitionForModuleAndIdentifier(context(key), `isotope--${identifier}`) : null;
+        })
+        .filter((value) => value),
 );

@@ -1,4 +1,4 @@
-import { Controller } from "@hotwired/stimulus";
+import { Controller } from '@hotwired/stimulus';
 import axios from '../scripts/_axios';
 
 export default class extends Controller {
@@ -6,7 +6,7 @@ export default class extends Controller {
         id: {
             type: String,
             required: true,
-        }
+        },
     };
 
     static targets = ['form'];
@@ -28,7 +28,10 @@ export default class extends Controller {
 
         await this.#submitForm(data);
 
-        const isPrevented = this.#dispatchSubmit({ target: event.submitter, detail: { form: this.formTarget, submitter: event.submitter, data } });
+        const isPrevented = this.#dispatchSubmit({
+            target: event.submitter,
+            detail: { form: this.formTarget, submitter: event.submitter, data },
+        });
 
         if (!isPrevented) {
             window.location.reload();
@@ -48,7 +51,7 @@ export default class extends Controller {
             signal: this.#abortController.signal,
             headers: {
                 'Isotope-Fragment': this.idValue,
-            }
+            },
         });
 
         const isPrevented = this.#dispatchSubmit({ target: event.target });
@@ -87,7 +90,8 @@ export default class extends Controller {
         let isPrevented = this.dispatch('submit', options).defaultPrevented;
 
         if (options.detail?.submitter?.name) {
-            isPrevented = this.dispatch(`submit.${options.detail.submitter.name}`, options).defaultPrevented || isPrevented;
+            isPrevented =
+                this.dispatch(`submit.${options.detail.submitter.name}`, options).defaultPrevented || isPrevented;
         }
 
         return isPrevented;

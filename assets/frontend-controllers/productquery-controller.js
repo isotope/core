@@ -1,8 +1,9 @@
-import { Controller } from "@hotwired/stimulus";
-import { ProductQuery, Filter, Sorting, Limit, Search } from '../scripts/_productquery';
+import { Controller } from '@hotwired/stimulus';
+import { Limit, ProductQuery, Search, Sorting } from '../scripts/_productquery';
 
 export default class extends Controller {
     static targets = ['search'];
+
     static values = {
         id: {
             type: String,
@@ -10,31 +11,23 @@ export default class extends Controller {
         },
     };
 
-    set (event) {
+    set(event) {
         const query = ProductQuery.fromLocation();
-        const filter = query
-            .getFilter(this.idValue)
-            .set(...this.#getFilterParams(event))
-        ;
-
+        const filter = query.getFilter(this.idValue).set(...this.#getFilterParams(event));
         query.apply(filter);
 
         this.#exec(query, event);
     }
 
-    unset (event) {
+    unset(event) {
         const query = ProductQuery.fromLocation();
-        const filter = query
-            .getFilter(this.idValue)
-            .unset(...this.#getFilterParams(event))
-        ;
-
+        const filter = query.getFilter(this.idValue).unset(...this.#getFilterParams(event));
         query.apply(filter);
 
         this.#exec(query, event);
     }
 
-    add (event) {
+    add(event) {
         const query = ProductQuery.fromLocation();
         const filter = query.getFilter(this.idValue);
         const [attribute, operator, values] = this.#getFilterParams(event);
@@ -48,7 +41,7 @@ export default class extends Controller {
         this.#exec(query, event);
     }
 
-    remove (event) {
+    remove(event) {
         const query = ProductQuery.fromLocation();
         const filter = query.getFilter(this.idValue);
         const [attribute, operator, values] = this.#getFilterParams(event);
@@ -62,7 +55,7 @@ export default class extends Controller {
         this.#exec(query, event);
     }
 
-    toggle (event) {
+    toggle(event) {
         const query = ProductQuery.fromLocation();
         const filter = query.getFilter(this.idValue);
         const [attribute, operator, values] = this.#getFilterParams(event);
@@ -76,26 +69,30 @@ export default class extends Controller {
         this.#exec(query, event);
     }
 
-    sort (event) {
+    sort(event) {
         const query = ProductQuery.fromLocation();
         const value = event.params.value || event.target.value;
 
         if (!value) {
-            throw new Error('Missing value for product query sorting. Either set Stimulus param "value" or make sure the event target has a "value" attribute (e.g. is an HTML form field).')
+            throw new Error(
+                'Missing value for product query sorting. Either set Stimulus param "value" or make sure the event target has a "value" attribute (e.g. is an HTML form field).',
+            );
         }
 
         const [attribute, direction] = value.split(':');
-        query.apply(new Sorting(this.idValue).add(attribute, 'DESC' === direction));
+        query.apply(new Sorting(this.idValue).add(attribute, direction === 'DESC'));
 
         this.#exec(query, event);
     }
 
-    limit (event) {
+    limit(event) {
         const query = ProductQuery.fromLocation();
         const value = event.params.value || event.target.value;
 
         if (!value) {
-            throw new Error('Missing value for product query limit. Either set Stimulus param "value" or make sure the event target has a "value" attribute (e.g. is an HTML form field).')
+            throw new Error(
+                'Missing value for product query limit. Either set Stimulus param "value" or make sure the event target has a "value" attribute (e.g. is an HTML form field).',
+            );
         }
 
         query.apply(new Limit(this.idValue, value.value));
@@ -103,29 +100,31 @@ export default class extends Controller {
         this.#exec(query, event);
     }
 
-    search (event) {
+    search(event) {
         if (!this.hasSearchTarget) {
             throw new Error('No search widget found.');
         }
 
         const query = ProductQuery.fromLocation();
 
-        query.apply(new Search(this.idValue, this.searchTarget.value))
+        query.apply(new Search(this.idValue, this.searchTarget.value));
 
         this.#exec(query, event);
     }
 
-    reset (event) {
+    reset(event) {
         this.#exec(new ProductQuery(), event);
     }
 
     #getFilterParams(event) {
         const name = event.params.name || event.target.name || '';
-        const operator = event.params.operator;
+        const { operator } = event.params;
         let value = event.params.value || event.target.value;
 
         if (!operator) {
-            throw new Error('Missing operator for product query filter. Make sure to set the Stimulus param "operator".')
+            throw new Error(
+                'Missing operator for product query filter. Make sure to set the Stimulus param "operator".',
+            );
         }
 
         if (value) {
@@ -135,7 +134,7 @@ export default class extends Controller {
         return [name, operator, value];
     }
 
-    #exec (query, event) {
+    #exec(query, event) {
         const url = new URL(window.location);
         url.search = query.toString();
         window.history.pushState({}, '', url.toString());
@@ -146,6 +145,6 @@ export default class extends Controller {
             return;
         }
 
-        window.location.search = query.toString()
+        window.location.search = query.toString();
     }
 }

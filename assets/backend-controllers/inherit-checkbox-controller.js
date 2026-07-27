@@ -11,7 +11,7 @@ export default class extends Controller {
 
     static targets = ['checkbox'];
 
-    connect () {
+    connect() {
         if (!this.checkboxTarget) {
             return;
         }
@@ -21,7 +21,7 @@ export default class extends Controller {
         let injectError = false;
 
         fields.forEach((name) => {
-            const el = document.getElementById((`ctrl_${ name }${ this.suffixValue }`));
+            const el = document.getElementById(`ctrl_${name}${this.suffixValue}`);
 
             if (!el) {
                 return;
@@ -37,8 +37,8 @@ export default class extends Controller {
             parent.classList.add('inherit');
 
             const container = document.createElement('div');
-            const check = this.checkboxTarget.querySelector((`input[value=${ name }]`));
-            const label = this.checkboxTarget.querySelector((`label[for=${ check.get('id') }]`));
+            const check = this.checkboxTarget.querySelector(`input[value=${name}]`);
+            const label = this.checkboxTarget.querySelector(`label[for=${check.get('id')}]`);
 
             container.classList.add('inherit-default');
             label.innerHTML = this.labelValue;
@@ -63,7 +63,7 @@ export default class extends Controller {
 
     toggleField(event) {
         const name = event.target.get('value');
-        const el = document.getElementById((`ctrl_${ name }${ this.suffixValue }`));
+        const el = document.getElementById(`ctrl_${name}${this.suffixValue}`);
 
         if (el) {
             this.#setState(el, !event.target.checked);

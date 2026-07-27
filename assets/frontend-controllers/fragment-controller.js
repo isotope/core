@@ -1,6 +1,6 @@
-import { Controller } from "@hotwired/stimulus";
-import { ProductQuery } from '../scripts/_productquery';
+import { Controller } from '@hotwired/stimulus';
 import axios from '../scripts/_axios';
+import { ProductQuery } from '../scripts/_productquery';
 
 export default class extends Controller {
     static values = {
@@ -11,7 +11,7 @@ export default class extends Controller {
         filters: Array,
     };
 
-    query (event) {
+    query(event) {
         const url = new URL(window.location);
 
         if (this.hasFiltersValue) {
@@ -35,13 +35,13 @@ export default class extends Controller {
         this.#load(url.toString());
     }
 
-    update (event) {
+    update(event) {
         event.preventDefault();
 
         this.#load(new URL(window.location).toString());
     }
 
-    submit (event) {
+    submit(event) {
         if (event.defaultPrevented) {
             return;
         }
@@ -57,10 +57,10 @@ export default class extends Controller {
         this.#load(new URL(window.location).toString(), data);
     }
 
-    async #load (url, postData) {
+    async #load(url, postData) {
         const timer = setTimeout(() => {
             this.element.setAttribute('aria-busy', 'true');
-        }, 500)
+        }, 500);
 
         let response;
 
@@ -68,13 +68,13 @@ export default class extends Controller {
             response = await axios.post(url, postData, {
                 headers: {
                     'Isotope-Fragment': this.idValue,
-                }
+                },
             });
         } else {
             response = await axios.get(url, {
                 headers: {
                     'Isotope-Fragment': this.idValue,
-                }
+                },
             });
         }
 

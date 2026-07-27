@@ -11,14 +11,14 @@ export default class extends Controller {
         prompt: {
             type: String,
             default: 'Please enter the a option:',
-        }
+        },
     };
 
-    initialize () {
-        this._change = this._change.bind(this);
+    initialize() {
+        this.change = this.change.bind(this);
     }
 
-    connect () {
+    connect() {
         this.previousValue = this.element.value;
         this.parentId = this.element.closest('table').id;
 
@@ -32,15 +32,15 @@ export default class extends Controller {
         this.option.value = 'extendSelect';
 
         this.element.append(this.option);
-        this.element.addEventListener('change', this._change);
+        this.element.addEventListener('change', this.change);
     }
 
-    disconnect () {
+    disconnect() {
         this.option?.remove();
-        this.element.removeEventListener('change', this._change);
+        this.element.removeEventListener('change', this.change);
     }
 
-    _change () {
+    change() {
         if (this.element.value !== 'extendSelect') {
             this.previousValue = this.element.value;
             return;
@@ -59,7 +59,7 @@ export default class extends Controller {
         option.value = name;
 
         if (this.parentId && collections[this.parentId]) {
-            collections[this.parentId].forEach(function(s) {
+            collections[this.parentId].forEach((s) => {
                 s.insertBefore(option.cloneNode(true), s.lastElementChild);
             });
         } else {

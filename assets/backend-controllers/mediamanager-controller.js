@@ -5,23 +5,24 @@ export default class extends Controller {
         url: String,
         accept: Array,
     };
+
     static targets = ['body', 'rowTemplate', 'file', 'dropzone'];
 
-    delete (event) {
+    delete(event) {
         event.target.closest('tr').remove();
     }
 
-    open () {
+    open() {
         this.fileTarget.click();
     }
 
-    change (event) {
-        this._addFile(event.target.files);
+    change(event) {
+        this.#addFile(event.target.files);
         event.target.value = '';
     }
 
-    dragover (event) {
-        if (!this._isFiles(event.dataTransfer)) {
+    dragover(event) {
+        if (!this.#isFiles(event.dataTransfer)) {
             return;
         }
 
@@ -31,8 +32,8 @@ export default class extends Controller {
         this.dropzoneTarget.style.display = '';
     }
 
-    activate (event) {
-        if (!this._isFiles(event.dataTransfer)) {
+    activate(event) {
+        if (!this.#isFiles(event.dataTransfer)) {
             return;
         }
 
@@ -43,8 +44,8 @@ export default class extends Controller {
         this.dropzoneTarget.style.display = '';
     }
 
-    deactivate (event) {
-        if (!this._isFiles(event.dataTransfer)) {
+    deactivate(event) {
+        if (!this.#isFiles(event.dataTransfer)) {
             return;
         }
 
@@ -57,25 +58,25 @@ export default class extends Controller {
         }
     }
 
-    drop () {
+    drop() {
         this.dropzoneTarget.style.display = 'none';
     }
 
     updateSorting() {
         Array.from(this.bodyTarget.children).forEach((tr, i) => {
             tr.querySelectorAll('input, select, textarea').forEach((el) => {
-                if (el.id) el.id = el.id.replace(/_[0-9]+_([a-z])/g, '_' + i + '_$1');
-                el.name = el.name.replace(/\[[0-9]+]/g, '[' + i + ']');
+                if (el.id) el.id = el.id.replace(/_[0-9]+_([a-z])/g, `_${i}_$1`);
+                el.name = el.name.replace(/\[[0-9]+]/g, `[${i}]`);
             });
             tr.querySelectorAll('label').forEach((el) => {
-                el.setAttribute('for', el.getAttribute('for').replace(/_[0-9]+_([a-z])/g, '_' + i + '_$1'));
+                el.setAttribute('for', el.getAttribute('for').replace(/_[0-9]+_([a-z])/g, `_${i}_$1`));
             });
         });
     }
 
-    _addFile(files) {
+    #addFile(files) {
         [...files].forEach(async (file) => {
-            if (!this._isAccepted(file)) {
+            if (!this.#isAccepted(file)) {
                 return;
             }
 
@@ -111,13 +112,13 @@ export default class extends Controller {
         this.updateSorting();
     }
 
-    _isAccepted(file) {
+    #isAccepted(file) {
         const extension = file.name.substring(file.name.lastIndexOf('.')).toLowerCase();
 
         return this.acceptValue.length > 0 && this.acceptValue.contains(extension);
     }
 
-    _isFiles(dataTransfer) {
+    #isFiles(dataTransfer) {
         return dataTransfer.types && dataTransfer.types.length === 1 && dataTransfer.types[0] === 'Files';
     }
 }

@@ -1,5 +1,5 @@
 import Axios from 'axios';
-import '@bprogress/core/css';
+import '@bprogress/core/dist/index.css';
 import { BProgress } from '@bprogress/core';
 import { extractScript } from './_dom';
 
@@ -9,32 +9,38 @@ const instance = Axios.create({
     },
 });
 
-instance.interceptors.request.use(config => {
-    BProgress.start();
-    return config;
-}, error => {
-    BProgress.done();
-    return Promise.reject(error);
-});
+instance.interceptors.request.use(
+    (config) => {
+        BProgress.start();
+        return config;
+    },
+    (error) => {
+        BProgress.done();
+        return Promise.reject(error);
+    },
+);
 
 // see https://gist.github.com/nemanja947/a71018e659f7d5255ea43c304f8ee108
-instance.interceptors.response.use(response => {
-    BProgress.done();
-    return response;
-}, error => {
-    BProgress.done();
-    return Promise.reject(error);
-});
+instance.interceptors.response.use(
+    (response) => {
+        BProgress.done();
+        return response;
+    },
+    (error) => {
+        BProgress.done();
+        return Promise.reject(error);
+    },
+);
 
-instance.interceptors.response.use(response => {
-    if ('application/isotope-action+json' !== response.headers['content-type']) {
+instance.interceptors.response.use((response) => {
+    if (response.headers['content-type'] !== 'application/isotope-action+json') {
         return response;
     }
 
     const json = response.data;
     const event = new CustomEvent('isotope-action', { details: json, cancelable: true });
 
-    window.dispatchEvent(event)
+    window.dispatchEvent(event);
 
     if (event.defaultPrevented) {
         return response;
