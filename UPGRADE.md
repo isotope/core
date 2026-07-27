@@ -9,13 +9,14 @@
 - The DHL Business shipping method has been removed.
 - All third-party payment methods have been removed.
 - The TrustedShop badge front end module has been removed.
-- The favorites feature has been removed.
+- The favorites feature has been extracted to a commercial extension (see https://extensions.terminal42.ch/p/isotope-favorites).
 - The wishlist feature has been removed.
 - The FineUploader attribute has been removed.
 - The PostSale entry point has been removed. Use your own controller or preferably the symfony/webhook component.
 - The `@IsotopeHook` annotation has been replaced by `#[AsIsotopeHook]` attribute.
 - The abstract ContentElement class loading Isotope JavaScript & CSS has been removed.
-- Removed the QuantitySurcharge, BasePrice, Downloads, FileTree, Media, PageTree, Price, PriceTiers, ShippingPrice, Upload and Weigth attributes.
+- Removed the QuantitySurcharge, BasePrice, PageTree, Price, PriceTiers, ShippingPrice, Upload and Weigth attributes.
+- Downloads, FileTree, Media attributes have been extracted to a commercial extension (see https://extensions.terminal42.ch/p/isotope-file-attribute).
 - The "product of current article" scope has been removed from product list category settings
 - The option to mark and filter new products has been removed
 - Custom SQL queries for product lists has been removed
@@ -24,3 +25,5 @@
 - The product variant list has been removed
 - The "legacy" price display in shop config has been removed
 - The automatic currency converter for shop configs has been removed
+- Frontend modules have been re-implemented as content elements
+- All templates are rewritten using the Twig template engine
