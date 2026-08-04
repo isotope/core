@@ -19,6 +19,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.name.1">
         <source>Enter a name for this payment method.</source>
+        <target>Ange ett namn för denna betalningsmetod.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.label.0">
         <source>Label</source>
@@ -26,6 +27,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.label.1">
         <source>This is displayed on the front end in association with the payment option.</source>
+        <target>Detta visas på användargränssnittet i samband med betalningsalternativet.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.note.0">
         <source>Payment Note</source>
@@ -37,27 +39,35 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.processing_status.0">
         <source>Status for payment in progress</source>
+        <target>Status: Betalning pågår</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.processing_status.1">
         <source>Select the order status for when the payment is in progress.</source>
+        <target>Välj orderstatus för när betalningen pågår.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.paid_status.0">
         <source>Status for paid orders</source>
+        <target>Status för betalda beställningar</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.paid_status.1">
         <source>Select the order status for when the payment was successful.</source>
+        <target>Välj orderstatus för när betalningen genomfördes.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.failed_status.0">
         <source>Status for failed orders</source>
+        <target>Status för misslyckade beställningar</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.failed_status.1">
         <source>Select the order status for when the payment failed.</source>
+        <target>Välj orderstatus för det fall att betalningen misslyckades.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.rule.0">
         <source>Rule condition</source>
+        <target>Regelvillkor</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.rule.1">
         <source>Allow payment method if this rule matches.</source>
+        <target>Tillåt betalningsmetoden om denna regel stämmer överens.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.shipping_modules.0">
         <source>Shipping methods</source>
@@ -161,6 +171,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.gateway_legend">
         <source>Payment gateway</source>
+        <target>Betalningsgateway</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.price_legend">
         <source>Price</source>

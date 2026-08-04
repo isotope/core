@@ -19,15 +19,19 @@
       </trans-unit>
       <trans-unit id="tl_nc_notification.type.iso_order.0">
         <source>New Order (Isotope eCommerce)</source>
+        <target>Neue Bestellung (Isotope eCommerce)</target>
       </trans-unit>
       <trans-unit id="tl_nc_notification.type.iso_order.1">
         <source>This notification type can be sent for new orders in Isotope eCommerce.</source>
+        <target>Diese Benachrichtigungsart kann bei neuen Bestellungen in Isotope eCommerce versendet werden.</target>
       </trans-unit>
       <trans-unit id="tl_nc_notification.type.iso_order_update.0">
         <source>Order Update (Isotope eCommerce)</source>
+        <target>Bestellstatus (Isotope eCommerce)</target>
       </trans-unit>
       <trans-unit id="tl_nc_notification.type.iso_order_update.1">
         <source>This notification type can be sent when order status is updated in the backend.</source>
+        <target>Diese Benachrichtigungsart kann versendet werden, wenn der Bestellstatus im Backend aktualisiert wird.</target>
       </trans-unit>
     </body>
   </file>

@@ -151,6 +151,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.multiple.1">
         <source>Allow to select more than one option.</source>
+        <target>Det ska vara möjligt att välja fler än ett alternativ.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.size.0">
         <source>Size/Amount</source>
@@ -170,9 +171,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.extensions.0">
         <source>Allowed file extensions</source>
+        <target>Tillåtna filändelser</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.extensions.1">
         <source>A comma separated list of valid file extensions. Leave this empty if you want to allow all files.</source>
+        <target>En kommaseparerad lista över giltiga filändelser. Lämna fältet tomt om du vill tillåta alla filer.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.rte.0">
         <source>Use HTML editor</source>
@@ -280,9 +283,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.be_column.0">
         <source>Show as variant column</source>
+        <target>Visa som variantkolumn</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.be_column.1">
         <source>Show this attribute in the product variant list.</source>
+        <target>Visa detta attribut i listan över produktvarianter.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.fe_filter.0">
         <source>Frontend filterable</source>

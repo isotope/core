@@ -3,6 +3,7 @@
     <body>
       <trans-unit id="tl_iso_related_category.tableLabel">
         <source>Related Category</source>
+        <target>Relaterad kategori</target>
       </trans-unit>
       <trans-unit id="tl_iso_related_category.name.0">
         <source>Category name</source>

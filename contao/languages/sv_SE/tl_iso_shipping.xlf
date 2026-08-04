@@ -79,9 +79,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_shipping.flatProductTypes.0">
         <source>Calculate for product types</source>
+        <target>Beräkna för produkttyper</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.flatProductTypes.1">
         <source>Calculate price for these product types only.</source>
+        <target>Beräkna priset endast för dessa produkttyper.</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.shipping_weight.0">
         <source>Shipping weight</source>
@@ -197,15 +199,19 @@
       </trans-unit>
       <trans-unit id="tl_iso_shipping.rule.0">
         <source>Rule condition</source>
+        <target>Regelvillkor</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.rule.1">
         <source>Allow shipping method if this rule matches.</source>
+        <target>Tillåt fraktmetoden om denna regel stämmer överens.</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.tracking_url.0">
         <source>Tracking URL</source>
+        <target>Spårnings-URL</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.tracking_url.1">
         <source>Enter a tracking URL for this shipping. Use %s as placeholder for the tracking number.</source>
+        <target>Ange en spårningslänk för denna leverans. Använd %s som platshållare för spårningsnumret.</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.debug.0">
         <source>Debug mode</source>
@@ -241,6 +247,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_shipping.order_legend">
         <source>Order settings</source>
+        <target>Beställningsinställningar</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.price_legend">
         <source>Price and Weight</source>

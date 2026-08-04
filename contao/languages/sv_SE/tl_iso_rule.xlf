@@ -1,0 +1,58 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="contao/languages/en/tl_iso_rule.xlf" source-language="en" target-language="sv-SE">
+    <body>
+      <trans-unit id="tl_iso_rule.tableLabel">
+        <source>Rule</source>
+        <target>Regel</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.name.0">
+        <source>Name</source>
+        <target>Namn</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.type.1">
+        <source>Enter a name for this condition (only visible in the back end).</source>
+        <target>Ange ett namn för detta villkor (syns endast i administratörsgränssnittet).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.conditions.0">
+        <source>Rule conditions</source>
+        <target>Regelvillkor</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.conditions.1">
+        <source>Configure conditions for this rule.</source>
+        <target>Konfigurera villkoren för denna regel.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.conditions.edit">
+        <source>Edit conditions</source>
+        <target>Redigera villkor</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.enabled.0">
+        <source>Enable</source>
+        <target>Aktivera</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.enabled.1">
+        <source>Check here if this rule should be enabled.</source>
+        <target>Markera här om denna regel ska aktiveras.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.priority.0">
+        <source>Priority</source>
+        <target>Prioritet</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.priority.1">
+        <source>Enter a numeric priority to sort the rules. The higher the number, the earlier the rule will be matched.</source>
+        <target>Ange ett numeriskt prioritetsvärde för att sortera reglerna. Ju högre siffra, desto tidigare kommer regeln att matchas.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.rule_legend">
+        <source>Rule</source>
+        <target>Regel</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.conditions_legend">
+        <source>Rule conditions</source>
+        <target>Regelvillkor</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.application_legend">
+        <source>Rule application</source>
+        <target>Tillämpning av regeln</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

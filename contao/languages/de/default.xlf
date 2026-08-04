@@ -7,6 +7,7 @@
       </trans-unit>
       <trans-unit id="ERR.invalidColumn">
         <source>&quot;%s&quot; cannot be used as a database column. Suggestion: &quot;%s&quot;</source>
+        <target>&quot;%s&quot; kann nicht als Datenbankspalte verwendet werden. Vorschlag: &quot;%s&quot;</target>
       </trans-unit>
       <trans-unit id="ERR.noStoreConfigurationSet">
         <source>No store configuration available</source>
@@ -90,6 +91,7 @@
       </trans-unit>
       <trans-unit id="PTY.iso_products.1">
         <source>Select this page type if your want to display a product list and product reader.</source>
+        <target>Wählen Sie diesen Seitentyp aus, wenn Sie eine Produktliste und einen Produktleser anzeigen möchten.</target>
       </trans-unit>
       <trans-unit id="MSC.productPicker">
         <source>Products</source>
@@ -673,12 +675,15 @@
       </trans-unit>
       <trans-unit id="MSC.isotopeIntroduction.2">
         <source>This is the page where most of the configuration will take place.</source>
+        <target>Auf dieser Seite werden die meisten Konfigurationen vorgenommen.</target>
       </trans-unit>
       <trans-unit id="MSC.isotopeIntroduction.3">
         <source>For initial setup, you should start from the bottom of this page and work your way upward.</source>
+        <target>Für die Ersteinrichtung sollten Sie unten auf dieser Seite beginnen und sich nach oben vorarbeiten.</target>
       </trans-unit>
       <trans-unit id="MSC.isotopeIntroduction.4">
         <source>Visit the official Isotope eCommerce website for the latest news, configuration manuals and professional support. Thank you so much for considering giving something back!</source>
+        <target>Besuchen Sie die offizielle Isotope eCommerce-Website, um die neuesten Nachrichten, Konfigurationsanleitungen und professionellen Support zu erhalten. Vielen Dank, dass Sie darüber nachdenken, etwas zurückzugeben!</target>
       </trans-unit>
       <trans-unit id="MSC.isotopeIntroduction.5">
         <source>The Isotope eCommerce Team</source>
@@ -686,6 +691,7 @@
       </trans-unit>
       <trans-unit id="MSC.isotopeIntroduction.6">
         <source>Isotope is a product of terminal42 gmbh in association with the Isotope eCommerce Team.</source>
+        <target>Isotope ist ein Produkt der terminal42 gmbh in Zusammenarbeit mit dem Isotope eCommerce-Team.</target>
       </trans-unit>
       <trans-unit id="MSC.iso_priceDisplay.net.0">
         <source>Net</source>
@@ -717,6 +723,7 @@
       </trans-unit>
       <trans-unit id="MSC.iso_taxCalculation.horizontal.1">
         <source>VAT is calculated individually for each line item – that is, item price × quantity, then the tax is calculated and rounded per item. At the end, all tax amounts are summed.</source>
+        <target>Die Mehrwertsteuer wird für jede einzelne Position berechnet – das heißt: Artikelpreis × Menge; anschließend wird die Steuer pro Artikel berechnet und gerundet. Am Ende werden alle Steuerbeträge addiert.</target>
       </trans-unit>
       <trans-unit id="MSC.iso_taxCalculation.vertical.0">
         <source>vertical</source>
@@ -724,6 +731,7 @@
       </trans-unit>
       <trans-unit id="MSC.iso_taxCalculation.vertical.1">
         <source>VAT is calculated only after summing all net amounts. Then the tax is applied to the total net amount and rounded once.</source>
+        <target>Die Mehrwertsteuer wird erst nach der Summierung aller Nettobeträge berechnet. Anschließend wird die Steuer auf den gesamten Nettobetrag angewandt und einmal gerundet.</target>
       </trans-unit>
       <trans-unit id="CTE.isotope">
         <source>Isotope eCommerce</source>
@@ -895,6 +903,7 @@
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.cart_total.1">
         <source>Match on the total amount of the cart.</source>
+        <target>Der Betrag entspricht dem Gesamtbetrag im Warenkorb.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.cart_address.0">
         <source>Cart address</source>
@@ -902,6 +911,7 @@
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.cart_address.1">
         <source>Match on country, subdivision or postal codes of the billing or shipping address.</source>
+        <target>Nach Land, Verwaltungsgebiet oder Postleitzahlen der Rechnungs- oder Lieferadresse suchen.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.cart_quantity.0">
         <source>Total quantity in cart</source>
@@ -909,6 +919,7 @@
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.cart_quantity.1">
         <source>Compares the given value to the sum of all quantities of all products.</source>
+        <target>Vergleicht den angegebenen Wert mit der Summe aller Mengen der Produkte.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.cart_products.0">
         <source>Total products in cart</source>
@@ -916,6 +927,7 @@
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.cart_products.1">
         <source>Compares the given value to the total products in the cart (regardless of their quantity).</source>
+        <target>Vergleicht den angegebenen Wert mit der Gesamtzahl der Artikel im Warenkorb (unabhängig von deren Stückzahl).</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.member">
         <source>Member</source>
@@ -927,12 +939,15 @@
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.member_authenticated.1">
         <source>Checks whether a customer is logged in or not.</source>
+        <target>Prüft, ob ein Kunde angemeldet ist oder nicht.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.member_group.0">
         <source>Member groups (current user)</source>
+        <target>Mitgliedsgruppen (aktueller Benutzer)</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.member_group.1">
         <source>Checks whether the currently logged-in user has or does not have certain member groups.</source>
+        <target>Prüft, ob der aktuell angemeldete Benutzer bestimmten Mitgliedergruppen angehört oder nicht.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.store">
         <source>Store</source>
@@ -944,6 +959,7 @@
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.store_config.1">
         <source>Checks for the current store configuration.</source>
+        <target>Überprüft die aktuelle Shop-Konfiguration.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.store_currency.0">
         <source>Currency</source>

@@ -58,6 +58,8 @@ erbjuda verklig frakt för dessa produkttyper.
         <source><![CDATA[
             Select which product categories (pages) should be considered for the products.<br><br><u>If this is a product list element and you configured a category filter element, the category filter selection will override this configuration!</u><br><br>
         ]]></source>
+        <target>
+Välj vilka produktkategorier (sidor) som ska beaktas för produkterna. &lt;br&gt;&lt;br&gt;&lt;u&gt;Om det här är ett produktlistelement och du har konfigurerat ett kategorifilterelement, kommer valet i kategorifiltret att åsidosätta denna konfiguration!&lt;/u&gt;&lt;br&gt;&lt;br&gt;</target>
       </trans-unit>
       <trans-unit id="XPL.iso_filterQuery">
       <source><![CDATA[
@@ -118,6 +120,63 @@ erbjuda verklig frakt för dessa produkttyper.
               <tr><td><code>(cat)</cat></td><td>Filter products by category.</td><td>no</td></tr>
             </table>
         ]]></source>
+      <target>
+&lt;p class=&quot;tl_help_table&quot;&gt;Isotope har en anpassad syntax för ”Product Query” som gör det möjligt att filtrera, söka och begränsa produkter med hjälp av förenklade URL-parametrar.&lt;br&gt;
+Här kan du ange ett filter för att begränsa vilka produkter som ska visas/matchas.&lt;/p&gt;
+
+&lt;h3 class=&quot;tl_help_table&quot;&gt;Exempel&lt;/h3&gt;
+&lt;p class=&quot;tl_help_table&quot;&gt;
+ Varje segment i en filterfråga består av ett attributnamn, en operator och ett värde. Här är ett mycket enkelt exempel:&lt;br&gt;&lt;br&gt;
+&lt;code&gt;type:1&lt;/code&gt;&lt;br&gt;&lt;br&gt;
+&lt;code&gt;[type]&lt;/code&gt; är attributet, &lt;code&gt;[:]&lt;/code&gt; är operatorn för ”är lika med”, och &lt;code&gt;[1]&lt;/code&gt;  är värdet.&lt;br&gt;
+ Exemplet ovan matchar endast produkttyper med ID 1. Motsvarande SQL-kod skulle vara&lt;code&gt;WHERE type=1&lt;/code&gt;.
+&lt;/p&gt;
+&lt;p class=&quot;tl_help_table&quot;&gt;
+Du kan skapa betydligt mer komplexa filter.&lt;br&gt;&lt;br&gt;
+&lt;code&gt;color!red,blue;size:M|L;&lt;/code&gt;&lt;br&gt;&lt;br&gt;
+Motsvarande SQL-kod skulle vara&lt;code&gt;WHERE (color != &quot;red&quot; AND color != &quot;blue&quot;) AND (size = &quot;M&quot; OR size = &quot;L&quot;)&lt;/code&gt;&lt;br&gt;
+För de flesta operatörer kan man ange flera värden, antingen separerade med kommatecken (&lt;code&gt;AND&lt;/code&gt;) eller med vertikalstreck (&lt;code&gt;OR&lt;/code&gt;) villkor.
+&lt;/p&gt;
+
+&lt;h3 class=&quot;tl_help_table&quot;&gt;Enkla operatorer&lt;/h3&gt;
+&lt;p&gt;
+Enkla operatorer består av ett unikt värde som aldrig kan användas i ett attributnamn. Isotope levereras med några användbara enkla operatorer.
+&lt;p/&gt;
+&lt;table class=&quot;tl_help_table&quot;&gt;
+&lt;tr&gt;
+&lt;th&gt;Operatör&lt;/th&gt;
+&lt;th&gt;Beskrivning&lt;/td&gt;
+&lt;th&gt;Motsvarande SQL-kod&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;:&lt;/code&gt;&lt;/td&gt;&lt;td&gt;lika&lt;/td&gt;&lt;td&gt;&lt;code&gt;=&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;!&lt;/code&gt;&lt;/td&gt;&lt;td&gt;inte lika med&lt;/td&gt;&lt;td&gt;&lt;code&gt;!=&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;&amp;lt;&lt;/code&gt;&lt;/td&gt;&lt;td&gt;mindre än&lt;/td&gt;&lt;td&gt;&lt;code&gt;&amp;lt;&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;≤&lt;/code&gt;&lt;/td&gt;&lt;td&gt;mindre än eller lika med&lt;/td&gt;&lt;td&gt;&lt;code&gt;&amp;lt;=&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;&amp;gt;&lt;/code&gt;&lt;/td&gt;&lt;td&gt;större än&lt;/td&gt;&lt;td&gt;&lt;code&gt;&amp;gt;&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;≥&lt;/code&gt;&lt;/td&gt;&lt;td&gt;större än eller lika med&lt;/td&gt;&lt;td&gt;&lt;code&gt;&amp;gt;=&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;h3 class=&quot;tl_help_table&quot;&gt;Komplexa operatorer&lt;/h3&gt;
+&lt;p class=&quot;tl_help_table&quot;&gt;
+Eftersom det bara finns ett begränsat antal tecken som kan vara användbara kan operatorer också ha ett vanligt strängnamn. I det fallet
+måste operatorn omges av parenteser så här: &lt;code&gt;id(modulo)1&lt;/code&gt;&lt;br&gt;
+Om vi antar en imaginär &lt;code&gt;modulo&lt;/code&gt; operator, Detta skulle troligen omfatta produkttyper där ID:t ger resten 1 vid modulo-beräkning.
+&lt;p/&gt;
+&lt;p class=&quot;tl_help_table&quot;&gt;
+Operatörer kan utföra valfria specialfrågor eller manuell filtrering av en produktlista. Ibland innebär detta att operatören inte behöver ett attributnamn,
+t.ex. om operatören redan vet vilket attribut eller vilken relationstabell som ska bearbetas.
+&lt;/p&gt;
+&lt;p class=&quot;tl_help_table&quot;&gt;
+Här följer en lista över Isotopes standardfilter. Se dokumentationen för respektive tillägg för information om ytterligare filter som tillhandahålls av tilläggen.
+&lt;/p&gt;
+&lt;table class=&quot;tl_help_table&quot;&gt;
+&lt;tr&gt;
+&lt;th&gt;Operatör&lt;/th&gt;
+&lt;th&gt;Beskrivning&lt;/td&gt;
+&lt;th&gt;Attributet ”Needs”&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;(cat)&lt;/cat&gt;&lt;/td&gt;&lt;td&gt;Sortera produkter efter kategori.&lt;/td&gt;&lt;td&gt;nej&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;</target>
       </trans-unit>
       <trans-unit id="XPL.checkoutTargetFile">
         <source>&lt;p class=&quot;tl_help_table&quot;&gt;Use these simple tokens to generate a dynamic file name.&lt;/p&gt;</source>

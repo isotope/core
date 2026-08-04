@@ -3,6 +3,7 @@
     <body>
       <trans-unit id="tl_iso_producttype.tableLabel">
         <source>Product Type</source>
+        <target>Produkttyp</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.name.0">
         <source>Name</source>
@@ -154,9 +155,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_producttype.validAliasCharacters.0">
       <source>Valid alias characters</source>
+      <target>Tillåtna tecken i alias</target>
     </trans-unit>
       <trans-unit id="tl_iso_producttype.validAliasCharacters.1">
         <source>Here you can select a custom character set for auto-generated product aliases.</source>
+        <target>Här kan du välja en anpassad teckenuppsättning för automatiskt genererade produktalias.</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.shipping_exempt.0">
         <source>Shipping handling</source>

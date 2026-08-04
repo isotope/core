@@ -7,6 +7,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.recordLabel">
         <source>Order #%s</source>
+        <target>Beställning #%s</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.id.0">
         <source>ID</source>
@@ -34,9 +35,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.transaction_status.0">
         <source>Payment status</source>
+        <target>Betalningsstatus</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.transaction_status.1">
         <source>Select the payment status of this order.</source>
+        <target>Välj betalningsstatus för denna beställning.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.transaction_status.2">
         <source>Payment</source>
@@ -44,9 +47,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.delivery_status.0">
         <source>Shipping status</source>
+        <target>Leveransstatus</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.delivery_status.1">
         <source>Select the delivery status of this order.</source>
+        <target>Välj leveransstatus för denna beställning.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.delivery_status.2">
         <source>Shipping</source>
@@ -98,6 +103,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.notification_shipping_tracking.1">
         <source>Here you can enter the shipping tracking information. Use the &lt;em&gt;##order_status_tracking_numbers##&lt;/em&gt; and/or &lt;em&gt;##order_status_tracking_urls##&lt;/em&gt; simple token in the notification.</source>
+        <target>Här kan du ange spårningsuppgifterna för försändelsen. Använd &lt;em&gt;##order_status_tracking_numbers##&lt;/em&gt; och/eller &lt;em&gt;##order_status_tracking_urls##&lt;/em&gt; en enkel symbol i meddelandet.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.notification_customer_notes.0">
         <source>Customer notes</source>
@@ -165,6 +171,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.details.1">
         <source>Show details of order ID %s</source>
+        <target>Visa detaljer för order-ID %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.orderStatusUpdate">
         <source>The status of your order has been updated.</source>
@@ -172,9 +179,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.orderStatusNotificationSuccess">
         <source>Notifications (e.g. email to client) have been sent. Check the system log if they were delivered successfully.</source>
+        <target>Meddelanden (t.ex. e-post till kunden) har skickats. Kontrollera systemloggen för att se om de har levererats korrekt.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.orderStatusNotificationError">
         <source>Notifications (e.g. email to client) could not be sent. Check the system log for details.</source>
+        <target>Meddelanden (t.ex. e-post till kunden) kunde inte skickas. Kontrollera systemloggen för mer information.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.noEmailData">
         <source>No additional email data available.</source>
@@ -206,6 +215,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.transaction_legend">
         <source>Transactions</source>
+        <target>Transaktioner</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.email_legend">
         <source>Email data</source>
@@ -217,6 +227,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.billing_address_empty">
         <source>This order does not have any billing address data.</source>
+        <target>Denna beställning innehåller inga uppgifter om faktureringsadress.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.shipping_address_legend">
         <source>Shipping address data</source>
@@ -224,6 +235,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.shipping_address_empty">
         <source>This order does not have any shipping address data.</source>
+        <target>Denna beställning innehåller inga uppgifter om leveransadress.</target>
       </trans-unit>
     </body>
   </file>

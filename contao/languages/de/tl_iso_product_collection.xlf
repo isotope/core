@@ -7,6 +7,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.recordLabel">
         <source>Order #%s</source>
+        <target>Bestellung #%s</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.id.0">
         <source>ID</source>
@@ -178,9 +179,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.orderStatusNotificationSuccess">
         <source>Notifications (e.g. email to client) have been sent. Check the system log if they were delivered successfully.</source>
+        <target>Benachrichtigungen (z. B. E-Mail an den Kunden) wurden versendet. Überprüfen Sie im Systemprotokoll, ob sie erfolgreich zugestellt wurden.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.orderStatusNotificationError">
         <source>Notifications (e.g. email to client) could not be sent. Check the system log for details.</source>
+        <target>Benachrichtigungen (z. B. E-Mail an den Kunden) konnten nicht versendet werden. Weitere Informationen finden Sie im Systemprotokoll.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.noEmailData">
         <source>No additional email data available.</source>

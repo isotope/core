@@ -159,6 +159,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.protected.1">
         <source>Show the product to certain member groups only.</source>
+        <target>Visa produkten endast för vissa medlemsgrupper.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.groups.0">
         <source>Allowed member groups</source>
@@ -166,6 +167,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.groups.1">
         <source>These groups will be able to see the product.</source>
+        <target>Dessa grupper kommer att kunna se produkten.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.cssID.0">
         <source>CSS ID/class</source>
@@ -289,12 +291,15 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.children.0">
         <source>Edit variants</source>
+        <target>Redigera varianter</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.children.1">
         <source>Edit variants of product ID %s</source>
+        <target>Redigera varianter av produkt-ID %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.filter">
         <source>Dynamic filters</source>
+        <target>Dynamiska filter</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.filter_noimages">
         <source>Without images</source>
@@ -302,9 +307,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.filter_nocategory">
         <source>Without categories</source>
+        <target>Utan kategorier</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.sorting">
         <source>Sort in category</source>
+        <target>Sortera efter kategori</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.prices.0">
         <source>Advanced prices</source>
@@ -328,9 +335,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.prices.rule.0">
         <source>Rule condition</source>
+        <target>Regelvillkor</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.prices.rule.1">
         <source>Apply price if this rule matches.</source>
+        <target>Tillämpa priset om denna regel stämmer överens.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.prices.apply_and_close">
         <source>Apply and close</source>

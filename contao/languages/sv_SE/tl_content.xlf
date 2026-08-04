@@ -59,9 +59,11 @@
       </trans-unit>
       <trans-unit id="tl_content.iso_hide_empty.0">
         <source>Hide empty list</source>
+        <target>Dölj tom lista</target>
       </trans-unit>
       <trans-unit id="tl_content.iso_hide_empty.1">
         <source>Hide product list when there are no products found.</source>
+        <target>Dölj produktlistan när inga produkter hittas.</target>
       </trans-unit>
       <trans-unit id="tl_content.iso_disable_options.0">
         <source>Disable product options (performance!)</source>
@@ -209,6 +211,7 @@
       </trans-unit>
       <trans-unit id="tl_content.iso_order_conditions.step._summary">
         <source>Summary (Products in Cart)</source>
+        <target>Sammanfattning (Produkter i varukorgen)</target>
       </trans-unit>
       <trans-unit id="tl_content.iso_order_conditions.position.0">
         <source>Position</source>
@@ -352,9 +355,11 @@
       </trans-unit>
       <trans-unit id="tl_content.iso_filterQuery.0">
         <source>Filter Query</source>
+        <target>Filtrera sökning</target>
       </trans-unit>
       <trans-unit id="tl_content.iso_filterQuery.1">
         <source>Enter a product query to filter the products. See the help wizard for details about the syntax.</source>
+        <target>Ange en produktsökning för att filtrera produkterna. Se hjälpguiden för mer information om syntaxen.</target>
       </trans-unit>
       <trans-unit id="tl_content.iso_filterModules.0">
         <source>Filter modules</source>
@@ -366,9 +371,11 @@
       </trans-unit>
       <trans-unit id="tl_content.iso_filterKey.0">
         <source>Filter key (optional)</source>
+        <target>Filternyckel (valfritt)</target>
       </trans-unit>
       <trans-unit id="tl_content.iso_filterKey.1">
         <source>Enter an optional key to link filter and list modules.</source>
+        <target>Ange en valfri nyckel för att koppla samman filter- och listmodulerna.</target>
       </trans-unit>
       <trans-unit id="tl_content.iso_filterHideSingle.0">
         <source>Hide single options</source>
@@ -380,9 +387,11 @@
       </trans-unit>
       <trans-unit id="tl_content.iso_enableSearch.0">
         <source>Show search field</source>
+        <target>Visa sökfältet</target>
       </trans-unit>
       <trans-unit id="tl_content.iso_enableSearch.1">
         <source>Show the search input field in the filter module.</source>
+        <target>Visa sökfältet i filtermodulen.</target>
       </trans-unit>
       <trans-unit id="tl_content.iso_searchFields.0">
         <source>Enabled search fields</source>
@@ -434,9 +443,11 @@
       </trans-unit>
       <trans-unit id="tl_content.iso_checkout_guest_jumpTo.0">
         <source>Checkout Jump to page for guests</source>
+        <target>Kassa - Gå till sidan för gäster</target>
       </trans-unit>
       <trans-unit id="tl_content.iso_checkout_guest_jumpTo.1">
         <source>Override the checkout jump to page if no member is logged in.</source>
+        <target>Åsidosätt omdirigeringen till kassan om ingen medlem är inloggad.</target>
       </trans-unit>
       <trans-unit id="tl_content.iso_listingSortField.0">
         <source>Initial sorting field</source>
@@ -480,9 +491,11 @@
       </trans-unit>
       <trans-unit id="tl_content.iso_notifications.0">
         <source>Order notifications</source>
+        <target>Beställningsbekräftelser</target>
       </trans-unit>
       <trans-unit id="tl_content.iso_notifications.1">
         <source>Send one or multiple notifications when the order is placed.</source>
+        <target>Skicka ett eller flera meddelanden när beställningen görs.</target>
       </trans-unit>
       <trans-unit id="tl_content.iso_order_conditions_legend">
         <source>Order conditions form</source>
@@ -490,6 +503,7 @@
       </trans-unit>
       <trans-unit id="tl_content.reference_legend">
         <source>Reference page</source>
+        <target>Referenssida</target>
       </trans-unit>
       <trans-unit id="tl_content.sortingDirection.ASC">
         <source>ASC</source>

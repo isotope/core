@@ -58,6 +58,9 @@
         <source><![CDATA[
             Select which product categories (pages) should be considered for the products.<br><br><u>If this is a product list element and you configured a category filter element, the category filter selection will override this configuration!</u><br><br>
         ]]></source>
+        <target>
+Wählen Sie aus, welche Produktkategorien (Seiten) für die Produkte berücksichtigt werden sollen. &lt;br&gt;&lt;br&gt;&lt;u&gt;Wenn es sich um ein Produktlistenelement handelt und Sie ein Kategoriefilterelement konfiguriert haben, hat die Auswahl im Kategoriefilter Vorrang vor dieser Konfiguration!&lt;/u&gt;&lt;br&gt;&lt;br&gt;
+</target>
       </trans-unit>
       <trans-unit id="XPL.iso_filterQuery">
       <source><![CDATA[
@@ -118,6 +121,64 @@
               <tr><td><code>(cat)</cat></td><td>Filter products by category.</td><td>no</td></tr>
             </table>
         ]]></source>
+      <target>
+&lt;p class=&quot;tl_help_table&quot;&gt;Isotope verfügt über eine eigene „Product Query“-Syntax, mit der sich Produkte mithilfe vereinfachter URL-Parameter filtern, suchen und einschränken lassen.&lt;br&gt;
+Sie können hier eine Filterabfrage eingeben, um die Produkte einzugrenzen, die aufgelistet bzw. abgeglichen werden sollen.&lt;/p&gt;
+
+&lt;h3 class=&quot;tl_help_table&quot;&gt;Beispiel&lt;/h3&gt;
+&lt;p class=&quot;tl_help_table&quot;&gt;
+Jedes Filterabfragsegment besteht aus einem Attributnamen, einem Operator und einem Wert. Hier ein ganz einfaches Beispiel:&lt;br&gt;&lt;br&gt;
+&lt;code&gt;type:1&lt;/code&gt;&lt;br&gt;&lt;br&gt;
+&lt;code&gt;type]&lt;/code&gt;ist das Attribut,&lt;code&gt;[:]&lt;/code&gt;ist der Operator für „gleich“ und &lt;code&gt;[1]&lt;/code&gt;ist der Wert.
+Das obige Beispiel findet nur Produkttypen mit der ID 1. Das entsprechende SQL-Befehl würde lauten: &lt;code&gt;WHERE type=1&lt;/code&gt;
+&lt;/p&gt;
+&lt;p class=&quot;tl_help_table&quot;&gt;
+ Sie können weitaus komplexere Filter erstellen.&lt;br&gt;&lt;br&gt;
+&lt;code&gt;color!red,blue;size:M|L;&lt;/code&gt;&lt;br&gt;&lt;br&gt;
+Das SQL-Äquivalent dazu wäre&lt;code&gt;WHERE (color != &quot;red&quot; AND color != &quot;blue&quot;) AND (size = &quot;M&quot; OR size = &quot;L&quot;)&lt;/code&gt;&lt;br&gt;
+Bei den meisten Operatoren können Sie mehrere Werte als durch Kommas getrennte (&lt;code&gt;AND&lt;/code&gt;) oder durch Pipe-Zeichen getrennte (&lt;code&gt;OR&lt;/code&gt;) Bedingung übergeben.
+&lt;/p&gt;
+
+&lt;h3 class=&quot;tl_help_table&quot;&gt;Einfache Operatoren&lt;/h3&gt;
+&lt;p&gt;
+Einfache Operatoren bestehen aus einem eindeutigen Wert, der niemals in einem Attributnamen verwendet werden darf. Isotope enthält einige nützliche einfache Operatoren.
+&lt;p/&gt;
+&lt;table class=&quot;tl_help_table&quot;&gt;
+&lt;tr&gt;
+&lt;th&gt;Operator&lt;/th&gt;
+&lt;th&gt;Beschreibung&lt;/td&gt;
+&lt;th&gt;SQL-Äquivalent&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;:&lt;/code&gt;&lt;/td&gt;&lt;td&gt;gleich&lt;/td&gt;&lt;td&gt;&lt;code&gt;=&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;!&lt;/code&gt;&lt;/td&gt;&lt;td&gt;nicht gleich&lt;/td&gt;&lt;td&gt;&lt;code&gt;!=&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;&amp;lt;&lt;/code&gt;&lt;/td&gt;&lt;td&gt;kleiner als&lt;/td&gt;&lt;td&gt;&lt;code&gt;&amp;lt;&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;≤&lt;/code&gt;&lt;/td&gt;&lt;td&gt;kleiner als oder gleich&lt;/td&gt;&lt;td&gt;&lt;code&gt;&amp;lt;=&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;&amp;gt;&lt;/code&gt;&lt;/td&gt;&lt;td&gt;größer als&lt;/td&gt;&lt;td&gt;&lt;code&gt;&amp;gt;&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;≥&lt;/code&gt;&lt;/td&gt;&lt;td&gt;größer als oder gleich&lt;/td&gt;&lt;td&gt;&lt;code&gt;&amp;gt;=&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;h3 class=&quot;tl_help_table&quot;&gt;Komplexe Operatoren&lt;/h3&gt;
+&lt;p class=&quot;tl_help_table&quot;&gt;
+Da nur eine begrenzte Anzahl von Zeichen sinnvoll sein kann, können Operatoren auch einen normalen Zeichenfolgen-Namen haben. In diesem Fall
+muss der Operator wie folgt in Klammern gesetzt werden: &lt;code&gt;id(modulo)1&lt;/code&gt;&lt;br&gt;
+Angenommen, es gäbe eine imaginäre &lt;code&gt;modulo&lt;/code&gt; oOperator – dies würde wahrscheinlich auf Produkttypen zutreffen, bei denen die ID dem Modulo von 1 entspricht.
+&lt;p/&gt;
+&lt;p class=&quot;tl_help_table&quot;&gt;
+Operatoren können beliebige spezielle Abfragen durchführen oder eine Produktliste manuell filtern. Manchmal bedeutet dies, dass ein Operator ein Attribut nicht benötigt
+name, z. B. wenn der Operator bereits weiß, auf welches Attribut oder welche Relationstabelle er zugreifen muss.
+&lt;/p&gt;
+&lt;p class=&quot;tl_help_table&quot;&gt;
+Hier finden Sie eine Liste der Isotope-Kernfilter. Informationen zu weiteren Filtern, die von Erweiterungen bereitgestellt werden, finden Sie in der jeweiligen Erweiterungsdokumentation.
+&lt;/p&gt;
+&lt;table class=&quot;tl_help_table&quot;&gt;
+&lt;tr&gt;
+&lt;th&gt;Operator&lt;/th&gt;
+&lt;th&gt;Beschreibung&lt;/td&gt;
+&lt;th&gt;Attribut benötigt&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;(cat)&lt;/cat&gt;&lt;/td&gt;&lt;td&gt;Produkte nach Kategorie filtern.&lt;/td&gt;&lt;td&gt;no&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+</target>
       </trans-unit>
       <trans-unit id="XPL.checkoutTargetFile">
         <source>&lt;p class=&quot;tl_help_table&quot;&gt;Use these simple tokens to generate a dynamic file name.&lt;/p&gt;</source>

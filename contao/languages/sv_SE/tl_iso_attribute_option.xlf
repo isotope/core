@@ -3,6 +3,7 @@
     <body>
       <trans-unit id="tl_iso_attribute_option.tableLabel">
         <source>Attribute Option</source>
+        <target>Attributalternativ</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.type.0">
         <source>Type</source>

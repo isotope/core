@@ -3,6 +3,7 @@
     <body>
       <trans-unit id="tl_iso_config.tableLabel">
         <source>Shop Configuration</source>
+        <target>Shop-Konfiguration</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.name.0">
         <source>Configuration Name</source>
@@ -230,6 +231,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.shipping_ids.1">
         <source>Select one or more shipping methods for the checkout.</source>
+        <target>Wählen Sie eine oder mehrere Versandarten für den Bestellvorgang aus.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.payment_ids.0">
         <source>Payment methods</source>
@@ -237,18 +239,23 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.payment_ids.1">
         <source>Select one or more payment methods for the checkout.</source>
+        <target>Wählen Sie eine oder mehrere Zahlungsmethoden für den Bezahlvorgang aus.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.default_shipping.0">
         <source>Default shipping method</source>
+        <target>Standardversandart</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.default_shipping.1">
         <source>Optionally select a default shipping method that should be applied to new carts.</source>
+        <target>Wählen Sie optional eine Standardversandart aus, die auf neue Warenkörbe angewendet werden soll.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.default_payment.0">
         <source>Default payment method</source>
+        <target>Standardzahlungsmethode</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.default_payment.1">
         <source>Optionally select a default payment method that should be applied to new carts.</source>
+        <target>Wählen Sie optional eine Standardzahlungsmethode aus, die für neue Warenkörbe verwendet werden soll.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.priceDisplay.0">
         <source>Price display</source>
@@ -260,9 +267,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.taxCalculation.0">
         <source>Tax calculation</source>
+        <target>Steuerberechnung</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.taxCalculation.1">
         <source>Select the tax calculation mode.</source>
+        <target>Wählen Sie den Steuerberechnungsmodus aus.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.currencyFormat.0">
         <source>Price formatting</source>
@@ -390,12 +399,15 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.checkout_legend">
         <source>Checkout – Address</source>
+        <target>Kasse – Adresse</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.shipping_legend">
         <source>Checkout – Shipping</source>
+        <target>Kasse – Versand</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.payment_legend">
         <source>Checkout – Payment</source>
+        <target>Kasse – Bezahlung</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.bank_legend">
         <source>Bank details</source>
@@ -403,6 +415,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.price_legend">
         <source>Price display &amp; currency formatting</source>
+        <target>Preisanzeige und Währungsformatierung</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.converter_legend">
         <source>Currency conversion</source>

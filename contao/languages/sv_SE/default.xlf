@@ -7,6 +7,7 @@
       </trans-unit>
       <trans-unit id="ERR.invalidColumn">
         <source>&quot;%s&quot; cannot be used as a database column. Suggestion: &quot;%s&quot;</source>
+        <target>&quot;%s&quot; kan inte användas som en databaskolumn. Förslag: &quot;%s&quot;</target>
       </trans-unit>
       <trans-unit id="ERR.noStoreConfigurationSet">
         <source>No store configuration available</source>
@@ -86,9 +87,11 @@
       </trans-unit>
       <trans-unit id="PTY.iso_products.0">
         <source>Isotope Products</source>
+        <target>Isotope-produkter</target>
       </trans-unit>
       <trans-unit id="PTY.iso_products.1">
         <source>Select this page type if your want to display a product list and product reader.</source>
+        <target>Välj den här sidtypen om du vill visa en produktlista och en produktläsare.</target>
       </trans-unit>
       <trans-unit id="MSC.productPicker">
         <source>Products</source>
@@ -96,6 +99,7 @@
       </trans-unit>
       <trans-unit id="MSC.filterByPages">
         <source>Products of category</source>
+        <target>Produkter i kategorin</target>
       </trans-unit>
       <trans-unit id="MSC.noVariants">
         <source>There are no variants for this product.</source>
@@ -115,15 +119,19 @@
       </trans-unit>
       <trans-unit id="MSC.payment_failed">
         <source>Unfortunately, the payment was not successful. Please change your payment method or try again to complete your payment.</source>
+        <target>Tyvärr gick betalningen inte igenom. Välj ett annat betalningssätt eller försök igen för att slutföra betalningen.</target>
       </trans-unit>
       <trans-unit id="MSC.payment_change">
         <source>Change payment</source>
+        <target>Ändra betalningssätt</target>
       </trans-unit>
       <trans-unit id="MSC.payment_complete">
         <source>Complete payment</source>
+        <target>Slutför betalningen</target>
       </trans-unit>
       <trans-unit id="MSC.payment_cancel">
         <source>Cancel order</source>
+        <target>Avbryt beställningen</target>
       </trans-unit>
       <trans-unit id="MSC.mmNoUploads">
         <source>No files uploaded.</source>
@@ -243,6 +251,7 @@
       </trans-unit>
       <trans-unit id="MSC.reorderConfirmation">
         <source>The products have been added to your shopping cart.</source>
+        <target>Produkterna har lagts till i din varukorg.</target>
       </trans-unit>
       <trans-unit id="MSC.editProductLinkTitle">
         <source>Edit %s</source>
@@ -306,9 +315,11 @@
       </trans-unit>
       <trans-unit id="MSC.transactionStatusHeadline">
         <source>Payment Status: %s</source>
+        <target>Betalningsstatus: %s</target>
       </trans-unit>
       <trans-unit id="MSC.deliveryStatusHeadline">
         <source>Delivery Status: %s</source>
+        <target>Leveransstatus: %s</target>
       </trans-unit>
       <trans-unit id="MSC.checkboutStepBack">
         <source>Go back to step &quot;%s&quot;</source>
@@ -336,6 +347,7 @@
       </trans-unit>
       <trans-unit id="MSC.createAddressHeadline">
         <source>Add a new address</source>
+        <target>Lägg till en ny adress</target>
       </trans-unit>
       <trans-unit id="MSC.editAddressLabel">
         <source>Edit</source>
@@ -367,9 +379,11 @@
       </trans-unit>
       <trans-unit id="MSC.iso_transaction_status">
         <source>Payment status</source>
+        <target>Betalningsstatus</target>
       </trans-unit>
       <trans-unit id="MSC.iso_delivery_status">
         <source>Shipping status</source>
+        <target>Leveransstatus</target>
       </trans-unit>
       <trans-unit id="MSC.iso_order_description">
         <source>Description</source>
@@ -389,6 +403,7 @@
       </trans-unit>
       <trans-unit id="MSC.iso_order_tax">
         <source>VAT</source>
+        <target>Moms</target>
       </trans-unit>
       <trans-unit id="MSC.iso_order_locked">
         <source>Placed</source>
@@ -464,27 +479,35 @@
       </trans-unit>
       <trans-unit id="MSC.shipping_address_message">
         <source>Select an existing address or add a new address to your account.</source>
+        <target>Välj en befintlig adress eller lägg till en ny adress i ditt konto.</target>
       </trans-unit>
       <trans-unit id="MSC.shipping_address_guest_message">
         <source>Enter your shipping information.</source>
+        <target>Ange dina leveransuppgifter.</target>
       </trans-unit>
       <trans-unit id="MSC.billing_address_message">
         <source>Select an existing address or add a new address to your account.</source>
+        <target>Välj en befintlig adress eller lägg till en ny adress i ditt konto.</target>
       </trans-unit>
       <trans-unit id="MSC.billing_address_guest_message">
         <source>Enter your billing information.</source>
+        <target>Ange dina faktureringsuppgifter.</target>
       </trans-unit>
       <trans-unit id="MSC.customer_address_message">
         <source>Select an existing address or add a new address to your account.</source>
+        <target>Välj en befintlig adress eller lägg till en ny adress i ditt konto.</target>
       </trans-unit>
       <trans-unit id="MSC.customer_address_guest_message">
         <source>Enter your customer information.</source>
+        <target>Ange dina kunduppgifter.</target>
       </trans-unit>
       <trans-unit id="MSC.address_error">
         <source>This address cannot be used or is missing required information.</source>
+        <target>Den här adressen kan inte användas eller saknar nödvändiga uppgifter.</target>
       </trans-unit>
       <trans-unit id="MSC.member_address_error">
         <source>Your member address cannot be used or is missing required information.</source>
+        <target>Din medlemsadress kan inte användas eller saknar nödvändiga uppgifter.</target>
       </trans-unit>
       <trans-unit id="MSC.shipping_method_message">
         <source>Select a shipping method.</source>
@@ -652,12 +675,15 @@
       </trans-unit>
       <trans-unit id="MSC.isotopeIntroduction.2">
         <source>This is the page where most of the configuration will take place.</source>
+        <target>Det är på den här sidan som det mesta av konfigurationen kommer att ske.</target>
       </trans-unit>
       <trans-unit id="MSC.isotopeIntroduction.3">
         <source>For initial setup, you should start from the bottom of this page and work your way upward.</source>
+        <target>Vid den första installationen bör du börja längst ner på den här sidan och arbeta dig uppåt.</target>
       </trans-unit>
       <trans-unit id="MSC.isotopeIntroduction.4">
         <source>Visit the official Isotope eCommerce website for the latest news, configuration manuals and professional support. Thank you so much for considering giving something back!</source>
+        <target>Besök Isotope e-handels officiella webbplats för de senaste nyheterna, konfigurationshandböcker och professionell support. Tack så mycket för att du överväger att ge något tillbaka!</target>
       </trans-unit>
       <trans-unit id="MSC.isotopeIntroduction.5">
         <source>The Isotope eCommerce Team</source>
@@ -665,6 +691,7 @@
       </trans-unit>
       <trans-unit id="MSC.isotopeIntroduction.6">
         <source>Isotope is a product of terminal42 gmbh in association with the Isotope eCommerce Team.</source>
+        <target>Isotope är en produkt från terminal42 gmbh i samarbete med Isotope eCommerce Team.</target>
       </trans-unit>
       <trans-unit id="MSC.iso_priceDisplay.net.0">
         <source>Net</source>
@@ -692,15 +719,19 @@
       </trans-unit>
       <trans-unit id="MSC.iso_taxCalculation.horizontal.0">
         <source>horizontal</source>
+        <target>horisontell</target>
       </trans-unit>
       <trans-unit id="MSC.iso_taxCalculation.horizontal.1">
         <source>VAT is calculated individually for each line item – that is, item price × quantity, then the tax is calculated and rounded per item. At the end, all tax amounts are summed.</source>
+        <target>Mervärdesskatten beräknas separat för varje artikel – det vill säga artikelpris × antal, varefter skatten beräknas och avrundas per artikel. Till slut summeras alla skattebelopp.</target>
       </trans-unit>
       <trans-unit id="MSC.iso_taxCalculation.vertical.0">
         <source>vertical</source>
+        <target>vertikal</target>
       </trans-unit>
       <trans-unit id="MSC.iso_taxCalculation.vertical.1">
         <source>VAT is calculated only after summing all net amounts. Then the tax is applied to the total net amount and rounded once.</source>
+        <target>Mervärdesskatten beräknas först efter att alla nettobelopp har summerats. Därefter tillämpas skatten på det totala nettobeloppet och avrundas en gång.</target>
       </trans-unit>
       <trans-unit id="CTE.isotope">
         <source>Isotope eCommerce</source>
@@ -868,9 +899,11 @@
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.cart_total.0">
         <source>Cart total</source>
+        <target>Totalt i varukorgen</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.cart_total.1">
         <source>Match on the total amount of the cart.</source>
+        <target>Jämför det totala beloppet i varukorgen.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.cart_address.0">
         <source>Cart address</source>
@@ -878,6 +911,7 @@
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.cart_address.1">
         <source>Match on country, subdivision or postal codes of the billing or shipping address.</source>
+        <target>Sök efter land, region eller postnummer för fakturerings- eller leveransadressen.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.cart_quantity.0">
         <source>Total quantity in cart</source>
@@ -885,6 +919,7 @@
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.cart_quantity.1">
         <source>Compares the given value to the sum of all quantities of all products.</source>
+        <target>Jämför det angivna värdet med summan av alla kvantiteter för alla produkter.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.cart_products.0">
         <source>Total products in cart</source>
@@ -892,21 +927,27 @@
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.cart_products.1">
         <source>Compares the given value to the total products in the cart (regardless of their quantity).</source>
+        <target>Jämför det angivna värdet med det totala antalet produkter i varukorgen (oavsett antal).</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.member">
         <source>Member</source>
+        <target>Medlem</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.member_authenticated.0">
         <source>Login status</source>
+        <target>Inloggningsstatus</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.member_authenticated.1">
         <source>Checks whether a customer is logged in or not.</source>
+        <target>Kontrollerar om en kund är inloggad eller inte.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.member_group.0">
         <source>Member groups (current user)</source>
+        <target>Medlemsgrupper (nuvarande användare)</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.member_group.1">
         <source>Checks whether the currently logged-in user has or does not have certain member groups.</source>
+        <target>Kontrollerar om den användare som för närvarande är inloggad tillhör eller inte tillhör vissa medlemsgrupper.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.store">
         <source>Store</source>
@@ -914,9 +955,11 @@
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.store_config.0">
         <source>Store config</source>
+        <target>Butikskonfiguration</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.store_config.1">
         <source>Checks for the current store configuration.</source>
+        <target>Kontrollerar den aktuella butikskonfigurationen.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.store_currency.0">
         <source>Currency</source>
@@ -924,21 +967,27 @@
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.store_currency.1">
         <source>Match on the current currency.</source>
+        <target>Jämför med den aktuella valutan.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.dates">
         <source>Date &amp; time</source>
+        <target>Datum och tid</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.store_date.0">
         <source>Date &amp; time</source>
+        <target>Datum och tid</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.store_date.1">
         <source>Checks for the current date and time.</source>
+        <target>Kontrollerar dagens datum och tid.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.store_time.0">
         <source>Time of day</source>
+        <target>Tid på dygnet</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.store_time.1">
         <source>Checks the time of the current day.</source>
+        <target>Kontrollerar klockslaget för dagens datum.</target>
       </trans-unit>
       <trans-unit id="ATTR.text.0">
         <source>Text field</source>

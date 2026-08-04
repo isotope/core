@@ -1,0 +1,222 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="contao/languages/en/tl_iso_rule_condition.xlf" source-language="en" target-language="sv-SE">
+    <body>
+      <trans-unit id="tl_iso_rule_condition.tableLabel">
+        <source>Rule Condition</source>
+        <target>Regelvillkor</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.type.0">
+        <source>Type</source>
+        <target>Typ</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.type.1">
+        <source>Select the condition type.</source>
+        <target>Välj villkorstyp.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.operator.0">
+        <source>Operator</source>
+        <target>Operatör</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.operator.1">
+        <source>Select the condition operator.</source>
+        <target>Välj villkorsoperatorn.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.quantity.0">
+        <source>Quantity</source>
+        <target>Kvantitet</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.quantity.1">
+        <source>Please enter a number.</source>
+        <target>Ange ett tal.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.quantity_from.0">
+        <source>Quantity from</source>
+        <target>Antal från</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.quantity_from.1">
+        <source>Please enter the minimum number.</source>
+        <target>Ange det minsta antalet.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.quantity_to.0">
+        <source>Quantity to</source>
+        <target>Antal till</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.quantity_to.1">
+        <source>Please enter the maximum number.</source>
+        <target>Ange det högsta antalet.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.amount.0">
+        <source>Amount</source>
+        <target>Belopp</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.amount.1">
+        <source>Please enter the amount.</source>
+        <target>Ange beloppet.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.amount_from.0">
+        <source>Amount from</source>
+        <target>Belopp från</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.amount_from.1">
+        <source>Please enter the minimum amount.</source>
+        <target>Ange minimibeloppet.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.amount_to.0">
+        <source>Amount to</source>
+        <target>Beloppet uppgår till</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.amount_to.1">
+        <source>Please enter the maximum amount.</source>
+        <target>Ange det högsta beloppet.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.member_groups.0">
+        <source>Member groups</source>
+        <target>Medlemsgrupper</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.member_groups.1">
+        <source>Choose the member groups.</source>
+        <target>Välj medlemsgrupper.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.config_ids.0">
+        <source>Store configurations</source>
+        <target>Shop konfigurationer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.config_ids.1">
+        <source>Choose the store configurations.</source>
+        <target>Välj butikskonfigurationerna.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.currencies.0">
+        <source>Currencies</source>
+        <target>Valutor</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.currencies.1">
+        <source>Choose the applicable currencies.</source>
+        <target>Välj de valutor som gäller.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.start.0">
+        <source>From</source>
+        <target>Från</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.start.1">
+        <source>Enter a date and time or leave blank to only apply an end date.</source>
+        <target>Ange datum och tid eller lämna fältet tomt om du endast vill ange ett slutdatum.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.stop.0">
+        <source>Until</source>
+        <target>Tills</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.stop.1">
+        <source>Enter a date and time or leave blank to only apply a start date.</source>
+        <target>Ange datum och tid eller lämna fältet tomt om du endast vill ange ett startdatum.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.start_time.0">
+        <source>From</source>
+        <target>Från</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.start_time.1">
+        <source>Enter a start time.</source>
+        <target>Ange en starttid.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.stop_time.0">
+        <source>Until</source>
+        <target>Tills</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.stop_time.1">
+        <source>Enter an end time.</source>
+        <target>Ange en sluttid.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.address_type.0">
+        <source>Address type</source>
+        <target>Adresstyp</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.address_type.1">
+        <source>Select the cart address type to apply to.</source>
+        <target>Välj den typ av leveransadress som du vill tillämpa detta på.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.address_type.billing">
+        <source>Billing address</source>
+        <target>Fakturaadress</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.address_type.shipping">
+        <source>Shipping address</source>
+        <target>Leveransadress</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.countries.0">
+        <source>Countries</source>
+        <target>Länder</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.countries.1">
+        <source>Select the countries this condition applies to.</source>
+        <target>Välj de länder som detta villkor gäller för.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.subdivisions.0">
+        <source>States/Regions</source>
+        <target>Stater/Regioner</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.subdivisions.1">
+        <source>Select the states or regions this rule applies to.</source>
+        <target>Välj de delstater eller regioner som denna regel gäller för.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.postalcodes.0">
+        <source>Postal codes</source>
+        <target>Postnummer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.postalcodes.1">
+        <source>Limit the condition to postal codes. You can enter a comma separated list and ranges (e.g. 1234,1235,1236-1239,1100-1200).</source>
+        <target>Begränsa sökningen till postnummer. Du kan ange en kommaseparerad lista och intervall (t.ex. 1234,1235,1236-1239,1100-1200).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.condition_legend">
+        <source>Rule condition</source>
+        <target>Regelvillkor</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.operator.eq">
+        <source>equals</source>
+        <target>lika</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.operator.neq">
+        <source>not equals</source>
+        <target>är inte lika med</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.operator.gt">
+        <source>greater then</source>
+        <target>större än</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.operator.gte">
+        <source>greater or equal to</source>
+        <target>större än eller lika med</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.operator.lt">
+        <source>lower then</source>
+        <target>lägre än</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.operator.lte">
+        <source>lower or equal to</source>
+        <target>mindre än eller lika med</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.operator.range">
+        <source>between</source>
+        <target>mellan</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.operator.has_all">
+        <source>all of</source>
+        <target>alla</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.operator.has_one">
+        <source>one of</source>
+        <target>en av</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.operator.has_none">
+        <source>not in</source>
+        <target>inte i</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.operator.logged_in">
+        <source>Customer is logged in</source>
+        <target>Kunden är inloggad</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.operator.not_logged_in">
+        <source>Customer is not logged in</source>
+        <target>Kunden är inte inloggad</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

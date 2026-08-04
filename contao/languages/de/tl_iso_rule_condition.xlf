@@ -1,0 +1,222 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="contao/languages/en/tl_iso_rule_condition.xlf" source-language="en" target-language="de">
+    <body>
+      <trans-unit id="tl_iso_rule_condition.tableLabel">
+        <source>Rule Condition</source>
+        <target>Regelbedingung</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.type.0">
+        <source>Type</source>
+        <target>Typ</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.type.1">
+        <source>Select the condition type.</source>
+        <target>Wählen Sie die Konditionsart aus.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.operator.0">
+        <source>Operator</source>
+        <target>Operator</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.operator.1">
+        <source>Select the condition operator.</source>
+        <target>Wählen Sie den Bedingungsoperator aus.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.quantity.0">
+        <source>Quantity</source>
+        <target>Anzahl</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.quantity.1">
+        <source>Please enter a number.</source>
+        <target>Bitte geben Sie eine Zahl ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.quantity_from.0">
+        <source>Quantity from</source>
+        <target>Anzahl ab</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.quantity_from.1">
+        <source>Please enter the minimum number.</source>
+        <target>Bitte geben Sie die Mindestanzahl ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.quantity_to.0">
+        <source>Quantity to</source>
+        <target>Anzahl bis</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.quantity_to.1">
+        <source>Please enter the maximum number.</source>
+        <target>Bitte geben Sie die maximale Anzahl ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.amount.0">
+        <source>Amount</source>
+        <target>Betrag</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.amount.1">
+        <source>Please enter the amount.</source>
+        <target>Bitte geben Sie den Betrag ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.amount_from.0">
+        <source>Amount from</source>
+        <target>Betrag von</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.amount_from.1">
+        <source>Please enter the minimum amount.</source>
+        <target>Bitte geben Sie den Mindestbetrag ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.amount_to.0">
+        <source>Amount to</source>
+        <target>Betrag bis</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.amount_to.1">
+        <source>Please enter the maximum amount.</source>
+        <target>Bitte geben Sie den Höchstbetrag ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.member_groups.0">
+        <source>Member groups</source>
+        <target>Mitgliedergruppen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.member_groups.1">
+        <source>Choose the member groups.</source>
+        <target>Wählen Sie die Mitgliedergruppen aus.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.config_ids.0">
+        <source>Store configurations</source>
+        <target>Konfigurationen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.config_ids.1">
+        <source>Choose the store configurations.</source>
+        <target>Wählen Sie die Shop-Konfigurationen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.currencies.0">
+        <source>Currencies</source>
+        <target>Währungen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.currencies.1">
+        <source>Choose the applicable currencies.</source>
+        <target>Wählen Sie die entsprechenden Währungen aus.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.start.0">
+        <source>From</source>
+        <target>Von</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.start.1">
+        <source>Enter a date and time or leave blank to only apply an end date.</source>
+        <target>Geben Sie ein Datum und eine Uhrzeit ein oder lassen Sie das Feld leer, um nur ein Enddatum festzulegen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.stop.0">
+        <source>Until</source>
+        <target>Bis</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.stop.1">
+        <source>Enter a date and time or leave blank to only apply a start date.</source>
+        <target>Geben Sie ein Datum und eine Uhrzeit ein oder lassen Sie das Feld leer, um nur ein Startdatum festzulegen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.start_time.0">
+        <source>From</source>
+        <target>Von</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.start_time.1">
+        <source>Enter a start time.</source>
+        <target>Geben Sie eine Startzeit ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.stop_time.0">
+        <source>Until</source>
+        <target>Bis</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.stop_time.1">
+        <source>Enter an end time.</source>
+        <target>Geben Sie eine Endzeit ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.address_type.0">
+        <source>Address type</source>
+        <target>Adresstyp</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.address_type.1">
+        <source>Select the cart address type to apply to.</source>
+        <target>Wählen Sie den Adresstyp für den Warenkorb aus, auf den die Einstellung angewendet werden soll.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.address_type.billing">
+        <source>Billing address</source>
+        <target>Rechnungsadresse</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.address_type.shipping">
+        <source>Shipping address</source>
+        <target>Versandadresse</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.countries.0">
+        <source>Countries</source>
+        <target>Länder</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.countries.1">
+        <source>Select the countries this condition applies to.</source>
+        <target>Wählen Sie die Länder aus, für die diese Bedingung gilt.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.subdivisions.0">
+        <source>States/Regions</source>
+        <target>Bundesländer/Staaten/Regionen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.subdivisions.1">
+        <source>Select the states or regions this rule applies to.</source>
+        <target>Wählen Sie die Bundesländer oder Regionen aus, für die diese Regel gilt.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.postalcodes.0">
+        <source>Postal codes</source>
+        <target>Postleitzahlen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.postalcodes.1">
+        <source>Limit the condition to postal codes. You can enter a comma separated list and ranges (e.g. 1234,1235,1236-1239,1100-1200).</source>
+        <target>Beschränken Sie die Bedingung auf Postleitzahlen. Sie können eine durch Kommas getrennte Liste sowie Bereiche eingeben (z. B. 1234,1235,1236–1239,1100–1200).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.condition_legend">
+        <source>Rule condition</source>
+        <target>Regel-Bedingung</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.operator.eq">
+        <source>equals</source>
+        <target>ist gleich</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.operator.neq">
+        <source>not equals</source>
+        <target>ist nicht gleich</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.operator.gt">
+        <source>greater then</source>
+        <target>größer als</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.operator.gte">
+        <source>greater or equal to</source>
+        <target>größer als oder gleich</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.operator.lt">
+        <source>lower then</source>
+        <target>kleiner als</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.operator.lte">
+        <source>lower or equal to</source>
+        <target>kleiner als oder gleich</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.operator.range">
+        <source>between</source>
+        <target>zwischen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.operator.has_all">
+        <source>all of</source>
+        <target>alle von</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.operator.has_one">
+        <source>one of</source>
+        <target>eines von</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.operator.has_none">
+        <source>not in</source>
+        <target>nicht in</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.operator.logged_in">
+        <source>Customer is logged in</source>
+        <target>Der Kunde ist angemeldet</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.operator.not_logged_in">
+        <source>Customer is not logged in</source>
+        <target>Der Kunde ist nicht angemeldet</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

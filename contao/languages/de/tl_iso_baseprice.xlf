@@ -3,6 +3,7 @@
     <body>
       <trans-unit id="tl_iso_baseprice.tableLabel">
         <source>Base Price</source>
+        <target>Grundpreis</target>
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.name.0">
         <source>Name</source>

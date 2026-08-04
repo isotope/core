@@ -11,6 +11,7 @@
       </trans-unit>
       <trans-unit id="MOD.iso_products.1">
         <source>Manage products for your Isotope eCommerce shop.</source>
+        <target>Hantera produkterna i din Isotope-webbutik.</target>
       </trans-unit>
       <trans-unit id="MOD.iso_orders.0">
         <source>Orders</source>
@@ -18,12 +19,15 @@
       </trans-unit>
       <trans-unit id="MOD.iso_orders.1">
         <source>See and manage orders for your shop.</source>
+        <target>Se och hantera beställningar för din butik.</target>
       </trans-unit>
       <trans-unit id="MOD.iso_rules.0">
         <source>Rules</source>
+        <target>Regler</target>
       </trans-unit>
       <trans-unit id="MOD.iso_rules.1">
         <source>Create rules to influence the store frontend.</source>
+        <target>Skapa regler för att påverka butikens frontend.</target>
       </trans-unit>
       <trans-unit id="MOD.iso_setup.0">
         <source>Configuration</source>
@@ -31,6 +35,7 @@
       </trans-unit>
       <trans-unit id="MOD.iso_setup.1">
         <source>Setup and configure Isotope eCommerce to your needs.</source>
+        <target>Installera och konfigurera Isotope eCommerce efter dina behov.</target>
       </trans-unit>
       <trans-unit id="FMD.isotope">
         <source>Isotope eCommerce</source>

@@ -1,0 +1,130 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="contao/languages/en/tl_iso_orderstatus.xlf" source-language="en" target-language="sv-SE">
+    <body>
+      <trans-unit id="tl_iso_orderstatus.tableLabel">
+        <source>Order Status</source>
+        <target>Orderstatus</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.type.0">
+        <source>Type</source>
+        <target>Typ</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.type.1">
+        <source>Select the status type.</source>
+        <target>Välj statustyp.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.type.order">
+        <source>Order status</source>
+        <target>Orderstatus</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.type.transaction">
+        <source>Payment status</source>
+        <target>Betalningsstatus</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.type.delivery">
+        <source>Shipping status</source>
+        <target>Leveransstatus</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.alias.0">
+        <source>Technical name</source>
+        <target>Tekniskt namn</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.alias.1">
+        <source>Please enter a technical name for this status. Use letters and underscores only.</source>
+        <target>Ange ett tekniskt namn för denna status. Använd endast bokstäver och understreck.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.sorting.0">
+        <source>Position</source>
+        <target>Position</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.sorting.1">
+        <source>Enter a numerical value to sort the order status.</source>
+        <target>Ange ett tal för att sortera orderstatusen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.name.0">
+        <source>Name</source>
+        <target>Namn</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.name.1">
+        <source>Please enter a name for this status.</source>
+        <target>Ange ett namn för denna status.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.label.0">
+        <source>Label</source>
+        <target>Etikett</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.label.1">
+        <source>Optionally enter a front end label for this status.</source>
+        <target>Du kan, om du vill, ange en etikett för denna status.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.workflow.0">
+        <source>Next possible states</source>
+        <target>Nästa möjliga tillstånd</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.workflow.1">
+        <source>Select the next status options and order can receive when having this status.</source>
+        <target>Välj de nästa statusalternativen och vilka beställningar som kan tas emot när denna status gäller.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.color.0">
+        <source>Color</source>
+        <target>Färg</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.color.1">
+        <source>Here you can set a custom color for this status. The color will appear on the order list in back end.</source>
+        <target>Här kan du ställa in en anpassad färg för denna status. Färgen kommer att synas på beställningslistan i back end.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.transaction_state.0">
+        <source>Payment state</source>
+        <target>Betalningsstatus</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.transaction_state.1">
+        <source>Configure the payment state for orders with this status.</source>
+        <target>Ställ in betalningsstatus för beställningar med denna status.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.transaction_state_options.pending.0">
+        <source>Pending</source>
+        <target>Pågående</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.transaction_state_options.pending.1">
+        <source>If the transaction status is pending, it means the payment has not been attempted or should be attempted again. The user will be requested to complete the payment for the order.</source>
+        <target>Om transaktionsstatusen är ”Pågående” betyder det att betalningen inte har genomförts eller bör göras på nytt. Användaren kommer att uppmanas att slutföra betalningen för beställningen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.transaction_state_options.processing.0">
+        <source>Processing</source>
+        <target>Bearbetning</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.transaction_state_options.processing.1">
+        <source>If the transaction status is processing, it means the payment is neither success nor failure. In this state, the user cannot change the order, but the order is also not considers done (e.g. downloads should not be available).</source>
+        <target>Om transaktionsstatusen är ”Bearbetning” innebär det att betalningen varken har lyckats eller misslyckats. I detta läge kan användaren inte ändra beställningen, men beställningen betraktas inte heller som slutförd (t.ex. bör nedladdningar inte vara tillgängliga).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.transaction_state_options.complete.0">
+        <source>Complete</source>
+        <target>Slutförd</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.transaction_state_options.complete.1">
+        <source>If the transaction is complete, the payment was successful. Shipping can be initiated and downloads should be available at this stage.</source>
+        <target>Om transaktionen är slutförd har betalningen genomförts. Frakt kan nu påbörjas och nedladdningarna bör vara tillgängliga i detta skede.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.welcomescreen.0">
+        <source>Show on welcome screen</source>
+        <target>Visa på välkomstskärmen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.welcomescreen.1">
+        <source>Show number of orders with this status on the backend welcome screen.</source>
+        <target>Visa antalet beställningar med denna status på backend-välkomstskärmen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.name_legend">
+        <source>Name</source>
+        <target>Namn</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.order_legend">
+        <source>Order state</source>
+        <target>Orderstatus</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.workflow_legend">
+        <source>Workflow</source>
+        <target>Arbetsflöde</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

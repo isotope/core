@@ -91,6 +91,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_gallery.anchor.lightbox">
         <source>Link to the image (e.g. for lightbox)</source>
+        <target>Länk till bilden (t.ex. för lightbox)</target>
       </trans-unit>
     </body>
   </file>

@@ -211,6 +211,7 @@
       </trans-unit>
       <trans-unit id="tl_content.iso_order_conditions.step._summary">
         <source>Summary (Products in Cart)</source>
+        <target>Zusammenfassung (Artikel im Warenkorb)</target>
       </trans-unit>
       <trans-unit id="tl_content.iso_order_conditions.position.0">
         <source>Position</source>
@@ -370,9 +371,11 @@
       </trans-unit>
       <trans-unit id="tl_content.iso_filterKey.0">
         <source>Filter key (optional)</source>
+        <target>Filterschlüssel (optional)</target>
       </trans-unit>
       <trans-unit id="tl_content.iso_filterKey.1">
         <source>Enter an optional key to link filter and list modules.</source>
+        <target>Geben Sie einen optionalen Schlüssel ein, um Filter- und Listenmodule miteinander zu verknüpfen.</target>
       </trans-unit>
       <trans-unit id="tl_content.iso_filterHideSingle.0">
         <source>Hide single options</source>

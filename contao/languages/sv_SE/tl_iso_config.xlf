@@ -3,6 +3,7 @@
     <body>
       <trans-unit id="tl_iso_config.tableLabel">
         <source>Shop Configuration</source>
+        <target>Butikskonfiguration</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.name.0">
         <source>Configuration Name</source>
@@ -230,6 +231,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.shipping_ids.1">
         <source>Select one or more shipping methods for the checkout.</source>
+        <target>Välj ett eller flera leveranssätt vid kassan.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.payment_ids.0">
         <source>Payment methods</source>
@@ -237,18 +239,23 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.payment_ids.1">
         <source>Select one or more payment methods for the checkout.</source>
+        <target>Välj ett eller flera betalningssätt vid utcheckningen.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.default_shipping.0">
         <source>Default shipping method</source>
+        <target>Standardleveranssätt</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.default_shipping.1">
         <source>Optionally select a default shipping method that should be applied to new carts.</source>
+        <target>Du kan välja att ange ett standardfraktalternativ som ska tillämpas på nya varukorgar.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.default_payment.0">
         <source>Default payment method</source>
+        <target>Standardbetalningssätt</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.default_payment.1">
         <source>Optionally select a default payment method that should be applied to new carts.</source>
+        <target>Du kan välja att ange en standardbetalningsmetod som ska användas för nya varukorgar.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.priceDisplay.0">
         <source>Price display</source>
@@ -260,9 +267,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.taxCalculation.0">
         <source>Tax calculation</source>
+        <target>Skatteberäkning</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.taxCalculation.1">
         <source>Select the tax calculation mode.</source>
+        <target>Välj beräkningssätt för skatt.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.currencyFormat.0">
         <source>Price formatting</source>
@@ -390,12 +399,15 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.checkout_legend">
         <source>Checkout – Address</source>
+        <target>Kassa – Adress</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.shipping_legend">
         <source>Checkout – Shipping</source>
+        <target>Kassa – Frakt</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.payment_legend">
         <source>Checkout – Payment</source>
+        <target>Kassa – Betalning</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.bank_legend">
         <source>Bank details</source>
@@ -403,6 +415,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.price_legend">
         <source>Price display &amp; currency formatting</source>
+        <target>Prisvisning och valutaformatering</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.converter_legend">
         <source>Currency conversion</source>
