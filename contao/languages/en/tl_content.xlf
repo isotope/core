@@ -362,12 +362,6 @@
       <trans-unit id="tl_content.iso_related_categories.1">
         <source>Select the categories to show products of.</source>
       </trans-unit>
-      <trans-unit id="tl_content.iso_continueShopping.0">
-        <source>Enable "Continue shopping" button</source>
-      </trans-unit>
-      <trans-unit id="tl_content.iso_continueShopping.1">
-        <source>Add a link to the currently added product to the cart.</source>
-      </trans-unit>
       <trans-unit id="tl_content.iso_notifications.0">
         <source>Order notifications</source>
       </trans-unit>

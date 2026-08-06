@@ -26,7 +26,7 @@ class ContinueShoppingAction extends AbstractProductCollectionAction
 
     public function supports(AbstractProductCollection $collection, array $context, array $options = []): bool
     {
-        return ($context['data']['iso_continueShopping'] ?? null) && null !== $this->getHref($context);
+        return null !== $this->getHref($context);
     }
 
     public function render(AbstractProductCollection $collection, array $context, array $options = []): string
