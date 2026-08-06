@@ -12,6 +12,7 @@ use Contao\CoreBundle\Exception\RedirectResponseException;
 use Contao\CoreBundle\Exception\ResponseException;
 use Contao\CoreBundle\Twig\FragmentTemplate;
 use Contao\FrontendUser;
+use Contao\Input;
 use Isotope\CoreBundle\Checkout\Payment\PaymentInterface;
 use Isotope\CoreBundle\Model\PaymentModel;
 use Isotope\CoreBundle\ModelType\PaymentRegistry;
@@ -43,9 +44,11 @@ class OrderDetailsController extends AbstractContentElementController
 
     protected function getResponse(FragmentTemplate $template, ContentModel $model, Request $request): Response
     {
-        $order = $this->loader->loadFromIdentifier($request->query->getString('uid'));
+        Input::setUnusedRouteParameters([]); // Disable check on custom page controller
 
-        if (!$order) {
+        $identifier = ltrim($request->attributes->getString('parameters'), '/');
+
+        if (!$identifier || !($order = $this->loader->loadFromIdentifier($identifier))) {
             throw new PageNotFoundException();
         }
 
@@ -160,8 +163,8 @@ class OrderDetailsController extends AbstractContentElementController
     {
         $transactionModel = $this->orderTransactionHandler->init($order);
 
-        $returnUrl = $this->generateContentUrl($this->getPageModel(), ['uid' => $order->getIdentifier(), 'transaction' => $transactionModel->uniqid, 'transaction_state' => 'success'], UrlGeneratorInterface::ABSOLUTE_URL);
-        $errorUrl = $this->generateContentUrl($this->getPageModel(), ['uid' => $order->getIdentifier(), 'transaction' => $transactionModel->uniqid, 'transaction_state' => 'failed'], UrlGeneratorInterface::ABSOLUTE_URL);
+        $returnUrl = $this->generateContentUrl($this->getPageModel(), ['parameters' => '/'.$order->getIdentifier(), 'transaction' => $transactionModel->uniqid, 'transaction_state' => 'success'], UrlGeneratorInterface::ABSOLUTE_URL);
+        $errorUrl = $this->generateContentUrl($this->getPageModel(), ['parameters' => '/'.$order->getIdentifier(), 'transaction' => $transactionModel->uniqid, 'transaction_state' => 'failed'], UrlGeneratorInterface::ABSOLUTE_URL);
 
         return $this->handleResponse($payment->process($order, $transactionModel, $returnUrl, $errorUrl), $order);
     }
@@ -176,6 +179,6 @@ class OrderDetailsController extends AbstractContentElementController
             return $response;
         }
 
-        throw new RedirectResponseException($this->generateContentUrl($this->getPageModel(), ['uid' => $order->getIdentifier()]));
+        throw new RedirectResponseException($this->generateContentUrl($this->getPageModel(), ['parameters' => '/'.$order->getIdentifier()]));
     }
 }

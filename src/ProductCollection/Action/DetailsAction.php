@@ -33,7 +33,7 @@ class DetailsAction extends AbstractProductCollectionAction
     {
         return $this->renderView($this->type, [
             'label' => $this->translator->trans('MSC.detailLabel', [], 'contao_default'),
-            'href' => $this->urlGenerator->generate($this->getPageModel($context), ['uid' => $collection->getIdentifier()]),
+            'href' => $this->urlGenerator->generate($this->getPageModel($context), ['parameters' => '/'.$collection->getIdentifier()]),
         ]);
     }
 
