@@ -15,7 +15,11 @@
             <fieldset class="billing_address">
                 <legend>
                     {% if requires_payment %}
-                        <h4>{{ 'MSC.billing_address'|trans }}</h4>
+                        {% if not requires_shipping %}
+                            <h4>{{ 'MSC.billing_shipping_address'|trans }}</h4>
+                        {% else %}
+                            <h4>{{ 'MSC.billing_address'|trans }}</h4>
+                        {% endif %}
                     {% else %}
                         <h4>{{ 'MSC.customer_address'|trans }}</h4>
                     {% endif %}

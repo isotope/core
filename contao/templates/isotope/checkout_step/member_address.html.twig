@@ -44,7 +44,11 @@
         <fieldset>
             <legend>
                 {% if requires_payment %}
-                    <h4>{{ 'MSC.billing_address'|trans }}</h4>
+                    {% if not shipping_address_manager %}
+                        <h4>{{ 'MSC.billing_shipping_address'|trans }}</h4>
+                    {% else %}
+                        <h4>{{ 'MSC.billing_address'|trans }}</h4>
+                    {% endif %}
                 {% else %}
                     <h4>{{ 'MSC.customer_address'|trans }}</h4>
                 {% endif %}
@@ -93,7 +97,7 @@
         </fieldset>
     </form>
 
-    {% if requires_shipping and shipping_address_manager|default %}
+    {% if shipping_address_manager %}
         <form method="POST" data-action="isotope--fragment#submit" class="shipping_address">
             <fieldset data-controller="isotope--toggle-attribute">
                 <legend>
