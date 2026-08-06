@@ -10,6 +10,8 @@ use Contao\StringUtil;
 use Isotope\CoreBundle\Model\AddressModel;
 use Isotope\CoreBundle\Model\ConfigModel;
 use Isotope\CoreBundle\Model\OrderStatusModel;
+use Isotope\CoreBundle\Model\PaymentModel;
+use Isotope\CoreBundle\Model\ShippingModel;
 use Isotope\CoreBundle\ProductCollection\Order\Order;
 use Isotope\CoreBundle\Store\Address\AddressFormatter;
 use Isotope\CoreBundle\Store\Context\StoreContext;
@@ -88,9 +90,28 @@ class DefaultOrderNotificationTokensListener
             }
         }
 
+        $tokens['member_id'] = 0;
         if ($member) {
             foreach ($member->row() as $k => $v) {
                 $tokens['member_'.$k] = $this->formatter->dcaValue(MemberModel::getTable(), $k, $v);
+            }
+        }
+
+        $tokens['payment_id'] = 0;
+        $tokens['payment_label'] = '';
+        $tokens['payment_note'] = '';
+        if (($payment = $order->getPaymentMethod()) && ($paymentModel = PaymentModel::findById($payment->getId()))) {
+            foreach ($paymentModel->row() as $k => $v) {
+                $tokens['payment_'.$k] = $this->formatter->dcaValue(PaymentModel::getTable(), $k, $v);
+            }
+        }
+
+        $tokens['shipping_id'] = 0;
+        $tokens['shipping_label'] = '';
+        $tokens['shipping_note'] = '';
+        if (($shipping = $order->getShippingMethod()) && ($shippingModel = ShippingModel::findById($shipping->getId()))) {
+            foreach ($shippingModel->row() as $k => $v) {
+                $tokens['shipping_'.$k] = $this->formatter->dcaValue(ShippingModel::getTable(), $k, $v);
             }
         }
 

@@ -59,14 +59,14 @@ class OrderNotificationType implements NotificationTypeInterface
             $this->create(AnythingTokenDefinition::class, 'shipping_address_*'), // All the shipping address model fields
             $this->create(EmailTokenDefinition::class, 'shipping_address_email'),
             $this->create(AnythingTokenDefinition::class, 'form_*'), // All the order condition form fields
-            //'payment_id', // Payment method ID
-            //'payment_label', // Payment method label
-            //'payment_note', // Payment method note
-            //'payment_*',
-            //'shipping_id', // Shipping method ID
-            //'shipping_label', // Shipping method label
-            //'shipping_note', // Shipping method note
-            //'shipping_*',
+            $this->create(TextTokenDefinition::class, 'payment_id'), // Payment method ID
+            $this->create(TextTokenDefinition::class, 'payment_label'), // Payment method label
+            $this->create(TextTokenDefinition::class, 'payment_note'), // Payment method note
+            $this->create(AnythingTokenDefinition::class, 'payment_*'),
+            $this->create(TextTokenDefinition::class, 'shipping_id'), // Shipping method ID
+            $this->create(TextTokenDefinition::class, 'shipping_label'), // Shipping method label
+            $this->create(TextTokenDefinition::class, 'shipping_note'), // Shipping method note
+            $this->create(AnythingTokenDefinition::class, 'shipping_*'),
             $this->create(AnythingTokenDefinition::class, 'config_*'), // Store configuration model fields
             $this->create(EmailTokenDefinition::class, 'config_email'),
             $this->create(AnythingTokenDefinition::class, 'member_*'), // Member model fields
