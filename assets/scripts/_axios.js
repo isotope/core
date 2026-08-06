@@ -1,5 +1,5 @@
 import Axios from 'axios';
-import '@bprogress/core/dist/index.css';
+import '@bprogress/core/css';
 import { BProgress } from '@bprogress/core';
 import { extractScript } from './_dom';
 

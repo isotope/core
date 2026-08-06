@@ -1,3 +1,10 @@
+@use './backend/attributes';
+@use './backend/products';
+@use './backend/related-products';
+@use './backend/mediamanager';
+@use './backend/orders';
+@use './backend/shop-config';
+
 #tl_navigation .group-isotope {
     background: url('../images/module.svg') 3px 1px no-repeat;
     background-size: 14px 14px;
@@ -30,10 +37,3 @@
         padding: 18px 0;
     }
 }
-
-@use './backend/attributes';
-@use './backend/products';
-@use './backend/related-products';
-@use './backend/mediamanager';
-@use './backend/orders';
-@use './backend/shop-config';
