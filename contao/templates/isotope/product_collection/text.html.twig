@@ -1,16 +1,20 @@
 {% trans_default_domain 'contao_default' %}
 
-{% for item in collection.lineItems %}
-    {{- item.label }}
-    {%- set options = item.options -%}
-    {%- if options is not empty -%}
-        (
-            {% for attribute, value in item.options %}
-                {% if not loop.first %}, {% endif %}
-                {{ isotope_attribute_label(attribute) }}: {{ isotope_attribute_value(attribute, value) }}
-            {% endfor %}
+{% for level, items in collection.lineItems.byLevel -%}
+{%- for item in items %}
+    {%- set price = isotope_price(item) -%}
+    {{- item.label -}}
+    {%- if item.configuration is not empty %} (
+        {%- for attribute, value in item.configuration -%}
+            {%- if not loop.first %}, {% endif -%}
+            {{- isotope_attribute_label(attribute) }}: {{ isotope_attribute_value(attribute, value)|join(',') -}}
+        {%- endfor -%}
         )
-    {%- endif -%}
+    {%- endif %}: {{ item.quantity }} x {{ price.with({ html: false }) }} = {{ price.with({ amount: price.total_price, html: false }) }}
 {% endfor %}
+{%- if level == 0 -%}
+    {{- 'MSC.subTotalLabel'|trans }}: {{ isotope_price(collection.subtotal(0), html: false) }}
+{% endif %}
+{%- endfor -%}
 --------------------
-{{ 'MSC.subTotalLabel'|trans }}: {{ isotope_price(collection.subtotal, html: false) }}
+{{ 'MSC.grandTotalLabel'|trans }}: {{ isotope_price(collection.total, html: false) }}
