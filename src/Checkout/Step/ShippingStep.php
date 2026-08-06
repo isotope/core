@@ -42,7 +42,7 @@ class ShippingStep extends AbstractCheckoutStep
 
         $event = $this->dispatchEvent($context, $request, $config);
 
-        $shippings = $this->getShippingMethods($context->getShippingIds(), $context);
+        $shippings = $this->getShippingMethods($context);
         $current = $this->getCurrent($cart, $context, $config);
 
         if (
@@ -110,24 +110,20 @@ class ShippingStep extends AbstractCheckoutStep
             return $shipping;
         }
 
-        $skippable = explode(',', $config['iso_checkout_skippable'] ?? '');
-
-        if (\in_array('shipping_method', $skippable, true) && $id = ($context->getShippingIds()[0] ?? null)) {
-            return $this->shippingRegistry->get(ShippingModel::findById($id), $context);
+        if (\in_array('shipping_method', explode(',', $config['iso_checkout_skippable'] ?? ''), true)) {
+            return array_first($this->getShippingMethods($context));
         }
 
         return null;
     }
 
     /**
-     * @param array<int> $ids
-     *
      * @return array<ShippingInterface>
      */
-    private function getShippingMethods(array $ids, StoreContext $context): array
+    private function getShippingMethods(StoreContext $context): array
     {
         /** @var list<ShippingInterface> $shippings */
-        $shippings = $this->shippingRegistry->get(ShippingModel::findMultipleByIds($ids), $context, true);
+        $shippings = $this->shippingRegistry->get(ShippingModel::findMultipleByIds($context->getShippingIds()), $context, true);
 
         if (!$shippings) {
             return [];

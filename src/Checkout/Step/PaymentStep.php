@@ -39,10 +39,10 @@ class PaymentStep extends AbstractCheckoutStep
             return null;
         }
 
-        $payments = $this->getPaymentMethods($context->getPaymentIds(), $context);
-        $current = $this->getCurrent($cart, $context, $config);
-
         $event = $this->dispatchEvent($context, $request, $config);
+
+        $payments = $this->getPaymentMethods($context);
+        $current = $this->getCurrent($cart, $context, $config);
 
         if (
             $current
@@ -111,23 +111,19 @@ class PaymentStep extends AbstractCheckoutStep
             return $payment;
         }
 
-        $skippable = explode(',', $config['iso_checkout_skippable'] ?? '');
-
-        if (\in_array('payment_method', $skippable, true) && $id = ($context->getPaymentIds()[0] ?? null)) {
-            return $this->paymentRegistry->get(PaymentModel::findById($id), $context);
+        if (\in_array('payment_method', explode(',', $config['iso_checkout_skippable'] ?? ''), true)) {
+            return array_first($this->getPaymentMethods($context));
         }
 
         return null;
     }
 
     /**
-     * @param array<int> $ids
-     *
      * @return array<PaymentInterface>
      */
-    private function getPaymentMethods(array $ids, StoreContext $context): array
+    private function getPaymentMethods(StoreContext $context): array
     {
-        $payments = $this->paymentRegistry->get(PaymentModel::findMultipleByIds($ids), $context, true);
+        $payments = $this->paymentRegistry->get(PaymentModel::findMultipleByIds($context->getPaymentIds()), $context, true);
 
         if (!$payments) {
             return [];
