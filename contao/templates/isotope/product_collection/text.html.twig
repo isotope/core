@@ -1,6 +1,6 @@
 {% trans_default_domain 'contao_default' %}
 
-{% for item in items %}
+{% for item in collection.lineItems %}
     {{- item.label }}
     {%- set options = item.options -%}
     {%- if options is not empty -%}

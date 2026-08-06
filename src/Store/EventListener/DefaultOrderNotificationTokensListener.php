@@ -94,18 +94,17 @@ class DefaultOrderNotificationTokensListener
             }
         }
 
-        $template = $event->getNotificationConfig()->get('iso_collectionTpl') ?: 'isotope/product_collection';
+        $htmlTemplate = $event->getNotificationConfig()->get('iso_collectionTpl') ?: 'isotope/product_collection';
+        $textTemplate = $event->getNotificationConfig()->get('iso_textCollectionTpl') ?: 'isotope/product_collection/text';
 
-        $tokens['cart_html'] = $this->twig->render('@Contao/'.$template.'.html.twig', [
+        $tokens['cart_html'] = $this->twig->render('@Contao/'.$htmlTemplate.'.html.twig', [
             'collection' => $order,
             'is_notification' => true,
-            'is_text' => false,
         ]);
 
-        $tokens['cart_text'] = $this->twig->render('@Contao/'.$template.'.html.twig', [
+        $tokens['cart_text'] = $this->twig->render('@Contao/'.$textTemplate.'.html.twig', [
             'collection' => $order,
             'is_notification' => true,
-            'is_text' => true,
         ]);
 
         $event->addTokens($tokens);
