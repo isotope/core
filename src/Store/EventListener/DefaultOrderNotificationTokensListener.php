@@ -76,7 +76,7 @@ class DefaultOrderNotificationTokensListener
             }
         }
 
-        $addresses = ['billing' => $order->getBillingAddress(), 'shipping' => $order->getShippingAddress()];
+        $addresses = ['billing' => $order->getBillingAddress(), 'shipping' => $order->getShippingAddress() ?: $order->getBillingAddress()];
 
         foreach ($addresses as $type => $address) {
             if ($address) {
