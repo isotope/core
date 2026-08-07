@@ -1,10 +1,10 @@
-{% block price_component %}
-    {% if amount is empty and unit_label is not empty %}
+{%- block price_component -%}
+    {%- if amount is empty and unit_label is not empty -%}
         {{- unit_label -}}
-    {% else %}
-        {% set html = html is defined ? html : true %}
-        {% set space = html ? '&nbsp;' : ' ' %}
-        {% set amount = amount|default(unit_price|default(0)) %}
+    {%- else -%}
+        {%- set html = html is defined ? html : true -%}
+        {%- set space = html ? '&nbsp;' : ' ' -%}
+        {%- set amount = amount|default(unit_price|default(0)) -%}
         {%- set price -%}
             {%- set symbol = currency.symbol -%}
             {%- if currency.after -%}{{- money.format(amount) -}}{%- endif -%}
@@ -13,8 +13,8 @@
             {%- if symbol -%}{{- symbol -}}{%- else -%}{{- currency.code -}}{%- endif -%}
             {%- if html -%}</span>{%- endif -%}
             {%- if not currency.after and (not symbol or currency.space) -%}{{ space }}{%- endif -%}
-            {%- if not currency.after -%}{{- money.format(amount) -}}{% endif %}
+            {%- if not currency.after -%}{{- money.format(amount) -}}{% endif -%}
         {%- endset -%}
-        {%- if is_range|default -%}{{ 'MSC.priceRangeLabel'|trans([price], 'contao_default')|raw }}{% else %}{{ price }}{% endif %}
-    {% endif %}
-{% endblock %}
+        {%- if is_range|default -%}{{ 'MSC.priceRangeLabel'|trans([price], 'contao_default')|raw }}{% else %}{{ price }}{% endif -%}
+    {%- endif -%}
+{%- endblock -%}
