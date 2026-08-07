@@ -88,7 +88,7 @@ class AddToCartAction extends AbstractProductAction
 
         $this->cartManager->add($context->getCart(), $item, $context);
 
-        return new ActionResult($this->markupFactory->create('@Contao/isotope/notification/added_to_cart.html.twig', [
+        return new ActionResult($this->markupFactory->create('@Contao/isotope/message/added_to_cart.html.twig', [
             'product' => $product,
             'configuration' => $configuration,
             'context' => $context,
