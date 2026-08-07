@@ -2,9 +2,18 @@
 
 {% block product_collection %}
     {% set href = null %}
+    {% set has_actions = block('product_collection_actions') is defined or block('product_collection_item_actions') is defined %}
 
-    {% if block('product_collection_actions') is defined or block('product_collection_item_actions') is defined %}
-        <form id="{{ fragment_id }}" method="post" data-action="isotope--collection#formAction" data-isotope--collection-target="form">
+    {% if has_actions %}
+        {% set form_attributes = attrs()
+            .set('id', fragment_id)
+            .set('method', 'post')
+            .set('data-action', 'isotope--collection#formAction')
+            .set('data-isotope--collection-target', 'form')
+            .mergeWith(form_attributes|default)
+            .mergeWith(product_collection_attributes|default)
+        %}
+        <form{{ form_attributes }}>
             <input type="hidden" name="FORM_SUBMIT" value="{{ fragment_id }}">
             <input type="hidden" name="REQUEST_TOKEN" value="{{ contao.request_token }}">
             <div class="formbody">
@@ -13,9 +22,9 @@
     {% block product_collection_inner %}
                 {#<?php if ($this->collection->hasErrors()): ?>
                 <p class="error"><?= implode('</p><p class="error">', $this->collection->getErrors()) ?></p>
-                <?php endif; ?>#}
+                <?php endif; ?> #}
 
-                <table>
+                <table{{ attrs().mergeWith(product_collection_attributes|default, not has_actions) }}>
                     <thead>
                         <tr>
                             {% if data.iso_gallery|default %}

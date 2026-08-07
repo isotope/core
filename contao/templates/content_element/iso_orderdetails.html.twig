@@ -16,46 +16,50 @@
     <div class="transaction_status {{ collection.transactionStatus.alias }}">{{ 'MSC.transactionStatusHeadline'|trans([collection.transactionStatus.label|default(collection.transactionStatus.name)|trans([], 'isotope')]) }}</div>
     <div class="delivery_status {{ collection.deliveryStatus.alias }}">{{ 'MSC.deliveryStatusHeadline'|trans([collection.deliveryStatus.label|default(collection.deliveryStatus.name)|trans([], 'isotope')]) }}</div>
 
-    {% if payment_pending %}
-        <form id="order_payment" method="post" data-action="isotope--fragment#submit">
-            <input type="hidden" name="REQUEST_TOKEN" value="{{ contao.request_token }}">
-        </form>
+    {% block payment %}
+        {% if payment_pending %}
+            <form id="order_payment" method="post" data-action="isotope--fragment#submit">
+                <input type="hidden" name="REQUEST_TOKEN" value="{{ contao.request_token }}">
+            </form>
 
-        <div class="payment_failed">
-            <p class="message">{{ 'MSC.payment_failed'|trans }}</p>
-            <button type="submit" class="change_payment" form="order_payment" name="change_payment" value="1">{{ 'MSC.payment_change'|trans }}</button>
-            <a class="submit" href="{{ app.request.uri }}&init_payment=1">{{ 'MSC.payment_complete'|trans }}</a>
-        </div>
-
-        {% if change_payment|default %}
-            <div class="payment_method">
-                <form method="post" data-action="isotope--fragment#submit">
-                    <input type="hidden" name="REQUEST_TOKEN" value="{{ contao.request_token }}">
-                    <input type="hidden" name="change_payment" value="1">
-
-                    <fieldset class="radio_container">
-                        {% for option in payment_options %}
-                            <span>
-                            <input
-                                id="opt_payment_{{ option.value }}"
-                                type="radio"
-                                name="payment_id"
-                                class="radio"
-                                value="{{ option.value }}"
-                                {% if option.active %} checked{% endif %}
-                            >
-                            <label for="opt_payment_{{ option.value }}">{{ option.label }}</label>
-                        </span>
-                        {% endfor %}
-                    </fieldset>
-                    <button type="submit">Select</button>
-                </form>
+            <div class="payment_failed top">
+                <p class="message">{{ 'MSC.payment_failed'|trans }}</p>
+                <div class="submit_container">
+                    <button type="submit" class="change_payment" form="order_payment" name="change_payment" value="1">{{ 'MSC.payment_change'|trans }}</button>
+                    <a class="submit" href="{{ app.request.uri }}&init_payment=1">{{ 'MSC.payment_complete'|trans }}</a>
+                </div>
             </div>
-        {% endif %}
-    {% endif %}
 
-    <div class="steps">
-        {% block steps %}
+            {% if change_payment|default %}
+                <div class="payment_method">
+                    <form method="post" data-action="isotope--fragment#submit">
+                        <input type="hidden" name="REQUEST_TOKEN" value="{{ contao.request_token }}">
+                        <input type="hidden" name="change_payment" value="1">
+
+                        <fieldset class="radio_container">
+                            {% for option in payment_options %}
+                                <span>
+                                <input
+                                    id="opt_payment_{{ option.value }}"
+                                    type="radio"
+                                    name="payment_id"
+                                    class="radio"
+                                    value="{{ option.value }}"
+                                    {% if option.active %} checked{% endif %}
+                                >
+                                <label for="opt_payment_{{ option.value }}">{{ option.label }}</label>
+                            </span>
+                            {% endfor %}
+                        </fieldset>
+                        <button type="submit">Select</button>
+                    </form>
+                </div>
+            {% endif %}
+        {% endif %}
+    {% endblock %}
+
+    {% block steps %}
+        <div class="steps">
             {% block billing_address %}
                 {% if collection.billingAddress %}
                     <div>
@@ -98,20 +102,26 @@
 
                 {% block additional_information %}{% endblock %}
             </div>
-        {% endblock %}
-    </div>
+        </div>
+    {% endblock %}
 
-    <div class="summary">
-        <h3>{{ 'MSC.order_review'|trans }}</h3>
-        {{ block('product_collection') }}
-    </div>
+    {% block summary %}
+        <div class="summary">
+            <h3>{{ 'MSC.order_review'|trans }}</h3>
+            {{ block('product_collection') }}
+        </div>
+    {% endblock %}
 
 {% endblock %}
 
 {% block product_collection_actions %}
     {% if payment_pending %}
-        <a href="{{ app.request.uri }}&init_payment=1">{{ 'MSC.payment_complete'|trans }}</a>
-        <button type="submit" form="order_payment" name="cancel_payment" value="1">{{ 'MSC.payment_cancel'|trans }}</button>
+        <div class="payment_failed bottom">
+            <div class="submit_container">
+                <a href="{{ app.request.uri }}&init_payment=1">{{ 'MSC.payment_complete'|trans }}</a>
+                <button type="submit" form="order_payment" name="cancel_payment" value="1">{{ 'MSC.payment_cancel'|trans }}</button>
+            </div>
+        </div>
     {% endif %}
 
     {{ isotope_product_collection_action('reorder') }}

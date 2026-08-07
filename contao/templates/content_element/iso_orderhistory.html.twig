@@ -15,30 +15,27 @@
         <table>
             <thead>
             <tr>
-                <th class="col_0 col_first order_date">{{ 'MSC.iso_order_date'|trans }}</th>
-                <th class="col_1 document_number">{{ 'MSC.iso_order_document_number'|trans }}</th>
-                <th class="col_2 order_total">{{ 'MSC.iso_order_total'|trans }}</th>
-                <th class="col_3 order_status">{{ 'MSC.iso_order_status'|trans }}</th>
-                <th class="col_3 order_status">{{ 'MSC.iso_transaction_status'|trans }}</th>
-                <th class="col_3 order_status">{{ 'MSC.iso_delivery_status'|trans }}</th>
-                <th class="col_4 col_last link">&nbsp;</th>
+                <th class="document_number">{{ 'MSC.iso_order_document_number'|trans }}</th>
+                <th class="order_date">{{ 'MSC.iso_order_date'|trans }}</th>
+                <th class="order_total">{{ 'MSC.iso_order_total'|trans }}</th>
+                <th class="order_status">{{ 'MSC.iso_transaction_status'|trans }}</th>
+                <th class="order_status">{{ 'MSC.iso_delivery_status'|trans }}</th>
+                <th class="actions">&nbsp;</th>
             </tr>
             </thead>
             <tbody>
             {% for collection in orders %}
                 <tr class="{{ collection.orderStatus.alias }}">
-                    <td class="col_0 col_first order_date">{{ collection.locked|date(contao.page.dateFormat) }}</td>
-                    <td class="col_1 document_number">{{ collection.documentNumber }}</td>
-                    <td class="col_2 order_total">{{ isotope_price(collection.total) }}</td>
-                    <td class="col_3 order_status">{{ collection.orderStatus.label|default(collection.orderStatus.name)|trans([], 'isotope') }}</td>
-                    <td class="col_3 transaction_status">{{ collection?.transactionStatus?.label|default(collection.transactionStatus?.name)|trans([], 'isotope') }}</td>
-                    <td class="col_3 delivery_status">{{ collection.deliveryStatus?.label|default(collection.deliveryStatus?.name)|trans([], 'isotope') }}</td>
-                    <td class="col_4 col_last link">
-                        <form id="{{ fragment_id }}" method="post" data-isotope--collection-target="form" data-action="isotope--collection#formAction">
+                    <td class="document_number">{{ collection.documentNumber }}</td>
+                    <td class="order_date">{{ collection.locked|date(contao.page.dateFormat) }}</td>
+                    <td class="order_total">{{ isotope_price(collection.total) }}</td>
+                    <td class="transaction_status">{{ collection?.transactionStatus?.label|default(collection.transactionStatus?.name)|trans([], 'isotope') }}</td>
+                    <td class="delivery_status">{{ collection.deliveryStatus?.label|default(collection.deliveryStatus?.name)|trans([], 'isotope') }}</td>
+                    <td class="actions">
+                        <form method="post" data-isotope--collection-target="form" data-action="isotope--collection#formAction">
                             <input type="hidden" name="FORM_SUBMIT" value="{{ fragment_id }}">
                             <input type="hidden" name="REQUEST_TOKEN" value="{{ contao.request_token }}">
                             {{ isotope_product_collection_action('details') }}
-                            {{ isotope_product_collection_action('reorder') }}
                         </form>
                     </td>
                 </tr>
