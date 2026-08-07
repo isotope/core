@@ -460,14 +460,6 @@
         <source>Select the categories to show products of.</source>
         <target>Ürünleri göstermek için kategorileri seçin.</target>
       </trans-unit>
-      <trans-unit id="tl_content.iso_continueShopping.0">
-        <source>Enable &quot;Continue shopping&quot; button</source>
-        <target>&quot;Alışverişe devam et&quot; düğmesi etkin</target>
-      </trans-unit>
-      <trans-unit id="tl_content.iso_continueShopping.1">
-        <source>Add a link to the currently added product to the cart.</source>
-        <target>Geçerli ürünün sepete eklenmesi için bir bağlantı ekleyin.</target>
-      </trans-unit>
       <trans-unit id="tl_content.iso_notifications.0">
         <source>Order notifications</source>
       </trans-unit>

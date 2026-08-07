@@ -175,7 +175,7 @@
       </trans-unit>
       <trans-unit id="MSC.detailLabel">
         <source>View Details</source>
-        <target>Details sehen</target>
+        <target>Details</target>
       </trans-unit>
       <trans-unit id="MSC.reorderLabel">
         <source>Reorder</source>

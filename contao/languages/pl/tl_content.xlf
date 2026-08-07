@@ -442,14 +442,6 @@
         <source>Select the categories to show products of.</source>
         <target>Wybierz kategorie z których będą pokazane produkty.</target>
       </trans-unit>
-      <trans-unit id="tl_content.iso_continueShopping.0">
-        <source>Enable &quot;Continue shopping&quot; button</source>
-        <target>Włącz przycisk &quot;Kontynuuj zakupy&quot;</target>
-      </trans-unit>
-      <trans-unit id="tl_content.iso_continueShopping.1">
-        <source>Add a link to the currently added product to the cart.</source>
-        <target>Dodaj link do właśnie dodanego produktu do koszyka.</target>
-      </trans-unit>
       <trans-unit id="tl_content.iso_notifications.0">
         <source>Order notifications</source>
       </trans-unit>
