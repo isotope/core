@@ -5,7 +5,7 @@
         .addClass('isotope-message')
         .set('id', dialog_id)
         .set('data-controller', 'isotope--message')
-        .set('data-isotope--message-delay-value', dialog_delay|default(5000))
+        .set('data-isotope--message-delay-value', dialog_delay|default, dialog_delay is defined)
         .set('data-action', 'click->isotope--message#hide', closable)
         .mergeWith(message_attributes|default)
     %}
