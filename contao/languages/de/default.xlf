@@ -118,6 +118,10 @@
         <target>Ihre Zahlung wird durchgeführt. Bitte haben Sie Geduld...</target>
       </trans-unit>
       <trans-unit id="MSC.payment_failed">
+        <source>Unfortunately, the payment was not successful. Please try again to complete your payment.</source>
+        <target> Ihre Zahlung ist leider fehlgeschlagen. Bitte versuchen Sie es erneut.</target>
+      </trans-unit>
+      <trans-unit id="MSC.payment_failed_change">
         <source>Unfortunately, the payment was not successful. Please change your payment method or try again to complete your payment.</source>
         <target> Ihre Zahlung ist leider fehlgeschlagen. Ändern Sie die Zahlungsmethode oder versuchen Sie es erneut.</target>
       </trans-unit>

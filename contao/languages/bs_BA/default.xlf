@@ -113,6 +113,9 @@
         <target>Vaša uplata se obrađuje. Molimo vas za strpljenje ...</target>
       </trans-unit>
       <trans-unit id="MSC.payment_failed">
+        <source>Unfortunately, the payment was not successful. Please try again to complete your payment.</source>
+      </trans-unit>
+      <trans-unit id="MSC.payment_failed_change">
         <source>Unfortunately, the payment was not successful. Please change your payment method or try again to complete your payment.</source>
       </trans-unit>
       <trans-unit id="MSC.payment_change">

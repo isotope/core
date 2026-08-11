@@ -6,14 +6,19 @@ namespace Isotope\CoreBundle\Store;
 
 use Contao\BackendUser;
 use Contao\CoreBundle\InsertTag\InsertTagParser;
+use Contao\CoreBundle\Routing\ContentUrlGenerator;
+use Contao\PageModel;
 use Doctrine\DBAL\Connection;
+use Isotope\CoreBundle\Checkout\Payment\PaymentInterface;
 use Isotope\CoreBundle\EventDispatcher\TransactionEventDispatcher;
+use Isotope\CoreBundle\HttpFoundation\PaymentResult;
 use Isotope\CoreBundle\Model\AddressModel;
 use Isotope\CoreBundle\Model\ProductCollectionItemModel;
 use Isotope\CoreBundle\Model\ProductCollectionLogModel;
 use Isotope\CoreBundle\Model\ProductCollectionModel;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
 use Isotope\CoreBundle\ProductCollection\Order\Order;
+use Isotope\CoreBundle\ProductCollection\OrderTransaction\OrderTransactionHandler;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Event\DocumentNumberTransactionEvent;
 use Isotope\CoreBundle\Store\Event\OrderStatusTransactionEvent;
@@ -21,10 +26,12 @@ use Isotope\CoreBundle\Store\Event\OrderTransactionEvent;
 use Isotope\CoreBundle\Store\Event\OrderValidationEvent;
 use Isotope\CoreBundle\Store\Exception\CollectionTypeException;
 use Isotope\CoreBundle\Store\Order\CreateOrderResult;
+use Isotope\CoreBundle\Store\Order\TransactionState;
 use Isotope\CoreBundle\Store\Order\WorkflowManager;
 use Isotope\CoreBundle\Util\StringUtil;
 use Isotope\CoreBundle\Validator\Exception\ConstraintViolationException;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\String\UnicodeString;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -41,7 +48,9 @@ class OrderManager
         private readonly Connection $connection,
         private readonly InsertTagParser $insertTagParser,
         private readonly WorkflowManager $workflowManager,
+        private readonly OrderTransactionHandler $orderTransactionHandler,
         private readonly Security $security,
+        private readonly ContentUrlGenerator $urlGenerator,
     ) {
     }
 
@@ -156,11 +165,7 @@ class OrderManager
     public function updateOrder(int $orderId, array $values/* , bool $updateDatabase = true */): array
     {
         $updateDatabase = (bool) (\func_get_args()[2] ?? true);
-        $order = ProductCollectionModel::findById($orderId);
-
-        if (Order::getType() !== $order?->type) {
-            throw new CollectionTypeException(Order::getType(), $order);
-        }
+        $order = $this->getOrderModel($orderId);
 
         return $this->transactionDispatcher->dispatch(
             new OrderStatusTransactionEvent($order, $values),
@@ -168,31 +173,50 @@ class OrderManager
                 $order = $event->getOrder();
                 $values = $event->getValues();
 
-                $hasChanges = false;
-
                 foreach ($values as $k => $v) {
-                    if ($hasChanges = ($v !== $order->{$k})) {
-                        break;
+                    if ($v === $order->{$k}) {
+                        unset($values[$k]);
                     }
                 }
 
-                if (!$hasChanges) {
-                    return $values;
+                if ([] === $values) {
+                    return [];
                 }
 
-                if (isset($values['order_status']) && $values['order_status'] !== $order->getOrderStatus()) {
-                    $this->workflowManager->getOrderWorkflow()->apply($order, $values['order_status']);
-                    $values['order_status'] = $order->getOrderStatus();
+                if (
+                    isset($values['order_status'])
+                    && $values['order_status'] !== $order->getOrderStatus()
+                ) {
+                    if ($this->workflowManager->getOrderWorkflow()->can($order, $values['order_status'])) {
+                        $this->workflowManager->getOrderWorkflow()->apply($order, $values['order_status']);
+                        $values['order_status'] = $order->getOrderStatus();
+                    } else {
+                        unset($values['order_status']);
+                    }
                 }
 
-                if (isset($values['transaction_status']) && $values['transaction_status'] !== $order->getTransactionStatus()) {
-                    $this->workflowManager->getTransactionWorkflow()->apply($order, $values['transaction_status']);
-                    $values['transaction_status'] = $order->getTransactionStatus();
+                if (
+                    isset($values['transaction_status'])
+                    && $values['transaction_status'] !== $order->getTransactionStatus()
+                ) {
+                    if ($this->workflowManager->getTransactionWorkflow()->can($order, $values['transaction_status'])) {
+                        $this->workflowManager->getTransactionWorkflow()->apply($order, $values['transaction_status']);
+                        $values['transaction_status'] = $order->getTransactionStatus();
+                    } else {
+                        unset($values['transaction_status']);
+                    }
                 }
 
-                if (isset($values['delivery_status']) && $values['delivery_status'] !== $order->getDeliveryStatus()) {
-                    $this->workflowManager->getDeliveryWorkflow()->apply($order, $values['delivery_status']);
-                    $values['delivery_status'] = $order->getDeliveryStatus();
+                if (
+                    isset($values['delivery_status'])
+                    && $values['delivery_status'] !== $order->getDeliveryStatus()
+                ) {
+                    if ($this->workflowManager->getDeliveryWorkflow()->can($order, $values['delivery_status'])) {
+                        $this->workflowManager->getDeliveryWorkflow()->apply($order, $values['delivery_status']);
+                        $values['delivery_status'] = $order->getDeliveryStatus();
+                    } else {
+                        unset($values['delivery_status']);
+                    }
                 }
 
                 $log = new ProductCollectionLogModel();
@@ -246,6 +270,45 @@ class OrderManager
             'total' => $data['total'],
             'transaction_status' => array_key_first($this->workflowManager->getTransactionWorkflow()->getMarking(new ProductCollectionModel())->getPlaces()),
         ]));
+    }
+
+    public function initPayment(Order $order, PaymentInterface $payment, PageModel $pageModel): PaymentResult
+    {
+        $transactionModel = $this->orderTransactionHandler->init($order);
+
+        $returnUrl = $this->urlGenerator->generate($pageModel, ['parameters' => '/'.$order->getIdentifier(), 'transaction' => $transactionModel->uniqid, 'transaction_state' => 'success'], UrlGeneratorInterface::ABSOLUTE_URL);
+        $errorUrl = $this->urlGenerator->generate($pageModel, ['parameters' => '/'.$order->getIdentifier(), 'transaction' => $transactionModel->uniqid, 'transaction_state' => 'failed'], UrlGeneratorInterface::ABSOLUTE_URL);
+
+        return $payment->process($order, $transactionModel, $returnUrl, $errorUrl);
+    }
+
+    public function canCancelPayment(Order $order, string $status): bool
+    {
+        if (TransactionState::Pending !== $order->getTransactionStatus()?->getTransactionState()) {
+            return false;
+        }
+
+        $workflow = $this->workflowManager->getTransactionWorkflow();
+        $model = $this->getOrderModel($order->getId());
+
+        return $workflow->can($model, $status);
+    }
+
+    public function cancelPayment(Order $order, string $status): bool
+    {
+        if (!$this->canCancelPayment($order, $status)) {
+            return false;
+        }
+
+        $values = $this->updateOrder($order->getId(), ['transaction_status' => $status]);
+
+        if (!isset($values['transaction_status'])) {
+            return false;
+        }
+
+        $this->orderTransactionHandler->cancel($order);
+
+        return true;
     }
 
     private function validateOrderData(array $data, StoreContext $context): void
@@ -307,6 +370,17 @@ class OrderManager
         }
 
         return $prefix.str_pad((string) ($max + 1), $event->getLength(), '0', STR_PAD_LEFT);
+    }
+
+    private function getOrderModel(int $id): ProductCollectionModel
+    {
+        $order = ProductCollectionModel::findById($id);
+
+        if (Order::getType() !== $order?->type) {
+            throw new CollectionTypeException(Order::getType(), $order);
+        }
+
+        return $order;
     }
 
     private function getUserId(): int

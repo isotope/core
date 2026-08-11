@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Checkout\Payment;
 
+use Isotope\CoreBundle\HttpFoundation\PaymentResult;
 use Isotope\CoreBundle\Model\OrderTransactionModel;
 use Isotope\CoreBundle\ProductCollection\Order\Order;
 use Isotope\CoreBundle\Store\Price\PriceDefinition;
 use Isotope\CoreBundle\Twig\TemplateMarkup;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Interface for an Isotope payment method.
@@ -47,9 +47,9 @@ interface PaymentInterface
     /**
      * Process payment on checkout confirmation page.
      */
-    public function process(Order $order, OrderTransactionModel $transactionModel, string $returnUrl, string $errorUrl): Response|null;
+    public function process(Order $order, OrderTransactionModel $transactionModel, string $returnUrl, string $errorUrl): PaymentResult;
 
-    public function finalize(Order $order, OrderTransactionModel $transactionModel, Request $request): Response|null;
+    public function finalize(Order $order, OrderTransactionModel $transactionModel, Request $request): PaymentResult;
 
-    public function failed(Order $order, OrderTransactionModel $transactionModel, Request $request): Response|null;
+    public function failed(Order $order, OrderTransactionModel $transactionModel, Request $request): PaymentResult;
 }

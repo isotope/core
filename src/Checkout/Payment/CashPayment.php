@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Checkout\Payment;
 
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsPayment;
+use Isotope\CoreBundle\HttpFoundation\PaymentResult;
 use Isotope\CoreBundle\Model\OrderTransactionModel;
 use Isotope\CoreBundle\ProductCollection\Order\Order;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Twig\TemplateMarkup;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 #[AsPayment(factory: CorePaymentFactory::class)]
 class CashPayment extends AbstractPayment
@@ -34,20 +33,20 @@ class CashPayment extends AbstractPayment
         return null;
     }
 
-    public function process(Order $order, OrderTransactionModel $transactionModel, string $returnUrl, string $errorUrl): Response|null
+    public function process(Order $order, OrderTransactionModel $transactionModel, string $returnUrl, string $errorUrl): PaymentResult
     {
         $this->updateTransactionStatus($order->getId(), $this->inProgressStatus);
 
-        return new RedirectResponse($returnUrl);
+        return new PaymentResult(redirect: $returnUrl);
     }
 
-    public function finalize(Order $order, OrderTransactionModel $transactionModel, Request $request): Response|null
+    public function finalize(Order $order, OrderTransactionModel $transactionModel, Request $request): PaymentResult
     {
-        return null;
+        return new PaymentResult();
     }
 
-    public function failed(Order $order, OrderTransactionModel $transactionModel, Request $request): Response|null
+    public function failed(Order $order, OrderTransactionModel $transactionModel, Request $request): PaymentResult
     {
-        return null;
+        return new PaymentResult();
     }
 }

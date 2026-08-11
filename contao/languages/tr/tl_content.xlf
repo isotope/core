@@ -111,6 +111,12 @@
         <source>A member login is required to view this page (e.g. if the order belongs to a member).</source>
         <target>Bu sayfayı görüntülemek için bir üye girişi gerekir (örneğin, sipariş bir üyeye aitse).</target>
       </trans-unit>
+      <trans-unit id="tl_content.iso_transaction_cancelled.0">
+        <source>Status for canceled transaction</source>
+      </trans-unit>
+      <trans-unit id="tl_content.iso_transaction_cancelled.1">
+        <source>If an order is unpaid, allow users to cancel an order and set this payment status.</source>
+      </trans-unit>
       <trans-unit id="tl_content.iso_login_jumpTo.0">
         <source>Login page</source>
         <target>Giriş sayfası</target>

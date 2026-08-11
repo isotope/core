@@ -18,43 +18,41 @@
 
     {% block payment %}
         {% if payment_pending %}
-            <form id="order_payment" method="post" data-action="isotope--fragment#submit">
-                <input type="hidden" name="REQUEST_TOKEN" value="{{ contao.request_token }}">
-            </form>
+            <div class="payment_pending" data-controller="isotope--toggle-attribute">
+                {% if payment_options|length > 1 %}
+                    <p class="message">{{ 'MSC.payment_failed_change'|trans }}</p>
+                {% else %}
+                    <p class="message">{{ 'MSC.payment_failed'|trans }}</p>
+                {% endif %}
 
-            <div class="payment_failed top">
-                <p class="message">{{ 'MSC.payment_failed'|trans }}</p>
-                <div class="submit_container">
-                    <button type="submit" class="change_payment" form="order_payment" name="change_payment" value="1">{{ 'MSC.payment_change'|trans }}</button>
-                    <a class="submit" href="{{ app.request.uri }}&init_payment=1">{{ 'MSC.payment_complete'|trans }}</a>
-                </div>
-            </div>
+                <form class="payment_method" method="post" data-action="isotope--fragment#submit">
+                    <input type="hidden" name="REQUEST_TOKEN" value="{{ contao.request_token }}">
 
-            {% if change_payment|default %}
-                <div class="payment_method">
-                    <form method="post" data-action="isotope--fragment#submit">
-                        <input type="hidden" name="REQUEST_TOKEN" value="{{ contao.request_token }}">
-                        <input type="hidden" name="change_payment" value="1">
-
-                        <fieldset class="radio_container">
+                    {% if payment_options|length > 1 %}
+                        <button type="button" class="change_payment" data-action="isotope--toggle-attribute#toggle">{{ 'MSC.payment_change'|trans }}</button>
+                        <fieldset class="radio_container hide-disabled" data-isotope--toggle-attribute-target="receiver"{% if not change_payment|default %} disabled{% endif %}>
+                            <input type="hidden" name="change_payment" value="1">
                             {% for option in payment_options %}
                                 <span>
-                                <input
-                                    id="opt_payment_{{ option.value }}"
-                                    type="radio"
-                                    name="payment_id"
-                                    class="radio"
-                                    value="{{ option.value }}"
-                                    {% if option.active %} checked{% endif %}
-                                >
-                                <label for="opt_payment_{{ option.value }}">{{ option.label }}</label>
-                            </span>
+                                    <input
+                                        id="opt_payment_{{ option.value }}"
+                                        type="radio"
+                                        name="payment_id"
+                                        class="radio"
+                                        value="{{ option.value }}"
+                                        {% if option.active %} checked{% endif %}
+                                    >
+                                    <label for="opt_payment_{{ option.value }}">{{ option.label }}</label>
+                                </span>
                             {% endfor %}
                         </fieldset>
-                        <button type="submit">Select</button>
-                    </form>
-                </div>
-            {% endif %}
+                    {% endif %}
+
+                    <div class="submit_container">
+                        <button class="submit init_payment" type="submit" name="init_payment" value="1">{{ 'MSC.payment_complete'|trans }}</button>
+                    </div>
+                </form>
+            </div>
         {% endif %}
     {% endblock %}
 
@@ -115,15 +113,8 @@
 {% endblock %}
 
 {% block product_collection_actions %}
-    {% if payment_pending %}
-        <div class="payment_failed bottom">
-            <div class="submit_container">
-                <a href="{{ app.request.uri }}&init_payment=1">{{ 'MSC.payment_complete'|trans }}</a>
-                <button type="submit" form="order_payment" name="cancel_payment" value="1">{{ 'MSC.payment_cancel'|trans }}</button>
-            </div>
-        </div>
-    {% endif %}
-
+    {{ isotope_product_collection_action('init_payment') }}
+    {{ isotope_product_collection_action('cancel_payment') }}
     {{ isotope_product_collection_action('reorder') }}
 {% endblock %}
 

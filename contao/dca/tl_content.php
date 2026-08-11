@@ -19,7 +19,7 @@ $GLOBALS['TL_DCA']['tl_content']['palettes']['iso_checkoutmember'] = '{type_lege
 $GLOBALS['TL_DCA']['tl_content']['palettes']['iso_checkoutguest'] = '{type_legend},title,headline,type;{config_legend},iso_checkout_method,iso_notifications;{redirect_legend},iso_checkout_skippable,orderCompleteJumpTo,iso_cart_jumpTo;{template_legend:hide},customTpl,iso_gallery;{iso_order_conditions_legend},iso_order_conditions;{protected_legend:hide},protected;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
 $GLOBALS['TL_DCA']['tl_content']['palettes']['iso_checkoutboth'] = '{type_legend},title,headline,type;{config_legend},iso_checkout_method,iso_notifications;{redirect_legend},iso_checkout_skippable,orderCompleteJumpTo,iso_cart_jumpTo;{template_legend:hide},customTpl,iso_gallery;{iso_order_conditions_legend},iso_order_conditions;{protected_legend:hide},protected;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
 $GLOBALS['TL_DCA']['tl_content']['palettes']['iso_orderhistory'] = '{type_legend},title,headline,type;{config_legend},iso_config_ids;{redirect_legend},jumpTo,iso_cart_jumpTo;{template_legend:hide},customTpl;{protected_legend:hide},protected;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
-$GLOBALS['TL_DCA']['tl_content']['palettes']['iso_orderdetails'] = '{type_legend},title,headline,type;{config_legend},iso_loginRequired;{redirect_legend:hide},iso_cart_jumpTo;{template_legend:hide},customTpl,iso_gallery;{protected_legend:hide},protected;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
+$GLOBALS['TL_DCA']['tl_content']['palettes']['iso_orderdetails'] = '{type_legend},title,headline,type;{config_legend},iso_loginRequired,iso_transaction_cancelled;{redirect_legend:hide},iso_cart_jumpTo;{template_legend:hide},customTpl,iso_gallery;{protected_legend:hide},protected;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
 $GLOBALS['TL_DCA']['tl_content']['palettes']['iso_configswitcher'] = '{type_legend},title,headline,type;{config_legend},iso_config_ids;{template_legend:hide},customTpl;{protected_legend:hide},protected;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
 $GLOBALS['TL_DCA']['tl_content']['palettes']['iso_productfilter'] = '{type_legend},title,headline,type;{config_legend},iso_category_scope,iso_filterQuery,iso_filterKey,iso_enableLimit,iso_filterFields,iso_filterHideSingle,iso_enableSearch,iso_sortingFields,iso_listingSortField,iso_listingSortDirection;{template_legend:hide},customTpl,iso_hide_list;{redirect_legend},jumpTo,iso_link_primary;{reference_legend:hide},defineRoot;{protected_legend:hide},protected;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
 $GLOBALS['TL_DCA']['tl_content']['palettes']['iso_categoryfilter'] = '{type_legend},title,headline,type;{config_legend},levelOffset,showLevel,showProtected,showHidden,iso_filterKey;{reference_legend:hide},defineRoot;{template_legend:hide},customTpl,iso_hide_list;{redirect_legend},jumpTo;{protected_legend:hide},protected;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
@@ -161,6 +161,11 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['iso_login_jumpTo'] = [
 $GLOBALS['TL_DCA']['tl_content']['fields']['iso_loginRequired'] = [
     'inputType' => 'checkbox',
     'eval' => ['tl_class' => 'w50'],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['iso_transaction_cancelled'] = [
+    'inputType' => 'select',
+    'eval' => ['includeBlankOption' => true, 'tl_class' => 'w50'],
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['iso_addProductJumpTo'] = [

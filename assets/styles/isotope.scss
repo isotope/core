@@ -11,7 +11,7 @@
     }
 }
 
-.content-iso-checkout fieldset.hide-disabled:disabled {
+[class^=content-iso-] fieldset.hide-disabled:disabled {
     display: none;
 }
 

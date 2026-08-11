@@ -118,6 +118,9 @@
         <target>Din betalning behandlas. Var tålmodig...</target>
       </trans-unit>
       <trans-unit id="MSC.payment_failed">
+        <source>Unfortunately, the payment was not successful. Please try again to complete your payment.</source>
+      </trans-unit>
+      <trans-unit id="MSC.payment_failed_change">
         <source>Unfortunately, the payment was not successful. Please change your payment method or try again to complete your payment.</source>
         <target>Tyvärr gick betalningen inte igenom. Välj ett annat betalningssätt eller försök igen för att slutföra betalningen.</target>
       </trans-unit>

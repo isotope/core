@@ -32,8 +32,8 @@ class OrderstatusMigration extends AbstractMigration
             ['alias' => 'refunded_partially', 'name' => 'Refunded (partially)', 'workflow' => 'refunded,cancelled,open', 'transaction_state' => 'processing', 'color' => 'ff8400'],
             ['alias' => 'refunded', 'name' => 'Refunded', 'workflow' => 'cancelled,open', 'transaction_state' => 'processing', 'color' => 'ff8400'],
             ['alias' => 'chargeback', 'name' => 'Chargeback', 'workflow' => 'paid,paid_partially,cancelled', 'transaction_state' => 'processing', 'color' => 'ff8400'],
-            ['alias' => 'cancelled', 'name' => 'Cancelled', 'workflow' => 'open,refunded_partially,refunded', 'transaction_state' => 'processing', 'color' => '000000'],
-            ['alias' => 'failed', 'name' => 'Failed', 'workflow' => 'open,processing,paid,paid_partially', 'transaction_state' => 'pending', 'color' => 'ff0000'],
+            ['alias' => 'cancelled', 'name' => 'Cancelled', 'workflow' => 'open,refunded_partially,refunded', 'transaction_state' => 'complete', 'color' => '000000'],
+            ['alias' => 'failed', 'name' => 'Failed', 'workflow' => 'open,processing,paid,paid_partially,cancelled', 'transaction_state' => 'pending', 'color' => 'ff0000'],
         ],
         'delivery' => [
             ['alias' => 'open', 'name' => 'Open', 'workflow' => 'shipped,shipped_partially,cancelled'],

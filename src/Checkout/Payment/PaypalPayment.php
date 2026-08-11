@@ -7,14 +7,14 @@ namespace Isotope\CoreBundle\Checkout\Payment;
 use Codefog\HasteBundle\StringParser;
 use Isotope\CoreBundle\Controller\PaypalIpnController;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsPayment;
+use Isotope\CoreBundle\HttpFoundation\PaymentResult;
 use Isotope\CoreBundle\Model\OrderTransactionModel;
 use Isotope\CoreBundle\ProductCollection\Order\Order;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Twig\TemplateMarkup;
+use Isotope\CoreBundle\Twig\TemplateMarkupFactory;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Twig\Environment;
 
 #[AsPayment(factory: CorePaymentFactory::class)]
 class PaypalPayment extends AbstractPayment
@@ -35,9 +35,9 @@ class PaypalPayment extends AbstractPayment
     {
         return [
             ...parent::getSubscribedServices(),
-            Environment::class,
             UrlGeneratorInterface::class,
             StringParser::class,
+            TemplateMarkupFactory::class,
         ];
     }
 
@@ -71,7 +71,7 @@ class PaypalPayment extends AbstractPayment
         return null;
     }
 
-    public function process(Order $order, OrderTransactionModel $transactionModel, string $returnUrl, string $errorUrl): Response|null
+    public function process(Order $order, OrderTransactionModel $transactionModel, string $returnUrl, string $errorUrl): PaymentResult
     {
         $arrData = [];
         $fltDiscount = 0;
@@ -114,7 +114,7 @@ class PaypalPayment extends AbstractPayment
             $arrData['quantity_'.$i] = $item->getQuantity();
         }
 
-        return new Response($this->get(Environment::class)->render(
+        return new PaymentResult($this->get(TemplateMarkupFactory::class)->create(
             '@Contao/isotope/payment/paypal.html.twig',
             [
                 'id' => $this->id,
@@ -134,22 +134,22 @@ class PaypalPayment extends AbstractPayment
         ));
     }
 
-    public function finalize(Order $order, OrderTransactionModel $transactionModel, Request $request): Response|null
+    public function finalize(Order $order, OrderTransactionModel $transactionModel, Request $request): PaymentResult
     {
         // TODO: check that IPN has not already updated the order
 
         $this->updateTransactionStatus($order->getId(), $this->processingStatus);
 
-        return null;
+        return new PaymentResult();
     }
 
-    public function failed(Order $order, OrderTransactionModel $transactionModel, Request $request): Response|null
+    public function failed(Order $order, OrderTransactionModel $transactionModel, Request $request): PaymentResult
     {
         $transactionModel->status = 'cancelled';
         $transactionModel->save();
 
         $this->updateTransactionStatus($order->getId(), $this->failedStatus);
 
-        return null;
+        return new PaymentResult();
     }
 }

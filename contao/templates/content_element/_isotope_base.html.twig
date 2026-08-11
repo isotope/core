@@ -5,23 +5,25 @@
 {% block wrapper %}
     {{ parent() }}
 
-    {% add to body %}
-        {% for type, messages in app.flashes(['isotope.success', 'isotope.error', 'isotope.raw']) %}
-            {% for message in messages %}
-                {% if type == 'isotope.raw' %}
-                    {{ message|raw }}
-                {% else %}
-                    {% with {message, type} only %}
-                        {% set notification_attributes = attrs()
-                            .addClass(type|slice(8))
-                            .mergeWith(notification_attributes|default)
-                        %}
-                        {{ block('message_component') }}
-                    {% endwith %}
-                {% endif %}
+    {% block messages %}
+        {% add to body %}
+            {% for type, messages in app.flashes(['isotope.success', 'isotope.error', 'isotope.raw']) %}
+                {% for message in messages %}
+                    {% if type == 'isotope.raw' %}
+                        {{ message|raw }}
+                    {% else %}
+                        {% with {message, type} only %}
+                            {% set notification_attributes = attrs()
+                                .addClass(type|slice(8))
+                                .mergeWith(notification_attributes|default)
+                            %}
+                            {{ block('message_component') }}
+                        {% endwith %}
+                    {% endif %}
+                {% endfor %}
             {% endfor %}
-        {% endfor %}
-    {% endadd %}
+        {% endadd %}
+    {% endblock %}
 {% endblock %}
 
 {% block style %}
