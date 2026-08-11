@@ -21,7 +21,7 @@ class PriceFieldListener
 {
     public function __construct(
         private readonly RequestStack $requestStack,
-        private readonly AttributeRegistry $attributeRegistry
+        private readonly AttributeRegistry $attributeRegistry,
     ) {
     }
 

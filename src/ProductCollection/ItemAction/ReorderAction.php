@@ -8,7 +8,6 @@ use Isotope\CoreBundle\DependencyInjection\Attribute\AsProductCollectionItemActi
 use Isotope\CoreBundle\HttpFoundation\ActionResult;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\ProductCollection\AbstractProductCollection;
-use Isotope\CoreBundle\ProductCollection\Cart\Cart;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
 use Isotope\CoreBundle\ProductCollection\Order\Order;
 use Isotope\CoreBundle\Store\CartManager;

@@ -12,7 +12,6 @@ use Doctrine\DBAL\Connection;
 use Isotope\CoreBundle\Attribute\AbstractAttribute;
 use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
 use Isotope\CoreBundle\Attribute\VariantAttributeInterface;
-use Isotope\CoreBundle\Exception\LogicException;
 use Isotope\CoreBundle\Exception\UnderflowException;
 use Isotope\CoreBundle\Exception\UnexpectedValueException;
 use Isotope\CoreBundle\Model\AttributeOptionModel;

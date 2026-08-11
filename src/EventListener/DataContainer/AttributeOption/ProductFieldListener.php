@@ -16,7 +16,7 @@ class ProductFieldListener
     }
 
     #[AsCallback('tl_iso_attribute_option', 'config.onload')]
-    public function filterProductOptions()
+    public function filterProductOptions(): void
     {
         $request = $this->requestStack->getCurrentRequest();
 
