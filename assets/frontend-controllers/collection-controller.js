@@ -1,5 +1,5 @@
 import { Controller } from '@hotwired/stimulus';
-import axios from '../scripts/_axios';
+import axios, { IsotopeAction } from '../scripts/_axios';
 
 export default class extends Controller {
     static values = {
@@ -26,14 +26,14 @@ export default class extends Controller {
             data.set(event.submitter.name, event.submitter.value);
         }
 
-        await this.#submitForm(data);
+        const isHandled = IsotopeAction(await this.#submitForm(data));
 
         const isPrevented = this.#dispatchSubmit({
             target: event.submitter,
             detail: { form: this.formTarget, submitter: event.submitter, data },
         });
 
-        if (!isPrevented) {
+        if (!isHandled && !isPrevented) {
             window.location.reload();
         }
 
@@ -47,16 +47,16 @@ export default class extends Controller {
 
         this.#abortController = new AbortController();
 
-        await axios.get(event.target.href, {
+        const isHandled = IsotopeAction(await axios.get(event.target.href, {
             signal: this.#abortController.signal,
             headers: {
                 'Isotope-Fragment': this.idValue,
             },
-        });
+        }));
 
         const isPrevented = this.#dispatchSubmit({ target: event.target });
 
-        if (!isPrevented) {
+        if (!isHandled && !isPrevented) {
             window.location.reload();
         }
 

@@ -1,5 +1,5 @@
 import { Controller } from '@hotwired/stimulus';
-import axios from '../scripts/_axios';
+import axios, { IsotopeAction } from '../scripts/_axios';
 import { ProductQuery } from '../scripts/_productquery';
 
 export default class extends Controller {
@@ -57,28 +57,26 @@ export default class extends Controller {
         this.#load(new URL(window.location).toString(), data);
     }
 
-    async #load(url, postData) {
+    async #load(url, formData) {
         const timer = setTimeout(() => {
             this.element.setAttribute('aria-busy', 'true');
         }, 500);
 
-        let response;
-
-        if (postData) {
-            response = await axios.post(url, postData, {
-                headers: {
-                    'Isotope-Fragment': this.idValue,
-                },
-            });
-        } else {
-            response = await axios.get(url, {
-                headers: {
-                    'Isotope-Fragment': this.idValue,
-                },
-            });
-        }
+        const response = await axios.request({
+            url,
+            method: formData ? 'POST' : 'GET',
+            data: formData,
+            headers: {
+                'Isotope-Fragment': this.idValue,
+            },
+        });
 
         clearTimeout(timer);
+
+        if (IsotopeAction(response)) {
+            this.element.setAttribute('aria-busy', '');
+            return;
+        }
 
         const div = document.createElement('div');
         div.innerHTML = response.data;

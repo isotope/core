@@ -32,9 +32,11 @@ instance.interceptors.response.use(
     },
 );
 
-instance.interceptors.response.use((response) => {
+export default instance;
+
+export function IsotopeAction(response) {
     if (response.headers['content-type'] !== 'application/isotope-action+json') {
-        return response;
+        return false;
     }
 
     const json = response.data;
@@ -43,11 +45,13 @@ instance.interceptors.response.use((response) => {
     window.dispatchEvent(event);
 
     if (event.defaultPrevented) {
-        return response;
+        return true;
     }
 
     if (json.redirect) {
         window.location = json.redirect;
+
+        return true;
     } else if (json.message) {
         const [txt, scripts] = extractScript(json.message);
 
@@ -58,9 +62,9 @@ instance.interceptors.response.use((response) => {
             script.text = scripts;
             document.body.append(script);
         }
+
+        return true;
     }
 
-    return response;
-});
-
-export default instance;
+    return false;
+}
