@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Twig\Runtime;
 
-use Contao\CoreBundle\Exception\RedirectResponseException;
-use Contao\CoreBundle\Exception\ResponseException;
 use Isotope\CoreBundle\Exception\ActionException;
-use Isotope\CoreBundle\HttpFoundation\ActionResult;
 use Isotope\CoreBundle\Product\Action\ProductActionRegistry;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\Render\ProductConfiguration;
@@ -16,12 +13,9 @@ use Isotope\CoreBundle\ProductCollection\AbstractProductCollection;
 use Isotope\CoreBundle\ProductCollection\Action\ProductCollectionActionRegistry;
 use Isotope\CoreBundle\ProductCollection\ItemAction\ProductCollectionItemActionRegistry;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
-use Isotope\CoreBundle\Twig\TemplateMarkup;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Isotope\CoreBundle\Util\MessagesUtil;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\FlashBagAwareSessionInterface;
-use Twig\Environment;
 use Twig\Extension\RuntimeExtensionInterface;
 
 class ActionRuntime implements RuntimeExtensionInterface
@@ -31,7 +25,7 @@ class ActionRuntime implements RuntimeExtensionInterface
         private readonly ProductCollectionActionRegistry $collectionActionRegistry,
         private readonly ProductCollectionItemActionRegistry $itemActionRegistry,
         private readonly RequestStack $requestStack,
-        private readonly Environment $twig,
+        private readonly MessagesUtil $messages,
     ) {
     }
 
@@ -57,7 +51,7 @@ class ActionRuntime implements RuntimeExtensionInterface
         if ($request->request->get('FORM_SUBMIT') === $view->getFormId($product) && $request->request->get('_action') === $type) {
             $result = $action->handle($product, $configData, $view);
 
-            $this->handleActionResult($type, $request, $result);
+            $this->messages->handleActionResult($type, $result);
         }
 
         return $action->render($product, $configData, $view);
@@ -89,7 +83,7 @@ class ActionRuntime implements RuntimeExtensionInterface
         ) {
             $result = $action->handle($collection, $context, $options);
 
-            $this->handleActionResult($type, $request, $result);
+            $this->messages->handleActionResult($type, $result);
         }
 
         return $action->render($collection, $context, $options);
@@ -126,62 +120,9 @@ class ActionRuntime implements RuntimeExtensionInterface
         ) {
             $result = $action->handle($collection, $item, $context);
 
-            $this->handleActionResult($type, $request, $result);
+            $this->messages->handleActionResult($type, $result);
         }
 
         return $action->render($collection, $item, $context);
-    }
-
-    private function handleActionResult(string $type, Request $request, ActionResult $result): never
-    {
-        if ($request->isXmlHttpRequest()) {
-            $this->throwJsonResponse($type, $result);
-        }
-
-        if (
-            $result->message
-            && ($session = $request->getSession()) instanceof FlashBagAwareSessionInterface
-        ) {
-            $type = match (true) {
-                $result->message instanceof TemplateMarkup => 'isotope.raw',
-                $result->success => 'isotope.success',
-                !$result->success => 'isotope.error',
-            };
-
-            $session->getFlashBag()->add($type, (string) $result->message);
-        }
-
-        if ($result->redirect) {
-            throw new RedirectResponseException($result->redirect);
-        }
-
-        throw new RedirectResponseException($request->getUri());
-    }
-
-    private function throwJsonResponse(string $type, ActionResult $result): never
-    {
-        $message = null;
-
-        if ($result->message instanceof TemplateMarkup) {
-            $message = (string) $result->message;
-        } elseif ($result->message) {
-            $message = $this->twig->render('@Contao/component/_isotope_message.html.twig', [
-                'type' => $type,
-                'message' => $result->message,
-            ]);
-        }
-
-        $response = new JsonResponse(
-            [
-                'type' => $type,
-                'success' => $result->success,
-                'message' => $message,
-                'redirect' => $result->redirect,
-            ],
-            200,
-            ['Content-Type' => 'application/isotope-action+json'],
-        );
-
-        throw new ResponseException($response);
     }
 }
