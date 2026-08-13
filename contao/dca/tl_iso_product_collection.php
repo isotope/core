@@ -228,22 +228,27 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
             'sql' => 'text NULL',
         ],
         'extensions' => [
+            'exclude' => false,
             'sql' => ['type' => Types::BLOB, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_MEDIUMBLOB, 'notnull' => false],
         ],
         'details' => [
             // input_field_callback from OrderDetailsListener
+            'exclude' => false,
             'eval' => ['doNotShow' => true],
         ],
         'transaction_data' => [
             // input_field_callback from OrderDetailsListener
+            'exclude' => false,
             'eval' => ['doNotShow' => true],
         ],
         'billing_address_data' => [
             // input_field_callback from OrderDetailsListener
+            'exclude' => false,
             'eval' => ['doNotShow' => true],
         ],
         'shipping_address_data' => [
             // input_field_callback from OrderDetailsListener
+            'exclude' => false,
             'eval' => ['doNotShow' => true],
         ],
     ],
