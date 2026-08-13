@@ -48,11 +48,25 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
                 'attributes' => 'data-contao--deeplink-target="primary"',
             ],
             'delete',
+            'show',
+            '-',
+            'show_billing' => [
+                'href' => 'table=tl_iso_address&act=show',
+                'icon' => 'show.svg',
+                'method' => 'GET',
+                'prefetch' => false,
+            ],
+            'show_shipping' => [
+                'href' => 'table=tl_iso_address&act=show',
+                'icon' => 'show.svg',
+                'method' => 'GET',
+                'prefetch' => false,
+            ],
         ],
     ],
     'palettes' => [
         '__selector__' => ['sendNotification'],
-        'default' => '{status_legend},transaction_status,delivery_status,order_status,date_paid,date_shipped,notes,sendNotification,submit_buttons;{log_legend},order_log;{details_legend},details;{transaction_legend:hide},transaction_data;{billing_address_legend:hide},billing_address_data;{shipping_address_legend:hide},shipping_address_data',
+        'default' => '{status_legend},transaction_status,delivery_status,order_status,date_paid,date_shipped,notes,sendNotification,submit_buttons;{log_legend},order_log;{details_legend},details;{transaction_legend:hide},transaction_data',
     ],
     'subpalettes' => [
         'sendNotification' => 'notification,notification_shipping_tracking,notification_customer_notes',
@@ -229,6 +243,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
         ],
         'extensions' => [
             'exclude' => false,
+            'eval' => ['doNotShow' => true],
             'sql' => ['type' => Types::BLOB, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_MEDIUMBLOB, 'notnull' => false],
         ],
         'details' => [
@@ -237,16 +252,6 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
             'eval' => ['doNotShow' => true],
         ],
         'transaction_data' => [
-            // input_field_callback from OrderDetailsListener
-            'exclude' => false,
-            'eval' => ['doNotShow' => true],
-        ],
-        'billing_address_data' => [
-            // input_field_callback from OrderDetailsListener
-            'exclude' => false,
-            'eval' => ['doNotShow' => true],
-        ],
-        'shipping_address_data' => [
             // input_field_callback from OrderDetailsListener
             'exclude' => false,
             'eval' => ['doNotShow' => true],

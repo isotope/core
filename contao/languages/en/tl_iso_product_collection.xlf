@@ -126,10 +126,22 @@
         <source>If you would like to convey information to other backend users, please do so here.</source>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.details.0">
-        <source>Order details</source>
+        <source>View Order</source>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.details.1">
         <source>Show details of order ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.show_billing.0">
+        <source>Billing Address</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.show_billing.1">
+        <source>Show details of billing address for order ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.show_shipping.0">
+        <source>Shipping Address</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.show_shipping.1">
+        <source>Show details of shipping address for order ID %s</source>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.orderStatusUpdate">
         <source>The status of your order has been updated.</source>
