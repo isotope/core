@@ -175,7 +175,15 @@ class GroupShipping extends AbstractShipping
     private function getPrices(bool $calculate = true): array
     {
         $calculator = $this->get(PriceCalculator::class);
-        $subtotal = $this->getStoreContext()->getCart()?->getSubtotal($this->getLevel() - 1);
+        $subtotal = null;
+
+        if (
+            $calculate
+            && !($subtotal = $this->getStoreContext()->getCart()?->getSubtotal($this->getLevel() - 1))
+        ) {
+            return [];
+        }
+
         $prices = [];
 
         foreach ($this->inner as $method) {
