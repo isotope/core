@@ -51,7 +51,7 @@ class CollectionItemMigration extends AbstractMigration
                 SQL,
         );
 
-        if (!$this->connection->createSchemaManager()->introspectTableByUnquotedName('tl_iso_product_collection_item')->hasColumn('sortin')) {
+        if (!$this->connection->createSchemaManager()->introspectTableByUnquotedName('tl_iso_product_collection_item')->hasColumn('sorting')) {
             $this->connection->executeStatement('ALTER TABLE tl_iso_product_collection_item ADD COLUMN `sorting` int(10) unsigned NOT NULL default 0');
         }
 
