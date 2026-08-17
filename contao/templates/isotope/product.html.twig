@@ -61,8 +61,8 @@
                             <div class="offer">
                                 <div class="price">{{ price }}</div>
                                 {% set baseprice = isotope_baseprice(product) %}
-                                {% if baseprice %}
-                                    <div class="baseprice">{{ baseprice }}</div>
+                                {% if baseprice is not empty %}
+                                    <div class="baseprice">{{ baseprice|raw }}</div>
                                 {% endif %}
                             </div>
                         {% endif %}
