@@ -12,7 +12,7 @@
     <div{{ message_attributes }}>
         <div class="inner"{% if closable %} data-action="click->isotope--message#stop"{% endif %}>
             {% if closable %}
-                {% block message_close %}<button class="close" data-action="isotope--message#hide">Close</button>{% endblock %}
+                {% block message_close %}<a href="{{ app.request.requestUri }}" class="close" data-action="isotope--message#hide">X</a>{% endblock %}
             {% endif %}
             {% block message_content %}<p>{{ message|default }}</p>{% endblock %}
         </div>

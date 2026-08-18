@@ -24,7 +24,9 @@ export default class Notification extends Controller {
         }
     }
 
-    hide () {
+    hide (e) {
+        e.preventDefault();
+
         if (this.timeout) {
             clearTimeout(this.timeout);
         }
