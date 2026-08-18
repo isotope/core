@@ -129,16 +129,22 @@
         <source>View Order</source>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.details.1">
+        <source>View line items, summary and transactions for order ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.show.0">
+        <source>Order Details</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.show.1">
         <source>Show details of order ID %s</source>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.show_billing.0">
-        <source>Billing Address</source>
+        <source>Billing Address Details</source>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.show_billing.1">
         <source>Show details of billing address for order ID %s</source>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.show_shipping.0">
-        <source>Shipping Address</source>
+        <source>Shipping Address Details</source>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.show_shipping.1">
         <source>Show details of shipping address for order ID %s</source>
