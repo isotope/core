@@ -1,5 +1,5 @@
 import { Controller } from '@hotwired/stimulus';
-import axios from '../scripts/_axios';
+import axios, { IsotopeAction } from '../scripts/_axios';
 import { extractScript } from '../scripts/_dom';
 
 export default class extends Controller {
@@ -46,7 +46,7 @@ export default class extends Controller {
             data.set(event.submitter.name, event.submitter.value);
         }
 
-        await this.#submitForm(data);
+        IsotopeAction(await this.#submitForm(data));
 
         this.element.setAttribute('aria-busy', 'false');
         this.formTarget.disabled = false;
