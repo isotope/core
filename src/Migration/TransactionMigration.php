@@ -17,7 +17,10 @@ class TransactionMigration extends AbstractMigration
 
     public function shouldRun(): bool
     {
-        return !$this->connection->createSchemaManager()->tablesExist(['tl_iso_order_transaction', 'tl_iso_order_transaction_event']);
+        $schemaManager = $this->connection->createSchemaManager();
+
+        return $schemaManager->tablesExist(['tl_iso_product_collection', 'tl_iso_payment'])
+            && !$schemaManager->tablesExist(['tl_iso_order_transaction', 'tl_iso_order_transaction_event']);
     }
 
     public function run(): MigrationResult
