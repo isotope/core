@@ -17,11 +17,6 @@ use Symfony\Component\Routing\Exception\ExceptionInterface;
 #[AsGallery]
 class StandardGallery extends AbstractGallery implements ContainerAwareInterface
 {
-    public function __construct(int $id, string|null $template = null)
-    {
-        parent::__construct($id, $template ?? '@Contao/isotope/gallery/standard.html.twig');
-    }
-
     public static function getSubscribedServices(): array
     {
         return [
