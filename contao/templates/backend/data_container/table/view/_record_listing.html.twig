@@ -1,6 +1,7 @@
 {% extends '@Contao/backend/data_container/table/view/_record_listing.html.twig' %}
 
+{% set table = app.request.query.get('table')|default(app.request.query.get('do')) %}
 {% set listing_attributes = attrs()
-    .addClass(app.request.query.get('table')|default(app.request.query.get('do')))
+    .addClass(table, table starts with 'tl_iso_' or table starts with 'iso_')
     .mergeWith(listing_attributes|default)
 %}
