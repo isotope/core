@@ -10,7 +10,11 @@
 {% endif %}
 
 {% for file in files %}
-    {% do figure_builder.from(file.src) %}
+    {% do figure_builder
+        .from(file.src)
+        .setMetadata(file.metadata)
+    %}
+
     {% block build_figure %}
         {% set figure = figure_builder.buildIfResourceExists() %}
         {% if figure %}

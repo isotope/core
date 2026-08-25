@@ -140,11 +140,11 @@ abstract class AbstractGallery extends AbstractModelType implements GalleryInter
             $files[$k]['link'] = $link;
             $files[$k]['rel'] = $rel;
 
-            $files[$k]['metadata'] = [
+            $files[$k]['metadata'] = new Metadata(array_filter([
                 Metadata::VALUE_ALT => $file['alt'] ?? null,
                 Metadata::VALUE_CAPTION => $file['desc'] ?? null,
                 Metadata::VALUE_URL => $file['link'] ?? null,
-            ];
+            ]));
         }
 
         return $files;
