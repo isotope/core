@@ -166,12 +166,36 @@
         <target>Wenn Sie für andere Backend-Nutzer Informationen hinterlegen möchten, tun Sie das bitte hier.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.details.0">
-        <source>Order details</source>
-        <target>Bestelldetails</target>
+        <source>View Order</source>
+        <target>Bestellung anzeigen</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.details.1">
+        <source>View line items, summary and transactions for order ID %s</source>
+        <target>Produkte, Zusammenfassung und Transaktionen für Bestellung ID %s anzeigen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.show.0">
+        <source>Order Details</source>
+        <target>Bestellungsdetails</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.show.1">
         <source>Show details of order ID %s</source>
         <target>Details der Bestellung ID %s anzeigen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.show_billing.0">
+        <source>Billing Address Details</source>
+        <target>Details der Rechnungsadresse</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.show_billing.1">
+        <source>Show details of billing address for order ID %s</source>
+        <target>Details der Rechnungsadresse für Bestellung ID %s anzeigen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.show_shipping.0">
+        <source>Shipping Address Details</source>
+        <target>Versandadresse</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.show_shipping.1">
+        <source>Show details of shipping address for order ID %s</source>
+        <target>Details der Versandadresse für Bestellung ID %s anzeigen</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.orderStatusUpdate">
         <source>The status of your order has been updated.</source>

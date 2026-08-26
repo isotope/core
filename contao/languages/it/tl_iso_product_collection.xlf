@@ -160,12 +160,30 @@
         <target>Se vuole inviare informazioni ad altri utenti backend per cortesia lo faccia qui.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.details.0">
-        <source>Order details</source>
-        <target>Dettagli ordine</target>
+        <source>View Order</source>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.details.1">
+        <source>View line items, summary and transactions for order ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.show.0">
+        <source>Order Details</source>
+        <target>Dettagli Ordine</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.show.1">
         <source>Show details of order ID %s</source>
         <target>Mostra i dettagli dell&apos;ordine ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.show_billing.0">
+        <source>Billing Address Details</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.show_billing.1">
+        <source>Show details of billing address for order ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.show_shipping.0">
+        <source>Shipping Address Details</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.show_shipping.1">
+        <source>Show details of shipping address for order ID %s</source>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.orderStatusUpdate">
         <source>The status of your order has been updated.</source>

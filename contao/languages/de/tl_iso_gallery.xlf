@@ -66,8 +66,8 @@
         <target>Eigenes Galerie-Template</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.customTpl.1">
-        <source>Here you can overwrite the default gallery template.</source>
-        <target>Hier können Sie das Standard Galerie-Template überschreiben.</target>
+        <source>Here you can select the gallery template.</source>
+        <target>Hier können Sie das Galerie-Template auswählen.</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.name_legend">
         <source>Name &amp; Type</source>

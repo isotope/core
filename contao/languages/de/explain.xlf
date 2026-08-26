@@ -129,13 +129,13 @@ Sie können hier eine Filterabfrage eingeben, um die Produkte einzugrenzen, die 
 &lt;p class=&quot;tl_help_table&quot;&gt;
 Jedes Filterabfragsegment besteht aus einem Attributnamen, einem Operator und einem Wert. Hier ein ganz einfaches Beispiel:&lt;br&gt;&lt;br&gt;
 &lt;code&gt;type:1&lt;/code&gt;&lt;br&gt;&lt;br&gt;
-&lt;code&gt;type]&lt;/code&gt;ist das Attribut,&lt;code&gt;[:]&lt;/code&gt;ist der Operator für „gleich“ und &lt;code&gt;[1]&lt;/code&gt;ist der Wert.
+&lt;code&gt;[type]&lt;/code&gt; ist das Attribut, &lt;code&gt;[:]&lt;/code&gt; ist der Operator für „gleich“ und &lt;code&gt;[1]&lt;/code&gt; ist der Wert.
 Das obige Beispiel findet nur Produkttypen mit der ID 1. Das entsprechende SQL-Befehl würde lauten: &lt;code&gt;WHERE type=1&lt;/code&gt;
 &lt;/p&gt;
 &lt;p class=&quot;tl_help_table&quot;&gt;
  Sie können weitaus komplexere Filter erstellen.&lt;br&gt;&lt;br&gt;
 &lt;code&gt;color!red,blue;size:M|L;&lt;/code&gt;&lt;br&gt;&lt;br&gt;
-Das SQL-Äquivalent dazu wäre&lt;code&gt;WHERE (color != &quot;red&quot; AND color != &quot;blue&quot;) AND (size = &quot;M&quot; OR size = &quot;L&quot;)&lt;/code&gt;&lt;br&gt;
+Das SQL-Äquivalent dazu wäre &lt;code&gt;WHERE (color != &quot;red&quot; AND color != &quot;blue&quot;) AND (size = &quot;M&quot; OR size = &quot;L&quot;)&lt;/code&gt;&lt;br&gt;
 Bei den meisten Operatoren können Sie mehrere Werte als durch Kommas getrennte (&lt;code&gt;AND&lt;/code&gt;) oder durch Pipe-Zeichen getrennte (&lt;code&gt;OR&lt;/code&gt;) Bedingung übergeben.
 &lt;/p&gt;
 

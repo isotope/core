@@ -816,8 +816,8 @@
         <source>This PayPal module supports IPN (Instant Payment Notifications).</source>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_gallery.standard.0">
-        <source>Default gallery</source>
-        <target>Галерея по умолчанию</target>
+        <source>Standard</source>
+        <target>Standard</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_gallery.standard.1">
         <source>&lt;p&gt;Uses the lightbox/mediabox for full size images. Make sure you select the appropriate &quot;moo_&quot; template in your page layout configuration.&lt;/p&gt;&lt;p&gt;You can supply a &quot;rel&quot; attribute to the link target by using a pipe (e.g. &quot;tl_files/video.mov|lightbox[400 300]&quot;). If no &quot;rel&quot; attribute is supplied, the link will be opened in a new window.&lt;/p&gt;</source>

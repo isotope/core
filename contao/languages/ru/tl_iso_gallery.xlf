@@ -59,8 +59,7 @@
         <target>Настраиваемый шаблон галереи</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.customTpl.1">
-        <source>Here you can overwrite the default gallery template.</source>
-        <target>Здесь вы можете перезаписать шаблон галереи по умолчанию.</target>
+        <source>Here you can select the gallery template.</source>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.name_legend">
         <source>Name &amp; Type</source>
