@@ -87,6 +87,7 @@ class DefaultOrderNotificationTokensListener
                 }
 
                 $tokens[$type.'_address'] = $this->addressFormatter->toHtml($address, $context->getBillingAddressConfig());
+                $tokens[$type.'_address_text'] = $this->addressFormatter->toText($address, $context->getBillingAddressConfig());
             }
         }
 

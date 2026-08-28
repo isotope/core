@@ -52,10 +52,12 @@ class OrderNotificationType implements NotificationTypeInterface
             $this->create(TextTokenDefinition::class, 'bank_code'),
             $this->create(TextTokenDefinition::class, 'tax_number'),
             //'collection_*', // All the collection fields
-            $this->create(TextTokenDefinition::class, 'billing_address'), // Formatted billing address
+            $this->create(HtmlTokenDefinition::class, 'billing_address'), // Formatted billing address
+            $this->create(TextTokenDefinition::class, 'billing_address_text'), // Formatted billing address
             $this->create(AnythingTokenDefinition::class, 'billing_address_*'), // All the billing address model fields
             $this->create(EmailTokenDefinition::class, 'billing_address_email'),
-            $this->create(TextTokenDefinition::class, 'shipping_address'), // Formatted shipping address
+            $this->create(HtmlTokenDefinition::class, 'shipping_address'), // Formatted shipping address
+            $this->create(TextTokenDefinition::class, 'shipping_address_text'), // Formatted shipping address
             $this->create(AnythingTokenDefinition::class, 'shipping_address_*'), // All the shipping address model fields
             $this->create(EmailTokenDefinition::class, 'shipping_address_email'),
             $this->create(AnythingTokenDefinition::class, 'form_*'), // All the order condition form fields
