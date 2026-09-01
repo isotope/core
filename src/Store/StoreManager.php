@@ -63,6 +63,7 @@ class StoreManager
 
         $context = $this->createForRequest($request);
         $request->attributes->set(self::CONTEXT_ATTRIBUTE, $context);
+        $context->setCart($this->cartManager->getCart($context));
 
         return $context;
     }
@@ -116,15 +117,13 @@ class StoreManager
             throw StoreContextException::noConfig();
         }
 
-        $context = $this->contextFactory->create(
+        return $this->contextFactory->create(
             (int) $rootPage->iso_store_id,
             $config,
             $request->getLocale(),
             $guestCartId ?? StringUtil::generateRandomId(),
             $memberId,
         );
-
-        return $context->setCart($this->cartManager->getCart($context));
     }
 
     private function getMemberId(): int|null
