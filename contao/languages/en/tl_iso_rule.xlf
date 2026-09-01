@@ -8,7 +8,7 @@
       <trans-unit id="tl_iso_rule.name.0">
         <source>Name</source>
       </trans-unit>
-      <trans-unit id="tl_iso_rule.type.1">
+      <trans-unit id="tl_iso_rule.name.1">
         <source>Enter a name for this condition (only visible in the back end).</source>
       </trans-unit>
       <trans-unit id="tl_iso_rule.conditions.0">
