@@ -1,5 +1,6 @@
 {% trans_default_domain 'contao_default' %}
 {% extends '@Contao/content_element/_isotope_base.html.twig' %}
+{% use '@Contao/component/_pagination.html.twig' %}
 
 {% set attributes = attrs()
     .set('data-controller', 'isotope--fragment')
@@ -17,4 +18,6 @@
             <p class="empty message">{{ message|default(data.iso_noProducts|default('MSC.noProducts'|trans)) }}</p>
         {% endfor %}
     </div>
+
+    {% if pagination|default %}{{ block('pagination_component') }}{% endif %}
 {% endblock %}

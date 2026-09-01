@@ -54,7 +54,8 @@ class StringUtil
             return $forceArray ? [] : null;
         }
 
-        $values = array_filter(explode(',', $value));
+        // Do not filter "0" but only really empty string
+        $values = array_filter(explode(',', $value), static fn (string $v) => '' !== $v);
 
         if ([] === $values) {
             return $forceArray ? [] : null;

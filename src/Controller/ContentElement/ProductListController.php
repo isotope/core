@@ -6,15 +6,17 @@ namespace Isotope\CoreBundle\Controller\ContentElement;
 
 use Contao\ContentModel;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsContentElement;
+use Contao\CoreBundle\Exception\PageNotFoundException;
+use Contao\CoreBundle\Exception\PageOutOfRangeException;
+use Contao\CoreBundle\Pagination\PaginationConfig;
+use Contao\CoreBundle\Pagination\PaginationFactoryInterface;
+use Contao\CoreBundle\Pagination\PaginationInterface;
 use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use Contao\CoreBundle\Twig\FragmentTemplate;
-use Contao\PageModel;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
-use Isotope\CoreBundle\Product\Category\CategoryFinder;
-use Isotope\CoreBundle\Product\Category\CategoryScope;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\DataCollector\ProductDto;
 use Isotope\CoreBundle\Product\DataCollector\ProductDtoCollection;
@@ -39,6 +41,7 @@ class ProductListController extends AbstractContentElementController
         private readonly TokenChecker $tokenChecker,
         private readonly ProductBuilder $productBuilder,
         private readonly StoreManager $storeManager,
+        private readonly PaginationFactoryInterface $paginationFactory,
     ) {
     }
 
@@ -56,7 +59,7 @@ class ProductListController extends AbstractContentElementController
         }
 
         $filterKeys = [$model->iso_filterKey ?: ''];
-        $products = $this->findProducts($model, $request, $filterKeys);
+        $products = $this->findProducts($model, $request, $filterKeys, $template);
 
         if ($model->iso_hide_empty && $products->isEmpty()) {
             return new Response('');
@@ -74,7 +77,7 @@ class ProductListController extends AbstractContentElementController
     /**
      * @return ProductCollection
      */
-    private function findProducts(ContentModel $model, Request $request, array $filterKeys): CollectionInterface
+    private function findProducts(ContentModel $model, Request $request, array $filterKeys, FragmentTemplate $template): CollectionInterface
     {
         $categories = $this->getCategories($model, $request);
 
@@ -99,15 +102,13 @@ class ProductListController extends AbstractContentElementController
             $filterKeys[] = 'cte'.$model->id;
         }
 
-        $productQuery?->apply($qb, $filterKeys);
+        $productQuery?->applyFilterAndSorting($qb, $filterKeys);
 
         if ($searchFields = StringUtil::csv($model->iso_searchFields)) {
             $productQuery?->applySearch($qb, $searchFields, $filterKeys);
         }
 
-        if ($model->numberOfItems > 0) {
-            $qb->setMaxResults((int) $model->numberOfItems);
-        }
+        $template->pagination = $this->applyPagination($model, $request, $qb, $productQuery?->getLimit($filterKeys));
 
         $ids = $qb->fetchFirstColumn();
 
@@ -147,5 +148,61 @@ class ProductListController extends AbstractContentElementController
         }
 
         return $qb;
+    }
+
+    private function applyPagination(ContentModel $model, Request $request, QueryBuilder $qb, int|null $perPage): PaginationInterface|null
+    {
+        $limit = null;
+        $offset = 0;
+
+        if ($model->numberOfItems > 0) {
+            $limit = (int) $model->numberOfItems;
+        }
+
+        if (null === $perPage) {
+            $perPage = (int) $model->perPage;
+        }
+
+        $total = (clone $qb)
+            ->select('COUNT(DISTINCT IFNULL(parent.id, tl_iso_product.id))')
+            ->resetGroupBy()
+            ->fetchOne()
+        ;
+
+        if ($total < 1) {
+            return null;
+        }
+
+        // Split the results
+        if ($perPage > 0 && (!isset($limit) || $model->numberOfItems > $perPage)) {
+            // Adjust the overall limit
+            if (isset($limit)) {
+                $total = min($limit, $total);
+            }
+
+            $param = '_p'.$model->id;
+
+            try {
+                $pagination = $this->paginationFactory->create(new PaginationConfig($param, $total, $perPage));
+            } catch (PageOutOfRangeException $e) {
+                throw new PageNotFoundException('Page not found: '.$request->getRequestUri(), previous: $e);
+            }
+
+            // Set limit and offset
+            $limit = $pagination->getPerPage();
+            $offset = $pagination->getOffset();
+
+            // Overall limit
+            if ($offset + $limit > $total) {
+                $limit = $total - $offset;
+            }
+        }
+
+        $qb
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
+        ;
+
+        return $pagination ?? null;
     }
 }

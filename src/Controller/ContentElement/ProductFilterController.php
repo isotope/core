@@ -25,6 +25,7 @@ use Isotope\CoreBundle\Product\Query\Sorting;
 use Isotope\CoreBundle\Util\StringUtil;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[AsContentElement('iso_productfilter', category: 'isotope')]
 class ProductFilterController extends AbstractContentElementController
@@ -34,6 +35,7 @@ class ProductFilterController extends AbstractContentElementController
         private readonly Formatter $formatter,
         private readonly Connection $connection,
         private readonly TokenChecker $tokenChecker,
+        private readonly TranslatorInterface $translator,
     ) {
     }
 
@@ -184,8 +186,6 @@ class ProductFilterController extends AbstractContentElementController
     {
         $options = [];
         $limits = array_unique(StringUtil::csv($perPage, intval(...), true));
-        sort($limits);
-
         $current = $productQuery?->getLimit([$key]);
 
         if (null !== $current && !\in_array($current, $limits, true)) {
@@ -194,7 +194,7 @@ class ProductFilterController extends AbstractContentElementController
 
         foreach ($limits as $limit) {
             $options[] = [
-                'label' => $limit,
+                'label' => 0 === $limit ? $this->translator->trans('MSC.filterAll', [], 'contao_default') : $limit,
                 'value' => $limit,
                 'default' => $limit === $current,
             ];

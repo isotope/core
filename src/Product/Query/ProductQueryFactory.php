@@ -78,8 +78,10 @@ class ProductQueryFactory
                     break;
 
                 case 'l':
-                    // TODO
-                    $isActive = true;
+                    if ('' !== $v) {
+                        $instance->setLimit($id, (int) $v);
+                        $isActive = true;
+                    }
                     break;
 
                 case 'q':

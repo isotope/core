@@ -57,7 +57,7 @@ class ProductQuery implements \Stringable
         return http_build_query($query);
     }
 
-    public function apply(QueryBuilder $queryBuilder, array $keys): void
+    public function applyFilterAndSorting(QueryBuilder $queryBuilder, array $keys): void
     {
         foreach ($this->getFilters($keys) as $filter) {
             $filter->apply($queryBuilder);
@@ -65,10 +65,6 @@ class ProductQuery implements \Stringable
 
         foreach ($this->getSortings($keys) as $sorting) {
             $sorting->apply($queryBuilder);
-        }
-
-        if (null !== ($limit = $this->getLimit($keys))) {
-            $queryBuilder->setMaxResults($limit);
         }
     }
 

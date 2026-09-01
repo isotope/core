@@ -95,7 +95,7 @@ export default class extends Controller {
             );
         }
 
-        query.apply(new Limit(this.idValue, value.value));
+        query.apply(new Limit(this.idValue, value));
 
         this.#exec(query, event);
     }

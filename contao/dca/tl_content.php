@@ -51,16 +51,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields'] += [
         'eval' => ['fieldType' => 'radio', 'tl_class' => 'clr'],
         'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
     ],
-    'numberOfItems' => [
-        'label' => &$GLOBALS['TL_LANG']['MSC']['numberOfItems'],
-        'inputType' => 'text',
-        'eval' => ['mandatory' => true, 'rgxp' => 'natural', 'tl_class' => 'w50'],
-    ],
-    'perPage' => [
-        'label' => &$GLOBALS['TL_LANG']['tl_module']['perPage'],
-        'inputType' => 'text',
-        'eval' => ['rgxp' => 'natural', 'tl_class' => 'w50'],
-    ],
     'levelOffset' => [
         'label' => &$GLOBALS['TL_LANG']['tl_module']['levelOffset'],
         'inputType' => 'text',
