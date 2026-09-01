@@ -30,7 +30,7 @@ class ReorderAction extends AbstractProductCollectionItemAction
 
     public function supports(AbstractProductCollection $collection, LineItem $item, array $context): bool
     {
-        return $collection instanceof Order && $item->getProduct() instanceof CoreProduct;
+        return $collection instanceof Order && null !== $item->getProduct();
     }
 
     public function render(AbstractProductCollection $collection, LineItem $item, array $context): string
