@@ -92,6 +92,20 @@ source_lang = en
 type = XLIFF
 resource_name = v3_0-core-tl_iso_gallery
 
+[o:terminal42:p:isotope:r:v3_0-core-tl_iso_order_transaction]
+file_filter = contao/languages/<lang>/tl_iso_order_transaction.xlf
+source_file = contao/languages/en/tl_iso_order_transaction.xlf
+source_lang = en
+type = XLIFF
+resource_name = v3_0-core-tl_iso_order_transaction
+
+[o:terminal42:p:isotope:r:v3_0-core-tl_iso_order_transaction_event]
+file_filter = contao/languages/<lang>/tl_iso_order_transaction_event.xlf
+source_file = contao/languages/en/tl_iso_order_transaction_event.xlf
+source_lang = en
+type = XLIFF
+resource_name = v3_0-core-tl_iso_order_transaction_event
+
 [o:terminal42:p:isotope:r:v3_0-core-tl_iso_orderstatus]
 file_filter = contao/languages/<lang>/tl_iso_orderstatus.xlf
 source_file = contao/languages/en/tl_iso_orderstatus.xlf
