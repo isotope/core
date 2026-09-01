@@ -114,6 +114,8 @@ export default class extends Controller {
 
     reset(event) {
         this.#exec(new ProductQuery(), event);
+
+        this.dispatch('reset', { target: event?.target, cancelable: false });
     }
 
     #getFilterParams(event) {
