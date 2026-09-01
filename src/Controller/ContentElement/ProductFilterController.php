@@ -18,6 +18,7 @@ use Isotope\CoreBundle\Attribute\AttributeRegistry;
 use Isotope\CoreBundle\Attribute\Option\OptionsSource;
 use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
 use Isotope\CoreBundle\Model\ProductModel;
+use Isotope\CoreBundle\Product\Category\CategoryFinder;
 use Isotope\CoreBundle\Product\Query\Filter\EqualFilter;
 use Isotope\CoreBundle\Product\Query\ProductQuery;
 use Isotope\CoreBundle\Product\Query\Sorting;
@@ -53,6 +54,7 @@ class ProductFilterController extends AbstractContentElementController
             $template->filterWidgets = $this->getFilterWidgets(
                 $filterFields,
                 $this->getCurrentFilterValues($productQuery, $filterKey, $filterFields),
+                $this->getCategories($model, $request),
                 (bool) $model->iso_filterHideSingle,
             );
         }
@@ -75,19 +77,16 @@ class ProductFilterController extends AbstractContentElementController
         return $template->getResponse();
     }
 
-    private function getFilterWidgets(array $fields, array $current, bool $hideSingle): array
+    private function getFilterWidgets(array $fields, array $current, array $categories, bool $hideSingle): array
     {
         $widgets = [];
-        // TODO: find configured categories
-        // $arrCategories = $this->findCategories();
-        $arrCategories = [$this->getPageModel()->id];
 
         [$attributeTypes, $variantTypes] = $this->getProductTypeIdsByAttribute();
         Controller::loadDataContainer('tl_iso_product');
 
         foreach ($fields as $fieldName) {
             $widget = Widget::getAttributesFromDca($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$fieldName], $fieldName, $current[$fieldName] ?? null, $fieldName, 'tl_iso_product');
-            $values = $this->getUsedValuesForField($fieldName, $arrCategories, $attributeTypes[$fieldName] ?? [], $variantTypes[$fieldName] ?? []);
+            $values = $this->getUsedValuesForField($fieldName, $categories, $attributeTypes[$fieldName] ?? [], $variantTypes[$fieldName] ?? []);
 
             if ([] === $values) {
                 continue;
@@ -125,7 +124,16 @@ class ProductFilterController extends AbstractContentElementController
                     continue;
                 }
 
-                $widget['options'][$k]['default'] = ($current[$fieldName] ?? null) === $option['value'];
+                if (\in_array($widget['rgxp'] ?? null, ['date', 'time', 'datim'], true)) {
+                    try {
+                        $objDate = new Date($option['label'], Date::getFormatFromRgxp($widget['rgxp']));
+                        $widget['options'][$k]['label'] = $objDate->{$widget['rgxp']};
+                    } catch (\OutOfBoundsException) {
+                        // ignore if date could not be converted
+                    }
+                }
+
+                $widget['options'][$k]['default'] = ($current[$fieldName] ?? null) === (string) $option['value'];
             }
 
             // Hide fields with just one option (if enabled)

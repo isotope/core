@@ -35,7 +35,6 @@ class ProductListController extends AbstractContentElementController
     public function __construct(
         private readonly Connection $connection,
         private readonly AttributeRegistry $attributeRegistry,
-        private readonly CategoryFinder $categoryFinder,
         private readonly ProductQueryFactory $productQueryFactory,
         private readonly TokenChecker $tokenChecker,
         private readonly ProductBuilder $productBuilder,
@@ -148,39 +147,5 @@ class ProductListController extends AbstractContentElementController
         }
 
         return $qb;
-    }
-
-    /**
-     * @return array<int>
-     */
-    private function getCategories(ContentModel $model, Request $request): array
-    {
-        $pageModel = null;
-        $product = $request->attributes->get('_content');
-
-        if ($model->defineRoot && $model->rootPage > 0) {
-            $pageModel = PageModel::findWithDetails($model->rootPage);
-        }
-
-        if (
-            null === $pageModel
-            && $this->isBackendScope($request)
-            && 'article' === $request->query->get('do')
-            && 'tl_content' === $request->query->get('table')
-        ) {
-            // TODO: this won't work for nested elements
-            $pageId = $this->connection->fetchOne('SELECT pid FROM tl_article WHERE id=?', [$request->query->getInt('id')]);
-            $pageModel = PageModel::findWithDetails($pageId);
-
-            if (!$pageModel) {
-                return [];
-            }
-        }
-
-        return $this->categoryFinder->getIds(
-            CategoryScope::tryFrom($model->iso_category_scope) ?? $model->iso_category_scope,
-            $pageModel ?: $this->getPageModel(),
-            $product instanceof CoreProduct ? $product : null,
-        );
     }
 }

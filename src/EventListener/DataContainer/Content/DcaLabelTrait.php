@@ -13,7 +13,7 @@ trait DcaLabelTrait
         }
 
         return \sprintf(
-            '%s <span class="label-info">[%s]</span>',
+            '%s [%s]',
             $config['label'][0],
             $name,
         );

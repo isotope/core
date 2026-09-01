@@ -8,6 +8,11 @@ use Contao\ContentModel;
 use Contao\CoreBundle\Controller\ContentElement\AbstractContentElementController as CoreContentElementController;
 use Contao\CoreBundle\Exception\ResponseException;
 use Contao\CoreBundle\Twig\FragmentTemplate;
+use Contao\PageModel;
+use Doctrine\DBAL\Connection;
+use Isotope\CoreBundle\Product\Category\CategoryFinder;
+use Isotope\CoreBundle\Product\Category\CategoryScope;
+use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\Product;
 use Isotope\CoreBundle\Product\Query\ProductQuery;
 use Isotope\CoreBundle\Product\Query\ProductQueryFactory;
@@ -53,6 +58,8 @@ abstract class AbstractContentElementController extends CoreContentElementContro
 
         $services[StoreManager::class] = StoreManager::class;
         $services[ProductQueryFactory::class] = ProductQueryFactory::class;
+        $services[CategoryFinder::class] = CategoryFinder::class;
+        $services[Connection::class] = Connection::class;
 
         return $services;
     }
@@ -63,6 +70,28 @@ abstract class AbstractContentElementController extends CoreContentElementContro
         parent::addDefaultDataToTemplate($template, $modelData, $section, $classes, $properties, $asEditorView);
 
         $template->fragment_id = $this->getFragmentId($modelData);
+    }
+
+    #[\Override]
+    protected function tagResponse(array|object|string|null $tags): void
+    {
+        if ($tags instanceof Product) {
+            $tags = $tags->getIdentifier();
+        } elseif (is_iterable($tags)) {
+            $identifiers = [];
+
+            foreach ($tags as $k => $v) {
+                if ($v instanceof Product) {
+                    $identifiers[$k] = $v->getIdentifier();
+                } else {
+                    $identifiers[$k] = $v;
+                }
+            }
+
+            $tags = $identifiers;
+        }
+
+        parent::tagResponse($tags);
     }
 
     protected function getProductQuery(Request $request): ProductQuery|null
@@ -94,25 +123,42 @@ abstract class AbstractContentElementController extends CoreContentElementContro
         $template->is_gross = PriceDisplay::Net !== $context->getPriceDisplay();
     }
 
-    #[\Override]
-    protected function tagResponse(array|object|string|null $tags): void
+    /**
+     * @return array<int>
+     */
+    protected function getCategories(ContentModel $model, Request $request): array
     {
-        if ($tags instanceof Product) {
-            $tags = $tags->getIdentifier();
-        } elseif (is_iterable($tags)) {
-            $identifiers = [];
+        $pageModel = null;
+        $product = $request->attributes->get('_content');
 
-            foreach ($tags as $k => $v) {
-                if ($v instanceof Product) {
-                    $identifiers[$k] = $v->getIdentifier();
-                } else {
-                    $identifiers[$k] = $v;
-                }
-            }
-
-            $tags = $identifiers;
+        if ($model->defineRoot && $model->rootPage > 0) {
+            $pageModel = PageModel::findWithDetails($model->rootPage);
         }
 
-        parent::tagResponse($tags);
+        // TODO: this won't work for nested elements
+        if (
+            null === $pageModel
+            && $this->isBackendScope($request)
+            && 'article' === $request->query->get('do')
+            && 'tl_content' === $request->query->get('table')
+        ) {
+            /** @var Connection $connection */
+            $connection = $this->container->get(Connection::class);
+            $pageId = $connection->fetchOne('SELECT pid FROM tl_article WHERE id=?', [$request->query->getInt('id')]);
+            $pageModel = PageModel::findWithDetails($pageId);
+
+            if (!$pageModel) {
+                return [];
+            }
+        }
+
+        /** @var CategoryFinder $categoryFinder */
+        $categoryFinder = $this->container->get(CategoryFinder::class);
+
+        return $categoryFinder->getIds(
+            CategoryScope::tryFrom($model->iso_category_scope) ?? $model->iso_category_scope,
+            $pageModel ?: $this->getPageModel(),
+            $product instanceof CoreProduct ? $product : null,
+        );
     }
 }
