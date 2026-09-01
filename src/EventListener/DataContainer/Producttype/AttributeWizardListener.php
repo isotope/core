@@ -60,7 +60,7 @@ class AttributeWizardListener
                 }],
             ],
             'name' => [
-                'input_field_callback' => $this->getNameClosure($dc->field, $values),
+                'input_field_callback' => $this->getNameClosure($dc->field, $values, $fixed),
             ],
             'legend' => [
                 'label' => &$GLOBALS['TL_LANG']['tl_iso_producttype']['attributes']['legend'],
@@ -262,14 +262,14 @@ class AttributeWizardListener
     /**
      * For each call, the closure returns the name of the next attribute in the wizard (for input_field_callback).
      */
-    private function getNameClosure(string $widgetName, array $values): \Closure
+    private function getNameClosure(string $widgetName, array $values, array $fixed): \Closure
     {
         System::loadLanguageFile('tl_iso_product');
 
         $i = 0;
         $current = [];
 
-        return function () use ($widgetName, &$current, $values, &$i): string {
+        return function () use ($widgetName, &$current, $values, $fixed, &$i): string {
             if ([] === $current) {
                 $current = $values;
             }
@@ -290,7 +290,8 @@ class AttributeWizardListener
             }
 
             return \sprintf(
-                '<input type="hidden" name="%s[%s][name]" id="ctrl_%s_row%s_name" value="%s"><div style="width:300px%s">%s <span class="label-info">[%s]</span></div>',
+                '%s<input type="hidden" name="%s[%s][name]" id="ctrl_%s_row%s_name" value="%s"><div style="width:300px%s">%s <span class="label-info">[%s]</span></div>',
+                \in_array($field['name'], $fixed, true) ? sprintf('<input type="hidden" name="%s[%s][enabled]" value="1">', $widgetName, $i) : '',
                 $widgetName,
                 $i,
                 $widgetName,
