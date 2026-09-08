@@ -13,8 +13,12 @@
 {% block content %}
 
     <h2>{{ 'MSC.orderDetailsHeadline'|trans([collection.documentNumber, collection.locked|date(contao.page.datimFormat)]) }}</h2>
-    <div class="transaction_status {{ collection.transactionStatus.alias }}">{{ 'MSC.transactionStatusHeadline'|trans([collection.transactionStatus.label|default(collection.transactionStatus.name)|trans([], 'isotope')]) }}</div>
-    <div class="delivery_status {{ collection.deliveryStatus.alias }}">{{ 'MSC.deliveryStatusHeadline'|trans([collection.deliveryStatus.label|default(collection.deliveryStatus.name)|trans([], 'isotope')]) }}</div>
+    {% if collection.transactionStatus %}
+        <div class="transaction_status {{ collection.transactionStatus.alias }}">{{ 'MSC.transactionStatusHeadline'|trans([collection.transactionStatus.label|default(collection.transactionStatus.name)|trans([], 'isotope')]) }}</div>
+    {% endif %}
+    {% if collection.deliveryStatus %}
+        <div class="delivery_status {{ collection.deliveryStatus.alias }}">{{ 'MSC.deliveryStatusHeadline'|trans([collection.deliveryStatus.label|default(collection.deliveryStatus.name)|trans([], 'isotope')]) }}</div>
+    {% endif %}
 
     {% block payment %}
         {% if payment_pending %}

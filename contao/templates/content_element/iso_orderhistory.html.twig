@@ -29,8 +29,8 @@
                     <td class="document_number">{{ collection.documentNumber }}</td>
                     <td class="order_date">{{ collection.locked|date(contao.page.dateFormat) }}</td>
                     <td class="order_total">{{ isotope_price(collection.total) }}</td>
-                    <td class="transaction_status">{{ collection?.transactionStatus?.label|default(collection.transactionStatus?.name)|trans([], 'isotope') }}</td>
-                    <td class="delivery_status">{{ collection.deliveryStatus?.label|default(collection.deliveryStatus?.name)|trans([], 'isotope') }}</td>
+                    <td class="transaction_status">{% if collection.transactionStatus %}{{ collection.transactionStatus.label|default(collection.transactionStatus.name)|trans([], 'isotope') }}{% endif %}</td>
+                    <td class="delivery_status">{% if collection.deliveryStatus %}{{ collection.deliveryStatus.label|default(collection.deliveryStatus.name)|trans([], 'isotope') }}{% endif %}</td>
                     <td class="actions">
                         <form method="post" data-isotope--collection-target="form" data-action="isotope--collection#formAction">
                             <input type="hidden" name="FORM_SUBMIT" value="{{ fragment_id }}">
