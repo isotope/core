@@ -39,7 +39,13 @@ ArrayUtil::arrayInsert($GLOBALS['BE_MOD']['isotope'], 0, [
         'tables' => ['tl_iso_product', 'tl_iso_product_category', 'tl_iso_related_product', 'tl_iso_attribute_option'],
     ],
     'iso_orders' => [
-        'tables' => ['tl_iso_product_collection', 'tl_iso_product_collection_item', 'tl_iso_address'],
+        'tables' => [
+            'tl_iso_product_collection',
+            'tl_iso_product_collection_item',
+            'tl_iso_address',
+            'tl_iso_order_transaction',
+            'tl_iso_order_transaction_event',
+        ],
         'class' => 'iso_orders',
     ],
     'iso_rules' => [

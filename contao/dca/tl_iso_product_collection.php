@@ -11,7 +11,13 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
     'config' => [
         'dataContainer' => DC_Table::class,
         'enableVersioning' => false,
-        'ctable' => ['tl_iso_product_collection_item', 'tl_iso_product_collection_log', 'tl_iso_address', 'tl_iso_order_transaction'],
+        'ctable' => [
+            'tl_iso_product_collection_item',
+            'tl_iso_product_collection_log',
+            'tl_iso_address',
+            'tl_iso_order_transaction',
+            'tl_iso_order_transaction_event',
+        ],
         'closed' => true,
         'notCreatable' => true,
         'notCopyable' => true,
