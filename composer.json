@@ -89,10 +89,12 @@
         "league/flysystem-bundle": "^3.7",
         "symfony/framework-bundle": "^7.4",
         "symfony/monolog-bundle": "^3.1",
-        "symfony/twig-bundle": "^7.4"
+        "symfony/twig-bundle": "^7.4",
+        "terminal42/contao-changelanguage": "^3.8"
     },
     "conflict": {
         "contao/manager-plugin": "<2.0 || >= 3.0",
+        "terminal42/contao-changelanguage": "< 3.8 || >= 4.0",
         "isotope/isotope_documents": "*"
     },
     "autoload": {
