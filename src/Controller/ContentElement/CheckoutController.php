@@ -82,7 +82,7 @@ class CheckoutController extends AbstractContentElementController
             throw new RedirectResponseException($this->generateContentUrl(PageModel::findById($model->orderCompleteJumpTo), ['parameters' => '/'.$result->getIdentifier(), 'init_payment' => true]));
         }
 
-        $this->addCollectionToTemplate($template, $cart, $context);
+        $this->addCollectionToTemplate($template, $cart, $context, (int) $model->iso_gallery);
 
         $template->steps = $steps;
         $template->completed = $allCompleted;

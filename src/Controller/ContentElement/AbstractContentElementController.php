@@ -17,9 +17,8 @@ use Isotope\CoreBundle\Product\Product;
 use Isotope\CoreBundle\Product\Query\ProductQuery;
 use Isotope\CoreBundle\Product\Query\ProductQueryFactory;
 use Isotope\CoreBundle\ProductCollection\AbstractProductCollection;
+use Isotope\CoreBundle\ProductCollection\ProductCollectionRenderer;
 use Isotope\CoreBundle\Store\Context\StoreContext;
-use Isotope\CoreBundle\Store\Price\PriceDisplay;
-use Isotope\CoreBundle\Store\Price\TaxCalculation;
 use Isotope\CoreBundle\Store\StoreManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -58,6 +57,7 @@ abstract class AbstractContentElementController extends CoreContentElementContro
 
         $services[StoreManager::class] = StoreManager::class;
         $services[ProductQueryFactory::class] = ProductQueryFactory::class;
+        $services[ProductCollectionRenderer::class] = ProductCollectionRenderer::class;
         $services[CategoryFinder::class] = CategoryFinder::class;
         $services[Connection::class] = Connection::class;
 
@@ -115,12 +115,12 @@ abstract class AbstractContentElementController extends CoreContentElementContro
         return $storeManager->getCurrentContext();
     }
 
-    protected function addCollectionToTemplate(FragmentTemplate $template, AbstractProductCollection $collection, StoreContext $context): void
+    protected function addCollectionToTemplate(FragmentTemplate $template, AbstractProductCollection $collection, StoreContext $context, int|null $galleryId = null): void
     {
-        $template->collection = $collection;
-        $template->show_taxes = TaxCalculation::Horizontal === $context->getTaxCalculation();
-        $template->multiple_taxes = $collection->getTotal()?->getCalculatedTaxes()->count() > 1;
-        $template->is_gross = PriceDisplay::Net !== $context->getPriceDisplay();
+        $this->container
+            ->get(ProductCollectionRenderer::class)
+            ->addToTemplate($template, $collection, $context, $galleryId)
+        ;
     }
 
     /**

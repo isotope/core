@@ -65,7 +65,7 @@ class OrderDetailsController extends AbstractContentElementController
 
         $this->handlePayment($order, $context, $request, $template, $model->iso_transaction_cancelled);
 
-        $this->addCollectionToTemplate($template, $order, $context);
+        $this->addCollectionToTemplate($template, $order, $context, (int) $model->iso_gallery);
 
         return $template->getResponse();
     }

@@ -27,7 +27,7 @@
                 <table{{ attrs().mergeWith(product_collection_attributes|default, not has_actions) }}>
                     <thead>
                         <tr>
-                            {% if data.iso_gallery|default %}
+                            {% if gallery_id|default %}
                                 <th class="image"></th>
                             {% endif %}
                             <th class="name">{{ 'MSC.iso_order_description'|trans }}</th>
@@ -46,18 +46,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% set colspan = 2 + (data.iso_gallery|default ? 1 : 0) + (show_taxes|default ? 1 : 0) %}
+                        {% set colspan = 2 + (gallery_id|default ? 1 : 0) + (show_taxes|default ? 1 : 0) %}
                         {% for level, items in collection.lineItems.byLevel %}
                             {% for item in items %}
                                 {% block product_collection_item %}
                                     {% set href = item.productReference ? content_url(item.productReference) : null %}
                                     <tr>
-                                        {% if data.iso_gallery|default and item.product %}
+                                        {% if gallery_id|default and item.product %}
                                             <td class="image">
-                                                {{ isotope_gallery(item.product, 'images', data.iso_gallery, href) }}
+                                                {{ isotope_gallery(item.product, 'images', gallery_id, href) }}
                                             </td>
                                         {% endif %}
-                                        <td class="name"{% if data.iso_gallery|default and not item.product %} colspan="2"{% endif %}>
+                                        <td class="name"{% if gallery_id|default and not item.product %} colspan="2"{% endif %}>
                                             {% block item_name %}
                                                 {% if href %}
                                                     <a href="{{ href }}">{{ item.label }}</a>

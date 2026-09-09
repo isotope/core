@@ -23,7 +23,7 @@ class CartController extends AbstractContentElementController
         $context = $this->getStoreContext();
         $collection = $context->getCart();
 
-        $this->addCollectionToTemplate($template, $collection, $context);
+        $this->addCollectionToTemplate($template, $collection, $context, (int) $model->iso_gallery);
 
         if (
             $request->isMethod(Request::METHOD_POST)
