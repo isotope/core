@@ -40,7 +40,7 @@ class MemberGroupCondition implements RuleConditionInterface
             return true;
         }
 
-        $hasGroups = $this->security->isGranted(ContaoCorePermissions::MEMBER_IN_GROUPS, [$this->groups]);
+        $hasGroups = $this->security->isGranted(ContaoCorePermissions::MEMBER_IN_GROUPS, $this->groups);
 
         return match ($this->operator) {
             'has_one' => $hasGroups,
