@@ -44,9 +44,7 @@ class RuleConditionModel extends Model
      */
     public static function findByRuleId(int $ruleId, array $options = []): Collection|null
     {
-        if (!isset($options['order'])) {
-            $options['order'] = 'sorting';
-        }
+        $options['order'] ??= 'sorting';
 
         return self::findBy(['tl_iso_rule_condition.pid=?', 'tl_iso_rule_condition.tstamp>0'], [$ruleId], $options);
     }

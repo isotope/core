@@ -6,7 +6,6 @@ namespace Isotope\CoreBundle\ProductCollection\ItemAction;
 
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsProductCollectionItemAction;
 use Isotope\CoreBundle\HttpFoundation\ActionResult;
-use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\ProductCollection\AbstractProductCollection;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
 use Isotope\CoreBundle\ProductCollection\Order\Order;

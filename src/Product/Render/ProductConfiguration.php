@@ -67,13 +67,7 @@ final class ProductConfiguration
 
     public function hasUploads(): bool
     {
-        foreach ($this->widgets as $widget) {
-            if ($widget instanceof UploadableWidgetInterface) {
-                return true;
-            }
-        }
-
-        return false;
+        return array_any($this->widgets, static fn ($widget) => $widget instanceof UploadableWidgetInterface);
     }
 
     /**

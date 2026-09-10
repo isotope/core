@@ -40,9 +40,7 @@ class CategoryFinder implements ResetInterface
         $cacheKey = $scope instanceof CategoryScope ? $scope->value : $scope;
         $cacheKey .= '_'.$pageModel->id.'_'.($product?->getProductId() ?? 0);
 
-        if (!isset($this->cache[$cacheKey])) {
-            $this->cache[$cacheKey] = $this->doFind($scope, $pageModel, $product);
-        }
+        $this->cache[$cacheKey] ??= $this->doFind($scope, $pageModel, $product);
 
         return $this->cache[$cacheKey];
     }

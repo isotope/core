@@ -45,9 +45,7 @@ class ProductCategoryUtil implements ResetInterface
      */
     public function getForProduct(ProductModel $product): array
     {
-        if (null === $this->unpublished) {
-            $this->unpublished = $this->preload(false);
-        }
+        $this->unpublished ??= $this->preload(false);
 
         return $this->unpublished[$product->pid ?: $product->id] ?? [];
     }
@@ -57,9 +55,7 @@ class ProductCategoryUtil implements ResetInterface
      */
     public function getPublishedForProduct(CoreProduct $product): array
     {
-        if (null === $this->published) {
-            $this->published = $this->preload(true);
-        }
+        $this->published ??= $this->preload(true);
 
         return $this->published[$product->getProductId()] ?? [];
     }
@@ -69,9 +65,7 @@ class ProductCategoryUtil implements ResetInterface
      */
     public function getPublishedForProductInRoot(int $rootId, CoreProduct $product): array
     {
-        if (!isset($this->root[$rootId])) {
-            $this->root[$rootId] = Database::getInstance()->getChildRecords($rootId, 'tl_page', false, [$rootId]);
-        }
+        $this->root[$rootId] ??= Database::getInstance()->getChildRecords($rootId, 'tl_page', false, [$rootId]);
 
         return array_values(array_intersect($this->getPublishedForProduct($product), $this->root[$rootId]));
     }

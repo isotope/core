@@ -62,14 +62,7 @@ class GroupShipping extends AbstractShipping
             return false;
         }
 
-        // Group is available if at least one shipping method is available.
-        foreach ($this->inner as $shipping) {
-            if ($shipping->isAvailable()) {
-                return true;
-            }
-        }
-
-        return false;
+        return array_any($this->inner, static fn ($shipping) => $shipping->isAvailable());
     }
 
     #[\Override]

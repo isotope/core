@@ -31,13 +31,7 @@ class MemberGroupCondition implements RuleConditionInterface
     public function isApplicable(StoreContext $context): bool
     {
         if ('has_all' === $this->operator) {
-            foreach ($this->groups as $group) {
-                if (!$this->security->isGranted(ContaoCorePermissions::MEMBER_IN_GROUPS, [$group])) {
-                    return false;
-                }
-            }
-
-            return true;
+            return array_all($this->groups, fn ($group) => $this->security->isGranted(ContaoCorePermissions::MEMBER_IN_GROUPS, [$group]));
         }
 
         $hasGroups = $this->security->isGranted(ContaoCorePermissions::MEMBER_IN_GROUPS, $this->groups);

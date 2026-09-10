@@ -205,15 +205,7 @@ class MediaManager extends Widget implements UploadableWidgetInterface
 
         // Check if there are values
         if ($this->mandatory) {
-            $hasFile = false;
-
-            foreach ($varInput as $file) {
-                if (is_file($projectDir.'/'.$this->getFilePath($file['src']))) {
-                    $hasFile = true;
-                    break;
-                }
-            }
-
+            $hasFile = array_any($varInput, fn ($file) => is_file($projectDir.'/'.$this->getFilePath($file['src'])));
             if (!$hasFile && (!\is_array($arrFallback) || empty($arrFallback))) {
                 $this->addError(\sprintf($GLOBALS['TL_LANG']['ERR']['mandatory'], $this->strLabel));
             }

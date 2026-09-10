@@ -159,9 +159,7 @@ class ProductListController extends AbstractContentElementController
             $limit = (int) $model->numberOfItems;
         }
 
-        if (null === $perPage) {
-            $perPage = (int) $model->perPage;
-        }
+        $perPage ??= (int) $model->perPage;
 
         $total = (clone $qb)
             ->select('COUNT(DISTINCT IFNULL(parent.id, tl_iso_product.id))')

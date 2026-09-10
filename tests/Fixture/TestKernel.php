@@ -18,6 +18,7 @@ use Symfony\Bundle\SecurityBundle\SecurityBundle;
 use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpKernel\Kernel;
+use Terminal42\ChangeLanguage\Terminal42ChangeLanguageBundle;
 use Terminal42\NotificationCenterBundle\Terminal42NotificationCenterBundle;
 
 class TestKernel extends Kernel
@@ -39,6 +40,7 @@ class TestKernel extends Kernel
             new CodefogHasteBundle(),
             new Terminal42NotificationCenterBundle(),
             new IsotopeBundle(),
+            new Terminal42ChangeLanguageBundle(),
         ];
     }
 

@@ -18,7 +18,6 @@ use Isotope\CoreBundle\Attribute\AttributeRegistry;
 use Isotope\CoreBundle\Attribute\Option\OptionsSource;
 use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
 use Isotope\CoreBundle\Model\ProductModel;
-use Isotope\CoreBundle\Product\Category\CategoryFinder;
 use Isotope\CoreBundle\Product\Query\Filter\EqualFilter;
 use Isotope\CoreBundle\Product\Query\ProductQuery;
 use Isotope\CoreBundle\Product\Query\Sorting;

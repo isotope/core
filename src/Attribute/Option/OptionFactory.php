@@ -192,9 +192,7 @@ class OptionFactory
                     return explode('.', $foreignKey, 2);
                 }
 
-                if (null === $fallback) {
-                    $fallback = $foreignKey;
-                }
+                $fallback ??= $foreignKey;
             } elseif (null === $fallback) {
                 // The row without language is the fallback
                 $fallback = $line;

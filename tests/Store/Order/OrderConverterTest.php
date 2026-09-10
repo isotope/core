@@ -17,7 +17,7 @@ final class OrderConverterTest extends TestCase
     public function testConvertToOrder(): void
     {
         $cart = new Cart('__identifier__');
-        $cart->setBillingAddress(new AddressModel());
+        $cart->setBillingAddress($this->createClassWithPropertiesStub(AddressModel::class));
         $cart->add((new LineItem(LineItem::TYPE_PRODUCT, 'tl_iso_product.42'))->setPrice(new CalculatedPrice(10, 10)));
         $cart->add((new LineItem(LineItem::TYPE_PRODUCT, 'tl_iso_product.43'))->setPrice(new CalculatedPrice(20, 20)));
         $cart->add((new LineItem(LineItem::TYPE_SHIPPING, 'tl_iso_shipping.1'))->setPrice(new CalculatedPrice(30, 30))->setLevel(1));

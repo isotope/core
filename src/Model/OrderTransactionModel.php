@@ -39,9 +39,7 @@ class OrderTransactionModel extends Model
      */
     public static function findByOrderId(int|string $orderId, array $options = []): Collection|null
     {
-        if (!isset($options['order'])) {
-            $options['order'] = 'created';
-        }
+        $options['order'] ??= 'created';
 
         return self::findBy('pid', $orderId, $options);
     }

@@ -291,7 +291,7 @@ class AttributeWizardListener
 
             return \sprintf(
                 '%s<input type="hidden" name="%s[%s][name]" id="ctrl_%s_row%s_name" value="%s"><div style="width:300px%s">%s <span class="label-info">[%s]</span></div>',
-                \in_array($field['name'], $fixed, true) ? sprintf('<input type="hidden" name="%s[%s][enabled]" value="1">', $widgetName, $i) : '',
+                \in_array($field['name'], $fixed, true) ? \sprintf('<input type="hidden" name="%s[%s][enabled]" value="1">', $widgetName, $i) : '',
                 $widgetName,
                 $i,
                 $widgetName,

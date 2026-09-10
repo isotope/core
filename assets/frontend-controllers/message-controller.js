@@ -1,4 +1,4 @@
-import { Controller } from "@hotwired/stimulus"
+import { Controller } from '@hotwired/stimulus';
 
 export default class Notification extends Controller {
     static values = {
@@ -6,25 +6,25 @@ export default class Notification extends Controller {
             type: Number,
             default: 5000,
         },
-    }
+    };
 
-    initialize () {
+    initialize() {
         this.hide = this.hide.bind(this);
     }
 
-    connect () {
+    connect() {
         if (this.hiddenValue === false) {
             this.show();
         }
     }
 
-    show () {
+    show() {
         if (this.delayValue) {
             this.timeout = setTimeout(this.hide, this.delayValue);
         }
     }
 
-    hide (e) {
+    hide(e) {
         e.preventDefault();
 
         if (this.timeout) {
@@ -34,7 +34,7 @@ export default class Notification extends Controller {
         this.element.remove();
     }
 
-    stop (e) {
+    stop(e) {
         e.preventDefault();
         e.stopPropagation();
     }

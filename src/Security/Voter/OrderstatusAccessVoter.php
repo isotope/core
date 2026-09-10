@@ -46,13 +46,11 @@ class OrderstatusAccessVoter extends AbstractDataContainerVoter implements Reset
 
     private function canDelete(array $current): bool
     {
-        if (null === $this->used) {
-            $this->used = [
-                'order' => $this->connection->fetchFirstColumn("SELECT DISTINCT order_status FROM tl_iso_product_collection WHERE type='order'"),
-                'transaction' => $this->connection->fetchFirstColumn("SELECT DISTINCT transaction_status FROM tl_iso_product_collection WHERE type='order'"),
-                'delivery' => $this->connection->fetchFirstColumn("SELECT DISTINCT delivery_status FROM tl_iso_product_collection WHERE type='order'"),
-            ];
-        }
+        $this->used ??= [
+            'order' => $this->connection->fetchFirstColumn("SELECT DISTINCT order_status FROM tl_iso_product_collection WHERE type='order'"),
+            'transaction' => $this->connection->fetchFirstColumn("SELECT DISTINCT transaction_status FROM tl_iso_product_collection WHERE type='order'"),
+            'delivery' => $this->connection->fetchFirstColumn("SELECT DISTINCT delivery_status FROM tl_iso_product_collection WHERE type='order'"),
+        ];
 
         return !\in_array($current['alias'], $this->used[$current['type']], true);
     }

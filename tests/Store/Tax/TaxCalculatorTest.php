@@ -70,7 +70,6 @@ final class TaxCalculatorTest extends TestCase
         foreach ($scope1 as $i => $actualRate) {
             $config = $expectedRates[$i];
 
-            $this->assertInstanceOf(TaxRate::class, $actualRate);
             $this->assertSame((string) $config['id'], $actualRate->getId());
             $this->assertSame($config['rate'], $actualRate->getTaxRate());
             $this->assertEqualsWithDelta(100.0, $actualRate->getPercentage(), PHP_FLOAT_EPSILON);

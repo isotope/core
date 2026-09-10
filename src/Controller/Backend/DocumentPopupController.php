@@ -52,7 +52,7 @@ class DocumentPopupController extends AbstractBackendController
 
         $this->denyAccessUnlessGranted(
             ContaoCorePermissions::DC_PREFIX.'tl_iso_order_document',
-            new ReadAction('tl_iso_order_document', $documentModel->row())
+            new ReadAction('tl_iso_order_document', $documentModel->row()),
         );
 
         if (

@@ -35,7 +35,7 @@ class DocumentManager
 
         $model = new OrderDocumentModel();
         $model->pid = $order->getId();
-        $model->tstamp = $createdAt->format('U');
+        $model->tstamp = (int) $createdAt->format('U');
         $model->type = $document->getId();
 
         try {

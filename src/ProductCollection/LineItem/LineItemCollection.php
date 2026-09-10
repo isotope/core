@@ -71,10 +71,7 @@ class LineItemCollection extends AbstractCollection
         $levels = [];
 
         foreach ($this as $item) {
-            if (!isset($levels[$item->getLevel()])) {
-                $levels[$item->getLevel()] = new self();
-            }
-
+            $levels[$item->getLevel()] ??= new self();
             $levels[$item->getLevel()]->add($item);
         }
 

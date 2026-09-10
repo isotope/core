@@ -10,7 +10,7 @@
             {{- isotope_attribute_label(attribute) }}: {{ isotope_attribute_value(attribute, value)|join(',') -}}
         {%- endfor -%}
         )
-    {%- endif %}: {{ item.quantity }} x {{ price.with({ html: false }) }} = {{ price.with({ amount: price.total_price, html: false }) }}
+    {%- endif %}: {{ item.quantity }} x {{ price.with({html: false}) }} = {{ price.with({amount: price.total_price, html: false}) }}
 {% endfor %}
 {%- if level == 0 -%}
     {{- 'MSC.subTotalLabel'|trans }}: {{ isotope_price(collection.subtotal(0), html: false) }}

@@ -11,7 +11,7 @@ export default class extends Controller {
         this.receiverTarget.disabled = true;
     }
 
-    toggle () {
+    toggle() {
         this.receiverTarget.disabled = !this.receiverTarget.disabled;
     }
 }

@@ -60,9 +60,7 @@ class AttributeRegistry implements ResetInterface
         $this->attributes = [];
         $dca = &$GLOBALS['TL_DCA']['tl_iso_product'];
 
-        if (!isset($dca['config']['sql']['keys'])) {
-            $dca['config']['sql']['keys'] = [];
-        }
+        $dca['config']['sql']['keys'] ??= [];
 
         if ($this->connection->createSchemaManager()->tablesExist(['tl_iso_attribute'])) {
             $attributes = $this->connection->fetchAllAssociative(
@@ -82,9 +80,7 @@ class AttributeRegistry implements ResetInterface
                     throw new MissingAttributeClassException($name, $config, $dca['fields'][$name] ?? []);
                 }
 
-                if (!isset($dca['fields'][$name])) {
-                    $dca['fields'][$name] = [];
-                }
+                $dca['fields'][$name] ??= [];
 
                 $this->applyContainer($attribute);
                 $attribute->updateDcaField($dca['fields'][$name], $dca['config']['sql']['keys']);

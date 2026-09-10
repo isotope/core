@@ -37,13 +37,7 @@ class Cart extends AbstractProductCollection
             return true;
         }
 
-        foreach ($this->getExtensions() as $extension) {
-            if ($extension->isModified()) {
-                return true;
-            }
-        }
-
-        return false;
+        return array_any($this->getExtensions(), static fn ($extension) => $extension->isModified());
     }
 
     public function setModified(bool $isModified = true): self

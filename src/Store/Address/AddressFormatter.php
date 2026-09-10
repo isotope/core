@@ -77,9 +77,7 @@ class AddressFormatter implements ResetInterface
 
     private function getCountryLabel(string $code): string
     {
-        if (null === $this->countryLabels) {
-            $this->countryLabels = $this->countries->getCountries();
-        }
+        $this->countryLabels ??= $this->countries->getCountries();
 
         return $this->countryLabels[$code] ?? $code;
     }

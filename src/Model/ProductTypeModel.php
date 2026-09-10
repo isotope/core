@@ -99,9 +99,7 @@ class ProductTypeModel extends Model
      */
     public function getAttributes(): array
     {
-        if (null === $this->attributesCache) {
-            $this->attributesCache = $this->getEnabledAttributesByPosition($this->attributes);
-        }
+        $this->attributesCache ??= $this->getEnabledAttributesByPosition($this->attributes);
 
         return $this->attributesCache;
     }
@@ -143,11 +141,9 @@ class ProductTypeModel extends Model
     {
         static $result;
 
-        if (null === $result) {
-            $result = Database::getInstance()->query(
-                "SELECT COUNT(*) AS total FROM tl_iso_producttype WHERE variants='1'",
-            )->total;
-        }
+        $result ??= Database::getInstance()->query(
+            "SELECT COUNT(*) AS total FROM tl_iso_producttype WHERE variants='1'",
+        )->total;
 
         return $result;
     }

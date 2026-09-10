@@ -47,12 +47,14 @@ export default class extends Controller {
 
         this.#abortController = new AbortController();
 
-        const isHandled = IsotopeAction(await axios.get(event.target.href, {
-            signal: this.#abortController.signal,
-            headers: {
-                'Isotope-Fragment': this.idValue,
-            },
-        }));
+        const isHandled = IsotopeAction(
+            await axios.get(event.target.href, {
+                signal: this.#abortController.signal,
+                headers: {
+                    'Isotope-Fragment': this.idValue,
+                },
+            }),
+        );
 
         const isPrevented = this.#dispatchSubmit({ target: event.target });
 

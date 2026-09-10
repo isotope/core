@@ -6,9 +6,6 @@ import Sorting from './Sorting';
 export default class ProductQuery {
     #configs = [];
 
-    constructor () {
-    }
-
     static fromLocation() {
         const instance = new ProductQuery();
         const { search } = window.location;

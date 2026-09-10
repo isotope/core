@@ -62,13 +62,7 @@ abstract class AbstractFilter implements FilterInterface
 
     public function matches(array $productValue): bool
     {
-        foreach ($productValue as $value) {
-            if ($this->matchesOne($value)) {
-                return true;
-            }
-        }
-
-        return false;
+        return array_any($productValue, fn ($value) => $this->matchesOne($value));
     }
 
     abstract protected function getOperator(): string;

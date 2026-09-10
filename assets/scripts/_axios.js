@@ -1,5 +1,5 @@
 import Axios from 'axios';
-import '@bprogress/core/css';
+import '@bprogress/core/css'; // eslint-disable-line import/no-unresolved
 import { BProgress } from '@bprogress/core';
 import { extractScript } from './_dom';
 
@@ -52,7 +52,9 @@ export function IsotopeAction(response) {
         window.location = json.redirect;
 
         return true;
-    } else if (json.message) {
+    }
+
+    if (json.message) {
         const [txt, scripts] = extractScript(json.message);
 
         document.body.insertAdjacentHTML('beforeend', txt);
