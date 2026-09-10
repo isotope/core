@@ -149,6 +149,12 @@
       <trans-unit id="tl_iso_product_collection.show_shipping.1">
         <source>Show details of shipping address for order ID %s</source>
       </trans-unit>
+      <trans-unit id="tl_iso_product_collection.documents.0">
+        <source>Documents</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.documents.1">
+        <source>List documents of order ID %s</source>
+      </trans-unit>
       <trans-unit id="tl_iso_product_collection.orderStatusUpdate">
         <source>The status of your order has been updated.</source>
       </trans-unit>

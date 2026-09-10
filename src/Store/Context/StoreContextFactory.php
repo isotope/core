@@ -13,6 +13,7 @@ use Doctrine\DBAL\Connection;
 use Isotope\CoreBundle\Model\AddressModel;
 use Isotope\CoreBundle\Model\ConfigModel;
 use Isotope\CoreBundle\Store\Address\AddressConfigFactory;
+use Isotope\CoreBundle\Store\Document\NumberFormat;
 use Isotope\CoreBundle\Store\Event\ContextCreatedEvent;
 use Isotope\CoreBundle\Store\Price\Currency;
 use Isotope\CoreBundle\Store\Price\MoneyFormat;
@@ -72,8 +73,10 @@ class StoreContextFactory
         $context->setDefaultShippingAddress($shippingAddress);
         $context->setShippingIds(array_map(intval(...), array_filter(explode(',', (string) $config->shipping_ids))));
         $context->setPaymentIds(array_map(intval(...), array_filter(explode(',', (string) $config->payment_ids))));
-        $context->setDocumentNumberPrefix($config->orderPrefix ? $this->insertTagParser->replaceInline($config->orderPrefix) : '');
-        $context->setDocumentNumberDigits((int) $config->orderDigits);
+        $context->setOrderNumberFormat(new NumberFormat(
+            $config->orderPrefix ? $this->insertTagParser->replaceInline($config->orderPrefix) : '',
+            (int) $config->orderDigits,
+        ));
 
         $this->eventDispatcher->dispatch(new ContextCreatedEvent($context, $config));
 

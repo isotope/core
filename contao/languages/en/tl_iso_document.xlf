@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="contao/languages/en/tl_iso_document.xlf" source-language="en">
+    <body>
+      <trans-unit id="tl_iso_document.tableLabel">
+        <source>Document</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.name.0">
+        <source>Document name</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.name.1">
+        <source>Enter a name for this document. This will only be used in the backend.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.type.0">
+        <source>Type of document</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.type.1">
+        <source>Select a particular document rendering class.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.logo.0">
+        <source>Logo</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.logo.1">
+        <source>Select a logo.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.documentTitle.0">
+        <source>Document title</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.documentTitle.1">
+        <source>You can use simple tokens ("collection_*" whereas * equals the database column of the collection) to render your file title (e.g. "Invoice ##collection_document_number##").</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.fileTitle.0">
+        <source>File name</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.fileTitle.1">
+        <source>You can use simple tokens ("collection_*" whereas * equals the database column of the collection) to render your file title (e.g. "invoice_##collection_document_number##").</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.numberPrefix.0">
+        <source>Document number prefix</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.numberPrefix.1">
+        <source>You can add a prefix (e.g. fiscal year) to the auto-incrementing document number.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.numberDigits.0">
+        <source>Document number length</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.numberDigits.1">
+        <source>Select the minimum length of the document number (not including document prefix).</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.customTpl.0">
+        <source>Custom document template</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.customTpl.1">
+        <source>Here you can select the document template.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.gallery.0">
+        <source>Gallery</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.gallery.1">
+        <source>Select a gallery to render images.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.type_legend">
+        <source>Name &amp; type</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.config_legend">
+        <source>General configuration</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.template_legend">
+        <source>Template</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,78 @@
+{% trans_default_domain 'contao_default' %}
+{% use '@Contao/isotope/product_collection.html.twig' %}
+
+{%- set html_attributes = attrs()
+    .set('lang', app.request.locale)
+    .mergeWith(html_attributes|default)
+-%}
+
+<!DOCTYPE html>
+<html{{ html_attributes|default }}>
+<head>
+    {% block head %}
+        <meta charset="UTF-8">
+        <meta name="generator" content="Contao Open Source CMS">
+
+        {% block viewport %}
+            <meta name="viewport" content="width=device-width,initial-scale=1.0,shrink-to-fit=no">
+        {% endblock %}
+
+        {% block title %}
+            <title>{{ title|default }}</title>
+        {% endblock %}
+
+        {% block style %}
+            <style>
+                body {
+                    max-width: 800px;
+                    margin: 0 auto;
+                    padding: 20px;
+                    font-family: Arial, Helvetica, sans-serif;
+                    color: #000;
+                }
+
+                table {
+                    width: 100%;
+                }
+
+                th {
+                    text-align: left;
+                }
+
+                .small {
+                    font-size: 0.8em;
+                }
+            </style>
+        {% endblock %}
+    {% endblock %}
+</head>
+
+<body{{ body_attributes|default }}>
+{% block body %}
+    <main>
+        {% block content %}
+            <p class="small">{{ isotope_address(collection.context.ownerAddress, collection.context.billingAddressConfig) }}</p>
+
+            <div style="font-size:14px; line-height: 18px;">
+                <table cellspacing="0" cellpadding="0" border="0">
+                    <tr>
+                        <td colspan="2" style="width:65%;font-size:34px;margin:0;padding:0;line-height:34px">{{ document_title }} {{ document_number }}</td>
+                        <td rowspan="2" style="width:40%">
+                            {{ isotope_address(collection.billingAddress, collection.context.billingAddressConfig) }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:15%"><br><br>{{ 'MSC.iso_order_locked'|trans }}<br>{{ 'MSC.iso_order_currency'|trans }}</td>
+                        <td style="width:45%"><br><br>{{ collection.locked|date }}<br>{{ collection.context.currency.code }}</td>
+                    </tr>
+                </table>
+            </div>
+
+            <br><br>
+
+            {{ block('product_collection') }}
+        {% endblock %}
+    </main>
+{% endblock %}
+</body>
+</html>

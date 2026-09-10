@@ -1,0 +1,60 @@
+{% trans_default_domain 'contao_tl_iso_order_document' %}
+{% extends '@Contao/be_main.html.twig' %}
+
+{% block meta %}
+    {{ parent() }}
+    <meta name="turbo-cache-control" content="no-cache">
+{% endblock %}
+
+{% block main_content %}
+
+    {{ operations|raw }}
+
+    <form id="tl_iso_order_document" class="tl_form tl_edit_form" method="post" data-turbo="false">
+        <div class="tl_formbody_edit">
+            <input type="hidden" name="FORM_SUBMIT" value="tl_iso_order_document">
+            <input type="hidden" name="REQUEST_TOKEN" value="{{ contao.request_token }}">
+
+            <fieldset id="pal_general_legend" class="tl_tbox" data-controller="contao--toggle-fieldset" data-contao--toggle-fieldset-id-value="general_legend" data-contao--toggle-fieldset-table-value="tl_iso_order_document" data-contao--toggle-fieldset-collapsed-class="collapsed">
+                <legend>
+                    <button type="button" data-action="contao--toggle-fieldset#toggle">{{ 'tl_iso_order_document.general_legend'|trans }}</button>
+                </legend>
+
+                <div class="widget-group">
+                    <div class="w50 widget">
+                        {{ widget|raw }}
+                        {% if not has_errors %}
+                            <p class="tl_help tl_tip">{{ 'tl_iso_order_document.type.1'|trans }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset id="pal_preview_legend" class="tl_box" data-controller="contao--toggle-fieldset" data-contao--toggle-fieldset-id-value="preview_legend" data-contao--toggle-fieldset-table-value="tl_iso_order_document" data-contao--toggle-fieldset-collapsed-class="collapsed">
+                <legend>
+                    <button type="button" data-action="contao--toggle-fieldset#toggle">{{ 'tl_iso_order_document.preview_legend'|trans }}</button>
+                </legend>
+
+                <div class="widget-group">
+                    <div class="clr widget">
+                        {% if viewer_markup|default %}
+                            {{ viewer_markup }}
+                        {% elseif preview_url|default %}
+                            <iframe src="{{ preview_url }}" width="100%" height="500" frameborder="1"></iframe>
+                        {% else %}
+                            <p class="tl_info">{{ 'tl_iso_order_document.preview'|trans }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
+        <div class="tl_formbody_submit" data-controller="contao--sticky-observer">
+            <div class="tl_submit_container">
+                <button type="submit" name="save" id="save" class="tl_submit" accesskey="s">{{ 'tl_iso_order_document.create.2'|trans }}</button>
+            </div>
+        </div>
+
+    </form>
+
+{% endblock %}

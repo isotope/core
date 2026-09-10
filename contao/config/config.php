@@ -6,7 +6,9 @@ use Isotope\CoreBundle\Model\AttributeModel;
 use Isotope\CoreBundle\Model\AttributeOptionModel;
 use Isotope\CoreBundle\Model\BasePriceModel;
 use Isotope\CoreBundle\Model\ConfigModel;
+use Isotope\CoreBundle\Model\DocumentModel;
 use Isotope\CoreBundle\Model\GalleryModel;
+use Isotope\CoreBundle\Model\OrderDocumentModel;
 use Isotope\CoreBundle\Model\OrderStatusModel;
 use Isotope\CoreBundle\Model\OrderTransactionEventModel;
 use Isotope\CoreBundle\Model\OrderTransactionModel;
@@ -45,6 +47,7 @@ ArrayUtil::arrayInsert($GLOBALS['BE_MOD']['isotope'], 0, [
             'tl_iso_address',
             'tl_iso_order_transaction',
             'tl_iso_order_transaction_event',
+            'tl_iso_order_document',
         ],
         'class' => 'iso_orders',
     ],
@@ -70,8 +73,10 @@ $GLOBALS['TL_MODELS'][AttributeModel::getTable()] = AttributeModel::class;
 $GLOBALS['TL_MODELS'][AttributeOptionModel::getTable()] = AttributeOptionModel::class;
 $GLOBALS['TL_MODELS'][BasePriceModel::getTable()] = BasePriceModel::class;
 $GLOBALS['TL_MODELS'][ConfigModel::getTable()] = ConfigModel::class;
+$GLOBALS['TL_MODELS'][DocumentModel::getTable()] = DocumentModel::class;
 $GLOBALS['TL_MODELS'][GalleryModel::getTable()] = GalleryModel::class;
 $GLOBALS['TL_MODELS'][OrderStatusModel::getTable()] = OrderStatusModel::class;
+$GLOBALS['TL_MODELS'][OrderDocumentModel::getTable()] = OrderDocumentModel::class;
 $GLOBALS['TL_MODELS'][OrderTransactionEventModel::getTable()] = OrderTransactionEventModel::class;
 $GLOBALS['TL_MODELS'][OrderTransactionModel::getTable()] = OrderTransactionModel::class;
 $GLOBALS['TL_MODELS'][PaymentModel::getTable()] = PaymentModel::class;

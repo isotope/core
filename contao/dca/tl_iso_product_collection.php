@@ -17,6 +17,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
             'tl_iso_address',
             'tl_iso_order_transaction',
             'tl_iso_order_transaction_event',
+            'tl_iso_order_document',
         ],
         'closed' => true,
         'notCreatable' => true,
@@ -53,9 +54,12 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
                 'prefetch' => true,
                 'attributes' => 'data-contao--deeplink-target="primary"',
             ],
-            'delete',
-            'show',
+            'documents' => [
+                'href' => 'table=tl_iso_order_document',
+                'icon' => 'document.svg',
+            ],
             '-',
+            'show',
             'show_billing' => [
                 'href' => 'table=tl_iso_address&act=show',
                 'icon' => 'show.svg',
@@ -68,6 +72,8 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
                 'method' => 'GET',
                 'prefetch' => false,
             ],
+            '-',
+            'delete',
         ],
     ],
     'palettes' => [

@@ -18,6 +18,9 @@ class AssetListener
         'tl_iso_product_collection' => [
             'list.operations.details.icon',
         ],
+        'tl_iso_order_document' => [
+            'list.operations.download.icon',
+        ],
     ];
 
     public function __construct(private readonly Packages $packages)

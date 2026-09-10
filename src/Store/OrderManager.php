@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Store;
 
 use Contao\BackendUser;
-use Contao\CoreBundle\InsertTag\InsertTagParser;
 use Contao\CoreBundle\Routing\ContentUrlGenerator;
 use Contao\PageModel;
 use Doctrine\DBAL\Connection;
@@ -20,7 +19,7 @@ use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
 use Isotope\CoreBundle\ProductCollection\Order\Order;
 use Isotope\CoreBundle\ProductCollection\OrderTransaction\OrderTransactionHandler;
 use Isotope\CoreBundle\Store\Context\StoreContext;
-use Isotope\CoreBundle\Store\Event\DocumentNumberTransactionEvent;
+use Isotope\CoreBundle\Store\Document\DocumentNumberGenerator;
 use Isotope\CoreBundle\Store\Event\OrderStatusTransactionEvent;
 use Isotope\CoreBundle\Store\Event\OrderTransactionEvent;
 use Isotope\CoreBundle\Store\Event\OrderValidationEvent;
@@ -32,7 +31,6 @@ use Isotope\CoreBundle\Util\StringUtil;
 use Isotope\CoreBundle\Validator\Exception\ConstraintViolationException;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\String\UnicodeString;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -46,11 +44,11 @@ class OrderManager
         private readonly TransactionEventDispatcher $transactionDispatcher,
         private readonly ValidatorInterface $validator,
         private readonly Connection $connection,
-        private readonly InsertTagParser $insertTagParser,
         private readonly WorkflowManager $workflowManager,
         private readonly OrderTransactionHandler $orderTransactionHandler,
         private readonly Security $security,
         private readonly ContentUrlGenerator $urlGenerator,
+        private readonly DocumentNumberGenerator $documentNumberGenerator,
     ) {
     }
 
@@ -138,10 +136,7 @@ class OrderManager
             $documentNumber = $collection->document_number;
 
             if (!$documentNumber) {
-                $documentNumber = $this->transactionDispatcher->dispatch(
-                    new DocumentNumberTransactionEvent($context->getDocumentNumberPrefix(), $context->getDocumentNumberDigits(), $context->getStoreId()),
-                    $this->generateDocumentNumber(...),
-                );
+                $documentNumber = $this->documentNumberGenerator->generateForOrder($context);
             }
 
             $this->connection->executeStatement(
@@ -337,39 +332,6 @@ class OrderManager
         $address->save();
 
         return $address;
-    }
-
-    private function generateDocumentNumber(DocumentNumberTransactionEvent $event): string
-    {
-        $prefix = $this->insertTagParser->replaceInline($event->getPrefix());
-
-        $qb = $this->connection->createQueryBuilder();
-        $qb
-            ->select('document_number')
-            ->from('tl_iso_product_collection')
-            ->where('type=:type')
-            ->andWhere('store_id=:storeId')
-            ->setParameter('type', Order::getType())
-            ->setParameter('storeId', $event->getStoreId())
-            ->orderBy('document_number', 'DESC')
-        ;
-
-        if ('' !== $prefix) {
-            $qb
-                ->andWhere('document_number LIKE :prefix')
-                ->setParameter('prefix', $prefix.'%')
-            ;
-        }
-
-        $result = $qb->fetchOne();
-
-        if (!\is_string($result)) {
-            $max = 0;
-        } else {
-            $max = (int) substr($result, (new UnicodeString($prefix))->length());
-        }
-
-        return $prefix.str_pad((string) ($max + 1), $event->getLength(), '0', STR_PAD_LEFT);
     }
 
     private function getOrderModel(int $id): ProductCollectionModel

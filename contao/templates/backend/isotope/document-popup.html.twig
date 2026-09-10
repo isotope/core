@@ -1,0 +1,25 @@
+{% trans_default_domain 'contao_default' %}
+{% extends '@Contao/be_main.html.twig' %}
+
+{% block main %}
+    <main id="main">
+        <table class="tl_show with-padding with-zebra">
+            <tr>
+                <td><span class="tl_label">{{ 'MSC.fileCreated'|trans }}:</span></td>
+                <td>{{ tstamp|date }}</td>
+            </tr>
+        </table>
+        {% if href|default %}
+            <div id="download">
+                <a href="{{ href }}" class="tl_submit" download="{{ path|split('/')|last }}">{{ backend_icon(icon, '', attrs().addClass('mime_icon')) }} {{ download }}</a>
+            </div>
+        {% endif %}
+        <div id="preview" style="padding: 0 2%">
+            {% if viewer_markup|default %}
+                {{ viewer_markup }}
+            {% else %}
+                <iframe src="{{ document_url }}" width="96%" height="500" frameborder="1"></iframe>
+            {% endif %}
+        </div>
+    </main>
+{% endblock %}

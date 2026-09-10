@@ -7,6 +7,7 @@ namespace Isotope\CoreBundle\Store\Context;
 use Isotope\CoreBundle\Model\AddressModel;
 use Isotope\CoreBundle\ProductCollection\Cart\Cart;
 use Isotope\CoreBundle\Store\Address\AddressConfig;
+use Isotope\CoreBundle\Store\Document\NumberFormat;
 use Isotope\CoreBundle\Store\Price\Currency;
 use Isotope\CoreBundle\Store\Price\MoneyFormat;
 use Isotope\CoreBundle\Store\Price\PriceDisplay;
@@ -26,9 +27,7 @@ final class StoreContext
      */
     private array $properties = [];
 
-    private string $documentNumberPrefix = '';
-
-    private int $documentNumberDigits = 4;
+    private NumberFormat|null $orderNumberFormat = null;
 
     private \DateTimeImmutable $timestamp;
 
@@ -134,26 +133,14 @@ final class StoreContext
         return $this->locale;
     }
 
-    public function getDocumentNumberPrefix(): string
+    public function getOrderNumberFormat(): NumberFormat
     {
-        return $this->documentNumberPrefix;
+        return $this->orderNumberFormat ?? new NumberFormat('', 4);
     }
 
-    public function setDocumentNumberPrefix(string $documentNumberPrefix): self
+    public function setOrderNumberFormat(NumberFormat $orderNumberFormat): self
     {
-        $this->documentNumberPrefix = $documentNumberPrefix;
-
-        return $this;
-    }
-
-    public function getDocumentNumberDigits(): int
-    {
-        return $this->documentNumberDigits;
-    }
-
-    public function setDocumentNumberDigits(int $documentNumberDigits): self
-    {
-        $this->documentNumberDigits = $documentNumberDigits;
+        $this->orderNumberFormat = $orderNumberFormat;
 
         return $this;
     }

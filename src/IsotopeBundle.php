@@ -9,6 +9,7 @@ use Isotope\CoreBundle\Attribute\AttributeFactoryInterface;
 use Isotope\CoreBundle\Backend\ShopConfig\ShopConfigInterface;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsAttribute;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsCheckoutStep;
+use Isotope\CoreBundle\DependencyInjection\Attribute\AsDocument;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsGallery;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsIsotopeHook;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsPayment;
@@ -20,6 +21,7 @@ use Isotope\CoreBundle\DependencyInjection\Attribute\AsProductFilter;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsRuleCondition;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsShipping;
 use Isotope\CoreBundle\DependencyInjection\Attribute\TypeAttributeInterface;
+use Isotope\CoreBundle\DependencyInjection\Compiler\ConfigureFilesystemPass;
 use Isotope\CoreBundle\DependencyInjection\Compiler\LoggerChannelFilePass;
 use Isotope\CoreBundle\DependencyInjection\Compiler\RegisterActionPass;
 use Isotope\CoreBundle\DependencyInjection\Compiler\RegisterAttributePass;
@@ -27,6 +29,7 @@ use Isotope\CoreBundle\DependencyInjection\Compiler\RegisterHookListenersPass;
 use Isotope\CoreBundle\DependencyInjection\Compiler\RegisterModelTypePass;
 use Isotope\CoreBundle\DependencyInjection\Compiler\RegisterProductFactoryPass;
 use Isotope\CoreBundle\DependencyInjection\Compiler\RegisterProductFilterPass;
+use Isotope\CoreBundle\ModelType\DocumentRegistry;
 use Isotope\CoreBundle\ModelType\GalleryRegistry;
 use Isotope\CoreBundle\ModelType\PaymentRegistry;
 use Isotope\CoreBundle\ModelType\RuleConditionRegistry;
@@ -59,12 +62,14 @@ class IsotopeBundle extends AbstractBundle
         $container->addCompilerPass(new RegisterProductFilterPass());
         $container->addCompilerPass(new RegisterModelTypePass(AsPayment::TAG_NAME, PaymentRegistry::class, ['tl_iso_payment.type']), priority: 10);
         $container->addCompilerPass(new RegisterModelTypePass(AsShipping::TAG_NAME, ShippingRegistry::class, ['tl_iso_shipping.type']), priority: 10);
+        $container->addCompilerPass(new RegisterModelTypePass(AsDocument::TAG_NAME, DocumentRegistry::class, ['tl_iso_document.type']), priority: 10);
         $container->addCompilerPass(new RegisterModelTypePass(AsGallery::TAG_NAME, GalleryRegistry::class, ['tl_iso_gallery.type']), priority: 10);
         $container->addCompilerPass(new RegisterModelTypePass(AsRuleCondition::TAG_NAME, RuleConditionRegistry::class, ['tl_iso_rule_condition.type'], true), priority: 10);
         $container->addCompilerPass(new RegisterActionPass(AsProductAction::TAG_NAME, ProductActionRegistry::class));
         $container->addCompilerPass(new RegisterActionPass(AsProductCollectionAction::TAG_NAME, ProductCollectionActionRegistry::class));
         $container->addCompilerPass(new RegisterActionPass(AsProductCollectionItemAction::TAG_NAME, ProductCollectionItemActionRegistry::class));
         $container->addCompilerPass(new LoggerChannelFilePass());
+        $container->addCompilerPass(new ConfigureFilesystemPass());
     }
 
     public function configure(DefinitionConfigurator $definition): void
@@ -152,6 +157,7 @@ class IsotopeBundle extends AbstractBundle
             AsProductFilter::class => AsProductFilter::TAG_NAME,
             AsProductFactory::class => AsProductFactory::TAG_NAME,
             AsAttribute::class => AsAttribute::TAG_NAME,
+            AsDocument::class => AsDocument::TAG_NAME,
             AsGallery::class => AsGallery::TAG_NAME,
             AsPayment::class => AsPayment::TAG_NAME,
             AsShipping::class => AsShipping::TAG_NAME,
