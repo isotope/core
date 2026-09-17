@@ -123,7 +123,7 @@ class PaypalIpnController extends AbstractController
             return;
         }
 
-        if ($transactionModel->status && $payment->getProcessingStatus() !== $transactionModel->status) {
+        if ($transactionModel->status) {
             $this->logger?->info('PayPal IPN: checkout for Order ID "'.$order->getId().'" already completed.');
 
             return;
@@ -132,6 +132,9 @@ class PaypalIpnController extends AbstractController
         $transactionModel->status = 'paid';
         $transactionModel->completed = time();
         $transactionModel->save();
+
+        $eventModel->paypal_txn_id = $request->request->get('txn_id');
+        $eventModel->save();
 
         $this->orderManager->updateOrder($order->getId(), [
             'transaction_status' => $payment->getPaidStatus(),

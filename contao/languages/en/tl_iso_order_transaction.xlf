@@ -32,6 +32,9 @@
       <trans-unit id="tl_iso_order_transaction.status.cancelled">
         <source>Cancelled</source>
       </trans-unit>
+      <trans-unit id="tl_iso_order_transaction.webhooks">
+        <source>Webhooks</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>

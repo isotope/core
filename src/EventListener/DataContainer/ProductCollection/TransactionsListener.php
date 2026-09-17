@@ -62,13 +62,13 @@ class TransactionsListener
                 $operations->append([
                     'href' => $this->urlGenerator->generate(TransactionEventsController::class, ['transactionId' => $transaction['id']]),
                     'icon' => $this->packages->getUrl('images/webhook.svg', 'isotope'),
-                    'label' => 'Webhooks',
+                    'label' => $this->translator->trans('tl_iso_order_transaction.webhooks', [], 'contao_tl_iso_order_transaction'),
                     'attributes' => (new HtmlAttributes())->set('onclick', "Backend.openModalIframe({title:'Webhooks', url:this.href+'?popup=1'});return false"),
                 ]);
             } else {
                 $operations->append([
                     'icon' => $this->packages->getUrl('images/webhook--disabled.svg', 'isotope'),
-                    'label' => 'Webhooks',
+                    'label' => $this->translator->trans('tl_iso_order_transaction.webhooks', [], 'contao_tl_iso_order_transaction'),
                 ]);
             }
 
