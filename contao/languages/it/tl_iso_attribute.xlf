@@ -151,6 +151,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.multiple.1">
         <source>Allow to select more than one option.</source>
+        <target>Consentire la selezione di più di un&apos;opzione.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.size.0">
         <source>Size/Amount</source>
@@ -170,9 +171,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.extensions.0">
         <source>Allowed file extensions</source>
+        <target>Estensioni di file consentite</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.extensions.1">
         <source>A comma separated list of valid file extensions. Leave this empty if you want to allow all files.</source>
+        <target>Un elenco di estensioni di file valide, separate da virgola. Lasciare questo campo vuoto se si desidera consentire tutti i file.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.rte.0">
         <source>Use HTML editor</source>
@@ -280,9 +283,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.be_column.0">
         <source>Show as variant column</source>
+        <target>Mostra come colonna variante</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.be_column.1">
         <source>Show this attribute in the product variant list.</source>
+        <target>Mostra questo attributo nell&apos;elenco delle varianti del prodotto.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.fe_filter.0">
         <source>Frontend filterable</source>
@@ -426,6 +431,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.deleteConfirm">
         <source>Do you really want to delete attribute ID %s? The database column will not be deleted, you need to manually update the database using the Contao Manager.</source>
+        <target>Vuoi davvero eliminare l&apos;ID dell&apos;attributo %s? La colonna del database non verrà eliminata; dovrai aggiornare manualmente il database utilizzando Contao Manager.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.attribute_legend">
         <source>Attribute name &amp; type</source>

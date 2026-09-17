@@ -197,6 +197,13 @@
         <source>Show details of shipping address for order ID %s</source>
         <target>Details der Versandadresse für Bestellung ID %s anzeigen</target>
       </trans-unit>
+      <trans-unit id="tl_iso_product_collection.documents.0">
+        <source>Documents</source>
+        <target>Dokumente</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.documents.1">
+        <source>List documents of order ID %s</source>
+      </trans-unit>
       <trans-unit id="tl_iso_product_collection.orderStatusUpdate">
         <source>The status of your order has been updated.</source>
         <target>Der Status Ihrer Bestellung wurde aktualisiert.</target>

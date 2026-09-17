@@ -375,6 +375,14 @@
         <source>Select the filter modules you want to consider for this product list.</source>
         <target>Välj de filtermodulerna du vill överväga för den här produktlistan.</target>
       </trans-unit>
+      <trans-unit id="tl_content.iso_filterFields.0">
+        <source>Enabled filters</source>
+        <target>Aktiverade filter</target>
+      </trans-unit>
+      <trans-unit id="tl_content.iso_filterFields.1">
+        <source>Please select filters to enable.</source>
+        <target>Välj filter för att aktivera.</target>
+      </trans-unit>
       <trans-unit id="tl_content.iso_filterKey.0">
         <source>Filter key (optional)</source>
         <target>Filternyckel (valfritt)</target>

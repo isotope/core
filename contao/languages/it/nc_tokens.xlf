@@ -11,18 +11,23 @@
       </trans-unit>
       <trans-unit id="nc_tokens.iso_order.order_status_*">
         <source>Fields of the current order status.</source>
+        <target>Campi relativi allo stato attuale dell&apos;ordine.</target>
       </trans-unit>
       <trans-unit id="nc_tokens.iso_order.transaction_status">
         <source>The label of the order&apos;s transaction status.</source>
+        <target>L&apos;etichetta dello stato della transazione dell&apos;ordine.</target>
       </trans-unit>
       <trans-unit id="nc_tokens.iso_order.transaction_status_*">
         <source>Fields of the current transaction status.</source>
+        <target>Campi relativi allo stato attuale della transazione.</target>
       </trans-unit>
       <trans-unit id="nc_tokens.iso_order.delivery_status">
         <source>The label of the order&apos;s delivery status.</source>
+        <target>L&apos;etichetta che indica lo stato di consegna dell&apos;ordine.</target>
       </trans-unit>
       <trans-unit id="nc_tokens.iso_order.delivery_status_*">
         <source>Fields of the current delivery status.</source>
+        <target>Campi relativi allo stato di consegna attuale.</target>
       </trans-unit>
       <trans-unit id="nc_tokens.iso_order.recipient_email">
         <source>The email address of the recipient.</source>
@@ -150,18 +155,23 @@
       </trans-unit>
       <trans-unit id="nc_tokens.iso_order.previous_order_status_*">
         <source>Fields of the previous order status.</source>
+        <target>Campi relativi allo stato dell&apos;ordine precedente.</target>
       </trans-unit>
       <trans-unit id="nc_tokens.iso_order.previous_transaction_status">
         <source>The label of the previous transaction status.</source>
+        <target>L&apos;etichetta dello stato della transazione precedente.</target>
       </trans-unit>
       <trans-unit id="nc_tokens.iso_order.previous_transaction_status_*">
         <source>Fields of the previous transaction status.</source>
+        <target>Campi relativi allo stato della transazione precedente.</target>
       </trans-unit>
       <trans-unit id="nc_tokens.iso_order.previous_delivery_status">
         <source>The label of the previous delivery status.</source>
+        <target>L&apos;etichetta relativa allo stato della consegna precedente.</target>
       </trans-unit>
       <trans-unit id="nc_tokens.iso_order.previous_delivery_status_*">
         <source>Fields of the previous delivery status.</source>
+        <target>Campi relativi allo stato di consegna precedente.</target>
       </trans-unit>
     </body>
   </file>

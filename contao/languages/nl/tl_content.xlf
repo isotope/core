@@ -334,6 +334,14 @@
         <source>Select the filter modules you want to consider for this product list.</source>
         <target>Selecteer de filter modules voor deze productlijst.</target>
       </trans-unit>
+      <trans-unit id="tl_content.iso_filterFields.0">
+        <source>Enabled filters</source>
+        <target>Filters mogelijk maken</target>
+      </trans-unit>
+      <trans-unit id="tl_content.iso_filterFields.1">
+        <source>Please select filters to enable.</source>
+        <target>Selecteer de filters waar gebruik van gemaakt kan worden</target>
+      </trans-unit>
       <trans-unit id="tl_content.iso_filterKey.0">
         <source>Filter key (optional)</source>
       </trans-unit>

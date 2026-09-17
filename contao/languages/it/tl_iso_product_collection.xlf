@@ -7,6 +7,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.recordLabel">
         <source>Order #%s</source>
+        <target>Numero d&apos;ordine # %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.id.0">
         <source>ID</source>
@@ -34,9 +35,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.transaction_status.0">
         <source>Payment status</source>
+        <target>Stato del pagamento</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.transaction_status.1">
         <source>Select the payment status of this order.</source>
+        <target>Seleziona lo stato di pagamento di questo ordine.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.transaction_status.2">
         <source>Payment</source>
@@ -44,9 +47,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.delivery_status.0">
         <source>Shipping status</source>
+        <target>Stato della spedizione</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.delivery_status.1">
         <source>Select the delivery status of this order.</source>
+        <target>Seleziona lo stato di consegna di questo ordine.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.delivery_status.2">
         <source>Shipping</source>
@@ -98,6 +103,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.notification_shipping_tracking.1">
         <source>Here you can enter the shipping tracking information. Use the &lt;em&gt;##order_status_tracking_numbers##&lt;/em&gt; and/or &lt;em&gt;##order_status_tracking_urls##&lt;/em&gt; simple token in the notification.</source>
+        <target>Qui puoi inserire le informazioni di tracciamento della spedizione. Utilizza il token semplice &lt;em&gt;##order_status_tracking_numbers##&lt;/em&gt; e/o &lt;em&gt;##order_status_tracking_urls##&lt;/em&gt; nella notifica.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.notification_customer_notes.0">
         <source>Customer notes</source>
@@ -161,9 +167,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.details.0">
         <source>View Order</source>
+        <target>Visualizza l&apos;ordine</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.details.1">
         <source>View line items, summary and transactions for order ID %s</source>
+        <target>Visualizza le voci di riga, il riepilogo e le transazioni relative all&apos;ID ordine %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.show.0">
         <source>Order Details</source>
@@ -175,15 +183,26 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.show_billing.0">
         <source>Billing Address Details</source>
+        <target>Dettagli dell&apos;indirizzo di fatturazione</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.show_billing.1">
         <source>Show details of billing address for order ID %s</source>
+        <target>Mostra i dettagli dell&apos;indirizzo di fatturazione per l&apos;ID ordine %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.show_shipping.0">
         <source>Shipping Address Details</source>
+        <target>Dettagli dell&apos;indirizzo di spedizione</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.show_shipping.1">
         <source>Show details of shipping address for order ID %s</source>
+        <target>Mostra i dettagli dell&apos;indirizzo di spedizione per l&apos;ID ordine %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.documents.0">
+        <source>Documents</source>
+        <target>Documenti</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.documents.1">
+        <source>List documents of order ID %s</source>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.orderStatusUpdate">
         <source>The status of your order has been updated.</source>
@@ -191,9 +210,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.orderStatusNotificationSuccess">
         <source>Notifications (e.g. email to client) have been sent. Check the system log if they were delivered successfully.</source>
+        <target>Le notifiche (ad esempio, le e-mail ai clienti) sono state inviate. Controlla il registro di sistema per verificare se sono state recapitate correttamente.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.orderStatusNotificationError">
         <source>Notifications (e.g. email to client) could not be sent. Check the system log for details.</source>
+        <target>Non è stato possibile inviare le notifiche (ad es. e-mail al cliente). Controllare il registro di sistema per ulteriori dettagli.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.noEmailData">
         <source>No additional email data available.</source>
@@ -225,6 +246,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.transaction_legend">
         <source>Transactions</source>
+        <target>Transazioni</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.email_legend">
         <source>Email data</source>
@@ -236,6 +258,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.billing_address_empty">
         <source>This order does not have any billing address data.</source>
+        <target>Questo ordine non contiene alcun dato relativo all&apos;indirizzo di fatturazione.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.shipping_address_legend">
         <source>Shipping address data</source>
@@ -243,6 +266,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.shipping_address_empty">
         <source>This order does not have any shipping address data.</source>
+        <target>Questo ordine non contiene alcun dato relativo all&apos;indirizzo di spedizione.</target>
       </trans-unit>
     </body>
   </file>

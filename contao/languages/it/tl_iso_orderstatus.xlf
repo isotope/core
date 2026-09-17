@@ -1,0 +1,130 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="contao/languages/en/tl_iso_orderstatus.xlf" source-language="en" target-language="it">
+    <body>
+      <trans-unit id="tl_iso_orderstatus.tableLabel">
+        <source>Order Status</source>
+        <target>Stato Ordine</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.type.0">
+        <source>Type</source>
+        <target>Tipo</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.type.1">
+        <source>Select the status type.</source>
+        <target>Selezionare il tipo di stato.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.type.order">
+        <source>Order status</source>
+        <target>Stato ordine</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.type.transaction">
+        <source>Payment status</source>
+        <target>Stato del pagamento</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.type.delivery">
+        <source>Shipping status</source>
+        <target>Stato della spedizione</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.alias.0">
+        <source>Technical name</source>
+        <target>Nome tecnico</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.alias.1">
+        <source>Please enter a technical name for this status. Use letters and underscores only.</source>
+        <target>Inserisci un nome tecnico per questo stato. Utilizza solo lettere e trattini bassi.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.sorting.0">
+        <source>Position</source>
+        <target>Posizione</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.sorting.1">
+        <source>Enter a numerical value to sort the order status.</source>
+        <target>Inserisci un valore numerico per ordinare lo stato dell&apos;ordine.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.name.0">
+        <source>Name</source>
+        <target>Nome</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.name.1">
+        <source>Please enter a name for this status.</source>
+        <target>Si prega di inserire un nome per questo stato.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.label.0">
+        <source>Label</source>
+        <target>Etichetta</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.label.1">
+        <source>Optionally enter a front end label for this status.</source>
+        <target>Se lo si desidera, inserire un&apos;etichetta front-end per questo stato.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.workflow.0">
+        <source>Next possible states</source>
+        <target>Prossimi stati possibili</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.workflow.1">
+        <source>Select the next status options and order can receive when having this status.</source>
+        <target>Seleziona le opzioni di stato successive e l&apos;ordine che può assumere quando si trova in questo stato.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.color.0">
+        <source>Color</source>
+        <target>Colore</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.color.1">
+        <source>Here you can set a custom color for this status. The color will appear on the order list in back end.</source>
+        <target>Qui è possibile impostare un colore personalizzato per questo stato. Il colore apparirà nella lista dell&apos;ordine nel backend</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.transaction_state.0">
+        <source>Payment state</source>
+        <target>Stato del pagamento</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.transaction_state.1">
+        <source>Configure the payment state for orders with this status.</source>
+        <target>Configurare lo stato di pagamento per gli ordini con questo stato.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.transaction_state_options.pending.0">
+        <source>Pending</source>
+        <target>In sospeso</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.transaction_state_options.pending.1">
+        <source>If the transaction status is pending, it means the payment has not been attempted or should be attempted again. The user will be requested to complete the payment for the order.</source>
+        <target>Se lo stato della transazione è “in sospeso”, significa che il pagamento non è stato effettuato o che occorre riprovare. All&apos;utente verrà richiesto di completare il pagamento dell&apos;ordine.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.transaction_state_options.processing.0">
+        <source>Processing</source>
+        <target>Elaborazione</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.transaction_state_options.processing.1">
+        <source>If the transaction status is processing, it means the payment is neither success nor failure. In this state, the user cannot change the order, but the order is also not considers done (e.g. downloads should not be available).</source>
+        <target>Se lo stato della transazione è “in elaborazione”, significa che il pagamento non è andato né a buon fine né ha dato esito negativo. In questo stato, l&apos;utente non può modificare l&apos;ordine, ma l&apos;ordine non è nemmeno considerato completato (ad esempio, i download non dovrebbero essere disponibili).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.transaction_state_options.complete.0">
+        <source>Complete</source>
+        <target>Completa</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.transaction_state_options.complete.1">
+        <source>If the transaction is complete, the payment was successful. Shipping can be initiated and downloads should be available at this stage.</source>
+        <target>Se la transazione è stata completata, il pagamento è andato a buon fine. A questo punto è possibile avviare la spedizione e i download dovrebbero essere disponibili.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.welcomescreen.0">
+        <source>Show on welcome screen</source>
+        <target>Mostra nella schermata di benvenuto</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.welcomescreen.1">
+        <source>Show number of orders with this status on the backend welcome screen.</source>
+        <target>Mostra il numero di ordini con questo stato nella schermata di benvenuto del backend.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.name_legend">
+        <source>Name</source>
+        <target>Nome</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.order_legend">
+        <source>Order state</source>
+        <target>Stato dell&apos;ordine</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.workflow_legend">
+        <source>Workflow</source>
+        <target>Workflow</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

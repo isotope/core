@@ -79,9 +79,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_shipping.flatProductTypes.0">
         <source>Calculate for product types</source>
+        <target>Calcola per i tipi di prodotto</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.flatProductTypes.1">
         <source>Calculate price for these product types only.</source>
+        <target>Calcola il prezzo solo per queste tipologie di prodotti.</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.shipping_weight.0">
         <source>Shipping weight</source>
@@ -197,15 +199,19 @@
       </trans-unit>
       <trans-unit id="tl_iso_shipping.rule.0">
         <source>Rule condition</source>
+        <target>Condizione della regola</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.rule.1">
         <source>Allow shipping method if this rule matches.</source>
+        <target>Consenti il metodo di spedizione se questa regola corrisponde.</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.tracking_url.0">
         <source>Tracking URL</source>
+        <target>Tracciamento URL</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.tracking_url.1">
         <source>Enter a tracking URL for this shipping. Use %s as placeholder for the tracking number.</source>
+        <target>Inserisci un URL di tracciamento per questa spedizione. Usa %s come segnaposto per il numero di tracciamento.</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.debug.0">
         <source>Debug mode</source>
@@ -241,6 +247,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_shipping.order_legend">
         <source>Order settings</source>
+        <target>Impostazioni dell&apos;ordine</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.price_legend">
         <source>Price and Weight</source>

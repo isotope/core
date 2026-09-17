@@ -159,6 +159,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_address.company_legend">
         <source>Company details</source>
+        <target>Dati aziendali</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.address_legend">
         <source>Address details</source>

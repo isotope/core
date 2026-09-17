@@ -53,9 +53,11 @@ Isotope userà ora questa pagina per generare il sito se un alias di prodotto vi
       </trans-unit>
         <trans-unit id="tl_page.iso_sitemapVariants.0">
             <source>Link to product variants in sitemap</source>
+            <target>Collegamento alle varianti del prodotto nella mappa del sito</target>
         </trans-unit>
         <trans-unit id="tl_page.iso_sitemapVariants.1">
             <source>Check here if the sitemap should show the product variants (if available).</source>
+            <target>Seleziona questa opzione se desideri che la mappa del sito mostri le varianti del prodotto (se disponibili).</target>
         </trans-unit>
       <trans-unit id="tl_page.iso_readerJumpTo.0">
         <source>Reader page</source>

@@ -823,6 +823,13 @@
         <source>This PayPal module supports IPN (Instant Payment Notifications).</source>
         <target>Ce module PayPal supporte IPN (Notification instantanée de paiement).</target>
       </trans-unit>
+      <trans-unit id="MODEL.tl_iso_document.standard.0">
+        <source>Standard</source>
+        <target>Standard</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_document.standard.1">
+        <source>Generate a document as HTML page.</source>
+      </trans-unit>
       <trans-unit id="MODEL.tl_iso_gallery.standard.0">
         <source>Standard</source>
         <target>Standard</target>

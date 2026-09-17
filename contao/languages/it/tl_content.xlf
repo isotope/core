@@ -59,9 +59,11 @@
       </trans-unit>
       <trans-unit id="tl_content.iso_hide_empty.0">
         <source>Hide empty list</source>
+        <target>Nascondi l&apos;elenco vuoto</target>
       </trans-unit>
       <trans-unit id="tl_content.iso_hide_empty.1">
         <source>Hide product list when there are no products found.</source>
+        <target>Nascondi l&apos;elenco dei prodotti quando non vengono trovati prodotti.</target>
       </trans-unit>
       <trans-unit id="tl_content.iso_disable_options.0">
         <source>Disable product options (performance!)</source>
@@ -117,9 +119,11 @@
       </trans-unit>
       <trans-unit id="tl_content.iso_transaction_cancelled.0">
         <source>Status for canceled transaction</source>
+        <target>Stato della transazione annullata</target>
       </trans-unit>
       <trans-unit id="tl_content.iso_transaction_cancelled.1">
         <source>If an order is unpaid, allow users to cancel an order and set this payment status.</source>
+        <target>Se un ordine non è stato pagato, consentire agli utenti di annullarlo e impostare questo stato di pagamento.</target>
       </trans-unit>
       <trans-unit id="tl_content.iso_login_jumpTo.0">
         <source>Login page</source>
@@ -215,6 +219,7 @@
       </trans-unit>
       <trans-unit id="tl_content.iso_order_conditions.step._summary">
         <source>Summary (Products in Cart)</source>
+        <target>Riepilogo (Prodotti nel carrello)</target>
       </trans-unit>
       <trans-unit id="tl_content.iso_order_conditions.position.0">
         <source>Position</source>
@@ -358,9 +363,11 @@
       </trans-unit>
       <trans-unit id="tl_content.iso_filterQuery.0">
         <source>Filter Query</source>
+        <target>Filtra la query</target>
       </trans-unit>
       <trans-unit id="tl_content.iso_filterQuery.1">
         <source>Enter a product query to filter the products. See the help wizard for details about the syntax.</source>
+        <target>Inserisci una query relativa ai prodotti per filtrarli. Consulta la guida per ulteriori dettagli sulla sintassi.</target>
       </trans-unit>
       <trans-unit id="tl_content.iso_filterModules.0">
         <source>Filter modules</source>
@@ -370,11 +377,21 @@
         <source>Select the filter modules you want to consider for this product list.</source>
         <target>Selezionare i moduli di filtraggio che si desidera considerare per questa lista di prodotti.</target>
       </trans-unit>
+      <trans-unit id="tl_content.iso_filterFields.0">
+        <source>Enabled filters</source>
+        <target>Filtri abilitati</target>
+      </trans-unit>
+      <trans-unit id="tl_content.iso_filterFields.1">
+        <source>Please select filters to enable.</source>
+        <target>Per cortesia selezioni i filtri da abilitare.</target>
+      </trans-unit>
       <trans-unit id="tl_content.iso_filterKey.0">
         <source>Filter key (optional)</source>
+        <target>Chiave di filtro (facoltativa)</target>
       </trans-unit>
       <trans-unit id="tl_content.iso_filterKey.1">
         <source>Enter an optional key to link filter and list modules.</source>
+        <target>Inserisci una chiave facoltativa per collegare i moduli filtro ed elenco.</target>
       </trans-unit>
       <trans-unit id="tl_content.iso_filterHideSingle.0">
         <source>Hide single options</source>
@@ -386,9 +403,11 @@
       </trans-unit>
       <trans-unit id="tl_content.iso_enableSearch.0">
         <source>Show search field</source>
+        <target>Mostra campo di ricerca</target>
       </trans-unit>
       <trans-unit id="tl_content.iso_enableSearch.1">
         <source>Show the search input field in the filter module.</source>
+        <target>Visualizza il campo di ricerca nel modulo dei filtri.</target>
       </trans-unit>
       <trans-unit id="tl_content.iso_searchFields.0">
         <source>Enabled search fields</source>
@@ -440,9 +459,11 @@
       </trans-unit>
       <trans-unit id="tl_content.iso_checkout_guest_jumpTo.0">
         <source>Checkout Jump to page for guests</source>
+        <target>Cassa - Vai alla pagina dedicata agli ospiti</target>
       </trans-unit>
       <trans-unit id="tl_content.iso_checkout_guest_jumpTo.1">
         <source>Override the checkout jump to page if no member is logged in.</source>
+        <target>Ignora il reindirizzamento alla pagina di checkout se nessun utente è connesso.</target>
       </trans-unit>
       <trans-unit id="tl_content.iso_listingSortField.0">
         <source>Initial sorting field</source>
@@ -478,9 +499,11 @@
       </trans-unit>
       <trans-unit id="tl_content.iso_notifications.0">
         <source>Order notifications</source>
+        <target>Notifiche relative agli ordini</target>
       </trans-unit>
       <trans-unit id="tl_content.iso_notifications.1">
         <source>Send one or multiple notifications when the order is placed.</source>
+        <target>Invia una o più notifiche quando viene effettuato l&apos;ordine.</target>
       </trans-unit>
       <trans-unit id="tl_content.iso_order_conditions_legend">
         <source>Order conditions form</source>
@@ -488,6 +511,7 @@
       </trans-unit>
       <trans-unit id="tl_content.reference_legend">
         <source>Reference page</source>
+        <target>Pagina di riferimento</target>
       </trans-unit>
       <trans-unit id="tl_content.sortingDirection.ASC">
         <source>ASC</source>

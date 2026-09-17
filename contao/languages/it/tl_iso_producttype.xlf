@@ -155,9 +155,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_producttype.validAliasCharacters.0">
       <source>Valid alias characters</source>
+      <target>Caratteri validi per gli alias</target>
     </trans-unit>
       <trans-unit id="tl_iso_producttype.validAliasCharacters.1">
         <source>Here you can select a custom character set for auto-generated product aliases.</source>
+        <target>Qui è possibile selezionare un set di caratteri personalizzato per gli alias dei prodotti generati automaticamente.</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.shipping_exempt.0">
         <source>Shipping handling</source>

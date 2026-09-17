@@ -20,6 +20,7 @@ La pagina del lettore (alias) sarà sempre la stessa pagina che hai selezionato 
       </trans-unit>
       <trans-unit id="XPL.noVariantAttributes">
         <source>To use product variants with Isotope eCommerce, you must first configure the attributes.&lt;br&gt;Please refer to &lt;a href=&quot;https://docs.isotopeecommerce.org/&quot; target=&quot;_blank&quot; style=&quot;text-decoration:underline&quot;&gt;the manual&lt;/a&gt; for more information about attribute setup.</source>
+        <target>Per utilizzare le varianti di prodotto con Isotope eCommerce, è necessario prima configurare gli attributi. &lt;br&gt; Per ulteriori informazioni sulla configurazione degli attributi, consultare il &lt;a href=&quot;https://docs.isotopeecommerce.org/&quot; target=&quot;_blank&quot; style=&quot;text-decoration:underline&quot;&gt;manuale&lt;/a&gt;.</target>
       </trans-unit>
       <trans-unit id="XPL.shippingExempt">
         <source>
@@ -57,6 +58,9 @@ offrire una vera spedizione per questi tipi di prodotto.
         <source><![CDATA[
             Select which product categories (pages) should be considered for the products.<br><br><u>If this is a product list element and you configured a category filter element, the category filter selection will override this configuration!</u><br><br>
         ]]></source>
+        <target>
+Seleziona le categorie di prodotti (pagine) da prendere in considerazione per i prodotti. &lt;br&gt;&lt;br&gt;&lt;u&gt;Se si tratta di un elemento “Elenco prodotti” e hai configurato un elemento “Filtro per categoria”, la selezione del filtro per categoria avrà la precedenza su questa configurazione!&lt;/u&gt;&lt;br&gt;&lt;br&gt;
+</target>
       </trans-unit>
       <trans-unit id="XPL.iso_filterQuery">
       <source><![CDATA[
@@ -117,6 +121,64 @@ offrire una vera spedizione per questi tipi di prodotto.
               <tr><td><code>(cat)</cat></td><td>Filter products by category.</td><td>no</td></tr>
             </table>
         ]]></source>
+      <target>
+&lt;p class=&quot;tl_help_table&quot;&gt;Isotope include una sintassi personalizzata denominata «Product Query» che consente di filtrare, cercare e limitare i prodotti tramite parametri URL semplificati.&lt;br&gt;
+Qui è possibile inserire una query di filtro per limitare i prodotti da elencare o da individuare.&lt;/p&gt;
+
+&lt;h3 class=&quot;tl_help_table&quot;&gt;Esempio&lt;/h3&gt;
+&lt;p class=&quot;tl_help_table&quot;&gt;
+Ogni segmento della query di filtro è composto da un nome di attributo, un operatore e un valore. Ecco un esempio molto semplice:&lt;br&gt;&lt;br&gt;
+&lt;code&gt;type:1&lt;/code&gt;&lt;br&gt;&lt;br&gt;
+&lt;code&gt;[type]&lt;/code&gt; è l’attributo, &lt;code&gt;[:]&lt;/code&gt; è l’operatore che indica «uguale a» e &lt;code&gt;[1]&lt;/code&gt; è il valore.&lt;br&gt;
+L’esempio sopra riportato individuerà solo i tipi di prodotto con ID 1. L’equivalente in SQL sarebbe &lt;code&gt;WHERE type=1&lt;/code&gt;.
+&lt;/p&gt;
+&lt;p class=&quot;tl_help_table&quot;&gt;
+È possibile creare filtri molto più complessi.&lt;br&gt;&lt;br&gt;
+&lt;code&gt;color!red,blue;size:M|L;&lt;/code&gt;&lt;br&gt;&lt;br&gt;
+L&apos;equivalente SQL di questo sarebbe &lt;code&gt;WHERE (color != “red” AND color != “blue”) AND (size = ‘M’ OR size = “L”)&lt;/code&gt;&lt;br&gt;
+Per la maggior parte degli operatori, è possibile passare più valori come condizione separata da virgole (&lt;code&gt;AND&lt;/code&gt;) o da barra verticale (&lt;code&gt;OR&lt;/code&gt;).
+&lt;/p&gt;
+
+&lt;h3 class=&quot;tl_help_table&quot;&gt;Operatori semplici&lt;/h3&gt;
+&lt;p&gt;
+Gli operatori semplici consistono in un valore unico che non può mai essere utilizzato nel nome di un attributo. Isotope include alcuni utili operatori semplici.
+&lt;p/&gt;
+&lt;table class=&quot;tl_help_table&quot;&gt;
+&lt;tr&gt;
+&lt;th&gt;Operatore&lt;/th&gt;
+&lt;th&gt;Descrizione&lt;/td&gt;
+&lt;th&gt;Equivalente SQL&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;:&lt;/code&gt;&lt;/td&gt;&lt;td&gt;equal&lt;/td&gt;&lt;td&gt;&lt;code&gt;=&lt;/code&gt;&lt;/td&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;!&lt;/code&gt;&lt;/td&gt;&lt;td&gt;not equal&lt;/td&gt;&lt;td&gt;&lt;code&gt;!=&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;&amp;lt;lesser than&lt;td&gt;&lt;td&gt;&lt;code&gt;&amp;lt;&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;≤&lt;/code&gt;&lt;/td&gt;&lt;td&gt;lesser than or equal&lt;/td&gt;&lt;td&gt;&lt;code&gt;&amp;lt;=&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;&amp;gt;&lt;/code&gt;&lt;/td&gt;&lt;td&gt;greater than&lt;/td&gt;&lt;td&gt;&lt;code&gt;&amp;gt;&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;≥&lt;/code&gt;&lt;/td&gt;&lt;td&gt;greater than or equal&lt;/td&gt;&lt;td&gt;&lt;code&gt;gt;=&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;h3 class=&quot;tl_help_table&quot;&gt;Operatori complessi&lt;/h3&gt;
+&lt;p class=&quot;tl_help_table&quot;&gt;
+Poiché il numero di caratteri utilizzabili è limitato, gli operatori possono anche avere un nome costituito da una stringa normale. In questo caso,
+l’operatore deve essere racchiuso tra parentesi come in questo esempio: &lt;code&gt;id(modulo)1&lt;/code&gt;&lt;br&gt;
+Ipotizzando un operatore &lt;code&gt;modulo&lt;/code&gt; immaginario, ciò corrisponderebbe probabilmente ai tipi di prodotto in cui l’ID corrisponde al modulo di 1.
+&lt;p/&gt;
+&lt;p class=&quot;tl_help_table&quot;&gt;
+Gli operatori possono eseguire qualsiasi query speciale o filtraggio manuale di un elenco di prodotti. A volte, ciò significa che un operatore non necessita di un nome di attributo,
+ad esempio se l’operatore sa già su quale attributo o tabella relazionale deve operare.
+&lt;/p&gt;
+&lt;p class=&quot;tl_help_table&quot;&gt;
+Ecco un elenco dei filtri principali di Isotope; si prega di consultare la documentazione delle estensioni per ulteriori filtri forniti dalle estensioni.
+&lt;/p&gt;
+&lt;table class=&quot;tl_help_table&quot;&gt;
+&lt;tr&gt;
+&lt;th&gt;Operatore&lt;/th&gt;
+&lt;th&gt;Descrizione&lt;/td&gt;
+&lt;th&gt;Richiede un attributo&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;(cat)&lt;/cat&gt;&lt;/td&gt;&lt;td&gt;Filtra i prodotti per categoria.&lt;/td&gt;&lt;td&gt;no&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+</target>
       </trans-unit>
       <trans-unit id="XPL.checkoutTargetFile">
         <source>&lt;p class=&quot;tl_help_table&quot;&gt;Use these simple tokens to generate a dynamic file name.&lt;/p&gt;</source>

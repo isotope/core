@@ -8,6 +8,7 @@ Si prega di scegliere un nome diverso.</target>
       </trans-unit>
       <trans-unit id="ERR.invalidColumn">
         <source>&quot;%s&quot; cannot be used as a database column. Suggestion: &quot;%s&quot;</source>
+        <target>“%s” non può essere utilizzato come colonna di un database. Suggerimento: “%s”</target>
       </trans-unit>
       <trans-unit id="ERR.noStoreConfigurationSet">
         <source>No store configuration available</source>
@@ -87,9 +88,11 @@ Si prega di scegliere un nome diverso.</target>
       </trans-unit>
       <trans-unit id="PTY.iso_products.0">
         <source>Isotope Products</source>
+        <target>Prodotti Isotope</target>
       </trans-unit>
       <trans-unit id="PTY.iso_products.1">
         <source>Select this page type if your want to display a product list and product reader.</source>
+        <target>Seleziona questo tipo di pagina se desideri visualizzare un elenco di prodotti e un lettore di prodotti.</target>
       </trans-unit>
       <trans-unit id="MSC.productPicker">
         <source>Products</source>
@@ -97,6 +100,7 @@ Si prega di scegliere un nome diverso.</target>
       </trans-unit>
       <trans-unit id="MSC.filterByPages">
         <source>Products of category</source>
+        <target>Prodotti della categoria</target>
       </trans-unit>
       <trans-unit id="MSC.noVariants">
         <source>There are no variants for this product.</source>
@@ -116,18 +120,23 @@ Si prega di scegliere un nome diverso.</target>
       </trans-unit>
       <trans-unit id="MSC.payment_failed">
         <source>Unfortunately, the payment was not successful. Please try again to complete your payment.</source>
+        <target>Purtroppo, il pagamento non è andato a buon fine. Ti preghiamo di riprovare a completare il pagamento.</target>
       </trans-unit>
       <trans-unit id="MSC.payment_failed_change">
         <source>Unfortunately, the payment was not successful. Please change your payment method or try again to complete your payment.</source>
+        <target>Purtroppo, il pagamento non è andato a buon fine. Ti preghiamo di modificare il metodo di pagamento o di riprovare a completare il pagamento.</target>
       </trans-unit>
       <trans-unit id="MSC.payment_change">
         <source>Change payment</source>
+        <target>Modifica del pagamento</target>
       </trans-unit>
       <trans-unit id="MSC.payment_complete">
         <source>Complete payment</source>
+        <target>Completa il pagamento</target>
       </trans-unit>
       <trans-unit id="MSC.payment_cancel">
         <source>Cancel order</source>
+        <target>Annulla l&apos;ordine</target>
       </trans-unit>
       <trans-unit id="MSC.mmNoUploads">
         <source>No files uploaded.</source>
@@ -247,6 +256,7 @@ Si prega di scegliere un nome diverso.</target>
       </trans-unit>
       <trans-unit id="MSC.reorderConfirmation">
         <source>The products have been added to your shopping cart.</source>
+        <target>I prodotti sono stati aggiunti al tuo carrello.</target>
       </trans-unit>
       <trans-unit id="MSC.editProductLinkTitle">
         <source>Edit %s</source>
@@ -310,9 +320,11 @@ Si prega di scegliere un nome diverso.</target>
       </trans-unit>
       <trans-unit id="MSC.transactionStatusHeadline">
         <source>Payment Status: %s</source>
+        <target>Stato del pagamento: %s</target>
       </trans-unit>
       <trans-unit id="MSC.deliveryStatusHeadline">
         <source>Delivery Status: %s</source>
+        <target>Stato della consegna: %s</target>
       </trans-unit>
       <trans-unit id="MSC.checkboutStepBack">
         <source>Go back to step &quot;%s&quot;</source>
@@ -340,6 +352,7 @@ Si prega di scegliere un nome diverso.</target>
       </trans-unit>
       <trans-unit id="MSC.createAddressHeadline">
         <source>Add a new address</source>
+        <target>Aggiungi un nuovo indirizzo</target>
       </trans-unit>
       <trans-unit id="MSC.editAddressLabel">
         <source>Edit</source>
@@ -371,9 +384,11 @@ Si prega di scegliere un nome diverso.</target>
       </trans-unit>
       <trans-unit id="MSC.iso_transaction_status">
         <source>Payment status</source>
+        <target>Stato del pagamento</target>
       </trans-unit>
       <trans-unit id="MSC.iso_delivery_status">
         <source>Shipping status</source>
+        <target>Stato della spedizione</target>
       </trans-unit>
       <trans-unit id="MSC.iso_order_description">
         <source>Description</source>
@@ -393,6 +408,7 @@ Si prega di scegliere un nome diverso.</target>
       </trans-unit>
       <trans-unit id="MSC.iso_order_tax">
         <source>VAT</source>
+        <target>IVA</target>
       </trans-unit>
       <trans-unit id="MSC.iso_order_locked">
         <source>Placed</source>
@@ -468,27 +484,35 @@ Si prega di scegliere un nome diverso.</target>
       </trans-unit>
       <trans-unit id="MSC.shipping_address_message">
         <source>Select an existing address or add a new address to your account.</source>
+        <target>Seleziona un indirizzo esistente oppure aggiungi un nuovo indirizzo al tuo account.</target>
       </trans-unit>
       <trans-unit id="MSC.shipping_address_guest_message">
         <source>Enter your shipping information.</source>
+        <target>Inserisci i dati per la spedizione.</target>
       </trans-unit>
       <trans-unit id="MSC.billing_address_message">
         <source>Select an existing address or add a new address to your account.</source>
+        <target>Seleziona un indirizzo esistente oppure aggiungi un nuovo indirizzo al tuo account.</target>
       </trans-unit>
       <trans-unit id="MSC.billing_address_guest_message">
         <source>Enter your billing information.</source>
+        <target>Inserisci i tuoi dati di fatturazione.</target>
       </trans-unit>
       <trans-unit id="MSC.customer_address_message">
         <source>Select an existing address or add a new address to your account.</source>
+        <target>Seleziona un indirizzo esistente oppure aggiungi un nuovo indirizzo al tuo account.</target>
       </trans-unit>
       <trans-unit id="MSC.customer_address_guest_message">
         <source>Enter your customer information.</source>
+        <target>Inserisci i dati del cliente.</target>
       </trans-unit>
       <trans-unit id="MSC.address_error">
         <source>This address cannot be used or is missing required information.</source>
+        <target>Questo indirizzo non può essere utilizzato oppure mancano alcune informazioni obbligatorie.</target>
       </trans-unit>
       <trans-unit id="MSC.member_address_error">
         <source>Your member address cannot be used or is missing required information.</source>
+        <target>L&apos;indirizzo del socio non può essere utilizzato oppure mancano alcune informazioni obbligatorie.</target>
       </trans-unit>
       <trans-unit id="MSC.shipping_method_message">
         <source>Select a shipping method.</source>
@@ -656,12 +680,15 @@ Si prega di scegliere un nome diverso.</target>
       </trans-unit>
       <trans-unit id="MSC.isotopeIntroduction.2">
         <source>This is the page where most of the configuration will take place.</source>
+        <target>Questa è la pagina in cui verrà effettuata la maggior parte delle impostazioni.</target>
       </trans-unit>
       <trans-unit id="MSC.isotopeIntroduction.3">
         <source>For initial setup, you should start from the bottom of this page and work your way upward.</source>
+        <target>Per la configurazione iniziale, ti consigliamo di iniziare dalla parte inferiore di questa pagina e procedere verso l&apos;alto.</target>
       </trans-unit>
       <trans-unit id="MSC.isotopeIntroduction.4">
         <source>Visit the official Isotope eCommerce website for the latest news, configuration manuals and professional support. Thank you so much for considering giving something back!</source>
+        <target>Visita il sito web ufficiale di Isotope eCommerce per le ultime novità, i manuali di configurazione e l&apos;assistenza professionale. Grazie mille per aver pensato di dare un contributo!</target>
       </trans-unit>
       <trans-unit id="MSC.isotopeIntroduction.5">
         <source>The Isotope eCommerce Team</source>
@@ -669,6 +696,7 @@ Si prega di scegliere un nome diverso.</target>
       </trans-unit>
       <trans-unit id="MSC.isotopeIntroduction.6">
         <source>Isotope is a product of terminal42 gmbh in association with the Isotope eCommerce Team.</source>
+        <target>Isotope è un prodotto di terminal42 gmbh in collaborazione con il team Isotope eCommerce.</target>
       </trans-unit>
       <trans-unit id="MSC.iso_priceDisplay.net.0">
         <source>Net</source>
@@ -696,15 +724,19 @@ Si prega di scegliere un nome diverso.</target>
       </trans-unit>
       <trans-unit id="MSC.iso_taxCalculation.horizontal.0">
         <source>horizontal</source>
+        <target>orizzontale</target>
       </trans-unit>
       <trans-unit id="MSC.iso_taxCalculation.horizontal.1">
         <source>VAT is calculated individually for each line item – that is, item price × quantity, then the tax is calculated and rounded per item. At the end, all tax amounts are summed.</source>
+        <target>L&apos;IVA viene calcolata singolarmente per ogni voce dell&apos;ordine, ovvero prezzo dell&apos;articolo × quantità; successivamente, l&apos;imposta viene calcolata e arrotondata per ogni articolo. Infine, tutti gli importi delle imposte vengono sommati.</target>
       </trans-unit>
       <trans-unit id="MSC.iso_taxCalculation.vertical.0">
         <source>vertical</source>
+        <target>verticale</target>
       </trans-unit>
       <trans-unit id="MSC.iso_taxCalculation.vertical.1">
         <source>VAT is calculated only after summing all net amounts. Then the tax is applied to the total net amount and rounded once.</source>
+        <target>L&apos;IVA viene calcolata solo dopo aver sommato tutti gli importi netti. Successivamente, l&apos;imposta viene applicata all&apos;importo netto totale e arrotondata una sola volta.</target>
       </trans-unit>
       <trans-unit id="CTE.isotope">
         <source>Isotope eCommerce</source>
@@ -846,6 +878,13 @@ Si prega di scegliere un nome diverso.</target>
         <source>This PayPal module supports IPN (Instant Payment Notifications).</source>
         <target>Questo modulo PayPal supporta IPN (Instant Payment Notifications).</target>
       </trans-unit>
+      <trans-unit id="MODEL.tl_iso_document.standard.0">
+        <source>Standard</source>
+        <target>Standard</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_document.standard.1">
+        <source>Generate a document as HTML page.</source>
+      </trans-unit>
       <trans-unit id="MODEL.tl_iso_gallery.standard.0">
         <source>Standard</source>
         <target>Standard</target>
@@ -872,9 +911,11 @@ Si prega di scegliere un nome diverso.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.cart_total.0">
         <source>Cart total</source>
+        <target>Totale carrello</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.cart_total.1">
         <source>Match on the total amount of the cart.</source>
+        <target>Confronta l&apos;importo totale del carrello.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.cart_address.0">
         <source>Cart address</source>
@@ -882,6 +923,7 @@ Si prega di scegliere un nome diverso.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.cart_address.1">
         <source>Match on country, subdivision or postal codes of the billing or shipping address.</source>
+        <target>Effettua la ricerca in base al Paese, alla suddivisione amministrativa o ai codici postali dell&apos;indirizzo di fatturazione o di spedizione.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.cart_quantity.0">
         <source>Total quantity in cart</source>
@@ -889,6 +931,7 @@ Si prega di scegliere un nome diverso.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.cart_quantity.1">
         <source>Compares the given value to the sum of all quantities of all products.</source>
+        <target>Confronta il valore specificato con la somma di tutte le quantità di tutti i prodotti.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.cart_products.0">
         <source>Total products in cart</source>
@@ -896,21 +939,27 @@ Si prega di scegliere un nome diverso.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.cart_products.1">
         <source>Compares the given value to the total products in the cart (regardless of their quantity).</source>
+        <target>Confronta il valore specificato con il totale dei prodotti presenti nel carrello (indipendentemente dalla loro quantità).</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.member">
         <source>Member</source>
+        <target>Membro</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.member_authenticated.0">
         <source>Login status</source>
+        <target>Stato di login</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.member_authenticated.1">
         <source>Checks whether a customer is logged in or not.</source>
+        <target>Verifica se un cliente ha effettuato l&apos;accesso o meno.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.member_group.0">
         <source>Member groups (current user)</source>
+        <target>Gruppi di membri (utente attuale)</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.member_group.1">
         <source>Checks whether the currently logged-in user has or does not have certain member groups.</source>
+        <target>Verifica se l&apos;utente attualmente connesso appartiene o meno a determinati gruppi di membri.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.store">
         <source>Store</source>
@@ -918,9 +967,11 @@ Si prega di scegliere un nome diverso.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.store_config.0">
         <source>Store config</source>
+        <target>Configurazione del negozio</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.store_config.1">
         <source>Checks for the current store configuration.</source>
+        <target>Verifica la configurazione corrente del negozio.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.store_currency.0">
         <source>Currency</source>
@@ -928,21 +979,27 @@ Si prega di scegliere un nome diverso.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.store_currency.1">
         <source>Match on the current currency.</source>
+        <target>Corrispondenza con la valuta corrente.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.dates">
         <source>Date &amp; time</source>
+        <target>Data e ora</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.store_date.0">
         <source>Date &amp; time</source>
+        <target>Data e ora</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.store_date.1">
         <source>Checks for the current date and time.</source>
+        <target>Verifica la data e l&apos;ora correnti.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.store_time.0">
         <source>Time of day</source>
+        <target>Ora del giorno</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.store_time.1">
         <source>Checks the time of the current day.</source>
+        <target>Verifica l&apos;ora del giorno corrente.</target>
       </trans-unit>
       <trans-unit id="ATTR.text.0">
         <source>Text field</source>

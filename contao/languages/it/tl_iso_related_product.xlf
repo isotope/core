@@ -27,6 +27,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_related_product.empty">
         <source>No products selected for this category.</source>
+        <target>Nessun prodotto selezionato per questa categoria.</target>
       </trans-unit>
     </body>
   </file>

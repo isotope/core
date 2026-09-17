@@ -19,6 +19,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.name.1">
         <source>Enter a name for this payment method.</source>
+        <target>Inserisci un nome per questo metodo di pagamento.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.label.0">
         <source>Label</source>
@@ -26,6 +27,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.label.1">
         <source>This is displayed on the front end in association with the payment option.</source>
+        <target>Questo viene visualizzato nell&apos;interfaccia utente insieme all&apos;opzione di pagamento.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.note.0">
         <source>Payment Note</source>
@@ -37,27 +39,35 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.processing_status.0">
         <source>Status for payment in progress</source>
+        <target>Stato: pagamento in corso</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.processing_status.1">
         <source>Select the order status for when the payment is in progress.</source>
+        <target>Seleziona lo stato dell&apos;ordine relativo alla fase in cui il pagamento è in corso.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.paid_status.0">
         <source>Status for paid orders</source>
+        <target>Stato degli ordini pagati</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.paid_status.1">
         <source>Select the order status for when the payment was successful.</source>
+        <target>Seleziona lo stato dell&apos;ordine relativo al pagamento andato a buon fine.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.failed_status.0">
         <source>Status for failed orders</source>
+        <target>Stato degli ordini non andati a buon fine</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.failed_status.1">
         <source>Select the order status for when the payment failed.</source>
+        <target>Seleziona lo stato dell&apos;ordine in caso di pagamento non andato a buon fine.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.rule.0">
         <source>Rule condition</source>
+        <target>Condizione della regola</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.rule.1">
         <source>Allow payment method if this rule matches.</source>
+        <target>Consenti il metodo di pagamento se questa regola è soddisfatta.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.shipping_modules.0">
         <source>Shipping methods</source>
@@ -161,6 +171,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.gateway_legend">
         <source>Payment gateway</source>
+        <target>Gateway di pagamento</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.price_legend">
         <source>Price</source>

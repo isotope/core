@@ -9,7 +9,7 @@
         <source>Name</source>
         <target>Name</target>
       </trans-unit>
-      <trans-unit id="tl_iso_rule.type.1">
+      <trans-unit id="tl_iso_rule.name.1">
         <source>Enter a name for this condition (only visible in the back end).</source>
         <target>Geben Sie einen Namen für diese Bedingung ein (nur im Backend sichtbar).</target>
       </trans-unit>

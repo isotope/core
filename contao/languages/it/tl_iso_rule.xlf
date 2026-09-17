@@ -1,0 +1,58 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="contao/languages/en/tl_iso_rule.xlf" source-language="en" target-language="it">
+    <body>
+      <trans-unit id="tl_iso_rule.tableLabel">
+        <source>Rule</source>
+        <target>Regola</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.name.0">
+        <source>Name</source>
+        <target>Nome</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.name.1">
+        <source>Enter a name for this condition (only visible in the back end).</source>
+        <target>Inserisci un nome per questa condizione (visibile solo nel back-end).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.conditions.0">
+        <source>Rule conditions</source>
+        <target>Condizioni della regola</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.conditions.1">
+        <source>Configure conditions for this rule.</source>
+        <target>Configurare le condizioni per questa regola.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.conditions.edit">
+        <source>Edit conditions</source>
+        <target>Modifica condizioni</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.enabled.0">
+        <source>Enable</source>
+        <target>Abilita</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.enabled.1">
+        <source>Check here if this rule should be enabled.</source>
+        <target>Selezionare questa casella se si desidera abilitare questa regola.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.priority.0">
+        <source>Priority</source>
+        <target>Priorità</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.priority.1">
+        <source>Enter a numeric priority to sort the rules. The higher the number, the earlier the rule will be matched.</source>
+        <target>Inserisci un valore numerico di priorità per ordinare le regole. Più alto è il numero, prima verrà applicata la regola.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.rule_legend">
+        <source>Rule</source>
+        <target>Regola</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.conditions_legend">
+        <source>Rule conditions</source>
+        <target>Condizioni della regola</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.application_legend">
+        <source>Rule application</source>
+        <target>Regola applicazione</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
