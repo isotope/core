@@ -1,0 +1,17 @@
+/.github export-ignore
+/.tx export-ignore
+/assets export-ignore
+/tests export-ignore
+/.editorconfig export-ignore
+/.eslintrc.json export-ignore
+/.gitattributes export-ignore
+/.gitignore export-ignore
+/.stylelintrc export-ignore
+/build.xml.dist export-ignore
+/composer-dependency-analyser.php export-ignore
+/ecs.php export-ignore
+/package.json export-ignore
+/phpstan.neon export-ignore
+/phpunit.xml.dist export-ignore
+/rector.php export-ignore
+/webpack.config.js export-ignore
