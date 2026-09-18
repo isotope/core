@@ -48,7 +48,11 @@ class ActionRuntime implements RuntimeExtensionInterface
             return '';
         }
 
-        if ($request->request->get('FORM_SUBMIT') === $view->getFormId($product) && $request->request->get('_action') === $type) {
+        if (
+            $request->isMethod(Request::METHOD_POST)
+            && $request->request->get('FORM_SUBMIT') === $view->getFormId($product)
+            && $request->request->get('_action') === $type
+        ) {
             $result = $action->handle($product, $configData, $view);
 
             $this->messages->handleActionResult($type, $result);
@@ -78,7 +82,8 @@ class ActionRuntime implements RuntimeExtensionInterface
         }
 
         if (
-            $request->request->get('FORM_SUBMIT') === $fragmentId
+            $request->isMethod(Request::METHOD_POST)
+            && $request->request->get('FORM_SUBMIT') === $fragmentId
             && $request->request->get('_action') === $type
         ) {
             $result = $action->handle($collection, $context, $options);
