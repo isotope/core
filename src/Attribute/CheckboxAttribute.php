@@ -38,6 +38,6 @@ class CheckboxAttribute extends AbstractOptionsAttribute
             return ['type' => Types::BOOLEAN, 'options' => ['default' => false]];
         }
 
-        return ['type' => Types::BLOB, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_BLOB];
+        return ['type' => Types::BLOB, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_BLOB, 'notnull' => false];
     }
 }

@@ -125,7 +125,7 @@ class SelectAttribute extends AbstractOptionsAttribute implements VariantAttribu
     protected function getSqlDefinition(): array|string
     {
         if ($this->hasMultiple()) {
-            return ['type' => Types::BLOB, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_BLOB];
+            return ['type' => Types::BLOB, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_BLOB, 'notnull' => false];
         }
 
         if (OptionsSource::Attribute === $this->getOptionsSource()) {

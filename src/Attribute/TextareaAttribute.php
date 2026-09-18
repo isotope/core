@@ -44,6 +44,6 @@ class TextareaAttribute extends AbstractAttribute
 
     protected function getSqlDefinition(): array|string
     {
-        return ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TEXT];
+        return ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TEXT, 'notnull' => false];
     }
 }
