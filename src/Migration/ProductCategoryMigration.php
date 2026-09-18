@@ -6,8 +6,11 @@ namespace Isotope\CoreBundle\Migration;
 
 use Contao\CoreBundle\Migration\AbstractMigration;
 use Contao\CoreBundle\Migration\MigrationResult;
+use Contao\Database;
 use Contao\StringUtil;
+use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @internal
@@ -66,8 +69,47 @@ class ProductCategoryMigration extends AbstractMigration
 
         if ($schemaManager->tablesExist(['tl_page'])) {
             $this->connection->executeStatement("UPDATE tl_page SET type='iso_products' WHERE type='regular' AND id IN (SELECT pid FROM tl_iso_product_category)");
+            $this->addDefaultConfig();
         }
 
         return $this->createResult(true);
+    }
+
+    private function addDefaultConfig(): void
+    {
+        if (!$this->connection->createSchemaManager()->introspectTableByUnquotedName('tl_iso_config')->hasColumn('fallback')) {
+            return;
+        }
+
+        $fallbackConfig = $this->connection->fetchOne("SELECT id FROM tl_iso_config WHERE fallback='1'");
+
+        if (false === $fallbackConfig) {
+            return;
+        }
+
+        $rootIds = [];
+        $pageIds = $this->connection->fetchFirstColumn('SELECT DISTINCT pid FROM tl_iso_product_category');
+
+        foreach ($pageIds as $pageId) {
+            $parents = Database::getInstance()->getParentRecords($pageId, 'tl_page');
+
+            $rootIds[] = $this->connection->fetchFirstColumn(
+                "SELECT id FROM tl_page WHERE type='root' AND id IN (?)",
+                [$parents],
+                [ArrayParameterType::INTEGER],
+            );
+        }
+
+        $rootIds = array_merge(...$rootIds);
+
+        if ([] === $rootIds) {
+            return;
+        }
+
+        $this->connection->executeStatement(
+            'UPDATE tl_page SET iso_config = ? WHERE id IN (?)',
+            [$fallbackConfig, $rootIds],
+            [Types::INTEGER, ArrayParameterType::INTEGER],
+        );
     }
 }
