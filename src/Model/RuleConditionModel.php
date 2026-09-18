@@ -14,6 +14,7 @@ use Contao\Model\Collection;
  * @property int    $tstamp
  * @property string $type
  * @property string $operator
+ * @property int    $rule
  * @property string $quantity
  * @property string $quantity_from
  * @property string $quantity_to

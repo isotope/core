@@ -19,7 +19,7 @@ class LabelListener
     ) {
     }
 
-    public function __invoke(array $row, string $label, DataContainer $dc): string
+    public function __invoke(array $row, string $label): string
     {
         System::loadLanguageFile('tl_iso_rule_condition');
 

@@ -17,6 +17,12 @@
       <trans-unit id="tl_iso_rule_condition.operator.1">
         <source>Select the condition operator.</source>
       </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.rule.0">
+        <source>Rule</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.rule.1">
+        <source>Select a rule that is not the current one.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_rule_condition.quantity.0">
         <source>Quantity</source>
       </trans-unit>

@@ -680,6 +680,12 @@
       <trans-unit id="MODEL.tl_iso_rule_condition.miscellaneous">
         <source>Miscellaneous</source>
       </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.nested_rule.0">
+        <source>Rule</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.nested_rule.1">
+        <source>Checks if the given rule is valid.</source>
+      </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.cart">
         <source>Cart</source>
       </trans-unit>

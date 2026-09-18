@@ -32,6 +32,7 @@ $GLOBALS['TL_DCA']['tl_iso_rule_condition'] = [
     'palettes' => [
         '__selector__' => ['type', 'operator'],
         'default' => '{condition_legend},type',
+        'nested_rule' => '{condition_legend},type,rule',
         'cart_total' => '{condition_legend},type,operator,amount',
         'cart_totalrange' => '{condition_legend},type,operator,amount_from,amount_to',
         'cart_address' => '{condition_legend},type,address_type,countries,subdivisions,postalcodes',
@@ -70,6 +71,12 @@ $GLOBALS['TL_DCA']['tl_iso_rule_condition'] = [
             'inputType' => 'select',
             'eval' => ['mandatory' => true, 'submitOnChange' => true, 'chosen' => true, 'tl_class' => 'w50'],
             'sql' => "varchar(64) NOT NULL default ''",
+        ],
+        'rule' => [
+            'inputType' => 'select',
+            'foreignKey' => 'tl_iso_rule.name',
+            'eval' => ['mandatory' => true, 'chosen' => true, 'tl_class' => 'w50'],
+            'sql' => ['type' => Types::INTEGER, 'notnull' => false, 'default' => 0],
         ],
         'quantity' => [
             'inputType' => 'text',

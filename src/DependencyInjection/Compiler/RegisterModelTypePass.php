@@ -49,10 +49,16 @@ class RegisterModelTypePass implements CompilerPassInterface
 
                 if ($this->withCategory) {
                     $category = $attributes['category'] ?? 'miscellaneous';
-                    $types[$category][] = $type;
+
+                    if ('' === $category) {
+                        $types[$type] = $type;
+                    } else {
+                        $types[$category][$type] = $type;
+                    }
                 } else {
-                    $types[] = $type;
+                    $types[$type] = $type;
                 }
+
                 $factories[$type] = new Reference($this->getFactory($definition, $attributes));
             }
 
