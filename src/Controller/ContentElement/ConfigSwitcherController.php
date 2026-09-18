@@ -26,6 +26,10 @@ class ConfigSwitcherController extends AbstractContentElementController
 
     protected function getResponse(FragmentTemplate $template, ContentModel $model, Request $request): Response
     {
+        if ($this->isBackendScope($request)) {
+            return new Response();
+        }
+
         $formId = 'iso_configswitcher_'.$model->id;
         $configIds = StringUtil::csv($model->iso_config_ids, intval(...));
         $configTotal = \count($configIds);

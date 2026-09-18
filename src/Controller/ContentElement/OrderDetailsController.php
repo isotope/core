@@ -42,6 +42,10 @@ class OrderDetailsController extends AbstractContentElementController
 
     protected function getResponse(FragmentTemplate $template, ContentModel $model, Request $request): Response
     {
+        if ($this->isBackendScope($request)) {
+            return new Response();
+        }
+
         Input::setUnusedRouteParameters([]); // Disable check on custom page controller
 
         $identifier = ltrim($request->attributes->getString('parameters'), '/');

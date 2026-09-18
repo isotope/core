@@ -24,6 +24,10 @@ class OrderHistoryController extends AbstractContentElementController
 
     protected function getResponse(FragmentTemplate $template, ContentModel $model, Request $request): Response
     {
+        if ($this->isBackendScope($request)) {
+            return new Response();
+        }
+
         $user = $this->getUser();
         $configIds = StringUtil::csv($model->iso_config_ids, intval(...));
 

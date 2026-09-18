@@ -36,6 +36,10 @@ class CheckoutController extends AbstractContentElementController
 
     protected function getResponse(FragmentTemplate $template, ContentModel $model, Request $request): Response
     {
+        if ($this->isBackendScope($request)) {
+            return new Response();
+        }
+
         $this->enforceMemberLogin($model);
 
         $context = $this->getStoreContext();
