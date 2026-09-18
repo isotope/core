@@ -20,6 +20,7 @@ use Contao\Model\Collection;
  * @property string $amount
  * @property string $amount_from
  * @property string $amount_to
+ * @property string $product_types
  * @property string $member_group
  * @property string $config_ids
  * @property string $currencies

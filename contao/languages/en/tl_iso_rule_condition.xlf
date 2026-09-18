@@ -53,6 +53,12 @@
       <trans-unit id="tl_iso_rule_condition.amount_to.1">
         <source>Please enter the maximum amount.</source>
       </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.product_types.0">
+        <source>Product types</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.product_types.1">
+        <source>Choose the product types.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_rule_condition.member_groups.0">
         <source>Member groups</source>
       </trans-unit>
@@ -157,6 +163,9 @@
       </trans-unit>
       <trans-unit id="tl_iso_rule_condition.operator.has_none">
         <source>not in</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.operator.has_only">
+        <source>only</source>
       </trans-unit>
       <trans-unit id="tl_iso_rule_condition.operator.logged_in">
         <source>Customer is logged in</source>

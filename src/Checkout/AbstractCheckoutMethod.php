@@ -7,7 +7,6 @@ namespace Isotope\CoreBundle\Checkout;
 use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use Isotope\CoreBundle\ModelType\AbstractModelType;
 use Isotope\CoreBundle\ModelType\ContainerAwareInterface;
-use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\RuleBuilder\RuleMatcher;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Price\PriceDefinition;
@@ -25,13 +24,6 @@ abstract class AbstractCheckoutMethod extends AbstractModelType implements Conta
     protected bool $percentage = false;
 
     protected int $rule = 0;
-
-    /**
-     * @var array<int>|null
-     */
-    protected array|null $allowedProductTypes = null;
-
-    protected ProductTypeCondition $productTypesCondition = ProductTypeCondition::onlyAvailable;
 
     protected bool $debug = false;
 
@@ -98,14 +90,6 @@ abstract class AbstractCheckoutMethod extends AbstractModelType implements Conta
         return $this;
     }
 
-    public function setAllowedProductTypes(array|null $ids, ProductTypeCondition $condition): static
-    {
-        $this->allowedProductTypes = $ids;
-        $this->productTypesCondition = $condition;
-
-        return $this;
-    }
-
     public function isDebug(): bool
     {
         return $this->debug;
@@ -159,34 +143,6 @@ abstract class AbstractCheckoutMethod extends AbstractModelType implements Conta
             && !$this->get(RuleMatcher::class)->isApplicable($this->rule, $this->context)
         ) {
             return false;
-        }
-
-        if (null !== $this->allowedProductTypes && ($cart = $this->context->getCart())) {
-            $items = $cart->getLineItems()->products();
-            $types = [];
-
-            foreach ($items as $item) {
-                $product = $item->getProduct();
-
-                if ($product instanceof CoreProduct) {
-                    $types[] = (int) $product->getProductType()->id;
-                } elseif (ProductTypeCondition::onlyAvailable === $this->productTypesCondition) {
-                    // If one product in collection is not of given type, shipping method is not available
-                    return false;
-                }
-            }
-
-            $types = array_unique($types);
-            $available = match ($this->productTypesCondition) {
-                ProductTypeCondition::onlyAvailable => [] === array_diff($types, $this->allowedProductTypes),
-                ProductTypeCondition::notAvailable => [] === array_intersect($this->allowedProductTypes, $types),
-                ProductTypeCondition::oneAvailable => [] !== array_intersect($this->allowedProductTypes, $types),
-                ProductTypeCondition::allAvailable => array_intersect($this->allowedProductTypes, $types) === $this->allowedProductTypes,
-            };
-
-            if (!$available) {
-                return false;
-            }
         }
 
         return true;

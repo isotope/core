@@ -7,6 +7,7 @@ namespace Isotope\CoreBundle\EventListener\DataContainer\RuleCondition;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\DataContainer;
 use Isotope\CoreBundle\Model\RuleConditionModel;
+use Isotope\CoreBundle\ModelType\Exception\FactoryNotFoundException;
 use Isotope\CoreBundle\ModelType\RuleConditionRegistry;
 use Isotope\CoreBundle\Store\Context\StoreContextFactory;
 
@@ -26,6 +27,12 @@ class OperatorOptionsListener
 
     private function getOperators(int $id): array
     {
-        return $this->conditionRegistry->get(RuleConditionModel::findById($id), $this->contextFactory->createBackend())?->getOperators() ?? [];
+        try {
+            return $this->conditionRegistry
+                ->get(RuleConditionModel::findById($id), $this->contextFactory->createBackend())
+                ?->getOperators() ?? [];
+        } catch (FactoryNotFoundException) {
+            return [];
+        }
     }
 }

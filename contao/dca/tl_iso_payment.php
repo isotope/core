@@ -2,7 +2,6 @@
 
 use Contao\DataContainer;
 use Contao\DC_Table;
-use Isotope\CoreBundle\Checkout\ProductTypeCondition;
 
 $GLOBALS['TL_DCA']['tl_iso_payment'] = [
     'config' => [
@@ -31,8 +30,8 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = [
     'palettes' => [
         '__selector__' => ['type'],
         'default' => '{type_legend},name,label,type',
-        'cash' => '{type_legend},type,name,label;{note_legend:hide},note;{checkout_legend},processing_status;{config_legend},shipping_modules,product_types,product_types_condition,rule;{price_legend:hide},price,tax_class;{enabled_legend},enabled',
-        'paypal' => '{type_legend},type,name,label;{note_legend:hide},note;{checkout_legend},processing_status,paid_status,failed_status;{config_legend},shipping_modules,product_types,product_types_condition,rule;{gateway_legend},paypal_account;{price_legend:hide},price,tax_class;{enabled_legend},enabled,debug',
+        'cash' => '{type_legend},type,name,label;{note_legend:hide},note;{checkout_legend},processing_status;{config_legend},shipping_modules,rule;{price_legend:hide},price,tax_class;{enabled_legend},enabled',
+        'paypal' => '{type_legend},type,name,label;{note_legend:hide},note;{checkout_legend},processing_status,paid_status,failed_status;{config_legend},shipping_modules,rule;{gateway_legend},paypal_account;{price_legend:hide},price,tax_class;{enabled_legend},enabled,debug',
     ],
     'fields' => [
         'id' => [
@@ -101,19 +100,6 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = [
             'eval' => ['tl_class' => 'clr'],
             'sql' => 'int(10) unsigned NOT NULL default 0',
             'relation' => ['type' => 'hasOne'],
-        ],
-        'product_types' => [
-            'inputType' => 'select',
-            'foreignKey' => 'tl_iso_producttype.name',
-            'eval' => ['multiple' => true, 'size' => 8, 'csv' => ',', 'tl_class' => 'clr w50', 'chosen' => true],
-            'sql' => 'blob NULL',
-            'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
-        ],
-        'product_types_condition' => [
-            'inputType' => 'select',
-            'enum' => ProductTypeCondition::class,
-            'eval' => ['tl_class' => 'w50'],
-            'sql' => "varchar(16) NOT NULL default ''",
         ],
         'paypal_account' => [
             'inputType' => 'text',

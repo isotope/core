@@ -13,7 +13,6 @@ use Isotope\CoreBundle\ModelType\ModelInstanceTrait;
 use Isotope\CoreBundle\ModelType\ModelTypeFactoryInterface;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Price\PriceDefinition;
-use Isotope\CoreBundle\Util\StringUtil;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -46,7 +45,6 @@ abstract class AbstractCheckoutMethodFactory implements ModelTypeFactoryInterfac
             ->setNote((string) $model->note)
             ->setPriceDefinition(PriceDefinition::fromString((string) $model->price, (int) $model->tax_class))
             ->setRule((int) $model->rule)
-            ->setAllowedProductTypes(StringUtil::csv($model->product_types, intval(...)), ProductTypeCondition::from($model->product_types_condition))
             ->setDebug((bool) $model->debug)
             ->setEnabled((bool) $model->enabled)
         ;

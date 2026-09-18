@@ -18,8 +18,6 @@ use Contao\Model;
  * @property string $failed_status
  * @property int    $rule
  * @property string $shipping_modules
- * @property string $product_types
- * @property string $product_types_condition
  * @property string $price
  * @property int    $tax_class
  * @property bool   $enabled

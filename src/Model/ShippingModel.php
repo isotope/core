@@ -20,8 +20,6 @@ use Contao\Model;
  * @property string $shipping_weight
  * @property string $minimum_weight
  * @property string $maximum_weight
- * @property string $product_types
- * @property string $product_types_condition
  * @property bool   $enabled
  * @property bool   $debug
  * @property bool   $inherit

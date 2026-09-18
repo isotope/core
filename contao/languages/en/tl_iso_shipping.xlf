@@ -125,18 +125,6 @@
       <trans-unit id="tl_iso_shipping.maximum_weight.1">
         <source>Enter a maximum weight to control availability based on the products in cart.</source>
       </trans-unit>
-      <trans-unit id="tl_iso_shipping.product_types.0">
-        <source>Product types</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_shipping.product_types.1">
-        <source>You can restrict this shipping method to certain product types. If the cart contains a product type you have not selected, the shipping module is not available.</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_shipping.product_types_condition.0">
-        <source>Product type condition</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_shipping.product_types_condition.1">
-        <source>Select how the product type filter should be applied.</source>
-      </trans-unit>
       <trans-unit id="tl_iso_shipping.group_methods.0">
         <source>Shipping methods</source>
       </trans-unit>

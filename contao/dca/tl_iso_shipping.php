@@ -2,7 +2,6 @@
 
 use Contao\DataContainer;
 use Contao\DC_Table;
-use Isotope\CoreBundle\Checkout\ProductTypeCondition;
 use Isotope\CoreBundle\Checkout\Shipping\FlatCalculation;
 use Isotope\CoreBundle\Checkout\Shipping\GroupCalculation;
 use Isotope\CoreBundle\Checkout\Shipping\ProductCalculation;
@@ -34,8 +33,8 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
     'palettes' => [
         '__selector__' => ['type', 'flatCalculation', 'group_calculation', 'inherit'],
         'default' => '{title_legend},name,label,type',
-        'flat' => '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},price,tax_class,shipping_weight,flatCalculation;{config_legend},minimum_weight,maximum_weight,product_types,product_types_condition,rule;{order_legend},tracking_url;{enabled_legend},enabled',
-        'product_price' => '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},tax_class,shipping_weight,productCalculation;{config_legend},minimum_weight,maximum_weight,product_types,product_types_condition,rule;{order_legend},tracking_url;{enabled_legend},enabled',
+        'flat' => '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},price,tax_class,shipping_weight,flatCalculation;{config_legend},minimum_weight,maximum_weight,rule;{order_legend},tracking_url;{enabled_legend},enabled',
+        'product_price' => '{title_legend},type,name,label;{note_legend:hide},note;{price_legend},tax_class,shipping_weight,productCalculation;{config_legend},minimum_weight,maximum_weight,rule;{order_legend},tracking_url;{enabled_legend},enabled',
         'group' => '{title_legend},type,inherit,name,label;{note_legend:hide},note;{config_legend},group_methods,rule;{price_legend},group_calculation;{enabled_legend},enabled',
         'groupinherit' => '{title_legend},type,inherit,name;{config_legend},group_methods,rule;{price_legend},group_calculation;{enabled_legend},enabled',
     ],
@@ -111,19 +110,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
             'reference' => &$GLOBALS['TL_LANG']['WGT'],
             'eval' => ['rgxp' => 'digit', 'tl_class' => 'w50'],
             'sql' => "varchar(255) NOT NULL default ''",
-        ],
-        'product_types' => [
-            'inputType' => 'select',
-            'foreignKey' => 'tl_iso_producttype.name',
-            'eval' => ['multiple' => true, 'size' => 8, 'csv' => ',', 'chosen' => true, 'tl_class' => 'clr w50'],
-            'sql' => 'blob NULL',
-            'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
-        ],
-        'product_types_condition' => [
-            'inputType' => 'select',
-            'enum' => ProductTypeCondition::class,
-            'eval' => ['tl_class' => 'w50'],
-            'sql' => "varchar(16) NOT NULL default ''",
         ],
         'price' => [
             'inputType' => 'text',

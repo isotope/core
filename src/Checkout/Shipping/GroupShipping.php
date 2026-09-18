@@ -152,7 +152,7 @@ class GroupShipping extends AbstractShipping
                 return $return;
 
             case GroupCalculation::sum:
-                $total = null;
+                $total = 0;
 
                 foreach ($this->getPrices() as $price) {
                     $total += $price[1]->getUnitPrice();

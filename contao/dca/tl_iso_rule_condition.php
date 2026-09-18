@@ -39,6 +39,7 @@ $GLOBALS['TL_DCA']['tl_iso_rule_condition'] = [
         'cart_quantityrange' => '{condition_legend},type,operator,quantity_from,quantity_to',
         'cart_products' => '{condition_legend},type,operator,quantity',
         'cart_productsrange' => '{condition_legend},type,operator,quantity_from,quantity_to',
+        'cart_producttypes' => '{condition_legend},type,operator,product_types',
         'member_group' => '{condition_legend},type,operator,member_groups',
         'member_authenticated' => '{condition_legend},type,operator',
         'store_config' => '{condition_legend},type,operator,config_ids',
@@ -98,6 +99,12 @@ $GLOBALS['TL_DCA']['tl_iso_rule_condition'] = [
         'amount_to' => [
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'rgxp' => 'price', 'tl_class' => 'w50'],
+            'sql' => ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TINYTEXT, 'notnull' => false],
+        ],
+        'product_types' => [
+            'inputType' => 'checkbox',
+            'foreignKey' => 'tl_iso_producttype.name',
+            'eval' => ['mandatory' => true, 'multiple' => true, 'csv' => ','],
             'sql' => ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TINYTEXT, 'notnull' => false],
         ],
         'member_groups' => [
