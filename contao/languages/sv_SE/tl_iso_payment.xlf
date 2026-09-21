@@ -77,22 +77,6 @@
         <source>You can restrict this payment method to certain shipping methods (e.g. Cash only when picking up).</source>
         <target>Du kan begränsa denna betalningsmetod till vissa fraktmetoder (t.ex. endast kontanter vid hämtning).</target>
       </trans-unit>
-      <trans-unit id="tl_iso_payment.product_types.0">
-        <source>Product types</source>
-        <target>Produkttyper</target>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.product_types.1">
-        <source>You can restrict this payment method to certain product types. If the cart contains a product type you have not selected, the payment method is not available.</source>
-        <target>Du kan begränsa denna betalningsmetod till vissa produkttyper. Om varukorgen innehåller en produkttyp som du inte har valt är betalningsmetoden inte tillgänglig.</target>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.product_types_condition.0">
-        <source>Product type condition</source>
-        <target>Produkttyp skick</target>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.product_types_condition.1">
-        <source>Select how the product type filter should be applied.</source>
-        <target>Välj hur produkttypfiltret ska tillämpas.</target>
-      </trans-unit>
       <trans-unit id="tl_iso_payment.paypal_account.0">
         <source>PayPal Account</source>
         <target>PayPal Account</target>

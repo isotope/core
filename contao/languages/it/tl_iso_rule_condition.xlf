@@ -21,6 +21,12 @@
         <source>Select the condition operator.</source>
         <target>Selezionare l&apos;operatore di condizione.</target>
       </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.rule.0">
+        <source>Rule</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.rule.1">
+        <source>Select a rule that is not the current one.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_rule_condition.quantity.0">
         <source>Quantity</source>
         <target>Quantità</target>
@@ -68,6 +74,12 @@
       <trans-unit id="tl_iso_rule_condition.amount_to.1">
         <source>Please enter the maximum amount.</source>
         <target>Inserisci l&apos;importo massimo.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.product_types.0">
+        <source>Product types</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.product_types.1">
+        <source>Choose the product types.</source>
       </trans-unit>
       <trans-unit id="tl_iso_rule_condition.member_groups.0">
         <source>Member groups</source>
@@ -208,6 +220,9 @@
       <trans-unit id="tl_iso_rule_condition.operator.has_none">
         <source>not in</source>
         <target>non in</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.operator.has_only">
+        <source>only</source>
       </trans-unit>
       <trans-unit id="tl_iso_rule_condition.operator.logged_in">
         <source>Customer is logged in</source>

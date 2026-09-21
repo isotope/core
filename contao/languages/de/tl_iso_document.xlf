@@ -35,9 +35,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_document.documentTitle.1">
         <source>You can use simple tokens (&quot;collection_*&quot; whereas * equals the database column of the collection) to render your file title (e.g. &quot;Invoice ##collection_document_number##&quot;).</source>
+        <target>Sie können einfache Platzhalter (&quot;collection_*&quot;, wobei * für die Datensatzspalte der Sammlung steht) verwenden, um Ihren Dateinamen darzustellen (z. B. &quot;Rechnung ##collection_document_number##&quot;).</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.fileTitle.0">
         <source>File name</source>
+        <target>Dateiname</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.fileTitle.1">
         <source>You can use simple tokens (&quot;collection_*&quot; whereas * equals the database column of the collection) to render your file title (e.g. &quot;invoice_##collection_document_number##&quot;).</source>
@@ -45,21 +47,27 @@
       </trans-unit>
       <trans-unit id="tl_iso_document.numberPrefix.0">
         <source>Document number prefix</source>
+        <target>Präfix für Dokumentennummern</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.numberPrefix.1">
         <source>You can add a prefix (e.g. fiscal year) to the auto-incrementing document number.</source>
+        <target>Sie können der automatisch hochgezählten Dokumentennummer ein Präfix (z. B. Geschäftsjahr) voranstellen.</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.numberDigits.0">
         <source>Document number length</source>
+        <target>Länge der Dokumentennummer</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.numberDigits.1">
         <source>Select the minimum length of the document number (not including document prefix).</source>
+        <target>Wählen Sie die Mindestlänge der Belegnummer aus (ohne Belegnummernpräfix).</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.customTpl.0">
         <source>Custom document template</source>
+        <target>Benutzerdefinierte Dokumentvorlage</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.customTpl.1">
         <source>Here you can select the document template.</source>
+        <target>Hier können Sie die Dokumentvorlage auswählen.</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.gallery.0">
         <source>Gallery</source>

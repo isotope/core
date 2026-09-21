@@ -840,6 +840,12 @@
         <source>Miscellaneous</source>
         <target>Diversen</target>
       </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.nested_rule.0">
+        <source>Rule</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.nested_rule.1">
+        <source>Checks if the given rule is valid.</source>
+      </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.cart">
         <source>Cart</source>
         <target>Winkelwagen</target>
@@ -869,6 +875,12 @@
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.cart_products.1">
         <source>Compares the given value to the total products in the cart (regardless of their quantity).</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.cart_producttypes.0">
+        <source>Product types in cart</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.cart_producttypes.1">
+        <source>Validate against whether certain, all or none of the selected product types are in the cart.</source>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.member">
         <source>Member</source>

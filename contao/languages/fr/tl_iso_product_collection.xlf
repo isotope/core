@@ -32,6 +32,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.transaction_status.0">
         <source>Payment status</source>
+        <target>État du paiement</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.transaction_status.1">
         <source>Select the payment status of this order.</source>
@@ -42,6 +43,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.delivery_status.0">
         <source>Shipping status</source>
+        <target>État de l&apos;expédition</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.delivery_status.1">
         <source>Select the delivery status of this order.</source>

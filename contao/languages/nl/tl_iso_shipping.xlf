@@ -144,20 +144,6 @@
         <source>Enter a maximum weight to control availability based on the products in cart.</source>
         <target>Vul een maximum gewicht in om beschikbaarheid te bepalen, gebaseerd op de producten in de winkelwagen. </target>
       </trans-unit>
-      <trans-unit id="tl_iso_shipping.product_types.0">
-        <source>Product types</source>
-        <target>Productsoorten</target>
-      </trans-unit>
-      <trans-unit id="tl_iso_shipping.product_types.1">
-        <source>You can restrict this shipping method to certain product types. If the cart contains a product type you have not selected, the shipping module is not available.</source>
-        <target>U kan deze verzendmethode beperken tot bepaalde product soorten. Als de winkelwagen een product soort bevat die niet geselecteerd is, is deze verzendmethode niet beschikbaar.</target>
-      </trans-unit>
-      <trans-unit id="tl_iso_shipping.product_types_condition.0">
-        <source>Product type condition</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_shipping.product_types_condition.1">
-        <source>Select how the product type filter should be applied.</source>
-      </trans-unit>
       <trans-unit id="tl_iso_shipping.group_methods.0">
         <source>Shipping methods</source>
         <target>Verzendmethoden</target>

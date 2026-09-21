@@ -144,20 +144,6 @@
         <source>Enter a maximum weight to control availability based on the products in cart.</source>
         <target>Entrez un poids maximum pour contrôler la disponibilité basée sur les produits dans le panier.</target>
       </trans-unit>
-      <trans-unit id="tl_iso_shipping.product_types.0">
-        <source>Product types</source>
-        <target>Types de produits</target>
-      </trans-unit>
-      <trans-unit id="tl_iso_shipping.product_types.1">
-        <source>You can restrict this shipping method to certain product types. If the cart contains a product type you have not selected, the shipping module is not available.</source>
-        <target>Limiter le mode de livraison pour certains types de produits. Si le panier contient un type de produit non sélectionné, le module d&apos;expédition n&apos;est pas disponible.</target>
-      </trans-unit>
-      <trans-unit id="tl_iso_shipping.product_types_condition.0">
-        <source>Product type condition</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_shipping.product_types_condition.1">
-        <source>Select how the product type filter should be applied.</source>
-      </trans-unit>
       <trans-unit id="tl_iso_shipping.group_methods.0">
         <source>Shipping methods</source>
         <target>Modes de livraison</target>

@@ -1,0 +1,54 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="contao/languages/en/tl_iso_orderstatus.xlf" source-language="en" target-language="de">
+    <body>
+      <trans-unit id="tl_iso_order_document.type.0">
+        <source>Type</source>
+        <target>Typ</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_order_document.type.1">
+        <source>Please select the document type.</source>
+        <target>Bitte wählen Sie die Dokumenttyp aus.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_order_document.document_number.0">
+        <source>Document Number</source>
+        <target>Dokumentennummer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_order_document.download.0">
+        <source>Download</source>
+        <target>Download</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_order_document.download.1">
+        <source>Download file of order document ID %s</source>
+        <target>Datei mit der Dokumentennummer %s herunterladen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_order_document.show.1">
+        <source>Show details of order document ID %s</source>
+        <target>Details zur Dokumentennummer %s anzeigen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_order_document.general_legend">
+        <source>Document Type</source>
+        <target>Dokumenttyp</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_order_document.preview_legend">
+        <source>Preview</source>
+        <target>Vorschau</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_order_document.create.0">
+        <source>New Document</source>
+        <target>Neues Dokument</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_order_document.create.1">
+        <source>Add a new document for order ID %s</source>
+        <target>Neues Dokument für die Bestellnummer %s hinzufügen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_order_document.create.2">
+        <source>Create document</source>
+        <target>Dokument erstellen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_order_document.preview">
+        <source>Please select a document type to get a preview.</source>
+        <target>Bitte wählen Sie einen Dokumenttyp aus, um eine Vorschau anzuzeigen.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

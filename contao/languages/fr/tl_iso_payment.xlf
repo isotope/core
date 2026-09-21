@@ -67,20 +67,6 @@
         <source>You can restrict this payment method to certain shipping methods (e.g. Cash only when picking up).</source>
         <target>Vous pouvez limiter ce mode de paiement à certains modes de livraison (par exemple, en espèces uniquement lors du ramassage).</target>
       </trans-unit>
-      <trans-unit id="tl_iso_payment.product_types.0">
-        <source>Product types</source>
-        <target>Types de produits</target>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.product_types.1">
-        <source>You can restrict this payment method to certain product types. If the cart contains a product type you have not selected, the payment method is not available.</source>
-        <target>Limiter ce mode de paiement pour certains types de produits. Si le panier contient un type de produit que vous n&apos;avez pas sélectionné, le module de paiement n&apos;est pas disponible.</target>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.product_types_condition.0">
-        <source>Product type condition</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.product_types_condition.1">
-        <source>Select how the product type filter should be applied.</source>
-      </trans-unit>
       <trans-unit id="tl_iso_payment.paypal_account.0">
         <source>PayPal Account</source>
         <target>Compte PayPal</target>

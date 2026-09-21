@@ -71,7 +71,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.date_paid.1">
         <source>Enter a date when this order has been paid.</source>
-        <target>Geben Sie an wann (Datum) diese Bestellung bezahlt wurde.</target>
+        <target>Geben Sie das Datum an wann diese Bestellung bezahlt wurde.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.date_shipped.0">
         <source>Shipped date</source>
@@ -79,7 +79,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.date_shipped.1">
         <source>Enter a date when this order has been shipped.</source>
-        <target>Geben Sie an wann (Datum) diese Bestellung versandt wurde.</target>
+        <target>Geben Sie das Datum an wann diese Bestellung versandt wurde.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.sendNotification.0">
         <source>Send a notification</source>
@@ -203,6 +203,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.documents.1">
         <source>List documents of order ID %s</source>
+        <target>Dokumente zur Bestellnummer %s auflisten</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.orderStatusUpdate">
         <source>The status of your order has been updated.</source>

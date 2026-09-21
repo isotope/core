@@ -144,22 +144,6 @@
         <source>Enter a maximum weight to control availability based on the products in cart.</source>
         <target>Uygunluğu, alışveriş sepetindeki ürünler temel alınarak kontrol etmek için maksimum bir ağırlık girin.</target>
       </trans-unit>
-      <trans-unit id="tl_iso_shipping.product_types.0">
-        <source>Product types</source>
-        <target>Ürün tipleri </target>
-      </trans-unit>
-      <trans-unit id="tl_iso_shipping.product_types.1">
-        <source>You can restrict this shipping method to certain product types. If the cart contains a product type you have not selected, the shipping module is not available.</source>
-        <target>Bu nakliye yöntemini belirli ürün türlerine göre kısıtlayabilirsiniz. Alışveriş sepeti, seçmediğiniz bir ürün türünü içeriyorsa, gönderim modülü kullanılamaz.</target>
-      </trans-unit>
-      <trans-unit id="tl_iso_shipping.product_types_condition.0">
-        <source>Product type condition</source>
-        <target>Ürün tipi koşulu</target>
-      </trans-unit>
-      <trans-unit id="tl_iso_shipping.product_types_condition.1">
-        <source>Select how the product type filter should be applied.</source>
-        <target>Ürün tipi filtresinin nasıl uygulanacağını seçin.</target>
-      </trans-unit>
       <trans-unit id="tl_iso_shipping.group_methods.0">
         <source>Shipping methods</source>
         <target>Nakliye yöntemleri </target>
