@@ -2,14 +2,12 @@
 
 use Contao\DataContainer;
 use Contao\DC_Table;
-use Contao\Input;
 
 $GLOBALS['TL_DCA']['tl_iso_address'] = [
     'config' => [
         'dataContainer' => DC_Table::class,
         'enableVersioning' => false,
         'notSortable' => true,
-        'ptable' => '',
         'dynamicPtable' => true,
         'sql' => [
             'keys' => [
@@ -58,7 +56,7 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = [
             'inputType' => 'select',
             'options' => ['male', 'female', 'other'],
             'reference' => &$GLOBALS['TL_LANG']['MSC'],
-            'eval' => ['includeBlankOption' => true, 'feEditable' => true, 'feGroup' => 'personal', 'tl_class' => 'w50'],
+            'eval' => ['includeBlankOption' => true, 'feEditable' => true, 'feGroup' => 'personal', 'tl_class' => 'w50',  'autocomplete' => 'sex'],
             'sql' => "varchar(32) NOT NULL default ''",
         ],
         'salutation' => [
@@ -69,26 +67,26 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = [
         'firstname' => [
             'search' => true,
             'inputType' => 'text',
-            'eval' => ['mandatory' => true, 'maxlength' => 255, 'feEditable' => true, 'feGroup' => 'personal', 'tl_class' => 'w50'],
+            'eval' => ['mandatory' => true, 'maxlength' => 255, 'feEditable' => true, 'feGroup' => 'personal', 'tl_class' => 'w50', 'autocomplete' => 'given-name'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'lastname' => [
             'search' => true,
             'flag' => DataContainer::SORT_INITIAL_LETTER_ASC,
             'inputType' => 'text',
-            'eval' => ['mandatory' => true, 'maxlength' => 255, 'feEditable' => true, 'feGroup' => 'personal', 'tl_class' => 'w50'],
+            'eval' => ['mandatory' => true, 'maxlength' => 255, 'feEditable' => true, 'feGroup' => 'personal', 'tl_class' => 'w50',  'autocomplete' => 'family-name'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'dateOfBirth' => [
             'inputType' => 'text',
-            'eval' => ['rgxp' => 'date', 'datepicker' => true, 'feEditable' => true, 'feViewable' => true, 'feGroup' => 'personal', 'tl_class' => 'w50'],
+            'eval' => ['rgxp' => 'date', 'datepicker' => true, 'feEditable' => true, 'feViewable' => true, 'feGroup' => 'personal', 'tl_class' => 'w50',  'autocomplete' => 'bday'],
             'sql' => "varchar(11) NOT NULL default ''",
         ],
         'company' => [
             'search' => true,
             'flag' => DataContainer::SORT_INITIAL_LETTER_ASC,
             'inputType' => 'text',
-            'eval' => ['mandatory' => false, 'maxlength' => 255, 'feEditable' => true, 'feGroup' => 'address', 'tl_class' => 'w50'],
+            'eval' => ['mandatory' => false, 'maxlength' => 255, 'feEditable' => true, 'feGroup' => 'address', 'tl_class' => 'w50', 'autocomplete' => 'organization'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'vat_no' => [
@@ -100,65 +98,56 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = [
         'street_1' => [
             'search' => true,
             'inputType' => 'text',
-            'eval' => ['mandatory' => true, 'maxlength' => 255, 'feEditable' => true, 'feGroup' => 'address', 'tl_class' => 'w50'],
+            'eval' => ['mandatory' => true, 'maxlength' => 255, 'feEditable' => true, 'feGroup' => 'address', 'tl_class' => 'w50', 'autocomplete' => 'address-line1'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'street_2' => [
             'search' => true,
             'inputType' => 'text',
-            'eval' => ['maxlength' => 255, 'feEditable' => true, 'feGroup' => 'address', 'tl_class' => 'w50'],
+            'eval' => ['maxlength' => 255, 'feEditable' => true, 'feGroup' => 'address', 'tl_class' => 'w50', 'autocomplete' => 'address-line2'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'street_3' => [
             'search' => true,
             'inputType' => 'text',
-            'eval' => ['maxlength' => 255, 'feEditable' => true, 'feGroup' => 'address', 'tl_class' => 'w50'],
+            'eval' => ['maxlength' => 255, 'feEditable' => true, 'feGroup' => 'address', 'tl_class' => 'w50', 'autocomplete' => 'address-line3'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'postal' => [
             'search' => true,
             'inputType' => 'text',
-            'eval' => ['mandatory' => true, 'maxlength' => 32, 'feEditable' => true, 'feGroup' => 'address', 'tl_class' => 'clr w50'],
+            'eval' => ['mandatory' => true, 'maxlength' => 32, 'feEditable' => true, 'feGroup' => 'address', 'tl_class' => 'clr w50', 'autocomplete' => 'postal-code'],
             'sql' => "varchar(32) NOT NULL default ''",
         ],
         'city' => [
             'filter' => true,
             'search' => true,
             'inputType' => 'text',
-            'eval' => ['mandatory' => true, 'maxlength' => 255, 'feEditable' => true, 'feGroup' => 'address', 'tl_class' => 'w50'],
+            'eval' => ['mandatory' => true, 'maxlength' => 255, 'feEditable' => true, 'feGroup' => 'address', 'tl_class' => 'w50', 'autocomplete' => 'address-level2'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'subdivision' => [
             'inputType' => 'conditionalselect',
-            'eval' => ['feEditable' => true, 'feGroup' => 'address', 'conditionField' => 'country', 'includeBlankOption' => true, 'tl_class' => 'w50'],
+            'eval' => ['feEditable' => true, 'feGroup' => 'address', 'conditionField' => 'country', 'includeBlankOption' => true, 'tl_class' => 'w50', 'autocomplete' => 'address-level1'],
             'sql' => "varchar(10) NOT NULL default ''",
         ],
         'country' => [
             'filter' => true,
             'inputType' => 'select',
-            'eval' => ['mandatory' => true, 'feEditable' => true, 'feGroup' => 'address', 'tl_class' => 'w50', 'chosen' => true],
+            'eval' => ['mandatory' => true, 'feEditable' => true, 'feGroup' => 'address', 'tl_class' => 'w50', 'chosen' => true, 'autocomplete' => 'country'],
             'sql' => "varchar(32) NOT NULL default ''",
         ],
         'phone' => [
             'search' => true,
             'inputType' => 'text',
-            'eval' => ['mandatory' => false, 'maxlength' => 64, 'rgxp' => 'phone', 'feEditable' => true, 'feGroup' => 'contact', 'tl_class' => 'w50'],
+            'eval' => ['mandatory' => false, 'maxlength' => 64, 'rgxp' => 'phone', 'feEditable' => true, 'feGroup' => 'contact', 'tl_class' => 'w50', 'autocomplete' => 'tel'],
             'sql' => "varchar(64) NOT NULL default ''",
         ],
         'email' => [
             'search' => true,
             'inputType' => 'text',
-            'eval' => ['mandatory' => true, 'maxlength' => 64, 'rgxp' => 'email', 'feEditable' => true, 'feGroup' => 'contact', 'tl_class' => 'w50'],
+            'eval' => ['mandatory' => true, 'maxlength' => 64, 'rgxp' => 'email', 'feEditable' => true, 'feGroup' => 'contact', 'tl_class' => 'w50', 'autocomplete' => 'email'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
     ],
 ];
-
-/*
- * Dynamically add parent table
- */
-if ('member' === Input::get('do')) {
-    $GLOBALS['TL_DCA']['tl_iso_address']['config']['ptable'] = 'tl_member';
-} elseif ('iso_orders' === Input::get('do')) {
-    $GLOBALS['TL_DCA']['tl_iso_address']['config']['ptable'] = 'tl_iso_product_collection';
-}
