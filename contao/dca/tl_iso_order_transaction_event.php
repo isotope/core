@@ -5,8 +5,6 @@ use Doctrine\DBAL\Types\Types;
 $GLOBALS['TL_DCA']['tl_iso_order_transaction_event'] = [
     'config' => [
         'ptable' => 'tl_iso_order_transaction',
-        'backendSearchIgnore' => true,
-        'permissions' => [],
         'sql' => [
             'keys' => [
                 'id' => 'primary',
