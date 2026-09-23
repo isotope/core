@@ -15,7 +15,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_download.downloads_allowed.1">
         <source>The number of times these file(s) can be downloaded per order (multiplied by the quantity sold). Enter 0 for unlimited downloads.</source>
-        <target>Il numero di volte che questo file può essere messo in download  moltiplicato l'ordine (moltiplicato per la quantità venduta). Inserisca 0 per numero illimitato di download</target>
+        <target>Il numero di volte che questo file può essere messo in download  moltiplicato l&apos;ordine (moltiplicato per la quantità venduta). Inserisca 0 per numero illimitato di download</target>
       </trans-unit>
       <trans-unit id="tl_iso_download.expires.0">
         <source>Expiration</source>
@@ -63,7 +63,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_download.cut.1">
         <source>Move download ID %s</source>
-        <target>Trasferimento dell'ID %s di download </target>
+        <target>Trasferimento dell&apos;ID %s di download </target>
       </trans-unit>
       <trans-unit id="tl_iso_download.delete.0">
         <source>Delete download</source>

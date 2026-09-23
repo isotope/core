@@ -7,7 +7,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.document_number.0">
         <source>Order Number</source>
-        <target>Numero d'ordine</target>
+        <target>Numero d&apos;ordine</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.member.0">
         <source>Member (empty for guests)</source>
@@ -155,7 +155,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.payment.1">
         <source>Show payment details of order ID %s</source>
-        <target>Mostra dettagli pagamento per l'ordine ID %s</target>
+        <target>Mostra dettagli pagamento per l&apos;ordine ID %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.shipping.0">
         <source>Shipping details</source>
@@ -163,7 +163,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.shipping.1">
         <source>Show shipping details of order ID %s</source>
-        <target>Mostra dettagli spedizione per l'ordine ID %s</target>
+        <target>Mostra dettagli spedizione per l&apos;ordine ID %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.print_document.0">
         <source>Print a document</source>
@@ -203,11 +203,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.saferpayStatusError">
         <source>Saferpay payment could not be captured! Please check &lt;a href=&quot;https://www.saferpay.com/BO/Login/&quot; target=&quot;_blank&quot;&gt;the Saferpay web interface&lt;/a&gt;.</source>
-        <target>Il pagamento Saferpay non poteva essere effettuato! Si prega di controllare &lt;a href=&quot;https://www.saferpay.com/BO/Login/&quot; target=&quot;_blank&quot;&gt;l'interfaccia web di Saferpay&lt;/a&gt;.</target>
+        <target>Il pagamento Saferpay non poteva essere effettuato! Si prega di controllare &lt;a href=&quot;https://www.saferpay.com/BO/Login/&quot; target=&quot;_blank&quot;&gt;l&apos;interfaccia web di Saferpay&lt;/a&gt;.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.saferpayStatusCancel">
         <source>Saferpay payment cannot be canceled automatically. Use &lt;a href=&quot;https://www.saferpay.com/BO/Login/&quot; target=&quot;_blank&quot;&gt;the Saferpay web interface&lt;/a&gt; to issue a refund.</source>
-        <target>Il pagamento Saferpay non può essere annullato automaticamente. Utilizza &lt;a href=&quot;https://www.saferpay.com/BO/Login/&quot; target=&quot;_blank&quot;&gt;l'interfaccia web di Saferpay&lt;/a&gt; per ottenere un rimborso.</target>
+        <target>Il pagamento Saferpay non può essere annullato automaticamente. Utilizza &lt;a href=&quot;https://www.saferpay.com/BO/Login/&quot; target=&quot;_blank&quot;&gt;l&apos;interfaccia web di Saferpay&lt;/a&gt; per ottenere un rimborso.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.noEmailData">
         <source>No additional email data available.</source>
@@ -215,7 +215,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.updateOrderStatus">
         <source>Update order status</source>
-        <target>Aggiornare lo stato dell'ordine</target>
+        <target>Aggiornare lo stato dell&apos;ordine</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.noLogData">
         <source>No order logs are available.</source>

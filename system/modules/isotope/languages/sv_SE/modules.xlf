@@ -142,7 +142,7 @@
         <target>Önskelista Manager</target>
       </trans-unit>
       <trans-unit id="FMD.iso_wishlistmanager.1">
-        <source>Allows the current member to manage it's wishlists.</source>
+        <source>Allows the current member to manage it&apos;s wishlists.</source>
         <target>Tillåter den nuvarande medlemmen att hantera sina önskelistor.</target>
       </trans-unit>
       <trans-unit id="FMD.iso_wishlistviewer.0">

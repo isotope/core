@@ -15,7 +15,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.amount.1">
         <source>Enter the base amount (e.g. &quot;100&quot;).</source>
-        <target>Inserire l'importo di base (ad es. &quot;100&quot;).</target>
+        <target>Inserire l&apos;importo di base (ad es. &quot;100&quot;).</target>
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.label.0">
         <source>Label</source>
@@ -23,7 +23,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.label.1">
         <source>Enter a label for this base price (e.g. &quot;%s per 100g&quot;.)</source>
-        <target>Inserite un'etichetta per questo prezzo base (ad es. &quot;%s per 100g&quot;).</target>
+        <target>Inserite un&apos;etichetta per questo prezzo base (ad es. &quot;%s per 100g&quot;).</target>
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.new.0">
         <source>New base price</source>
@@ -39,7 +39,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.edit.1">
         <source>Edit base price ID %s</source>
-        <target>Modificare l'ID %s del prezzo base </target>
+        <target>Modificare l&apos;ID %s del prezzo base </target>
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.copy.0">
         <source>Duplicate base price</source>
@@ -47,7 +47,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.copy.1">
         <source>Duplicate base price ID %s</source>
-        <target>Duplicare l'ID %s del prezzo base </target>
+        <target>Duplicare l&apos;ID %s del prezzo base </target>
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.delete.0">
         <source>Delete base price</source>
@@ -55,7 +55,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.delete.1">
         <source>Delete base price ID %s</source>
-        <target>Cancellare l'ID %s del prezzo base</target>
+        <target>Cancellare l&apos;ID %s del prezzo base</target>
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.show.0">
         <source>Base price details</source>

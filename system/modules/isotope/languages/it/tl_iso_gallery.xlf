@@ -23,7 +23,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_gallery.anchor.1">
         <source>Select what anchor type should be generated on the image.</source>
-        <target>Selezionare quale tipo di ancoraggio deve essere generato sull'immagine.</target>
+        <target>Selezionare quale tipo di ancoraggio deve essere generato sull&apos;immagine.</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.placeholder.0">
         <source>Placeholder image</source>
@@ -39,7 +39,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_gallery.main_size.1">
         <source>Please enter a width and height for the main product image.</source>
-        <target>Inserire larghezza e altezza per l'immagine principale del prodotto.</target>
+        <target>Inserire larghezza e altezza per l&apos;immagine principale del prodotto.</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.gallery_size.0">
         <source>Gallery image size</source>
@@ -47,7 +47,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_gallery.gallery_size.1">
         <source>Please enter a width and height for the additional images.</source>
-        <target>Inserire una larghezza e un'altezza per le immagini aggiuntive.</target>
+        <target>Inserire una larghezza e un&apos;altezza per le immagini aggiuntive.</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.lightbox_template.0">
         <source>Lightbox template</source>
@@ -63,7 +63,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_gallery.lightbox_size.1">
         <source>Please enter a width and height for lightbox images.</source>
-        <target>Inserire una larghezza e un'altezza per le immagini lightbox.</target>
+        <target>Inserire una larghezza e un&apos;altezza per le immagini lightbox.</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.zoom_size.0">
         <source>Zoom image size</source>
@@ -71,7 +71,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_gallery.zoom_size.1">
         <source>Please enter a width and height for zoom images.</source>
-        <target>Inserire una larghezza e un'altezza per le immagini zoomate.</target>
+        <target>Inserire una larghezza e un&apos;altezza per le immagini zoomate.</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.zoom_windowSize.0">
         <source>Zoom window size</source>
@@ -79,7 +79,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_gallery.zoom_windowSize.1">
         <source>Optionally enter a width and height for the zoom window (defaults to 400x400).</source>
-        <target>Inserire opzionalmente una larghezza e un'altezza per la finestra di zoom (default 400x400).</target>
+        <target>Inserire opzionalmente una larghezza e un&apos;altezza per la finestra di zoom (default 400x400).</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.zoom_position.0">
         <source>Zoom window position</source>
@@ -175,7 +175,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_gallery.main_watermark_image.1">
         <source>Select an image if you want to add a watermark to the main product image.</source>
-        <target>Selezionare un'immagine se si desidera aggiungere una filigrana all'immagine principale del prodotto.</target>
+        <target>Selezionare un&apos;immagine se si desidera aggiungere una filigrana all&apos;immagine principale del prodotto.</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.main_watermark_position.0">
         <source>Main watermark position</source>
@@ -191,7 +191,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_gallery.gallery_watermark_image.1">
         <source>Select an image if you want to add a watermark to the gallery images.</source>
-        <target>Selezionare un'immagine se si desidera aggiungere una filigrana alle immagini della galleria.</target>
+        <target>Selezionare un&apos;immagine se si desidera aggiungere una filigrana alle immagini della galleria.</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.gallery_watermark_position.0">
         <source>Gallery watermark position</source>
@@ -207,7 +207,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_gallery.lightbox_watermark_image.1">
         <source>Select an image if you want to add a watermark to the lightbox images.</source>
-        <target>Selezionare un'immagine se si desidera aggiungere una filigrana alle immagini della lightbox.</target>
+        <target>Selezionare un&apos;immagine se si desidera aggiungere una filigrana alle immagini della lightbox.</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.lightbox_watermark_position.0">
         <source>Lightbox watermark position</source>
@@ -223,7 +223,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_gallery.zoom_watermark_image.1">
         <source>Select an image if you want to add a watermark to the zoom images.</source>
-        <target>Selezionare un'immagine se si desidera aggiungere una filigrana alle immagini zoomate.</target>
+        <target>Selezionare un&apos;immagine se si desidera aggiungere una filigrana alle immagini zoomate.</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.zoom_watermark_position.0">
         <source>Zoom watermark position</source>
@@ -319,7 +319,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_gallery.includeJQuery">
         <source>Make sure to include jQuery in your page layout for this gallery to work correctly.</source>
-        <target>Assicurarsi di includere jQuery nell'impaginazione affinché questa galleria funzioni correttamente.</target>
+        <target>Assicurarsi di includere jQuery nell&apos;impaginazione affinché questa galleria funzioni correttamente.</target>
       </trans-unit>
     </body>
   </file>

@@ -94,7 +94,7 @@
         <target>Tillgängliga länder</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.countries.1">
-        <source>Select the countries where this payment method may be used (customer's billing address).</source>
+        <source>Select the countries where this payment method may be used (customer&apos;s billing address).</source>
         <target>Välj de länder där denna betalningsmetod kan användas (kundens faktureringsadress).</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.shipping_modules.0">
@@ -258,7 +258,7 @@
         <target>Betalningsmetod</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.psp_payment_method.1">
-        <source>You can select a payment method here. Make sure your PSP contract also includes this payment method! If you don't select anything at all here, the customer will have to choose the preferred payment method on the PSP interface!</source>
+        <source>You can select a payment method here. Make sure your PSP contract also includes this payment method! If you don&apos;t select anything at all here, the customer will have to choose the preferred payment method on the PSP interface!</source>
         <target>Du kan välja en betalningsmetod här. Se till att ditt PSP-kontrakt även innehåller denna betalningsmetod! Om du inte väljer något alls här, måste kunden välja den föredragna betalningsmetoden på PSP-gränssnittet!</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.requireCCV.0">

@@ -3,7 +3,7 @@
     <body>
       <trans-unit id="ERR.systemColumn">
         <source>Name &quot;%s&quot; is reserved for system use. Please choose a different name.</source>
-        <target>Questo &quot;1%s&quot; nome è riservato per l'uso del sistema. 
+        <target>Questo &quot;1%s&quot; nome è riservato per l&apos;uso del sistema. 
 Si prega di scegliere un nome diverso.</target>
       </trans-unit>
       <trans-unit id="ERR.noStoreConfigurationSet">
@@ -20,7 +20,7 @@ Si prega di scegliere un nome diverso.</target>
       </trans-unit>
       <trans-unit id="ERR.orderNotFound">
         <source>The requested order was not found.</source>
-        <target>L'ordine richiesto non è stato trovato.</target>
+        <target>L&apos;ordine richiesto non è stato trovato.</target>
       </trans-unit>
       <trans-unit id="ERR.emptyWishlists">
         <source>You have not created any wishlists yet.</source>
@@ -56,7 +56,7 @@ Si prega di scegliere un nome diverso.</target>
       </trans-unit>
       <trans-unit id="ERR.cartMinSubtotal">
         <source>The minimum order amount is %s. Please add more products before checkout.</source>
-        <target>L'importo minimo dell'ordine è di %s. Si prega di aggiungere altri prodotti prima del checkout.</target>
+        <target>L&apos;importo minimo dell&apos;ordine è di %s. Si prega di aggiungere altri prodotti prima del checkout.</target>
       </trans-unit>
       <trans-unit id="ERR.productMinimumQuantity">
         <source>The minimum quantity for &quot;%s&quot; is %s items. Please check your shopping cart.</source>
@@ -68,7 +68,7 @@ Si prega di scegliere un nome diverso.</target>
       </trans-unit>
       <trans-unit id="ERR.datepickerRgxp">
         <source>Select an appropriate field validation (date, time, date and time) to enable the date picker.</source>
-        <target>Selezionare un'appropriata convalida del campo (data, ora, data e ora) per abilitare il selezionatore di data.</target>
+        <target>Selezionare un&apos;appropriata convalida del campo (data, ora, data e ora) per abilitare il selezionatore di data.</target>
       </trans-unit>
       <trans-unit id="ERR.emptyDownloadsFolder">
         <source>The selected folder is empty.</source>
@@ -108,7 +108,7 @@ Si prega di scegliere un nome diverso.</target>
       </trans-unit>
       <trans-unit id="ERR.oppTooMany">
         <source>The payment API currently does not support this many brands at a time.</source>
-        <target>L'API di pagamento non supporta attualmente così tanti prodotti</target>
+        <target>L&apos;API di pagamento non supporta attualmente così tanti prodotti</target>
       </trans-unit>
       <trans-unit id="MSC.selectGroup">
         <source>Only show this group</source>
@@ -348,7 +348,7 @@ Si prega di scegliere un nome diverso.</target>
       </trans-unit>
       <trans-unit id="MSC.reorderConfirmation">
         <source>The products of the selected order have been added to your shopping cart.</source>
-        <target>I prodotti dell'ordine selezionato sono stati aggiunti al carrello.</target>
+        <target>I prodotti dell&apos;ordine selezionato sono stati aggiunti al carrello.</target>
       </trans-unit>
       <trans-unit id="MSC.editProductLinkTitle">
         <source>Edit %s</source>
@@ -432,11 +432,11 @@ Si prega di scegliere un nome diverso.</target>
       </trans-unit>
       <trans-unit id="MSC.useBillingAddress">
         <source>Use billing address</source>
-        <target>Usare l'indirizzo di fatturazione</target>
+        <target>Usare l&apos;indirizzo di fatturazione</target>
       </trans-unit>
       <trans-unit id="MSC.useCustomerAddress">
         <source>Use customer address</source>
-        <target>Usare l'indirizzo del cliente</target>
+        <target>Usare l&apos;indirizzo del cliente</target>
       </trans-unit>
       <trans-unit id="MSC.differentShippingAddress">
         <source>Different shipping address</source>
@@ -464,7 +464,7 @@ Si prega di scegliere un nome diverso.</target>
       </trans-unit>
       <trans-unit id="MSC.iso_order_date">
         <source>Order date</source>
-        <target>Data dell'ordine</target>
+        <target>Data dell&apos;ordine</target>
       </trans-unit>
       <trans-unit id="MSC.iso_order_document_number">
         <source>Order number</source>
@@ -496,11 +496,11 @@ Si prega di scegliere un nome diverso.</target>
       </trans-unit>
       <trans-unit id="MSC.low_to_high">
         <source>lo to hi</source>
-        <target>dal basso all'alto</target>
+        <target>dal basso all&apos;alto</target>
       </trans-unit>
       <trans-unit id="MSC.high_to_low">
         <source>hi to lo</source>
-        <target>dall'alto al basso</target>
+        <target>dall&apos;alto al basso</target>
       </trans-unit>
       <trans-unit id="MSC.a_to_z">
         <source>A to Z</source>
@@ -512,11 +512,11 @@ Si prega di scegliere un nome diverso.</target>
       </trans-unit>
       <trans-unit id="MSC.old_to_new">
         <source>earlier to later</source>
-        <target>dal meno recente all'ultimo</target>
+        <target>dal meno recente all&apos;ultimo</target>
       </trans-unit>
       <trans-unit id="MSC.new_to_old">
         <source>later to earlier</source>
-        <target>dall'ultimo al meno recente</target>
+        <target>dall&apos;ultimo al meno recente</target>
       </trans-unit>
       <trans-unit id="MSC.pay_with_redirect.0">
         <source>Processing payment</source>
@@ -596,7 +596,7 @@ Si prega di scegliere un nome diverso.</target>
       </trans-unit>
       <trans-unit id="MSC.order_review_message">
         <source>Review and confirm your order details.</source>
-        <target>Rivedere e confermare i dettagli dell'ordine.</target>
+        <target>Rivedere e confermare i dettagli dell&apos;ordine.</target>
       </trans-unit>
       <trans-unit id="MSC.checkout_address">
         <source>Address</source>
@@ -640,7 +640,7 @@ Si prega di scegliere un nome diverso.</target>
       </trans-unit>
       <trans-unit id="MSC.order_review">
         <source>Order Review</source>
-        <target>Revisione dell'ordine</target>
+        <target>Revisione dell&apos;ordine</target>
       </trans-unit>
       <trans-unit id="MSC.changeCheckoutInfo">
         <source>Change</source>
@@ -696,7 +696,7 @@ Si prega di scegliere un nome diverso.</target>
       </trans-unit>
       <trans-unit id="MSC.productcacheNoscript">
         <source>Your browser does not support JavaScript. Please &lt;a href=&quot;%s&quot;&gt;click here&lt;/a&gt; to load the product list.</source>
-        <target>Il vostro browser non supporta JavaScript. Clicca &lt;a href=&quot;%s&quot;&gt;qui&lt;/a&gt;per caricare l'elenco dei prodotti.</target>
+        <target>Il vostro browser non supporta JavaScript. Clicca &lt;a href=&quot;%s&quot;&gt;qui&lt;/a&gt;per caricare l&apos;elenco dei prodotti.</target>
       </trans-unit>
       <trans-unit id="MSC.noFilesInFolder">
         <source>No files in this folder</source>
@@ -768,7 +768,7 @@ Si prega di scegliere un nome diverso.</target>
       </trans-unit>
       <trans-unit id="MSC.isotopeIntroduction.2">
         <source>This is the page where most of the configuration will take place. &lt;strong&gt;You should start from the bottom of this page and work your way upward from right to left.&lt;/strong&gt;</source>
-        <target>Questa è la pagina dove avrà luogo la maggior parte della configurazione. &lt;strong&gt;Dovreste iniziare dalla parte inferiore di questa pagina e procedere verso l'alto da destra a sinistra.&lt;/strong&gt;</target>
+        <target>Questa è la pagina dove avrà luogo la maggior parte della configurazione. &lt;strong&gt;Dovreste iniziare dalla parte inferiore di questa pagina e procedere verso l&apos;alto da destra a sinistra.&lt;/strong&gt;</target>
       </trans-unit>
       <trans-unit id="MSC.isotopeIntroduction.3">
         <source>Visit the official &lt;a href=&quot;http://isotopeecommerce.org&quot; target=&quot;_blank&quot;&gt;Isotope eCommerce website&lt;/a&gt; for the latest news, configuration manuals and professional support. Thank you so much for considering giving something back!</source>
@@ -816,7 +816,7 @@ Si prega di scegliere un nome diverso.</target>
       </trans-unit>
       <trans-unit id="MSC.noShippingAddress">
         <source>Please fill in the shipping address.</source>
-        <target>Si prega di inserire l'indirizzo di spedizione.</target>
+        <target>Si prega di inserire l&apos;indirizzo di spedizione.</target>
       </trans-unit>
       <trans-unit id="MSC.noShippingRequiredMsg">
         <source>None of the products in your shopping cart require shipping!</source>
@@ -824,7 +824,7 @@ Si prega di scegliere un nome diverso.</target>
       </trans-unit>
       <trans-unit id="MSC.availableShippingMethodsMsg">
         <source>The following shipping methods are available for your current shopping cart and the shipping address details you provided:</source>
-        <target>I seguenti metodi di spedizione sono disponibili per il vostro attuale carrello della spesa e i dettagli dell'indirizzo di spedizione che avete fornito:</target>
+        <target>I seguenti metodi di spedizione sono disponibili per il vostro attuale carrello della spesa e i dettagli dell&apos;indirizzo di spedizione che avete fornito:</target>
       </trans-unit>
       <trans-unit id="MSC.saveAddressButton">
         <source>Save address</source>
@@ -832,15 +832,15 @@ Si prega di scegliere un nome diverso.</target>
       </trans-unit>
       <trans-unit id="MSC.billpay_agb_de">
         <source>Mit der &amp;Uuml;bermittlung der für die Abwicklung des Rechnungskaufs und einer Identitäts und Bonitätsprüfung erforderlichen Daten an die &lt;a href=&quot;https://billpay.de/endkunden&quot; target=&quot;_blank&quot;&gt;Billpay GmbH&lt;/a&gt; bin ich einverstanden. Es gelten die &lt;a href=&quot;https://www.billpay.de/kunden/agb#datenschutz&quot; target=&quot;_blank&quot;&gt;Datenschutzbestimmungen&lt;/a&gt; von Billpay.</source>
-        <target>Acconsento alla trasmissione alla &lt;a href=&quot;https://billpay.de/endkunden&quot; target=&quot;_blank&quot;&gt;Billpay GmbH&lt;/a&gt; dei dati necessari per l'elaborazione dell'acquisto in conto corrente e ad un controllo dell'identità e del credito. Si applicano le norme di &lt;a href=&quot;https://www.billpay.de/kunden/agb#datenschutz&quot; target=&quot;_blank&quot;&gt;protezione dei dati&lt;/a&gt; di Billpay.</target>
+        <target>Acconsento alla trasmissione alla &lt;a href=&quot;https://billpay.de/endkunden&quot; target=&quot;_blank&quot;&gt;Billpay GmbH&lt;/a&gt; dei dati necessari per l&apos;elaborazione dell&apos;acquisto in conto corrente e ad un controllo dell&apos;identità e del credito. Si applicano le norme di &lt;a href=&quot;https://www.billpay.de/kunden/agb#datenschutz&quot; target=&quot;_blank&quot;&gt;protezione dei dati&lt;/a&gt; di Billpay.</target>
       </trans-unit>
       <trans-unit id="MSC.billpay_agb_ch">
         <source>Mit der &amp;Uuml;bermittlung der für die Abwicklung des Rechnungskaufs und einer Identitäts und Bonitätsprüfung erforderlichen Daten an die &lt;a href=&quot;https://billpay.de/endkunden&quot; target=&quot;_blank&quot;&gt;Billpay GmbH&lt;/a&gt; bin ich einverstanden. Es gelten die &lt;a href=&quot;https://www.billpay.de/kunden/agb-ch#datenschutz&quot; target=&quot;_blank&quot;&gt;Datenschutzbestimmungen&lt;/a&gt; von Billpay.</source>
-        <target>Acconsento alla trasmissione alla &lt;a href=&quot;https://billpay.de/endkunden&quot; target=&quot;_blank&quot;&gt;Billpay GmbH&lt;/a&gt; dei dati necessari per l'elaborazione dell'acquisto in conto corrente e ad un controllo dell'identità e del credito. Si applicano le norme di &lt;a href=&quot;https://www.billpay.de/kunden/agb-ch#datenschutz&quot; target=&quot;_blank&quot;&gt;protezione dei dati&lt;/a&gt; di Billpay.</target>
+        <target>Acconsento alla trasmissione alla &lt;a href=&quot;https://billpay.de/endkunden&quot; target=&quot;_blank&quot;&gt;Billpay GmbH&lt;/a&gt; dei dati necessari per l&apos;elaborazione dell&apos;acquisto in conto corrente e ad un controllo dell&apos;identità e del credito. Si applicano le norme di &lt;a href=&quot;https://www.billpay.de/kunden/agb-ch#datenschutz&quot; target=&quot;_blank&quot;&gt;protezione dei dati&lt;/a&gt; di Billpay.</target>
       </trans-unit>
       <trans-unit id="MSC.billpay_agb_at">
         <source>Mit der &amp;Uuml;bermittlung der für die Abwicklung des Rechnungskaufs und einer Identitäts und Bonitätsprüfung erforderlichen Daten an die &lt;a href=&quot;https://billpay.de/endkunden&quot; target=&quot;_blank&quot;&gt;Billpay GmbH&lt;/a&gt; bin ich einverstanden. Es gelten die &lt;a href=&quot;https://www.billpay.de/kunden/agb-at#datenschutz&quot; target=&quot;_blank&quot;&gt;Datenschutzbestimmungen&lt;/a&gt; von Billpay.</source>
-        <target>Acconsento alla trasmissione alla &lt;a href=&quot;https://billpay.de/endkunden&quot; target=&quot;_blank&quot;&gt;Billpay GmbH&lt;/a&gt; dei dati necessari per l'elaborazione dell'acquisto in conto corrente e ad un controllo dell'identità e del credito. Si applicano le norme di &lt;a href=&quot;https://www.billpay.de/kunden/agb-at#datenschutz&quot; target=&quot;_blank&quot;&gt;protezione dei dati&lt;/a&gt; di Billpay.</target>
+        <target>Acconsento alla trasmissione alla &lt;a href=&quot;https://billpay.de/endkunden&quot; target=&quot;_blank&quot;&gt;Billpay GmbH&lt;/a&gt; dei dati necessari per l&apos;elaborazione dell&apos;acquisto in conto corrente e ad un controllo dell&apos;identità e del credito. Si applicano le norme di &lt;a href=&quot;https://www.billpay.de/kunden/agb-at#datenschutz&quot; target=&quot;_blank&quot;&gt;protezione dei dati&lt;/a&gt; di Billpay.</target>
       </trans-unit>
       <trans-unit id="MSC.iso_priceDisplay.net.0">
         <source>Net</source>
@@ -848,7 +848,7 @@ Si prega di scegliere un nome diverso.</target>
       </trans-unit>
       <trans-unit id="MSC.iso_priceDisplay.net.1">
         <source>Show net prices to all customers. Taxes included in the product price (tax rate configuration) will be deducted.</source>
-        <target>Mostra i prezzi netti a tutti i clienti. Le tasse incluse nel prezzo del prodotto (configurazione dell'aliquota fiscale) saranno detratte.</target>
+        <target>Mostra i prezzi netti a tutti i clienti. Le tasse incluse nel prezzo del prodotto (configurazione dell&apos;aliquota fiscale) saranno detratte.</target>
       </trans-unit>
       <trans-unit id="MSC.iso_priceDisplay.gross.0">
         <source>Gross (recommended)</source>
@@ -863,8 +863,8 @@ Si prega di scegliere un nome diverso.</target>
         <target>Fisso</target>
       </trans-unit>
       <trans-unit id="MSC.iso_priceDisplay.fixed.1">
-        <source>The product price will always be shown as in the product setting. Taxes are always calculated as &quot;included&quot;. This means the shop owner's profit varies depending on the applicable taxes.</source>
-        <target>Il prezzo del prodotto sarà sempre indicato come nell'impostazione del prodotto. Le tasse sono sempre calcolate come &quot;incluse&quot;. Ciò significa che il profitto del proprietario del negozio varia a seconda delle imposte applicabili.</target>
+        <source>The product price will always be shown as in the product setting. Taxes are always calculated as &quot;included&quot;. This means the shop owner&apos;s profit varies depending on the applicable taxes.</source>
+        <target>Il prezzo del prodotto sarà sempre indicato come nell&apos;impostazione del prodotto. Le tasse sono sempre calcolate come &quot;incluse&quot;. Ciò significa che il profitto del proprietario del negozio varia a seconda delle imposte applicabili.</target>
       </trans-unit>
       <trans-unit id="MSC.iso_priceDisplay.legacy.0">
         <source>Legacy</source>
@@ -900,7 +900,7 @@ Si prega di scegliere un nome diverso.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_shipping.product_price.1">
         <source>In this method the shipping costs are based on the products individual shipping price. Make sure to have the Shipping Price attribute enabled per each product.</source>
-        <target>In questo metodo i costi di spedizione si basano sul prezzo di spedizione individuale dei prodotti. Assicurati di avere l'attributo del prezzo di spedizione abilitato per ogni prodotto.</target>
+        <target>In questo metodo i costi di spedizione si basano sul prezzo di spedizione individuale dei prodotti. Assicurati di avere l&apos;attributo del prezzo di spedizione abilitato per ogni prodotto.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_shipping.dhl_business.0">
         <source>DHL Business Shipping</source>
@@ -908,7 +908,7 @@ Si prega di scegliere un nome diverso.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_shipping.dhl_business.1">
         <source>Registers the shipment for DHL business delivery, including tracking number and shipping label.</source>
-        <target>Registra la spedizione per la consegna aziendale DHL, incluso il numero di tracciamento e l'etichetta di spedizione.</target>
+        <target>Registra la spedizione per la consegna aziendale DHL, incluso il numero di tracciamento e l&apos;etichetta di spedizione.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.cash.0">
         <source>Cash</source>
@@ -952,9 +952,11 @@ Si prega di scegliere un nome diverso.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.paypal_checkout.0">
         <source>PayPal Checkout</source>
+        <target>Pagamento con PayPal</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.paypal_checkout.1">
         <source>Checkout is the latest PayPal payment method.</source>
+        <target>Checkout è l&apos;ultimo metodo di pagamento offerto da PayPal.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.postfinance.0">
         <source>PostFinance</source>
@@ -1066,7 +1068,7 @@ Si prega di scegliere un nome diverso.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_gallery.inline.1">
         <source>Clicking on a gallery image will replace the main image.</source>
-        <target>Cliccando su un'immagine della galleria si sostituisce l'immagine principale.</target>
+        <target>Cliccando su un&apos;immagine della galleria si sostituisce l&apos;immagine principale.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_gallery.elevatezoom.0">
         <source>Elevate Zoom gallery</source>
@@ -1074,7 +1076,7 @@ Si prega di scegliere un nome diverso.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_gallery.elevatezoom.1">
         <source>A gallery that zooms on the image on hover. See &lt;a href=&quot;http://www.elevateweb.co.uk/image-zoom&quot; target=&quot;_blank&quot;&gt;the script website&lt;/a&gt; for more information.</source>
-        <target>Una galleria che ingrandisce l'immagine a volo d'uccello. Vedi &lt;a href=&quot;http://www.elevateweb.co.uk/image-zoom&quot; target=&quot;_blank&quot;&gt;il sito web&lt;/a&gt; dello script per maggiori informazioni.</target>
+        <target>Una galleria che ingrandisce l&apos;immagine a volo d&apos;uccello. Vedi &lt;a href=&quot;http://www.elevateweb.co.uk/image-zoom&quot; target=&quot;_blank&quot;&gt;il sito web&lt;/a&gt; dello script per maggiori informazioni.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_product.standard.0">
         <source>Standard product</source>
@@ -1134,7 +1136,7 @@ Si prega di scegliere un nome diverso.</target>
       </trans-unit>
       <trans-unit id="ATTR.mediaManager.1">
         <source>Upload images and other files to the Isotope eCommerce file system. Output is processed trough an IsotopeGallery class.</source>
-        <target>Caricare immagini e altri file nel file system Isotope eCommerce. L'output viene elaborato attraverso una classe IsotopeGallery.</target>
+        <target>Caricare immagini e altri file nel file system Isotope eCommerce. L&apos;output viene elaborato attraverso una classe IsotopeGallery.</target>
       </trans-unit>
       <trans-unit id="ATTR.conditionalselect.0">
         <source>Conditional Select-Menu</source>
@@ -1497,7 +1499,7 @@ Si prega di scegliere un nome diverso.</target>
         <target>KMF - Franco delle Comore</target>
       </trans-unit>
       <trans-unit id="CUR.KPW">
-        <source>KPW - Democratic People's Republic of Korean Won</source>
+        <source>KPW - Democratic People&apos;s Republic of Korean Won</source>
         <target>KPW - Won nordcoreano</target>
       </trans-unit>
       <trans-unit id="CUR.KRW">
@@ -1630,7 +1632,7 @@ Si prega di scegliere un nome diverso.</target>
       </trans-unit>
       <trans-unit id="CUR.OMR">
         <source>OMR - Omani Rial</source>
-        <target>OMR - Riyal dell'Oman</target>
+        <target>OMR - Riyal dell&apos;Oman</target>
       </trans-unit>
       <trans-unit id="CUR.PAB">
         <source>PAB - Balboa</source>
@@ -1757,8 +1759,8 @@ Si prega di scegliere un nome diverso.</target>
         <target>TND - Dinaro tunisino</target>
       </trans-unit>
       <trans-unit id="CUR.TOP">
-        <source>TOP - Pa'anga</source>
-        <target>TOP - Pa'anga</target>
+        <source>TOP - Pa&apos;anga</source>
+        <target>TOP - Pa&apos;anga</target>
       </trans-unit>
       <trans-unit id="CUR.TRY">
         <source>TRY - New Turkish Lira</source>
@@ -1890,7 +1892,7 @@ Si prega di scegliere un nome diverso.</target>
       </trans-unit>
       <trans-unit id="CHECKOUT.Isotope\CheckoutStep\OrderInfo">
           <source>Order summary</source>
-          <target>Riepilogo dell'ordine</target>
+          <target>Riepilogo dell&apos;ordine</target>
       </trans-unit>
       <trans-unit id="CHECKOUT.Isotope\CheckoutStep\OrderProducts">
           <source>Order products</source>

@@ -70,7 +70,7 @@
         <target>Gata 2</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.street_2.1">
-        <source>Enter a second street info if there's any.</source>
+        <source>Enter a second street info if there&apos;s any.</source>
         <target>Ange en andra gatuinformation om det finns någon.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.street_3.0">
@@ -78,7 +78,7 @@
         <target>Gata 3</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.street_3.1">
-        <source>Enter a third street info if there's any.</source>
+        <source>Enter a third street info if there&apos;s any.</source>
         <target>Ange information om en tredje gata om det finns någon.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.postal.0">
@@ -434,7 +434,7 @@
         <target>Spårmedlem</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.ga_member.1">
-        <source>Enter simple tokens to track a member (e.g. ##firstname## ##lastname##). ATTENTION: make sure you're allowed to do this!</source>
+        <source>Enter simple tokens to track a member (e.g. ##firstname## ##lastname##). ATTENTION: make sure you&apos;re allowed to do this!</source>
         <target>Ange enkla tokens för att spåra en medlem (t.ex. ##firstname## ##efternamn##). OBS: se till att du får göra detta!</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.left">

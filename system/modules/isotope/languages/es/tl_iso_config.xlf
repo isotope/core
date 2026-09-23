@@ -69,7 +69,7 @@
         <target>Calle 2</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.street_2.1">
-        <source>Enter a second street info if there's any.</source>
+        <source>Enter a second street info if there&apos;s any.</source>
         <target>Información añadida a la dirección</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.street_3.0">
@@ -77,7 +77,7 @@
         <target>Calle 3</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.street_3.1">
-        <source>Enter a third street info if there's any.</source>
+        <source>Enter a third street info if there&apos;s any.</source>
         <target>Información añadida a la dirección</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.postal.0">
@@ -396,7 +396,7 @@
         <source>Track member</source>
       </trans-unit>
       <trans-unit id="tl_iso_config.ga_member.1">
-        <source>Enter simple tokens to track a member (e.g. ##firstname## ##lastname##). ATTENTION: make sure you're allowed to do this!</source>
+        <source>Enter simple tokens to track a member (e.g. ##firstname## ##lastname##). ATTENTION: make sure you&apos;re allowed to do this!</source>
       </trans-unit>
       <trans-unit id="tl_iso_config.left">
         <source>To the left of price</source>

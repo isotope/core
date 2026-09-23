@@ -6,7 +6,7 @@
         <target>ID Магазина</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.store_id.1">
-        <source>Different store IDs group a store on multiple root sites. A members's cart and addresses will be shared across the same store IDs.</source>
+        <source>Different store IDs group a store on multiple root sites. A members&apos;s cart and addresses will be shared across the same store IDs.</source>
         <target>Используйте разные идентификаторы магазина, чтобы группировать набор конфигураций магазина. Корзина пользователя и адреса будут совместно использоваться в одинаковых ID магазина.</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.label.0">
@@ -86,7 +86,7 @@
         <target>Улица 2</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.street_2.1">
-        <source>Enter a second street info if there's any.</source>
+        <source>Enter a second street info if there&apos;s any.</source>
         <target>Введите информацию об улице 2, если она есть.</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.street_3.0">
@@ -94,7 +94,7 @@
         <target>Улица 3</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.street_3.1">
-        <source>Enter a third street info if there's any.</source>
+        <source>Enter a third street info if there&apos;s any.</source>
         <target>Введите информацию об улице 3, если она есть.</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.postal.0">

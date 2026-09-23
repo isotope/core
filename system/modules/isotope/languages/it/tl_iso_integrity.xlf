@@ -23,7 +23,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_integrity.permission">
         <source>Only admin can perform integrity check.</source>
-        <target>Solo l'amministratore può eseguire il controllo di integrità.</target>
+        <target>Solo l&apos;amministratore può eseguire il controllo di integrità.</target>
       </trans-unit>
       <trans-unit id="tl_iso_integrity.pricetable.0">
         <source>Advanced prices</source>

@@ -7,7 +7,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_category.cut.1">
         <source>Move product ID %s</source>
-        <target>%s ID'li ürünü taşı</target>
+        <target>%s ID&apos;li ürünü taşı</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_category.pasteafter.0">
         <source>Paste at the top</source>
@@ -15,7 +15,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_category.pasteafter.1">
         <source>Paste after product ID %s</source>
-        <target>%s ID'li üründen sonra yapıştır</target>
+        <target>%s ID&apos;li üründen sonra yapıştır</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_category.hint">
         <source>The frontend module must not have a sorting field configured for the manual sorting to be applied.</source>

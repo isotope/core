@@ -6,7 +6,7 @@
         <target>Mağaza ID</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.store_id.1">
-        <source>Different store IDs group a store on multiple root sites. A members's cart and addresses will be shared across the same store IDs.</source>
+        <source>Different store IDs group a store on multiple root sites. A members&apos;s cart and addresses will be shared across the same store IDs.</source>
         <target>Farklı mağaza kimlikleri, birden fazla kök sitesinde bir mağaza grubu oluşturur. Üyelerin alışveriş sepeti ve adresleri, aynı mağaza kimliklerinde paylaşılacak.</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.label.0">
@@ -86,7 +86,7 @@
         <target>Sokak 2 </target>
       </trans-unit>
       <trans-unit id="tl_iso_address.street_2.1">
-        <source>Enter a second street info if there's any.</source>
+        <source>Enter a second street info if there&apos;s any.</source>
         <target>Lütfen sokağınızı girin</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.street_3.0">
@@ -94,7 +94,7 @@
         <target>Sokak 3</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.street_3.1">
-        <source>Enter a third street info if there's any.</source>
+        <source>Enter a third street info if there&apos;s any.</source>
         <target>Diğer adres bilgileri</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.postal.0">
@@ -211,7 +211,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_address.edit.1">
         <source>Edit address ID %s</source>
-        <target>%s ID'li adresi düzenle</target>
+        <target>%s ID&apos;li adresi düzenle</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.copy.0">
         <source>Duplicate address</source>
@@ -219,7 +219,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_address.copy.1">
         <source>Duplicate address ID %s</source>
-        <target>%s ID'li adresi kopyala</target>
+        <target>%s ID&apos;li adresi kopyala</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.delete.0">
         <source>Delete address</source>
@@ -227,7 +227,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_address.delete.1">
         <source>Delete address ID %s</source>
-        <target>%s ID'li adresi sil</target>
+        <target>%s ID&apos;li adresi sil</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.show.0">
         <source>Address details</source>
@@ -235,7 +235,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_address.show.1">
         <source>Show details of address ID %s</source>
-        <target>%s ID'li adresin detaylarını gör</target>
+        <target>%s ID&apos;li adresin detaylarını gör</target>
       </trans-unit>
     </body>
   </file>

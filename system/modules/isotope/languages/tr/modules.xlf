@@ -27,7 +27,7 @@
       </trans-unit>
       <trans-unit id="MOD.iso_setup.1">
         <source>Setup and configure Isotope eCommerce to your needs</source>
-        <target>Isotope eCommerce'i ihtiyaçlarınıza göre ayarlayın ve yapılandırın</target>
+        <target>Isotope eCommerce&apos;i ihtiyaçlarınıza göre ayarlayın ve yapılandırın</target>
       </trans-unit>
       <trans-unit id="FMD.isotope">
         <source>Isotope eCommerce</source>
@@ -137,7 +137,7 @@
         <source>Wishlist Manager</source>
       </trans-unit>
       <trans-unit id="FMD.iso_wishlistmanager.1">
-        <source>Allows the current member to manage it's wishlists.</source>
+        <source>Allows the current member to manage it&apos;s wishlists.</source>
       </trans-unit>
       <trans-unit id="FMD.iso_wishlistviewer.0">
         <source>Public Wishlists</source>
@@ -303,7 +303,7 @@
       </trans-unit>
       <trans-unit id="IMD.notifications.1">
         <source>Use the Notification Center to manage emails etc. for Isotope eCommerce.</source>
-        <target>Isotope eCommerce'de  e-postaları yönetmek için Bildirim Merkezi'ni kullanın.</target>
+        <target>Isotope eCommerce&apos;de  e-postaları yönetmek için Bildirim Merkezi&apos;ni kullanın.</target>
       </trans-unit>
       <trans-unit id="IMD.documents.0">
         <source>Documents</source>

@@ -15,7 +15,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.label.1">
         <source>The label is used in frontend, e.g. for config switcher.</source>
-        <target>L'etichetta viene utilizzata nel frontend, ad es. per il config switcher.</target>
+        <target>L&apos;etichetta viene utilizzata nel frontend, ad es. per il config switcher.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.fallback.0">
         <source>Set as default store</source>
@@ -47,7 +47,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.company.1">
         <source>You can enter a company name here (if applicable).</source>
-        <target>Inserire qui il nome di un'azienda (se applicabile).</target>
+        <target>Inserire qui il nome di un&apos;azienda (se applicabile).</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.vat_no.0">
         <source>VAT No.</source>
@@ -70,7 +70,7 @@
         <target>Via 2</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.street_2.1">
-        <source>Enter a second street info if there's any.</source>
+        <source>Enter a second street info if there&apos;s any.</source>
         <target>Inserisca una seconda informazione per la via se necessario.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.street_3.0">
@@ -78,7 +78,7 @@
         <target>Via 3</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.street_3.1">
-        <source>Enter a third street info if there's any.</source>
+        <source>Enter a third street info if there&apos;s any.</source>
         <target>Inserisca una terza informazione per la via se necessario.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.postal.0">
@@ -111,7 +111,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.country.1">
         <source>Please select a country. This is also the default for custom shipping/billing addresses.</source>
-        <target>Selezionare un paese. Questo è anche l'impostazione predefinita per gli indirizzi di spedizione/fatturazione personalizzati.</target>
+        <target>Selezionare un paese. Questo è anche l&apos;impostazione predefinita per gli indirizzi di spedizione/fatturazione personalizzati.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.phone.0">
         <source>Phone number</source>
@@ -167,15 +167,15 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.address_fields.1">
         <source>Select the fields for a billing and shipping address when checking out.</source>
-        <target>Selezionare i campi per l'indirizzo di fatturazione e di spedizione al momento del check-out.</target>
+        <target>Selezionare i campi per l&apos;indirizzo di fatturazione e di spedizione al momento del check-out.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.address_fields.billing.0">
         <source>For billing address</source>
-        <target>Per l'indirizzo di fatturazione</target>
+        <target>Per l&apos;indirizzo di fatturazione</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.address_fields.shipping.0">
         <source>For shipping address</source>
-        <target>Per l'indirizzo di spedizione</target>
+        <target>Per l&apos;indirizzo di spedizione</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.address_fields.disabled">
         <source>Disabled</source>
@@ -211,7 +211,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.billing_countries.1">
         <source>Select the countries you want to allow for checkout billing address. Select none to allow all countries.</source>
-        <target>Selezionare i paesi che si desidera consentire l'indirizzo di fatturazione del checkout. Selezionare nessuno per consentire tutti i paesi.</target>
+        <target>Selezionare i paesi che si desidera consentire l&apos;indirizzo di fatturazione del checkout. Selezionare nessuno per consentire tutti i paesi.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.shipping_countries.0">
         <source>Available shipping countries</source>
@@ -219,7 +219,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.shipping_countries.1">
         <source>Select the countries you want to allow for checkout shipping address. Select none to allow all countries.</source>
-        <target>Selezionare i paesi che si desidera consentire l'indirizzo di spedizione alla cassa. Selezionare nessuno per consentire tutti i paesi.</target>
+        <target>Selezionare i paesi che si desidera consentire l&apos;indirizzo di spedizione alla cassa. Selezionare nessuno per consentire tutti i paesi.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.limitMemberCountries.0">
         <source>Limit member countries</source>
@@ -227,7 +227,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.limitMemberCountries.1">
         <source>Limit member countries (Registration, Personal Data) to the combined list of billing and shipping countries.</source>
-        <target>Limitare i paesi membri (registrazione, dati personali) all'elenco combinato dei paesi di fatturazione e spedizione.</target>
+        <target>Limitare i paesi membri (registrazione, dati personali) all&apos;elenco combinato dei paesi di fatturazione e spedizione.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.vatNoValidators.0">
         <source>VAT No. validation</source>
@@ -235,7 +235,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.vatNoValidators.1">
         <source>If you enable one or multiple services, the VAT No. address field will be validated.</source>
-        <target>Se si abilita uno o più servizi, il campo dell'indirizzo del numero di partita IVA sarà convalidato.</target>
+        <target>Se si abilita uno o più servizi, il campo dell&apos;indirizzo del numero di partita IVA sarà convalidato.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.priceDisplay.0">
         <source>Price display</source>
@@ -323,7 +323,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.currencyAutomator.1">
         <source>Enable automatic update of price calcuation factors by using an online currency conversion provider.</source>
-        <target>Attivare l'aggiornamento automatico dei fattori di calcolo dei prezzi utilizzando un provider di conversione di valuta online.</target>
+        <target>Attivare l&apos;aggiornamento automatico dei fattori di calcolo dei prezzi utilizzando un provider di conversione di valuta online.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.currencyOrigin.0">
         <source>Currency origin</source>
@@ -343,19 +343,19 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.orderPrefix.0">
         <source>Order number prefix</source>
-        <target>Prefisso del numero d'ordine</target>
+        <target>Prefisso del numero d&apos;ordine</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.orderPrefix.1">
         <source>You can add a prefix (e.g. fiscal year) to the auto-incrementing order number.</source>
-        <target>È possibile aggiungere un prefisso (ad es. anno fiscale) al numero d'ordine di autoincremento.</target>
+        <target>È possibile aggiungere un prefisso (ad es. anno fiscale) al numero d&apos;ordine di autoincremento.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.orderDigits.0">
         <source>Order number length</source>
-        <target>Lunghezza del numero d'ordine</target>
+        <target>Lunghezza del numero d&apos;ordine</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.orderDigits.1">
         <source>Select the minimum length of the order number (not including order prefix).</source>
-        <target>Selezionare la lunghezza minima del numero d'ordine (escluso il prefisso dell'ordine).</target>
+        <target>Selezionare la lunghezza minima del numero d&apos;ordine (escluso il prefisso dell&apos;ordine).</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.orderstatus_new.0">
         <source>Status for new orders</source>
@@ -367,11 +367,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.orderstatus_error.0">
         <source>Order status on error</source>
-        <target>Stato dell'ordine in caso di errore</target>
+        <target>Stato dell&apos;ordine in caso di errore</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.orderstatus_error.1">
         <source>Select an order status if something goes wrong (e.g. payment).</source>
-        <target>Selezionare uno stato dell'ordine se qualcosa non dovesse andare a buon fine (ad es. pagamento).</target>
+        <target>Selezionare uno stato dell&apos;ordine se qualcosa non dovesse andare a buon fine (ad es. pagamento).</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.orderDetailsModule.0">
         <source>Module for backend view</source>
@@ -379,7 +379,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.orderDetailsModule.1">
         <source>Select a order details module that is used to show the order in the backend.</source>
-        <target>Selezionare un modulo di dettaglio dell'ordine che viene utilizzato per mostrare l'ordine nel backend.</target>
+        <target>Selezionare un modulo di dettaglio dell&apos;ordine che viene utilizzato per mostrare l&apos;ordine nel backend.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.invoiceLogo.0">
         <source>Invoice Logo</source>
@@ -403,7 +403,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.cartMinSubtotal.1">
         <source>The minimum cart subtotal required to order. Enter 0 to disable.</source>
-        <target>Il subtotale minimo del carrello richiesto per l'ordine. Inserire 0 per disattivare.</target>
+        <target>Il subtotale minimo del carrello richiesto per l&apos;ordine. Inserire 0 per disattivare.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.newProductPeriod.0">
         <source>Duration to mark a product as &quot;new&quot;</source>
@@ -411,7 +411,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.newProductPeriod.1">
         <source>If you would like to highlight new products, you can enter a time period here. It will automatically add a CSS class &quot;new&quot; to every product everywhere within Isotope eCommerce.</source>
-        <target>Se desiderate evidenziare nuovi prodotti, potete inserire qui un periodo di tempo. Aggiungerà automaticamente una classe CSS &quot;nuovo&quot; ad ogni prodotto ovunque all'interno di Isotope eCommerce.</target>
+        <target>Se desiderate evidenziare nuovi prodotti, potete inserire qui un periodo di tempo. Aggiungerà automaticamente una classe CSS &quot;nuovo&quot; ad ogni prodotto ovunque all&apos;interno di Isotope eCommerce.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.ga_enable.0">
         <source>Enable Google Analytics</source>
@@ -419,7 +419,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.ga_enable.1">
         <source>Enable e-commerce tracking with Google Analytics.</source>
-        <target>Attivare il tracciamento dell'e-commerce con Google Analytics.</target>
+        <target>Attivare il tracciamento dell&apos;e-commerce con Google Analytics.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.ga_account.0">
         <source>Account</source>
@@ -434,7 +434,7 @@
         <target>Traccia membro</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.ga_member.1">
-        <source>Enter simple tokens to track a member (e.g. ##firstname## ##lastname##). ATTENTION: make sure you're allowed to do this!</source>
+        <source>Enter simple tokens to track a member (e.g. ##firstname## ##lastname##). ATTENTION: make sure you&apos;re allowed to do this!</source>
         <target>Inserite dei semplici token per rintracciare un membro (ad es. ##nome## ## cognome##). ATTENZIONE: assicurati di poterlo fare!</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.left">
@@ -499,7 +499,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.edit.1">
         <source>Edit store configuration ID %s.</source>
-        <target>Modificare l'ID %s di configurazione del negozio.</target>
+        <target>Modificare l&apos;ID %s di configurazione del negozio.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.copy.0">
         <source>Copy configuration</source>
@@ -507,7 +507,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.copy.1">
         <source>Copy store configuration ID %s.</source>
-        <target>Copiare l'ID %s della configurazione del negozio.</target>
+        <target>Copiare l&apos;ID %s della configurazione del negozio.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.delete.0">
         <source>Delete configuration</source>
@@ -515,7 +515,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.delete.1">
         <source>Delete store configuration ID %s.</source>
-        <target>Cancellare l'ID %s della configurazione del negozio.</target>
+        <target>Cancellare l&apos;ID %s della configurazione del negozio.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.show.0">
         <source>Show configuration details</source>
@@ -523,7 +523,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.show.1">
         <source>Show details for store configuration ID %s.</source>
-        <target>Mostra i dettagli per l'ID %s della configurazione del negozio.</target>
+        <target>Mostra i dettagli per l&apos;ID %s della configurazione del negozio.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.name_legend">
         <source>Name</source>
@@ -531,7 +531,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.address_legend">
         <source>Address configuration</source>
-        <target>Configurazione dell'indirizzo</target>
+        <target>Configurazione dell&apos;indirizzo</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.config_legend">
         <source>Configuration</source>

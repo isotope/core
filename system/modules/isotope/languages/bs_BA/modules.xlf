@@ -142,7 +142,7 @@
         <target>Upravitelj liste želja</target>
       </trans-unit>
       <trans-unit id="FMD.iso_wishlistmanager.1">
-        <source>Allows the current member to manage it's wishlists.</source>
+        <source>Allows the current member to manage it&apos;s wishlists.</source>
         <target>Omogućava trenutnom članu upravljanje svojim listama želja.</target>
       </trans-unit>
       <trans-unit id="FMD.iso_wishlistviewer.0">

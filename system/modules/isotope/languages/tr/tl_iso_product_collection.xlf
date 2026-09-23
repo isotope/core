@@ -131,7 +131,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.edit.1">
         <source>Edit order ID %s</source>
-        <target>%s ID'li siparişi düzenle</target>
+        <target>%s ID&apos;li siparişi düzenle</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.delete.0">
         <source>Delete order</source>
@@ -139,7 +139,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.delete.1">
         <source>Delete order ID %s</source>
-        <target>%s ID'li siparişi sil</target>
+        <target>%s ID&apos;li siparişi sil</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.payment.0">
         <source>Payment details</source>
@@ -147,7 +147,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.payment.1">
         <source>Show payment details of order ID %s</source>
-        <target>%s ID'li siparişin ödeme detaylarını göster</target>
+        <target>%s ID&apos;li siparişin ödeme detaylarını göster</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.shipping.0">
         <source>Shipping details</source>
@@ -155,7 +155,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.shipping.1">
         <source>Show shipping details of order ID %s</source>
-        <target>%s ID'li siparişin nakliye detaylarını göster</target>
+        <target>%s ID&apos;li siparişin nakliye detaylarını göster</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.print_document.0">
         <source>Print a document</source>
@@ -163,7 +163,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.print_document.1">
         <source>Print order ID %s with a document of your choice</source>
-        <target>Seçeceğiniz bir belge ile birlikte %s ID'li siparişi yazdırın.</target>
+        <target>Seçeceğiniz bir belge ile birlikte %s ID&apos;li siparişi yazdırın.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.document_choice.0">
         <source>Document</source>

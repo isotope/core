@@ -23,7 +23,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.isDefault.1">
         <source>Check here if this should be the default option.</source>
-        <target>Controllare qui se questa dovrebbe essere l'opzione predefinita.</target>
+        <target>Controllare qui se questa dovrebbe essere l&apos;opzione predefinita.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.label.0">
         <source>Label</source>
@@ -31,7 +31,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.label.1">
         <source>Enter the label for this option.</source>
-        <target>Inserire l'etichetta per questa opzione.</target>
+        <target>Inserire l&apos;etichetta per questa opzione.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.price.0">
         <source>Price surcharge or deduction</source>
@@ -75,7 +75,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.edit.1">
         <source>Edit option ID %s.</source>
-        <target>Modificare l'opzione ID %s.</target>
+        <target>Modificare l&apos;opzione ID %s.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.copy.0">
         <source>Copy option</source>
@@ -83,7 +83,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.copy.1">
         <source>Copy option ID %s.</source>
-        <target>Copiare l'opzione ID %s.</target>
+        <target>Copiare l&apos;opzione ID %s.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.delete.0">
         <source>Delete option</source>
@@ -91,7 +91,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.delete.1">
         <source>Delete option ID %s.</source>
-        <target>Cancellare l'opzione ID %s.</target>
+        <target>Cancellare l&apos;opzione ID %s.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.show.0">
         <source>Option details</source>
@@ -99,7 +99,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.show.1">
         <source>Show details for option ID %s.</source>
-        <target>Mostrare i dettagli per l'ID dell'opzione %s.</target>
+        <target>Mostrare i dettagli per l&apos;ID dell&apos;opzione %s.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.label_legend">
         <source>Type &amp; Label</source>

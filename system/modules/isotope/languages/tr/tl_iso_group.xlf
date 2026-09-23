@@ -31,7 +31,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_group.edit.1">
         <source>Edit group ID %s</source>
-        <target>%s ID'li grubu düzenle</target>
+        <target>%s ID&apos;li grubu düzenle</target>
       </trans-unit>
       <trans-unit id="tl_iso_group.copy.0">
         <source>Duplicate group</source>
@@ -39,7 +39,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_group.copy.1">
         <source>Duplicate group ID %s</source>
-        <target>%s ID'li grubu kopyala</target>
+        <target>%s ID&apos;li grubu kopyala</target>
       </trans-unit>
       <trans-unit id="tl_iso_group.copyChilds.0">
         <source>Duplicate with subgroups</source>
@@ -47,7 +47,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_group.copyChilds.1">
         <source>Duplicate group ID %s with subgroups</source>
-        <target>%s ID'li grubu alt gruplarla birlikte kopyala</target>
+        <target>%s ID&apos;li grubu alt gruplarla birlikte kopyala</target>
       </trans-unit>
       <trans-unit id="tl_iso_group.cut.0">
         <source>Move group</source>
@@ -55,7 +55,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_group.cut.1">
         <source>Move group ID %s</source>
-        <target>%s ID'li grubu taşı</target>
+        <target>%s ID&apos;li grubu taşı</target>
       </trans-unit>
       <trans-unit id="tl_iso_group.delete.0">
         <source>Delete group</source>
@@ -63,7 +63,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_group.delete.1">
         <source>Delete group ID %s</source>
-        <target>%s ID'li grubu sil</target>
+        <target>%s ID&apos;li grubu sil</target>
       </trans-unit>
       <trans-unit id="tl_iso_group.show.0">
         <source>Group details</source>
@@ -71,7 +71,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_group.show.1">
         <source>Show details of group ID %s</source>
-        <target>%s ID'li grubun detaylarını gör</target>
+        <target>%s ID&apos;li grubun detaylarını gör</target>
       </trans-unit>
       <trans-unit id="tl_iso_group.pasteafter.0">
         <source>Paste after</source>
@@ -79,7 +79,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_group.pasteafter.1">
         <source>Paste after group ID %s</source>
-        <target>%s ID'li gruptan sonra yapıştır</target>
+        <target>%s ID&apos;li gruptan sonra yapıştır</target>
       </trans-unit>
       <trans-unit id="tl_iso_group.pasteinto.0">
         <source>Paste into</source>
@@ -87,7 +87,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_group.pasteinto.1">
         <source>Paste into group ID %s</source>
-        <target>%s ID'li grubun içine yapıştır</target>
+        <target>%s ID&apos;li grubun içine yapıştır</target>
       </trans-unit>
       <trans-unit id="tl_iso_group.group_legend">
         <source>Product group settings</source>

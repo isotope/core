@@ -3,7 +3,7 @@
     <body>
       <trans-unit id="ERR.systemColumn">
         <source>Name &quot;%s&quot; is reserved for system use. Please choose a different name.</source>
-        <target>El nombre '%s' esta reservado para una utilización del sistema. Por favor elige otro nombre.</target>
+        <target>El nombre &apos;%s&apos; esta reservado para una utilización del sistema. Por favor elige otro nombre.</target>
       </trans-unit>
       <trans-unit id="ERR.noStoreConfigurationSet">
         <source>No store configuration available</source>
@@ -778,7 +778,7 @@
         <source>Fixed</source>
       </trans-unit>
       <trans-unit id="MSC.iso_priceDisplay.fixed.1">
-        <source>The product price will always be shown as in the product setting. Taxes are always calculated as &quot;included&quot;. This means the shop owner's profit varies depending on the applicable taxes.</source>
+        <source>The product price will always be shown as in the product setting. Taxes are always calculated as &quot;included&quot;. This means the shop owner&apos;s profit varies depending on the applicable taxes.</source>
       </trans-unit>
       <trans-unit id="MSC.iso_priceDisplay.legacy.0">
         <source>Legacy</source>
@@ -1366,7 +1366,7 @@
         <target>KMF - Comoras - Franco</target>
       </trans-unit>
       <trans-unit id="CUR.KPW">
-        <source>KPW - Democratic People's Republic of Korean Won</source>
+        <source>KPW - Democratic People&apos;s Republic of Korean Won</source>
         <target>KPW - Corea del Norte - Won</target>
       </trans-unit>
       <trans-unit id="CUR.KRW">
@@ -1626,8 +1626,8 @@
         <target>TND - Túnez - Dinar</target>
       </trans-unit>
       <trans-unit id="CUR.TOP">
-        <source>TOP - Pa'anga</source>
-        <target>TOP - Tonga - Pa'anga</target>
+        <source>TOP - Pa&apos;anga</source>
+        <target>TOP - Tonga - Pa&apos;anga</target>
       </trans-unit>
       <trans-unit id="CUR.TRY">
         <source>TRY - New Turkish Lira</source>

@@ -488,11 +488,11 @@
       </trans-unit>
       <trans-unit id="MSC.a_to_z">
         <source>A to Z</source>
-        <target>A'dan Z'ye</target>
+        <target>A&apos;dan Z&apos;ye</target>
       </trans-unit>
       <trans-unit id="MSC.z_to_a">
         <source>Z to A</source>
-        <target>Z'den A'ya</target>
+        <target>Z&apos;den A&apos;ya</target>
       </trans-unit>
       <trans-unit id="MSC.old_to_new">
         <source>earlier to later</source>
@@ -676,7 +676,7 @@
       </trans-unit>
       <trans-unit id="MSC.productcacheNoscript">
         <source>Your browser does not support JavaScript. Please &lt;a href=&quot;%s&quot;&gt;click here&lt;/a&gt; to load the product list.</source>
-        <target>Tarayıcınız JavaScript'i desteklemiyor. Ürün listesini yüklemek için &lt;a href=&quot;%s&quot;&gt; burayı tıklayın &lt;/a&gt;.</target>
+        <target>Tarayıcınız JavaScript&apos;i desteklemiyor. Ürün listesini yüklemek için &lt;a href=&quot;%s&quot;&gt; burayı tıklayın &lt;/a&gt;.</target>
       </trans-unit>
       <trans-unit id="MSC.noFilesInFolder">
         <source>No files in this folder</source>
@@ -759,7 +759,7 @@
       </trans-unit>
       <trans-unit id="MSC.isotopeIntroduction.5">
         <source>Isotope is a product of %s in association with &lt;a href=&quot;http://isotopeecommerce.org/de/team.html&quot; target=&quot;_blank&quot;&gt;the Isotope eCommerce Team&lt;/a&gt;.</source>
-        <target>Isotope, %s'in  &lt;a href=&quot;http://isotopeecommerce.org/de/team.html&quot; target=&quot;_blank&quot;&gt;the Isotope eCommerce Takımı&lt;/a&gt; ile ilişkili bir üründür.</target>
+        <target>Isotope, %s&apos;in  &lt;a href=&quot;http://isotopeecommerce.org/de/team.html&quot; target=&quot;_blank&quot;&gt;the Isotope eCommerce Takımı&lt;/a&gt; ile ilişkili bir üründür.</target>
       </trans-unit>
       <trans-unit id="MSC.iso_orderCollectionBy.asc_id">
         <source>by date added (ascending)</source>
@@ -842,7 +842,7 @@
         <target>Sabit</target>
       </trans-unit>
       <trans-unit id="MSC.iso_priceDisplay.fixed.1">
-        <source>The product price will always be shown as in the product setting. Taxes are always calculated as &quot;included&quot;. This means the shop owner's profit varies depending on the applicable taxes.</source>
+        <source>The product price will always be shown as in the product setting. Taxes are always calculated as &quot;included&quot;. This means the shop owner&apos;s profit varies depending on the applicable taxes.</source>
         <target>Ürün fiyatı daima ürün ayarında gösterilecektir. Vergiler her zaman &quot;dahil&quot; olarak hesaplanır. Bu, mağaza sahibinin karının, geçerli vergilere bağlı olarak değiştiği anlamına gelir.</target>
       </trans-unit>
       <trans-unit id="MSC.iso_priceDisplay.legacy.0">
@@ -851,7 +851,7 @@
       </trans-unit>
       <trans-unit id="MSC.iso_priceDisplay.legacy.1">
         <source>Price display as in Isotope &lt; 2.3. Prices are shown as gross prices if a tax is included and applicable. Additional taxes are only shown as surcharges.</source>
-        <target>Fiyat göstergesi, İzotop &lt;2.3'deki gibi. Bir vergi dahil edilip uygulanabilirse fiyatlar brüt fiyatlarla gösterilir. Ek vergiler sadece ek ücret olarak gösterilir.</target>
+        <target>Fiyat göstergesi, İzotop &lt;2.3&apos;deki gibi. Bir vergi dahil edilip uygulanabilirse fiyatlar brüt fiyatlarla gösterilir. Ek vergiler sadece ek ücret olarak gösterilir.</target>
       </trans-unit>
       <trans-unit id="CTE.isotope">
         <source>Isotope eCommerce</source>
@@ -913,7 +913,7 @@
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.paypal.1">
         <source>This PayPal module supports IPN (Instant Payment Notifications).</source>
-        <target>Bu PayPal modülü, IPN'yi (Anında Ödeme Bildirimleri) destekler.</target>
+        <target>Bu PayPal modülü, IPN&apos;yi (Anında Ödeme Bildirimleri) destekler.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.paypal_plus.0">
         <source>PayPal PLUS</source>
@@ -1026,7 +1026,7 @@
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_gallery.standard.1">
         <source>&lt;p&gt;Uses the lightbox/mediabox for full size images. Make sure you select the appropriate &quot;moo_&quot; template in your page layout configuration.&lt;/p&gt;&lt;p&gt;You can supply a &quot;rel&quot; attribute to the link target by using a pipe (e.g. &quot;tl_files/video.mov|lightbox[400 300]&quot;). If no &quot;rel&quot; attribute is supplied, the link will be opened in a new window.&lt;/p&gt;</source>
-        <target>&lt;p&gt;Tam boyutlu resimler için lightbox / mediabox'u kullanır. Sayfa düzen yapılandırmanızda uygun &quot;moo_&quot; şablonunu seçtiğinizden emin olun.&lt;/p&gt;&lt;p&gt;Bağlantı hedefine bir boru kullanarak bir &quot;rel&quot; özelliği sunabilirsiniz (örn. &quot;tl_files/video.mov | lightbox [ 400 300] &quot;). &quot;Rel&quot; özelliği sağlanmazsa, bağlantı yeni bir pencerede açılacaktır.&lt;/p&gt;</target>
+        <target>&lt;p&gt;Tam boyutlu resimler için lightbox / mediabox&apos;u kullanır. Sayfa düzen yapılandırmanızda uygun &quot;moo_&quot; şablonunu seçtiğinizden emin olun.&lt;/p&gt;&lt;p&gt;Bağlantı hedefine bir boru kullanarak bir &quot;rel&quot; özelliği sunabilirsiniz (örn. &quot;tl_files/video.mov | lightbox [ 400 300] &quot;). &quot;Rel&quot; özelliği sağlanmazsa, bağlantı yeni bir pencerede açılacaktır.&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_gallery.inline.0">
         <source>Inline gallery</source>
@@ -1461,8 +1461,8 @@
         <target>KMF - Comorian Franc</target>
       </trans-unit>
       <trans-unit id="CUR.KPW">
-        <source>KPW - Democratic People's Republic of Korean Won</source>
-        <target>KPW - Democratic People's Republic of Korean Won</target>
+        <source>KPW - Democratic People&apos;s Republic of Korean Won</source>
+        <target>KPW - Democratic People&apos;s Republic of Korean Won</target>
       </trans-unit>
       <trans-unit id="CUR.KRW">
         <source>KRW - Republic of Korean Won</source>
@@ -1721,8 +1721,8 @@
         <target>TND - Tunisian Dinar</target>
       </trans-unit>
       <trans-unit id="CUR.TOP">
-        <source>TOP - Pa'anga</source>
-        <target>TOP - Pa'anga</target>
+        <source>TOP - Pa&apos;anga</source>
+        <target>TOP - Pa&apos;anga</target>
       </trans-unit>
       <trans-unit id="CUR.TRY">
         <source>TRY - New Turkish Lira</source>

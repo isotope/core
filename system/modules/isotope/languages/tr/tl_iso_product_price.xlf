@@ -63,7 +63,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_price.edit.1">
         <source>Edit price ID %s</source>
-        <target>%s ID'li fiyatı düzenle</target>
+        <target>%s ID&apos;li fiyatı düzenle</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_price.copy.0">
         <source>Duplicate price</source>
@@ -71,7 +71,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_price.copy.1">
         <source>Duplicate price ID %s</source>
-        <target>%s ID'li fiyatı kopyala</target>
+        <target>%s ID&apos;li fiyatı kopyala</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_price.delete.0">
         <source>Delete price</source>
@@ -79,7 +79,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_price.delete.1">
         <source>Delete price ID %s</source>
-        <target>%s ID'li fiyatı sil</target>
+        <target>%s ID&apos;li fiyatı sil</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_price.show.0">
         <source>Price details</source>
@@ -87,7 +87,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_price.show.1">
         <source>Show details of price ID %s</source>
-        <target>%s ID'li fiyatın detaylarını göster</target>
+        <target>%s ID&apos;li fiyatın detaylarını göster</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_price.price_tier_columns.min.0">
         <source>Quantity (min)</source>

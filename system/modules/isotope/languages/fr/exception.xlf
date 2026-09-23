@@ -11,10 +11,10 @@
       </trans-unit>
       <trans-unit id="XPT.isotopeOldFix">
         <source>There are multiple options to get your installation back:</source>
-        <target>Il y a plusieurs options pour obtenir votre installation d'origine :</target>
+        <target>Il y a plusieurs options pour obtenir votre installation d&apos;origine :</target>
       </trans-unit>
       <trans-unit id="XPT.isotopeOldFix1">
-        <source>Create a backup, then completely uninstall Isotope and remove all it's database tables and related extensions. Afterwards you can install Isotope eCommerce 2.0 again.</source>
+        <source>Create a backup, then completely uninstall Isotope and remove all it&apos;s database tables and related extensions. Afterwards you can install Isotope eCommerce 2.0 again.</source>
         <target>Créer une sauvegarde, puis désinstaller complètement Isotope. Retirer toute les tables de la base et les extensions liées. Ensuite, installer à nouveau Isotope eCommerce 2.0.</target>
       </trans-unit>
       <trans-unit id="XPT.isotopeOldFix2">
@@ -27,7 +27,7 @@
       </trans-unit>
       <trans-unit id="XPT.isotopeOldExplain">
         <source>&lt;a href=&quot;http://isotopeecommerce.org/&quot; target=&quot;_blank&quot;&gt;Visit our website&lt;/a&gt; for more information about Isotope eCommerce.</source>
-        <target>&lt;a href=&quot;http://isotopeecommerce.org/&quot; target=&quot;_blank&quot;&gt;Visitez notre site web&lt;/ a&gt; pour obtenir plus d'informations sur Isotope eCommerce.</target>
+        <target>&lt;a href=&quot;http://isotopeecommerce.org/&quot; target=&quot;_blank&quot;&gt;Visitez notre site web&lt;/ a&gt; pour obtenir plus d&apos;informations sur Isotope eCommerce.</target>
       </trans-unit>
     </body>
   </file>

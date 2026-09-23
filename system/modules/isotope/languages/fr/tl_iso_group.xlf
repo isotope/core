@@ -7,7 +7,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_group.name.1">
         <source>Please enter a name for this group.</source>
-        <target>Veuillez, s'il vous plaît, entrer un nom pour ce groupe.</target>
+        <target>Veuillez, s&apos;il vous plaît, entrer un nom pour ce groupe.</target>
       </trans-unit>
       <trans-unit id="tl_iso_group.product_type.0">
         <source>Default product type</source>

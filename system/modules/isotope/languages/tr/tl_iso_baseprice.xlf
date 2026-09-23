@@ -39,7 +39,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.edit.1">
         <source>Edit base price ID %s</source>
-        <target>%s ID'li taban fiyatı düzenle</target>
+        <target>%s ID&apos;li taban fiyatı düzenle</target>
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.copy.0">
         <source>Duplicate base price</source>
@@ -47,7 +47,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.copy.1">
         <source>Duplicate base price ID %s</source>
-        <target>%s ID'li taban fiyatı kopyala</target>
+        <target>%s ID&apos;li taban fiyatı kopyala</target>
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.delete.0">
         <source>Delete base price</source>
@@ -55,7 +55,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.delete.1">
         <source>Delete base price ID %s</source>
-        <target>%s ID'li taban fiyatı sil</target>
+        <target>%s ID&apos;li taban fiyatı sil</target>
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.show.0">
         <source>Base price details</source>
@@ -63,7 +63,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.show.1">
         <source>Show details of base price ID %s</source>
-        <target>%s ID'li taban fiyatın detaylarını göster</target>
+        <target>%s ID&apos;li taban fiyatın detaylarını göster</target>
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.name_legend">
         <source>Base price</source>

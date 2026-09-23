@@ -39,7 +39,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_group.copy.1">
         <source>Duplicate group ID %s</source>
-        <target>Duplicare l'ID del gruppo %s</target>
+        <target>Duplicare l&apos;ID del gruppo %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_group.copyChilds.0">
         <source>Duplicate with subgroups</source>
@@ -47,7 +47,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_group.copyChilds.1">
         <source>Duplicate group ID %s with subgroups</source>
-        <target>Duplicare l'ID del gruppo %s con i sottogruppi</target>
+        <target>Duplicare l&apos;ID del gruppo %s con i sottogruppi</target>
       </trans-unit>
       <trans-unit id="tl_iso_group.cut.0">
         <source>Move group</source>
@@ -55,7 +55,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_group.cut.1">
         <source>Move group ID %s</source>
-        <target>Spostare l'ID del gruppo %s</target>
+        <target>Spostare l&apos;ID del gruppo %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_group.delete.0">
         <source>Delete group</source>
@@ -63,7 +63,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_group.delete.1">
         <source>Delete group ID %s</source>
-        <target>Cancellare l'ID del gruppo %s</target>
+        <target>Cancellare l&apos;ID del gruppo %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_group.show.0">
         <source>Group details</source>
@@ -71,7 +71,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_group.show.1">
         <source>Show details of group ID %s</source>
-        <target>Mostra i dettagli dell'ID del gruppo %s</target>
+        <target>Mostra i dettagli dell&apos;ID del gruppo %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_group.pasteafter.0">
         <source>Paste after</source>
@@ -79,7 +79,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_group.pasteafter.1">
         <source>Paste after group ID %s</source>
-        <target>Incolla dopo l'ID del gruppo %s</target>
+        <target>Incolla dopo l&apos;ID del gruppo %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_group.pasteinto.0">
         <source>Paste into</source>

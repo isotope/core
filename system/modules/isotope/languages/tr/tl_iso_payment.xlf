@@ -94,7 +94,7 @@
         <target>Kullanılabilir ülkeler</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.countries.1">
-        <source>Select the countries where this payment method may be used (customer's billing address).</source>
+        <source>Select the countries where this payment method may be used (customer&apos;s billing address).</source>
         <target>Bu ödeme yönteminin kullanılabileceği ülkeleri (müşterinin fatura adresi) seçin.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.shipping_modules.0">
@@ -243,7 +243,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.psp_dynamic_template.0">
         <source>Dynamic template URL</source>
-        <target>Dinamik şablon URL'si</target>
+        <target>Dinamik şablon URL&apos;si</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.psp_dynamic_template.1">
         <source>Enter a valid &lt;strong&gt;absolute&lt;/strong&gt; URL to a dynamic template here.</source>
@@ -254,7 +254,7 @@
         <target>Ödeme Şekli</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.psp_payment_method.1">
-        <source>You can select a payment method here. Make sure your PSP contract also includes this payment method! If you don't select anything at all here, the customer will have to choose the preferred payment method on the PSP interface!</source>
+        <source>You can select a payment method here. Make sure your PSP contract also includes this payment method! If you don&apos;t select anything at all here, the customer will have to choose the preferred payment method on the PSP interface!</source>
         <target>Burada bir ödeme yöntemi seçebilirsiniz. PSP sözleşmenizin de bu ödeme yöntemini de içerdiğinden emin olun! Burada hiç bir şey seçmezseniz, müşterinin PSP arayüzünde tercih edilen ödeme yöntemini seçmesi gerekir!</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.requireCCV.0">
@@ -379,7 +379,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.sofortueberweisung_user_id.1">
         <source>Your customer ID for sofortüberweisung.de</source>
-        <target>sofortüberweisung.de için Müşteri ID'niz</target>
+        <target>sofortüberweisung.de için Müşteri ID&apos;niz</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.sofortueberweisung_project_id.0">
         <source>Project ID</source>
@@ -387,7 +387,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.sofortueberweisung_project_id.1">
         <source>Your project ID for sofortüberweisung.de</source>
-        <target>sofortüberweisung.de için Proje ID'niz</target>
+        <target>sofortüberweisung.de için Proje ID&apos;niz</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.sofortueberweisung_project_password.0">
         <source>Projekt password</source>
@@ -513,7 +513,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.epay_merchantnumber.1">
         <source>The unique merchant number created in ePay. This merchant number is to be found in your contract with PBS.</source>
-        <target>EPay'de yaratılmış benzersiz satıcı numarası. Bu satıcı numarası PBS ile olan sözleşmenizde bulunacaktır.</target>
+        <target>EPay&apos;de yaratılmış benzersiz satıcı numarası. Bu satıcı numarası PBS ile olan sözleşmenizde bulunacaktır.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.epay_windowstate.0">
         <source>Integration type</source>
@@ -545,7 +545,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.payone_aid.1">
         <source>Please enter your unique PAYONE subaccount ID (aid).</source>
-        <target>Benzersiz  PAYONE subaccount ID (aid)'nizi girin.</target>
+        <target>Benzersiz  PAYONE subaccount ID (aid)&apos;nizi girin.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.payone_portalid.0">
         <source>PAYONE Portal ID</source>
@@ -553,7 +553,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.payone_portalid.1">
         <source>Please enter your unique PAYONE portal ID.</source>
-        <target>Benzersiz  PAYONE portal ID'nizi girin.</target>
+        <target>Benzersiz  PAYONE portal ID&apos;nizi girin.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.payone_key.0">
         <source>Secret key</source>
@@ -675,7 +675,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_user_id.1">
         <source>Please enter your user ID.</source>
-        <target>Lütfen kullanıcı ID'nizi girin.</target>
+        <target>Lütfen kullanıcı ID&apos;nizi girin.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_password.0">
         <source>Password</source>
@@ -833,7 +833,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.edit.1">
         <source>Edit payment method ID %s</source>
-        <target>%s ID'li ödeme yöntemini düzenle</target>
+        <target>%s ID&apos;li ödeme yöntemini düzenle</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.copy.0">
         <source>Copy payment method</source>
@@ -841,7 +841,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.copy.1">
         <source>Copy payment method ID %s</source>
-        <target>%s ID'li ödeme yöntemini kopyala</target>
+        <target>%s ID&apos;li ödeme yöntemini kopyala</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.delete.0">
         <source>Delete payment method</source>
@@ -849,7 +849,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.delete.1">
         <source>Delete payment method ID %s</source>
-        <target>%s ID'li ödeme yöntemini sil</target>
+        <target>%s ID&apos;li ödeme yöntemini sil</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.toggle.0">
         <source>Enable/disable payment method</source>
@@ -857,7 +857,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.toggle.1">
         <source>Enable/disable payment method ID %s</source>
-        <target>%s ID'li ödeme yöntemini etkinleştir/devre dışı bırak</target>
+        <target>%s ID&apos;li ödeme yöntemini etkinleştir/devre dışı bırak</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.show.0">
         <source>Payment method details</source>
@@ -865,7 +865,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.show.1">
         <source>Show details of payment method ID %s</source>
-        <target>%s ID'li ödeme yöntemi detaylarını gör</target>
+        <target>%s ID&apos;li ödeme yöntemi detaylarını gör</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.capture.0">
         <source>Authorize and Capture</source>

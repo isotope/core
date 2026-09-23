@@ -14,8 +14,8 @@
         <target>Yüklemenizi geri almak için birden fazla seçenek vardır:</target>
       </trans-unit>
       <trans-unit id="XPT.isotopeOldFix1">
-        <source>Create a backup, then completely uninstall Isotope and remove all it's database tables and related extensions. Afterwards you can install Isotope eCommerce 2.0 again.</source>
-        <target>Bir yedek oluşturun, ardından tamamen Isotope'u kaldırın, tüm veritabanı tablolarını ve ilgili uzantılarını kaldırın. Daha sonra tekrar Isotope eCommerce 2.0 kurabilirsiniz.</target>
+        <source>Create a backup, then completely uninstall Isotope and remove all it&apos;s database tables and related extensions. Afterwards you can install Isotope eCommerce 2.0 again.</source>
+        <target>Bir yedek oluşturun, ardından tamamen Isotope&apos;u kaldırın, tüm veritabanı tablolarını ve ilgili uzantılarını kaldırın. Daha sonra tekrar Isotope eCommerce 2.0 kurabilirsiniz.</target>
       </trans-unit>
       <trans-unit id="XPT.isotopeOldFix2">
         <source>We are currently running a fundraising to develop an update tool. The more people that help, the sooner you will be able to update your old installation. &lt;a href=&quot;http://isotopeecommerce.com/en/&quot; target=&quot;_blank&quot;&gt;Please consider participating&lt;/a&gt;.</source>
@@ -23,7 +23,7 @@
       </trans-unit>
       <trans-unit id="XPT.isotopeOldFix3">
         <source>Get an experienced Contao developer to migrate your data manually. We suggest to take a look at &lt;a href=&quot;http://contao.org/en/&quot; target=&quot;_blank&quot;&gt;the Contao partner listing&lt;/a&gt;.</source>
-        <target>Verilerinizi manuel olarak taşımak için deneyimli bir Contao geliştiricisinden yardım alın. &lt;a href=&quot;http://contao.org/en/&quot; target=&quot;_blank&quot;&gt; Contao'nun iş ortağı listesine &lt;/a&gt; göz atmanızı öneririz.</target>
+        <target>Verilerinizi manuel olarak taşımak için deneyimli bir Contao geliştiricisinden yardım alın. &lt;a href=&quot;http://contao.org/en/&quot; target=&quot;_blank&quot;&gt; Contao&apos;nun iş ortağı listesine &lt;/a&gt; göz atmanızı öneririz.</target>
       </trans-unit>
       <trans-unit id="XPT.isotopeOldExplain">
         <source>&lt;a href=&quot;http://isotopeecommerce.org/&quot; target=&quot;_blank&quot;&gt;Visit our website&lt;/a&gt; for more information about Isotope eCommerce.</source>

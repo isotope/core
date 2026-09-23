@@ -159,7 +159,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.chosen.0">
         <source>Use &quot;Chosen&quot; JavaScript</source>
-        <target>&quot;Seçilmiş&quot; JavaScript'i kullanın</target>
+        <target>&quot;Seçilmiş&quot; JavaScript&apos;i kullanın</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.chosen.1">
         <source>This option enables the usage of the &quot;Chosen&quot; JavaScript for the select field, which enables you to select multiple values via a search function.</source>
@@ -533,7 +533,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.url.1">
         <source>Checks whether the input is a valid URL.</source>
-        <target>Girilen URL'nin geçerli olup olmadığını kontrol eder.</target>
+        <target>Girilen URL&apos;nin geçerli olup olmadığını kontrol eder.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.price.0">
         <source>Price</source>
@@ -597,7 +597,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.2.1">
         <source>Database ID of the order record.</source>
-        <target>Sipariş kaydının veritabanı ID'si.</target>
+        <target>Sipariş kaydının veritabanı ID&apos;si.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.3.0">
         <source>##order_date##</source>
@@ -613,7 +613,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.4.1">
         <source>Database ID of the product.</source>
-        <target>Ürünün veritabanı ID'si.</target>
+        <target>Ürünün veritabanı ID&apos;si.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.5.0">
         <source>##product_sku##</source>
@@ -621,7 +621,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.5.1">
         <source>SKU of the product.</source>
-        <target>Ürünün SKU'su-stok tutma birimi.</target>
+        <target>Ürünün SKU&apos;su-stok tutma birimi.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.6.0">
         <source>##product_name##</source>
@@ -637,7 +637,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.7.1">
         <source>Position of the product on the order document, starting from 1.</source>
-        <target>Ürünün sipariş belgesindeki konumu, 1'den başlayarak.</target>
+        <target>Ürünün sipariş belgesindeki konumu, 1&apos;den başlayarak.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.8.0">
         <source>##attribute_field##</source>
@@ -709,7 +709,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.edit.1">
         <source>Edit attribute ID %s.</source>
-        <target>%s ID'li özellği düzenle</target>
+        <target>%s ID&apos;li özellği düzenle</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.copy.0">
         <source>Copy attribute</source>
@@ -717,7 +717,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.copy.1">
         <source>Copy attribute ID %s.</source>
-        <target>%s ID'li özellği kopyala</target>
+        <target>%s ID&apos;li özellği kopyala</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.delete.0">
         <source>Delete attribute</source>
@@ -732,7 +732,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.show.1">
         <source>Show details for attribute ID %s.</source>
-        <target>%s ID'li özellğin detaylarını gör</target>
+        <target>%s ID&apos;li özellğin detaylarını gör</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.deleteConfirm">
         <source>Do you really want to delete attribute ID %s? The database column will not be deleted, you need to manually update the database using the Contao Manager.</source>

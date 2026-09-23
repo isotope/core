@@ -3,23 +3,23 @@
     <body>
       <trans-unit id="ERR.systemColumn">
         <source>Name &quot;%s&quot; is reserved for system use. Please choose a different name.</source>
-        <target>Le nom `%s` est réservé pour l'administration du système. Merci de choisir un autre nom.</target>
+        <target>Le nom `%s` est réservé pour l&apos;administration du système. Merci de choisir un autre nom.</target>
       </trans-unit>
       <trans-unit id="ERR.noStoreConfigurationSet">
         <source>No store configuration available</source>
-        <target>Il n'existe pas de configuration pour cette entrepot</target>
+        <target>Il n&apos;existe pas de configuration pour cette entrepot</target>
       </trans-unit>
       <trans-unit id="ERR.noDefaultStoreConfiguration">
         <source>Please create a default store configuration.</source>
-        <target>Créez d'abord une configuration de l'entrepot.</target>
+        <target>Créez d&apos;abord une configuration de l&apos;entrepot.</target>
       </trans-unit>
       <trans-unit id="ERR.emptyOrderHistory">
         <source>You have not yet placed any orders.</source>
-        <target>Vous n'avez rien commandé jusqu'ici.</target>
+        <target>Vous n&apos;avez rien commandé jusqu&apos;ici.</target>
       </trans-unit>
       <trans-unit id="ERR.orderNotFound">
         <source>The requested order was not found.</source>
-        <target>La commande désirée n'a pas pu être trouvée.</target>
+        <target>La commande désirée n&apos;a pas pu être trouvée.</target>
       </trans-unit>
       <trans-unit id="ERR.emptyWishlists">
         <source>You have not created any wishlists yet.</source>
@@ -49,11 +49,11 @@
       </trans-unit>
       <trans-unit id="ERR.noAddressBookEntries">
         <source>You have no address book entries.</source>
-        <target>Il n'y a pas d'entrées dans votre carnet d'adresses.</target>
+        <target>Il n&apos;y a pas d&apos;entrées dans votre carnet d&apos;adresses.</target>
       </trans-unit>
       <trans-unit id="ERR.cartMinSubtotal">
         <source>The minimum order amount is %s. Please add more products before checkout.</source>
-        <target>Le montant minimum de commande est %s. Veuillez ajouter d'autres produits avant de commander.</target>
+        <target>Le montant minimum de commande est %s. Veuillez ajouter d&apos;autres produits avant de commander.</target>
       </trans-unit>
       <trans-unit id="ERR.productMinimumQuantity">
         <source>The minimum quantity for &quot;%s&quot; is %s items. Please check your shopping cart.</source>
@@ -77,7 +77,7 @@
       </trans-unit>
       <trans-unit id="ERR.collectionItemNotAvailable">
         <source>This product is no longer available.</source>
-        <target>Ce produit n'est plus disponible.</target>
+        <target>Ce produit n&apos;est plus disponible.</target>
       </trans-unit>
       <trans-unit id="ERR.collectionErrorInItems">
         <source>There are errors in your products.</source>
@@ -168,7 +168,7 @@
       </trans-unit>
       <trans-unit id="MSC.undeletableUnpublished">
         <source>Some records could not be deleted and have been unpublished instead.</source>
-        <target>Certains enregistrements ne peuvent pas être supprimés et n'ont pas été dé-publier.</target>
+        <target>Certains enregistrements ne peuvent pas être supprimés et n&apos;ont pas été dé-publier.</target>
       </trans-unit>
       <trans-unit id="MSC.quantity">
         <source>Quantity</source>
@@ -296,11 +296,11 @@
       </trans-unit>
       <trans-unit id="MSC.noItemsInFavorites">
         <source>There are no items in your favorites list.</source>
-        <target>Vous n'avez enregistré aucun favori</target>
+        <target>Vous n&apos;avez enregistré aucun favori</target>
       </trans-unit>
       <trans-unit id="MSC.noItemsInCart">
         <source>There are no items in your cart.</source>
-        <target>Il n'y a pas d'article dans votre panier.</target>
+        <target>Il n&apos;y a pas d&apos;article dans votre panier.</target>
       </trans-unit>
       <trans-unit id="MSC.noItemsInWishlist">
         <source>There are no items in this wishlist.</source>
@@ -363,11 +363,11 @@
       </trans-unit>
       <trans-unit id="MSC.noPaymentModules">
         <source>No payment options are currently available</source>
-        <target>Actuellement, il n'y a pas d'options de paiement.</target>
+        <target>Actuellement, il n&apos;y a pas d&apos;options de paiement.</target>
       </trans-unit>
       <trans-unit id="MSC.noShippingModules">
         <source>No shipping options are currently available.</source>
-        <target>Actuellement, il n'y a pas d'options de livraison.</target>
+        <target>Actuellement, il n&apos;y a pas d&apos;options de livraison.</target>
       </trans-unit>
       <trans-unit id="MSC.noOrderEmails">
         <source>No orders emails found.</source>
@@ -383,7 +383,7 @@
       </trans-unit>
       <trans-unit id="MSC.cartBT">
         <source>Shopping Cart</source>
-        <target>Panier d'achat</target>
+        <target>Panier d&apos;achat</target>
       </trans-unit>
       <trans-unit id="MSC.checkoutBT">
         <source>Proceed to Checkout</source>
@@ -403,7 +403,7 @@
       </trans-unit>
       <trans-unit id="MSC.checkboutStepBack">
         <source>Go back to step &quot;%s&quot;</source>
-        <target>Retourner à l'étape &quot;%s&quot;</target>
+        <target>Retourner à l&apos;étape &quot;%s&quot;</target>
       </trans-unit>
       <trans-unit id="MSC.createNewAddressLabel">
         <source>Create New Address</source>
@@ -411,11 +411,11 @@
       </trans-unit>
       <trans-unit id="MSC.useBillingAddress">
         <source>Use billing address</source>
-        <target>Utiliser l'adresse de paiement</target>
+        <target>Utiliser l&apos;adresse de paiement</target>
       </trans-unit>
       <trans-unit id="MSC.useCustomerAddress">
         <source>Use customer address</source>
-        <target>Utiliser l'adresse du client</target>
+        <target>Utiliser l&apos;adresse du client</target>
       </trans-unit>
       <trans-unit id="MSC.differentShippingAddress">
         <source>Different shipping address</source>
@@ -533,7 +533,7 @@
       </trans-unit>
       <trans-unit id="MSC.shipping_address_message">
         <source>Enter your shipping information or select an existing address.</source>
-        <target>Saisir vos informations d'expédition ou sélectionner une adresse existante.</target>
+        <target>Saisir vos informations d&apos;expédition ou sélectionner une adresse existante.</target>
       </trans-unit>
       <trans-unit id="MSC.billing_address_message">
         <source>Enter your billing information or select an existing address.</source>
@@ -597,7 +597,7 @@
       </trans-unit>
       <trans-unit id="MSC.billing_shipping_address">
         <source>Billing &amp; Shipping Address</source>
-        <target>Adresse de facturation et d'expédition</target>
+        <target>Adresse de facturation et d&apos;expédition</target>
       </trans-unit>
       <trans-unit id="MSC.customer_address">
         <source>Customer Address</source>
@@ -633,11 +633,11 @@
       </trans-unit>
       <trans-unit id="MSC.cc_exp_month">
         <source>Expiration month</source>
-        <target>Mois d'expiration</target>
+        <target>Mois d&apos;expiration</target>
       </trans-unit>
       <trans-unit id="MSC.cc_exp_year">
         <source>Expiration year</source>
-        <target>Année d'expiration</target>
+        <target>Année d&apos;expiration</target>
       </trans-unit>
       <trans-unit id="MSC.backendPaymentNotFound">
         <source>Payment module not found!</source>
@@ -645,7 +645,7 @@
       </trans-unit>
       <trans-unit id="MSC.backendShippingNotFound">
         <source>Shipping module not found!</source>
-        <target>Module d'expédition non trouvé !</target>
+        <target>Module d&apos;expédition non trouvé !</target>
       </trans-unit>
       <trans-unit id="MSC.backendPaymentNoInfo">
         <source>This payment module does not provide additional information.</source>
@@ -653,7 +653,7 @@
       </trans-unit>
       <trans-unit id="MSC.backendShippingNoInfo">
         <source>This shipping module does not provide additional information.</source>
-        <target>Ce module d'expédition ne fournit pas d'informations supplémentaires.</target>
+        <target>Ce module d&apos;expédition ne fournit pas d&apos;informations supplémentaires.</target>
       </trans-unit>
       <trans-unit id="MSC.useDefault">
         <source>Use default value</source>
@@ -739,26 +739,26 @@
       </trans-unit>
       <trans-unit id="MSC.isotopeIntroduction.2">
         <source>This is the page where most of the configuration will take place. &lt;strong&gt;You should start from the bottom of this page and work your way upward from right to left.&lt;/strong&gt;</source>
-        <target>C'est la page où la majeure partie de la configuration à lieu. &lt;strong&gt;Procédez depuis le bas de la liste en remontant de droite à gauche.&lt;/strong&gt;</target>
+        <target>C&apos;est la page où la majeure partie de la configuration à lieu. &lt;strong&gt;Procédez depuis le bas de la liste en remontant de droite à gauche.&lt;/strong&gt;</target>
       </trans-unit>
       <trans-unit id="MSC.isotopeIntroduction.3">
         <source>Visit the official &lt;a href=&quot;http://isotopeecommerce.org&quot; target=&quot;_blank&quot;&gt;Isotope eCommerce website&lt;/a&gt; for the latest news, configuration manuals and professional support. Thank you so much for considering giving something back!</source>
       </trans-unit>
       <trans-unit id="MSC.isotopeIntroduction.4">
         <source>The Isotope eCommerce Team</source>
-        <target>L'équipe de Isotope eCommerce</target>
+        <target>L&apos;équipe de Isotope eCommerce</target>
       </trans-unit>
       <trans-unit id="MSC.isotopeIntroduction.5">
         <source>Isotope is a product of %s in association with &lt;a href=&quot;http://isotopeecommerce.org/de/team.html&quot; target=&quot;_blank&quot;&gt;the Isotope eCommerce Team&lt;/a&gt;.</source>
-        <target>Isotope est un produit de %s en association avec &lt;a href=&quot;http://isotopeecommerce.org/de/team.html&quot; target=&quot;_blank&quot;&gt;l'équipe Isotope eCommerce&lt;/a&gt;.</target>
+        <target>Isotope est un produit de %s en association avec &lt;a href=&quot;http://isotopeecommerce.org/de/team.html&quot; target=&quot;_blank&quot;&gt;l&apos;équipe Isotope eCommerce&lt;/a&gt;.</target>
       </trans-unit>
       <trans-unit id="MSC.iso_orderCollectionBy.asc_id">
         <source>by date added (ascending)</source>
-        <target>par date d'ajout (ascendant)</target>
+        <target>par date d&apos;ajout (ascendant)</target>
       </trans-unit>
       <trans-unit id="MSC.iso_orderCollectionBy.desc_id">
         <source>by date added (descending)</source>
-        <target>par date d'ajout (descendant)</target>
+        <target>par date d&apos;ajout (descendant)</target>
       </trans-unit>
       <trans-unit id="MSC.iso_orderCollectionBy.asc_tstamp">
         <source>by date updated (ascending)</source>
@@ -821,7 +821,7 @@
         <source>Fixed</source>
       </trans-unit>
       <trans-unit id="MSC.iso_priceDisplay.fixed.1">
-        <source>The product price will always be shown as in the product setting. Taxes are always calculated as &quot;included&quot;. This means the shop owner's profit varies depending on the applicable taxes.</source>
+        <source>The product price will always be shown as in the product setting. Taxes are always calculated as &quot;included&quot;. This means the shop owner&apos;s profit varies depending on the applicable taxes.</source>
       </trans-unit>
       <trans-unit id="MSC.iso_priceDisplay.legacy.0">
         <source>Legacy</source>
@@ -839,15 +839,15 @@
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_shipping.flat.1">
         <source>This is the default shipping method for regular shipping.</source>
-        <target>C'est la méthode standard pour expédition standard.</target>
+        <target>C&apos;est la méthode standard pour expédition standard.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_shipping.group.0">
         <source>Shipping group</source>
-        <target>Groupe d'expédition</target>
+        <target>Groupe d&apos;expédition</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_shipping.group.1">
         <source>With this method, you can group multiple shipping methods into one and calculate the price based on them.</source>
-        <target>Avec cette méthode, vous pouvez grouper plusieurs méthode d'expédition en une et calculer le prix d'après ces dernières.</target>
+        <target>Avec cette méthode, vous pouvez grouper plusieurs méthode d&apos;expédition en une et calculer le prix d&apos;après ces dernières.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_shipping.product_price.0">
         <source>Product-price shipping</source>
@@ -991,7 +991,7 @@
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_gallery.standard.1">
         <source>&lt;p&gt;Uses the lightbox/mediabox for full size images. Make sure you select the appropriate &quot;moo_&quot; template in your page layout configuration.&lt;/p&gt;&lt;p&gt;You can supply a &quot;rel&quot; attribute to the link target by using a pipe (e.g. &quot;tl_files/video.mov|lightbox[400 300]&quot;). If no &quot;rel&quot; attribute is supplied, the link will be opened in a new window.&lt;/p&gt;</source>
-        <target>&lt;p&gt;Utilisez le lightbox/mediabox pour des images pleine résolution. Assurez vous de sélectionner le modèle &quot;moo_&quot; approprié dans la configuration du modèle de page.&lt;/p&gt;&lt;p&gt;Vous pouvez fournir un attribut &quot;rel&quot; à la cible du lien an utilisant un tuyaux (ex: &quot;tl_files/video.mov|lightbox[400 300]&quot;). Si aucun attribut &quot;rel&quot; n'est renseigné, le lien sera ouvert dans une nouvelle fenêtre.&lt;/p&gt;</target>
+        <target>&lt;p&gt;Utilisez le lightbox/mediabox pour des images pleine résolution. Assurez vous de sélectionner le modèle &quot;moo_&quot; approprié dans la configuration du modèle de page.&lt;/p&gt;&lt;p&gt;Vous pouvez fournir un attribut &quot;rel&quot; à la cible du lien an utilisant un tuyaux (ex: &quot;tl_files/video.mov|lightbox[400 300]&quot;). Si aucun attribut &quot;rel&quot; n&apos;est renseigné, le lien sera ouvert dans une nouvelle fenêtre.&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_gallery.inline.0">
         <source>Inline gallery</source>
@@ -999,7 +999,7 @@
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_gallery.inline.1">
         <source>Clicking on a gallery image will replace the main image.</source>
-        <target>Cliquer sur une image de la galerie pour remplacer l'image principale.</target>
+        <target>Cliquer sur une image de la galerie pour remplacer l&apos;image principale.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_gallery.elevatezoom.0">
         <source>Elevate Zoom gallery</source>
@@ -1013,7 +1013,7 @@
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_product.standard.1">
         <source>A default product. Select this if nothing else matches.</source>
-        <target>Un produit par défaut. Sélectionnez-le si rien d'autre ne correspond.</target>
+        <target>Un produit par défaut. Sélectionnez-le si rien d&apos;autre ne correspond.</target>
       </trans-unit>
       <trans-unit id="ISO_VAT.eu_vies">
         <source>European VAT Number (&lt;a href=&quot;http://ec.europa.eu/taxation_customs/vies/vieshome.do&quot; target=&quot;_blank&quot;&gt;VIES&lt;/a&gt;)</source>
@@ -1024,7 +1024,7 @@
       </trans-unit>
       <trans-unit id="ATTR.text.1">
         <source>A single-line input field for a short or medium text.</source>
-        <target>Champ d'une ligne pour la saisie d'un texte court ou moyen.</target>
+        <target>Champ d&apos;une ligne pour la saisie d&apos;un texte court ou moyen.</target>
       </trans-unit>
       <trans-unit id="ATTR.textarea.0">
         <source>Textarea</source>
@@ -1032,7 +1032,7 @@
       </trans-unit>
       <trans-unit id="ATTR.textarea.1">
         <source>A multi-line input field for a medium or long text.</source>
-        <target>Champ comportant plusieurs lignes pour la saisie d'un texte moyen ou long.</target>
+        <target>Champ comportant plusieurs lignes pour la saisie d&apos;un texte moyen ou long.</target>
       </trans-unit>
       <trans-unit id="ATTR.select.0">
         <source>Select menu</source>
@@ -1040,7 +1040,7 @@
       </trans-unit>
       <trans-unit id="ATTR.select.1">
         <source>A single- or multi-line drop-down menu.&lt;br /&gt;&lt;i&gt;This field type is suitable for product variants.&lt;/i&gt;</source>
-        <target>Liste déroulante pour la sélection d'un ou plusieurs choix.&lt;br /&gt;&lt;em&gt;Ce type de champ est adapté pour les variantes de produits.&lt;/em&gt;</target>
+        <target>Liste déroulante pour la sélection d&apos;un ou plusieurs choix.&lt;br /&gt;&lt;em&gt;Ce type de champ est adapté pour les variantes de produits.&lt;/em&gt;</target>
       </trans-unit>
       <trans-unit id="ATTR.radio.0">
         <source>Radio button menu</source>
@@ -1064,7 +1064,7 @@
       </trans-unit>
       <trans-unit id="ATTR.mediaManager.1">
         <source>Upload images and other files to the Isotope eCommerce file system. Output is processed trough an IsotopeGallery class.</source>
-        <target>Charge les images et autre fichiers dans le système de fichiers d'Isotope eCommerce. La sortie est traitée par une classe IsotopeGallery</target>
+        <target>Charge les images et autre fichiers dans le système de fichiers d&apos;Isotope eCommerce. La sortie est traitée par une classe IsotopeGallery</target>
       </trans-unit>
       <trans-unit id="ATTR.conditionalselect.0">
         <source>Conditional Select-Menu</source>
@@ -1072,7 +1072,7 @@
       </trans-unit>
       <trans-unit id="ATTR.conditionalselect.1">
         <source>show select-options based on another select menu.</source>
-        <target>Liste déroulante affichant des options dépendantes d'une autre liste déroulante.</target>
+        <target>Liste déroulante affichant des options dépendantes d&apos;une autre liste déroulante.</target>
       </trans-unit>
       <trans-unit id="ATTR.fileTree.0">
         <source>File tree</source>
@@ -1102,7 +1102,7 @@
       </trans-unit>
       <trans-unit id="ATTR.upload.1">
         <source>A single-line input field to upload a local file to the server.</source>
-        <target>Champ d'une ligne pour l'envoi d'un fichier local vers le serveur.</target>
+        <target>Champ d&apos;une ligne pour l&apos;envoi d&apos;un fichier local vers le serveur.</target>
       </trans-unit>
       <trans-unit id="ATTR.media.0">
         <source>Video/Audio</source>
@@ -1156,7 +1156,7 @@
       </trans-unit>
       <trans-unit id="CUR.AWG">
         <source>AWG - Aruban Guilder</source>
-        <target>AWG - Florin d'Aruba</target>
+        <target>AWG - Florin d&apos;Aruba</target>
       </trans-unit>
       <trans-unit id="CUR.AZN">
         <source>AZN - Azerbaijani Manat</source>
@@ -1419,7 +1419,7 @@
         <target>KMF - Franc des Comores</target>
       </trans-unit>
       <trans-unit id="CUR.KPW">
-        <source>KPW - Democratic People's Republic of Korean Won</source>
+        <source>KPW - Democratic People&apos;s Republic of Korean Won</source>
         <target>KPW - Won de la Corée du Nord</target>
       </trans-unit>
       <trans-unit id="CUR.KRW">
@@ -1679,8 +1679,8 @@
         <target>TND - Dinar tunisien</target>
       </trans-unit>
       <trans-unit id="CUR.TOP">
-        <source>TOP - Pa'anga</source>
-        <target>TOP - Pa'anga</target>
+        <source>TOP - Pa&apos;anga</source>
+        <target>TOP - Pa&apos;anga</target>
       </trans-unit>
       <trans-unit id="CUR.TRY">
         <source>TRY - New Turkish Lira</source>
@@ -1736,7 +1736,7 @@
       </trans-unit>
       <trans-unit id="CUR.XCD">
         <source>XCD - East Caribbean Dollar</source>
-        <target>XCD - Dollar des Caraïbes de l'Est</target>
+        <target>XCD - Dollar des Caraïbes de l&apos;Est</target>
       </trans-unit>
       <trans-unit id="CUR.XOF">
         <source>XOF - CFA Franc BCEAO</source>

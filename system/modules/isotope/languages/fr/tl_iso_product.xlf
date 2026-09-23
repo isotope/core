@@ -11,7 +11,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.pages.1">
         <source>Select a category (page-based categories take advantage of Contao pages features such as navigation automation, protection, templates, and full integration with content elements.</source>
-        <target>Sélectionner une catégorie (les catégories sont basées sur les pages afin de profiter des fonctionnalités de Contao telles que la création automatique de la navigation, la protection, les modèles, et l'intégration complète avec les éléments de contenu).</target>
+        <target>Sélectionner une catégorie (les catégories sont basées sur les pages afin de profiter des fonctionnalités de Contao telles que la création automatique de la navigation, la protection, les modèles, et l&apos;intégration complète avec les éléments de contenu).</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.type.0">
         <source>Product type</source>
@@ -41,7 +41,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.name.1">
         <source>Please enter the name of this product.</source>
-        <target>Veuillez, s'il vous plaît, entrer le nom de ce produit.</target>
+        <target>Veuillez, s&apos;il vous plaît, entrer le nom de ce produit.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.gtin.0">
         <source>GTIN (Global Trade Item Number)</source>
@@ -55,7 +55,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.sku.1">
         <source>Please enter a unique stock keeping unit for this product.</source>
-        <target>Veuillez, s'il vous plaît, entrer une unité de gestion des stocks unique pour ce produit.</target>
+        <target>Veuillez, s&apos;il vous plaît, entrer une unité de gestion des stocks unique pour ce produit.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.shipping_weight.0">
         <source>Shipping weight</source>
@@ -63,7 +63,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.shipping_weight.1">
         <source>Please enter the shipping weight for this product. This can be used to calculate shipping cost.</source>
-        <target>Saisir le poids de ce produit. Il peut être utilisé pour calculer le coût d'expédition.</target>
+        <target>Saisir le poids de ce produit. Il peut être utilisé pour calculer le coût d&apos;expédition.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.shipping_price.0">
         <source>Shipping price</source>
@@ -77,7 +77,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.teaser.1">
         <source>Please enter the teaser.</source>
-        <target>Veuillez, s'il vous plaît, entrer un résumé.</target>
+        <target>Veuillez, s&apos;il vous plaît, entrer un résumé.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.description.0">
         <source>Description</source>
@@ -85,7 +85,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.description.1">
         <source>Please enter the product description.</source>
-        <target>Veuillez, s'il vous plaît, entrer la description du produit.</target>
+        <target>Veuillez, s&apos;il vous plaît, entrer la description du produit.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.meta_title.0">
         <source>Meta title</source>
@@ -109,7 +109,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.meta_keywords.1">
         <source>Meta keywords will be placed in the header on product detail page, for search engine optimization.</source>
-        <target>Les mots clef Meta seront placés dans l'en-tête de la page détaillée du produit pour une optimisation des moteurs de recherche.</target>
+        <target>Les mots clef Meta seront placés dans l&apos;en-tête de la page détaillée du produit pour une optimisation des moteurs de recherche.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.price.0">
         <source>Price</source>
@@ -117,7 +117,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.price.1">
         <source>Please enter the price(s) for this product and select the tax class.</source>
-        <target>Veuillez, s'il vous plaît, entrer un prix pour ce produit.</target>
+        <target>Veuillez, s&apos;il vous plaît, entrer un prix pour ce produit.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.shipping_exempt.0">
         <source>Exempt from shipping</source>
@@ -125,7 +125,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.shipping_exempt.1">
         <source>Check if item is not a shipped item (such as downloadable products).</source>
-        <target>Vérifier si le produit n'est pas un produit livré (comme les produits téléchargeables).</target>
+        <target>Vérifier si le produit n&apos;est pas un produit livré (comme les produits téléchargeables).</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.shipping_pickup.0">
         <source>Pickup only</source>
@@ -139,7 +139,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.baseprice.1">
         <source>Enter the amount to calculate the base price (e.g. &quot;1500&quot; if your product is 1500 grams).</source>
-        <target>Veuillez, s'il vous plaît, entrer votre prix de base.</target>
+        <target>Veuillez, s&apos;il vous plaît, entrer votre prix de base.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.images.0">
         <source>Images</source>
@@ -147,7 +147,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.images.1">
         <source>Upload images to this product. Please save the product after selecting a file.</source>
-        <target>Importer des images pour ce produit. Veuillez, s'il vous plaît, sauvegarder le produit après avoir sélectionné un fichier.</target>
+        <target>Importer des images pour ce produit. Veuillez, s&apos;il vous plaît, sauvegarder le produit après avoir sélectionné un fichier.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.protected.0">
         <source>Protect product</source>
@@ -155,7 +155,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.protected.1">
         <source>Restrict product access to certain member groups.</source>
-        <target>Restreindre l'accès du produit à certains groupes de membres.</target>
+        <target>Restreindre l&apos;accès du produit à certains groupes de membres.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.groups.0">
         <source>Allowed member groups</source>
@@ -171,7 +171,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.guests.1">
         <source>Hide the product if there is an authenticated user.</source>
-        <target>Masquer le produit s'il y a un utilisateur authentifié.</target>
+        <target>Masquer le produit s&apos;il y a un utilisateur authentifié.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.cssID.0">
         <source>CSS ID/class</source>
@@ -199,7 +199,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.stop.0">
         <source>Stop date</source>
-        <target>Afficher jusqu'au</target>
+        <target>Afficher jusqu&apos;au</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.stop.1">
         <source>Do not show this product after the date specified.</source>
@@ -290,7 +290,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.new_variant.1">
         <source>Add new variant to a given product</source>
-        <target>Ajouter une variante d'un produit.</target>
+        <target>Ajouter une variante d&apos;un produit.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.edit.0">
         <source>Edit product</source>
@@ -358,7 +358,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.filter_new_today">
         <source>Added today</source>
-        <target>Ajouté aujourd'hui</target>
+        <target>Ajouté aujourd&apos;hui</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.filter_new_week">
         <source>Added this week</source>
@@ -386,7 +386,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.import.1">
         <source>Import images and other media from a folder</source>
-        <target>Importer des images et autres médias à partir d'un dossier.</target>
+        <target>Importer des images et autres médias à partir d&apos;un dossier.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.prices.0">
         <source>Manage prices</source>
@@ -461,7 +461,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.inventory_legend">
         <source>Inventory Settings</source>
-        <target>Paramètres de l'inventaire</target>
+        <target>Paramètres de l&apos;inventaire</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.shipping_legend">
         <source>Shipping Settings</source>
@@ -498,17 +498,17 @@
       <trans-unit id="tl_iso_product.importAssetsDescr">
         <source>&lt;p&gt;There are two different ways this feature may be used:&lt;/p&gt;
 &lt;ol&gt;
-    &lt;li&gt;The source folder you select contains files that either match the product's SKU or name. Isotope eCommerce is going to match all the files against all of your products and import them into the respective product's assets folder.&lt;/li&gt;
-    &lt;li&gt;The source folder you select contains subfolders that either match the product's SKU or name. Isotope eCommerce is going to match all the subfolders against all of your products and import everything within one subfolder into the respective product's asset folder.&lt;/li&gt;
+    &lt;li&gt;The source folder you select contains files that either match the product&apos;s SKU or name. Isotope eCommerce is going to match all the files against all of your products and import them into the respective product&apos;s assets folder.&lt;/li&gt;
+    &lt;li&gt;The source folder you select contains subfolders that either match the product&apos;s SKU or name. Isotope eCommerce is going to match all the subfolders against all of your products and import everything within one subfolder into the respective product&apos;s asset folder.&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;Hint: Any developer can provide you with other matching rules than just the product's SKU or name.&lt;/p&gt;
+&lt;p&gt;Hint: Any developer can provide you with other matching rules than just the product&apos;s SKU or name.&lt;/p&gt;
 </source>
-        <target>Il y a deux manière différente d'utiliser cette option:
+        <target>Il y a deux manière différente d&apos;utiliser cette option:
 
 Le répertoire source contient des fichiers qui correspondent soit au SKU produit, soit à son nom. Isotope eCommerce va alors faire correspondre tout les fichiers avec vos produits et les importer dans les répertoire produits respectifs.
-Le répertoire source contient des sous-répertoires qui correspondent soit au SKU produit, soit à son nom.  Isotope eCommerce va alors faire correspondre tout les sous-répertoires avec vos produits et tout importer au sein d'un sous-répertoire dans le répertoire produits respectif.
+Le répertoire source contient des sous-répertoires qui correspondent soit au SKU produit, soit à son nom.  Isotope eCommerce va alors faire correspondre tout les sous-répertoires avec vos produits et tout importer au sein d&apos;un sous-répertoire dans le répertoire produits respectif.
 
-Nota: Un développeur peut vous fournir d'autre règles de correspondance qu'uniquement le SKU produit ou son nom.
+Nota: Un développeur peut vous fournir d&apos;autre règles de correspondance qu&apos;uniquement le SKU produit ou son nom.
 </target>
       </trans-unit>
     </body>

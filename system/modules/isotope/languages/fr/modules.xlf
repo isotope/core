@@ -39,7 +39,7 @@
       </trans-unit>
       <trans-unit id="FMD.iso_productfilter.1">
         <source>Define individual filters for Isotope such as category trees and product attribute filters.</source>
-        <target>Permet de définir les filtres individuels pour Isotope tels que l'arborescence des catégories et les filtres d'attributs des produits.</target>
+        <target>Permet de définir les filtres individuels pour Isotope tels que l&apos;arborescence des catégories et les filtres d&apos;attributs des produits.</target>
       </trans-unit>
       <trans-unit id="FMD.iso_cumulativefilter.0">
         <source>Cumulative Filter</source>
@@ -67,23 +67,23 @@
       </trans-unit>
       <trans-unit id="FMD.iso_productlist.1">
         <source>General Listing module. Can be used to list products or values of attributes. May be combined with other modules (i.e. the Filter Module) to provide further drill-down capabilities.</source>
-        <target>Peut être utilisé pour lister des produits ou des valeurs d'attributs. Peut être combiné avec d'autres modules (ex. : le module de filtrage).</target>
+        <target>Peut être utilisé pour lister des produits ou des valeurs d&apos;attributs. Peut être combiné avec d&apos;autres modules (ex. : le module de filtrage).</target>
       </trans-unit>
       <trans-unit id="FMD.iso_productvariantlist.0">
         <source>Product Variant List</source>
-        <target>Liste de variantes d'un produit</target>
+        <target>Liste de variantes d&apos;un produit</target>
       </trans-unit>
       <trans-unit id="FMD.iso_productvariantlist.1">
         <source>Lists each variant of a product. Make sure you use the iso_list_variants template.</source>
-        <target>Liste de chaque variante d'un produit. Assurez-vous d'utiliser le modèle iso_list_variants.</target>
+        <target>Liste de chaque variante d&apos;un produit. Assurez-vous d&apos;utiliser le modèle iso_list_variants.</target>
       </trans-unit>
       <trans-unit id="FMD.iso_productreader.0">
         <source>Product Reader</source>
-        <target>Détails d'un produit</target>
+        <target>Détails d&apos;un produit</target>
       </trans-unit>
       <trans-unit id="FMD.iso_productreader.1">
         <source>Product reader module. This is used to display product details.</source>
-        <target>Module lecteur de produits. Il est utilisé pour afficher les détails d'un produit.</target>
+        <target>Module lecteur de produits. Il est utilisé pour afficher les détails d&apos;un produit.</target>
       </trans-unit>
       <trans-unit id="FMD.iso_favorites.0">
         <source>Favorites</source>
@@ -93,11 +93,11 @@
       </trans-unit>
       <trans-unit id="FMD.iso_cart.0">
         <source>Shopping Cart</source>
-        <target>Panier d'achat</target>
+        <target>Panier d&apos;achat</target>
       </trans-unit>
       <trans-unit id="FMD.iso_cart.1">
         <source>A fully-featured shopping cart module.  Box or Full Display can be set by template selection.</source>
-        <target>Module panier d'achat. En box ou un plein affichage peut être réglé par la sélection de modèle.</target>
+        <target>Module panier d&apos;achat. En box ou un plein affichage peut être réglé par la sélection de modèle.</target>
       </trans-unit>
       <trans-unit id="FMD.iso_checkout.0">
         <source>Checkout</source>
@@ -109,11 +109,11 @@
       </trans-unit>
       <trans-unit id="FMD.iso_addressbook.0">
         <source>Address Book</source>
-        <target>Carnet d'adresse</target>
+        <target>Carnet d&apos;adresse</target>
       </trans-unit>
       <trans-unit id="FMD.iso_addressbook.1">
         <source>Allow customers to manage their address book.</source>
-        <target>Permet aux clients de gérer leur carnet d'adresses.</target>
+        <target>Permet aux clients de gérer leur carnet d&apos;adresses.</target>
       </trans-unit>
       <trans-unit id="FMD.iso_orderhistory.0">
         <source>Order History</source>
@@ -121,7 +121,7 @@
       </trans-unit>
       <trans-unit id="FMD.iso_orderhistory.1">
         <source>Order lister that allows customers to view their order history</source>
-        <target>Permet aux clients de consulter l'historique de leurs commandes.</target>
+        <target>Permet aux clients de consulter l&apos;historique de leurs commandes.</target>
       </trans-unit>
       <trans-unit id="FMD.iso_orderdetails.0">
         <source>Order Details</source>
@@ -129,13 +129,13 @@
       </trans-unit>
       <trans-unit id="FMD.iso_orderdetails.1">
         <source>Order reader that allows customers to view order history details</source>
-        <target>Permet aux clients de consulter le détail de leurs commandes dans l'historique.</target>
+        <target>Permet aux clients de consulter le détail de leurs commandes dans l&apos;historique.</target>
       </trans-unit>
       <trans-unit id="FMD.iso_wishlistmanager.0">
         <source>Wishlist Manager</source>
       </trans-unit>
       <trans-unit id="FMD.iso_wishlistmanager.1">
-        <source>Allows the current member to manage it's wishlists.</source>
+        <source>Allows the current member to manage it&apos;s wishlists.</source>
       </trans-unit>
       <trans-unit id="FMD.iso_wishlistviewer.0">
         <source>Public Wishlists</source>
@@ -155,7 +155,7 @@
       </trans-unit>
       <trans-unit id="FMD.iso_configswitcher.1">
         <source>Switch between store configuration to change currency and other settings.</source>
-        <target>Basculer entre les configurations de boutique pour changer de monnaie et d'autres paramètres.</target>
+        <target>Basculer entre les configurations de boutique pour changer de monnaie et d&apos;autres paramètres.</target>
       </trans-unit>
       <trans-unit id="FMD.iso_relatedproducts.0">
         <source>Related products</source>
@@ -171,7 +171,7 @@
       </trans-unit>
       <trans-unit id="FMD.iso_messages.1">
         <source>Displays all Isotope messages if they have not been displayed elsewhere.</source>
-        <target>Affiche tous les messages d'Isotopes s'ils n'ont pas été affichés ailleurs.</target>
+        <target>Affiche tous les messages d&apos;Isotopes s&apos;ils n&apos;ont pas été affichés ailleurs.</target>
       </trans-unit>
       <trans-unit id="FMD.iso_shipping_calculator.0">
         <source>Shipping cost calculator</source>
@@ -209,7 +209,7 @@
       </trans-unit>
       <trans-unit id="IMD.producttypes.1">
         <source>Manage and create product types from sets of attributes.</source>
-        <target>Gérer et créer des types de produits à partir d'ensembles d'attributs.</target>
+        <target>Gérer et créer des types de produits à partir d&apos;ensembles d&apos;attributs.</target>
       </trans-unit>
       <trans-unit id="IMD.related_categories.0">
         <source>Related categories</source>
@@ -289,7 +289,7 @@
       </trans-unit>
       <trans-unit id="IMD.orderstatus.1">
         <source>Define order status.</source>
-        <target>Définir l'état des commandes.</target>
+        <target>Définir l&apos;état des commandes.</target>
       </trans-unit>
       <trans-unit id="IMD.notifications.0">
         <source>Notifications</source>

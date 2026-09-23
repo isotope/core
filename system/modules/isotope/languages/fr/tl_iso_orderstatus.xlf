@@ -7,7 +7,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_orderstatus.name.1">
         <source>Please enter a name for this status.</source>
-        <target>Veuillez, s'il vous plaît, entrer un nom pour cet état.</target>
+        <target>Veuillez, s&apos;il vous plaît, entrer un nom pour cet état.</target>
       </trans-unit>
       <trans-unit id="tl_iso_orderstatus.color.0">
         <source>Color</source>
@@ -65,7 +65,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_orderstatus.edit.1">
         <source>Edit order status ID %s</source>
-        <target>Éditer l'état des commandes ID %s</target>
+        <target>Éditer l&apos;état des commandes ID %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_orderstatus.copy.0">
         <source>Duplicate order status</source>
@@ -73,7 +73,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_orderstatus.copy.1">
         <source>Duplicate order status ID %s</source>
-        <target>Dupliquer l'état des commandes ID %s</target>
+        <target>Dupliquer l&apos;état des commandes ID %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_orderstatus.cut.0">
         <source>Move order status</source>
@@ -81,7 +81,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_orderstatus.cut.1">
         <source>Move order status ID %s</source>
-        <target>Déplacer l'état des commandes ID %s</target>
+        <target>Déplacer l&apos;état des commandes ID %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_orderstatus.delete.0">
         <source>Delete order status</source>
@@ -89,15 +89,15 @@
       </trans-unit>
       <trans-unit id="tl_iso_orderstatus.delete.1">
         <source>Delete order status ID %s</source>
-        <target>Supprimer l'état des commandes ID %s</target>
+        <target>Supprimer l&apos;état des commandes ID %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_orderstatus.show.0">
         <source>Order status details</source>
-        <target>Détails de l'état des commandes</target>
+        <target>Détails de l&apos;état des commandes</target>
       </trans-unit>
       <trans-unit id="tl_iso_orderstatus.show.1">
         <source>Show details of order status ID %s</source>
-        <target>Afficher les détails de l'état des commandes ID %s</target>
+        <target>Afficher les détails de l&apos;état des commandes ID %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_orderstatus.pasteafter.0">
         <source>Paste after</source>
@@ -105,7 +105,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_orderstatus.pasteafter.1">
         <source>Paste after order status ID %s</source>
-        <target>Coller après l'état des commandes ID %s</target>
+        <target>Coller après l&apos;état des commandes ID %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_orderstatus.pasteinto.0">
         <source>Paste into</source>
@@ -113,7 +113,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_orderstatus.pasteinto.1">
         <source>Paste into order status ID %s</source>
-        <target>Coller dans l'état des commandes ID %s</target>
+        <target>Coller dans l&apos;état des commandes ID %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_orderstatus.name_legend">
         <source>Name</source>

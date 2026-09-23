@@ -39,7 +39,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_label.edit.1">
         <source>Edit label ID %s</source>
-        <target>%s ID'li etiketi düzenle</target>
+        <target>%s ID&apos;li etiketi düzenle</target>
       </trans-unit>
       <trans-unit id="tl_iso_label.copy.0">
         <source>Duplicate label</source>
@@ -47,7 +47,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_label.copy.1">
         <source>Duplicate label ID %s</source>
-        <target>%s ID'li etiketi kopyala</target>
+        <target>%s ID&apos;li etiketi kopyala</target>
       </trans-unit>
       <trans-unit id="tl_iso_label.delete.0">
         <source>Delete label</source>
@@ -55,7 +55,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_label.delete.1">
         <source>Delete label ID %s</source>
-        <target>%s ID'li etiketi sil</target>
+        <target>%s ID&apos;li etiketi sil</target>
       </trans-unit>
       <trans-unit id="tl_iso_label.show.0">
         <source>Label details</source>
@@ -63,7 +63,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_label.show.1">
         <source>Show details of label ID %s</source>
-        <target>%s ID'li etiketin detaylarını gör</target>
+        <target>%s ID&apos;li etiketin detaylarını gör</target>
       </trans-unit>
       <trans-unit id="tl_iso_label.label_legend">
         <source>Label translation</source>

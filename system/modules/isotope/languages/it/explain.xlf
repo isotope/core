@@ -16,10 +16,11 @@ La pagina del lettore (alias) sarà sempre la stessa pagina che hai selezionato 
       </trans-unit>
       <trans-unit id="XPL.mediaManager">
         <source>&lt;p class=&quot;tl_help_table&quot;&gt;To upload a new picture, select the file and save the product. After successfully uploading, a preview of the image is displayed and next to it you can enter its alternative text and a description. For multiple pictures, you can click on the arrows to the right and change their order, the top image is used as the main image of each product.&lt;/p&gt;</source>
-        <target>&lt;p class=&quot;tl_help_table&quot;&gt;Per caricare una nuova immagine selezioni il file e salvi il prodotto. Dopo aver caricato con successo, viene visualizzata un'anteprima del messaggio e vicino ad essa puo' inserire il testo alternativo e una descrizione. Per immagini multipli, puo' fare click sulle frecce e cambiare la loro posizione, l'immagine in cima è quella usata come immagine principale per ogni prodotto.&lt;/p&gt;</target>
+        <target>&lt;p class=&quot;tl_help_table&quot;&gt;Per caricare una nuova immagine selezioni il file e salvi il prodotto. Dopo aver caricato con successo, viene visualizzata un&apos;anteprima del messaggio e vicino ad essa puo&apos; inserire il testo alternativo e una descrizione. Per immagini multipli, puo&apos; fare click sulle frecce e cambiare la loro posizione, l&apos;immagine in cima è quella usata come immagine principale per ogni prodotto.&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="XPL.noVariantAttributes">
         <source>To use product variants with Isotope eCommerce, you must first configure the attributes.&lt;br&gt;Please refer to &lt;a href=&quot;https://docs.isotopeecommerce.org/&quot; target=&quot;_blank&quot; style=&quot;text-decoration:underline&quot;&gt;the manual&lt;/a&gt; for more information about attribute setup.</source>
+        <target>Per utilizzare le varianti di prodotto con Isotope eCommerce, è necessario prima configurare gli attributi. &lt;br&gt; Per ulteriori informazioni sulla configurazione degli attributi, consultare il &lt;a href=&quot;https://docs.isotopeecommerce.org/&quot; target=&quot;_blank&quot; style=&quot;text-decoration:underline&quot;&gt;manuale&lt;/a&gt;.</target>
       </trans-unit>
       <trans-unit id="XPL.shippingExempt">
         <source>
@@ -44,10 +45,10 @@ Configura la gestione della spedizione nel processo di checkout.
 &lt;strong&gt;Escluso:&lt;/strong&gt;&lt;br&gt;
 Se il carrello contiene solo prodotti esentati dalla spedizione, il processo di checkout non chiederà un indirizzo di spedizione né un metodo di spedizione.
 Questo è utile per i download o altri tipi di prodotti digitali.&lt;br&gt;
-Se c'è almeno un prodotto non esentato nel carrello, il processo è normale, ma i prodotti esentati vengono ignorati (ad esempio dal calcolo del prezzo di spedizione).
+Se c&apos;è almeno un prodotto non esentato nel carrello, il processo è normale, ma i prodotti esentati vengono ignorati (ad esempio dal calcolo del prezzo di spedizione).
 &lt;br&gt;&lt;br&gt;
 &lt;strong&gt;Ritiro:&lt;/strong&gt;&lt;br&gt;
-Se almeno un tipo di prodotto nel carrello ha questa opzione abilitata, l'indirizzo di spedizione nella fase di checkout non verrà raccolto.
+Se almeno un tipo di prodotto nel carrello ha questa opzione abilitata, l&apos;indirizzo di spedizione nella fase di checkout non verrà raccolto.
 Puoi ancora usare i metodi di spedizione per offrire, ad esempio, diverse opzioni di ritiro. Assicurati di impostare correttamente i metodi di spedizione per non
 offrire una vera spedizione per questi tipi di prodotto.
 &lt;/p&gt;
@@ -55,7 +56,7 @@ offrire una vera spedizione per questi tipi di prodotto.
       </trans-unit>
       <trans-unit id="XPL.elevatezoom_position">
         <source>Positioning the window can be done in by setting a default position, and then using x and y offset to adjust. You can also position the window into a container - See more at: &lt;a href=&quot;http://www.elevateweb.co.uk/image-zoom/examples#window-position&quot; target=&quot;_blank&quot;&gt;http://www.elevateweb.co.uk/image-zoom/examples#window-position&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;img src=&quot;system/modules/isotope/assets/images/elevatezoom-positions.png&quot; alt=&quot;&quot;&gt;</source>
-        <target>Il posizionamento della finestra può essere effettuato impostando una posizione predefinita, e poi usando l'offset x e y per la regolazione. Si può anche posizionare la finestra in un contenitore - Per maggiori informazioni: &lt;a href=&quot;http://www.elevateweb.co.uk/image-zoom/examples#window-position&quot; target=&quot;_blank&quot;&gt;http://www.elevateweb.co.uk/image-zoom/examples#window-position&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;img src=&quot;system/modules/isotope/assets/images/elevatezoom-positions.png&quot; alt=&quot;&quot;&gt;</target>
+        <target>Il posizionamento della finestra può essere effettuato impostando una posizione predefinita, e poi usando l&apos;offset x e y per la regolazione. Si può anche posizionare la finestra in un contenitore - Per maggiori informazioni: &lt;a href=&quot;http://www.elevateweb.co.uk/image-zoom/examples#window-position&quot; target=&quot;_blank&quot;&gt;http://www.elevateweb.co.uk/image-zoom/examples#window-position&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;img src=&quot;system/modules/isotope/assets/images/elevatezoom-positions.png&quot; alt=&quot;&quot;&gt;</target>
       </trans-unit>
       <trans-unit id="XPL.iso_category_scope">
         <source><![CDATA[

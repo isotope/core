@@ -188,7 +188,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_producttype.edit.1">
         <source>Edit product type ID %s</source>
-        <target>%s ID'li ürün tipini düzenle</target>
+        <target>%s ID&apos;li ürün tipini düzenle</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.copy.0">
         <source>Copy product type definiton</source>
@@ -196,7 +196,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_producttype.copy.1">
         <source>Copy definition of product type ID %s</source>
-        <target>%s ID'li ürün tipinin tanımını düzenle</target>
+        <target>%s ID&apos;li ürün tipinin tanımını düzenle</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.delete.0">
         <source>Delete product type</source>
@@ -204,7 +204,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_producttype.delete.1">
         <source>Delete product type ID %s</source>
-        <target>%s ID'li ürün tipini sil</target>
+        <target>%s ID&apos;li ürün tipini sil</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.show.0">
         <source>product type details</source>
@@ -212,7 +212,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_producttype.show.1">
         <source>Show details of product type ID %s</source>
-        <target>%s ID'li ürün tipinin detaylarını göster</target>
+        <target>%s ID&apos;li ürün tipinin detaylarını göster</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.name_legend">
         <source>Product type settings</source>

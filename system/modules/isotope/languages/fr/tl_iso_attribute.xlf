@@ -7,7 +7,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.name.1">
         <source>Please enter a name for this attribute.</source>
-        <target>Merci d'entrer un nom pour cet attribut.</target>
+        <target>Merci d&apos;entrer un nom pour cet attribut.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.field_name.0">
         <source>Internal name</source>
@@ -35,11 +35,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.variant_option.0">
         <source>Add to product variants wizard</source>
-        <target>Ajouter à l'assistant de variantes du produit</target>
+        <target>Ajouter à l&apos;assistant de variantes du produit</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.variant_option.1">
         <source>If selected, this attribute will be added to the product variants wizard for use as a product variant option.</source>
-        <target>Si sélectionné, cet attribut sera ajouté à l'assistant de variantes de produit pour une utilisation comme une option de variante de produit.</target>
+        <target>Si sélectionné, cet attribut sera ajouté à l&apos;assistant de variantes de produit pour une utilisation comme une option de variante de produit.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.customer_defined.0">
         <source>Defined by customer</source>
@@ -55,7 +55,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.description.1">
         <source>The description is shown as a hint to the backend user.</source>
-        <target>La description est indiquée par un indice à l'utilisateur back office.</target>
+        <target>La description est indiquée par un indice à l&apos;utilisateur back office.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.optionsSource.0">
         <source>Options source</source>
@@ -85,7 +85,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.options.1">
         <source>Please enter one or more options. Use the buttons to add, move or delete an option. If you are working without JavaScript assistance, you should save your changes before you modify the order!</source>
-        <target>Merci d'entrer une ou plusieurs options. Utilisez les boutons pour ajouter, déplacer ou supprimer une option. Si vous travaillez sans l'aide de JavaScript, vous devez enregistrer vos modifications avant de modifier l'ordre.</target>
+        <target>Merci d&apos;entrer une ou plusieurs options. Utilisez les boutons pour ajouter, déplacer ou supprimer une option. Si vous travaillez sans l&apos;aide de JavaScript, vous devez enregistrer vos modifications avant de modifier l&apos;ordre.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.options.value.0">
         <source>Value</source>
@@ -160,11 +160,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.rte.0">
         <source>Use HTML editor</source>
-        <target>Utiliser l'éditeur HTML</target>
+        <target>Utiliser l&apos;éditeur HTML</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.rte.1">
         <source>Select a tinyMCE configuration file to enable the rich text editor.</source>
-        <target>Sélectionnez un fichier de configuration tinyMCE pour activer l'éditeur de texte riche.</target>
+        <target>Sélectionnez un fichier de configuration tinyMCE pour activer l&apos;éditeur de texte riche.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.multilingual.0">
         <source>Multilingual</source>
@@ -180,7 +180,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.rgxp.1">
         <source>Validate the input against a regular expression.</source>
-        <target>Validez l'entrée avec une expression régulière.</target>
+        <target>Validez l&apos;entrée avec une expression régulière.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.placeholder.0">
         <source>Placeholder</source>
@@ -226,7 +226,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.foreignKey.1">
         <source>Instead of adding options you can enter a table.field combination to select from database. To use multilingual foreignKeys, enter one per line and specify the language (example: en=tl_table.field)</source>
-        <target>Au lieu d'ajouter des options vous pouvez entrer une combinaison &quot;table.champ&quot; pour les sélectionner depuis la base de données.</target>
+        <target>Au lieu d&apos;ajouter des options vous pouvez entrer une combinaison &quot;table.champ&quot; pour les sélectionner depuis la base de données.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.conditionField.0">
         <source>Parent field</source>
@@ -286,7 +286,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.path.1">
         <source>You can limit the file tree by defining a root directory here.</source>
-        <target>Vous pouvez limiter l'arborescence de fichiers en définissant un répertoire racine ici.</target>
+        <target>Vous pouvez limiter l&apos;arborescence de fichiers en définissant un répertoire racine ici.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.rootNodes.0">
         <source>Root nodes</source>
@@ -308,7 +308,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.uploadFolder.1">
         <source>Please select the target folder from the files directory.</source>
-        <target>Veuillez, s'il vous plaît, choisir le dossier de destination dans l'arborescence de fichiers.</target>
+        <target>Veuillez, s&apos;il vous plaît, choisir le dossier de destination dans l&apos;arborescence de fichiers.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.useHomeDir.0">
         <source>Use home directory</source>
@@ -316,7 +316,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.useHomeDir.1">
         <source>Store the file in the home directory if there is an authenticated user.</source>
-        <target>Enregistrer le fichier dans le répertoire personnel si l'utilisateur est authentifié.</target>
+        <target>Enregistrer le fichier dans le répertoire personnel si l&apos;utilisateur est authentifié.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.doNotOverwrite.0">
         <source>Preserve existing files</source>
@@ -459,7 +459,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.date.1">
         <source>Checks whether the input matches the global date format.</source>
-        <target>Vérifie si l'entrée correspond au format de date.</target>
+        <target>Vérifie si l&apos;entrée correspond au format de date.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.time.0">
         <source>Time</source>
@@ -467,7 +467,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.time.1">
         <source>Checks whether the input matches the global time format.</source>
-        <target>Vérifie si l'entrée correspond au format d'heure.</target>
+        <target>Vérifie si l&apos;entrée correspond au format d&apos;heure.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.datim.0">
         <source>Date and time</source>
@@ -475,7 +475,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.datim.1">
         <source>Checks whether the input matches the global date and time format.</source>
-        <target>Vérifie si l'entrée correspond aux formats de date et d'heure.</target>
+        <target>Vérifie si l&apos;entrée correspond aux formats de date et d&apos;heure.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.phone.0">
         <source>Phone number</source>
@@ -491,15 +491,15 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.email.1">
         <source>Checks whether the input is a valid e-mail address.</source>
-        <target>Vérifie si l'adresse e-mail est valide.</target>
+        <target>Vérifie si l&apos;adresse e-mail est valide.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.url.0">
         <source>URL format</source>
-        <target>Format d'URL</target>
+        <target>Format d&apos;URL</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.url.1">
         <source>Checks whether the input is a valid URL.</source>
-        <target>Vérifie si l'URL est valide.</target>
+        <target>Vérifie si l&apos;URL est valide.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.price.0">
         <source>Price</source>
@@ -649,7 +649,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.edit.1">
         <source>Edit attribute ID %s.</source>
-        <target>Éditer l'attribut ID %s.</target>
+        <target>Éditer l&apos;attribut ID %s.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.copy.0">
         <source>Copy attribute</source>
@@ -657,7 +657,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.copy.1">
         <source>Copy attribute ID %s.</source>
-        <target>Dupliquer l'attribut ID %s.</target>
+        <target>Dupliquer l&apos;attribut ID %s.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.delete.0">
         <source>Delete attribute</source>
@@ -668,18 +668,18 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.show.0">
         <source>Attribute details</source>
-        <target>Détails de l'attribut</target>
+        <target>Détails de l&apos;attribut</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.show.1">
         <source>Show details for attribute ID %s.</source>
-        <target>Afficher les détails de l'attribut ID %s.</target>
+        <target>Afficher les détails de l&apos;attribut ID %s.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.deleteConfirm">
         <source>Do you really want to delete attribute ID %s? The database column will not be deleted, you need to manually update the database using the Contao Manager.</source>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.attribute_legend">
         <source>Attribute name &amp; type</source>
-        <target>Nom et type d'attribut</target>
+        <target>Nom et type d&apos;attribut</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.description_legend">
         <source>Description</source>
@@ -691,7 +691,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.config_legend">
         <source>Attribute configuration</source>
-        <target>Configuration d'attribut</target>
+        <target>Configuration d&apos;attribut</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.search_filters_legend">
         <source>Search &amp; Filtering Settings</source>

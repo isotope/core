@@ -137,7 +137,7 @@
         <target>Håndter ønskeliste</target>
       </trans-unit>
       <trans-unit id="FMD.iso_wishlistmanager.1">
-        <source>Allows the current member to manage it's wishlists.</source>
+        <source>Allows the current member to manage it&apos;s wishlists.</source>
       </trans-unit>
       <trans-unit id="FMD.iso_wishlistviewer.0">
         <source>Public Wishlists</source>

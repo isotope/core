@@ -7,7 +7,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_price.price_tiers.1">
         <source>Setup at least one price tier for &quot;Quantity 1&quot;. You can enter discount prices if the user orders more than one product.</source>
-        <target>Configurer au moins un niveau de prix pour &quot;Quantité 1&quot;. Vous pouvez entrer des prix réduits si l'utilisateur commande plus d'un produit.</target>
+        <target>Configurer au moins un niveau de prix pour &quot;Quantité 1&quot;. Vous pouvez entrer des prix réduits si l&apos;utilisateur commande plus d&apos;un produit.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_price.tax_class.0">
         <source>Tax Class</source>
@@ -43,7 +43,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_price.stop.0">
         <source>Use until</source>
-        <target>Utiliser jusqu'à</target>
+        <target>Utiliser jusqu&apos;à</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_price.stop.1">
         <source>Do not use the price on the website after this day.</source>

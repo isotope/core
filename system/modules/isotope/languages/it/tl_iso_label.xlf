@@ -15,7 +15,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_label.label.1">
         <source>Enter the source label.</source>
-        <target>Inserisca l'etichetta sorgente.</target>
+        <target>Inserisca l&apos;etichetta sorgente.</target>
       </trans-unit>
       <trans-unit id="tl_iso_label.replacement.0">
         <source>Replacement</source>

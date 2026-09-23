@@ -94,7 +94,7 @@
         <target>Aktive Länder</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.countries.1">
-        <source>Select the countries where this payment method may be used (customer's billing address).</source>
+        <source>Select the countries where this payment method may be used (customer&apos;s billing address).</source>
         <target>Falls diese Zahlungsart nur in gewissen Ländern unterstützt wird (Rechnungsadresse des Kunden).</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.shipping_modules.0">
@@ -258,7 +258,7 @@
         <target>Zahlungsart</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.psp_payment_method.1">
-        <source>You can select a payment method here. Make sure your PSP contract also includes this payment method! If you don't select anything at all here, the customer will have to choose the preferred payment method on the PSP interface!</source>
+        <source>You can select a payment method here. Make sure your PSP contract also includes this payment method! If you don&apos;t select anything at all here, the customer will have to choose the preferred payment method on the PSP interface!</source>
         <target>Sie können hier eine Zahlungsart auswählen. Stellen Sie sicher, dass Ihr PSP-Vertrag diese Zahlungsart auch beinhaltet! Wenn Sie nichts auswählen, muss der Kunde die bevorzugte Zahlungsart in der PSP-Oberfläche auswählen.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.requireCCV.0">
@@ -579,7 +579,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.worldpay_instId.1">
         <source>Please enter your WorldPay Installation ID</source>
-        <target>Bitte geben Sie die WorldPay Installation's ID ein</target>
+        <target>Bitte geben Sie die WorldPay Installation&apos;s ID ein</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.worldpay_callbackPW.0">
         <source>Transaction Password</source>

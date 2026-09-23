@@ -6,7 +6,7 @@
         <target>ID negozio</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.store_id.1">
-        <source>Different store IDs group a store on multiple root sites. A members's cart and addresses will be shared across the same store IDs.</source>
+        <source>Different store IDs group a store on multiple root sites. A members&apos;s cart and addresses will be shared across the same store IDs.</source>
         <target>Diversi store ID raggruppano un negozio su più siti root. Il carrello e gli indirizzi di un membro saranno condivisi tra gli stessi store ID.</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.label.0">
@@ -15,7 +15,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_address.label.1">
         <source>Please enter a custom label for this address.</source>
-        <target>Si prega di inserire un'etichetta personalizzata per questo indirizzo.</target>
+        <target>Si prega di inserire un&apos;etichetta personalizzata per questo indirizzo.</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.gender.0">
         <source>Gender</source>
@@ -86,7 +86,7 @@
         <target>Via 2</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.street_2.1">
-        <source>Enter a second street info if there's any.</source>
+        <source>Enter a second street info if there&apos;s any.</source>
         <target>Inserisca una seconda informazione per la via se necessario.</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.street_3.0">
@@ -94,7 +94,7 @@
         <target>Via 3</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.street_3.1">
-        <source>Enter a third street info if there's any.</source>
+        <source>Enter a third street info if there&apos;s any.</source>
         <target>Inserisca una terza informazione per la via se necessario.</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.postal.0">
@@ -151,7 +151,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_address.isDefaultBilling.1">
         <source>Is this your default billing address?</source>
-        <target>E' questo il suo indirizzo di fatturazione principale?</target>
+        <target>E&apos; questo il suo indirizzo di fatturazione principale?</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.isDefaultShipping.0">
         <source>Default shipping address</source>
@@ -159,7 +159,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_address.isDefaultShipping.1">
         <source>Is this your default shipping address?</source>
-        <target>E' questo il suo indirizzo di spedizione principale?</target>
+        <target>E&apos; questo il suo indirizzo di spedizione principale?</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.store_legend">
         <source>Store</source>
@@ -211,7 +211,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_address.edit.1">
         <source>Edit address ID %s</source>
-        <target>Modiica l'indirizzo ID %s</target>
+        <target>Modiica l&apos;indirizzo ID %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.copy.0">
         <source>Duplicate address</source>
@@ -235,7 +235,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_address.show.1">
         <source>Show details of address ID %s</source>
-        <target>Mostra i dettagli dell'indirizzo ID %s</target>
+        <target>Mostra i dettagli dell&apos;indirizzo ID %s</target>
       </trans-unit>
     </body>
   </file>

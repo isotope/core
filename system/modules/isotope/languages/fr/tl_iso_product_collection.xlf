@@ -3,9 +3,11 @@
     <body>
       <trans-unit id="tl_iso_product_collection.id.0">
         <source>ID</source>
+        <target>ID</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.document_number.0">
         <source>Order Number</source>
+        <target>Numéro de commande</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.member.0">
         <source>Member (empty for guests)</source>
@@ -21,7 +23,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.order_status.1">
         <source>Select the status of this order.</source>
-        <target>Sélectionner l'état de cette commande</target>
+        <target>Sélectionner l&apos;état de cette commande</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.locked.0">
         <source>Placed</source>
@@ -121,7 +123,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.notes.1">
         <source>If you would like to convey information to other backend users, please do so here.</source>
-        <target>Permet de transmettre des informations à d'autres utilisateurs du back office.</target>
+        <target>Permet de transmettre des informations à d&apos;autres utilisateurs du back office.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.edit.0">
         <source>Edit order</source>
@@ -177,7 +179,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.orderStatusUpdate">
         <source>The status of your order has been updated.</source>
-        <target>L'état de votre commande a été mis à jour.</target>
+        <target>L&apos;état de votre commande a été mis à jour.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.orderStatusNotificationSuccess">
         <source>Notifications (e.g. email to client) have been sent.</source>
@@ -185,7 +187,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.orderStatusNotificationError">
         <source>Notifications (e.g. email to client) clould not be sent. Check the system log.</source>
-        <target>Notifications (ex: courriel au client) n'ont pas pu être envoyés. Vérifiez le log du système</target>
+        <target>Notifications (ex: courriel au client) n&apos;ont pas pu être envoyés. Vérifiez le log du système</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.saferpayStatusSuccess">
         <source>Saferpay payment was sucessfully captured.</source>

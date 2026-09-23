@@ -47,7 +47,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_download.edit.1">
         <source>Edit download ID %s</source>
-        <target>%s ID'li İndirmeyi düzenle</target>
+        <target>%s ID&apos;li İndirmeyi düzenle</target>
       </trans-unit>
       <trans-unit id="tl_iso_download.copy.0">
         <source>Duplicate download</source>
@@ -55,7 +55,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_download.copy.1">
         <source>Duplicate download ID %s</source>
-        <target>%s ID'li İndirmeyi kopyala</target>
+        <target>%s ID&apos;li İndirmeyi kopyala</target>
       </trans-unit>
       <trans-unit id="tl_iso_download.cut.0">
         <source>Move download</source>
@@ -63,7 +63,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_download.cut.1">
         <source>Move download ID %s</source>
-        <target>%s ID'li İndirmeyi taşı</target>
+        <target>%s ID&apos;li İndirmeyi taşı</target>
       </trans-unit>
       <trans-unit id="tl_iso_download.delete.0">
         <source>Delete download</source>
@@ -71,7 +71,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_download.delete.1">
         <source>Delete download ID %s</source>
-        <target>%s ID'li İndirmeyi sil</target>
+        <target>%s ID&apos;li İndirmeyi sil</target>
       </trans-unit>
       <trans-unit id="tl_iso_download.toggle.0">
         <source>Publish/unpublish download</source>
@@ -79,7 +79,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_download.toggle.1">
         <source>Publish/unpublish download ID %s</source>
-        <target>%s ID'li indirmeyi yayınla/yayından kaldır</target>
+        <target>%s ID&apos;li indirmeyi yayınla/yayından kaldır</target>
       </trans-unit>
       <trans-unit id="tl_iso_download.show.0">
         <source>Download details</source>
@@ -87,7 +87,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_download.show.1">
         <source>Show details of download ID %s</source>
-        <target>%s ID'li indirmenin detaylarını gör</target>
+        <target>%s ID&apos;li indirmenin detaylarını gör</target>
       </trans-unit>
       <trans-unit id="tl_iso_download.editheader.0">
         <source>Edit product</source>
@@ -103,7 +103,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_download.pasteafter.1">
         <source>Paste after download ID %s</source>
-        <target>%s ID'li indirmeden sonra yapıştır</target>
+        <target>%s ID&apos;li indirmeden sonra yapıştır</target>
       </trans-unit>
       <trans-unit id="tl_iso_download.pastenew.0">
         <source>Add new at the top</source>
@@ -111,7 +111,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_download.pastenew.1">
         <source>Add new after download ID %s</source>
-        <target>%s ID'li indirmeden sonra yeni ekle</target>
+        <target>%s ID&apos;li indirmeden sonra yeni ekle</target>
       </trans-unit>
       <trans-unit id="tl_iso_download.file_legend">
         <source>Attachement</source>

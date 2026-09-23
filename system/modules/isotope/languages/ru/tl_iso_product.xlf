@@ -450,10 +450,10 @@
       <trans-unit id="tl_iso_product.importAssetsDescr">
         <source>&lt;p&gt;There are two different ways this feature may be used:&lt;/p&gt;
 &lt;ol&gt;
-    &lt;li&gt;The source folder you select contains files that either match the product's SKU or name. Isotope eCommerce is going to match all the files against all of your products and import them into the respective product's assets folder.&lt;/li&gt;
-    &lt;li&gt;The source folder you select contains subfolders that either match the product's SKU or name. Isotope eCommerce is going to match all the subfolders against all of your products and import everything within one subfolder into the respective product's asset folder.&lt;/li&gt;
+    &lt;li&gt;The source folder you select contains files that either match the product&apos;s SKU or name. Isotope eCommerce is going to match all the files against all of your products and import them into the respective product&apos;s assets folder.&lt;/li&gt;
+    &lt;li&gt;The source folder you select contains subfolders that either match the product&apos;s SKU or name. Isotope eCommerce is going to match all the subfolders against all of your products and import everything within one subfolder into the respective product&apos;s asset folder.&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;Hint: Any developer can provide you with other matching rules than just the product's SKU or name.&lt;/p&gt;
+&lt;p&gt;Hint: Any developer can provide you with other matching rules than just the product&apos;s SKU or name.&lt;/p&gt;
 </source>
       </trans-unit>
     </body>

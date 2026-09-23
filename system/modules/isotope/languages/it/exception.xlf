@@ -13,10 +13,10 @@ Per evitare ciò, gli strumenti di aggiornamento del database sono stati bloccat
       </trans-unit>
       <trans-unit id="XPT.isotopeOldFix">
         <source>There are multiple options to get your installation back:</source>
-        <target>Ci sono diverse opzioni per ottenere l'istallazione precedente.</target>
+        <target>Ci sono diverse opzioni per ottenere l&apos;istallazione precedente.</target>
       </trans-unit>
       <trans-unit id="XPT.isotopeOldFix1">
-        <source>Create a backup, then completely uninstall Isotope and remove all it's database tables and related extensions. Afterwards you can install Isotope eCommerce 2.0 again.</source>
+        <source>Create a backup, then completely uninstall Isotope and remove all it&apos;s database tables and related extensions. Afterwards you can install Isotope eCommerce 2.0 again.</source>
         <target>Crea un backup, poi disinstalla completamente Isotope e rimuovi tutte le tabelle di database e le relative estensioni. Successivamente puoi installare di nuovo Isotope eCommerce 2.0.</target>
       </trans-unit>
       <trans-unit id="XPT.isotopeOldFix2">

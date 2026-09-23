@@ -23,7 +23,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_producttype.fallback.1">
         <source>Check here if this is the default product type.</source>
-        <target>Cocher si c'est le type de produit par défaut.</target>
+        <target>Cocher si c&apos;est le type de produit par défaut.</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.description.0">
         <source>Description</source>
@@ -93,7 +93,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_producttype.attributes.1">
         <source>Select the collection of attributes that should be included for this product type.</source>
-        <target>Sélectionner la collection d'attributs qui doit être incluse pour ce type de produit.</target>
+        <target>Sélectionner la collection d&apos;attributs qui doit être incluse pour ce type de produit.</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.attributes.legend.0">
         <source>Grouping</source>
@@ -109,7 +109,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_producttype.attributes.tl_class.1">
         <source>Enter a tl_class to override alignment for this attribute.</source>
-        <target>Saisir un tl_class pour surcharger l'alignement pour cet attribut.</target>
+        <target>Saisir un tl_class pour surcharger l&apos;alignement pour cet attribut.</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.attributes.mandatory.0">
         <source>Mandatory</source>
@@ -137,7 +137,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_producttype.variant_attributes.1">
         <source>Select the collection of variant attributes that should be included for this product type. Those that are not selected will be hidden from view and inherited from the parent product.</source>
-        <target>Choisissez une collection d'attributs de variante à ajouter à ce type de produit. Les attributs des variantes non sélectionnés sont invisibles et ne seront pas hérités du produit parent.</target>
+        <target>Choisissez une collection d&apos;attributs de variante à ajouter à ce type de produit. Les attributs des variantes non sélectionnés sont invisibles et ne seront pas hérités du produit parent.</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.force_variant_options.0">
         <source>Always show variant attributes</source>
@@ -145,7 +145,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_producttype.force_variant_options.1">
         <source>Show a variant attribute (select, radio) even if there is only one choice.</source>
-        <target>Afficher un attribut de variante (select, radio), même s'il n'y a qu'un seul choix.</target>
+        <target>Afficher un attribut de variante (select, radio), même s&apos;il n&apos;y a qu&apos;un seul choix.</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.shipping_exempt.0">
         <source>Shipping handling</source>

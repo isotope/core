@@ -70,7 +70,7 @@
         <target>Sokak 2 </target>
       </trans-unit>
       <trans-unit id="tl_iso_config.street_2.1">
-        <source>Enter a second street info if there's any.</source>
+        <source>Enter a second street info if there&apos;s any.</source>
         <target>Lütfen sokağınızı girin</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.street_3.0">
@@ -78,7 +78,7 @@
         <target>Sokak 3</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.street_3.1">
-        <source>Enter a third street info if there's any.</source>
+        <source>Enter a third street info if there&apos;s any.</source>
         <target>Diğer adres bilgileri</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.postal.0">
@@ -411,11 +411,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.newProductPeriod.1">
         <source>If you would like to highlight new products, you can enter a time period here. It will automatically add a CSS class &quot;new&quot; to every product everywhere within Isotope eCommerce.</source>
-        <target>Yeni ürünleri vurgulamak isterseniz, bunun burada bir süre girebilirsiniz. Istop eCommerce'in her yerinde her ürüne otomatik olarak bir &quot;yeni&quot; CSS sınıfı ekleyecek.</target>
+        <target>Yeni ürünleri vurgulamak isterseniz, bunun burada bir süre girebilirsiniz. Istop eCommerce&apos;in her yerinde her ürüne otomatik olarak bir &quot;yeni&quot; CSS sınıfı ekleyecek.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.ga_enable.0">
         <source>Enable Google Analytics</source>
-        <target>Google Analytics'i etkinleştir</target>
+        <target>Google Analytics&apos;i etkinleştir</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.ga_enable.1">
         <source>Enable e-commerce tracking with Google Analytics.</source>
@@ -434,7 +434,7 @@
         <target>Üye izleme</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.ga_member.1">
-        <source>Enter simple tokens to track a member (e.g. ##firstname## ##lastname##). ATTENTION: make sure you're allowed to do this!</source>
+        <source>Enter simple tokens to track a member (e.g. ##firstname## ##lastname##). ATTENTION: make sure you&apos;re allowed to do this!</source>
         <target>Bir üyeyi izlemek için basit simgeleri girin (örn. ##firstname## ##lastname##). DİKKAT: Bunu yapmanıza izin verildiğinden emin olun!</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.left">
@@ -499,7 +499,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.edit.1">
         <source>Edit store configuration ID %s.</source>
-        <target>%s ID'li mağaza yapılandırmasını düzenle </target>
+        <target>%s ID&apos;li mağaza yapılandırmasını düzenle </target>
       </trans-unit>
       <trans-unit id="tl_iso_config.copy.0">
         <source>Copy configuration</source>
@@ -507,7 +507,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.copy.1">
         <source>Copy store configuration ID %s.</source>
-        <target>%s ID'li mağaza yapılandırmasını kopyala</target>
+        <target>%s ID&apos;li mağaza yapılandırmasını kopyala</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.delete.0">
         <source>Delete configuration</source>
@@ -515,7 +515,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.delete.1">
         <source>Delete store configuration ID %s.</source>
-        <target>%s ID'li mağaza yapılandırmasını sil</target>
+        <target>%s ID&apos;li mağaza yapılandırmasını sil</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.show.0">
         <source>Show configuration details</source>
@@ -523,7 +523,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.show.1">
         <source>Show details for store configuration ID %s.</source>
-        <target>%s ID'li mağaza yapılandırmasının detaylarını gör</target>
+        <target>%s ID&apos;li mağaza yapılandırmasının detaylarını gör</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.name_legend">
         <source>Name</source>

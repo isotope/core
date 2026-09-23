@@ -63,7 +63,7 @@
       </trans-unit>
       <trans-unit id="FMD.iso_rangefilter.1">
         <source>Provides a range filter to find products within a value range.</source>
-        <target>Fornisce un filtro di fascia per trovare i prodotti all'interno di una fascia di valori.</target>
+        <target>Fornisce un filtro di fascia per trovare i prodotti all&apos;interno di una fascia di valori.</target>
       </trans-unit>
       <trans-unit id="FMD.iso_productlist.0">
         <source>Product List</source>
@@ -71,7 +71,7 @@
       </trans-unit>
       <trans-unit id="FMD.iso_productlist.1">
         <source>General Listing module. Can be used to list products or values of attributes. May be combined with other modules (i.e. the Filter Module) to provide further drill-down capabilities.</source>
-        <target>Modulo Elenco Generale. Puo' essere usato per elencare prodotti o valori di attributi. Puo' anche essere messo in combinazione con altri moduli (ad es. Modulo Filtro) per fornire ulteriori capacità.</target>
+        <target>Modulo Elenco Generale. Puo&apos; essere usato per elencare prodotti o valori di attributi. Puo&apos; anche essere messo in combinazione con altri moduli (ad es. Modulo Filtro) per fornire ulteriori capacità.</target>
       </trans-unit>
       <trans-unit id="FMD.iso_productvariantlist.0">
         <source>Product Variant List</source>
@@ -95,7 +95,7 @@
       </trans-unit>
       <trans-unit id="FMD.iso_favorites.1">
         <source>Renders the list of products on the favorites list.</source>
-        <target>Rende l'elenco dei prodotti nella lista dei favoriti.</target>
+        <target>Rende l&apos;elenco dei prodotti nella lista dei favoriti.</target>
       </trans-unit>
       <trans-unit id="FMD.iso_cart.0">
         <source>Shopping Cart</source>
@@ -142,7 +142,7 @@
         <target>Manager della lista dei favoriti </target>
       </trans-unit>
       <trans-unit id="FMD.iso_wishlistmanager.1">
-        <source>Allows the current member to manage it's wishlists.</source>
+        <source>Allows the current member to manage it&apos;s wishlists.</source>
         <target>Permette al membro attuale di gestire le sue liste dei favoriti.</target>
       </trans-unit>
       <trans-unit id="FMD.iso_wishlistviewer.0">
@@ -199,7 +199,7 @@
       </trans-unit>
       <trans-unit id="FMD.iso_cart_address.1">
         <source>Displays a form to enter the cart address data that will be used to calculate prices.</source>
-        <target>Visualizza un modulo per l'inserimento dei dati dell'indirizzo del carrello che verrà utilizzato per il calcolo dei prezzi.</target>
+        <target>Visualizza un modulo per l&apos;inserimento dei dati dell&apos;indirizzo del carrello che verrà utilizzato per il calcolo dei prezzi.</target>
       </trans-unit>
       <trans-unit id="FMD.iso_trustedshops.0">
         <source>Trusted Shops Badge</source>
@@ -279,11 +279,11 @@
       </trans-unit>
       <trans-unit id="IMD.tax_class.1">
         <source>Set up Tax classes, which contain sets of Tax rates.</source>
-        <target>Imposti la classe di tassazione che contiene l'insieme  delle aliquote d'imposta</target>
+        <target>Imposti la classe di tassazione che contiene l&apos;insieme  delle aliquote d&apos;imposta</target>
       </trans-unit>
       <trans-unit id="IMD.tax_rate.0">
         <source>Tax rates</source>
-        <target>Aliquota d'imposta</target>
+        <target>Aliquota d&apos;imposta</target>
       </trans-unit>
       <trans-unit id="IMD.tax_rate.1">
         <source>Set up tax rates based on things like shipping/billing location and order total.</source>

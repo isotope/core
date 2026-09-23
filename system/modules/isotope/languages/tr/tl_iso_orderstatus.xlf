@@ -71,7 +71,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_orderstatus.edit.1">
         <source>Edit order status ID %s</source>
-        <target>%s ID'li sipariş durumunu düzenle</target>
+        <target>%s ID&apos;li sipariş durumunu düzenle</target>
       </trans-unit>
       <trans-unit id="tl_iso_orderstatus.copy.0">
         <source>Duplicate order status</source>
@@ -79,7 +79,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_orderstatus.copy.1">
         <source>Duplicate order status ID %s</source>
-        <target>%s ID'li sipariş durumunu kopyala</target>
+        <target>%s ID&apos;li sipariş durumunu kopyala</target>
       </trans-unit>
       <trans-unit id="tl_iso_orderstatus.cut.0">
         <source>Move order status</source>
@@ -87,7 +87,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_orderstatus.cut.1">
         <source>Move order status ID %s</source>
-        <target>%s ID'li sipariş durumunu taşı</target>
+        <target>%s ID&apos;li sipariş durumunu taşı</target>
       </trans-unit>
       <trans-unit id="tl_iso_orderstatus.delete.0">
         <source>Delete order status</source>
@@ -95,7 +95,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_orderstatus.delete.1">
         <source>Delete order status ID %s</source>
-        <target>%s ID'li sipariş durumunu sil</target>
+        <target>%s ID&apos;li sipariş durumunu sil</target>
       </trans-unit>
       <trans-unit id="tl_iso_orderstatus.show.0">
         <source>Order status details</source>
@@ -103,7 +103,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_orderstatus.show.1">
         <source>Show details of order status ID %s</source>
-        <target>%s ID'li sipariş durumunun detaylarını gör</target>
+        <target>%s ID&apos;li sipariş durumunun detaylarını gör</target>
       </trans-unit>
       <trans-unit id="tl_iso_orderstatus.pasteafter.0">
         <source>Paste after</source>
@@ -111,7 +111,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_orderstatus.pasteafter.1">
         <source>Paste after order status ID %s</source>
-        <target>%s ID'li sipariş durumundan sonra yapıştır</target>
+        <target>%s ID&apos;li sipariş durumundan sonra yapıştır</target>
       </trans-unit>
       <trans-unit id="tl_iso_orderstatus.pasteinto.0">
         <source>Paste into</source>
@@ -119,7 +119,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_orderstatus.pasteinto.1">
         <source>Paste into order status ID %s</source>
-        <target>%s ID'li sipariş durumunun içine  yapıştır</target>
+        <target>%s ID&apos;li sipariş durumunun içine  yapıştır</target>
       </trans-unit>
       <trans-unit id="tl_iso_orderstatus.name_legend">
         <source>Name</source>

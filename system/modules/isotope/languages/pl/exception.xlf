@@ -14,7 +14,7 @@
         <target>Istnieje kilka sposobów, aby przywrócić instalację:</target>
       </trans-unit>
       <trans-unit id="XPT.isotopeOldFix1">
-        <source>Create a backup, then completely uninstall Isotope and remove all it's database tables and related extensions. Afterwards you can install Isotope eCommerce 2.0 again.</source>
+        <source>Create a backup, then completely uninstall Isotope and remove all it&apos;s database tables and related extensions. Afterwards you can install Isotope eCommerce 2.0 again.</source>
         <target>Utwórz kopię zapasową, a następnie odinstaluj Isotope i usuń wszystkie jego tabele w bazie danych i powiązane rozszerzenia. Potem ponownie zainstaluj Isotope eCommerce 2.0.</target>
       </trans-unit>
       <trans-unit id="XPT.isotopeOldFix2">

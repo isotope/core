@@ -70,7 +70,7 @@
         <target>Straatnaam 2</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.street_2.1">
-        <source>Enter a second street info if there's any.</source>
+        <source>Enter a second street info if there&apos;s any.</source>
         <target>Vul een tweede regel voor de straatnaam in, indien van toepassing.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.street_3.0">
@@ -78,7 +78,7 @@
         <target>Straatnaam 3</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.street_3.1">
-        <source>Enter a third street info if there's any.</source>
+        <source>Enter a third street info if there&apos;s any.</source>
         <target>Vul een derde regel voor de straatnaam in, indien van toepassing.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.postal.0">
@@ -294,7 +294,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.priceCalculateFactor.1">
         <source>Defaults should be 1. You can use this to convert between multiple currencies.</source>
-        <target>Standaardwaarden moeten worden 1. U kunt dit gebruiken om te converteren tussen meerdere valuta's.</target>
+        <target>Standaardwaarden moeten worden 1. U kunt dit gebruiken om te converteren tussen meerdere valuta&apos;s.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.priceCalculateMode.0">
         <source>Calculation mode</source>
@@ -419,7 +419,7 @@
         <target>Bezoeker volgen</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.ga_member.1">
-        <source>Enter simple tokens to track a member (e.g. ##firstname## ##lastname##). ATTENTION: make sure you're allowed to do this!</source>
+        <source>Enter simple tokens to track a member (e.g. ##firstname## ##lastname##). ATTENTION: make sure you&apos;re allowed to do this!</source>
         <target>Voer tokens in om de bezoeker mee te volgen (bijv. ##firstname## ##lastname##). LET OP: ga na of dit in uw situatie toe is gestaan.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.left">

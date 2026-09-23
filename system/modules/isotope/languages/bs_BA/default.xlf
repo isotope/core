@@ -852,7 +852,7 @@
         <source>Fixed</source>
       </trans-unit>
       <trans-unit id="MSC.iso_priceDisplay.fixed.1">
-        <source>The product price will always be shown as in the product setting. Taxes are always calculated as &quot;included&quot;. This means the shop owner's profit varies depending on the applicable taxes.</source>
+        <source>The product price will always be shown as in the product setting. Taxes are always calculated as &quot;included&quot;. This means the shop owner&apos;s profit varies depending on the applicable taxes.</source>
       </trans-unit>
       <trans-unit id="MSC.iso_priceDisplay.legacy.0">
         <source>Legacy</source>
@@ -1477,7 +1477,7 @@
         <target>KMF - Komorski Franc</target>
       </trans-unit>
       <trans-unit id="CUR.KPW">
-        <source>KPW - Democratic People's Republic of Korean Won</source>
+        <source>KPW - Democratic People&apos;s Republic of Korean Won</source>
         <target>KPW - Won Demokratske Narodne Republike Koreje</target>
       </trans-unit>
       <trans-unit id="CUR.KRW">
@@ -1737,8 +1737,8 @@
         <target>TND - Tuniski dinar</target>
       </trans-unit>
       <trans-unit id="CUR.TOP">
-        <source>TOP - Pa'anga</source>
-        <target>TOP - Pa'anga</target>
+        <source>TOP - Pa&apos;anga</source>
+        <target>TOP - Pa&apos;anga</target>
       </trans-unit>
       <trans-unit id="CUR.TRY">
         <source>TRY - New Turkish Lira</source>

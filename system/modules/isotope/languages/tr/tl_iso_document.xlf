@@ -87,7 +87,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_document.edit.1">
         <source>Edit document ID %s</source>
-        <target>%s ID'li Belgeyi Düzenle </target>
+        <target>%s ID&apos;li Belgeyi Düzenle </target>
       </trans-unit>
       <trans-unit id="tl_iso_document.copy.0">
         <source>Copy document</source>
@@ -95,7 +95,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_document.copy.1">
         <source>Copy document ID %s</source>
-        <target>%s ID'li Belgeyi kopyala</target>
+        <target>%s ID&apos;li Belgeyi kopyala</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.delete.0">
         <source>Delete document</source>
@@ -103,7 +103,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_document.delete.1">
         <source>Delete document ID %s</source>
-        <target>%s ID'li Belgeyi sil</target>
+        <target>%s ID&apos;li Belgeyi sil</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.show.0">
         <source>Document details</source>
@@ -111,7 +111,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_document.show.1">
         <source>Show details of document ID %s</source>
-        <target>%s ID'li belgenin detaylarını gör</target>
+        <target>%s ID&apos;li belgenin detaylarını gör</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.type_legend">
         <source>Name &amp; type</source>

@@ -255,7 +255,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_gallery.edit.1">
         <source>Edit gallery ID %s</source>
-        <target>%s ID'li galeriyi düzenle</target>
+        <target>%s ID&apos;li galeriyi düzenle</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.copy.0">
         <source>Duplicate gallery</source>
@@ -263,7 +263,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_gallery.copy.1">
         <source>Duplicate gallery ID %s</source>
-        <target>%s ID'Li galeriyi kopyala</target>
+        <target>%s ID&apos;Li galeriyi kopyala</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.delete.0">
         <source>Delete gallery</source>
@@ -271,7 +271,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_gallery.delete.1">
         <source>Delete gallery ID %s</source>
-        <target>%s ID'Li galeriyi sil</target>
+        <target>%s ID&apos;Li galeriyi sil</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.show.0">
         <source>Gallery details</source>
@@ -279,7 +279,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_gallery.show.1">
         <source>Show details of gallery ID %s</source>
-        <target>%s ID'li galeriinin detaylarını göster</target>
+        <target>%s ID&apos;li galeriinin detaylarını göster</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.name_legend">
         <source>Name &amp; Type</source>

@@ -74,7 +74,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.edit.1">
         <source>Edit option ID %s.</source>
-        <target>%s ID'li seçeneği düzenle </target>
+        <target>%s ID&apos;li seçeneği düzenle </target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.copy.0">
         <source>Copy option</source>
@@ -82,7 +82,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.copy.1">
         <source>Copy option ID %s.</source>
-        <target>%s ID'li seçeneği kopyala </target>
+        <target>%s ID&apos;li seçeneği kopyala </target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.delete.0">
         <source>Delete option</source>
@@ -90,7 +90,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.delete.1">
         <source>Delete option ID %s.</source>
-        <target>%s ID'li seçeneği sil</target>
+        <target>%s ID&apos;li seçeneği sil</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.show.0">
         <source>Option details</source>
@@ -98,7 +98,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.show.1">
         <source>Show details for option ID %s.</source>
-        <target>%s ID'li seçeneğin detaylarını gör</target>
+        <target>%s ID&apos;li seçeneğin detaylarını gör</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.label_legend">
         <source>Type &amp; Label</source>

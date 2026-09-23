@@ -19,7 +19,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_download.expires.0">
         <source>Expiration</source>
-        <target>Date d'expiration</target>
+        <target>Date d&apos;expiration</target>
       </trans-unit>
       <trans-unit id="tl_iso_download.expires.1">
         <source>Define if the download(s) expires after a certain time period.</source>
@@ -59,11 +59,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_download.cut.0">
         <source>Move download</source>
-        <target>Déplacer l'élément</target>
+        <target>Déplacer l&apos;élément</target>
       </trans-unit>
       <trans-unit id="tl_iso_download.cut.1">
         <source>Move download ID %s</source>
-        <target>Déplacer l'élément ID %s</target>
+        <target>Déplacer l&apos;élément ID %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_download.delete.0">
         <source>Delete download</source>
@@ -103,7 +103,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_download.pasteafter.1">
         <source>Paste after download ID %s</source>
-        <target>Coller après l'élément ID %s</target>
+        <target>Coller après l&apos;élément ID %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_download.pastenew.0">
         <source>Add new at the top</source>
@@ -111,7 +111,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_download.pastenew.1">
         <source>Add new after download ID %s</source>
-        <target>Ajouter un nouveau après l'élément ID %s</target>
+        <target>Ajouter un nouveau après l&apos;élément ID %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_download.file_legend">
         <source>Attachement</source>

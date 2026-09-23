@@ -7,7 +7,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_price.price_tiers.1">
         <source>Setup at least one price tier for &quot;Quantity 1&quot;. You can enter discount prices if the user orders more than one product.</source>
-        <target>Stel op z'n minst een prijsstelling voor &quot;1 stuks&quot; in. U kunt kortingen instellen als de klant meer dan 1 product koopt.</target>
+        <target>Stel op z&apos;n minst een prijsstelling voor &quot;1 stuks&quot; in. U kunt kortingen instellen als de klant meer dan 1 product koopt.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_price.tax_class.0">
         <source>Tax Class</source>

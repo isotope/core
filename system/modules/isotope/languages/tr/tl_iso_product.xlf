@@ -83,7 +83,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.teaser.1">
         <source>Please enter the teaser.</source>
-        <target>Lütfen teaser'ı girin.</target>
+        <target>Lütfen teaser&apos;ı girin.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.description.0">
         <source>Description</source>
@@ -304,7 +304,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.edit.1">
         <source>Edit product ID %s</source>
-        <target>%s ID'li ürünü düzenle</target>
+        <target>%s ID&apos;li ürünü düzenle</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.copy.0">
         <source>Copy product</source>
@@ -312,7 +312,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.copy.1">
         <source>Copy product ID %s</source>
-        <target>%s ID'li ürünü kopyala</target>
+        <target>%s ID&apos;li ürünü kopyala</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.cut.0">
         <source>Move product</source>
@@ -320,7 +320,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.cut.1">
         <source>Move product ID %s</source>
-        <target>%s ID'li ürünü taşı</target>
+        <target>%s ID&apos;li ürünü taşı</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.delete.0">
         <source>Delete product</source>
@@ -328,7 +328,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.delete.1">
         <source>Delete product ID %s</source>
-        <target>%s ID'li ürünü sil</target>
+        <target>%s ID&apos;li ürünü sil</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.toggle.0">
         <source>Publish/unpublish product</source>
@@ -336,7 +336,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.toggle.1">
         <source>Publish/unpublish product ID %s</source>
-        <target>%s ID'li ürünü yayınla/yayından kaldır</target>
+        <target>%s ID&apos;li ürünü yayınla/yayından kaldır</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.show.0">
         <source>Product details</source>
@@ -344,7 +344,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.show.1">
         <source>Show details of product ID %s</source>
-        <target>%s ID'li ürünün detaylarını göster</target>
+        <target>%s ID&apos;li ürünün detaylarını göster</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.filter">
         <source>Advanced filter:</source>
@@ -412,7 +412,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.variants.1">
         <source>Show variants for product ID %s</source>
-        <target>%s ID'li ürünün çeşitlerini göster</target>
+        <target>%s ID&apos;li ürünün çeşitlerini göster</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.generate.0">
         <source>Generate variants</source>
@@ -420,7 +420,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.generate.1">
         <source>Generate variants for product ID %s</source>
-        <target>%s ID'li ürün için çeşitler oluştur</target>
+        <target>%s ID&apos;li ürün için çeşitler oluştur</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.related.0">
         <source>Related products</source>
@@ -428,7 +428,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.related.1">
         <source>Manage related products for product ID %s</source>
-        <target>%s ID'li ürün ile ilgili ürünleri yönetin</target>
+        <target>%s ID&apos;li ürün ile ilgili ürünleri yönetin</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.downloads.0">
         <source>Downloads</source>
@@ -436,7 +436,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.downloads.1">
         <source>Edit downloads for product ID %s</source>
-        <target>%s ID'liürün için indirmeleri düzenle</target>
+        <target>%s ID&apos;liürün için indirmeleri düzenle</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.downloads.2">
         <source>Currently: %s downloads.</source>
@@ -448,7 +448,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.group.1">
         <source>Move product ID %s to a group</source>
-        <target>%s ID'li ürünü bir gruba taşı</target>
+        <target>%s ID&apos;li ürünü bir gruba taşı</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.groupSelected">
         <source>Group</source>
@@ -505,17 +505,17 @@
       <trans-unit id="tl_iso_product.importAssetsDescr">
         <source>&lt;p&gt;There are two different ways this feature may be used:&lt;/p&gt;
 &lt;ol&gt;
-    &lt;li&gt;The source folder you select contains files that either match the product's SKU or name. Isotope eCommerce is going to match all the files against all of your products and import them into the respective product's assets folder.&lt;/li&gt;
-    &lt;li&gt;The source folder you select contains subfolders that either match the product's SKU or name. Isotope eCommerce is going to match all the subfolders against all of your products and import everything within one subfolder into the respective product's asset folder.&lt;/li&gt;
+    &lt;li&gt;The source folder you select contains files that either match the product&apos;s SKU or name. Isotope eCommerce is going to match all the files against all of your products and import them into the respective product&apos;s assets folder.&lt;/li&gt;
+    &lt;li&gt;The source folder you select contains subfolders that either match the product&apos;s SKU or name. Isotope eCommerce is going to match all the subfolders against all of your products and import everything within one subfolder into the respective product&apos;s asset folder.&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;Hint: Any developer can provide you with other matching rules than just the product's SKU or name.&lt;/p&gt;
+&lt;p&gt;Hint: Any developer can provide you with other matching rules than just the product&apos;s SKU or name.&lt;/p&gt;
 </source>
         <target>&lt;p&gt;Bu özellikte kullanılabilecek iki farklı yol vardır:&lt;/p&gt;
 &lt;ol&gt;
-    &lt;li&gt;Seçtiğiniz kaynak klasörü, ürünün SKU'sunu veya adını eşleyen dosyaları içerir. Isotope eCommerce , tüm dosyalarınızı tüm ürünlerinizle eşleştirip ilgili ürünün assets klasörüne içe aktaracaktır.&lt;/li&gt;
-    &lt;li&gt;Seçtiğiniz kaynak klasörü, ürünün SKU'sunu veya adını eşleşen alt klasörler içerir. Isotope eCommerce, tüm alt klasörleri tüm ürünlerinizle eşleştirecek ve bir alt klasördeki her şeyi ilgili ürünün varlık klasörüne içe aktaracaktır.&lt;/li&gt;
+    &lt;li&gt;Seçtiğiniz kaynak klasörü, ürünün SKU&apos;sunu veya adını eşleyen dosyaları içerir. Isotope eCommerce , tüm dosyalarınızı tüm ürünlerinizle eşleştirip ilgili ürünün assets klasörüne içe aktaracaktır.&lt;/li&gt;
+    &lt;li&gt;Seçtiğiniz kaynak klasörü, ürünün SKU&apos;sunu veya adını eşleşen alt klasörler içerir. Isotope eCommerce, tüm alt klasörleri tüm ürünlerinizle eşleştirecek ve bir alt klasördeki her şeyi ilgili ürünün varlık klasörüne içe aktaracaktır.&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;İpucu: Herhangi bir geliştirici, yalnızca ürünün SKU'su veya adından farklı eşleştirme kuralları sağlayabilir.
+&lt;p&gt;İpucu: Herhangi bir geliştirici, yalnızca ürünün SKU&apos;su veya adından farklı eşleştirme kuralları sağlayabilir.
 &lt;/p&gt;
 </target>
       </trans-unit>

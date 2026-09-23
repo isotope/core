@@ -156,7 +156,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.extensions.1">
         <source>A comma separated list of valid file extensions.</source>
-        <target>Een door komma's gescheiden lijst van geldige extensies.</target>
+        <target>Een door komma&apos;s gescheiden lijst van geldige extensies.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.rte.0">
         <source>Use HTML editor</source>

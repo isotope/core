@@ -7,7 +7,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.name.1">
         <source>Please enter a name for your configuration. This is only used for back end reference.</source>
-        <target>Veuillez entrer un nom pour la configuration. Ce n'est utilisé que dans le back office</target>
+        <target>Veuillez entrer un nom pour la configuration. Ce n&apos;est utilisé que dans le back office</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.label.0">
         <source>Label</source>
@@ -15,7 +15,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.label.1">
         <source>The label is used in frontend, e.g. for config switcher.</source>
-        <target>Ce libellé est utilisé en front office, ex. : l'outil de changement de configuration</target>
+        <target>Ce libellé est utilisé en front office, ex. : l&apos;outil de changement de configuration</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.fallback.0">
         <source>Set as default store</source>
@@ -23,7 +23,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.fallback.1">
         <source>Set this as the default store for back-end currency formatting and other locale-specific information.</source>
-        <target>Définir cette boutique par défaut pour le formatage de monnaies et d'autres informations spécifiques aux paramètres régionaux du back office.</target>
+        <target>Définir cette boutique par défaut pour le formatage de monnaies et d&apos;autres informations spécifiques aux paramètres régionaux du back office.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.firstname.0">
         <source>First name</source>
@@ -70,16 +70,16 @@
         <target>Rue 2</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.street_2.1">
-        <source>Enter a second street info if there's any.</source>
-        <target>Saisir un complément d'adresse s'il y a lieu.</target>
+        <source>Enter a second street info if there&apos;s any.</source>
+        <target>Saisir un complément d&apos;adresse s&apos;il y a lieu.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.street_3.0">
         <source>Street 3</source>
         <target>Rue 3</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.street_3.1">
-        <source>Enter a third street info if there's any.</source>
-        <target>Saisir un complément d'adresse s'il y a lieu.</target>
+        <source>Enter a third street info if there&apos;s any.</source>
+        <target>Saisir un complément d&apos;adresse s&apos;il y a lieu.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.postal.0">
         <source>Postal code</source>
@@ -155,19 +155,19 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.address_fields.0">
         <source>Address fields</source>
-        <target>Champs d'adresse</target>
+        <target>Champs d&apos;adresse</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.address_fields.1">
         <source>Select the fields for a billing and shipping address when checking out.</source>
-        <target>Veuillez sélectionner les champs pour une adresse de facturation et d'expédition lors de la vérification.</target>
+        <target>Veuillez sélectionner les champs pour une adresse de facturation et d&apos;expédition lors de la vérification.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.address_fields.billing.0">
         <source>For billing address</source>
-        <target>Pour l'adresse de facturation</target>
+        <target>Pour l&apos;adresse de facturation</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.address_fields.shipping.0">
         <source>For shipping address</source>
-        <target>Pour l'adresse d'expédition</target>
+        <target>Pour l&apos;adresse d&apos;expédition</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.address_fields.disabled">
         <source>Disabled</source>
@@ -203,7 +203,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.billing_countries.1">
         <source>Select the countries you want to allow for checkout billing address. Select none to allow all countries.</source>
-        <target>Sélectionner les pays autorisés pour l'adresse de facturation de la commande.</target>
+        <target>Sélectionner les pays autorisés pour l&apos;adresse de facturation de la commande.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.shipping_countries.0">
         <source>Available shipping countries</source>
@@ -211,7 +211,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.shipping_countries.1">
         <source>Select the countries you want to allow for checkout shipping address. Select none to allow all countries.</source>
-        <target>Sélectionner les pays autorisés pour l'adresse de livraison de la commande.</target>
+        <target>Sélectionner les pays autorisés pour l&apos;adresse de livraison de la commande.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.limitMemberCountries.0">
         <source>Limit member countries</source>
@@ -219,7 +219,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.limitMemberCountries.1">
         <source>Limit member countries (Registration, Personal Data) to the combined list of billing and shipping countries.</source>
-        <target>Limiter les pays des membres (inscription, données personnelles) à la liste combinée des pays de facturation et d'expédition.</target>
+        <target>Limiter les pays des membres (inscription, données personnelles) à la liste combinée des pays de facturation et d&apos;expédition.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.vatNoValidators.0">
         <source>VAT No. validation</source>
@@ -242,15 +242,15 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.priceRoundPrecision.0">
         <source>Rounding precision</source>
-        <target>Précision de l'arrondi</target>
+        <target>Précision de l&apos;arrondi</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.priceRoundPrecision.1">
         <source>How much decimal precision to have. You should set something between 0 and 2 for all payment gateways to work correctly. See PHP manual for round().</source>
-        <target>Définir la précision de l'arrondi. Une valeur entre 0 et 2 fonctionne correctement sur toutes les passerelles de paiement. Voir le manuel de PHP pour la fonction round().</target>
+        <target>Définir la précision de l&apos;arrondi. Une valeur entre 0 et 2 fonctionne correctement sur toutes les passerelles de paiement. Voir le manuel de PHP pour la fonction round().</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.priceRoundIncrement.0">
         <source>Rounding increment</source>
-        <target>Augmentation de l'arrondi</target>
+        <target>Augmentation de l&apos;arrondi</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.priceRoundIncrement.1">
         <source>Some currencies (e.g. swiss francs) do not support 0.01 precision.</source>
@@ -270,7 +270,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.currencyPosition.1">
         <source>Select if you want to show currency on the left or right side of the price.</source>
-        <target>Sélectionner si la devise doit s'afficher à gauche ou à droite du prix.</target>
+        <target>Sélectionner si la devise doit s&apos;afficher à gauche ou à droite du prix.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.currencySymbol.0">
         <source>Use currency symbol</source>
@@ -334,7 +334,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.orderPrefix.1">
         <source>You can add a prefix (e.g. fiscal year) to the auto-incrementing order number.</source>
-        <target>Ajouter un préfixe (ex. : année de l'exercice fiscal) pour le numéro auto-incrémenté de la commande.</target>
+        <target>Ajouter un préfixe (ex. : année de l&apos;exercice fiscal) pour le numéro auto-incrémenté de la commande.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.orderDigits.0">
         <source>Order number length</source>
@@ -354,11 +354,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.orderstatus_error.0">
         <source>Order status on error</source>
-        <target>État des commandes en cas d'erreur</target>
+        <target>État des commandes en cas d&apos;erreur</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.orderstatus_error.1">
         <source>Select an order status if something goes wrong (e.g. payment).</source>
-        <target>Sélectionnez un état de la commande en cas d'erreur (par exemple : le paiement).</target>
+        <target>Sélectionnez un état de la commande en cas d&apos;erreur (par exemple : le paiement).</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.orderDetailsModule.0">
         <source>Module for backend view</source>
@@ -388,7 +388,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.cartMinSubtotal.1">
         <source>The minimum cart subtotal required to order. Enter 0 to disable.</source>
-        <target>Le sous-total minimum du panier requis lors d'une commande. Saisir 0 pour désactiver.</target>
+        <target>Le sous-total minimum du panier requis lors d&apos;une commande. Saisir 0 pour désactiver.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.newProductPeriod.0">
         <source>Duration to mark a product as &quot;new&quot;</source>
@@ -414,7 +414,7 @@
         <source>Track member</source>
       </trans-unit>
       <trans-unit id="tl_iso_config.ga_member.1">
-        <source>Enter simple tokens to track a member (e.g. ##firstname## ##lastname##). ATTENTION: make sure you're allowed to do this!</source>
+        <source>Enter simple tokens to track a member (e.g. ##firstname## ##lastname##). ATTENTION: make sure you&apos;re allowed to do this!</source>
       </trans-unit>
       <trans-unit id="tl_iso_config.left">
         <source>To the left of price</source>
@@ -510,7 +510,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.address_legend">
         <source>Address configuration</source>
-        <target>Configuration d'adresse</target>
+        <target>Configuration d&apos;adresse</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.config_legend">
         <source>Configuration</source>
