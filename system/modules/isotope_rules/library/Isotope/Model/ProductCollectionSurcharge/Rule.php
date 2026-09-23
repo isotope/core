@@ -218,7 +218,7 @@ class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectio
                 case 'subtotal':
                     $blnMatch = true; // At least one item in the collection matched the rule conditions
                     $objSurcharge->total_price += $objItem->getTotalPrice();
-                    $objSurcharge->tax_free_total_price = $objItem->getTaxFreeTotalPrice();
+                    $objSurcharge->tax_free_total_price += $objItem->getTaxFreeTotalPrice();
 
                     if ($objRule->tax_class == -1) {
                         if ($blnPercentage) {
