@@ -532,10 +532,10 @@ Isotope.MediaManager = {};
 
         switch (command) {
             case 'up':
-                parent.getPrevious() ? parent.injectBefore(parent.getPrevious()) : parent.injectInside(tbody);
+                parent.getPrevious() ? parent.inject(parent.getPrevious(), 'before') : parent.inject(tbody, 'bottom');
                 break;
             case 'down':
-                parent.getNext() ? parent.injectAfter(parent.getNext()) : parent.injectBefore(tbody.getFirst());
+                parent.getNext() ? parent.inject(parent.getNext(), 'after') : parent.inject(tbody, 'top');
                 break;
             case 'delete':
                 parent.destroy();

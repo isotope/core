@@ -382,6 +382,7 @@ class Backend extends ContaoBackend
                 $arrAttribs['strTable']     = $dc->table;
                 $arrAttribs['strField']     = $strField;
                 $arrAttribs['activeRecord'] = $dc->activeRecord;
+                $arrAttribs['currentRecord'] = $intId;
 
                 /** @var \Isotope\Widget\MediaManager $objWidget */
                 $objWidget = new $GLOBALS['BE_FFL']['mediaManager']($arrAttribs);
