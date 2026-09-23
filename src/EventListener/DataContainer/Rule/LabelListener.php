@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\EventListener\DataContainer\Rule;
 
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
-use Contao\DataContainer;
 use Contao\System;
 use Doctrine\DBAL\Connection;
 use Isotope\CoreBundle\EventListener\DataContainer\RuleCondition\LabelListener as RuleConditionLabelListener;

@@ -30,7 +30,8 @@ class OperatorOptionsListener
         try {
             return $this->conditionRegistry
                 ->get(RuleConditionModel::findById($id), $this->contextFactory->createBackend())
-                ?->getOperators() ?? [];
+                ?->getOperators() ?? []
+            ;
         } catch (FactoryNotFoundException) {
             return [];
         }

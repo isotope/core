@@ -56,7 +56,7 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = [
             'inputType' => 'select',
             'options' => ['male', 'female', 'other'],
             'reference' => &$GLOBALS['TL_LANG']['MSC'],
-            'eval' => ['includeBlankOption' => true, 'feEditable' => true, 'feGroup' => 'personal', 'tl_class' => 'w50',  'autocomplete' => 'sex'],
+            'eval' => ['includeBlankOption' => true, 'feEditable' => true, 'feGroup' => 'personal', 'tl_class' => 'w50', 'autocomplete' => 'sex'],
             'sql' => "varchar(32) NOT NULL default ''",
         ],
         'salutation' => [
@@ -74,12 +74,12 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = [
             'search' => true,
             'flag' => DataContainer::SORT_INITIAL_LETTER_ASC,
             'inputType' => 'text',
-            'eval' => ['mandatory' => true, 'maxlength' => 255, 'feEditable' => true, 'feGroup' => 'personal', 'tl_class' => 'w50',  'autocomplete' => 'family-name'],
+            'eval' => ['mandatory' => true, 'maxlength' => 255, 'feEditable' => true, 'feGroup' => 'personal', 'tl_class' => 'w50', 'autocomplete' => 'family-name'],
             'sql' => "varchar(255) NOT NULL default ''",
         ],
         'dateOfBirth' => [
             'inputType' => 'text',
-            'eval' => ['rgxp' => 'date', 'datepicker' => true, 'feEditable' => true, 'feViewable' => true, 'feGroup' => 'personal', 'tl_class' => 'w50',  'autocomplete' => 'bday'],
+            'eval' => ['rgxp' => 'date', 'datepicker' => true, 'feEditable' => true, 'feViewable' => true, 'feGroup' => 'personal', 'tl_class' => 'w50', 'autocomplete' => 'bday'],
             'sql' => "varchar(11) NOT NULL default ''",
         ],
         'company' => [

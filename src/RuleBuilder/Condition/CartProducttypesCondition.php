@@ -7,7 +7,6 @@ namespace Isotope\CoreBundle\RuleBuilder\Condition;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsRuleCondition;
 use Isotope\CoreBundle\Model\ProductTypeModel;
 use Isotope\CoreBundle\Product\CoreProduct;
-use Isotope\CoreBundle\Product\Product;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
 use Isotope\CoreBundle\RuleBuilder\Exception\InvalidOperatorException;
 use Isotope\CoreBundle\Store\Context\StoreContext;

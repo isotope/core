@@ -95,7 +95,7 @@ class CheckoutRuleMigration extends AbstractMigration
 
             $this->connection->insert('tl_iso_rule', [
                 'tstamp' => time(),
-                'name' => sprintf($name, $row['name'], $row['id']),
+                'name' => \sprintf($name, $row['name'], $row['id']),
                 'enabled' => 1,
             ]);
 
@@ -114,16 +114,16 @@ class CheckoutRuleMigration extends AbstractMigration
         }
 
         $this->connection->executeStatement(<<<SQL
-            ALTER TABLE $table
-                DROP COLUMN minimum_total,
-                DROP COLUMN maximum_total,
-                DROP COLUMN quantity_mode,
-                DROP COLUMN minimum_quantity,
-                DROP COLUMN maximum_quantity,
-                DROP COLUMN config_ids,
-                DROP COLUMN product_types,
-                DROP COLUMN product_types_condition
-        SQL);
+                ALTER TABLE $table
+                    DROP COLUMN minimum_total,
+                    DROP COLUMN maximum_total,
+                    DROP COLUMN quantity_mode,
+                    DROP COLUMN minimum_quantity,
+                    DROP COLUMN maximum_quantity,
+                    DROP COLUMN config_ids,
+                    DROP COLUMN product_types,
+                    DROP COLUMN product_types_condition
+            SQL);
     }
 
     private function createRangeCondition(string $type, string $field, float $from, float $to): array|null

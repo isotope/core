@@ -38,7 +38,9 @@ class NestedRuleCondition implements RuleConditionInterface
             return '-';
         }
 
-        return $this->labelListener->__invoke($ruleModel->row(), $ruleModel->name);
+        $listener = $this->labelListener;
+
+        return $listener($ruleModel->row(), $ruleModel->name);
     }
 
     public function getOperators(): array
