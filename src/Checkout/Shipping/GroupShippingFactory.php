@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Checkout\Shipping;
 
 use Contao\Model;
-use Contao\StringUtil;
 use Isotope\CoreBundle\Model\ShippingModel;
 use Isotope\CoreBundle\ModelType\ShippingRegistry;
 use Isotope\CoreBundle\Store\Context\StoreContext;
+use Isotope\CoreBundle\Util\StringUtil;
 
 /**
  * @extends AbstractShippingFactory<GroupShipping>
@@ -24,10 +24,10 @@ class GroupShippingFactory extends AbstractShippingFactory
      */
     public function doCreate(Model $model, StoreContext $context): AbstractShipping
     {
-        $ids = StringUtil::deserialize($model->group_methods, true);
+        $ids = StringUtil::csv($model->group_methods, intval(...), true);
 
         // Prevent recursion if we should load ourselves
-        if (($key = array_search($model->id, $ids, true)) !== false) {
+        if (false !== ($key = array_search((int) $model->id, $ids, true))) {
             unset($ids[$key]);
         }
 

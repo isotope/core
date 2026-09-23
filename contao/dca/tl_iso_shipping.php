@@ -162,7 +162,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
         ],
         'group_methods' => [
             'inputType' => 'checkboxWizard',
-            'eval' => ['mandatory' => true, 'multiple' => true, 'tl_class' => 'clr w50'],
+            'eval' => ['mandatory' => true, 'multiple' => true, 'csv' => ',', 'tl_class' => 'clr w50'],
             'sql' => 'blob NULL',
         ],
         'group_calculation' => [
