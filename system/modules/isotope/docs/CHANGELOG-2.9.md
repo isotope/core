@@ -1,12 +1,20 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.9.10 (2026-09-23)
+--------------------------
+
+- Fix regression when calculating net price (#2584)
+- Fix sorting of media files (#2582)
+
+
 Version 2.9.9 (2026-06-29)
 --------------------------
 
 - Fixed net price calculation when rules are applied (#2251)
 - Do not render gallery if there is no image
 - Fixed PHP 8 warnings (#2580, #2581)
+
 
 Version 2.9.8 (2025-10-27)
 --------------------------
