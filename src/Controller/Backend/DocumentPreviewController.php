@@ -21,7 +21,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 #[AsController]
 #[Route(
-    '%contao.backend.route_prefix%/isotope-document/preview/{orderId}/{documentId}.pdf',
+    '%contao.backend.route_prefix%/isotope-document/preview/{orderId}/{documentId}',
     requirements: ['orderId' => '\d+', 'documentId' => '\d+'],
     defaults: ['_scope' => 'backend'],
 )]

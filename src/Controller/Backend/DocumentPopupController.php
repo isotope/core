@@ -33,7 +33,6 @@ class DocumentPopupController extends AbstractBackendController
     public function __construct(
         private readonly OrderFactory $orderFactory,
         private readonly DocumentRegistry $documentRegistry,
-        private readonly UriSigner $uriSigner,
     ) {
     }
 
@@ -62,8 +61,7 @@ class DocumentPopupController extends AbstractBackendController
             throw new PageNotFoundException();
         }
 
-        $url = $this->generateUrl(DocumentController::class, ['id' => $documentModel->id], UrlGeneratorInterface::ABSOLUTE_URL);
-        $url = $this->uriSigner->sign($url);
+        $url = $this->generateUrl(DocumentController::class, ['uuid' => $documentModel->uniqid], UrlGeneratorInterface::ABSOLUTE_URL);
 
         return $this->render('@Contao/backend/isotope/document-popup.html.twig', [
             'tstamp' => $documentModel->tstamp,

@@ -9,6 +9,7 @@ use Contao\Model;
 /**
  * @property int    $id
  * @property int    $pid
+ * @property string $uniqid
  * @property int    $tstamp
  * @property int    $type
  * @property string $document_number

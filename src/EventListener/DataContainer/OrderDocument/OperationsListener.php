@@ -19,7 +19,6 @@ class OperationsListener
     public function __construct(
         private readonly Security $security,
         private readonly UrlGeneratorInterface $urlGenerator,
-        private readonly UriSigner $uriSigner,
     ) {
     }
 
@@ -42,12 +41,19 @@ class OperationsListener
     #[AsCallback('tl_iso_order_document', 'list.operations.download.button')]
     public function download(DataContainerOperation $operation): void
     {
+        if (!($operation->getRecord()['uniqid'] ?? null)) {
+            $operation->hide();
+
+            return;
+        }
+
         $url = $this->urlGenerator->generate(
             DocumentController::class,
-            ['id' => $operation->getRecord()['id']],
+            ['uuid' => $operation->getRecord()['uniqid']],
         );
 
-        $operation->setUrl($this->uriSigner->sign($url, \DateInterval::createFromDateString('5 minutes')));
+        $operation->setUrl($url);
+        $operation['attributes']->set('target', '_blank');
     }
 
     #[AsCallback('tl_iso_order_document', 'list.operations.show.button')]

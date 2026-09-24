@@ -12,6 +12,7 @@ use Isotope\CoreBundle\Store\Document\DocumentNumberGenerator;
 use Isotope\CoreBundle\Store\Document\OrderDocument;
 use Isotope\CoreBundle\Store\Document\Storage;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Uid\Uuid;
 
 class DocumentManager
 {
@@ -35,6 +36,7 @@ class DocumentManager
 
         $model = new OrderDocumentModel();
         $model->pid = $order->getId();
+        $model->uniqid = Uuid::v4()->toString();
         $model->tstamp = (int) $createdAt->format('U');
         $model->type = $document->getId();
 
@@ -58,20 +60,20 @@ class DocumentManager
         return $file;
     }
 
-    public function find(int $id): OrderDocument|null
+    public function find(string $uuid): OrderDocument|null
     {
         if (
-            !($model = OrderDocumentModel::findById($id))
-            || !($contents = $this->storage->retrieve($model->file_id))
+            !($model = OrderDocumentModel::findOneBy('uniqid', $uuid))
+            || !($contents = $this->storage->retrieve((string) $model->file_id))
         ) {
             return null;
         }
 
         return new OrderDocument(
-            $model->document_number,
+            (string) $model->document_number,
             \DateTimeImmutable::createFromFormat('U', (string) $model->tstamp),
-            $model->file_name,
-            $model->mime_type,
+            (string) $model->file_name,
+            (string) $model->mime_type,
             $contents,
         );
     }

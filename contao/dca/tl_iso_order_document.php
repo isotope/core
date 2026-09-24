@@ -18,6 +18,7 @@ $GLOBALS['TL_DCA']['tl_iso_order_document'] = [
             'keys' => [
                 'id' => 'primary',
                 'pid' => 'index',
+                'uniqid' => 'unique',
             ],
         ],
     ],
@@ -62,6 +63,9 @@ $GLOBALS['TL_DCA']['tl_iso_order_document'] = [
         ],
         'pid' => [
             'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
+        ],
+        'uniqid' => [
+            'sql' => ['type' => Types::STRING, 'length' => 36, 'notnull' => false],
         ],
         'tstamp' => [
             'sorting' => true,
