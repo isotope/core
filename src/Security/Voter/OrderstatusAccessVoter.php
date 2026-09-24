@@ -39,7 +39,7 @@ class OrderstatusAccessVoter extends AbstractDataContainerVoter implements Reset
         return match (true) {
             $action instanceof CreateAction,
             $action instanceof ReadAction => true,
-            $action instanceof UpdateAction => !isset($action->getNew()['alias']),
+            $action instanceof UpdateAction => !isset($action->getNew()['alias']) || empty($action->getCurrent()['alias']),
             $action instanceof DeleteAction => $this->canDelete($action->getCurrent()),
         };
     }
