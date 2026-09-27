@@ -1,7 +1,7 @@
 <?php
 
-use Contao\DataContainer;
 use Contao\DC_Table;
+use Contao\DataContainer;
 use Contao\Input;
 use Contao\System;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
@@ -24,7 +24,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
         'notCopyable' => true,
         'notDeletable' => ('select' === Input::get('act')),
         'permissions' => ['update'],
-        'sql' => [
+        'sql' =>  [
             'keys' => [
                 'id' => 'primary',
                 'uniqid,type' => 'unique',
@@ -86,19 +86,19 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
     'fields' => [
         'id' => [
             'search' => true,
-            'sql' => 'int(10) unsigned NOT NULL auto_increment',
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'autoincrement' => true],
         ],
         'tstamp' => [
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
         ],
         'type' => [
             'eval' => ['doNotShow' => true],
-            'sql' => "varchar(32) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 32, 'default' => ''],
         ],
         'member' => [
             'search' => true,
             'foreignKey' => "tl_member.CONCAT_WS(' ', company, firstname, lastname, street, postal, city)",
-            'sql' => 'int(10) unsigned NULL',
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'notnull' => false],
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
         ],
         'locked' => [
@@ -106,69 +106,69 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
             'filter' => true,
             'sorting' => true,
             'eval' => ['rgxp' => 'datim', 'doNotShow' => true],
-            'sql' => 'int(10) NULL',
+            'sql' => ['type' => Types::INTEGER, 'notnull' => false],
         ],
         'store_id' => [
             'eval' => ['doNotShow' => true],
-            'sql' => "int(2) unsigned NOT NULL default '0'",
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
         ],
         'settings' => [
             'eval' => ['doNotShow' => true],
-            'sql' => 'blob NULL',
+            'sql' => ['type' => Types::BLOB, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_BLOB, 'notnull' => false],
         ],
         'checkout_info' => [
             'eval' => ['doNotShow' => true],
-            'sql' => 'blob NULL',
+            'sql' => ['type' => Types::BLOB, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_BLOB, 'notnull' => false],
         ],
         'payment_data' => [
             'eval' => ['doNotShow' => true],
-            'sql' => 'blob NULL',
+            'sql' => ['type' => Types::BLOB, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_BLOB, 'notnull' => false],
         ],
         'shipping_data' => [
             'eval' => ['doNotShow' => true],
-            'sql' => 'blob NULL',
+            'sql' => ['type' => Types::BLOB, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_BLOB, 'notnull' => false],
         ],
         'source_collection_id' => [
-            'sql' => 'int(10) unsigned NOT NULL default 0',
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
             'relation' => ['type' => 'hasOne', 'load' => 'lazy', 'table' => 'tl_iso_product_collection'],
         ],
         'document_number' => [
             'search' => true,
             'sorting' => true,
-            'sql' => "varchar(64) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 64, 'default' => ''],
         ],
         'uniqid' => [
             'search' => true,
-            'sql' => 'varchar(64) NULL',
+            'sql' => ['type' => Types::STRING, 'length' => 64, 'notnull' => false],
         ],
         'order_status' => [
             'filter' => true,
             'sorting' => true,
             'inputType' => 'select',
             'eval' => ['tl_class' => 'w33'],
-            'sql' => 'varchar(32) NULL',
+            'sql' => ['type' => Types::STRING, 'length' => 32, 'notnull' => false],
         ],
         'transaction_status' => [
             'filter' => true,
             'inputType' => 'select',
             'eval' => ['tl_class' => 'w33'],
-            'sql' => 'varchar(32) NULL',
+            'sql' => ['type' => Types::STRING, 'length' => 32, 'notnull' => false],
         ],
         'delivery_status' => [
             'filter' => true,
             'inputType' => 'select',
             'eval' => ['tl_class' => 'w33'],
-            'sql' => 'varchar(32) NULL',
+            'sql' => ['type' => Types::STRING, 'length' => 32, 'notnull' => false],
         ],
         'date_paid' => [
             'inputType' => 'text',
             'eval' => ['rgxp' => 'datim', 'datepicker' => true, 'tl_class' => 'clr w33'],
-            'sql' => 'int(10) NULL',
+            'sql' => ['type' => Types::INTEGER, 'notnull' => false],
         ],
         'date_shipped' => [
             'inputType' => 'text',
             'eval' => ['rgxp' => 'datim', 'datepicker' => true, 'tl_class' => 'w33'],
-            'sql' => 'int(10) NULL',
+            'sql' => ['type' => Types::INTEGER, 'notnull' => false],
         ],
         'sendNotification' => [
             'inputType' => 'checkbox',
@@ -195,33 +195,33 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
         'config_id' => [
             'filter' => true,
             'foreignKey' => 'tl_iso_config.name',
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
         ],
         'payment_id' => [
             'filter' => true,
             'foreignKey' => 'tl_iso_payment.name',
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
         ],
         'shipping_id' => [
             'filter' => true,
             'foreignKey' => 'tl_iso_shipping.name',
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
         ],
         'billing_address_id' => [
             'search' => true,
             'foreignKey' => "tl_iso_address.CONCAT_WS(' ', company, firstname, lastname, street_1, street_2, street_3, postal, city)",
             'eval' => ['doNotShow' => true],
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
         ],
         'shipping_address_id' => [
             'search' => true,
             'foreignKey' => "tl_iso_address.CONCAT_WS(' ', company, firstname, lastname, street_1, street_2, street_3, postal, city)",
             'eval' => ['doNotShow' => true],
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
         ],
         'order_log' => [
@@ -229,34 +229,34 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
             'eval' => ['doNotShow' => true],
         ],
         'subtotal' => [
-            'sql' => "decimal(12,2) NOT NULL default '0.00'",
+            'sql' => ['type' => Types::DECIMAL, 'precision' => 12, 'scale' => 2, 'default' => '0.00'],
         ],
         'tax_free_subtotal' => [
-            'sql' => "decimal(12,2) NOT NULL default '0.00'",
+            'sql' => ['type' => Types::DECIMAL, 'precision' => 12, 'scale' => 2, 'default' => '0.00'],
         ],
         'total' => [
             'sorting' => true,
-            'sql' => "decimal(12,2) NOT NULL default '0.00'",
+            'sql' => ['type' => Types::DECIMAL, 'precision' => 12, 'scale' => 2, 'default' => '0.00'],
         ],
         'tax_free_total' => [
-            'sql' => "decimal(12,2) NOT NULL default '0.00'",
+            'sql' => ['type' => Types::DECIMAL, 'precision' => 12, 'scale' => 2, 'default' => '0.00'],
         ],
         'currency' => [
-            'sql' => "varchar(4) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 4, 'default' => ''],
         ],
         'language' => [
             'options_callback' => static fn () => System::getContainer()->get('contao.intl.locales')->getLocales(null, true),
-            'sql' => "varchar(5) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 5, 'default' => ''],
         ],
         'notes' => [
             'inputType' => 'textarea',
             'eval' => ['style' => 'height:80px;', 'tl_class' => 'clr'],
-            'sql' => 'text NULL',
+            'sql' => ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TEXT, 'notnull' => false],
         ],
         'extensions' => [
             'exclude' => false,
             'eval' => ['doNotShow' => true],
-            'sql' => ['type' => Types::BLOB, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_MEDIUMBLOB, 'notnull' => false],
+            'sql' =>  ['type' => Types::BLOB, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_MEDIUMBLOB, 'notnull' => false],
         ],
         'details' => [
             // input_field_callback from OrderDetailsListener

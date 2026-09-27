@@ -1,7 +1,8 @@
 <?php
 
-use Contao\DataContainer;
 use Contao\DC_Table;
+use Contao\DataContainer;
+use Doctrine\DBAL\Types\Types;
 
 $GLOBALS['TL_DCA']['tl_iso_product_category'] = [
     'config' => [
@@ -14,7 +15,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_category'] = [
         'backlink' => 'do=iso_products',
         'backendSearchIgnore' => true,
         'permissions' => [],
-        'sql' => [
+        'sql' =>  [
             'keys' => [
                 'id' => 'primary',
                 'pid' => 'index',
@@ -39,26 +40,26 @@ $GLOBALS['TL_DCA']['tl_iso_product_category'] = [
     ],
     'fields' => [
         'id' => [
-            'sql' => 'int(10) unsigned NOT NULL auto_increment',
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'autoincrement' => true],
         ],
         'pid' => [
             'foreignKey' => 'tl_page.title',
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
             'relation' => ['type' => 'belongsTo', 'load' => 'lazy'],
         ],
         'sorting' => [
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
         ],
         'tstamp' => [
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
         ],
         'product_id' => [
             'foreignKey' => 'tl_iso_product.name',
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
         ],
         'product_sorting' => [
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
         ],
     ],
 ];

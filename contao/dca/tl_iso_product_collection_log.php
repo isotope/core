@@ -1,11 +1,14 @@
 <?php
 
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
+use Doctrine\DBAL\Types\Types;
+
 $GLOBALS['TL_DCA']['tl_iso_product_collection_log'] = [
     'config' => [
         'ptable' => 'tl_iso_product_collection',
         'backendSearchIgnore' => true,
         'permissions' => [],
-        'sql' => [
+        'sql' =>  [
             'keys' => [
                 'id' => 'primary',
                 'pid' => 'index',
@@ -14,20 +17,20 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_log'] = [
     ],
     'fields' => [
         'id' => [
-            'sql' => 'int(10) unsigned NOT NULL auto_increment',
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'autoincrement' => true],
         ],
         'tstamp' => [
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
         ],
         'pid' => [
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
         ],
         'author' => [
             'foreignKey' => 'tl_user.username',
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
         ],
         'data' => [
-            'sql' => 'blob NULL',
+            'sql' => ['type' => Types::BLOB, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_BLOB, 'notnull' => false],
         ],
     ],
 ];

@@ -4,6 +4,7 @@ use Contao\CoreBundle\DataContainer\PaletteManipulator;
 use Contao\DataContainer;
 use Contao\Input;
 use Contao\PageModel;
+use Doctrine\DBAL\Types\Types;
 
 $GLOBALS['TL_DCA']['tl_page']['config']['ctable'][] = 'tl_iso_product_category';
 
@@ -55,14 +56,14 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['iso_config'] = [
     'inputType' => 'select',
     'foreignKey' => 'tl_iso_config.name',
     'eval' => ['includeBlankOption' => true, 'tl_class' => 'w50'],
-    'sql' => "int(10) unsigned NOT NULL default '0'",
+    'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
     'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
 ];
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['iso_store_id'] = [
     'inputType' => 'text',
     'eval' => ['mandatory' => true, 'rgxp' => 'digit', 'nospace' => true, 'maxlength' => 2, 'tl_class' => 'w50'],
-    'sql' => 'int(2) unsigned NOT NULL default 0',
+    'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
 ];
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['iso_readerMode'] = [
@@ -71,21 +72,21 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['iso_readerMode'] = [
     'reference' => &$GLOBALS['TL_LANG']['tl_page']['iso_readerModes'],
     'eval' => ['submitOnChange' => true, 'helpwizard' => true, 'tl_class' => 'w50'],
     'explanation' => 'isoReaderJumpTo',
-    'sql' => "varchar(8) NOT NULL default 'current'",
+    'sql' => ['type' => Types::STRING, 'length' => 8, 'default' => 'current'],
 ];
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['iso_readerJumpTo'] = [
     'inputType' => 'pageTree',
     'foreignKey' => 'tl_page.title',
     'eval' => ['fieldType' => 'radio', 'mandatory' => true, 'tl_class' => 'clr w50'],
-    'sql' => "int(10) unsigned NOT NULL default '0'",
+    'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
     'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
 ];
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['iso_sitemapVariants'] = [
     'inputType' => 'checkbox',
     'eval' => ['tl_class' => 'w50'],
-    'sql' => ['type' => 'boolean', 'default' => false],
+    'sql' =>  ['type' => 'boolean', 'default' => false],
 ];
 
 /*

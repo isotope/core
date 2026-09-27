@@ -29,9 +29,9 @@ class RadioAttribute extends AbstractOptionsAttribute implements VariantAttribut
     protected function getSqlDefinition(): array|string
     {
         if (OptionsSource::Attribute === $this->getOptionsSource()) {
-            return ['type' => Types::STRING, 'length' => 64, 'options' => ['default' => '']];
+            return ['type' => Types::STRING, 'length' => 64, 'default' => ''];
         }
 
-        return ['type' => Types::INTEGER, 'options' => ['unsigned' => true, 'default' => 0]];
+        return ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0];
     }
 }

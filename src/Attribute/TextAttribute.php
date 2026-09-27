@@ -88,7 +88,7 @@ class TextAttribute extends AbstractAttribute
         return [
             'type' => Types::STRING,
             'length' => $this->maxlength > 0 ? $this->maxlength : 255,
-            'options' => ['default' => ''],
+            'default' => '',
         ];
     }
 }

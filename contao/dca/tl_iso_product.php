@@ -3,6 +3,8 @@
 use Contao\DataContainer;
 use Contao\Input;
 use Contao\System;
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
+use Doctrine\DBAL\Types\Types;
 use Isotope\CoreBundle\DataContainer\ProductData;
 use Isotope\CoreBundle\Model\TaxClassModel;
 
@@ -15,7 +17,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
         'enableVersioning' => true,
         'ctable' => ['tl_iso_product', 'tl_iso_related_product', 'tl_iso_attribute_option'],
         'markAsCopy' => 'name',
-        'sql' => [
+        'sql' =>  [
             'keys' => [
                 'id' => 'primary',
                 'pid,language,type' => 'index',
@@ -78,34 +80,34 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
     'fields' => [
         'id' => [
             'attributes' => ['systemColumn' => true],
-            'sql' => 'int(10) unsigned NOT NULL auto_increment',
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'autoincrement' => true],
         ],
         'pid' => [
             'attributes' => ['systemColumn' => true],
-            'sql' => 'int(10) unsigned NOT NULL default 0',
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
         ],
         'tstamp' => [
             'sorting' => true,
             'attributes' => ['systemColumn' => true],
-            'sql' => 'int(10) unsigned NOT NULL default 0',
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
         ],
         'language' => [
             'eval' => ['doNotShow' => true],
             'attributes' => ['systemColumn' => true, 'inherit' => true],
-            'sql' => "varchar(5) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 5, 'default' => ''],
         ],
         'dateAdded' => [
             'default' => static fn () => time(),
             'sorting' => true,
             'eval' => ['rgxp' => 'datim', 'doNotCopy' => true],
             'attributes' => ['fe_sorting' => true, 'systemColumn' => true],
-            'sql' => 'int(10) unsigned NOT NULL default 0',
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
         ],
         'hitCount' => [
             'sorting' => true,
             'flag' => DataContainer::SORT_DESC,
             'attributes' => ['fe_sorting' => true, 'systemColumn' => true],
-            'sql' => 'int(10) unsigned NOT NULL default 0',
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
         ],
         'type' => [
             'filter' => true,
@@ -113,7 +115,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'foreignKey' => 'tl_iso_producttype.name',
             'eval' => ['mandatory' => true, 'submitOnChange' => true, 'includeBlankOption' => true, 'tl_class' => 'w50', 'helpwizard' => true],
             'attributes' => ['legend' => 'general_legend', 'fixed' => true, 'inherit' => true, 'systemColumn' => true],
-            'sql' => 'int(10) unsigned NOT NULL default 0',
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
             'explanation' => 'tl_iso_product.type',
         ],
@@ -128,14 +130,14 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'inputType' => 'inheritCheckbox',
             'eval' => ['multiple' => true, 'translatableFor' => '*'],
             'attributes' => ['systemColumn' => true],
-            'sql' => 'blob NULL',
+            'sql' => ['type' => Types::BLOB, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_BLOB, 'notnull' => false],
         ],
         'fallback' => [
             'toggle' => true,
             'inputType' => 'checkbox',
             'eval' => ['doNotCopy' => true, 'fallback' => true, 'tl_class' => 'clr'],
             'attributes' => ['legend' => 'general_legend', 'variant_fixed' => true, 'excluded' => true, 'systemColumn' => true],
-            'sql' => ['type' => 'boolean', 'default' => false],
+            'sql' =>  ['type' => 'boolean', 'default' => false],
         ],
         'alias' => [
             'search' => true,
@@ -143,7 +145,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'inputType' => 'text',
             'eval' => ['rgxp' => 'alnum', 'doNotCopy' => true, 'spaceToUnderscore' => true, 'isMultilingualAlias' => true, 'generateAliasFromField' => 'name', 'translatableFor' => '*', 'maxlength' => 128, 'tl_class' => 'w50'],
             'attributes' => ['legend' => 'general_legend', 'fixed' => true, 'inherit' => true],
-            'sql' => "varchar(128) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 128, 'default' => ''],
         ],
         'gtin' => [
             'search' => true,
@@ -151,7 +153,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'inputType' => 'text',
             'eval' => ['maxlength' => 14, 'unique' => true, 'doNotCopy' => true, 'tl_class' => 'w50'],
             'attributes' => ['legend' => 'general_legend', 'fe_search' => true, 'singular' => true],
-            'sql' => "varchar(14) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 14, 'default' => ''],
         ],
         'sku' => [
             'search' => true,
@@ -159,7 +161,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'maxlength' => 128, 'unique' => true, 'doNotCopy' => true, 'tl_class' => 'w50'],
             'attributes' => ['legend' => 'general_legend', 'fe_sorting' => true, 'fe_search' => true, 'singular' => true],
-            'sql' => "varchar(128) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 128, 'default' => ''],
         ],
         'name' => [
             'search' => true,
@@ -167,42 +169,42 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'translatableFor' => '*', 'tl_class' => 'clr long'],
             'attributes' => ['legend' => 'general_legend', 'fixed' => true, 'fe_sorting' => true, 'fe_search' => true],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'teaser' => [
             'search' => true,
             'inputType' => 'textarea',
             'eval' => ['translatableFor' => '*', 'style' => 'height:80px', 'tl_class' => 'clr'],
             'attributes' => ['legend' => 'general_legend', 'fe_search' => true],
-            'sql' => 'text NULL',
+            'sql' => ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TEXT, 'notnull' => false],
         ],
         'description' => [
             'search' => true,
             'inputType' => 'textarea',
             'eval' => ['mandatory' => true, 'rte' => 'tinyMCE', 'translatableFor' => '*', 'tl_class' => 'clr'],
             'attributes' => ['legend' => 'general_legend', 'fe_search' => true],
-            'sql' => 'text NULL',
+            'sql' => ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TEXT, 'notnull' => false],
         ],
         'meta_title' => [
             'search' => true,
             'inputType' => 'text',
             'eval' => ['maxlength' => 255, 'translatableFor' => '*', 'tl_class' => 'clr long'],
             'attributes' => ['legend' => 'meta_legend', 'variant_excluded' => true],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'meta_description' => [
             'search' => true,
             'inputType' => 'textarea',
             'eval' => ['translatableFor' => '*', 'style' => 'height:60px', 'tl_class' => 'clr'],
             'attributes' => ['legend' => 'meta_legend', 'variant_excluded' => true],
-            'sql' => 'text NULL',
+            'sql' => ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TEXT, 'notnull' => false],
         ],
         'price' => [
             'inputType' => 'timePeriod',
             'foreignKey' => 'tl_iso_tax_class.name',
             'eval' => ['mandatory' => true, 'maxlength' => 13, 'rgxp' => 'digit', 'includeBlankOption' => true, 'blankOptionLabel' => &$GLOBALS['TL_LANG']['MSC']['taxFree'], 'doNotSaveEmpty' => true, 'tl_class' => 'w50'],
             'attributes' => ['legend' => 'pricing_legend', 'fe_sorting' => true, 'dynamic' => true, 'singular' => true, 'systemColumn' => true],
-            'sql' => 'text NULL',
+            'sql' => ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TEXT, 'notnull' => false],
         ],
         'prices' => [
             'inputType' => 'rowWizard',
@@ -241,14 +243,14 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
                 ],
             ],
             'eval' => ['tl_class' => 'clr'],
-            'sql' => 'text NULL',
+            'sql' => ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TEXT, 'notnull' => false],
         ],
         'baseprice' => [
             'inputType' => 'timePeriod',
             'foreignKey' => 'tl_iso_baseprice.name',
             'eval' => ['includeBlankOption' => true, 'rgxp' => 'digit', 'tl_class' => 'w50'],
             'attributes' => ['legend' => 'pricing_legend'],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'shipping_weight' => [
             'inputType' => 'timePeriod',
@@ -257,53 +259,53 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'reference' => &$GLOBALS['TL_LANG']['WGT'],
             'eval' => ['rgxp' => 'digit', 'tl_class' => 'w50', 'helpwizard' => true],
             'attributes' => ['legend' => 'shipping_legend'],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'shipping_exempt' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
             'attributes' => ['legend' => 'shipping_legend'],
-            'sql' => ['type' => 'boolean', 'default' => false],
+            'sql' =>  ['type' => 'boolean', 'default' => false],
         ],
         'shipping_pickup' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
             'attributes' => ['legend' => 'shipping_legend'],
-            'sql' => ['type' => 'boolean', 'default' => false],
+            'sql' =>  ['type' => 'boolean', 'default' => false],
         ],
         'shipping_price' => [
             'inputType' => 'text',
             'eval' => ['rgxp' => 'digit', 'tl_class' => 'w50'],
             'attributes' => ['legend' => 'shipping_legend'],
-            'sql' => "decimal(9,2) unsigned NOT NULL default '0.00'",
+            'sql' => ['type' => Types::DECIMAL, 'precision' => 9, 'scale' => 2, 'unsigned' => true, 'default' => '0.00'],
         ],
         'images' => [
             'inputType' => 'mediaManager',
             'explanation' => 'mediaManager',
             'eval' => ['translatableFor' => '*', 'extensions' => '%contao.image.valid_extensions%', 'helpwizard' => true, 'tl_class' => 'clr'],
             'attributes' => ['legend' => 'media_legend', 'fixed' => true, 'dynamic' => true, 'fetch_fallback' => true],
-            'sql' => 'blob NULL',
+            'sql' => ['type' => Types::BLOB, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_BLOB, 'notnull' => false],
         ],
         'protected' => [
             'filter' => true,
             'inputType' => 'checkbox',
             'eval' => ['submitOnChange' => true, 'tl_class' => 'clr'],
             'attributes' => ['legend' => 'expert_legend', 'systemColumn' => true],
-            'sql' => ['type' => 'boolean', 'default' => false],
+            'sql' =>  ['type' => 'boolean', 'default' => false],
         ],
         'groups' => [
             'filter' => true,
             'inputType' => 'checkbox',
             'foreignKey' => 'tl_member_group.name',
             'eval' => ['mandatory' => true, 'multiple' => true, 'systemColumn' => true],
-            'sql' => 'blob NULL',
+            'sql' => ['type' => Types::BLOB, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_BLOB, 'notnull' => false],
             'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
         ],
         'cssID' => [
             'inputType' => 'text',
             'eval' => ['multiple' => true, 'size' => 2, 'tl_class' => 'w50'],
             'attributes' => ['legend' => 'expert_legend'],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'published' => [
             'toggle' => true,
@@ -311,19 +313,19 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = [
             'inputType' => 'checkbox',
             'eval' => ['doNotCopy' => true, 'tl_class' => 'clr'],
             'attributes' => ['legend' => 'publish_legend', 'fixed' => true, 'variant_fixed' => true, 'systemColumn' => true],
-            'sql' => ['type' => 'boolean', 'default' => false],
+            'sql' =>  ['type' => 'boolean', 'default' => false],
         ],
         'start' => [
             'inputType' => 'text',
             'eval' => ['rgxp' => 'datim', 'datepicker' => true, 'tl_class' => 'w50'],
             'attributes' => ['legend' => 'publish_legend', 'fixed' => true, 'variant_fixed' => true, 'systemColumn' => true],
-            'sql' => "varchar(10) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 10, 'default' => ''],
         ],
         'stop' => [
             'inputType' => 'text',
             'eval' => ['rgxp' => 'datim', 'datepicker' => true, 'tl_class' => 'w50'],
             'attributes' => ['legend' => 'publish_legend', 'fixed' => true, 'variant_fixed' => true, 'systemColumn' => true],
-            'sql' => "varchar(10) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 10, 'default' => ''],
         ],
         'variantFields' => [
             'label' => &$GLOBALS['TL_LANG']['tl_iso_producttype']['variant_attributes'],

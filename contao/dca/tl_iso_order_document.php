@@ -1,7 +1,7 @@
 <?php
 
-use Contao\DataContainer;
 use Contao\DC_Table;
+use Contao\DataContainer;
 use Doctrine\DBAL\Types\Types;
 
 $GLOBALS['TL_DCA']['tl_iso_order_document'] = [
@@ -14,7 +14,7 @@ $GLOBALS['TL_DCA']['tl_iso_order_document'] = [
         'notSortable' => true,
         'ptable' => 'tl_iso_product_collection',
         'permissions' => ['create', 'delete'],
-        'sql' => [
+        'sql' =>  [
             'keys' => [
                 'id' => 'primary',
                 'pid' => 'index',
@@ -59,36 +59,36 @@ $GLOBALS['TL_DCA']['tl_iso_order_document'] = [
     ],
     'fields' => [
         'id' => [
-            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'autoincrement' => true],
+            'sql' =>  ['type' => Types::INTEGER, 'unsigned' => true, 'autoincrement' => true],
         ],
         'pid' => [
-            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
+            'sql' =>  ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
         ],
         'uniqid' => [
-            'sql' => ['type' => Types::STRING, 'length' => 36, 'notnull' => false],
+            'sql' =>  ['type' => Types::STRING, 'length' => 36, 'notnull' => false],
         ],
         'tstamp' => [
             'sorting' => true,
-            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
+            'sql' =>  ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
         ],
         'type' => [
             'filter' => true,
             'foreignKey' => 'tl_iso_document.name',
-            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
+            'sql' =>  ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
         ],
         'document_number' => [
             'search' => true,
             'sorting' => true,
-            'sql' => ['type' => Types::STRING, 'length' => 64, 'default' => ''],
+            'sql' =>  ['type' => Types::STRING, 'length' => 64, 'default' => ''],
         ],
         'file_id' => [
-            'sql' => ['type' => Types::STRING, 'length' => 64, 'notnull' => false],
+            'sql' =>  ['type' => Types::STRING, 'length' => 64, 'notnull' => false],
         ],
         'file_name' => [
-            'sql' => ['type' => Types::STRING, 'length' => 64, 'notnull' => false],
+            'sql' =>  ['type' => Types::STRING, 'length' => 64, 'notnull' => false],
         ],
         'mime_type' => [
-            'sql' => ['type' => Types::STRING, 'length' => 32, 'notnull' => false],
+            'sql' =>  ['type' => Types::STRING, 'length' => 32, 'notnull' => false],
         ],
     ],
 ];

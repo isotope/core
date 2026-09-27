@@ -1,14 +1,16 @@
 <?php
 
-use Contao\DataContainer;
 use Contao\DC_Table;
+use Contao\DataContainer;
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
+use Doctrine\DBAL\Types\Types;
 
 $GLOBALS['TL_DCA']['tl_iso_payment'] = [
     'config' => [
         'dataContainer' => DC_Table::class,
         'enableVersioning' => true,
         'markAsCopy' => 'name',
-        'sql' => [
+        'sql' =>  [
             'keys' => [
                 'id' => 'primary',
             ],
@@ -35,10 +37,10 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = [
     ],
     'fields' => [
         'id' => [
-            'sql' => 'int(10) unsigned NOT NULL auto_increment',
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'autoincrement' => true],
         ],
         'tstamp' => [
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
         ],
         'type' => [
             'filter' => true,
@@ -46,59 +48,59 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = [
             'default' => 'cash',
             'reference' => &$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment'],
             'eval' => ['includeBlankOption' => true, 'helpwizard' => true, 'submitOnChange' => true, 'chosen' => true, 'tl_class' => 'w50'],
-            'sql' => "varchar(64) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 64, 'default' => ''],
         ],
         'name' => [
             'search' => true,
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'maxlength' => 255, 'tl_class' => 'clr w50'],
             'translation' => ['domain' => 'isotope'],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'label' => [
             'inputType' => 'text',
             'eval' => ['maxlength' => 255, 'tl_class' => 'w50'],
             'translation' => ['domain' => 'isotope'],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'note' => [
             'inputType' => 'textarea',
             'eval' => ['rte' => 'tinyMCE'],
             'translation' => ['domain' => 'isotope'],
-            'sql' => 'text NULL',
+            'sql' => ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TEXT, 'notnull' => false],
         ],
         'processing_status' => [
             'inputType' => 'select',
             'foreignKey' => 'tl_iso_orderstatus.name',
             'eval' => ['mandatory' => true, 'includeBlankOption' => true, 'tl_class' => 'w33'],
-            'sql' => 'varchar(32) NULL',
+            'sql' => ['type' => Types::STRING, 'length' => 32, 'notnull' => false],
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
         ],
         'paid_status' => [
             'inputType' => 'select',
             'foreignKey' => 'tl_iso_orderstatus.name',
             'eval' => ['mandatory' => true, 'includeBlankOption' => true, 'tl_class' => 'w33'],
-            'sql' => 'varchar(32) NULL',
+            'sql' => ['type' => Types::STRING, 'length' => 32, 'notnull' => false],
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
         ],
         'failed_status' => [
             'inputType' => 'select',
             'foreignKey' => 'tl_iso_orderstatus.name',
             'eval' => ['mandatory' => true, 'includeBlankOption' => true, 'tl_class' => 'w33'],
-            'sql' => 'varchar(32) NULL',
+            'sql' => ['type' => Types::STRING, 'length' => 32, 'notnull' => false],
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
         ],
         'shipping_modules' => [
             'inputType' => 'select',
             'eval' => ['multiple' => true, 'size' => 8, 'csv' => ',', 'tl_class' => 'clr w50', 'chosen' => true],
-            'sql' => 'blob NULL',
+            'sql' => ['type' => Types::BLOB, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_BLOB, 'notnull' => false],
         ],
         'rule' => [
             'filter' => true,
             'inputType' => 'picker',
             'foreignKey' => 'tl_iso_rule.name',
             'eval' => ['tl_class' => 'clr'],
-            'sql' => 'int(10) unsigned NOT NULL default 0',
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
             'relation' => ['type' => 'hasOne'],
         ],
         'paypal_account' => [
@@ -108,26 +110,26 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = [
         'price' => [
             'inputType' => 'text',
             'eval' => ['maxlength' => 16, 'rgxp' => 'surcharge', 'nullIfEmpty' => true, 'tl_class' => 'w50'],
-            'sql' => 'varchar(16) NULL',
+            'sql' => ['type' => Types::STRING, 'length' => 16, 'notnull' => false],
         ],
         'tax_class' => [
             'filter' => true,
             'inputType' => 'select',
             'foreignKey' => 'tl_iso_tax_class.name',
             'eval' => ['includeBlankOption' => true, 'blankOptionLabel' => &$GLOBALS['TL_LANG']['MSC']['taxFree'], 'tl_class' => 'w50'],
-            'sql' => "int(10) NOT NULL default '0'",
+            'sql' => ['type' => Types::INTEGER, 'default' => 0],
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
         ],
         'enabled' => [
             'toggle' => true,
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
-            'sql' => ['type' => 'boolean', 'default' => false],
+            'sql' =>  ['type' => 'boolean', 'default' => false],
         ],
         'debug' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
-            'sql' => ['type' => 'boolean', 'default' => false],
+            'sql' =>  ['type' => 'boolean', 'default' => false],
         ],
     ],
 ];

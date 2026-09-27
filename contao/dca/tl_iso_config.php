@@ -1,8 +1,8 @@
 <?php
 
 use Contao\BackendUser;
-use Contao\DataContainer;
 use Contao\DC_Table;
+use Contao\DataContainer;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Types\Types;
 use Isotope\CoreBundle\Store\Price\PriceDisplay;
@@ -13,7 +13,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
         'dataContainer' => DC_Table::class,
         'enableVersioning' => true,
         'markAsCopy' => 'name',
-        'sql' => [
+        'sql' =>  [
             'keys' => [
                 'id' => 'primary',
             ],
@@ -49,22 +49,22 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
     ],
     'fields' => [
         'id' => [
-            'sql' => 'int(10) unsigned NOT NULL auto_increment',
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'autoincrement' => true],
         ],
         'tstamp' => [
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
         ],
         'name' => [
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'unique' => true, 'maxlength' => 255, 'tl_class' => 'w50'],
             'translation' => ['domain' => 'isotope'],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'label' => [
             'inputType' => 'text',
             'eval' => ['maxlength' => 255, 'tl_class' => 'w50'],
             'translation' => ['domain' => 'isotope'],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'firstname' => [
             'search' => true,
@@ -72,7 +72,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
             'flag' => DataContainer::SORT_INITIAL_LETTER_ASC,
             'inputType' => 'text',
             'eval' => ['maxlength' => 255, 'tl_class' => 'w50'],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'lastname' => [
             'search' => true,
@@ -80,7 +80,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
             'flag' => DataContainer::SORT_INITIAL_LETTER_ASC,
             'inputType' => 'text',
             'eval' => ['maxlength' => 255, 'tl_class' => 'w50'],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'company' => [
             'search' => true,
@@ -88,37 +88,37 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
             'flag' => DataContainer::SORT_INITIAL_LETTER_ASC,
             'inputType' => 'text',
             'eval' => ['maxlength' => 255, 'tl_class' => 'w50'],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'vat_no' => [
             'search' => true,
             'inputType' => 'text',
             'eval' => ['maxlength' => 255, 'tl_class' => 'w50'],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'street_1' => [
             'search' => true,
             'inputType' => 'text',
             'eval' => ['maxlength' => 255, 'tl_class' => 'w50'],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'street_2' => [
             'search' => true,
             'inputType' => 'text',
             'eval' => ['maxlength' => 255, 'tl_class' => 'w50'],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'street_3' => [
             'search' => true,
             'inputType' => 'text',
             'eval' => ['maxlength' => 255, 'tl_class' => 'w50'],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'postal' => [
             'search' => true,
             'inputType' => 'text',
             'eval' => ['maxlength' => 32, 'tl_class' => 'clr w50'],
-            'sql' => "varchar(32) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 32, 'default' => ''],
         ],
         'city' => [
             'filter' => true,
@@ -126,13 +126,13 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
             'sorting' => true,
             'inputType' => 'text',
             'eval' => ['maxlength' => 255, 'tl_class' => 'w50'],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'subdivision' => [
             'sorting' => true,
             'inputType' => 'conditionalselect',
             'eval' => ['conditionField' => 'country', 'includeBlankOption' => true, 'tl_class' => 'w50'],
-            'sql' => "varchar(10) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 10, 'default' => ''],
         ],
         'country' => [
             'filter' => true,
@@ -140,39 +140,39 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
             'inputType' => 'select',
             'default' => (string) BackendUser::getInstance()->country,
             'eval' => ['mandatory' => true, 'includeBlankOption' => true, 'tl_class' => 'w50'],
-            'sql' => "varchar(2) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 2, 'default' => ''],
         ],
         'phone' => [
             'search' => true,
             'inputType' => 'text',
             'eval' => ['maxlength' => 64, 'rgxp' => 'phone', 'tl_class' => 'w50'],
-            'sql' => "varchar(64) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 64, 'default' => ''],
         ],
         'email' => [
             'search' => true,
             'inputType' => 'text',
             'eval' => ['maxlength' => 64, 'rgxp' => 'email', 'tl_class' => 'w50'],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'bankName' => [
             'inputType' => 'text',
             'eval' => ['maxlength' => 255, 'tl_class' => 'w50'],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'bankAccount' => [
             'inputType' => 'text',
             'eval' => ['maxlength' => 34, 'tl_class' => 'w50'],
-            'sql' => "varchar(34) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 34, 'default' => ''],
         ],
         'bankCode' => [
             'inputType' => 'text',
             'eval' => ['maxlength' => 16, 'tl_class' => 'w50'],
-            'sql' => "varchar(16) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 16, 'default' => ''],
         ],
         'taxNumber' => [
             'inputType' => 'text',
             'eval' => ['maxlength' => 255, 'tl_class' => 'w50'],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'address_fields' => [
             'inputType' => 'rowWizard',
@@ -199,45 +199,45 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
                 'tl_class' => 'clr',
                 'actions' => [],
             ],
-            'sql' => 'blob NULL',
+            'sql' => ['type' => Types::BLOB, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_BLOB, 'notnull' => false],
         ],
         'billing_country' => [
             'inputType' => 'select',
             'eval' => ['includeBlankOption' => true, 'tl_class' => 'w50', 'chosen' => true],
-            'sql' => "varchar(2) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 2, 'default' => ''],
         ],
         'shipping_country' => [
             'inputType' => 'select',
             'eval' => ['includeBlankOption' => true, 'tl_class' => 'w50', 'chosen' => true],
-            'sql' => "varchar(2) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 2, 'default' => ''],
         ],
         'billing_countries' => [
             'inputType' => 'select',
             'eval' => ['multiple' => true, 'size' => 8, 'csv' => ',', 'tl_class' => 'w50', 'chosen' => true],
-            'sql' => 'text NULL',
+            'sql' => ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TEXT, 'notnull' => false],
         ],
         'shipping_countries' => [
             'inputType' => 'select',
             'eval' => ['multiple' => true, 'size' => 8, 'csv' => ',', 'tl_class' => 'w50', 'chosen' => true],
-            'sql' => 'text NULL',
+            'sql' => ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TEXT, 'notnull' => false],
         ],
         'limitMemberCountries' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
-            'sql' => ['type' => 'boolean', 'default' => false],
+            'sql' =>  ['type' => 'boolean', 'default' => false],
         ],
         'payment_ids' => [
             'inputType' => 'checkboxWizard',
             'foreignKey' => 'tl_iso_payment.name',
             'eval' => ['multiple' => true, 'csv' => ','],
-            'sql' => ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TINYTEXT, 'notnull' => false],
+            'sql' =>  ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TINYTEXT, 'notnull' => false],
             'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
         ],
         'shipping_ids' => [
             'inputType' => 'checkboxWizard',
             'foreignKey' => 'tl_iso_shipping.name',
             'eval' => ['multiple' => true, 'csv' => ','],
-            'sql' => ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TINYTEXT, 'notnull' => false],
+            'sql' =>  ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TINYTEXT, 'notnull' => false],
             'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
         ],
         'priceDisplay' => [
@@ -246,7 +246,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
             'enum' => PriceDisplay::class,
             'reference' => &$GLOBALS['TL_LANG']['MSC']['iso_priceDisplay'],
             'eval' => ['mandatory' => true, 'tl_class' => 'w33', 'helpwizard' => true],
-            'sql' => "varchar(8) NOT NULL default 'gross'",
+            'sql' => ['type' => Types::STRING, 'length' => 8, 'default' => 'gross'],
         ],
         'taxCalculation' => [
             'default' => 'vertical',
@@ -254,39 +254,39 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
             'enum' => TaxCalculation::class,
             'reference' => &$GLOBALS['TL_LANG']['MSC']['iso_taxCalculation'],
             'eval' => ['mandatory' => true, 'tl_class' => 'w33', 'helpwizard' => true],
-            'sql' => "varchar(16) NOT NULL default 'vertical'",
+            'sql' => ['type' => Types::STRING, 'length' => 16, 'default' => 'vertical'],
         ],
         'currencyFormat' => [
             'inputType' => 'select',
             'eval' => ['includeBlankOption' => true, 'decodeEntities' => true, 'mandatory' => true, 'tl_class' => 'clr w33'],
-            'sql' => "varchar(20) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 20, 'default' => ''],
         ],
         'priceRoundPrecision' => [
             'default' => '2',
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'maxlength' => 1, 'rgpx' => 'digit', 'tl_class' => 'w33'],
-            'sql' => "int(1) unsigned NOT NULL default '2'",
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 2],
         ],
         'priceRoundIncrement' => [
             'inputType' => 'select',
             'options' => ['0.01', '0.05'],
             'eval' => ['mandatory' => true, 'tl_class' => 'w33'],
-            'sql' => "varchar(4) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 4, 'default' => ''],
         ],
         'currency' => [
             'inputType' => 'select',
             'eval' => ['includeBlankOption' => true, 'mandatory' => true, 'chosen' => true, 'tl_class' => 'w33'],
-            'sql' => "varchar(3) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 3, 'default' => ''],
         ],
         'currencySymbol' => [
             'inputType' => 'checkbox',
             'eval' => ['submitOnChange' => true, 'tl_class' => 'w33'],
-            'sql' => ['type' => 'boolean', 'default' => false],
+            'sql' =>  ['type' => 'boolean', 'default' => false],
         ],
         'currencySpace' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w33'],
-            'sql' => ['type' => 'boolean', 'default' => false],
+            'sql' =>  ['type' => 'boolean', 'default' => false],
         ],
         'currencyPosition' => [
             'inputType' => 'radio',
@@ -294,25 +294,25 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
             'options' => ['left', 'right'],
             'reference' => &$GLOBALS['TL_LANG']['tl_iso_config'],
             'eval' => ['tl_class' => 'w33'],
-            'sql' => "varchar(5) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 5, 'default' => ''],
         ],
         'priceCalculateFactor' => [
             'default' => 1,
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'maxlength' => 16, 'rgxp' => 'digit', 'tl_class' => 'w50'],
-            'sql' => "varchar(16) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 16, 'default' => ''],
         ],
         'orderPrefix' => [
             'inputType' => 'text',
             'eval' => ['maxlength' => 255, 'decodeEntities' => true, 'tl_class' => 'w50'],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'orderDigits' => [
             'default' => 4,
             'inputType' => 'select',
             'options' => range(1, 9),
             'eval' => ['tl_class' => 'w50'],
-            'sql' => "int(1) unsigned NOT NULL default '4'",
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 4],
         ],
     ],
 ];

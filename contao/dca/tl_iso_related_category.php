@@ -1,14 +1,15 @@
 <?php
 
-use Contao\DataContainer;
 use Contao\DC_Table;
+use Contao\DataContainer;
+use Doctrine\DBAL\Types\Types;
 
 $GLOBALS['TL_DCA']['tl_iso_related_category'] = [
     'config' => [
         'dataContainer' => DC_Table::class,
         'enableVersioning' => true,
         'markAsCopy' => 'name',
-        'sql' => [
+        'sql' =>  [
             'keys' => [
                 'id' => 'primary',
             ],
@@ -32,16 +33,16 @@ $GLOBALS['TL_DCA']['tl_iso_related_category'] = [
     ],
     'fields' => [
         'id' => [
-            'sql' => 'int(10) unsigned NOT NULL auto_increment',
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'autoincrement' => true],
         ],
         'tstamp' => [
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
         ],
         'name' => [
             'search' => true,
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'maxlength' => 255, 'tl_class' => 'long'],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
     ],
 ];

@@ -1,15 +1,17 @@
 <?php
 
-use Contao\DataContainer;
 use Contao\DC_Table;
+use Contao\DataContainer;
 use Contao\System;
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
+use Doctrine\DBAL\Types\Types;
 
 $GLOBALS['TL_DCA']['tl_iso_producttype'] = [
     'config' => [
         'dataContainer' => DC_Table::class,
         'enableVersioning' => true,
         'markAsCopy' => 'name',
-        'sql' => [
+        'sql' =>  [
             'keys' => [
                 'id' => 'primary',
                 'variants' => 'index',
@@ -40,16 +42,16 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = [
     ],
     'fields' => [
         'id' => [
-            'sql' => 'int(10) unsigned NOT NULL auto_increment',
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'autoincrement' => true],
         ],
         'tstamp' => [
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
         ],
         'name' => [
             'search' => true,
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'maxlength' => 255, 'tl_class' => 'w50'],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'class' => [
             'filter' => true,
@@ -57,56 +59,56 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = [
             'default' => 'standard',
             'reference' => &$GLOBALS['TL_LANG']['MODEL']['tl_iso_product'],
             'eval' => ['mandatory' => true, 'submitOnChange' => true, 'helpwizard' => true, 'tl_class' => 'w50'],
-            'sql' => "varchar(64) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 64, 'default' => ''],
         ],
         'fallback' => [
             'filter' => true,
             'inputType' => 'checkbox',
             'eval' => ['fallback' => true, 'tl_class' => 'w50'],
-            'sql' => ['type' => 'boolean', 'default' => false],
+            'sql' =>  ['type' => 'boolean', 'default' => false],
         ],
         'description' => [
             'inputType' => 'textarea',
             'eval' => ['style' => 'height:80px', 'tl_class' => 'clr'],
-            'sql' => 'text NULL',
+            'sql' => ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TEXT, 'notnull' => false],
         ],
         'prices' => [
             'inputType' => 'checkbox',
             'eval' => ['submitOnChange' => true, 'tl_class' => 'clr'],
-            'sql' => ['type' => 'boolean', 'default' => false],
+            'sql' =>  ['type' => 'boolean', 'default' => false],
         ],
         'show_price_tiers' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
-            'sql' => ['type' => 'boolean', 'default' => false],
+            'sql' =>  ['type' => 'boolean', 'default' => false],
         ],
         'list_template' => [
             'inputType' => 'select',
             'eval' => ['mandatory' => true, 'includeBlankOption' => true, 'tl_class' => 'w50', 'chosen' => true],
-            'sql' => "varchar(255) NOT NULL default 'isotope/product/list'",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => 'isotope/product/list'],
         ],
         'reader_template' => [
             'inputType' => 'select',
             'eval' => ['mandatory' => true, 'includeBlankOption' => true, 'tl_class' => 'w50', 'chosen' => true],
-            'sql' => "varchar(255) NOT NULL default 'isotope/product/reader'",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => 'isotope/product/reader'],
         ],
         'list_gallery' => [
             'inputType' => 'select',
             'foreignKey' => 'tl_iso_gallery.name',
             'eval' => ['mandatory' => true, 'includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'],
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
         ],
         'reader_gallery' => [
             'inputType' => 'select',
             'foreignKey' => 'tl_iso_gallery.name',
             'eval' => ['mandatory' => true, 'includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'],
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
         ],
         'cssClass' => [
             'inputType' => 'text',
             'search' => true,
             'eval' => ['maxlength' => 64, 'tl_class' => 'w50'],
-            'sql' => "varchar(64) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 64, 'default' => ''],
         ],
         'attributes' => [
             'default' => [
@@ -128,13 +130,13 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = [
                 'tl_class' => 'clr',
                 'actions' => [],
             ],
-            'sql' => 'blob NULL',
+            'sql' => ['type' => Types::BLOB, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_BLOB, 'notnull' => false],
         ],
         'variants' => [
             'filter' => true,
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'clr', 'submitOnChange' => true],
-            'sql' => ['type' => 'boolean', 'default' => false],
+            'sql' =>  ['type' => 'boolean', 'default' => false],
         ],
         'variant_attributes' => [
             'inputType' => 'rowWizard',
@@ -142,18 +144,18 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = [
                 'tl_class' => 'clr',
                 'actions' => [],
             ],
-            'sql' => 'blob NULL',
+            'sql' => ['type' => Types::BLOB, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_BLOB, 'notnull' => false],
         ],
         'force_variant_options' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'clr'],
-            'sql' => ['type' => 'boolean', 'default' => false],
+            'sql' =>  ['type' => 'boolean', 'default' => false],
         ],
         'validAliasCharacters' => [
             'inputType' => 'select',
             'options_callback' => static fn () => System::getContainer()->get('contao.slug.valid_characters')->getOptions(),
             'eval' => ['includeBlankOption' => true, 'decodeEntities' => true, 'tl_class' => 'w50'],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'shipping_exempt' => [
             'filter' => true,
@@ -169,7 +171,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = [
                 'blankOptionLabel' => &$GLOBALS['TL_LANG']['tl_iso_producttype']['shipping_exempt']['default'],
                 'helpwizard' => true,
             ],
-            'sql' => "char(1) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 1, 'fixed' => true, 'default' => ''],
         ],
     ],
 ];

@@ -1,8 +1,9 @@
 <?php
 
-use Contao\DataContainer;
 use Contao\DC_Table;
+use Contao\DataContainer;
 use Contao\System;
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Types\Types;
 use Isotope\CoreBundle\Attribute\Option\OptionsSource;
 
@@ -17,7 +18,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
         'enableVersioning' => true,
         'markAsCopy' => 'name',
         'ctable' => ['tl_iso_attribute_option'],
-        'sql' => [
+        'sql' =>  [
             'keys' => [
                 'id' => 'primary',
                 'type' => 'index',
@@ -70,10 +71,10 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
     ],
     'fields' => [
         'id' => [
-            'sql' => 'int(10) unsigned NOT NULL auto_increment',
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'autoincrement' => true],
         ],
         'tstamp' => [
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
         ],
         'name' => [
             'search' => true,
@@ -82,7 +83,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'maxlength' => 255, 'decodeEntities' => true, 'tl_class' => 'w50'],
             'translation' => ['domain' => 'isotope'],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'field_name' => [
             'search' => true,
@@ -90,7 +91,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
             'flag' => DataContainer::SORT_INITIAL_LETTER_ASC,
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'maxlength' => 30, 'unique' => true, 'doNotCopy' => true, 'doNotSaveEmpty' => true, 'tl_class' => 'w50'],
-            'sql' => "varchar(30) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 30, 'default' => ''],
         ],
         'type' => [
             'filter' => true,
@@ -99,7 +100,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
             'inputType' => 'select',
             'reference' => &$GLOBALS['TL_LANG']['ATTR'],
             'eval' => ['mandatory' => true, 'includeBlankOption' => true, 'submitOnChange' => true, 'helpwizard' => true, 'tl_class' => 'w50', 'chosen' => true],
-            'sql' => "varchar(64) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 64, 'default' => ''],
         ],
         'legend' => [
             'search' => true,
@@ -110,14 +111,14 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
             'options' => ['general_legend', 'meta_legend', 'pricing_legend', 'inventory_legend', 'shipping_legend', 'options_legend', 'media_legend', 'expert_legend', 'publish_legend'],
             'reference' => &$GLOBALS['TL_LANG']['tl_iso_product'],
             'eval' => ['mandatory' => true, 'tl_class' => 'w50', 'chosen' => true],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'description' => [
             'search' => true,
             'inputType' => 'text',
             'eval' => ['maxlength' => 255, 'tl_class' => 'clr long'],
             'translation' => ['domain' => 'isotope'],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'optionsSource' => [
             'filter' => true,
@@ -148,7 +149,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
                 return $arrOptions;
             },
             'eval' => ['mandatory' => true, 'submitOnChange' => true, 'tl_class' => 'clr'],
-            'sql' => "varchar(16) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 16, 'default' => ''],
         ],
         'options' => [
             'inputType' => 'rowWizard',
@@ -173,7 +174,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
                 ],
             ],
             'eval' => ['mandatory' => true, 'tl_class' => 'clr'],
-            'sql' => 'blob NULL',
+            'sql' => ['type' => Types::BLOB, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_BLOB, 'notnull' => false],
         ],
         'optionsTable' => [
             'inputType' => 'dcaWizardMultilingual',
@@ -189,144 +190,144 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
         'foreignKey' => [
             'inputType' => 'textarea',
             'eval' => ['mandatory' => true, 'style' => 'height:80px', 'decodeEntities' => true],
-            'sql' => 'text NULL',
+            'sql' => ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TEXT, 'notnull' => false],
         ],
         'includeBlankOption' => [
             'inputType' => 'checkbox',
             'eval' => ['submitOnChange' => true, 'tl_class' => 'w50 m12'],
-            'sql' => ['type' => 'boolean', 'default' => false],
+            'sql' =>  ['type' => 'boolean', 'default' => false],
         ],
         'blankOptionLabel' => [
             'inputType' => 'text',
             'eval' => ['maxlength' => 255, 'tl_class' => 'w50'],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'variant_option' => [
             'filter' => true,
             'inputType' => 'checkbox',
             'eval' => ['submitOnChange' => true, 'tl_class' => 'w50'],
-            'sql' => ['type' => 'boolean', 'default' => false],
+            'sql' =>  ['type' => 'boolean', 'default' => false],
         ],
         'be_filter' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'clr w25'],
-            'sql' => ['type' => Types::BOOLEAN, 'default' => false],
+            'sql' =>  ['type' => Types::BOOLEAN, 'default' => false],
         ],
         'be_search' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w25'],
-            'sql' => ['type' => Types::BOOLEAN, 'default' => false],
+            'sql' =>  ['type' => Types::BOOLEAN, 'default' => false],
         ],
         'be_column' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w25'],
-            'sql' => ['type' => Types::BOOLEAN, 'default' => false],
+            'sql' =>  ['type' => Types::BOOLEAN, 'default' => false],
         ],
         'customer_defined' => [
             'filter' => true,
             'inputType' => 'checkbox',
             'eval' => ['submitOnChange' => true, 'tl_class' => 'w50'],
-            'sql' => ['type' => 'boolean', 'default' => false],
+            'sql' =>  ['type' => 'boolean', 'default' => false],
         ],
         'mandatory' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
-            'sql' => ['type' => 'boolean', 'default' => false],
+            'sql' =>  ['type' => 'boolean', 'default' => false],
         ],
         'fe_filter' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w25'],
-            'sql' => ['type' => Types::BOOLEAN, 'default' => false],
+            'sql' =>  ['type' => Types::BOOLEAN, 'default' => false],
         ],
         'fe_search' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w25'],
-            'sql' => ['type' => Types::BOOLEAN, 'default' => false],
+            'sql' =>  ['type' => Types::BOOLEAN, 'default' => false],
         ],
         'fe_sorting' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w25'],
-            'sql' => ['type' => Types::BOOLEAN, 'default' => false],
+            'sql' =>  ['type' => Types::BOOLEAN, 'default' => false],
         ],
         'multiple' => [
             'inputType' => 'checkbox',
             'eval' => ['submitOnChange' => true, 'tl_class' => 'clr w50'],
-            'sql' => ['type' => 'boolean', 'default' => false],
+            'sql' =>  ['type' => 'boolean', 'default' => false],
         ],
         'size' => [
             'inputType' => 'text',
             'default' => 5,
             'eval' => ['rgxp' => 'digit', 'tl_class' => 'w50'],
-            'sql' => "smallint(5) unsigned NOT NULL default '0'",
+            'sql' => ['type' => Types::SMALLINT, 'unsigned' => true, 'default' => 0],
         ],
         'chosen' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
-            'sql' => ['type' => 'boolean', 'default' => false],
+            'sql' =>  ['type' => 'boolean', 'default' => false],
         ],
         'extensions' => [
             'inputType' => 'text',
             'eval' => ['rgxp' => 'extnd', 'maxlength' => 255, 'tl_class' => 'w50'],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'rte' => [
             'inputType' => 'select',
             'eval' => ['includeBlankOption' => true, 'tl_class' => 'w50', 'chosen' => true],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'multilingual' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
-            'sql' => ['type' => 'boolean', 'default' => false],
+            'sql' =>  ['type' => 'boolean', 'default' => false],
         ],
         'rgxp' => [
             'inputType' => 'select',
             'options' => ['digit', 'alpha', 'alnum', 'extnd', 'date', 'time', 'datim', 'phone', 'email', 'url', 'price', 'discount', 'surcharge'],
             'reference' => &$GLOBALS['TL_LANG']['tl_iso_attribute'],
             'eval' => ['helpwizard' => true, 'includeBlankOption' => true, 'submitOnChange' => true, 'tl_class' => 'w50'],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'placeholder' => [
             'search' => true,
             'inputType' => 'text',
             'eval' => ['decodeEntities' => true, 'maxlength' => 255, 'tl_class' => 'w50'],
             'translation' => ['domain' => 'isotope'],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'minlength' => [
             'inputType' => 'text',
             'eval' => ['rgxp' => 'digit', 'tl_class' => 'w50'],
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
         ],
         'maxlength' => [
             'inputType' => 'text',
             'eval' => ['rgxp' => 'digit', 'tl_class' => 'w50'],
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
         ],
         'minval' => [
             'inputType' => 'text',
             'eval' => ['rgxp' => 'digit', 'tl_class' => 'w50'],
-            'sql' => "varchar(10) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 10, 'default' => ''],
         ],
         'maxval' => [
             'inputType' => 'text',
             'eval' => ['rgxp' => 'digit', 'tl_class' => 'w50'],
-            'sql' => "varchar(10) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 10, 'default' => ''],
         ],
         'step' => [
             'inputType' => 'text',
             'eval' => ['rgxp' => 'digit', 'tl_class' => 'w50'],
-            'sql' => "varchar(10) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 10, 'default' => ''],
         ],
         'datepicker' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
-            'sql' => ['type' => 'boolean', 'default' => false],
+            'sql' =>  ['type' => 'boolean', 'default' => false],
         ],
         'customTpl' => [
             'inputType' => 'select',
             'eval' => ['chosen' => true, 'tl_class' => 'w50'],
-            'sql' => "varchar(64) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 64, 'default' => ''],
         ],
     ],
 ];

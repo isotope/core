@@ -6,7 +6,7 @@ use Doctrine\DBAL\Types\Types;
 $GLOBALS['TL_DCA']['tl_iso_product_collection_item'] = [
     'config' => [
         'ptable' => 'tl_iso_product_collection',
-        'sql' => [
+        'sql' =>  [
             'keys' => [
                 'id' => 'primary',
                 'pid' => 'index',
@@ -16,59 +16,59 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_item'] = [
     ],
     'fields' => [
         'id' => [
-            'sql' => 'int(10) unsigned NOT NULL auto_increment',
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'autoincrement' => true],
         ],
         'pid' => [
             'foreignKey' => 'tl_iso_product_collection.document_number',
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
             'relation' => ['type' => 'belongsTo', 'load' => 'lazy'],
         ],
         'tstamp' => [
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
         ],
         'sorting' => [
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
         ],
         'type' => [
-            'sql' => 'varchar(32) NOT NULL',
+            'sql' => ['type' => Types::STRING, 'length' => 32],
         ],
         'identifier' => [
-            'sql' => 'varchar(64) NULL',
+            'sql' => ['type' => Types::STRING, 'length' => 64, 'notnull' => false],
         ],
         'configuration' => [
-            'sql' => 'blob NULL',
+            'sql' => ['type' => Types::BLOB, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_BLOB, 'notnull' => false],
         ],
         'sku' => [
-            'sql' => 'varchar(128) NULL',
+            'sql' => ['type' => Types::STRING, 'length' => 128, 'notnull' => false],
         ],
         'label' => [
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'quantity' => [
-            'sql' => 'int(10) unsigned NOT NULL default 0',
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
         ],
         'level' => [
-            'sql' => ['type' => Types::SMALLINT, 'unsigned' => true, 'default' => 0],
+            'sql' =>  ['type' => Types::SMALLINT, 'unsigned' => true, 'default' => 0],
         ],
         'unit_label' => [
-            'sql' => 'varchar(128) NULL',
+            'sql' => ['type' => Types::STRING, 'length' => 128, 'notnull' => false],
         ],
         'price' => [
-            'sql' => 'decimal(12,2) NOT NULL default 0.00',
+            'sql' => ['type' => Types::DECIMAL, 'precision' => 12, 'scale' => 2, 'default' => '0.00'],
         ],
         'tax_free_price' => [
-            'sql' => 'decimal(12,2) NOT NULL default 0.00',
+            'sql' => ['type' => Types::DECIMAL, 'precision' => 12, 'scale' => 2, 'default' => '0.00'],
         ],
         'price_data' => [
-            'sql' => ['type' => Types::BLOB, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_MEDIUMBLOB, 'notnull' => false],
+            'sql' =>  ['type' => Types::BLOB, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_MEDIUMBLOB, 'notnull' => false],
         ],
         'tax_id' => [
             // Not the ID of a tax class or rate, this is the CSV list of applicable taxes (incremental numeric)
-            'sql' => "varchar(32) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 32, 'default' => ''],
         ],
         'referencePage' => [
             'foreignKey' => 'tl_page.title',
-            'sql' => 'int(10) unsigned NULL',
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'notnull' => false],
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
         ],
     ],

@@ -35,7 +35,7 @@ class CheckboxAttribute extends AbstractOptionsAttribute
     protected function getSqlDefinition(): array|string
     {
         if (OptionsSource::Name === $this->getOptionsSource()) {
-            return ['type' => Types::BOOLEAN, 'options' => ['default' => false]];
+            return ['type' => Types::BOOLEAN, 'default' => false];
         }
 
         return ['type' => Types::BLOB, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_BLOB, 'notnull' => false];

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Attribute;
 
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
+use Doctrine\DBAL\Types\Types;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsAttribute;
 
 #[AsAttribute]
@@ -25,6 +27,6 @@ class MediaManagerAttribute extends AbstractAttribute implements TranslationFall
 
     protected function getSqlDefinition(): array|string
     {
-        return 'blob NULL';
+        return ['type' => Types::BLOB, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_BLOB, 'notnull' => false];
     }
 }

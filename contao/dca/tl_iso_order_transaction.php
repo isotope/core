@@ -1,12 +1,13 @@
 <?php
 
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Types\Types;
 
 $GLOBALS['TL_DCA']['tl_iso_order_transaction'] = [
     'config' => [
         'ptable' => 'tl_iso_product_collection',
         'ctable' => ['tl_iso_order_transaction_event'],
-        'sql' => [
+        'sql' =>  [
             'keys' => [
                 'id' => 'primary',
                 'pid' => 'index',
@@ -16,41 +17,41 @@ $GLOBALS['TL_DCA']['tl_iso_order_transaction'] = [
     ],
     'fields' => [
         'id' => [
-            'sql' => 'int(10) unsigned NOT NULL auto_increment',
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'autoincrement' => true],
         ],
         'tstamp' => [
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
         ],
         'pid' => [
             'foreignKey' => 'tl_iso_product_collection.document_number',
-            'sql' => ['type' => Types::INTEGER, 'unsigned' => true],
+            'sql' =>  ['type' => Types::INTEGER, 'unsigned' => true],
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
         ],
         'uniqid' => [
-            'sql' => 'varchar(64) NOT NULL',
+            'sql' => ['type' => Types::STRING, 'length' => 64],
         ],
         'payment_id' => [
             'foreignKey' => 'tl_iso_payment.name',
-            'sql' => ['type' => Types::INTEGER, 'unsigned' => true],
+            'sql' =>  ['type' => Types::INTEGER, 'unsigned' => true],
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
         ],
         'created' => [
-            'sql' => ['type' => Types::INTEGER, 'unsigned' => true],
+            'sql' =>  ['type' => Types::INTEGER, 'unsigned' => true],
         ],
         'completed' => [
-            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'notnull' => false],
+            'sql' =>  ['type' => Types::INTEGER, 'unsigned' => true, 'notnull' => false],
         ],
         'label' => [
-            'sql' => 'text NULL',
+            'sql' => ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TEXT, 'notnull' => false],
         ],
         'amount' => [
-            'sql' => 'text NULL',
+            'sql' => ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TEXT, 'notnull' => false],
         ],
         'currency' => [
-            'sql' => 'text NULL',
+            'sql' => ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TEXT, 'notnull' => false],
         ],
         'status' => [
-            'sql' => 'varchar(32) NULL',
+            'sql' => ['type' => Types::STRING, 'length' => 32, 'notnull' => false],
         ],
     ],
 ];

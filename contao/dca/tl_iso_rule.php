@@ -1,7 +1,8 @@
 <?php
 
-use Contao\DataContainer;
 use Contao\DC_Table;
+use Contao\DataContainer;
+use Doctrine\DBAL\Types\Types;
 
 $GLOBALS['TL_DCA']['tl_iso_rule'] = [
     'config' => [
@@ -9,7 +10,7 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = [
         'ctable' => ['tl_iso_rule_condition'],
         'enableVersioning' => false,
         'markAsCopy' => 'name',
-        'sql' => [
+        'sql' =>  [
             'keys' => [
                 'id' => 'primary',
             ],
@@ -30,10 +31,10 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = [
     ],
     'fields' => [
         'id' => [
-            'sql' => 'int(10) unsigned NOT NULL auto_increment',
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'autoincrement' => true],
         ],
         'tstamp' => [
-            'sql' => 'int(10) unsigned NOT NULL default 0',
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
         ],
         'name' => [
             'search' => true,
@@ -41,7 +42,7 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = [
             'flag' => DataContainer::SORT_INITIAL_LETTER_ASC,
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'maxlength' => 255, 'tl_class' => 'clr w50'],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'conditions' => [
             'inputType' => 'dcaWizard',
@@ -59,14 +60,14 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = [
             'inputType' => 'checkbox',
             'filter' => true,
             'eval' => ['doNotCopy' => true, 'tl_class' => 'w33 m12'],
-            'sql' => ['type' => 'boolean', 'default' => false],
+            'sql' =>  ['type' => 'boolean', 'default' => false],
         ],
         'priority' => [
             'sorting' => true,
             'flag' => DataContainer::SORT_BOTH,
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'rgxp' => 'digit', 'tl_class' => 'w33'],
-            'sql' => 'int(10) NOT NULL default 0',
+            'sql' => ['type' => Types::INTEGER, 'default' => 0],
         ],
     ],
 ];

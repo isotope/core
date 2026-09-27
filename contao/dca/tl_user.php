@@ -1,6 +1,8 @@
 <?php
 
 use Contao\CoreBundle\DataContainer\PaletteManipulator;
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
+use Doctrine\DBAL\Types\Types;
 
 /*
  * Extend tl_user palettes
@@ -27,55 +29,55 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['iso_modules'] = [
     'inputType' => 'checkbox',
     'reference' => &$GLOBALS['TL_LANG']['IMD'],
     'eval' => ['multiple' => true, 'helpwizard' => true, 'tl_class' => 'clr w50'],
-    'sql' => 'blob NULL',
+    'sql' => ['type' => Types::BLOB, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_BLOB, 'notnull' => false],
 ];
 
 $GLOBALS['TL_DCA']['tl_user']['fields']['iso_producttypes'] = [
     'inputType' => 'checkbox',
     'foreignKey' => 'tl_iso_producttype.name',
     'eval' => ['multiple' => true, 'tl_class' => 'clr w50'],
-    'sql' => 'blob NULL',
+    'sql' => ['type' => Types::BLOB, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_BLOB, 'notnull' => false],
 ];
 
 $GLOBALS['TL_DCA']['tl_user']['fields']['iso_payments'] = [
     'inputType' => 'checkbox',
     'foreignKey' => 'tl_iso_payment.name',
     'eval' => ['multiple' => true, 'tl_class' => 'clr w50'],
-    'sql' => 'blob NULL',
+    'sql' => ['type' => Types::BLOB, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_BLOB, 'notnull' => false],
 ];
 
 $GLOBALS['TL_DCA']['tl_user']['fields']['iso_shippings'] = [
     'inputType' => 'checkbox',
     'foreignKey' => 'tl_iso_shipping.name',
     'eval' => ['multiple' => true, 'tl_class' => 'clr w50'],
-    'sql' => 'blob NULL',
+    'sql' => ['type' => Types::BLOB, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_BLOB, 'notnull' => false],
 ];
 
 $GLOBALS['TL_DCA']['tl_user']['fields']['iso_tax_classes'] = [
     'inputType' => 'checkbox',
     'foreignKey' => 'tl_iso_tax_class.name',
     'eval' => ['multiple' => true, 'tl_class' => 'clr w50'],
-    'sql' => 'blob NULL',
+    'sql' => ['type' => Types::BLOB, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_BLOB, 'notnull' => false],
 ];
 
 $GLOBALS['TL_DCA']['tl_user']['fields']['iso_tax_rates'] = [
     'inputType' => 'checkbox',
     'foreignKey' => 'tl_iso_tax_rate.name',
     'eval' => ['multiple' => true, 'tl_class' => 'clr w50'],
-    'sql' => 'blob NULL',
+    'sql' => ['type' => Types::BLOB, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_BLOB, 'notnull' => false],
 ];
 
 $GLOBALS['TL_DCA']['tl_user']['fields']['iso_configs'] = [
     'inputType' => 'checkbox',
     'foreignKey' => 'tl_iso_config.name',
     'eval' => ['multiple' => true, 'tl_class' => 'clr w50'],
-    'sql' => 'blob NULL',
+    'sql' => ['type' => Types::BLOB, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_BLOB, 'notnull' => false],
 ];
 
 $GLOBALS['TL_DCA']['tl_user']['fields']['iso_member_groups'] = [
     'inputType' => 'checkbox',
     'foreignKey' => 'tl_member_group.name',
     'eval' => ['multiple' => true, 'isAssociative' => true, 'tl_class' => 'clr'],
-    'sql' => 'blob NULL',
+    'sql' => ['type' => Types::BLOB, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_BLOB, 'notnull' => false],
     'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
 ];

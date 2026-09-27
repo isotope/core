@@ -1,7 +1,9 @@
 <?php
 
-use Contao\DataContainer;
 use Contao\DC_Table;
+use Contao\DataContainer;
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
+use Doctrine\DBAL\Types\Types;
 use Isotope\CoreBundle\Checkout\Shipping\FlatCalculation;
 use Isotope\CoreBundle\Checkout\Shipping\GroupCalculation;
 use Isotope\CoreBundle\Checkout\Shipping\ProductCalculation;
@@ -11,7 +13,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
         'dataContainer' => DC_Table::class,
         'enableVersioning' => true,
         'markAsCopy' => 'name',
-        'sql' => [
+        'sql' =>  [
             'keys' => [
                 'id' => 'primary',
             ],
@@ -46,10 +48,10 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
     ],
     'fields' => [
         'id' => [
-            'sql' => 'int(10) unsigned NOT NULL auto_increment',
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'autoincrement' => true],
         ],
         'tstamp' => [
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
         ],
         'type' => [
             'filter' => true,
@@ -57,31 +59,31 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
             'default' => 'flat',
             'reference' => &$GLOBALS['TL_LANG']['MODEL']['tl_iso_shipping'],
             'eval' => ['helpwizard' => true, 'submitOnChange' => true, 'chosen' => true, 'tl_class' => 'w50'],
-            'sql' => "varchar(64) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 64, 'default' => ''],
         ],
         'inherit' => [
             'inputType' => 'checkbox',
             'eval' => ['submitOnChange' => true, 'tl_class' => 'w50 m12'],
-            'sql' => ['type' => 'boolean', 'default' => false],
+            'sql' =>  ['type' => 'boolean', 'default' => false],
         ],
         'name' => [
             'search' => true,
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'maxlength' => 255, 'tl_class' => 'clr w50'],
             'translation' => ['domain' => 'isotope'],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'label' => [
             'inputType' => 'text',
             'eval' => ['maxlength' => 255, 'tl_class' => 'w50'],
             'translation' => ['domain' => 'isotope'],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'note' => [
             'inputType' => 'textarea',
             'eval' => ['rte' => 'tinyMCE', 'decodeEntities' => true],
             'translation' => ['domain' => 'isotope'],
-            'sql' => 'text NULL',
+            'sql' => ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TEXT, 'notnull' => false],
         ],
         'tracking_url' => [
             'inputType' => 'text',
@@ -92,7 +94,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
             'inputType' => 'picker',
             'foreignKey' => 'tl_iso_rule.name',
             'eval' => ['tl_class' => 'clr'],
-            'sql' => 'int(10) unsigned NOT NULL default 0',
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
             'relation' => ['type' => 'hasOne'],
         ],
         'minimum_weight' => [
@@ -101,7 +103,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
             'options' => ['mg', 'g', 'kg', 't', 'ct', 'oz', 'lb', 'st', 'grain'],
             'reference' => &$GLOBALS['TL_LANG']['WGT'],
             'eval' => ['rgxp' => 'digit', 'tl_class' => 'w50'],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'maximum_weight' => [
             'default' => ['unit' => 'kg'],
@@ -109,26 +111,26 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
             'options' => ['mg', 'g', 'kg', 't', 'ct', 'oz', 'lb', 'st', 'grain'],
             'reference' => &$GLOBALS['TL_LANG']['WGT'],
             'eval' => ['rgxp' => 'digit', 'tl_class' => 'w50'],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'price' => [
             'inputType' => 'text',
             'eval' => ['maxlength' => 16, 'rgxp' => 'surcharge', 'nullIfEmpty' => true, 'tl_class' => 'w50'],
-            'sql' => 'varchar(16) NULL',
+            'sql' => ['type' => Types::STRING, 'length' => 16, 'notnull' => false],
         ],
         'tax_class' => [
             'filter' => true,
             'inputType' => 'select',
             'foreignKey' => 'tl_iso_tax_class.name',
             'eval' => ['includeBlankOption' => true, 'blankOptionLabel' => &$GLOBALS['TL_LANG']['MSC']['taxFree'], 'tl_class' => 'w50'],
-            'sql' => "int(10) NOT NULL default '0'",
+            'sql' => ['type' => Types::INTEGER, 'default' => 0],
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
         ],
         'flatCalculation' => [
             'inputType' => 'select',
             'enum' => FlatCalculation::class,
             'eval' => ['submitOnChange' => true, 'includeBlankOption' => true, 'blankOptionLabel' => &$GLOBALS['TL_LANG']['tl_iso_shipping']['flat'], 'tl_class' => 'w50'],
-            'sql' => "varchar(10) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 10, 'default' => ''],
         ],
         'flatWeight' => [
             'inputType' => 'timePeriod',
@@ -136,13 +138,13 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
             'options' => ['mg', 'g', 'kg', 't', 'ct', 'oz', 'lb', 'st', 'grain'],
             'reference' => &$GLOBALS['TL_LANG']['WGT'],
             'eval' => ['rgxp' => 'digit', 'tl_class' => 'w50', 'helpwizard' => true],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'flatProductTypes' => [
             'inputType' => 'select',
             'foreignKey' => 'tl_iso_producttype.name',
             'eval' => ['multiple' => true, 'size' => 8, 'csv' => ',', 'chosen' => true, 'tl_class' => 'w50'],
-            'sql' => 'blob NULL',
+            'sql' => ['type' => Types::BLOB, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_BLOB, 'notnull' => false],
             'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
         ],
         'shipping_weight' => [
@@ -151,36 +153,36 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
             'options' => ['mg', 'g', 'kg', 't', 'ct', 'oz', 'lb', 'st', 'grain'],
             'reference' => &$GLOBALS['TL_LANG']['WGT'],
             'eval' => ['rgxp' => 'digit', 'tl_class' => 'w50', 'helpwizard' => true],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'productCalculation' => [
             'inputType' => 'select',
             'enum' => ProductCalculation::class,
             'reference' => &$GLOBALS['TL_LANG']['tl_iso_shipping']['productCalculationOptions'],
             'eval' => ['helpwizard' => true, 'tl_class' => 'w50'],
-            'sql' => "varchar(16) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 16, 'default' => ''],
         ],
         'group_methods' => [
             'inputType' => 'checkboxWizard',
             'eval' => ['mandatory' => true, 'multiple' => true, 'csv' => ',', 'tl_class' => 'clr w50'],
-            'sql' => 'blob NULL',
+            'sql' => ['type' => Types::BLOB, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_BLOB, 'notnull' => false],
         ],
         'group_calculation' => [
             'inputType' => 'select',
             'enum' => GroupCalculation::class,
             'eval' => ['submitOnChange' => true, 'tl_class' => 'w50'],
-            'sql' => "varchar(10) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 10, 'default' => ''],
         ],
         'debug' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'clr w50'],
-            'sql' => ['type' => 'boolean', 'default' => false],
+            'sql' =>  ['type' => 'boolean', 'default' => false],
         ],
         'enabled' => [
             'toggle' => true,
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
-            'sql' => ['type' => 'boolean', 'default' => false],
+            'sql' =>  ['type' => 'boolean', 'default' => false],
         ],
     ],
 ];

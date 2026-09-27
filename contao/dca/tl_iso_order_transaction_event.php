@@ -5,7 +5,7 @@ use Doctrine\DBAL\Types\Types;
 $GLOBALS['TL_DCA']['tl_iso_order_transaction_event'] = [
     'config' => [
         'ptable' => 'tl_iso_order_transaction',
-        'sql' => [
+        'sql' =>  [
             'keys' => [
                 'id' => 'primary',
                 'pid' => 'index',
@@ -15,22 +15,22 @@ $GLOBALS['TL_DCA']['tl_iso_order_transaction_event'] = [
     'fields' => [
         'id' => [
             'eval' => ['doNotShow' => true],
-            'sql' => 'int(10) unsigned NOT NULL auto_increment',
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'autoincrement' => true],
         ],
         'pid' => [
             'eval' => ['doNotShow' => true],
-            'sql' => ['type' => Types::INTEGER, 'unsigned' => true],
+            'sql' =>  ['type' => Types::INTEGER, 'unsigned' => true],
         ],
         'tstamp' => [
             'eval' => ['doNotShow' => true, 'rgxp' => 'datim'],
-            'sql' => ['type' => Types::INTEGER, 'unsigned' => true],
+            'sql' =>  ['type' => Types::INTEGER, 'unsigned' => true],
         ],
         'payload' => [
             'eval' => ['doNotShow' => true],
-            'sql' => ['type' => Types::JSON],
+            'sql' =>  ['type' => Types::JSON],
         ],
         'paypal_txn_id' => [
-            'sql' => ['type' => Types::STRING, 'length' => 32, 'notnull' => false],
+            'sql' =>  ['type' => Types::STRING, 'length' => 32, 'notnull' => false],
         ],
     ],
 ];

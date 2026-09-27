@@ -1,14 +1,16 @@
 <?php
 
-use Contao\DataContainer;
 use Contao\DC_Table;
+use Contao\DataContainer;
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
+use Doctrine\DBAL\Types\Types;
 
 $GLOBALS['TL_DCA']['tl_iso_tax_class'] = [
     'config' => [
         'dataContainer' => DC_Table::class,
         'enableVersioning' => true,
         'markAsCopy' => 'name',
-        'sql' => [
+        'sql' =>  [
             'keys' => [
                 'id' => 'primary',
             ],
@@ -32,27 +34,27 @@ $GLOBALS['TL_DCA']['tl_iso_tax_class'] = [
     ],
     'fields' => [
         'id' => [
-            'sql' => 'int(10) unsigned NOT NULL auto_increment',
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'autoincrement' => true],
         ],
         'tstamp' => [
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
         ],
         'name' => [
             'search' => true,
             'inputType' => 'text',
             'eval' => ['maxlength' => 255, 'mandatory' => true, 'tl_class' => 'w50'],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'fallback' => [
             'inputType' => 'checkbox',
             'eval' => ['fallback' => true, 'tl_class' => 'w50 m12'],
-            'sql' => ['type' => 'boolean', 'default' => false],
+            'sql' =>  ['type' => 'boolean', 'default' => false],
         ],
         'includes' => [
             'inputType' => 'select',
             'foreignKey' => 'tl_iso_tax_rate.name',
             'eval' => ['includeBlankOption' => true, 'tl_class' => 'w50'],
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
             'relation' => ['type' => 'hasOne'],
         ],
         'label' => [
@@ -60,13 +62,13 @@ $GLOBALS['TL_DCA']['tl_iso_tax_class'] = [
             'inputType' => 'text',
             'eval' => ['maxlength' => 255, 'tl_class' => 'w50'],
             'translation' => ['domain' => 'isotope'],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'rates' => [
             'inputType' => 'checkboxWizard',
             'foreignKey' => 'tl_iso_tax_rate.name',
             'eval' => ['multiple' => true, 'csv' => ',', 'tl_class' => 'clr w50'],
-            'sql' => 'text NULL',
+            'sql' => ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TEXT, 'notnull' => false],
             'relation' => ['type' => 'hasMany'],
         ],
     ],

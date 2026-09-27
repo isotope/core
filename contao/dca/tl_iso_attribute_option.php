@@ -2,6 +2,7 @@
 
 use Contao\DataContainer;
 use Contao\Input;
+use Doctrine\DBAL\Types\Types;
 use Terminal42\DcMultilingualBundle\Driver;
 
 $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = [
@@ -9,7 +10,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = [
         'dataContainer' => Driver::class,
         'enableVersioning' => true,
         'dynamicPtable' => true,
-        'sql' => [
+        'sql' =>  [
             'keys' => [
                 'id' => 'primary',
                 'ptable,pid' => 'index',
@@ -37,31 +38,31 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = [
     ],
     'fields' => [
         'id' => [
-            'sql' => 'int(10) unsigned NOT NULL auto_increment',
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'autoincrement' => true],
         ],
         'pid' => [
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
         ],
         'sorting' => [
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
         ],
         'tstamp' => [
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
         ],
         'ptable' => [
-            'sql' => "varchar(64) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 64, 'default' => ''],
         ],
         'langPid' => [
             'eval' => ['doNotShow' => true],
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
         ],
         'language' => [
             'eval' => ['doNotShow' => true],
-            'sql' => "varchar(5) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 5, 'default' => ''],
         ],
         'field_name' => [
             'eval' => ['doNotShow' => true],
-            'sql' => "varchar(30) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 30, 'default' => ''],
         ],
         'type' => [
             'default' => 'option',
@@ -69,23 +70,23 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = [
             'options' => ['option', 'group'],
             'reference' => &$GLOBALS['TL_LANG']['tl_iso_attribute_option']['type'],
             'eval' => ['tl_class' => 'w50', 'doNotCopy' => true, 'submitOnChange' => true],
-            'sql' => "varchar(8) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 8, 'default' => ''],
         ],
         'isDefault' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50 m12', 'doNotCopy' => true],
-            'sql' => ['type' => 'boolean', 'default' => false],
+            'sql' =>  ['type' => 'boolean', 'default' => false],
         ],
         'label' => [
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'maxlength' => 255, 'translatableFor' => '*', 'tl_class' => 'clr long'],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'price' => [
             'label' => &$GLOBALS['TL_LANG']['tl_iso_attribute_option'][Input::get('popup') ? 'price' : 'price_short'],
             'inputType' => 'text',
             'eval' => ['maxlength' => 16, 'rgxp' => 'discount', 'tl_class' => 'w50'],
-            'sql' => "varchar(16) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 16, 'default' => ''],
             'save_callback' => [
                 static function ($varValue) {
                     if ('' !== $varValue && !str_contains((string) $varValue, '.') && !str_contains((string) $varValue, '%')) {
@@ -104,13 +105,13 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = [
             'search' => true,
             'inputType' => 'text',
             'eval' => ['maxlength' => 64, 'tl_class' => 'w50'],
-            'sql' => "varchar(64) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 64, 'default' => ''],
         ],
         'published' => [
             'toggle' => true,
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50', 'doNotCopy' => true],
-            'sql' => ['type' => 'boolean', 'default' => false],
+            'sql' =>  ['type' => 'boolean', 'default' => false],
         ],
     ],
 ];

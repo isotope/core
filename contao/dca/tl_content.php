@@ -1,6 +1,7 @@
 <?php
 
 use Contao\System;
+use Doctrine\DBAL\Types\Types;
 use Isotope\CoreBundle\Checkout\CheckoutMethod;
 use Isotope\CoreBundle\Product\Category\CategoryScope;
 
@@ -82,14 +83,14 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['iso_list_layout'] = [
     'default' => 'isotope/product/list',
     'inputType' => 'select',
     'eval' => ['includeBlankOption' => true, 'tl_class' => 'w50', 'chosen' => true],
-    'sql' => "varchar(64) NOT NULL default ''", // cannot use virtual fields, @see https://github.com/contao/contao/issues/9905
+    'sql' => ['type' => Types::STRING, 'length' => 64, 'default' => ''], // cannot use virtual fields, @see https://github.com/contao/contao/issues/9905
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['iso_reader_layout'] = [
     'default' => 'isotope/product/reader',
     'inputType' => 'select',
     'eval' => ['includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'],
-    'sql' => "varchar(64) NOT NULL default ''", // cannot use virtual fields, @see https://github.com/contao/contao/issues/9905
+    'sql' => ['type' => Types::STRING, 'length' => 64, 'default' => ''], // cannot use virtual fields, @see https://github.com/contao/contao/issues/9905
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['iso_gallery'] = [
@@ -200,7 +201,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['iso_order_conditions'] = [
     'fields' => [
         'form' => [
             'label' => &$GLOBALS['TL_LANG']['tl_content']['iso_order_conditions']['form'],
-            'exclude' => true,
             'inputType' => 'select',
             'foreignKey' => 'tl_form.title',
             'eval' => [

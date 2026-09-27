@@ -1,14 +1,15 @@
 <?php
 
-use Contao\DataContainer;
 use Contao\DC_Table;
+use Contao\DataContainer;
+use Doctrine\DBAL\Types\Types;
 
 $GLOBALS['TL_DCA']['tl_iso_document'] = [
     'config' => [
         'dataContainer' => DC_Table::class,
         'enableVersioning' => true,
         'markAsCopy' => 'name',
-        'sql' => [
+        'sql' =>  [
             'keys' => [
                 'id' => 'primary',
             ],
@@ -34,16 +35,16 @@ $GLOBALS['TL_DCA']['tl_iso_document'] = [
     ],
     'fields' => [
         'id' => [
-            'sql' => 'int(10) unsigned NOT NULL auto_increment',
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'autoincrement' => true],
         ],
         'tstamp' => [
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
         ],
         'name' => [
             'search' => true,
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'maxlength' => 255, 'tl_class' => 'w50'],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'type' => [
             'filter' => true,
@@ -51,44 +52,44 @@ $GLOBALS['TL_DCA']['tl_iso_document'] = [
             'default' => 'standard',
             'reference' => &$GLOBALS['TL_LANG']['MODEL']['tl_iso_document'],
             'eval' => ['helpwizard' => true, 'submitOnChange' => true, 'tl_class' => 'w50', 'includeBlankOption' => true],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'documentTitle' => [
             'search' => true,
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'decodeEntities' => true, 'maxlength' => 255, 'tl_class' => 'w50'],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'fileTitle' => [
             'search' => true,
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'decodeEntities' => true, 'maxlength' => 255, 'tl_class' => 'w50'],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'numberPrefix' => [
             'inputType' => 'text',
             'eval' => ['maxlength' => 255, 'decodeEntities' => true, 'tl_class' => 'w50'],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'numberDigits' => [
             'default' => 4,
             'inputType' => 'select',
             'options' => range(1, 9),
             'eval' => ['tl_class' => 'w50'],
-            'sql' => "int(1) unsigned NOT NULL default '4'",
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 4],
         ],
         'customTpl' => [
             'filter' => true,
             'inputType' => 'select',
             'eval' => ['includeBlankOption' => true, 'tl_class' => 'w50'],
-            'sql' => "varchar(64) NOT NULL default ''",
+            'sql' => ['type' => Types::STRING, 'length' => 64, 'default' => ''],
         ],
         'gallery' => [
             'filter' => true,
             'inputType' => 'select',
             'foreignKey' => 'tl_iso_gallery.name',
             'eval' => ['includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'],
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
         ],
     ],
 ];

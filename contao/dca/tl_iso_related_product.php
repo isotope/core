@@ -1,7 +1,9 @@
 <?php
 
-use Contao\DataContainer;
 use Contao\DC_Table;
+use Contao\DataContainer;
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
+use Doctrine\DBAL\Types\Types;
 
 $GLOBALS['TL_DCA']['tl_iso_related_product'] = [
     'config' => [
@@ -10,7 +12,7 @@ $GLOBALS['TL_DCA']['tl_iso_related_product'] = [
         'ptable' => 'tl_iso_product',
         'notSortable' => true,
         'backendSearchIgnore' => true,
-        'sql' => [
+        'sql' =>  [
             'keys' => [
                 'id' => 'primary',
                 'pid' => 'index',
@@ -36,22 +38,22 @@ $GLOBALS['TL_DCA']['tl_iso_related_product'] = [
     ],
     'fields' => [
         'id' => [
-            'sql' => 'int(10) unsigned NOT NULL auto_increment',
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'autoincrement' => true],
         ],
         'pid' => [
             'foreignKey' => 'tl_iso_product.name',
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
             'relation' => ['type' => 'belongsTo', 'load' => 'lazy'],
         ],
         'tstamp' => [
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
         ],
         'category' => [
             'filter' => true,
             'inputType' => 'select',
             'foreignKey' => 'tl_iso_related_category.name',
             'eval' => ['mandatory' => true, 'includeBlankOption' => true, 'doNotCopy' => true, 'tl_class' => 'w50'],
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
         ],
         'products' => [
@@ -59,7 +61,7 @@ $GLOBALS['TL_DCA']['tl_iso_related_product'] = [
             'inputType' => 'picker',
             'foreignKey' => 'tl_iso_product.name',
             'eval' => ['mandatory' => true, 'multiple' => true, 'csv' => ',', 'tl_class' => 'clr', 'isSortable' => true],
-            'sql' => 'blob NULL',
+            'sql' => ['type' => Types::BLOB, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_BLOB, 'notnull' => false],
             'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
         ],
     ],
