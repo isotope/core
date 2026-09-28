@@ -129,6 +129,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = [
             'eval' => [
                 'tl_class' => 'clr',
                 'actions' => [],
+                'max' => 1,
             ],
             'sql' => ['type' => Types::BLOB, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_BLOB, 'notnull' => false],
         ],
