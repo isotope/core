@@ -80,7 +80,7 @@
                                             {% if not item.isDynamic %}
                                                 {% block item_quantity %}
                                                     {% if editable|default %}
-                                                        <input name="quantity[{{ item.id }}]" type="number" class="text" value="{{ item.quantity }}" maxlength="10">
+                                                        <input name="quantity[{{ item.id }}]" type="number" class="text" value="{{ item.quantity }}">
                                                     {% else %}
                                                         {{ item.quantity }} x
                                                     {% endif %}
