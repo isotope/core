@@ -101,7 +101,7 @@ class CheckoutController extends AbstractContentElementController
      */
     private function enforceMemberLogin(ContentModel $model): void
     {
-        if (CheckoutMethod::Member->value !== $model->iso_checkout_method) {
+        if (CheckoutMethod::Member->value !== $model->iso_checkout_method || $this->isGranted('ROLE_MEMBER')) {
             return;
         }
 
