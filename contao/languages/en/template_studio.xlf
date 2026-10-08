@@ -14,6 +14,12 @@
       <trans-unit id="template_studio.operation.create_product_collection_variant.1">
         <source>Create a new variant template for product collections.</source>
       </trans-unit>
+      <trans-unit id="template_studio.operation.create_document_variant.0">
+        <source>Create variant</source>
+      </trans-unit>
+      <trans-unit id="template_studio.operation.create_document_variant.1">
+        <source>Create a new variant template for documents.</source>
+      </trans-unit>
       <trans-unit id="template_studio.operation.rename_product_variant.0">
         <source>Rename variant</source>
       </trans-unit>
@@ -24,6 +30,12 @@
         <source>Rename variant</source>
       </trans-unit>
       <trans-unit id="template_studio.operation.rename_product_collection_variant.1">
+        <source>Rename the %s variant template</source>
+      </trans-unit>
+      <trans-unit id="template_studio.operation.rename_document_variant.0">
+        <source>Rename variant</source>
+      </trans-unit>
+      <trans-unit id="template_studio.operation.rename_document_variant.1">
         <source>Rename the %s variant template</source>
       </trans-unit>
     </body>

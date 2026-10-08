@@ -21,6 +21,6 @@ abstract class AbstractCreateVariantOperation extends CoreAbstractCreateVariantO
             return false;
         }
 
-        return 1 === preg_match('%^'.preg_quote($this->getPrefix(), '%').'$%', $context->getIdentifier());
+        return 1 === preg_match('%^'.preg_quote($this->getPrefix(), '%').'($|/[^_/][^/]*$)%', $context->getIdentifier());
     }
 }
