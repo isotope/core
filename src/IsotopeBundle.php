@@ -22,6 +22,7 @@ use Isotope\CoreBundle\DependencyInjection\Attribute\AsRuleCondition;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsShipping;
 use Isotope\CoreBundle\DependencyInjection\Attribute\TypeAttributeInterface;
 use Isotope\CoreBundle\DependencyInjection\Compiler\ConfigureFilesystemPass;
+use Isotope\CoreBundle\DependencyInjection\Compiler\DisabledTemplateStudioPass;
 use Isotope\CoreBundle\DependencyInjection\Compiler\LoggerChannelFilePass;
 use Isotope\CoreBundle\DependencyInjection\Compiler\RegisterActionPass;
 use Isotope\CoreBundle\DependencyInjection\Compiler\RegisterAttributePass;
@@ -40,6 +41,7 @@ use Isotope\CoreBundle\ProductCollection\ItemAction\ProductCollectionItemActionR
 use Isotope\CoreBundle\ProductCollection\OrderTransaction\TransactionStatus;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ChildDefinition;
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\LogicException;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -56,6 +58,7 @@ class IsotopeBundle extends AbstractBundle
 
     public function build(ContainerBuilder $container): void
     {
+        $container->addCompilerPass(new DisabledTemplateStudioPass(), priority: 10);
         $container->addCompilerPass(new RegisterHookListenersPass());
         $container->addCompilerPass(new RegisterAttributePass(), priority: 10);
         $container->addCompilerPass(new RegisterProductFactoryPass(), priority: 10);
