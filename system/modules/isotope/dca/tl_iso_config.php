@@ -104,7 +104,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             {pricing_legend},priceDisplay,currencyFormat,priceRoundPrecision,priceRoundIncrement;
             {currency_legend},currency,currencyPosition,currencySymbol;
             {converter_legend:hide},priceCalculateFactor,priceCalculateMode,currencyAutomator;
-            {order_legend:hide},orderPrefix,orderDigits,orderstatus_new,orderstatus_error,orderDetailsModule;
+            {order_legend:hide},orderPrefix,orderDigits,orderstatus_new,orderstatus_error,orderstatus_no_payment,orderDetailsModule;
             {config_legend},templateGroup,cartMinSubtotal;
             {products_legend},newProductPeriod;
             {analytics_legend},ga_enable',
@@ -550,6 +550,17 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
         'orderstatus_error' => array
+        (
+            'exclude'               => true,
+            'filter'                => true,
+            'inputType'             => 'select',
+            'foreignKey'            => \Isotope\Model\OrderStatus::getTable().'.name',
+            'options_callback'      => array('\Isotope\Backend', 'getOrderStatus'),
+            'eval'                  => array('mandatory'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
+            'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
+        ),
+        'orderstatus_no_payment' => array
         (
             'exclude'               => true,
             'filter'                => true,

@@ -327,6 +327,12 @@
       <trans-unit id="tl_iso_config.orderstatus_error.1">
         <source>Select an order status if something goes wrong (e.g. payment).</source>
       </trans-unit>
+       <trans-unit id="tl_iso_config.orderstatus_error.0">
+         <source>Status for free orders</source>
+       </trans-unit>
+       <trans-unit id="tl_iso_config.orderstatus_error.1">
+         <source>Choose a matching status for free orders. A payment module can override this.</source>
+       </trans-unit>
       <trans-unit id="tl_iso_config.orderDetailsModule.0">
         <source>Module for backend view</source>
       </trans-unit>
