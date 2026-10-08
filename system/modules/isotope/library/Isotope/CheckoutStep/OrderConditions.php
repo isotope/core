@@ -67,10 +67,6 @@ class OrderConditions extends CheckoutStep implements IsotopeCheckoutStep, Isoto
             throw new \InvalidArgumentException('Order condition form "' . $this->formId . '" not found.');
         }
 
-        if (isset($objFormConfig->tableless)) {
-            $this->objForm->setTableless($objFormConfig->tableless);
-        }
-
         $this->objForm->addFieldsFromFormGenerator(
             $this->formId,
             function ($strName, &$arrDca) {

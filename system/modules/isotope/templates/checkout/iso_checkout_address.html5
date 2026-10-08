@@ -4,12 +4,6 @@
 
 <?php if ($this->fields): ?>
 <div id="<?= $this->class ?>_new" class="address_new"<?php if($this->style): ?> style="<?= $this->style ?>"<?php endif; ?>>
-<?php if($this->tableless): ?>
 <?= $this->fields ?>
-<?php else: ?>
-<table>
-<?= $this->fields ?>
-</table>
-<?php endif; ?>
 </div>
 <?php endif; ?>

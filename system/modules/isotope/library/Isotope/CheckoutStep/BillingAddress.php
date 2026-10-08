@@ -53,7 +53,6 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
             Isotope::getCart()->setBillingAddress($address);
 
             $this->Template->class = $this->getStepClass();
-            $this->Template->tableless = $this->objModule->tableless ?? true;
             $this->Template->options = $address->generate();
             $this->Template->fields = '';
 
