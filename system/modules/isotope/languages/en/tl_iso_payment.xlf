@@ -146,6 +146,54 @@
       <trans-unit id="tl_iso_payment.paypal_secret.1">
         <source>Enter your PayPal API secret.</source>
       </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_enable_funding.0">
+        <source>Enable funding</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_enable_funding.1">
+        <source>The enabled funding sources for the transaction. By default, funding source eligibility is determined based on a variety of factors. Enable funding can be used to ensure a funding source is rendered, if eligible.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_enable_funding_options.card">
+        <source>Credit or debit cards</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_enable_funding_options.credit">
+        <source>PayPal Credit (US, UK)</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_enable_funding_options.paylater">
+        <source>Pay Later (US, UK), Pay in 4 (AU)</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_enable_funding_options.venmo">
+        <source>Venmo</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_enable_funding_options.bancontact">
+        <source>Bancontact</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_enable_funding_options.blik">
+        <source>BLIK</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_enable_funding_options.eps">
+        <source>eps</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_enable_funding_options.giropay">
+        <source>giropay</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_enable_funding_options.ideal">
+        <source>iDEAL</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_enable_funding_options.mercadopago">
+        <source>Mercado Pago</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_enable_funding_options.mybank">
+        <source>MyBank</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_enable_funding_options.p24">
+        <source>Przelewy24</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_enable_funding_options.sepa">
+        <source>SEPA-Lastschrift</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_enable_funding_options.sofort">
+        <source>Sofort</source>
+      </trans-unit>
       <trans-unit id="tl_iso_payment.psp_pspid.0">
         <source>PSPID</source>
       </trans-unit>
