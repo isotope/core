@@ -15,6 +15,7 @@ use Contao\Database;
 use Contao\FrontendUser;
 use Contao\Input;
 use Contao\Model;
+use Contao\System;
 
 /**
  * Isotope\Model\ProductCache represents an Isotope product cache model
@@ -227,6 +228,10 @@ class ProductCache extends Model
     public static function purge()
     {
         Database::getInstance()->query("TRUNCATE " . static::$strTable);
+
+        if (System::getContainer()->has('fos_http_cache.cache_manager')) {
+            System::getContainer()->get('fos_http_cache.cache_manager')->invalidateTags(['contao.db.tl_iso_product']);
+        }
     }
 
     /**

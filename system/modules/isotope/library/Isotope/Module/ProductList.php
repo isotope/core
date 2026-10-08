@@ -303,6 +303,12 @@ class ProductList extends Module
         ;
 
         $this->Template->products = $arrBuffer;
+
+        // Add cache tag
+        if (System::getContainer()->has('fos_http_cache.http.symfony_response_tagger')) {
+            $responseTagger = System::getContainer()->get('fos_http_cache.http.symfony_response_tagger');
+            $responseTagger->addTags(['contao.db.tl_iso_product']);
+        }
     }
 
     /**
