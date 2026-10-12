@@ -40,6 +40,11 @@ class ProductCollectionStorage
     {
         $collection->setId((int) $collectionModel->id);
 
+        if (!$collectionModel->uniqid) {
+            $collectionModel->uniqid = $collection->getIdentifier();
+            $collectionModel->save();
+        }
+
         if ($collectionModel->extensions) {
             try {
                 $json = json_decode($collectionModel->extensions, true, 512, JSON_THROW_ON_ERROR);
