@@ -18,7 +18,7 @@ class LowerEqualFilter extends AbstractFilter
 
     protected function applyValue(QueryBuilder $qb, mixed $queryValue): CompositeExpression|string
     {
-        return $qb->expr()->lt('tl_iso_product.'.$this->attributeName, $qb->createNamedParameter($queryValue));
+        return $qb->expr()->lte('tl_iso_product.'.$this->attributeName, $qb->createNamedParameter($queryValue));
     }
 
     protected function compare(mixed $queryValue, mixed $productValue): bool
