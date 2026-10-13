@@ -104,8 +104,13 @@ class ProductCollectionModel extends Model
     {
         $t = self::$strTable;
 
-        $columns = ["$t.member=?", "$t.type=?", "$t.store_id=?"];
-        $values = [$memberId, $type, $storeId];
+        $columns = ["$t.member=?", "$t.type=?"];
+        $values = [$memberId, $type];
+
+        if (null !== $storeId) {
+            $columns[] = "$t.store_id=?";
+            $values[] = $storeId;
+        }
 
         return self::findOneBy($columns, $values, $options);
     }
