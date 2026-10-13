@@ -108,10 +108,10 @@ class AddressStep extends AbstractCheckoutStep
             if ($addShipping) {
                 if (true === $shippingResult) {
                     $cart->setShippingAddress($shippingAddress);
-                } elseif (false === $billingResult) {
+                } elseif (false === $shippingResult) {
                     // TODO: handle error
                 } else {
-                    // $errors = $billingResult;
+                    // $errors = $shippingResult;
                     // TODO: handle error
                 }
             } else {
@@ -337,7 +337,10 @@ class AddressStep extends AbstractCheckoutStep
             $address = new AddressModel();
         }
 
-        $address->setRow(MemberModel::findById($context->getMemberId())->row());
+        $memberData = MemberModel::findById($context->getMemberId())?->row() ?? [];
+        unset($memberData['id']);
+
+        $address->mergeRow($memberData);
         $address->street_1 = $address->street;
         $address->ptable = 'tl_iso_product_collection';
         $address->pid = $context->getCart()->getId();
