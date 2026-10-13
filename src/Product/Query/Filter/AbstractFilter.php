@@ -74,7 +74,7 @@ abstract class AbstractFilter implements FilterInterface
     private function matchesOne(mixed $productValue): bool
     {
         foreach ($this->queryValues as $query) {
-            $result = $this->compare($productValue, $query);
+            $result = $this->compare($query, $productValue);
 
             // One match in OR case, abort the loop
             if ($result && $this->or) {
