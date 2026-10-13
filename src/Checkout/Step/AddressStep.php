@@ -290,7 +290,7 @@ class AddressStep extends AbstractCheckoutStep
         if (
             $shippingAddress
             && (
-                ($context->getMemberId() > 0 ^ $shippingAddress->isMemberAddress())
+                ($shippingAddress !== $billingAddress && ($context->getMemberId() > 0 ^ $shippingAddress->isMemberAddress()))
                 || !$this->addressValidator->isValid($shippingAddress, $context->getShippingAddressConfig())
             )
         ) {
