@@ -26,8 +26,9 @@ class Sorting implements \Stringable
     {
         $qb->addOrderBy(
             \sprintf(
-                'COALESCE(parent_translation.%1$s, parent.%1$s, translation.%1$s, tl_iso_product.%1$s)',
+                '%2$s(COALESCE(parent_translation.%1$s, parent.%1$s, translation.%1$s, tl_iso_product.%1$s))',
                 $this->attribute,
+                $this->desc ? 'MAX' : 'MIN',
             ),
             $this->desc ? 'DESC' : null,
         );

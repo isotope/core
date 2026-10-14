@@ -126,16 +126,13 @@ class ProductListController extends AbstractContentElementController
             ->select('IFNULL(parent.id, tl_iso_product.id)')
             ->from('tl_iso_product')
             ->where($qb->expr()->in('c.pid', $qb->createNamedParameter($categories, ArrayParameterType::INTEGER)))
+            ->andWhere("tl_iso_product.language=''")
             ->leftJoin('tl_iso_product', 'tl_iso_product', 'translation', "tl_iso_product.id=translation.pid AND translation.language='$locale'")
             ->leftJoin('tl_iso_product', 'tl_iso_product', 'parent', 'tl_iso_product.pid=parent.id')
             ->leftJoin('parent', 'tl_iso_product', 'parent_translation', "parent.id=parent_translation.pid AND parent_translation.language='$locale'")
             ->leftJoin('tl_iso_product', 'tl_iso_product_category', 'c', 'IFNULL(parent.id, tl_iso_product.id)=c.product_id')
-            ->groupBy('parent.id', 'tl_iso_product.id', 'translation.id')
+            ->groupBy('IFNULL(parent.id, tl_iso_product.id)')
         ;
-
-        foreach ($this->attributeRegistry->getTranslatableFields() as $attribute) {
-            $qb->addSelect("IFNULL(translation.$attribute, tl_iso_product.$attribute) AS $attribute");
-        }
 
         if (!$this->tokenChecker->isPreviewMode()) {
             $qb
@@ -164,6 +161,7 @@ class ProductListController extends AbstractContentElementController
         $total = (clone $qb)
             ->select('COUNT(DISTINCT IFNULL(parent.id, tl_iso_product.id))')
             ->resetGroupBy()
+            ->resetOrderBy()
             ->fetchOne()
         ;
 
