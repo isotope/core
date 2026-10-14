@@ -94,11 +94,13 @@ class ProductCategoryUtil implements ResetInterface
     {
         $qb = $this->connection->createQueryBuilder();
         $qb
-            ->select('c.product_id', 'GROUP_CONCAT(c.pid ORDER BY c.product_sorting, c.id)')
+            ->select('c.product_id', 'c.pid')
             ->from('tl_iso_product_category', 'c')
             ->join('c', 'tl_page', 'p', 'c.pid=p.id')
             ->where("p.type NOT LIKE 'error_401' AND p.type NOT LIKE 'error_403' AND p.type != 'error_404' AND p.type != 'error_503'")
-            ->groupBy('c.product_id')
+            ->orderBy('c.product_id')
+            ->addOrderBy('c.product_sorting')
+            ->addOrderBy('c.id')
         ;
 
         if ($published && !$this->tokenChecker->isPreviewMode()) {
@@ -108,10 +110,13 @@ class ProductCategoryUtil implements ResetInterface
             ;
         }
 
-        return array_map(
-            static fn ($v) => array_map(intval(...), explode(',', (string) $v)),
-            $qb->fetchAllKeyValue(),
-        );
+        $categories = [];
+
+        foreach ($qb->executeQuery()->iterateNumeric() as [$productId, $categoryId]) {
+            $categories[(int) $productId][] = (int) $categoryId;
+        }
+
+        return $categories;
     }
 
     public function reset(): void

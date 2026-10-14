@@ -19,7 +19,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_category'] = [
             'keys' => [
                 'id' => 'primary',
                 'pid' => 'index',
-                'product_id' => 'index',
+                'product_id,product_sorting,id' => 'index',
             ],
         ],
     ],
