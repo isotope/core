@@ -98,13 +98,20 @@ class ProductFilterController extends AbstractContentElementController
             if ($attribute instanceof OptionsAttributeInterface) {
                 if (OptionsSource::Name === $attribute->getOptionsSource()) {
                     $options = [];
+                    $stringValues = array_map(strval(...), $values);
 
-                    if (\array_key_exists('1', $values)) {
-                        $options['1'] = $GLOBALS['TL_LANG']['MSC']['yes'];
+                    if (\in_array('1', $stringValues, true)) {
+                        $options[] = [
+                            'value' => '1',
+                            'label' => $this->translator->trans('MSC.yes', [], 'contao_default'),
+                        ];
                     }
 
-                    if (\array_key_exists('', $values)) {
-                        $options[''] = $GLOBALS['TL_LANG']['MSC']['no'];
+                    if (\in_array('0', $stringValues, true)) {
+                        $options[] = [
+                            'value' => '0',
+                            'label' => $this->translator->trans('MSC.no', [], 'contao_default'),
+                        ];
                     }
 
                     $widget['options'] = $options;
@@ -270,7 +277,7 @@ class ProductFilterController extends AbstractContentElementController
             $join
             WHERE
                 tl_iso_product.language=''
-                AND tl_iso_product.$field!=''
+                AND CAST(tl_iso_product.$field AS CHAR)!=''
                 ".$published.'
                 AND (
                     tl_iso_product.id IN (
