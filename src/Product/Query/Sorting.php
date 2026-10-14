@@ -25,7 +25,10 @@ class Sorting implements \Stringable
     public function apply(QueryBuilder $qb): void
     {
         $qb->addOrderBy(
-            \sprintf('IFNULL(parent_translation.%1$s, IFNULL(parent.%1$s, tl_iso_product.%1$s))', $this->attribute),
+            \sprintf(
+                'COALESCE(parent_translation.%1$s, parent.%1$s, translation.%1$s, tl_iso_product.%1$s)',
+                $this->attribute,
+            ),
             $this->desc ? 'DESC' : null,
         );
     }
