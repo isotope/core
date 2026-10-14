@@ -71,7 +71,10 @@ class ProductQuery implements \Stringable
     public function applySearch(QueryBuilder $queryBuilder, array $fields, array $keys): void
     {
         $search = implode(' ', array_intersect_key($this->search, array_flip($keys)));
-        $keywords = array_unique(explode(' ', $search));
+        $keywords = array_values(array_unique(array_filter(
+            explode(' ', $search),
+            static fn (string $keyword): bool => '' !== $keyword,
+        )));
 
         if ([] === $keywords) {
             return;
