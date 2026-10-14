@@ -116,7 +116,7 @@ class ProductFilterController extends AbstractContentElementController
 
                     $widget['options'] = $options;
                 } elseif (\is_array($widget['options'])) {
-                    $widget['options'] = array_filter($widget['options'], static fn (array $option) => empty($option['value']) || \in_array($option['value'], $values, false));
+                    $widget['options'] = array_filter($widget['options'], static fn (array $option) => '' === (string) $option['value'] || \in_array($option['value'], $values, false));
                 }
             }
 

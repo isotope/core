@@ -50,7 +50,7 @@ class StringUtil
      */
     public static function csv(string|null $value, callable|null $callback = null, bool $forceArray = false): array|null
     {
-        if (!$value) {
+        if (null === $value || '' === $value) {
             return $forceArray ? [] : null;
         }
 
@@ -65,6 +65,6 @@ class StringUtil
             return array_map($callback, $values);
         }
 
-        return array_filter($values);
+        return $values;
     }
 }
