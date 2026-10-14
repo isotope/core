@@ -73,7 +73,7 @@ class CategoryFilterBuilder extends Module
                 continue;
             }
 
-            $hasSubpages = $hasSubpages && (!$this->showLevel || $this->showLevel >= $level);
+            $hasSubpages = $hasSubpages && (!$this->showLevel || $this->showLevel > $level);
 
             $item = $menu
                 ->addChild('tl_page.'.$subpage->id)
