@@ -128,7 +128,7 @@ class ProductListController extends AbstractContentElementController
             ->where($qb->expr()->in('c.pid', $qb->createNamedParameter($categories, ArrayParameterType::INTEGER)))
             ->leftJoin('tl_iso_product', 'tl_iso_product', 'translation', "tl_iso_product.id=translation.pid AND translation.language='$locale'")
             ->leftJoin('tl_iso_product', 'tl_iso_product', 'parent', 'tl_iso_product.pid=parent.id')
-            ->leftJoin('parent', 'tl_iso_product', 'parent_translation', "parent.pid=parent_translation.id AND parent_translation.language='$locale'")
+            ->leftJoin('parent', 'tl_iso_product', 'parent_translation', "parent.id=parent_translation.pid AND parent_translation.language='$locale'")
             ->leftJoin('tl_iso_product', 'tl_iso_product_category', 'c', 'IFNULL(parent.id, tl_iso_product.id)=c.product_id')
             ->groupBy('parent.id', 'tl_iso_product.id', 'translation.id')
         ;
