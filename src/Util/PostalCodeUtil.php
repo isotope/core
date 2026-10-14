@@ -28,7 +28,18 @@ class PostalCodeUtil
                     break;
 
                 case 2:
-                    $codes = array_merge($codes, range($parts[0], $parts[1]));
+                    $range = range($parts[0], $parts[1]);
+
+                    if (
+                        preg_match('/^(0?)[0-9]+$/', $parts[0], $start)
+                        && preg_match('/^(0?)[0-9]+$/', $parts[1], $end)
+                        && ('0' === $start[1] || '0' === $end[1])
+                    ) {
+                        $length = max(\strlen($parts[0]), \strlen($parts[1]));
+                        $range = array_map(static fn ($code): string => str_pad((string) $code, $length, '0', STR_PAD_LEFT), $range);
+                    }
+
+                    $codes = array_merge($codes, $range);
                     break;
             }
         }
