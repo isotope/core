@@ -10,6 +10,7 @@ use Contao\Database;
 use Contao\Module;
 use Isotope\CoreBundle\Exception\RuntimeException;
 use Isotope\CoreBundle\Product\Query\Filter\CategoryFilter;
+use Isotope\CoreBundle\Product\Query\Filter\FilterInterface;
 use Isotope\CoreBundle\Product\Query\ProductQuery;
 use Isotope\CoreBundle\Product\Query\ProductQueryFactory;
 use Knp\Menu\Attribute\AsMenuBuilder;
@@ -92,12 +93,26 @@ class CategoryFilterBuilder extends Module
                 $value = implode(',', array_unique(array_merge($currentIds, $childIds)));
             }
 
-            if ('' === $value) {
+            $filters = array_filter(
+                $productQuery?->getFilters([$filterKey]) ?? [],
+                static fn (FilterInterface $filter) => !$filter instanceof CategoryFilter,
+            );
+
+            if ('' !== $value) {
+                $filters[] = new CategoryFilter(null, $value);
+            }
+
+            if ([] === $filters) {
                 $item->setUri($this->urlParser->removeQueryString(['_f'.$filterKey]));
+            } else {
+                $item->setUri($this->urlParser->addQueryString(http_build_query([
+                    '_f'.$filterKey => implode(';', array_map(strval(...), $filters)),
+                ])));
+            }
+
+            if ('' === $value) {
                 $item->setLinkAttribute('data-action', 'isotope--productquery#unset:prevent');
             } else {
-                $item->setUri($this->urlParser->addQueryString(http_build_query(['_f'.$filterKey => (string) (new CategoryFilter(null, $value))])));
-
                 $item
                     ->setLinkAttribute('data-action', 'isotope--productquery#set:prevent')
                     ->setLinkAttribute('data-isotope--productquery-value-param', $value)
