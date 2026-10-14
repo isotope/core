@@ -118,5 +118,6 @@ class ProductCategoryUtil implements ResetInterface
     {
         $this->published = null;
         $this->unpublished = null;
+        $this->root = [];
     }
 }
