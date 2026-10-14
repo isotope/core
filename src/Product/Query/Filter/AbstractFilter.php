@@ -33,7 +33,7 @@ abstract class AbstractFilter implements FilterInterface
 
     public function __toString(): string
     {
-        return $this->getAttributeName().$this->getOperator().implode(',', $this->queryValues);
+        return $this->getAttributeName().$this->getOperator().implode($this->or ? '|' : ',', $this->queryValues);
     }
 
     public function getAttributeName(): string|null
