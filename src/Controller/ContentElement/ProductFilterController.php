@@ -93,6 +93,21 @@ class ProductFilterController extends AbstractContentElementController
                 continue;
             }
 
+            // Flatten the options (remove groups on filters)
+            if (\is_array($widget['options'] ?? null)) {
+                $options = [];
+
+                foreach ($widget['options'] as $option) {
+                    if (\array_key_exists('value', $option)) {
+                        $options[] = $option;
+                    } else {
+                        array_push($options, ...array_values($option));
+                    }
+                }
+
+                $widget['options'] = $options;
+            }
+
             $attribute = $this->attributeRegistry->get($fieldName);
 
             if ($attribute instanceof OptionsAttributeInterface) {
