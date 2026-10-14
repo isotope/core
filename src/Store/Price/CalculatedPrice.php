@@ -150,7 +150,11 @@ class CalculatedPrice implements \JsonSerializable
             (float) ($data['total_price'] ?? 0),
             new CalculatedTaxCollection(),
             new TaxRateCollection(),
+            quantity: (int) ($data['quantity'] ?? 1),
         );
+
+        $price->setUnitLabel($data['unit_label'] ?? null);
+        $price->setRange((bool) ($data['is_range'] ?? false));
 
         foreach (($data['calculated_taxes'] ?? []) as $tax) {
             $price->getCalculatedTaxes()->put(
