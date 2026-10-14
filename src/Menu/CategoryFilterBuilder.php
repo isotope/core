@@ -65,6 +65,10 @@ class CategoryFilterBuilder extends Module
         foreach ($pages as ['page' => $subpage, 'hasSubpages' => $hasSubpages]) {
             $subpage->loadDetails();
 
+            if ($subpage->guests && $this->security->isGranted('ROLE_MEMBER')) {
+                continue;
+            }
+
             // Do not show protected pages unless a back end or front end user is logged in
             if (
                 !$this->showProtected
