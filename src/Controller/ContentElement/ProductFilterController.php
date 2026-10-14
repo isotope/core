@@ -250,7 +250,7 @@ class ProductFilterController extends AbstractContentElementController
             $categoryWhere = 'OR tl_iso_product.pid IN (
                                     SELECT product_id
                                     FROM tl_iso_product_category
-                                    #WHERE pid IN ('.implode(',', $categories).')
+                                    WHERE pid IN ('.implode(',', $categories).')
                                 )';
 
             if (!$isPreviewMode) {
