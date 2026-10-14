@@ -228,7 +228,10 @@ class ProductFilterController extends AbstractContentElementController
      */
     private function getUsedValuesForField(string $field, array $categories, array $attributeTypes, array $variantTypes): array
     {
-        if ([] === $attributeTypes && [] === $variantTypes) {
+        if (
+            [] === $categories
+            || ([] === $attributeTypes && [] === $variantTypes)
+        ) {
             return [];
         }
 
