@@ -8,7 +8,7 @@ use Doctrine\DBAL\Query\Expression\CompositeExpression;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsProductFilter;
 
-#[AsProductFilter('>=')]
+#[AsProductFilter('≥')]
 class GreaterEqualFilter extends AbstractFilter
 {
     protected function getOperator(): string
