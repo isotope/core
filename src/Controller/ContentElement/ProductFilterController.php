@@ -236,14 +236,14 @@ class ProductFilterController extends AbstractContentElementController
         $join = '';
         $categoryWhere = '';
         $published = '';
-        $time = Date::floorToMinute();
+        $time = time();
         $isPreviewMode = $this->tokenChecker->isPreviewMode();
 
         if (!$isPreviewMode) {
             $published = "
                 AND tl_iso_product.published='1'
-                AND (tl_iso_product.start='' OR tl_iso_product.start<'$time')
-                AND (tl_iso_product.stop='' OR tl_iso_product.stop>'".($time + 60)."')
+                AND (tl_iso_product.start='' OR tl_iso_product.start<$time)
+                AND (tl_iso_product.stop='' OR tl_iso_product.stop>$time)
             ";
         }
 
@@ -264,8 +264,8 @@ class ProductFilterController extends AbstractContentElementController
                 $published .= " AND (
                     tl_iso_product.pid=0 OR (
                         translation.published='1'
-                        AND (translation.start='' OR translation.start<'$time')
-                        AND (translation.stop='' OR translation.stop>'".($time + 60)."')
+                        AND (translation.start='' OR translation.start<$time)
+                        AND (translation.stop='' OR translation.stop>$time)
                     )
                 )";
             }
