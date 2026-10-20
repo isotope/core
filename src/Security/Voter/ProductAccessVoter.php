@@ -45,6 +45,11 @@ class ProductAccessVoter extends AbstractDataContainerVoter implements ResetInte
             return false;
         }
 
+        // Allow to create new products if any product types are allowed
+        if ($action instanceof CreateAction && !$action->getNewPid()) {
+            return true;
+        }
+
         $cacheKey = $this->getCacheKey($user->iso_producttypes);
 
         $allowedIds = $this->cache[$cacheKey] ?? $this->getAllowedIds($user->iso_producttypes, $cacheKey);
@@ -52,7 +57,7 @@ class ProductAccessVoter extends AbstractDataContainerVoter implements ResetInte
         return match (true) {
             $action instanceof ReadAction,
             $action instanceof DeleteAction => \in_array((int) $action->getCurrentId(), $allowedIds, true),
-            $action instanceof CreateAction => \in_array((int) $action->getNewId(), $allowedIds, true),
+            $action instanceof CreateAction => \in_array((int) $action->getNewPid(), $allowedIds, true),
             $action instanceof UpdateAction => \in_array((int) $action->getCurrentId(), $allowedIds, true)
                 && (null === $action->getNewId() || \in_array((int) $action->getNewId(), $allowedIds, true)),
         };
