@@ -279,7 +279,10 @@ class OrderManager
 
     public function canCancelPayment(Order $order, string $status): bool
     {
-        if (TransactionState::Pending !== $order->getTransactionStatus()?->getTransactionState()) {
+        if (
+            !$order->getPaymentMethod()
+            || TransactionState::Pending !== $order->getTransactionStatus()?->getTransactionState()
+        ) {
             return false;
         }
 

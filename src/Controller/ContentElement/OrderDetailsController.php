@@ -80,10 +80,10 @@ class OrderDetailsController extends AbstractContentElementController
         $state = $order->getTransactionStatus()?->getTransactionState();
 
         $template->payment_options = [];
-        $template->payment_pending = TransactionState::Pending === $state;
-        $template->payment_processing = TransactionState::Processing === $state;
-        $template->payment_complete = TransactionState::Complete === $state;
-        $template->payment_cancelled = $cancelStatus === $order->getOrderStatus()->alias;
+        $template->payment_pending = $payment && TransactionState::Pending === $state;
+        $template->payment_processing = $payment && TransactionState::Processing === $state;
+        $template->payment_complete = !$payment || TransactionState::Complete === $state;
+        $template->payment_cancelled = $payment && $cancelStatus === $order->getOrderStatus()->alias;
 
         if (!$payment || TransactionState::Complete === $state) {
             return;
