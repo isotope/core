@@ -55,7 +55,7 @@ class CollectionItemMigration extends AbstractMigration
             $this->connection->executeStatement('ALTER TABLE tl_iso_product_collection_item ADD COLUMN `sorting` int(10) unsigned NOT NULL default 0');
         }
 
-        $this->connection->executeStatement("UPDATE tl_iso_product_collection_item SET type='product', identifier=CONCAT('tl_iso_product.', product_id)");
+        $this->connection->executeStatement("UPDATE tl_iso_product_collection_item SET type='product', identifier=IF(product_id REGEXP '^[0-9]+$', CONCAT('tl_iso_product.', product_id), product_id)");
 
         $surcharges = $this->connection->fetchAllAssociative('SELECT * FROM tl_iso_product_collection_surcharge ORDER BY pid, sorting');
 
