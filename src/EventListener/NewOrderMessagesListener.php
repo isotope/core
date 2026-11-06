@@ -30,7 +30,7 @@ class NewOrderMessagesListener
         $qb
             ->select('COUNT(*) AS total', 's.name')
             ->from('tl_iso_product_collection', 'c')
-            ->leftJoin('c', 'tl_iso_orderstatus', 's', 'c.order_status=s.id')
+            ->leftJoin('c', 'tl_iso_orderstatus', 's', 'c.order_status=s.alias')
             ->where("c.type='order'")
             ->andWhere('s.welcomescreen=1')
             ->groupBy('s.id')
