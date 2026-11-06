@@ -1,7 +1,7 @@
 <?php
 
-use Contao\DC_Table;
 use Contao\DataContainer;
+use Contao\DC_Table;
 use Doctrine\DBAL\Types\Types;
 
 $GLOBALS['TL_DCA']['tl_iso_address'] = [
@@ -10,7 +10,7 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = [
         'enableVersioning' => false,
         'notSortable' => true,
         'dynamicPtable' => true,
-        'sql' =>  [
+        'sql' => [
             'keys' => [
                 'id' => 'primary',
                 'pid,store_id' => 'index',

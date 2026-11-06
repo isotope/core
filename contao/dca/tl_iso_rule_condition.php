@@ -1,7 +1,7 @@
 <?php
 
-use Contao\DC_Table;
 use Contao\DataContainer;
+use Contao\DC_Table;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Types\Types;
 
@@ -10,7 +10,7 @@ $GLOBALS['TL_DCA']['tl_iso_rule_condition'] = [
         'dataContainer' => DC_Table::class,
         'ptable' => 'tl_iso_rule',
         'enableVersioning' => false,
-        'sql' =>  [
+        'sql' => [
             'keys' => [
                 'id' => 'primary',
                 'pid,sorting' => 'index',
@@ -76,80 +76,80 @@ $GLOBALS['TL_DCA']['tl_iso_rule_condition'] = [
             'inputType' => 'select',
             'foreignKey' => 'tl_iso_rule.name',
             'eval' => ['mandatory' => true, 'chosen' => true, 'tl_class' => 'w50'],
-            'sql' =>  ['type' => Types::INTEGER, 'notnull' => false, 'default' => 0],
+            'sql' => ['type' => Types::INTEGER, 'notnull' => false, 'default' => 0],
         ],
         'quantity' => [
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'rgxp' => 'digit', 'tl_class' => 'w50'],
-            'sql' =>  ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TINYTEXT, 'notnull' => false],
+            'sql' => ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TINYTEXT, 'notnull' => false],
         ],
         'quantity_from' => [
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'rgxp' => 'digit', 'tl_class' => 'w50'],
-            'sql' =>  ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TINYTEXT, 'notnull' => false],
+            'sql' => ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TINYTEXT, 'notnull' => false],
         ],
         'quantity_to' => [
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'rgxp' => 'price', 'tl_class' => 'w50'],
-            'sql' =>  ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TINYTEXT, 'notnull' => false],
+            'sql' => ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TINYTEXT, 'notnull' => false],
         ],
         'amount' => [
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'rgxp' => 'price', 'tl_class' => 'w50'],
-            'sql' =>  ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TINYTEXT, 'notnull' => false],
+            'sql' => ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TINYTEXT, 'notnull' => false],
         ],
         'amount_from' => [
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'rgxp' => 'price', 'tl_class' => 'w50'],
-            'sql' =>  ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TINYTEXT, 'notnull' => false],
+            'sql' => ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TINYTEXT, 'notnull' => false],
         ],
         'amount_to' => [
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'rgxp' => 'price', 'tl_class' => 'w50'],
-            'sql' =>  ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TINYTEXT, 'notnull' => false],
+            'sql' => ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TINYTEXT, 'notnull' => false],
         ],
         'product_types' => [
             'inputType' => 'checkbox',
             'foreignKey' => 'tl_iso_producttype.name',
             'eval' => ['mandatory' => true, 'multiple' => true, 'csv' => ','],
-            'sql' =>  ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TINYTEXT, 'notnull' => false],
+            'sql' => ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TINYTEXT, 'notnull' => false],
         ],
         'member_groups' => [
             'inputType' => 'checkbox',
             'foreignKey' => 'tl_member_group.name',
             'eval' => ['mandatory' => true, 'multiple' => true, 'csv' => ','],
-            'sql' =>  ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TINYTEXT, 'notnull' => false],
+            'sql' => ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TINYTEXT, 'notnull' => false],
         ],
         'config_ids' => [
             'inputType' => 'checkbox',
             'foreignKey' => 'tl_iso_config.name',
             'eval' => ['mandatory' => true, 'multiple' => true, 'csv' => ','],
-            'sql' =>  ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TINYTEXT, 'notnull' => false],
+            'sql' => ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TINYTEXT, 'notnull' => false],
         ],
         'currencies' => [
             'inputType' => 'select',
             'eval' => ['mandatory' => true, 'multiple' => true, 'csv' => ',', 'chosen' => true, 'tl_class' => 'w50'],
-            'sql' =>  ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TINYTEXT, 'notnull' => false],
+            'sql' => ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TINYTEXT, 'notnull' => false],
         ],
         'start' => [
             'inputType' => 'text',
             'eval' => ['rgxp' => 'datim', 'datepicker' => true, 'tl_class' => 'clr w50'],
-            'sql' =>  ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TINYTEXT, 'notnull' => false],
+            'sql' => ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TINYTEXT, 'notnull' => false],
         ],
         'stop' => [
             'inputType' => 'text',
             'eval' => ['rgxp' => 'datim', 'datepicker' => true, 'tl_class' => 'w50'],
-            'sql' =>  ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TINYTEXT, 'notnull' => false],
+            'sql' => ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TINYTEXT, 'notnull' => false],
         ],
         'start_time' => [
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'rgxp' => 'time', 'tl_class' => 'clr w50'],
-            'sql' =>  ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TINYTEXT, 'notnull' => false],
+            'sql' => ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TINYTEXT, 'notnull' => false],
         ],
         'stop_time' => [
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'rgxp' => 'time', 'tl_class' => 'w50'],
-            'sql' =>  ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TINYTEXT, 'notnull' => false],
+            'sql' => ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TINYTEXT, 'notnull' => false],
         ],
         'address_type' => [
             'filter' => true,

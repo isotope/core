@@ -30,7 +30,7 @@ class CartProducttypesCondition implements RuleConditionInterface
     public function isApplicable(StoreContext $context): bool
     {
         $productTypes = array_map(
-            static fn (LineItem $lineItem) => $lineItem->getProduct() instanceof CoreProduct ? $lineItem->getProduct()->getProductType()->id : 0,
+            static fn (LineItem $lineItem) => ($product = $lineItem->getProduct()) instanceof CoreProduct ? $product->getProductType()->id : 0,
             $context->getCart()?->getLineItems()->products()->toArray() ?? [],
         );
 

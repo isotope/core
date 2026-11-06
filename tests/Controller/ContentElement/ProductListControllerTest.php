@@ -20,6 +20,7 @@ use Isotope\CoreBundle\Product\Query\ProductQueryFactory;
 use Isotope\CoreBundle\Product\Query\Sorting;
 use Isotope\CoreBundle\Store\StoreManager;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -70,14 +71,27 @@ final class ProductListControllerTest extends TestCase
     public function testPaginationReturnsEachProductOnce(bool $desc, int $offset, array $expected): void
     {
         $pagination = $this->createStub(PaginationInterface::class);
-        $pagination->method('getPerPage')->willReturn(2);
-        $pagination->method('getOffset')->willReturn($offset);
+        $pagination
+            ->method('getPerPage')
+            ->willReturn(2)
+        ;
+
+        $pagination
+            ->method('getOffset')
+            ->willReturn($offset)
+        ;
 
         $factory = $this->createMock(PaginationFactoryInterface::class);
-        $factory->expects($this->once())
+        $factory
+            ->expects($this->once())
             ->method('create')
-            ->with($this->callback(static fn (PaginationConfig $config): bool => 3 === $config->getTotal()))
-            ->willReturn($pagination)
+            ->willReturnCallback(
+                function (PaginationConfig $config) use ($pagination): PaginationInterface&Stub {
+                    $this->assertSame(3, $config->getTotal());
+
+                    return $pagination;
+                },
+            )
         ;
 
         $controller = $this->createController($factory);
@@ -85,16 +99,19 @@ final class ProductListControllerTest extends TestCase
         (new Sorting('name', $desc))->apply($qb);
 
         $model = $this->createStub(ContentModel::class);
-        $model->method('__get')->willReturnMap([
-            ['id', 42],
-            ['numberOfItems', 0],
-            ['perPage', 2],
-        ]);
+        $model
+            ->method('__get')
+            ->willReturnMap([
+                ['id', 42],
+                ['numberOfItems', 0],
+                ['perPage', 2],
+            ])
+        ;
 
         $result = (new \ReflectionMethod($controller, 'applyPagination'))->invoke($controller, $model, new Request(), $qb, null);
 
-        self::assertSame($pagination, $result);
-        self::assertSame($expected, array_map(intval(...), $qb->fetchFirstColumn()));
+        $this->assertSame($pagination, $result);
+        $this->assertSame($expected, array_map(intval(...), $qb->fetchFirstColumn()));
     }
 
     public static function paginationProvider(): iterable
@@ -112,7 +129,7 @@ final class ProductListControllerTest extends TestCase
         (new EqualFilter('name', 'Variant B'))->apply($qb);
         (new Sorting('name'))->apply($qb);
 
-        self::assertSame([1], array_map(intval(...), $qb->fetchFirstColumn()));
+        $this->assertSame([1], array_map(intval(...), $qb->fetchFirstColumn()));
     }
 
     private function createController(PaginationFactoryInterface $factory): ProductListController

@@ -1,7 +1,7 @@
 <?php
 
-use Contao\DC_Table;
 use Contao\DataContainer;
+use Contao\DC_Table;
 use Doctrine\DBAL\Types\Types;
 
 $GLOBALS['TL_DCA']['tl_iso_product_category'] = [
@@ -15,7 +15,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_category'] = [
         'backlink' => 'do=iso_products',
         'backendSearchIgnore' => true,
         'permissions' => [],
-        'sql' =>  [
+        'sql' => [
             'keys' => [
                 'id' => 'primary',
                 'pid' => 'index',

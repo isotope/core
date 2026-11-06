@@ -17,21 +17,21 @@ final class CalculatedPriceTest extends TestCase
         ;
         $restored = CalculatedPrice::createFromJson(json_encode($price, JSON_THROW_ON_ERROR));
 
-        self::assertNotNull($restored);
-        self::assertSame(3, $restored->getQuantity());
-        self::assertSame('10%', $restored->getUnitLabel());
-        self::assertTrue($restored->isRange());
-        self::assertSame($price->jsonSerialize(), $restored->jsonSerialize());
-        self::assertSame(30.0, $restored->reduce()->getUnitPrice());
+        $this->assertInstanceOf(CalculatedPrice::class, $restored);
+        $this->assertSame(3, $restored->getQuantity());
+        $this->assertSame('10%', $restored->getUnitLabel());
+        $this->assertTrue($restored->isRange());
+        $this->assertSame($price->jsonSerialize(), $restored->jsonSerialize());
+        $this->assertEqualsWithDelta(30.0, $restored->reduce()->getUnitPrice(), PHP_FLOAT_EPSILON);
     }
 
     public function testMissingQuantityDefaultsToOne(): void
     {
         $price = CalculatedPrice::createFromJson('{"unit_price":10,"total_price":10}');
 
-        self::assertNotNull($price);
-        self::assertSame(1, $price->getQuantity());
-        self::assertNull($price->getUnitLabel());
-        self::assertFalse($price->isRange());
+        $this->assertInstanceOf(CalculatedPrice::class, $price);
+        $this->assertSame(1, $price->getQuantity());
+        $this->assertNull($price->getUnitLabel());
+        $this->assertFalse($price->isRange());
     }
 }

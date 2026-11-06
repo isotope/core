@@ -1,7 +1,7 @@
 <?php
 
-use Contao\DC_Table;
 use Contao\DataContainer;
+use Contao\DC_Table;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Types\Types;
 
@@ -12,7 +12,7 @@ $GLOBALS['TL_DCA']['tl_iso_related_product'] = [
         'ptable' => 'tl_iso_product',
         'notSortable' => true,
         'backendSearchIgnore' => true,
-        'sql' =>  [
+        'sql' => [
             'keys' => [
                 'id' => 'primary',
                 'pid' => 'index',

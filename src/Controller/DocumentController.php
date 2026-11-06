@@ -16,9 +16,8 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('_isotope/document/{uuid}')]
 class DocumentController extends AbstractController
 {
-    public function __construct(
-        private readonly DocumentManager $documentManager,
-    ) {
+    public function __construct(private readonly DocumentManager $documentManager)
+    {
     }
 
     public function __invoke(Request $request, string $uuid): Response

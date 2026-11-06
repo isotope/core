@@ -115,7 +115,7 @@ class CategoryFilterBuilder extends Module
             }
 
             $item->setUri($this->urlParser->removeQueryStringCallback(
-                static fn (mixed $value, string|int $key) => !preg_match('/^_p\d+$/', (string) $key),
+                static fn (mixed $value, int|string $key) => !preg_match('/^_p\d+$/', (string) $key),
                 $item->getUri(),
             ));
 

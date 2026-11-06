@@ -42,7 +42,7 @@ final class ProductCategoryUtilTest extends TestCase
 
         $this->connection->insert('tl_iso_product_category', ['id' => 401, 'pid' => 10000, 'product_id' => 2, 'product_sorting' => 0]);
 
-        self::assertSame([1 => range(10000, 10399), 2 => [10000]], $this->createUtil()->preload(true));
+        $this->assertSame([1 => range(10000, 10399), 2 => [10000]], $this->createUtil()->preload(true));
     }
 
     public function testPreloadHonoursPublicationAndPageType(): void
@@ -60,15 +60,18 @@ final class ProductCategoryUtilTest extends TestCase
 
         $util = $this->createUtil();
 
-        self::assertSame([1 => [10]], $util->preload(true));
-        self::assertSame([1 => [10, 11, 12, 13]], $util->preload(false));
-        self::assertSame([1 => [10, 11, 12, 13]], $this->createUtil(true)->preload(true));
+        $this->assertSame([1 => [10]], $util->preload(true));
+        $this->assertSame([1 => [10, 11, 12, 13]], $util->preload(false));
+        $this->assertSame([1 => [10, 11, 12, 13]], $this->createUtil(true)->preload(true));
     }
 
     private function createUtil(bool $preview = false): ProductCategoryUtil
     {
         $tokenChecker = $this->createStub(TokenChecker::class);
-        $tokenChecker->method('isPreviewMode')->willReturn($preview);
+        $tokenChecker
+            ->method('isPreviewMode')
+            ->willReturn($preview)
+        ;
 
         return new ProductCategoryUtil(
             $this->connection,

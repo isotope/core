@@ -51,7 +51,7 @@ class OrderNotificationType implements NotificationTypeInterface
             $this->create(TextTokenDefinition::class, 'bank_account'),
             $this->create(TextTokenDefinition::class, 'bank_code'),
             $this->create(TextTokenDefinition::class, 'tax_number'),
-            //'collection_*', // All the collection fields
+            // 'collection_*', // All the collection fields
             $this->create(HtmlTokenDefinition::class, 'billing_address'), // Formatted billing address
             $this->create(TextTokenDefinition::class, 'billing_address_text'), // Formatted billing address
             $this->create(AnythingTokenDefinition::class, 'billing_address_*'), // All the billing address model fields

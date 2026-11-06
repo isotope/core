@@ -1,7 +1,7 @@
 <?php
 
-use Contao\DC_Table;
 use Contao\DataContainer;
+use Contao\DC_Table;
 use Contao\System;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Types\Types;
@@ -11,7 +11,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = [
         'dataContainer' => DC_Table::class,
         'enableVersioning' => true,
         'markAsCopy' => 'name',
-        'sql' =>  [
+        'sql' => [
             'keys' => [
                 'id' => 'primary',
                 'variants' => 'index',
@@ -65,7 +65,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = [
             'filter' => true,
             'inputType' => 'checkbox',
             'eval' => ['fallback' => true, 'tl_class' => 'w50'],
-            'sql' =>  ['type' => 'boolean', 'default' => false],
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'description' => [
             'inputType' => 'textarea',
@@ -75,12 +75,12 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = [
         'prices' => [
             'inputType' => 'checkbox',
             'eval' => ['submitOnChange' => true, 'tl_class' => 'clr'],
-            'sql' =>  ['type' => 'boolean', 'default' => false],
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'show_price_tiers' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
-            'sql' =>  ['type' => 'boolean', 'default' => false],
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'list_template' => [
             'inputType' => 'select',
@@ -137,7 +137,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = [
             'filter' => true,
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'clr', 'submitOnChange' => true],
-            'sql' =>  ['type' => 'boolean', 'default' => false],
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'variant_attributes' => [
             'inputType' => 'rowWizard',
@@ -150,7 +150,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = [
         'force_variant_options' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'clr'],
-            'sql' =>  ['type' => 'boolean', 'default' => false],
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'validAliasCharacters' => [
             'inputType' => 'select',

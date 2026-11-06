@@ -1,7 +1,7 @@
 <?php
 
-use Contao\DC_Table;
 use Contao\DataContainer;
+use Contao\DC_Table;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Types\Types;
 use Isotope\CoreBundle\Checkout\Shipping\FlatCalculation;
@@ -13,7 +13,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
         'dataContainer' => DC_Table::class,
         'enableVersioning' => true,
         'markAsCopy' => 'name',
-        'sql' =>  [
+        'sql' => [
             'keys' => [
                 'id' => 'primary',
             ],
@@ -64,7 +64,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
         'inherit' => [
             'inputType' => 'checkbox',
             'eval' => ['submitOnChange' => true, 'tl_class' => 'w50 m12'],
-            'sql' =>  ['type' => 'boolean', 'default' => false],
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'name' => [
             'search' => true,
@@ -176,13 +176,13 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
         'debug' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'clr w50'],
-            'sql' =>  ['type' => 'boolean', 'default' => false],
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'enabled' => [
             'toggle' => true,
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
-            'sql' =>  ['type' => 'boolean', 'default' => false],
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
     ],
 ];

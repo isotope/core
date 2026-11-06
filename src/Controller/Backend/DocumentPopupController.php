@@ -17,7 +17,6 @@ use Isotope\CoreBundle\ModelType\DocumentRegistry;
 use Isotope\CoreBundle\ProductCollection\Order\OrderFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\UriSigner;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;

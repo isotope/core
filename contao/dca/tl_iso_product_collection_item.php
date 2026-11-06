@@ -6,7 +6,7 @@ use Doctrine\DBAL\Types\Types;
 $GLOBALS['TL_DCA']['tl_iso_product_collection_item'] = [
     'config' => [
         'ptable' => 'tl_iso_product_collection',
-        'sql' =>  [
+        'sql' => [
             'keys' => [
                 'id' => 'primary',
                 'pid' => 'index',
@@ -48,7 +48,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_item'] = [
             'sql' => ['type' => Types::INTEGER, 'unsigned' => true, 'default' => 0],
         ],
         'level' => [
-            'sql' =>  ['type' => Types::SMALLINT, 'unsigned' => true, 'default' => 0],
+            'sql' => ['type' => Types::SMALLINT, 'unsigned' => true, 'default' => 0],
         ],
         'unit_label' => [
             'sql' => ['type' => Types::STRING, 'length' => 128, 'notnull' => false],
@@ -60,7 +60,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_item'] = [
             'sql' => ['type' => Types::DECIMAL, 'precision' => 12, 'scale' => 2, 'default' => '0.00'],
         ],
         'price_data' => [
-            'sql' =>  ['type' => Types::BLOB, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_MEDIUMBLOB, 'notnull' => false],
+            'sql' => ['type' => Types::BLOB, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_MEDIUMBLOB, 'notnull' => false],
         ],
         'tax_id' => [
             // Not the ID of a tax class or rate, this is the CSV list of applicable taxes (incremental numeric)

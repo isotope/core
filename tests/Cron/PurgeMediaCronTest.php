@@ -17,7 +17,9 @@ use Symfony\Component\Filesystem\Filesystem;
 final class PurgeMediaCronTest extends ContaoTestCase
 {
     private Connection $connection;
+
     private Filesystem $filesystem;
+
     private string $projectDir;
 
     protected function setUp(): void
@@ -76,11 +78,11 @@ final class PurgeMediaCronTest extends ContaoTestCase
         $this->createCron()();
 
         foreach ($retained as $path) {
-            self::assertFileExists($this->projectDir.'/'.$path);
+            $this->assertFileExists($this->projectDir.'/'.$path);
         }
 
-        self::assertFileDoesNotExist($this->projectDir.'/isotope/o/orphan.jpg');
-        self::assertFileDoesNotExist($this->projectDir.'/isotope/o/orphan.pdf');
+        $this->assertFileDoesNotExist($this->projectDir.'/isotope/o/orphan.jpg');
+        $this->assertFileDoesNotExist($this->projectDir.'/isotope/o/orphan.pdf');
     }
 
     public function testPreservesRecentFilesAndFilesOutsideTheMediaManagerLayout(): void
@@ -102,10 +104,10 @@ final class PurgeMediaCronTest extends ContaoTestCase
         $this->createCron()();
 
         foreach ([...$retained, 'isotope/r/recent.jpg'] as $path) {
-            self::assertFileExists($this->projectDir.'/'.$path);
+            $this->assertFileExists($this->projectDir.'/'.$path);
         }
 
-        self::assertFileDoesNotExist($this->projectDir.'/isotope/o/orphan.jpg');
+        $this->assertFileDoesNotExist($this->projectDir.'/isotope/o/orphan.jpg');
     }
 
     public function testDoesNotFollowSymbolicLinks(): void
@@ -116,9 +118,9 @@ final class PurgeMediaCronTest extends ContaoTestCase
         $this->filesystem->symlink($this->projectDir.'/outside/file.jpg', $this->projectDir.'/isotope/a/alias.jpg');
         $this->createCron()();
 
-        self::assertFileExists($this->projectDir.'/outside/file.jpg');
-        self::assertTrue(is_link($this->projectDir.'/isotope/a/alias.jpg'));
-        self::assertTrue(is_link($this->projectDir.'/isotope/o'));
+        $this->assertFileExists($this->projectDir.'/outside/file.jpg');
+        $this->assertTrue(is_link($this->projectDir.'/isotope/a/alias.jpg'));
+        $this->assertTrue(is_link($this->projectDir.'/isotope/o'));
     }
 
     public function testDoesNotDeleteAnythingWhenReadingReferencesFails(): void
@@ -128,9 +130,9 @@ final class PurgeMediaCronTest extends ContaoTestCase
 
         try {
             $this->createCron()();
-            self::fail('Expected the database query to fail.');
+            $this->fail('Expected the database query to fail.');
         } catch (TableNotFoundException) {
-            self::assertFileExists($this->projectDir.'/isotope/o/orphan.jpg');
+            $this->assertFileExists($this->projectDir.'/isotope/o/orphan.jpg');
         }
     }
 
@@ -139,30 +141,35 @@ final class PurgeMediaCronTest extends ContaoTestCase
         $this->connection->executeStatement('DROP TABLE tl_iso_product');
         $this->createCron()();
 
-        self::assertDirectoryDoesNotExist($this->projectDir.'/isotope');
+        $this->assertDirectoryDoesNotExist($this->projectDir.'/isotope');
     }
 
     public function testRunsMonthly(): void
     {
         $attributes = (new \ReflectionClass(PurgeMediaCron::class))->getAttributes(AsCronJob::class);
 
-        self::assertCount(1, $attributes);
-        self::assertSame('monthly', $attributes[0]->newInstance()->interval);
+        $this->assertCount(1, $attributes);
+        $this->assertSame('monthly', $attributes[0]->newInstance()->interval);
     }
 
     private function createCron(): PurgeMediaCron
     {
         $controller = $this->createAdapterStub(['loadDataContainer']);
-        $controller->method('loadDataContainer')->willReturnCallback(static function (string $table): void {
-            self::assertSame('tl_iso_product', $table);
+        $controller
+            ->method('loadDataContainer')
+            ->willReturnCallback(
+                static function (string $table): void {
+                    self::assertSame('tl_iso_product', $table);
 
-            $GLOBALS['TL_DCA'][$table]['fields'] = [
-                'images' => ['inputType' => 'mediaManager', 'sql' => 'blob NULL'],
-                'downloads' => ['inputType' => 'mediaManager', 'sql' => 'blob NULL'],
-                'virtual' => ['inputType' => 'mediaManager'],
-                'name' => ['inputType' => 'text', 'sql' => "varchar(255) NOT NULL default ''"],
-            ];
-        });
+                    $GLOBALS['TL_DCA'][$table]['fields'] = [
+                        'images' => ['inputType' => 'mediaManager', 'sql' => 'blob NULL'],
+                        'downloads' => ['inputType' => 'mediaManager', 'sql' => 'blob NULL'],
+                        'virtual' => ['inputType' => 'mediaManager'],
+                        'name' => ['inputType' => 'text', 'sql' => "varchar(255) NOT NULL default ''"],
+                    ];
+                },
+            )
+        ;
 
         return new PurgeMediaCron(
             $this->createContaoFrameworkStub([Controller::class => $controller]),

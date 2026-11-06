@@ -1,7 +1,7 @@
 <?php
 
-use Contao\DC_Table;
 use Contao\DataContainer;
+use Contao\DC_Table;
 use Contao\Input;
 use Contao\System;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
@@ -24,7 +24,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
         'notCopyable' => true,
         'notDeletable' => ('select' === Input::get('act')),
         'permissions' => ['update'],
-        'sql' =>  [
+        'sql' => [
             'keys' => [
                 'id' => 'primary',
                 'uniqid,type' => 'unique',
@@ -256,7 +256,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
         'extensions' => [
             'exclude' => false,
             'eval' => ['doNotShow' => true],
-            'sql' =>  ['type' => Types::BLOB, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_MEDIUMBLOB, 'notnull' => false],
+            'sql' => ['type' => Types::BLOB, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_MEDIUMBLOB, 'notnull' => false],
         ],
         'details' => [
             // input_field_callback from OrderDetailsListener

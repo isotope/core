@@ -41,7 +41,6 @@ use Isotope\CoreBundle\ProductCollection\ItemAction\ProductCollectionItemActionR
 use Isotope\CoreBundle\ProductCollection\OrderTransaction\TransactionStatus;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ChildDefinition;
-use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\LogicException;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;

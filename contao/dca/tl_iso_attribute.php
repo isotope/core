@@ -1,7 +1,7 @@
 <?php
 
-use Contao\DC_Table;
 use Contao\DataContainer;
+use Contao\DC_Table;
 use Contao\System;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Types\Types;
@@ -18,7 +18,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
         'enableVersioning' => true,
         'markAsCopy' => 'name',
         'ctable' => ['tl_iso_attribute_option'],
-        'sql' =>  [
+        'sql' => [
             'keys' => [
                 'id' => 'primary',
                 'type' => 'index',
@@ -195,7 +195,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
         'includeBlankOption' => [
             'inputType' => 'checkbox',
             'eval' => ['submitOnChange' => true, 'tl_class' => 'w50 m12'],
-            'sql' =>  ['type' => 'boolean', 'default' => false],
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'blankOptionLabel' => [
             'inputType' => 'text',
@@ -206,53 +206,53 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
             'filter' => true,
             'inputType' => 'checkbox',
             'eval' => ['submitOnChange' => true, 'tl_class' => 'w50'],
-            'sql' =>  ['type' => 'boolean', 'default' => false],
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'be_filter' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'clr w25'],
-            'sql' =>  ['type' => Types::BOOLEAN, 'default' => false],
+            'sql' => ['type' => Types::BOOLEAN, 'default' => false],
         ],
         'be_search' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w25'],
-            'sql' =>  ['type' => Types::BOOLEAN, 'default' => false],
+            'sql' => ['type' => Types::BOOLEAN, 'default' => false],
         ],
         'be_column' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w25'],
-            'sql' =>  ['type' => Types::BOOLEAN, 'default' => false],
+            'sql' => ['type' => Types::BOOLEAN, 'default' => false],
         ],
         'customer_defined' => [
             'filter' => true,
             'inputType' => 'checkbox',
             'eval' => ['submitOnChange' => true, 'tl_class' => 'w50'],
-            'sql' =>  ['type' => 'boolean', 'default' => false],
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'mandatory' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
-            'sql' =>  ['type' => 'boolean', 'default' => false],
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'fe_filter' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w25'],
-            'sql' =>  ['type' => Types::BOOLEAN, 'default' => false],
+            'sql' => ['type' => Types::BOOLEAN, 'default' => false],
         ],
         'fe_search' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w25'],
-            'sql' =>  ['type' => Types::BOOLEAN, 'default' => false],
+            'sql' => ['type' => Types::BOOLEAN, 'default' => false],
         ],
         'fe_sorting' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w25'],
-            'sql' =>  ['type' => Types::BOOLEAN, 'default' => false],
+            'sql' => ['type' => Types::BOOLEAN, 'default' => false],
         ],
         'multiple' => [
             'inputType' => 'checkbox',
             'eval' => ['submitOnChange' => true, 'tl_class' => 'clr w50'],
-            'sql' =>  ['type' => 'boolean', 'default' => false],
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'size' => [
             'inputType' => 'text',
@@ -263,7 +263,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
         'chosen' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
-            'sql' =>  ['type' => 'boolean', 'default' => false],
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'extensions' => [
             'inputType' => 'text',
@@ -278,7 +278,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
         'multilingual' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
-            'sql' =>  ['type' => 'boolean', 'default' => false],
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'rgxp' => [
             'inputType' => 'select',
@@ -322,7 +322,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
         'datepicker' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
-            'sql' =>  ['type' => 'boolean', 'default' => false],
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'customTpl' => [
             'inputType' => 'select',
