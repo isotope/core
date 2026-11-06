@@ -21,6 +21,7 @@ use Contao\CoreBundle\Util\ArrayTree;
 use Contao\Database;
 use Contao\DataContainer;
 use Contao\Date;
+use Contao\DcaExtractor;
 use Contao\Environment;
 use Contao\Input;
 use Contao\Message;
@@ -45,6 +46,13 @@ class ProductData extends Driver
 		$GLOBALS['TL_DCA'][$strTable]['config']['ptable'] = $strTable;
 		$GLOBALS['TL_DCA'][$strTable]['config']['langPid'] = 'pid';
 		$GLOBALS['TL_DCA'][$strTable]['config']['langColumnName'] = 'language';
+
+		// Fix redirect URL after copying multiple records
+		if (Input::get('act') === 'copyAll' && Input::get('id') && Input::get('pid') === null)
+		{
+			Input::setGet('pid', Input::get('id'));
+			Input::setGet('mode', (string) self::PASTE_INTO);
+		}
 
 		parent::__construct($strTable);
 
@@ -122,6 +130,9 @@ class ProductData extends Driver
 				}
 			}
 		}
+
+		// The core lazy operations handler is private.
+		(new \ReflectionMethod(\Contao\DC_Table::class, 'handleSingleRecordOperationsRequest'))->invoke($this);
 
 		$parameters = array(
 			'panel' => $this->panel(),
@@ -890,9 +901,7 @@ System::getContainer()->get('contao.data_container.global_operations_builder')->
 	}
 
 	/**
-	 * List all records of the current table and return them as HTML string
-	 *
-	 * @return string
+	 * List all records of the current table and return them as HTML string.
 	 */
 	protected function listView()
 	{
@@ -906,12 +915,10 @@ System::getContainer()->get('contao.data_container.global_operations_builder')->
 			$firstOrderBy = $this->firstOrderBy;
 		}
 
-		$limitHeight = BackendUser::getInstance()->doNotCollapse ? false : (int) ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['limitHeight'] ?? 0);
+		// PATCH: Show only main products.
+		$this->procedure[] = 'pid=0';
 
 		$query = "SELECT * FROM " . $this->strTable;
-
-		// PATCH: Show only main products
-		$this->procedure[] = "pid=0";
 
 		if (!empty($this->procedure))
 		{
@@ -948,8 +955,12 @@ System::getContainer()->get('contao.data_container.global_operations_builder')->
 
 				if (isset($GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['foreignKey']))
 				{
-					$chunks = explode('.', $GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['foreignKey'], 2);
-					$orderBy[$k] = "(SELECT " . Database::quoteIdentifier($chunks[1]) . " FROM " . $chunks[0] . " WHERE " . $chunks[0] . ".id=" . $this->strTable . "." . $key . ")";
+					$dcaExtractor = DcaExtractor::getInstance($this->strTable);
+					$fkField = $dcaExtractor->getRelations()[$key]['field'] ?? 'id';
+					$fkField = Database::quoteIdentifier($fkField);
+
+					$fk = System::getContainer()->get('contao.data_container.foreign_key_parser')->parse($GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['foreignKey']);
+					$orderBy[$k] = "(SELECT " . $fk->getColumnExpression() . " FROM " . $fk->getTableName() . " WHERE " . $fk->getTableName() . ".$fkField=" . $this->strTable . "." . $key . ")";
 				}
 
 				if (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['flag'] ?? null, array(self::SORT_DAY_ASC, self::SORT_DAY_DESC, self::SORT_DAY_BOTH, self::SORT_MONTH_ASC, self::SORT_MONTH_DESC, self::SORT_MONTH_BOTH, self::SORT_YEAR_ASC, self::SORT_YEAR_DESC, self::SORT_YEAR_BOTH)))
@@ -1035,7 +1046,7 @@ System::getContainer()->get('contao.data_container.global_operations_builder')->
 			$operations->addBackButton($GLOBALS['TL_DCA'][$this->strTable]['config']['backlink']);
 		}
 
-		if (Input::get('act') != 'select' && !($GLOBALS['TL_DCA'][$this->strTable]['config']['closed'] ?? null) && !($GLOBALS['TL_DCA'][$this->strTable]['config']['notCreatable'] ?? null) && $security->isGranted(ContaoCorePermissions::DC_PREFIX . $this->strTable, new CreateAction($this->strTable)))
+		if (Input::get('act') != 'select' && !($GLOBALS['TL_DCA'][$this->strTable]['config']['closed'] ?? null) && !($GLOBALS['TL_DCA'][$this->strTable]['config']['notCreatable'] ?? null) && !($GLOBALS['TL_DCA'][$this->strTable]['config']['notEditable'] ?? null) && $security->isGranted(ContaoCorePermissions::DC_PREFIX . $this->strTable, new CreateAction($this->strTable)))
 		{
 			if ($this->ptable)
 			{
@@ -1056,30 +1067,14 @@ System::getContainer()->get('contao.data_container.global_operations_builder')->
 
 		$operations->addFilterButton();
 
-		$return = Message::generate() . $operations;
+		$parameters = array();
+		$records = array();
 
-		// Return "no records found" message
-		if ($objRow->numRows < 1)
-		{
-			$return .= '
-<p class="tl_empty">' . $GLOBALS['TL_LANG']['MSC']['noResult'] . '</p>';
-		}
-
-		// List records
-		else
+		if ($objRow->numRows)
 		{
 			$result = $objRow->fetchAllAssoc();
-
-			$return .= ((Input::get('act') == 'select') ? '
-<form id="tl_select" class="tl_form' . ((Input::get('act') == 'select') ? ' unselectable' : '') . '" method="post" novalidate>
-<div class="tl_formbody_edit">
-<input type="hidden" name="FORM_SUBMIT" value="tl_select">
-<input type="hidden" name="REQUEST_TOKEN" value="' . htmlspecialchars(System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue(), ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5) . '">' : '') . '
-<div class="tl_listing_container iso_listing_container list_view" id="tl_listing" data-controller="contao--check-all"' . $this->getPickerValueAttribute() . '>' . (isset($GLOBALS['TL_DCA'][$table]['list']['sorting']['breadcrumb']) ? $GLOBALS['TL_DCA'][$table]['list']['sorting']['breadcrumb'] : '') . ((Input::get('act') == 'select' || $this->strPickerFieldType == 'checkbox') ? '
-<div class="tl_select_trigger">
-<label for="tl_select_trigger" class="tl_select_label">' . $GLOBALS['TL_LANG']['MSC']['selectAll'] . '</label> <input type="checkbox" id="tl_select_trigger" data-action="contao--check-all#toggleAll" class="tl_tree_checkbox">
-</div>' : '') . '
-<table class="tl_listing' . (($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns'] ?? null) ? ' showColumns' : '') . ($this->strPickerFieldType ? ' picker unselectable' : '') . '">';
+			// Initialize the private core counter before generating record operations.
+			(new \ReflectionProperty(\Contao\DC_Table::class, 'lazyLoadOperationsRows'))->setValue($this, \count($result));
 
 			// Automatically add the "order by" field as last column if we do not have group headers
 			if (($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns'] ?? null) && false !== ($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showFirstOrderBy'] ?? null))
@@ -1108,12 +1103,10 @@ System::getContainer()->get('contao.data_container.global_operations_builder')->
 			}
 
 			// Generate the table header if the "show columns" option is active
+			$parameters['table_headers'] = array();
+
 			if ($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns'] ?? null)
 			{
-				$return .= '
-<thead>
-  <tr>';
-
 				foreach ($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['fields'] as $f)
 				{
 					if (str_contains($f, ':'))
@@ -1121,20 +1114,15 @@ System::getContainer()->get('contao.data_container.global_operations_builder')->
 						list($f) = explode(':', $f, 2);
 					}
 
-					$return .= '
-    <th class="tl_folder_tlist col_' . $f . (($f == $firstOrderBy) ? ' ordered_by' : '') . '">' . (\is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$f]['label'] ?? null) ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$f]['label'][0] : ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$f]['label'] ?? $f)) . '</th>';
+					$parameters['table_headers'][$f] = \is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$f]['label'] ?? null)
+						? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$f]['label'][0]
+						: ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$f]['label'] ?? $f)
+					;
 				}
-
-				$return .= '
-    <th class="tl_folder_tlist tl_right_nowrap"></th>
-  </tr>
-</thead>
-<tbody>';
 			}
 
 			// Process result and add label and buttons
-			$remoteCur = false;
-			$groupclass = 'tl_folder_tlist';
+			$strGroup = '';
 
 			foreach ($result as $row)
 			{
@@ -1143,124 +1131,93 @@ System::getContainer()->get('contao.data_container.global_operations_builder')->
 
 				$this->denyAccessUnlessGranted(ContaoCorePermissions::DC_PREFIX . $this->strTable, new ReadAction($this->strTable, $row));
 
+				$recordOperations = $this->generateButtons($row, $this->strTable, $this->root);
+				(new \ReflectionMethod(\Contao\DC_Table::class, 'respondWithSingleRecordOperationsIfNeeded'))->invoke($this, $this->strTable, (int) $row['id'], $recordOperations);
+
+				$record = array(
+					'id' => $row['id'],
+					'is_draft' => (string) ($row['tstamp'] ?? null) === '0',
+					'operations' => $recordOperations,
+				);
+
+				if ($this->strPickerFieldType)
+				{
+					$record['picker_input_field'] = $this->getPickerInputField($row['id']);
+				}
+
 				$this->current[] = $row['id'];
 				$label = $this->generateRecordLabel($row, $this->strTable);
 
-				// Build the sorting groups
-				if (($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] ?? null) > 0)
+				// Add the group header
+				if (($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] ?? null) > 0 && !($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns'] ?? null) && !($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['disableGrouping'] ?? null))
 				{
-					$current = $row[$firstOrderBy];
 					$orderBy = $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['fields'] ?? array('id');
 					$sortingMode = (\count($orderBy) == 1 && $firstOrderBy == $orderBy[0] && ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['flag'] ?? null) && !($GLOBALS['TL_DCA'][$this->strTable]['fields'][$firstOrderBy]['flag'] ?? null)) ? $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['flag'] : ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$firstOrderBy]['flag'] ?? null);
-					$remoteNew = $this->formatCurrentValue($firstOrderBy, $current, $sortingMode);
+					$group = $this->formatGroupHeader($firstOrderBy, $row[$firstOrderBy], $sortingMode, $row);
 
-					// Add the group header
-					if (($remoteNew != $remoteCur || $remoteCur === false) && !($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns'] ?? null) && !($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['disableGrouping'] ?? null))
+					if ($group != $strGroup)
 					{
-						$group = $this->formatGroupHeader($firstOrderBy, $remoteNew, $sortingMode, $row);
-						$remoteCur = $remoteNew;
-
-						$return .= '
-  <tr>
-    <th colspan="2" class="' . $groupclass . '">' . $group . '</th>
-  </tr>';
-						$groupclass = 'tl_folder_list';
+						$record['group_header'] = $group;
+						$strGroup = $group;
 					}
 				}
 
-				$return .= '
-  <tr class="' . ((string) ($row['tstamp'] ?? null) === '0' ? 'draft ' : '') . ' hover-row" data-controller="contao--deeplink contao--operations-menu" data-action="contextmenu->contao--operations-menu#open click->contao--check-all#toggleInput">
-    ';
-
-				$colspan = 1;
-
-				// Handle strings and arrays
-				if (!($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns'] ?? null))
+				if ($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns'] ?? false)
 				{
-					$label = \is_array($label) ? implode(' ', $label) : $label;
-				}
-				elseif (!\is_array($label))
-				{
-					$label = array($label);
-					$colspan = \count($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['fields'] ?? array());
-				}
+					$colspan = 1;
 
-				// Show columns
-				if ($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns'] ?? null)
-				{
+					if (!\is_array($label))
+					{
+						$label = array($label);
+						$colspan = \count($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['fields'] ?? array());
+					}
+
+					$record['columns'] = array();
+					$record['columns_colspan'] = $colspan;
+
 					foreach ($label as $j=>$arg)
 					{
 						$field = $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['fields'][$j] ?? null;
+						$name = explode(':', $field, 2)[0];
 						$value = (string) $arg !== '' ? $arg : '-';
 
-						$return .= '<td colspan="' . $colspan . '" class="tl_file_list col_' . explode(':', $field, 2)[0] . ($field == $firstOrderBy ? ' ordered_by' : '') . '">' . $value . '</td>';
+						$record['columns'][$name] = $value;
 					}
 				}
 				else
 				{
-					$return .= '<td class="tl_file_list">' . ($limitHeight ? '<div data-contao--limit-height-target="node">' : '') . $label . ($limitHeight ? '</div>' : '') . '</td>';
+					$record['label'] = \is_array($label) ? implode(' ', $label) : $label;
 				}
 
-				// Buttons ($row, $table, $root, $blnCircularReference, $children, $previous, $next)
-				$return .= ((Input::get('act') == 'select') ? '
-    <td class="tl_file_list tl_right_nowrap"><input type="checkbox" name="IDS[]" id="ids_' . $row['id'] . '" class="tl_tree_checkbox" data-contao--check-all-target="input" data-action="contao--check-all#toggleInput" value="' . $row['id'] . '"></td>' : '
-    <td class="tl_file_list tl_right_nowrap">' . $this->generateButtons($row, $this->strTable, $this->root) . ($this->strPickerFieldType ? $this->getPickerInputField($row['id']) : '') . '</td>') . '
-  </tr>';
+				$records[] = $record;
 			}
 
-			// Close the table body if the "show columns" option is active
-			if ($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns'] ?? null)
-			{
-				$return .= '</tbody>';
-			}
-
-			// Close the table
-			$return .= '
-</table>' . ($this->strPickerFieldType == 'radio' ? '
-<div class="tl_radio_reset">
-<label for="tl_radio_reset" class="tl_radio_label">' . $GLOBALS['TL_LANG']['MSC']['resetSelected'] . '</label> <input type="radio" name="picker" id="tl_radio_reset" value="" class="tl_tree_radio">
-</div>' : '') . '
-</div>';
-
-			// Add another panel at the end of the page
+			// Add pagination
 			if (str_contains($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['panelLayout'] ?? '', 'limit'))
 			{
-				$return .= $this->paginationMenu();
+				$parameters['pagination'] = $this->paginationMenu();
 			}
 
-			// Close the form
+			// Add select buttons
 			if (Input::get('act') == 'select')
 			{
-				$strButtons = System::getContainer()->get('contao.data_container.buttons_builder')->generateSelectButtons($this->strTable, false, $this);
-
-				$return .= '
-</div>
-  ' . $strButtons . '
-</form>';
+				$parameters['buttons'] = System::getContainer()->get('contao.data_container.buttons_builder')->generateSelectButtons($this->strTable, false, $this);
 			}
 		}
 
-		if ($limitHeight)
-		{
-			$return = '<div
-				data-controller="contao--limit-height"
-				data-contao--limit-height-max-value="' . $limitHeight . '"
-				data-contao--limit-height-expand-value="' . $GLOBALS['TL_LANG']['MSC']['expandNode'] . '"
-				data-contao--limit-height-collapse-value="' . $GLOBALS['TL_LANG']['MSC']['collapseNode'] . '"
-				data-contao--limit-height-expand-all-value="' . $GLOBALS['TL_LANG']['DCA']['expandNodes'][0] . '"
-				data-contao--limit-height-expand-all-title-value="' . $GLOBALS['TL_LANG']['DCA']['expandNodes'][1] . '"
-				data-contao--limit-height-collapse-all-value="' . $GLOBALS['TL_LANG']['DCA']['collapseNodes'][0] . '"
-				data-contao--limit-height-collapse-all-title-value="' . $GLOBALS['TL_LANG']['DCA']['collapseNodes'][1] . '"
-			>' . $return . '</div>';
-		}
+		$parameters['message'] = Message::generate();
+		$parameters['global_operations'] = $operations;
+		$parameters['records'] = $records;
+		$parameters['order_by'] = $firstOrderBy;
+		$parameters['show_columns'] = $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns'] ?? false;
+		$parameters['table_name'] = $this->strTable;
+		$parameters['primary_only'] = $this->shouldRenderPrimaryOperationsOnly();
 
-		return $return;
+		return $this->render('view/list', $parameters);
 	}
 
 	/**
-	 * Show header of the parent table and list all records of the current table
-	 *
-	 * @return string
+	 * Show the main product header and list its variants.
 	 */
 	protected function parentView()
 	{
@@ -1270,9 +1227,7 @@ System::getContainer()->get('contao.data_container.global_operations_builder')->
 		$arrClipboard = System::getContainer()->get('contao.data_container.clipboard_manager')->get($this->strTable);
 		$blnClipboard = null !== $arrClipboard;
 		$blnMultiboard = null !== $arrClipboard && \is_array($arrClipboard['id'] ?? null);
-
-		$labelCut = $GLOBALS['TL_LANG'][$this->strTable]['cut'] ?? $GLOBALS['TL_LANG']['DCA']['cut'];
-		$limitHeight = BackendUser::getInstance()->doNotCollapse ? false : (int) ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['limitHeight'] ?? 0);
+		$canAddNew = !$blnClipboard && !($GLOBALS['TL_DCA'][$this->strTable]['config']['closed'] ?? null) && !($GLOBALS['TL_DCA'][$this->strTable]['config']['notCreatable'] ?? null) && !($GLOBALS['TL_DCA'][$this->strTable]['config']['notEditable'] ?? null);
 
 		$db = Database::getInstance();
 		$security = System::getContainer()->get('security.helper');
@@ -1280,21 +1235,21 @@ System::getContainer()->get('contao.data_container.global_operations_builder')->
 
 		if (!Input::get('nb'))
 		{
-			if ($this->ptable && 'select' === Input::get('act'))
+			if (Input::get('act') == 'select')
 			{
 				$operations->addBackButton('do='.Input::get('do').'&amp;id='.Input::get('id'));
-			}
-			elseif ($this->ptable)
-			{
-				$operations->addBackButton('do='.Input::get('do'));
 			}
 			elseif (isset($GLOBALS['TL_DCA'][$this->strTable]['config']['backlink']))
 			{
 				$operations->addBackButton($GLOBALS['TL_DCA'][$this->strTable]['config']['backlink']);
 			}
+			elseif ($this->ptable)
+			{
+                $operations->addBackButton('do='.Input::get('do'));
+			}
 		}
 
-		if (Input::get('act') != 'select' && !$blnClipboard && !($GLOBALS['TL_DCA'][$this->strTable]['config']['closed'] ?? null) && !($GLOBALS['TL_DCA'][$this->strTable]['config']['notCreatable'] ?? null) && $security->isGranted(ContaoCorePermissions::DC_PREFIX . $this->strTable, new CreateAction($this->strTable, array('pid' => $this->intCurrentPid))))
+		if (Input::get('act') != 'select' && $canAddNew && $security->isGranted(ContaoCorePermissions::DC_PREFIX . $this->strTable, new CreateAction($this->strTable, $this->addDynamicPtable(array('pid' => $this->intCurrentPid)))))
 		{
 			if ($blnHasSorting)
 			{
@@ -1319,207 +1274,158 @@ System::getContainer()->get('contao.data_container.global_operations_builder')->
 
 		$operations->addFilterButton();
 
-		$return = Message::generate() . $operations;
-
 		// Get all details of the parent record
 		$objParent = $db
 			->prepare("SELECT * FROM " . $this->ptable . " WHERE id=?")
 			->limit(1)
 			->execute($this->intCurrentPid);
 
-		if ($objParent->numRows < 1)
+		if (!$objParent->numRows)
 		{
-			return $return;
+			throw new ResponseException(new Response(\sprintf('No parent record with ID "%s" exists in "%s".', $this->intCurrentPid, $this->ptable), Response::HTTP_NOT_FOUND));
 		}
 
-		$return .= ((Input::get('act') == 'select') ? '
+		$parameters = array(
+			'is_sortable' => false,
+			'has_clipboard_content' => $blnClipboard,
+		);
 
-<form id="tl_select" class="tl_form' . ((Input::get('act') == 'select') ? ' unselectable' : '') . '" method="post" novalidate>
-<div class="tl_formbody_edit">
-<input type="hidden" name="FORM_SUBMIT" value="tl_select">
-<input type="hidden" name="REQUEST_TOKEN" value="' . htmlspecialchars(System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue(), ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5) . '">' : '') . ($blnClipboard ? '
-<div id="paste_hint">
-  <p>' . $GLOBALS['TL_LANG']['MSC']['selectNewPosition'] . '</p>
-</div>' : '') . '
-<div class="tl_listing_container iso_listing_container parent_view' . (($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['renderAsGrid'] ?? false) ? ' as-grid' : '') . ($this->strPickerFieldType ? ' picker unselectable' : '') . '" id="tl_listing" data-controller="contao--check-all"' . $this->getPickerValueAttribute() . '>
-<div class="tl_header hover-div" data-controller="contao--deeplink contao--operations-menu" data-action="contextmenu->contao--operations-menu#open click->contao--check-all#toggleInput">';
-
-		// List all records of the child table
-		if (\in_array(Input::get('act'), array('select', null)))
+		if (Input::get('act') != 'select' && $this->strPickerFieldType != 'checkbox')
 		{
-			// Header
-			$security = System::getContainer()->get('security.helper');
-
-			$return .= '
-<div class="tl_content_right">';
-
-			if (Input::get('act') == 'select' || $this->strPickerFieldType == 'checkbox')
+			if ($blnClipboard)
 			{
-				$return .= '
-<label for="tl_select_trigger" class="tl_select_label">' . $GLOBALS['TL_LANG']['MSC']['selectAll'] . '</label> <input type="checkbox" id="tl_select_trigger" data-action="contao--check-all#toggleAll" class="tl_tree_checkbox">';
+				$headerOperations = System::getContainer()->get('contao.data_container.operations_builder')->initialize($this->strTable);
+				$headerOperations->addPasteButton('pastetop', $table, $this->addToUrl('act=' . $arrClipboard['mode'] . '&amp;mode=2&amp;pid=' . $objParent->id . (!$blnMultiboard ? '&amp;id=' . $arrClipboard['id'] : '')));
 			}
 			else
 			{
-				if ($blnClipboard)
-				{
-					$operations = System::getContainer()->get('contao.data_container.operations_builder')->initialize($this->strTable);
-					$operations->addPasteButton('pastetop', $table, $this->addToUrl('act=' . $arrClipboard['mode'] . '&amp;mode=2&amp;pid=' . $objParent->id . (!$blnMultiboard ? '&amp;id=' . $arrClipboard['id'] : '')));
+				$headerOperations = $this->generateHeaderButtons($objParent->row(), $this->ptable);
+			}
 
-					$return .= $operations;
+			$parameters['header_operations'] = $headerOperations;
+		}
+
+		// Format header fields
+		$add = array();
+		$headerFields = $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['headerFields'];
+		$valueFormatter = System::getContainer()->get('contao.data_container.value_formatter');
+
+		$dc = (new \ReflectionClass(static::class))->newInstanceWithoutConstructor();
+		$dc->strTable = $this->strTable;
+		$dc->intId = $this->intCurrentPid;
+
+		foreach ($headerFields as $v)
+		{
+			$dc->strField = $v;
+			$_v = $valueFormatter->format($this->ptable, $v, $objParent->$v, $dc);
+
+			// Add the sorting field
+			if ($_v)
+			{
+				if (isset($GLOBALS['TL_DCA'][$this->ptable]['fields'][$v]['label']))
+				{
+					$key = \is_array($GLOBALS['TL_DCA'][$this->ptable]['fields'][$v]['label']) ? $GLOBALS['TL_DCA'][$this->ptable]['fields'][$v]['label'][0] : $GLOBALS['TL_DCA'][$this->ptable]['fields'][$v]['label'];
 				}
 				else
 				{
-					$operations = $this->generateHeaderButtons($objParent->row(), $this->ptable);
-
-					if ($blnHasSorting && !($GLOBALS['TL_DCA'][$this->strTable]['config']['closed'] ?? null) && !($GLOBALS['TL_DCA'][$this->strTable]['config']['notCreatable'] ?? null) && $security->isGranted(ContaoCorePermissions::DC_PREFIX . $this->strTable, new CreateAction($this->strTable, $this->addDynamicPtable(array('pid' => $objParent->id, 'sorting' => 0)))))
-					{
-						$operations->addSeparator();
-						$operations->addNewButton($operations::CREATE_TOP, $table, $objParent->id, $this->intId);
-					}
-
-					$return .= $operations;
+					$key = $GLOBALS['TL_LANG'][$this->ptable][$v][0] ?? $v;
 				}
+
+				$add[$key] = $_v;
 			}
+		}
 
-			$return .= '
-</div>';
+		// Trigger the header_callback (see #3417)
+		if (\is_array($GLOBALS['TL_DCA'][$table]['list']['sorting']['header_callback'] ?? null))
+		{
+			$add = System::importStatic($GLOBALS['TL_DCA'][$table]['list']['sorting']['header_callback'][0])->{$GLOBALS['TL_DCA'][$table]['list']['sorting']['header_callback'][1]}($add, $this);
+		}
+		elseif (\is_callable($GLOBALS['TL_DCA'][$table]['list']['sorting']['header_callback'] ?? null))
+		{
+			$add = $GLOBALS['TL_DCA'][$table]['list']['sorting']['header_callback']($add, $this);
+		}
 
-			// Format header fields
-			$add = array();
-			$headerFields = $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['headerFields'];
-			$valueFormatter = System::getContainer()->get('contao.data_container.value_formatter');
+		$parameters['table_headers'] = array_map(static fn ($v) => \is_array($v) ? $v[0] : $v, $add);
 
-			foreach ($headerFields as $v)
+		$orderBy = array();
+		$firstOrderBy = array();
+
+		// Add all records of the current table
+		$query = "SELECT * FROM " . $this->strTable;
+
+		if (\is_array($this->orderBy) && isset($this->orderBy[0]))
+		{
+			$orderBy = $this->orderBy;
+			$firstOrderBy = preg_replace('/\s+.*$/', '', $orderBy[0]);
+
+			// Order by the foreign key
+			if (isset($GLOBALS['TL_DCA'][$this->strTable]['fields'][$firstOrderBy]['foreignKey']))
 			{
-				$_v = $valueFormatter->format($this->ptable, $v, $objParent->$v, $this);
+				$dcaExtractor = DcaExtractor::getInstance($this->strTable);
+				$fkField = $dcaExtractor->getRelations()[$firstOrderBy]['field'] ?? 'id';
+				$fkField = Database::quoteIdentifier($fkField);
 
-				// Add the sorting field
-				if ($_v)
+				$fk = System::getContainer()->get('contao.data_container.foreign_key_parser')->parse($GLOBALS['TL_DCA'][$this->strTable]['fields'][$firstOrderBy]['foreignKey']);
+				$orderBy[0] = "(SELECT " . $fk->getColumnExpression() . " FROM " . $fk->getTableName() . " WHERE " . $this->strTable . "." . Database::quoteIdentifier($firstOrderBy) . "=" . $fk->getTableName() . ".$fkField)";
+			}
+		}
+		elseif (\is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['fields'] ?? null))
+		{
+			$orderBy = $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['fields'];
+			$firstOrderBy = preg_replace('/\s+.*$/', '', $orderBy[0]);
+		}
+
+		$arrProcedure = $this->procedure;
+		$arrValues = $this->values;
+
+		// PATCH: Filter variants by their main product.
+		$arrProcedure[] = 'pid=?';
+		$arrValues[] = $this->intCurrentPid;
+
+		// WHERE
+		if (!empty($arrProcedure))
+		{
+			$query .= " WHERE " . implode(' AND ', $arrProcedure);
+		}
+
+		if (!empty($this->root) && \is_array($this->root))
+		{
+			$query .= (!empty($arrProcedure) ? " AND " : " WHERE ") . "id IN(" . implode(',', array_map('\intval', $this->root)) . ")";
+		}
+
+		// ORDER BY
+		if (!empty($orderBy) && \is_array($orderBy))
+		{
+			foreach ($orderBy as $k=>$v)
+			{
+				if (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['flag'] ?? null, array(self::SORT_INITIAL_LETTER_DESC, self::SORT_INITIAL_LETTERS_DESC, self::SORT_DAY_DESC, self::SORT_MONTH_DESC, self::SORT_YEAR_DESC, self::SORT_DESC)))
 				{
-					if (isset($GLOBALS['TL_DCA'][$this->ptable]['fields'][$v]['label']))
-					{
-						$key = \is_array($GLOBALS['TL_DCA'][$this->ptable]['fields'][$v]['label']) ? $GLOBALS['TL_DCA'][$this->ptable]['fields'][$v]['label'][0] : $GLOBALS['TL_DCA'][$this->ptable]['fields'][$v]['label'];
-					}
-					else
-					{
-						$key = $GLOBALS['TL_LANG'][$this->ptable][$v][0] ?? $v;
-					}
-
-					$add[$key] = $_v;
+					$orderBy[$k] .= ' DESC';
 				}
 			}
 
-			// Trigger the header_callback (see #3417)
-			if (\is_array($GLOBALS['TL_DCA'][$table]['list']['sorting']['header_callback'] ?? null))
-			{
-				$add = System::importStatic($GLOBALS['TL_DCA'][$table]['list']['sorting']['header_callback'][0])->{$GLOBALS['TL_DCA'][$table]['list']['sorting']['header_callback'][1]}($add, $this);
-			}
-			elseif (\is_callable($GLOBALS['TL_DCA'][$table]['list']['sorting']['header_callback'] ?? null))
-			{
-				$add = $GLOBALS['TL_DCA'][$table]['list']['sorting']['header_callback']($add, $this);
-			}
+			$query .= " ORDER BY " . implode(', ', $orderBy) . ', id';
+		}
 
-			// Output the header data
-			$return .= '
+		$objOrderByStmt = $db->prepare($query);
 
-<table class="tl_header_table">';
+		// LIMIT
+		if ($this->limit)
+		{
+			$arrLimit = explode(',', $this->limit) + array(null, null);
+			$objOrderByStmt->limit($arrLimit[1], $arrLimit[0]);
+		}
 
-			foreach ($add as $k=>$v)
-			{
-				if (\is_array($v))
-				{
-					$v = $v[0];
-				}
+		$objOrderBy = $objOrderByStmt->execute(...$arrValues);
+		$records = array();
 
-				$return .= '
-  <tr>
-    <td><span class="tl_label">' . $k . ':</span> </td>
-    <td>' . $v . '</td>
-  </tr>';
-			}
-
-			$return .= '
-</table>
-</div>';
-
-			$orderBy = array();
-			$firstOrderBy = array();
-
-			// Add all records of the current table
-			$query = "SELECT * FROM " . $this->strTable;
-
-			if (\is_array($this->orderBy) && isset($this->orderBy[0]))
-			{
-				$orderBy = $this->orderBy;
-				$firstOrderBy = preg_replace('/\s+.*$/', '', $orderBy[0]);
-
-				// Order by the foreign key
-				if (isset($GLOBALS['TL_DCA'][$this->strTable]['fields'][$firstOrderBy]['foreignKey']))
-				{
-					$key = explode('.', $GLOBALS['TL_DCA'][$this->strTable]['fields'][$firstOrderBy]['foreignKey'], 2);
-					$orderBy[0] = "(SELECT " . Database::quoteIdentifier($key[1]) . " FROM " . $key[0] . " WHERE " . $this->strTable . "." . Database::quoteIdentifier($firstOrderBy) . "=" . $key[0] . ".id)";
-				}
-			}
-			elseif (\is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['fields'] ?? null))
-			{
-				$orderBy = $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['fields'];
-				$firstOrderBy = preg_replace('/\s+.*$/', '', $orderBy[0]);
-			}
-
-			$arrProcedure = $this->procedure;
-			$arrValues = $this->values;
-
-			// PATCH: filter for parent ID
-			$arrProcedure[] = "pid=?";
-			$arrValues[] = $this->intCurrentPid;
-
-			// WHERE
-			if (!empty($arrProcedure))
-			{
-				$query .= " WHERE " . implode(' AND ', $arrProcedure);
-			}
-
-			if (!empty($this->root) && \is_array($this->root))
-			{
-				$query .= (!empty($arrProcedure) ? " AND " : " WHERE ") . "id IN(" . implode(',', array_map('\intval', $this->root)) . ")";
-			}
-
-			// ORDER BY
-			if (!empty($orderBy) && \is_array($orderBy))
-			{
-				foreach ($orderBy as $k=>$v)
-				{
-					if (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['flag'] ?? null, array(self::SORT_INITIAL_LETTER_DESC, self::SORT_INITIAL_LETTERS_DESC, self::SORT_DAY_DESC, self::SORT_MONTH_DESC, self::SORT_YEAR_DESC, self::SORT_DESC)))
-					{
-						$orderBy[$k] .= ' DESC';
-					}
-				}
-
-				$query .= " ORDER BY " . implode(', ', $orderBy) . ', id';
-			}
-
-			$objOrderByStmt = $db->prepare($query);
-
-			// LIMIT
-			if ($this->limit)
-			{
-				$arrLimit = explode(',', $this->limit) + array(null, null);
-				$objOrderByStmt->limit($arrLimit[1], $arrLimit[0]);
-			}
-
-			$objOrderBy = $objOrderByStmt->execute(...$arrValues);
-
-			if ($objOrderBy->numRows < 1)
-			{
-				return $return . '
-<p class="tl_empty_parent_view">' . $GLOBALS['TL_LANG']['MSC']['noResult'] . '</p>
-</div>';
-			}
-
-			$result = $objOrderBy->fetchAllAssoc();
-			$return .= '
-
-<table class="tl_listing' . (($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns'] ?? null) ? ' showColumns' : '') . ($this->strPickerFieldType ? ' picker unselectable' : '') . '">';
+		if ($objOrderBy->numRows)
+		{
+			// Render the child records
+			$strGroup = '';
+			$row = $objOrderBy->fetchAllAssoc();
+			// Initialize the private core counter before generating record operations.
+			(new \ReflectionProperty(\Contao\DC_Table::class, 'lazyLoadOperationsRows'))->setValue($this, \count($row));
 
 			// Automatically add the "order by" field as last column if we do not have group headers
 			if (($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns'] ?? null) && false !== ($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showFirstOrderBy'] ?? null))
@@ -1548,12 +1454,10 @@ System::getContainer()->get('contao.data_container.global_operations_builder')->
 			}
 
 			// Generate the table header if the "show columns" option is active
+			$parameters['column_headers'] = array();
+
 			if ($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns'] ?? null)
 			{
-				$return .= '
-<thead>
-  <tr>';
-
 				foreach ($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['fields'] as $f)
 				{
 					if (str_contains($f, ':'))
@@ -1561,140 +1465,111 @@ System::getContainer()->get('contao.data_container.global_operations_builder')->
 						list($f) = explode(':', $f, 2);
 					}
 
-					$return .= '
-    <th class="tl_folder_tlist col_' . $f . (($f == $firstOrderBy) ? ' ordered_by' : '') . '">' . (\is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$f]['label'] ?? null) ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$f]['label'][0] : ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$f]['label'] ?? $f)) . '</th>';
+					$parameters['column_headers'][$f] = \is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$f]['label'] ?? null)
+						? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$f]['label'][0]
+						: ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$f]['label'] ?? $f)
+					;
 				}
-
-				$return .= '
-    <th class="tl_folder_tlist tl_right_nowrap"></th>
-  </tr>
-</thead>
-<tbody>';
 			}
 
-			// Process result and add label and buttons
-			$remoteCur = false;
-			$groupclass = 'tl_folder_tlist';
-
-			foreach ($result as $row)
+			for ($i=0, $c=\count($row); $i<$c; $i++)
 			{
-				// Improve performance for $dc->getCurrentRecord($id);
-				static::setCurrentRecordCache($row['id'], $this->strTable, $row);
+				// Improve performance
+				static::setCurrentRecordCache($row[$i]['id'], $this->strTable, $row[$i]);
 
-				$this->denyAccessUnlessGranted(ContaoCorePermissions::DC_PREFIX . $this->strTable, new ReadAction($this->strTable, $row));
+				$this->denyAccessUnlessGranted(ContaoCorePermissions::DC_PREFIX . $this->strTable, new ReadAction($this->strTable, $row[$i]));
 
-				$this->current[] = $row['id'];
-				$label = $this->generateRecordLabel($row, $this->strTable);
+				$this->current[] = $row[$i]['id'];
 
-				// Build the sorting groups
-				if (($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] ?? null) > 0)
+				$record = array(
+					'id' => $row[$i]['id'],
+					'is_draft' => (string) ($row[$i]['tstamp'] ?? null) === '0',
+				);
+
+				if ($this->strPickerFieldType)
 				{
-					$current = $row[$firstOrderBy];
+					$record['picker_input_field'] = $this->getPickerInputField($row[$i]['id']);
+				}
+
+				// Add the group header
+				if (($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] ?? null) > 0 && !($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns'] ?? null) && !($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['disableGrouping'] ?? null))
+				{
 					$orderBy = $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['fields'] ?? array('id');
 					$sortingMode = (\count($orderBy) == 1 && $firstOrderBy == $orderBy[0] && ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['flag'] ?? null) && !($GLOBALS['TL_DCA'][$this->strTable]['fields'][$firstOrderBy]['flag'] ?? null)) ? $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['flag'] : ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$firstOrderBy]['flag'] ?? null);
-					$remoteNew = $this->formatCurrentValue($firstOrderBy, $current, $sortingMode);
+					$group = $this->formatGroupHeader($firstOrderBy, $row[$i][$firstOrderBy], $sortingMode, $row[$i]);
 
-					// Add the group header
-					if (($remoteNew != $remoteCur || $remoteCur === false) && !($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns'] ?? null) && !($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['disableGrouping'] ?? null))
+					if ($group != $strGroup)
 					{
-						$group = $this->formatGroupHeader($firstOrderBy, $remoteNew, $sortingMode, $row);
-						$remoteCur = $remoteNew;
-
-						$return .= '
-  <tr>
-    <th colspan="2" class="' . $groupclass . '">' . $group . '</th>
-  </tr>';
-						$groupclass = 'tl_folder_list';
+						$record['group_header'] = $group;
+						$strGroup = $group;
 					}
 				}
 
-				$return .= '
-  <tr class="' . ((string) ($row['tstamp'] ?? null) === '0' ? 'draft ' : '') . ' hover-row" data-controller="contao--deeplink contao--operations-menu" data-action="contextmenu->contao--operations-menu#open click->contao--check-all#toggleInput">
-    ';
-
-				$colspan = 1;
-
-				// Handle strings and arrays
-				if (!($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns'] ?? null))
+				if (Input::get('act') != 'select')
 				{
-					$label = \is_array($label) ? implode(' ', $label) : $label;
-				}
-				elseif (!\is_array($label))
-				{
-					$label = array($label);
-					$colspan = \count($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['fields'] ?? array());
+					$recordOperations = $this->generateButtons($row[$i], $this->strTable, $this->root);
+
+					(new \ReflectionMethod(\Contao\DC_Table::class, 'respondWithSingleRecordOperationsIfNeeded'))->invoke($this, $this->strTable, (int) $row[$i]['id'], $recordOperations);
+
+					$record['operations'] = $recordOperations;
 				}
 
-				// Show columns
-				if ($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns'] ?? null)
+				$label = $this->generateRecordLabel($row[$i], $this->strTable);
+
+				if ($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns'] ?? false)
 				{
+					$colspan = 1;
+
+					if (!\is_array($label))
+					{
+						$label = array($label);
+						$colspan = \count($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['fields'] ?? array());
+					}
+
+					$record['columns'] = array();
+					$record['columns_colspan'] = $colspan;
+
 					foreach ($label as $j=>$arg)
 					{
 						$field = $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['fields'][$j] ?? null;
+						$name = explode(':', $field, 2)[0];
 						$value = (string) $arg !== '' ? $arg : '-';
 
-						$return .= '<td colspan="' . $colspan . '" class="tl_file_list col_' . explode(':', $field, 2)[0] . ($field == $firstOrderBy ? ' ordered_by' : '') . '">' . $value . '</td>';
+						$record['columns'][$name] = $value;
 					}
 				}
 				else
 				{
-					$return .= '<td class="tl_file_list">' . ($limitHeight ? '<div data-contao--limit-height-target="node">' : '') . $label . ($limitHeight ? '</div>' : '') . '</td>';
+					$record['label'] = \is_array($label) ? implode(' ', $label) : $label;
 				}
 
-				// Buttons ($row, $table, $root, $blnCircularReference, $children, $previous, $next)
-				$return .= ((Input::get('act') == 'select') ? '
-    <td class="tl_file_list tl_right_nowrap"><input type="checkbox" name="IDS[]" id="ids_' . $row['id'] . '" class="tl_tree_checkbox" data-contao--check-all-target="input" data-action="contao--check-all#toggleInput" value="' . $row['id'] . '"></td>' : '
-    <td class="tl_file_list tl_right_nowrap">' . $this->generateButtons($row, $this->strTable, $this->root) . ($this->strPickerFieldType ? $this->getPickerInputField($row['id']) : '') . '</td>') . '
-  </tr>';
+				$records[] = $record;
 			}
 
-			// Close the table body if the "show columns" option is active
-			if ($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns'] ?? null)
-			{
-				$return .= '</tbody>';
-			}
+		    $parameters['records'] = $records;
 
-			// Close the table
-			$return .= '
-</table>' . ($this->strPickerFieldType == 'radio' ? '
-<div class="tl_radio_reset">
-<label for="tl_radio_reset" class="tl_radio_label">' . $GLOBALS['TL_LANG']['MSC']['resetSelected'] . '</label> <input type="radio" name="picker" id="tl_radio_reset" value="" class="tl_tree_radio">
-</div>' : '') . '
-</div>';
 
-			// Add another panel at the end of the page
+			// Add pagination
 			if (str_contains($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['panelLayout'] ?? '', 'limit'))
 			{
-				$return .= $this->paginationMenu();
+				$parameters['pagination'] = $this->paginationMenu();
 			}
 
-			// Close the form
+			// Add select buttons
 			if (Input::get('act') == 'select')
 			{
-				$strButtons = System::getContainer()->get('contao.data_container.buttons_builder')->generateSelectButtons($this->strTable, false, $this);
-
-				$return .= '
-</div>
-  ' . $strButtons . '
-</form>';
+				$parameters['buttons'] = System::getContainer()->get('contao.data_container.buttons_builder')->generateSelectButtons($this->strTable, false, $this);
 			}
 		}
 
-		if ($limitHeight)
-		{
-			$return = '<div
-				data-controller="contao--limit-height"
-				data-contao--limit-height-max-value="' . $limitHeight . '"
-				data-contao--limit-height-expand-value="' . $GLOBALS['TL_LANG']['MSC']['expandNode'] . '"
-				data-contao--limit-height-collapse-value="' . $GLOBALS['TL_LANG']['MSC']['collapseNode'] . '"
-				data-contao--limit-height-expand-all-value="' . $GLOBALS['TL_LANG']['DCA']['expandNodes'][0] . '"
-				data-contao--limit-height-expand-all-title-value="' . $GLOBALS['TL_LANG']['DCA']['expandNodes'][1] . '"
-				data-contao--limit-height-collapse-all-value="' . $GLOBALS['TL_LANG']['DCA']['collapseNodes'][0] . '"
-				data-contao--limit-height-collapse-all-title-value="' . $GLOBALS['TL_LANG']['DCA']['collapseNodes'][1] . '"
-			>' . $return . '</div>';
-		}
+		$parameters['message'] = Message::generate();
+		$parameters['global_operations'] = $operations;
+		$parameters['order_by'] = $firstOrderBy;
+		$parameters['show_columns'] = $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns'] ?? false;
+		$parameters['table_name'] = $this->strTable;
+		$parameters['primary_only'] = $this->shouldRenderPrimaryOperationsOnly();
 
-		return $return;
+		return $this->render('view/parent', $parameters);
 	}
 
 	/**
@@ -1945,8 +1820,12 @@ System::getContainer()->get('contao.data_container.global_operations_builder')->
 
 			if (isset($GLOBALS['TL_DCA'][$this->strTable]['fields'][$fld]['foreignKey']))
 			{
-				list($t, $f) = explode('.', $GLOBALS['TL_DCA'][$this->strTable]['fields'][$fld]['foreignKey'], 2);
-				$this->procedure[] = "(" . \sprintf($strPattern, Database::quoteIdentifier($fld)) . " OR " . \sprintf($strPattern, "(SELECT " . Database::quoteIdentifier($f) . " FROM $t WHERE $t.id=" . $this->strTable . "." . Database::quoteIdentifier($fld) . ")") . ")";
+				$dcaExtractor = DcaExtractor::getInstance($this->strTable);
+				$fkField = $dcaExtractor->getRelations()[$fld]['field'] ?? 'id';
+				$fkField = Database::quoteIdentifier($fkField);
+
+				$fk = System::getContainer()->get('contao.data_container.foreign_key_parser')->parse($GLOBALS['TL_DCA'][$this->strTable]['fields'][$fld]['foreignKey']);
+				$this->procedure[] = "(" . \sprintf($strPattern, Database::quoteIdentifier($fld)) . " OR " . \sprintf($strPattern, "(SELECT " . $fk->getColumnExpression() . " FROM " . $fk->getTableName() . " WHERE " . $fk->getTableName() . ".$fkField=" . $this->strTable . "." . Database::quoteIdentifier($fld) . ")") . ")";
 				$this->values[] = $searchValue;
 			}
 			else
@@ -2475,6 +2354,7 @@ System::getContainer()->get('contao.data_container.global_operations_builder')->
 			'error' => $this->noReload,
 			'as_select' => Input::get('act') === 'select',
 			'as_picker' => (bool) $this->strPickerFieldType,
+			'panel_active' => $this->panelActive,
 		);
 
 		if ($defaultParameters['as_picker'])
@@ -2486,6 +2366,8 @@ System::getContainer()->get('contao.data_container.global_operations_builder')->
 		}
 
         $namespace = match ($component) {
+            'view/list',
+            'view/parent',
             'multiple',
             'single' => 'productdata',
             default => 'table',

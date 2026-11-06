@@ -1,0 +1,119 @@
+{% extends '@Contao/backend/data_container/productdata/view/_base.html.twig' %}
+
+{% block view %}
+    {% embed '@Contao/backend/data_container/table/view/parent.html.twig' %}
+        {% trans_default_domain 'contao_default' %}
+
+        {% block listing %}
+            {% if has_clipboard_content %}
+                <div id="paste_hint"><p>{{ 'MSC.selectNewPosition'|trans }}</p></div>
+            {% endif %}
+
+            {% embed '@Contao/backend/data_container/table/view/_record_listing.html.twig' with {
+                listing_attributes: attrs().addClass('parent_view').addClass('as-grid', display_grid),
+            } %}
+                {% trans_default_domain 'contao_default' %}
+
+                {% block records %}
+                    <div class="tl_header hover-div" data-controller="contao--deeplink contao--operations-menu" data-action="contextmenu->contao--operations-menu#open click->contao--check-all#toggleInput">
+                        <div class="tl_content_right">
+                            {{ block('select_all_button') }}
+
+                            {{ header_operations|default|raw }}
+                        </div>
+
+                        <table class="tl_header_table">
+                            {% for label, value in table_headers %}
+                                <tr>
+                                    <td><span class="tl_label">{{ label }}:</span> </td>
+                                    <td>{{ value|raw }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+
+                    {% if records|length %}
+                        {% set table_attributes = attrs()
+                            .addClass('tl_listing')
+                            .addClass('showColumns', show_columns)
+                            .addClass(['picker', 'unselectable'], as_picker)
+                        %}
+                        <table{{ table_attributes }}>
+                            {% if column_headers|length %}
+                                <thead>
+                                <tr>
+                                    {% for name, label in column_headers %}
+                                        {% set table_header_attributes = attrs()
+                                            .addClass('tl_folder_tlist')
+                                            .addClass("col_#{name}")
+                                            .addClass('ordered_by', name == order_by)
+                                        %}
+                                        <th{{ table_header_attributes }}>{{ label }}</th>
+                                    {% endfor %}
+                                    <th class="tl_folder_tlist tl_right_nowrap"></th>
+                                </tr>
+                                </thead>
+                            {% endif %}
+
+                            <tbody>
+                            {% for record in records %}
+                                {# Group header #}
+                                {% if record.group_header is defined %}
+                                    <tr>
+                                        {% set group_header_attributes = attrs()
+                                            .set('colspan', 2)
+                                            .addClass('tl_folder_tlist', loop.first)
+                                            .addClass('tl_folder_list', not loop.first)
+                                        %}
+                                        <th{{ group_header_attributes }}>{{ record.group_header|raw }}</th>
+                                    </tr>
+                                {% endif %}
+
+                                {# Record #}
+                                {% set row_attributes = attrs()
+                                    .addClass('draft', record.is_draft)
+                                    .addClass('hover-row')
+                                    .set('data-controller', 'contao--deeplink contao--operations-menu')
+                                    .set('data-action', 'contextmenu->contao--operations-menu#open click->contao--check-all#toggleInput')
+                                    .set('data-contao--operations-menu-record-id-value', record.id)
+                                    .set('data-contao--operations-menu-record-table-value', table_name)
+                                    .set('data-contao--operations-menu-primary-only-value', primary_only ? 'true' : 'false')
+                                %}
+                                <tr{{ row_attributes }}>
+                                    {% if record.columns is defined %}
+                                        {# Record displayed as multiple columns #}
+                                        {% for name, label in record.columns %}
+                                            {% set col_attributes = attrs()
+                                                .set('colspan', record.columns_colspan)
+                                                .addClass('tl_file_list')
+                                                .addClass("col_#{name}")
+                                                .addClass('ordered_by', name == order_by)
+                                            %}
+                                            <td{{ col_attributes }}>{{ label|raw }}</td>
+                                        {% endfor %}
+                                    {% else %}
+                                        {# Record displayed as a single column #}
+                                        <td class="tl_file_list">
+                                            {% set label_attributes = attrs()
+                                                .set('data-contao--limit-height-target', 'node', limit_height)
+                                            %}
+                                            <div{{ label_attributes }}>{{ record.label|raw }}</div>
+                                        </td>
+                                    {% endif %}
+
+                                    {# Right column #}
+                                    <td class="tl_file_list tl_right_nowrap">
+                                        {{ include(('@Contao/backend/data_container/table/view/_record_operations.html.twig')) }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <p class="tl_empty_parent_view">{{ (panel_active ? 'MSC.noResultWithFilter' : 'MSC.noResult')|trans }}</p>
+                    {% endif %}
+                {% endblock %}
+            {% endembed %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
