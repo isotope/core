@@ -66,7 +66,7 @@
         <source>Custom database table (foreignKey)</source>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.optionsSource.attribute">
-        <source>Options Wizard (deprecated)</source>
+        <source>Options Wizard</source>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.options.0">
         <source>Options</source>
