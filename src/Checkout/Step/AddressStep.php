@@ -79,6 +79,8 @@ class AddressStep extends AbstractCheckoutStep
         $addShipping = null !== $cart->getShippingAddress();
         $shippingAddress = null;
         $shippingForm = null;
+        $billingErrors = [];
+        $shippingErrors = [];
 
         if ($requiresShipping && !$skipShipping) {
             $shippingAddress = $cart->getShippingAddress() ?? new AddressModel();
@@ -92,35 +94,25 @@ class AddressStep extends AbstractCheckoutStep
         }
 
         if ($this->isSubmitted($request)) {
-            $billingResult = $this->formBuilder->validate($billingForm, $context->getBillingAddressConfig());
+            $billingResult = $this->formBuilder->validate($billingForm, $billingAddressConfig);
             $addShipping = $requiresShipping && !$skipShipping && $request->request->getBoolean('add_shipping_address');
             $shippingResult = $addShipping ? $this->formBuilder->validate($shippingForm, $context->getShippingAddressConfig()) : false;
 
-            if (true === $billingResult) {
-                $cart->setBillingAddress($billingAddress);
-            } elseif (false === $billingResult) {
-                // TODO: handle error
-            } else {
-                // $errors = $billingResult;
-                // TODO: handle error
+            if (true !== $billingResult) {
+                $event->setHasError();
+                $billingErrors = $billingResult ?: [$this->translator->trans('MSC.address_error', [], 'contao_default')];
             }
 
-            if ($addShipping) {
-                if (true === $shippingResult) {
-                    $cart->setShippingAddress($shippingAddress);
-                } elseif (false === $shippingResult) {
-                    // TODO: handle error
-                } else {
-                    // $errors = $shippingResult;
-                    // TODO: handle error
-                }
-            } else {
-                $cart->setShippingAddress(null);
+            if ($addShipping && true !== $shippingResult) {
+                $event->setHasError();
+                $shippingErrors = $shippingResult ?: [$this->translator->trans('MSC.address_error', [], 'contao_default')];
             }
-
-            $cart->setModified();
 
             if (!$event->hasError()) {
+                $cart->setBillingAddress($billingAddress);
+                $cart->setShippingAddress($addShipping ? $shippingAddress : null);
+                $cart->setModified();
+
                 throw new RedirectResponseException($request->getRequestUri());
             }
         }
@@ -130,8 +122,8 @@ class AddressStep extends AbstractCheckoutStep
             false,
             'guest_address',
             [
-                'billing_address_form' => $this->formBuilder->render($billingForm),
-                'shipping_address_form' => $shippingForm ? $this->formBuilder->render($shippingForm) : null,
+                'billing_address_form' => $this->formBuilder->render($billingForm, $billingErrors),
+                'shipping_address_form' => $shippingForm ? $this->formBuilder->render($shippingForm, $shippingErrors) : null,
 
                 'requires_payment' => CartUtil::requiresPayment($cart),
                 'requires_shipping' => $requiresShipping && !$skipShipping,

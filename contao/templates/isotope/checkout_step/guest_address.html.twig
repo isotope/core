@@ -29,6 +29,9 @@
                 {% else %}
                     <p>{{ 'MSC.customer_address_guest_message'|trans }}</p>
                 {% endif %}
+                {% for error in billing_address_form.errors %}
+                    <p class="message error" role="alert">{{ error }}</p>
+                {% endfor %}
                 {{ billing_address_form.hidden|raw }}
                 {{ billing_address_form.fields|raw }}
             </fieldset>
@@ -74,6 +77,9 @@
                         </span>
                     </fieldset>
                     <fieldset class="shipping_address_input hide-disabled" data-isotope--toggle-attribute-target="receiver"{% if not add_shipping_address %} disabled{% endif %}>
+                        {% for error in shipping_address_form.errors %}
+                            <p class="message error" role="alert">{{ error }}</p>
+                        {% endfor %}
                         {{ shipping_address_form.hidden|raw }}
                         {{ shipping_address_form.fields|raw }}
                     </fieldset>

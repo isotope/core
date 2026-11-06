@@ -95,7 +95,7 @@ class AddressManager
         }
 
         return [
-            'form' => $this->formBuilder->render($form),
+            'form' => $this->formBuilder->render($form, $result ?: []),
             'address' => $address,
             'config' => $addressConfig,
         ];
