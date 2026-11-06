@@ -32,8 +32,8 @@ class AvailabilityChecker
         $time = time();
 
         return ($product->published
-                && ('' === $product->start || $product->start > $time)
-                && ('' === $product->stop || $product->stop < $time)
+                && ('' === $product->start || $product->start <= $time)
+                && ('' === $product->stop || $product->stop > $time)
         ) || $this->tokenChecker->isPreviewMode();
     }
 
