@@ -91,7 +91,9 @@
         "symfony/framework-bundle": "^7.4",
         "symfony/monolog-bundle": "^3.1",
         "symfony/twig-bundle": "^7.4",
-        "terminal42/contao-changelanguage": "^3.8"
+        "symfony/var-exporter": "^7.4",
+        "terminal42/contao-changelanguage": "^3.8",
+        "web-auth/webauthn-symfony-bundle": "^5.0"
     },
     "conflict": {
         "contao/manager-plugin": "<2.0 || >= 3.0",

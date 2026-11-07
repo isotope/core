@@ -43,6 +43,8 @@ doctrine:
             default:
                 driver: pdo_mysql
                 url: '%env(DATABASE_URL)%'
+                # Avoid connecting to MySQL to detect the platform during cache warmup.
+                server_version: '8.0'
                 charset: utf8mb4
                 default_table_options:
                     charset: utf8mb4

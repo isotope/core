@@ -20,6 +20,7 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpKernel\Kernel;
 use Terminal42\ChangeLanguage\Terminal42ChangeLanguageBundle;
 use Terminal42\NotificationCenterBundle\Terminal42NotificationCenterBundle;
+use Webauthn\Bundle\WebauthnBundle;
 
 class TestKernel extends Kernel
 {
@@ -36,6 +37,7 @@ class TestKernel extends Kernel
             new KnpMenuBundle(),
             new SchebTwoFactorBundle(),
             new FlysystemBundle(),
+            new WebauthnBundle(),
             new ContaoCoreBundle(),
             new CodefogHasteBundle(),
             new Terminal42NotificationCenterBundle(),
