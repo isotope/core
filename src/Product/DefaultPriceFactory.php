@@ -35,11 +35,13 @@ class DefaultPriceFactory
             return (new PriceDefinitionCollection())->merge(...$prices);
         }
 
+        $variantId = $dto['pid'] ? (string) $dto['id'] : null;
+
         if ($dto['pid'] && !empty($dto['__parent']) && !$type->hasVariantPrices()) {
-            return $this->createFromArray($dto['__parent'], $type->hasAdvancedPrices(), $context);
+            return $this->createFromArray($dto['__parent'], $type->hasAdvancedPrices(), $context, $variantId);
         }
 
-        return $this->createFromArray($dto->getArrayCopy(), $type->hasAdvancedPrices(), $context);
+        return $this->createFromArray($dto->getArrayCopy(), $type->hasAdvancedPrices(), $context, $variantId);
     }
 
     /**
