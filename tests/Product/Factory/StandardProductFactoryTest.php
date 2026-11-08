@@ -42,22 +42,52 @@ final class StandardProductFactoryTest extends TestCase
         $type = $this->getMockBuilder(ProductTypeModel::class)
             ->disableOriginalConstructor()
             ->onlyMethods(['__get', 'getAttributes', 'getVariantAttributes', 'hasVariants', 'onRegister', 'onUnregister'])
-            ->getMock();
-        $type->method('__get')->willReturnMap([['id', 42], ['shipping_exempt', '']]);
-        $type->method('getAttributes')->willReturn(['published', 'start', 'stop']);
-        $type->method('getVariantAttributes')->willReturn(['published', 'start', 'stop']);
-        $type->expects($this->once())->method('onRegister');
+            ->getMock()
+        ;
+
+        $type
+            ->expects($this->atLeast(2))
+            ->method('__get')
+            ->willReturnMap([['id', 42], ['shipping_exempt', '']])
+        ;
+
+        $type
+            ->method('getAttributes')
+            ->willReturn(['published', 'start', 'stop'])
+        ;
+
+        $type
+            ->method('getVariantAttributes')
+            ->willReturn(['published', 'start', 'stop'])
+        ;
+
+        $type
+            ->expects($this->once())
+            ->method('onRegister')
+        ;
         Registry::getInstance()->register($type);
 
         $columns = ['id', 'pid', 'type', 'published', 'start', 'stop', 'inherit'];
         $attributes = $this->createStub(AttributeRegistry::class);
-        $attributes->method('getSystemColumns')->willReturn($columns);
+        $attributes
+            ->method('getSystemColumns')
+            ->willReturn($columns)
+        ;
         $tokenChecker = $this->createStub(TokenChecker::class);
-        $tokenChecker->method('isPreviewMode')->willReturn($preview);
+        $tokenChecker
+            ->method('isPreviewMode')
+            ->willReturn($preview)
+        ;
         $categories = $this->createStub(ProductCategoryUtil::class);
-        $categories->method('getPublishedForProductInCurrentRoot')->willReturn([1]);
+        $categories
+            ->method('getPublishedForProductInCurrentRoot')
+            ->willReturn([1])
+        ;
         $calculator = $this->createStub(PriceCalculator::class);
-        $calculator->method('calculateProduct')->willReturn(new CalculatedPrice(10, 10));
+        $calculator
+            ->method('calculateProduct')
+            ->willReturn(new CalculatedPrice(10, 10))
+        ;
         $dispatcher = new EventDispatcher();
 
         $factory = new StandardProductFactory(

@@ -33,12 +33,8 @@ class ProductCollector implements ItemCollectorInterface
                 continue;
             }
 
-            if (!$product->isAvailable()) {
-                $error = new TranslatableMessage('ERR.collectionItemNotAvailable', [], 'contao_default');
-
-                if (!\in_array($error, $item->getErrors())) {
-                    $item->addError($error);
-                }
+            if (!$product->isAvailable() && !$item->hasErrors()) {
+                $item->addError(new TranslatableMessage('ERR.collectionItemNotAvailable', [], 'contao_default'));
             }
 
             $price = $this->priceCalculator->calculateProduct($product, $item->getQuantity(), false, $context);

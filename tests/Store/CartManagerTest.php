@@ -30,12 +30,21 @@ final class CartManagerTest extends TestCase
         ($itemError ? $item : $invalidCart)->addError(new TranslatableMessage('error'));
 
         $calculator = $this->createMock(CartCalculator::class);
-        $calculator->expects($afterCalculation ? $this->once() : $this->never())
-            ->method('calculate')->willReturn($invalidCart);
+        $calculator
+            ->expects($afterCalculation ? $this->once() : $this->never())
+            ->method('calculate')
+            ->willReturn($invalidCart)
+        ;
         $converter = $this->createMock(OrderConverter::class);
-        $converter->expects($this->never())->method('convertToOrder');
+        $converter
+            ->expects($this->never())
+            ->method('convertToOrder')
+        ;
         $orderManager = $this->createMock(OrderManager::class);
-        $orderManager->expects($this->never())->method('createOrder');
+        $orderManager
+            ->expects($this->never())
+            ->method('createOrder')
+        ;
 
         $manager = new CartManager(
             $this->createStub(CartFactory::class),

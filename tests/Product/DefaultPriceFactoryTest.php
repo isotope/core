@@ -12,7 +12,9 @@ use Isotope\CoreBundle\Product\DataCollector\ProductDto;
 use Isotope\CoreBundle\Product\DefaultPriceFactory;
 use Isotope\CoreBundle\Product\Render\ProductRendererInterface;
 use Isotope\CoreBundle\RuleBuilder\RuleMatcher;
+use Isotope\CoreBundle\Store\Price\CalculatedPrice;
 use Isotope\CoreBundle\Store\Price\PriceCalculator;
+use Isotope\CoreBundle\Store\Price\PriceDefinitionCollection;
 use Isotope\CoreBundle\Store\Tax\TaxCalculator;
 use Isotope\CoreBundle\Test\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -24,10 +26,25 @@ final class DefaultPriceFactoryTest extends TestCase
     public function testVariantPricesHaveTheirOwnReference(bool $advanced, bool $inherited, bool $fallback): void
     {
         $type = $this->createStub(ProductTypeModel::class);
-        $type->method('getAttributes')->willReturn(['price']);
-        $type->method('hasVariantPrices')->willReturn(!$inherited);
-        $type->method('hasAdvancedPrices')->willReturn($advanced);
-        $type->method('showPriceTiers')->willReturn(false);
+        $type
+            ->method('getAttributes')
+            ->willReturn(['price'])
+        ;
+
+        $type
+            ->method('hasVariantPrices')
+            ->willReturn(!$inherited)
+        ;
+
+        $type
+            ->method('hasAdvancedPrices')
+            ->willReturn($advanced)
+        ;
+
+        $type
+            ->method('showPriceTiers')
+            ->willReturn(false)
+        ;
 
         $data = [
             'id' => 42,
@@ -41,8 +58,9 @@ final class DefaultPriceFactoryTest extends TestCase
         $prices = $factory->create(new ProductDto('tl_iso_product.42', 1, $data), $type, $context);
 
         $this->assertCount($advanced ? 2 : 1, $prices);
+        $this->assertInstanceOf(PriceDefinitionCollection::class, $prices);
         $this->assertSame($advanced ? ['42', '42'] : ['42'], $prices->column('getReference'));
-        $this->assertSame(100.0, $prices->first()->getAmount());
+        $this->assertEqualsWithDelta(100.0, $prices->first()->getAmount(), PHP_FLOAT_EPSILON);
 
         $product = new CoreProduct($data, $type, $this->createStub(ProductRendererInterface::class));
         $product->setIsVariant(true)->setPrices($prices);
@@ -56,10 +74,12 @@ final class DefaultPriceFactoryTest extends TestCase
         ));
 
         $displayPrice = $calculator->calculateProduct($product, 1, true, $context);
+        $this->assertInstanceOf(CalculatedPrice::class, $displayPrice);
         $this->assertSame($advanced && $inherited ? 80.0 : 100.0, $displayPrice->getUnitPrice());
         $this->assertSame($advanced && $inherited, $displayPrice->isRange());
 
         $cartPrice = $calculator->calculateProduct($product, 10, false, $context);
+        $this->assertInstanceOf(CalculatedPrice::class, $cartPrice);
         $this->assertSame($advanced ? 80.0 : 100.0, $cartPrice->getUnitPrice());
     }
 
@@ -79,8 +99,15 @@ final class DefaultPriceFactoryTest extends TestCase
     public function testParentPricesKeepEachVariantsReference(bool $advanced): void
     {
         $type = $this->createStub(ProductTypeModel::class);
-        $type->method('hasVariantPrices')->willReturn(true);
-        $type->method('hasAdvancedPrices')->willReturn($advanced);
+        $type
+            ->method('hasVariantPrices')
+            ->willReturn(true)
+        ;
+
+        $type
+            ->method('hasAdvancedPrices')
+            ->willReturn($advanced)
+        ;
         $context = $this->createStoreContext();
         $factory = new DefaultPriceFactory($this->createStub(RuleMatcher::class));
         $prices = $factory->create(new ProductDto('tl_iso_product.1', 1, [
@@ -91,6 +118,7 @@ final class DefaultPriceFactoryTest extends TestCase
                 ['id' => 43, ...$this->priceData(120)],
             ],
         ]), $type, $context);
+        $this->assertInstanceOf(PriceDefinitionCollection::class, $prices);
 
         $this->assertSame($advanced ? ['42', '42', '43', '43'] : ['42', '43'], $prices->column('getReference'));
     }
@@ -99,8 +127,15 @@ final class DefaultPriceFactoryTest extends TestCase
     public function testProductWithoutVariantsHasNoVariantReference(bool $advanced): void
     {
         $type = $this->createStub(ProductTypeModel::class);
-        $type->method('getAttributes')->willReturn(['price']);
-        $type->method('hasAdvancedPrices')->willReturn($advanced);
+        $type
+            ->method('getAttributes')
+            ->willReturn(['price'])
+        ;
+
+        $type
+            ->method('hasAdvancedPrices')
+            ->willReturn($advanced)
+        ;
         $context = $this->createStoreContext();
         $factory = new DefaultPriceFactory($this->createStub(RuleMatcher::class));
         $prices = $factory->create(new ProductDto('tl_iso_product.1', 1, [
@@ -108,6 +143,7 @@ final class DefaultPriceFactoryTest extends TestCase
             'pid' => 0,
             ...$this->priceData(100),
         ]), $type, $context);
+        $this->assertInstanceOf(PriceDefinitionCollection::class, $prices);
 
         $this->assertSame($advanced ? [null, null] : [null], $prices->column('getReference'));
     }

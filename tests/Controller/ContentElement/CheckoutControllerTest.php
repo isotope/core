@@ -34,11 +34,22 @@ final class CheckoutControllerTest extends TestCase
         $original = $modified ? (new Cart('cart'))->setModified() : $cart;
         $context->setCart($original);
         $manager = $this->createMock(CartManager::class);
-        $manager->expects($this->never())->method('order');
-        $manager->expects($modified ? $this->once() : $this->never())
-            ->method('recalculate')->with($original, $context)->willReturn($cart);
+        $manager
+            ->expects($this->never())
+            ->method('order')
+        ;
+
+        $manager
+            ->expects($modified ? $this->once() : $this->never())
+            ->method('recalculate')
+            ->with($original, $context)
+            ->willReturn($cart)
+        ;
         $step = $this->createStub(CheckoutStepInterface::class);
-        $step->method('getSummary')->willReturn(new CheckoutStepSummary('Complete step', true));
+        $step
+            ->method('getSummary')
+            ->willReturn(new CheckoutStepSummary('Complete step', true))
+        ;
 
         $controller = $this->getMockBuilder(CheckoutController::class)
             ->setConstructorArgs([
@@ -48,18 +59,38 @@ final class CheckoutControllerTest extends TestCase
                 new EventDispatcher(),
             ])
             ->onlyMethods(['isBackendScope', 'getStoreContext', 'addCollectionToTemplate'])
-            ->getMock();
-        $controller->method('isBackendScope')->willReturn(false);
-        $controller->method('getStoreContext')->willReturn($context);
-        $controller->expects($this->once())->method('addCollectionToTemplate')
-            ->with($this->isInstanceOf(FragmentTemplate::class), $cart, $context, 0);
+            ->getMock()
+        ;
+
+        $controller
+            ->method('isBackendScope')
+            ->willReturn(false)
+        ;
+
+        $controller
+            ->method('getStoreContext')
+            ->willReturn($context)
+        ;
+
+        $controller
+            ->expects($this->once())
+            ->method('addCollectionToTemplate')
+            ->with($this->isInstanceOf(FragmentTemplate::class), $cart, $context, 0)
+        ;
 
         $model = $this->createStub(ContentModel::class);
-        $model->method('row')->willReturn([]);
-        $model->method('__get')->willReturnMap([
-            ['iso_checkout_method', ''],
-            ['iso_gallery', 0],
-        ]);
+        $model
+            ->method('row')
+            ->willReturn([])
+        ;
+
+        $model
+            ->method('__get')
+            ->willReturnMap([
+                ['iso_checkout_method', ''],
+                ['iso_gallery', 0],
+            ])
+        ;
         $template = new FragmentTemplate('checkout', static fn () => new Response());
         $request = Request::create('/checkout', Request::METHOD_POST, ['place_order' => '1']);
 
