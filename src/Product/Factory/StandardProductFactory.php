@@ -50,7 +50,7 @@ class StandardProductFactory implements ProductFactoryInterface
             ->setVariantConfiguration(fn () => $this->getVariantConfiguration($product, $type))
             ->setPrices(fn () => $this->priceFactory->create($dto, $type, $context))
             ->setPrice(fn () => $this->calculator->calculateProduct($product, $dto->getQuantity(), true, $context))
-            ->setAvailable(fn () => $this->availabilityChecker->isAvailable($product, $context))
+            ->setAvailable(fn () => $this->isParentPublished($dto) && $this->availabilityChecker->isAvailable($product, $context))
         ;
 
         $product->addExtension(new QuantityExtension(static fn () => $product->getPrices()?->sort('getQuantity')->first()->getQuantity() ?? 1));
@@ -64,6 +64,17 @@ class StandardProductFactory implements ProductFactoryInterface
         $this->eventDispatcher->dispatch(new ProductCreatedEvent($product, $dto, $context));
 
         return $product;
+    }
+
+    private function isParentPublished(ProductDto $dto): bool
+    {
+        $parent = $dto['__parent'] ?? null;
+
+        return null === $parent || $this->availabilityChecker->isPublished(
+            (bool) $parent['published'],
+            $parent['start'],
+            $parent['stop'],
+        );
     }
 
     private function getProductData(ProductDto $dto, ProductTypeModel $type): array

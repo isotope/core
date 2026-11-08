@@ -15,6 +15,12 @@
             <p class="message empty">{{ 'MSC.noItemsInCart'|trans }}</p>
         {% endblock %}
     {% else %}
+        {% block checkout_errors %}
+            {% if collection.hasErrors %}
+                <p class="error">{{ 'ERR.cartErrorInItems'|trans }}</p>
+            {% endif %}
+        {% endblock %}
+
         {% block checkout_steps %}
             <div class="steps{% if completed %} completed{% endif %}">
                 {% set continue = true %}

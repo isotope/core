@@ -20,20 +20,20 @@ class AvailabilityChecker
 
     public function isAvailable(CoreProduct $product, StoreContext $context): bool
     {
-        return $this->isPublished($product)
+        return $this->isPublished((bool) $product->published, $product->start, $product->stop)
             && $this->hasAccess($product, $context)
             && $this->hasVariantsAvailable($product)
             && $this->hasValidPrice($product)
             && $this->hasCategoriesInCurrentRoot($product);
     }
 
-    private function isPublished(CoreProduct $product): bool
+    public function isPublished(bool $published, string $start, string $stop): bool
     {
         $time = time();
 
-        return ($product->published
-                && ('' === $product->start || $product->start <= $time)
-                && ('' === $product->stop || $product->stop > $time)
+        return ($published
+                && ('' === $start || $start <= $time)
+                && ('' === $stop || $stop > $time)
         ) || $this->tokenChecker->isPreviewMode();
     }
 

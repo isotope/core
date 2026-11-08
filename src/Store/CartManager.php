@@ -13,6 +13,7 @@ use Isotope\CoreBundle\ProductCollection\LineItem\LineItemCollection;
 use Isotope\CoreBundle\ProductCollection\ProductCollectionStorage;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Exception\EmptyCartException;
+use Isotope\CoreBundle\Store\Exception\InvalidCartException;
 use Isotope\CoreBundle\Store\Order\CreateOrderResult;
 use Isotope\CoreBundle\Store\Order\OrderConverter;
 
@@ -117,7 +118,15 @@ class CartManager
             throw new EmptyCartException();
         }
 
+        if ($cart->hasErrors()) {
+            throw new InvalidCartException();
+        }
+
         $cart = $this->calculator->calculate($cart, $context);
+
+        if ($cart->hasErrors()) {
+            throw new InvalidCartException();
+        }
 
         // TODO: validate payment
 

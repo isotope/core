@@ -10,6 +10,7 @@ use Isotope\CoreBundle\ProductCollection\AbstractProductCollection;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Price\PriceCalculator;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
+use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 #[AutoconfigureTag('isotope.item_collector', ['priority' => 100])]
@@ -30,6 +31,14 @@ class ProductCollector implements ItemCollectorInterface
 
             if (!$product instanceof CoreProduct) {
                 continue;
+            }
+
+            if (!$product->isAvailable()) {
+                $error = new TranslatableMessage('ERR.collectionItemNotAvailable', [], 'contao_default');
+
+                if (!\in_array($error, $item->getErrors())) {
+                    $item->addError($error);
+                }
             }
 
             $price = $this->priceCalculator->calculateProduct($product, $item->getQuantity(), false, $context);

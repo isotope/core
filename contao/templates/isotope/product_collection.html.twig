@@ -20,9 +20,11 @@
     {% endif %}
 
     {% block product_collection_inner %}
-                {# <?php if ($this->collection->hasErrors()): ?>
-                <p class="error"><?= implode('</p><p class="error">', $this->collection->getErrors()) ?></p>
-                <?php endif; ?> #}
+                {% block product_collection_errors %}
+                    {% for error in collection.errors %}
+                        <p class="error">{{ error|trans }}</p>
+                    {% endfor %}
+                {% endblock %}
 
                 <table{{ attrs().mergeWith(product_collection_attributes|default, not has_actions) }}>
                     <thead>
