@@ -73,7 +73,7 @@ class WorkflowManager implements ResetInterface
             'delivery' => new DefinitionBuilder(),
         ];
 
-        $records = $this->connection->fetchAllAssociative('SELECT * FROM tl_iso_orderstatus');
+        $records = $this->connection->fetchAllAssociative('SELECT * FROM tl_iso_orderstatus ORDER BY type, sorting, id');
 
         foreach ($records as $row) {
             if (!isset($definitions[$row['type']])) {
