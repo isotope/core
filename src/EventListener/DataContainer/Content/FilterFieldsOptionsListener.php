@@ -21,6 +21,10 @@ class FilterFieldsOptionsListener
         $options = [];
 
         foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $name => $config) {
+            if (($config['eval']['multiple'] ?? false) && ',' !== ($config['eval']['csv'] ?? null)) {
+                continue;
+            }
+
             if ($config['attributes']['fe_filter'] ?? false) {
                 $options[$name] = $this->getDcaLabel($name, $config);
             }

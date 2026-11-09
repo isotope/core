@@ -77,6 +77,9 @@
       <trans-unit id="tl_iso_attribute.options.value.0">
         <source>Value</source>
       </trans-unit>
+      <trans-unit id="tl_iso_attribute.options.value.1">
+        <source>Technical value, up to 64 characters. Use ASCII letters, digits and underscores only.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_attribute.options.label.0">
         <source>Label</source>
       </trans-unit>

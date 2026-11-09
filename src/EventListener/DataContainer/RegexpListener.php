@@ -13,6 +13,7 @@ class RegexpListener
     public function __invoke(string $regexp, mixed $value, Widget $widget): bool
     {
         return match ($regexp) {
+            'optionvalue' => $this->validate('/^[A-Za-z0-9_]+$/D', (string) $value, 'optionvalue', $widget),
             'price' => $this->validate('/^[\d .-]*$/', (string) $value, 'digit', $widget),
             'discount' => $this->validate('/^[-+]\d+(\.\d+)?%?$/', (string) $value, 'discount', $widget),
             'surcharge' => $this->validate('/^-?\d+(\.\d+)?%?$/', (string) $value, 'surcharge', $widget),

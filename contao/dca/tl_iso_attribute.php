@@ -157,7 +157,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = [
                 'value' => [
                     'label' => &$GLOBALS['TL_LANG']['tl_iso_attribute']['options']['value'],
                     'inputType' => 'text',
-                    'eval' => ['mandatory' => true, 'maxlength' => 64],
+                    'eval' => ['mandatory' => true, 'maxlength' => 64, 'rgxp' => 'optionvalue'],
                 ],
                 'label' => [
                     'label' => &$GLOBALS['TL_LANG']['tl_iso_attribute']['options']['label'],
