@@ -33,7 +33,13 @@ abstract class AbstractFilter implements FilterInterface
 
     public function __toString(): string
     {
-        return $this->getAttributeName().$this->getOperator().implode($this->or ? '|' : ',', $this->queryValues);
+        $operator = $this->getOperator();
+
+        if (preg_match('/\w/', $operator)) {
+            $operator = '('.$operator.')';
+        }
+
+        return $this->getAttributeName().$operator.implode($this->or ? '|' : ',', $this->queryValues);
     }
 
     public function getAttributeName(): string|null
@@ -41,6 +47,9 @@ abstract class AbstractFilter implements FilterInterface
         return $this->attributeName;
     }
 
+    /**
+     * @return list<string>
+     */
     public function getValue(): array
     {
         return $this->queryValues;
@@ -70,6 +79,55 @@ abstract class AbstractFilter implements FilterInterface
     abstract protected function applyValue(QueryBuilder $qb, mixed $queryValue): CompositeExpression|string;
 
     abstract protected function compare(mixed $queryValue, mixed $productValue): bool;
+
+    protected function isMultiple(): bool
+    {
+        $eval = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$this->attributeName]['eval'] ?? [];
+
+        if (!($eval['multiple'] ?? false)) {
+            return false;
+        }
+
+        if (',' !== ($eval['csv'] ?? null)) {
+            throw new \LogicException(\sprintf('Cannot filter attribute "%s": multiple-choice attributes must use comma-separated CSV storage.', $this->attributeName));
+        }
+
+        return true;
+    }
+
+    protected function matchesMultiple(array $productValue, bool $matchAll = false): bool
+    {
+        foreach ($this->queryValues as $query) {
+            $result = $matchAll;
+
+            foreach ($productValue as $value) {
+                $result = $this->compare($query, $value);
+
+                // One match is enough when matching any stored value.
+                if ($result && !$matchAll) {
+                    break;
+                }
+
+                // One mismatch fails when matching all stored values.
+                if (!$result && $matchAll) {
+                    break;
+                }
+            }
+
+            if ($result && $this->or) {
+                return true;
+            }
+
+            if (!$result && !$this->or) {
+                return false;
+            }
+        }
+
+        // In the OR case, no query condition matched, so the result is FALSE.
+        // In the AND case, every query condition matched, so the result is TRUE.
+
+        return !$this->or;
+    }
 
     private function matchesOne(mixed $productValue): bool
     {

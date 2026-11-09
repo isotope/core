@@ -16,8 +16,18 @@ class EqualFilter extends AbstractFilter
         return ':';
     }
 
+    #[\Override]
+    public function matches(array $productValue): bool
+    {
+        return $this->isMultiple() ? $this->matchesMultiple($productValue) : parent::matches($productValue);
+    }
+
     protected function applyValue(QueryBuilder $qb, mixed $queryValue): CompositeExpression|string
     {
+        if ($this->isMultiple()) {
+            return $qb->expr()->gt('FIND_IN_SET('.$qb->createNamedParameter($queryValue).', tl_iso_product.'.$this->attributeName.')', '0');
+        }
+
         return $qb->expr()->eq('tl_iso_product.'.$this->attributeName, $qb->createNamedParameter($queryValue));
     }
 

@@ -61,19 +61,25 @@
             <p>
               Simple operators cosist of a unique value that can never be used in an attribute name. Isotope ships with a few useful simple operators.
             <p/>
-            <table class="tl_help_table">
+            <table class="tl_help_table with-padding">
               <tr>
                 <th>Operator</th>
                 <th>Description</td>
                 <th>SQL equivalent</th>
               </tr>
-              <tr><td><code>:</code></td><td>equal</td><td><code>=</code></td></tr>
-              <tr><td><code>!</code></td><td>not equal</td><td><code>!=</code></td></tr>
+              <tr><td><code>:</code></td><td>Equal, or contains the value for multiple-choice attributes.</td><td><code>=</code>, or membership in comma-separated CSV</td></tr>
+              <tr><td><code>!</code></td><td>Not equal, or does not contain the value for multiple-choice attributes.</td><td><code>!=</code>, or absence from comma-separated CSV</td></tr>
               <tr><td><code>&lt;</code></td><td>lesser than</td><td><code>&lt;</code></td></tr>
               <tr><td><code>≤</code></td><td>lesser than or equal</td><td><code>&lt;=</code></td></tr>
               <tr><td><code>&gt;</code></td><td>greater than</td><td><code>&gt;</code></td></tr>
               <tr><td><code>≥</code></td><td>greater than or equal</td><td><code>&gt;=</code></td></tr>
             </table>
+
+            <p class="tl_help_table">
+              Equality operators automatically handle multiple-choice attributes stored as comma-separated CSV. Serialized arrays and other CSV separators are not supported.
+              For example, <code>color:red,blue</code> requires both values, while <code>color:red|blue</code> requires either value.
+              Use <code>color!red,blue</code> to exclude products containing either value.
+            </p>
 
             <h3 class="tl_help_table">Complex Operators</h3>
             <p class="tl_help_table">
@@ -88,7 +94,7 @@
             <p class="tl_help_table">
               Here's a list of Isotope core filters, please consult extension documentation about additional filters provided by extensions.
             </p>
-            <table class="tl_help_table">
+            <table class="tl_help_table with-padding">
               <tr>
                 <th>Operator</th>
                 <th>Description</td>
