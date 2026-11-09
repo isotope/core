@@ -78,7 +78,14 @@ class ConfigModel extends Model
 
         $options = array_merge(
             [
-                'column' => ["$t.id=(SELECT config_id FROM tl_iso_product_collection WHERE type='cart' AND member=? AND store_id=?)"],
+                // member+store_id should be unique for an active cart, but isn't
+                // enforced in the schema - ORDER BY + LIMIT 1 keeps this a valid
+                // scalar subquery (picks the most recent one) instead of erroring
+                // with "Cardinality violation" when more than one row exists.
+                'column' => [
+                    "$t.id=(SELECT config_id FROM tl_iso_product_collection " .
+                    "WHERE type='cart' AND member=? AND store_id=? ORDER BY id DESC LIMIT 1)",
+                ],
                 'value' => [$memberId, $storeId],
                 'return' => 'Model',
             ],
@@ -94,7 +101,11 @@ class ConfigModel extends Model
 
         $options = array_merge(
             [
-                'column' => ["$t.id=(SELECT config_id FROM tl_iso_product_collection WHERE type='cart' AND uniqid=? AND store_id=?)"],
+                // Same cardinality-violation guard as findByMemberCart() above.
+                'column' => [
+                    "$t.id=(SELECT config_id FROM tl_iso_product_collection " .
+                    "WHERE type='cart' AND uniqid=? AND store_id=? ORDER BY id DESC LIMIT 1)",
+                ],
                 'value' => [$uniqid, $storeId],
                 'return' => 'Model',
             ],
