@@ -10,10 +10,10 @@ use Ramsey\Collection\Sort;
 /**
  * @extends AbstractCollection<Product>
  *
- * @method static where(?string $propertyOrMethod, mixed $value)
- * @method static sort(?string $propertyOrMethod = null, Sort $order = Sort::Ascending)
- * @method static merge(ProductCollection ...$collections)
- * @method static filter(callable $callback)
+ * @method where(?string $propertyOrMethod, mixed $value)
+ * @method sort(?string $propertyOrMethod = null, Sort $order = Sort::Ascending)
+ * @method merge(ProductCollection ...$collections)
+ * @method filter(callable $callback)
  */
 class ProductCollection extends AbstractCollection
 {

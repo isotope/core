@@ -11,17 +11,16 @@ use Contao\CoreBundle\Exception\PageOutOfRangeException;
 use Contao\CoreBundle\Pagination\PaginationConfig;
 use Contao\CoreBundle\Pagination\PaginationFactoryInterface;
 use Contao\CoreBundle\Pagination\PaginationInterface;
-use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use Contao\CoreBundle\Twig\FragmentTemplate;
-use Doctrine\DBAL\ArrayParameterType;
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Query\QueryBuilder;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\DataCollector\ProductDto;
 use Isotope\CoreBundle\Product\DataCollector\ProductDtoCollection;
+use Isotope\CoreBundle\Product\Finder\ProductFinder;
+use Isotope\CoreBundle\Product\Finder\ProductFinderFactory;
 use Isotope\CoreBundle\Product\ProductBuilder;
 use Isotope\CoreBundle\Product\ProductCollection;
+use Isotope\CoreBundle\Product\Query\ProductQuery;
 use Isotope\CoreBundle\Product\Query\ProductQueryFactory;
 use Isotope\CoreBundle\Product\Query\Sorting;
 use Isotope\CoreBundle\Product\Render\ListView;
@@ -35,10 +34,9 @@ use Symfony\Component\HttpFoundation\Response;
 class ProductListController extends AbstractContentElementController
 {
     public function __construct(
-        private readonly Connection $connection,
         private readonly AttributeRegistry $attributeRegistry,
+        private readonly ProductFinderFactory $finderFactory,
         private readonly ProductQueryFactory $productQueryFactory,
-        private readonly TokenChecker $tokenChecker,
         private readonly ProductBuilder $productBuilder,
         private readonly StoreManager $storeManager,
         private readonly PaginationFactoryInterface $paginationFactory,
@@ -47,70 +45,69 @@ class ProductListController extends AbstractContentElementController
 
     protected function getResponse(FragmentTemplate $template, ContentModel $model, Request $request): Response
     {
-        if ($request->attributes->get('_content') instanceof CoreProduct && $model->iso_hide_list) {
+        if ($model->iso_hide_list && $request->attributes->get('_content') instanceof CoreProduct) {
             return new Response();
         }
 
-        if ($model->iso_emptyFilter && null === $this->getProductQuery($request)) {
+        $template->products = [];
+        $template->pagination = null;
+        $template->view = ListView::createFromContent($model);
+
+        $productQuery = $this->getProductQuery($request);
+
+        if ($model->iso_emptyFilter && null === $productQuery) {
             $template->message = $model->iso_noFilter;
-            $template->products = [];
 
             return $template->getResponse();
         }
 
         $filterKeys = [$model->iso_filterKey ?: ''];
-        $products = $this->findProducts($model, $request, $filterKeys, $template);
+        $products = null;
+        $pagination = null;
 
-        if ($model->iso_hide_empty && $products->isEmpty()) {
-            return new Response('');
+        if ($finder = $this->createProductFinder($model, $request, $productQuery, $filterKeys)) {
+            $pagination = $this->getPagination($model, $request, $finder, $productQuery?->getLimit($filterKeys));
+            $products = $this->findProducts($finder, $pagination);
+        }
+
+        if (!$products || $products->isEmpty()) {
+            return $model->iso_hide_empty ? new Response('') : $template->getResponse();
         }
 
         $this->tagResponse($products);
 
+        $template->pagination = $pagination;
         $template->products = $products;
-        $template->view = ListView::createFromContent($model);
         $template->filters = $filterKeys;
 
         return $template->getResponse();
     }
 
-    /**
-     * @return ProductCollection
-     */
-    private function findProducts(ContentModel $model, Request $request, array $filterKeys, FragmentTemplate $template): CollectionInterface
+    private function createProductFinder(ContentModel $model, Request $request, ProductQuery|null $productQuery, array $queryKeys): ProductFinder|null
     {
         $categories = $this->getCategories($model, $request);
 
-        // Cannot find products without having categories
         if ([] === $categories) {
-            return new ProductCollection();
+            return null;
         }
 
-        $qb = $this->prepareQueryBuilder($categories, $request->getLocale());
+        $baseFilters = $model->iso_filterQuery ? $this->productQueryFactory->parseFilters($model->iso_filterQuery, $this->attributeRegistry->getNames()) : [];
+        $baseSorting = $model->iso_listingSortField ? [new Sorting($model->iso_listingSortField, 'DESC' === $model->iso_listingSortDirection)] : [];
 
-        $productQuery = $this->getProductQuery($request);
+        return $this->finderFactory->create($categories, $request->getLocale(), $baseFilters, $baseSorting)
+            ->withFilters($productQuery?->getFilters($queryKeys) ?? [])
+            ->withSorting($productQuery?->getSortings($queryKeys) ?? [])
+            ->withSearch(StringUtil::csv($model->iso_searchFields) ?? [], $productQuery?->getSearches($queryKeys) ?? [])
+        ;
+    }
 
-        if ($model->iso_filterQuery) {
-            $productQuery = $productQuery ? clone $productQuery : $this->productQueryFactory->create();
-            $productQuery->setFilters('cte'.$model->id, $this->productQueryFactory->parseFilters($model->iso_filterQuery, $this->attributeRegistry->getNames()));
-            $filterKeys[] = 'cte'.$model->id;
-        }
-
-        if ($model->iso_listingSortField) {
-            $productQuery = $productQuery ? clone $productQuery : $this->productQueryFactory->create();
-            $productQuery->setSorting('cte'.$model->id, [new Sorting($model->iso_listingSortField, 'DESC' === $model->iso_listingSortDirection)]);
-            $filterKeys[] = 'cte'.$model->id;
-        }
-
-        $productQuery?->applyFilterAndSorting($qb, $filterKeys);
-
-        if ($searchFields = StringUtil::csv($model->iso_searchFields)) {
-            $productQuery?->applySearch($qb, $searchFields, $filterKeys);
-        }
-
-        $template->pagination = $this->applyPagination($model, $request, $qb, $productQuery?->getLimit($filterKeys));
-
-        $ids = $qb->fetchFirstColumn();
+    /**
+     * @return ProductCollection
+     */
+    private function findProducts(ProductFinder $finder, PaginationInterface $pagination): CollectionInterface
+    {
+        [$offset, $end] = $pagination->getIndexRange();
+        $ids = $finder->findIds($end - $offset, $offset);
 
         $dtoCollection = new ProductDtoCollection(array_map(static fn (int|string $id) => new ProductDto('tl_iso_product.'.$id), $ids));
 
@@ -119,86 +116,26 @@ class ProductListController extends AbstractContentElementController
         return $products->filter(static fn (CoreProduct $product) => $product->isAvailable());
     }
 
-    private function prepareQueryBuilder(array $categories, string $locale): QueryBuilder
+    private function getPagination(ContentModel $model, Request $request, ProductFinder $finder, int|null $perPage): PaginationInterface
     {
-        $qb = $this->connection->createQueryBuilder();
-        $qb
-            ->select('IFNULL(parent.id, tl_iso_product.id)')
-            ->from('tl_iso_product')
-            ->where($qb->expr()->in('c.pid', $qb->createNamedParameter($categories, ArrayParameterType::INTEGER)))
-            ->andWhere("tl_iso_product.language=''")
-            ->leftJoin('tl_iso_product', 'tl_iso_product', 'translation', "tl_iso_product.id=translation.pid AND translation.language='$locale'")
-            ->leftJoin('tl_iso_product', 'tl_iso_product', 'parent', 'tl_iso_product.pid=parent.id')
-            ->leftJoin('parent', 'tl_iso_product', 'parent_translation', "parent.id=parent_translation.pid AND parent_translation.language='$locale'")
-            ->leftJoin('tl_iso_product', 'tl_iso_product_category', 'c', 'IFNULL(parent.id, tl_iso_product.id)=c.product_id')
-            ->groupBy('IFNULL(parent.id, tl_iso_product.id)')
-        ;
-
-        if (!$this->tokenChecker->isPreviewMode()) {
-            $qb
-                ->setParameter('time', time())
-                ->andWhere('tl_iso_product.published=1')
-                ->andWhere("tl_iso_product.start='' OR tl_iso_product.start < :time")
-                ->andWhere("tl_iso_product.stop='' OR tl_iso_product.stop > :time")
-                ->andWhere("tl_iso_product.pid=0 OR (parent.published=1 AND (parent.start='' OR parent.start < :time) AND (parent.stop='' OR parent.stop > :time))")
-            ;
-        }
-
-        return $qb;
-    }
-
-    private function applyPagination(ContentModel $model, Request $request, QueryBuilder $qb, int|null $perPage): PaginationInterface|null
-    {
-        $limit = null;
-        $offset = 0;
+        $total = $finder->count();
 
         if ($model->numberOfItems > 0) {
-            $limit = (int) $model->numberOfItems;
+            $total = min((int) $model->numberOfItems, $total);
         }
 
         $perPage ??= (int) $model->perPage;
+        $paginate = $total > 0 && $perPage > 0 && ($model->numberOfItems <= 0 || $model->numberOfItems > $perPage);
+        $config = new PaginationConfig('_p'.$model->id, $total, $paginate ? $perPage : $total);
 
-        $total = (clone $qb)
-            ->select('COUNT(DISTINCT IFNULL(parent.id, tl_iso_product.id))')
-            ->resetGroupBy()
-            ->resetOrderBy()
-            ->fetchOne()
-        ;
-
-        if ($total < 1) {
-            return null;
+        if (!$paginate) {
+            $config = $config->withCurrentPage(1);
         }
 
-        // Split the results
-        if ($perPage > 0 && (!isset($limit) || $model->numberOfItems > $perPage)) {
-            // Adjust the overall limit
-            if (isset($limit)) {
-                $total = min($limit, $total);
-            }
-
-            $param = '_p'.$model->id;
-
-            try {
-                $pagination = $this->paginationFactory->create(new PaginationConfig($param, $total, $perPage));
-            } catch (PageOutOfRangeException $e) {
-                throw new PageNotFoundException('Page not found: '.$request->getRequestUri(), previous: $e);
-            }
-
-            // Set limit and offset
-            $limit = $pagination->getPerPage();
-            $offset = $pagination->getOffset();
-
-            // Overall limit
-            if ($offset + $limit > $total) {
-                $limit = $total - $offset;
-            }
+        try {
+            return $this->paginationFactory->create($config);
+        } catch (PageOutOfRangeException $e) {
+            throw new PageNotFoundException('Page not found: '.$request->getRequestUri(), previous: $e);
         }
-
-        $qb
-            ->setFirstResult($offset)
-            ->setMaxResults($limit)
-        ;
-
-        return $pagination ?? null;
     }
 }

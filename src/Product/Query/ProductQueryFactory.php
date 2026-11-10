@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Product\Query;
 
-use Doctrine\DBAL\Connection;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
 use Isotope\CoreBundle\Product\Exception\InvalidQueryAttributeException;
 use Isotope\CoreBundle\Product\Exception\InvalidQueryOperatorException;
@@ -24,7 +23,6 @@ class ProductQueryFactory
     public function __construct(
         private readonly array $filters,
         private readonly AttributeRegistry $attributeRegistry,
-        private readonly Connection $connection,
         private readonly RequestStack $requestStack,
     ) {
     }
@@ -50,12 +48,12 @@ class ProductQueryFactory
 
     public function create(): ProductQuery
     {
-        return new ProductQuery($this->connection);
+        return new ProductQuery();
     }
 
     public function createFromRequest(Request $request): ProductQuery|null
     {
-        $instance = new ProductQuery($this->connection);
+        $instance = new ProductQuery();
         $validAttributes = null;
         $isActive = false;
 
