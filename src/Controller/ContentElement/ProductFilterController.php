@@ -6,20 +6,18 @@ namespace Isotope\CoreBundle\Controller\ContentElement;
 
 use Codefog\HasteBundle\Formatter;
 use Contao\ContentModel;
-use Contao\Controller;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsContentElement;
 use Contao\CoreBundle\Exception\BadRequestException;
-use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use Contao\CoreBundle\Twig\FragmentTemplate;
-use Contao\Date;
 use Contao\Widget;
-use Doctrine\DBAL\Connection;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
-use Isotope\CoreBundle\Attribute\Option\OptionsSource;
-use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
+use Isotope\CoreBundle\Attribute\Filter\FilterOptionsProvider;
 use Isotope\CoreBundle\Product\CoreProduct;
+use Isotope\CoreBundle\Product\Finder\ProductFinder;
+use Isotope\CoreBundle\Product\Finder\ProductFinderFactory;
 use Isotope\CoreBundle\Product\Query\Filter\EqualFilter;
 use Isotope\CoreBundle\Product\Query\ProductQuery;
+use Isotope\CoreBundle\Product\Query\ProductQueryFactory;
 use Isotope\CoreBundle\Product\Query\Sorting;
 use Isotope\CoreBundle\Util\StringUtil;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,8 +30,9 @@ class ProductFilterController extends AbstractContentElementController
     public function __construct(
         private readonly AttributeRegistry $attributeRegistry,
         private readonly Formatter $formatter,
-        private readonly Connection $connection,
-        private readonly TokenChecker $tokenChecker,
+        private readonly ProductFinderFactory $finderFactory,
+        private readonly ProductQueryFactory $queryFactory,
+        private readonly FilterOptionsProvider $optionsProvider,
         private readonly TranslatorInterface $translator,
     ) {
     }
@@ -52,10 +51,13 @@ class ProductFilterController extends AbstractContentElementController
         $productQuery = $this->getProductQuery($request);
 
         if ($filterFields = StringUtil::csv($model->iso_filterFields)) {
+            $baseFilters = $model->iso_filterQuery ? $this->queryFactory->parseFilters($model->iso_filterQuery, $this->attributeRegistry->getNames()) : [];
+            $finder = $this->finderFactory->create($this->getCategories($model, $request), $request->getLocale(), $baseFilters);
+
             $template->filterWidgets = $this->getFilterWidgets(
                 $filterFields,
                 $this->getCurrentFilterValues($productQuery, $filterKey, $filterFields),
-                $this->getCategories($model, $request),
+                $finder,
                 (bool) $model->iso_filterHideSingle,
             );
         }
@@ -78,88 +80,34 @@ class ProductFilterController extends AbstractContentElementController
         return $template->getResponse();
     }
 
-    private function getFilterWidgets(array $fields, array $current, array $categories, bool $hideSingle): array
+    private function getFilterWidgets(array $fields, array $current, ProductFinder $finder, bool $hideSingle): array
     {
         $widgets = [];
 
-        [$attributeTypes, $variantTypes] = $this->getProductTypeIdsByAttribute();
-        Controller::loadDataContainer('tl_iso_product');
+        foreach ($this->optionsProvider->getAttributes($fields, $finder) as $attribute) {
+            $name = $attribute->getName();
+            $field = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$name];
 
-        foreach ($fields as $fieldName) {
-            $widget = Widget::getAttributesFromDca($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$fieldName], $fieldName, $current[$fieldName] ?? null, $fieldName, 'tl_iso_product');
-            $values = $this->getUsedValuesForField($fieldName, $categories, $attributeTypes[$fieldName] ?? [], $variantTypes[$fieldName] ?? []);
+            // Options have already been resolved by the provider.
+            unset($field['options_callback'], $field['foreignKey']);
+            $field['options'] = [];
+            $widget = Widget::getAttributesFromDca($field, $name, $current[$name] ?? null, $name, 'tl_iso_product');
+            $widget['options'] = [];
 
-            if ([] === $values) {
-                continue;
-            }
-
-            // Flatten the options (remove groups on filters)
-            if (\is_array($widget['options'] ?? null)) {
-                $options = [];
-
-                foreach ($widget['options'] as $option) {
-                    if (\array_key_exists('value', $option)) {
-                        $options[] = $option;
-                    } else {
-                        array_push($options, ...array_values($option));
-                    }
-                }
-
-                $widget['options'] = $options;
-            }
-
-            $attribute = $this->attributeRegistry->get($fieldName);
-
-            if ($attribute instanceof OptionsAttributeInterface) {
-                if (OptionsSource::Name === $attribute->getOptionsSource()) {
-                    $options = [];
-                    $stringValues = array_map(strval(...), $values);
-
-                    if (\in_array('1', $stringValues, true)) {
-                        $options[] = [
-                            'value' => '1',
-                            'label' => $this->translator->trans('MSC.yes', [], 'contao_default'),
-                        ];
-                    }
-
-                    if (\in_array('0', $stringValues, true)) {
-                        $options[] = [
-                            'value' => '0',
-                            'label' => $this->translator->trans('MSC.no', [], 'contao_default'),
-                        ];
-                    }
-
-                    $widget['options'] = $options;
-                } elseif (\is_array($widget['options'])) {
-                    $widget['options'] = array_filter($widget['options'], static fn (array $option) => '' === (string) $option['value'] || \in_array($option['value'], $values, false));
-                }
-            }
-
-            // Generate options from database values (e.g. for text fields)
-            if (!\is_array($widget['options'] ?? null)) {
-                $widget['options'] = array_map(static fn ($v) => ['value' => $v, 'label' => $v], $values);
-            }
-
-            foreach ($widget['options'] as $k => $option) {
-                if ('' === $option['value']) {
-                    $widget['blankOptionLabel'] = $option['label'];
-                    unset($widget['options'][$k]);
+            foreach ($attribute->getOptions() as $option) {
+                if ('' === $option->getValue()) {
+                    $widget['blankOptionLabel'] = $option->getLabel();
                     continue;
                 }
 
-                if (\in_array($widget['rgxp'] ?? null, ['date', 'time', 'datim'], true)) {
-                    try {
-                        $objDate = new Date($option['label'], Date::getFormatFromRgxp($widget['rgxp']));
-                        $widget['options'][$k]['label'] = $objDate->{$widget['rgxp']};
-                    } catch (\OutOfBoundsException) {
-                        // ignore if date could not be converted
-                    }
-                }
-
-                $widget['options'][$k]['default'] = ($current[$fieldName] ?? null) === (string) $option['value'];
+                $widget['options'][] = [
+                    'value' => $option->getValue(),
+                    'label' => $option->getLabel(),
+                    'cssClass' => $option->getCssClass(),
+                    'default' => ($current[$name] ?? null) === $option->getValue(),
+                ];
             }
 
-            // Hide fields with just one option (if enabled)
             if ($hideSingle && \count($widget['options']) < 2) {
                 continue;
             }
@@ -190,13 +138,13 @@ class ProductFilterController extends AbstractContentElementController
             $options[] = [
                 'label' => $this->formatter->dcaLabel('tl_iso_product', $field).', '.$asc,
                 'value' => $field.':ASC',
-                'default' => $isDefault && !$current?->desc,
+                'default' => $isDefault && !$current->desc,
             ];
 
             $options[] = [
                 'label' => $this->formatter->dcaLabel('tl_iso_product', $field).', '.$desc,
                 'value' => $field.':DESC',
-                'default' => $isDefault && $current?->desc,
+                'default' => $isDefault && $current->desc,
             ];
         }
 
@@ -234,120 +182,6 @@ class ProductFilterController extends AbstractContentElementController
 
         $template->hasSearch = true;
         $template->keywords = implode(' ', $productQuery?->getSearches([$key]) ?? []);
-    }
-
-    /**
-     * Returns an array of attribute values found in the product table.
-     *
-     * @return array<string>
-     */
-    private function getUsedValuesForField(string $field, array $categories, array $attributeTypes, array $variantTypes): array
-    {
-        if (
-            [] === $categories
-            || ([] === $attributeTypes && [] === $variantTypes)
-        ) {
-            return [];
-        }
-
-        $typeConditions = [];
-        $join = '';
-        $categoryWhere = '';
-        $published = '';
-        $time = time();
-        $isPreviewMode = $this->tokenChecker->isPreviewMode();
-
-        if (!$isPreviewMode) {
-            $published = "
-                AND tl_iso_product.published='1'
-                AND (tl_iso_product.start='' OR tl_iso_product.start<$time)
-                AND (tl_iso_product.stop='' OR tl_iso_product.stop>$time)
-            ";
-        }
-
-        if ([] !== $attributeTypes) {
-            $typeConditions[] = 'tl_iso_product.type IN ('.implode(',', $attributeTypes).')';
-        }
-
-        if ([] !== $variantTypes) {
-            $typeConditions[] = 'translation.type IN ('.implode(',', $variantTypes).')';
-            $join = 'LEFT OUTER JOIN tl_iso_product translation ON tl_iso_product.pid=translation.id';
-            $categoryWhere = 'OR tl_iso_product.pid IN (
-                                    SELECT product_id
-                                    FROM tl_iso_product_category
-                                    WHERE pid IN ('.implode(',', $categories).')
-                                )';
-
-            if (!$isPreviewMode) {
-                $published .= " AND (
-                    tl_iso_product.pid=0 OR (
-                        translation.published='1'
-                        AND (translation.start='' OR translation.start<$time)
-                        AND (translation.stop='' OR translation.stop>$time)
-                    )
-                )";
-            }
-        }
-
-        $options = $this->connection->fetchFirstColumn("
-            SELECT DISTINCT tl_iso_product.$field AS options
-            FROM tl_iso_product
-            $join
-            WHERE
-                tl_iso_product.language=''
-                AND CAST(tl_iso_product.$field AS CHAR)!=''
-                ".$published.'
-                AND (
-                    tl_iso_product.id IN (
-                        SELECT product_id
-                        FROM tl_iso_product_category
-                        WHERE pid IN ('.implode(',', $categories).")
-                    )
-                    $categoryWhere
-                )
-                AND (
-                    ".implode(' OR ', $typeConditions).'
-                )
-        ');
-
-        $isCsv = true === ($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$field]['eval']['multiple'] ?? null)
-            && !empty($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$field]['eval']['csv'] ?? null);
-
-        return array_unique(array_merge(...array_map(
-            static fn ($v) => $isCsv ? explode($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$field]['eval']['csv'], (string) $v) : \Contao\StringUtil::deserialize($v, true),
-            $options,
-        )));
-    }
-
-    /**
-     * Get product type IDs with attribute enabled.
-     *
-     * @return array{0: array<string, array<int>>, 1: array<string, array<int>>}
-     */
-    private function getProductTypeIdsByAttribute(): array
-    {
-        $attributes = [];
-        $variantAttributes = [];
-
-        $productTypes = $this->connection->fetchAllAssociative('SELECT id, attributes, variants, variant_attributes FROM tl_iso_producttype');
-
-        foreach ($productTypes as $type) {
-            foreach (\Contao\StringUtil::deserialize($type['attributes'], true) as $attribute => $config) {
-                if ($config['enabled'] ?? false) {
-                    $attributes[$attribute][] = $type['id'];
-                }
-            }
-
-            if ($type['variants']) {
-                foreach (\Contao\StringUtil::deserialize($type['variant_attributes'], true) as $attribute => $config) {
-                    if ($config['enabled'] ?? false) {
-                        $variantAttributes[$attribute][] = $type['id'];
-                    }
-                }
-            }
-        }
-
-        return [$attributes, $variantAttributes];
     }
 
     private function getSortingLabels(string $field): array
