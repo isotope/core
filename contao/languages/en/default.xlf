@@ -572,6 +572,12 @@
       <trans-unit id="CTE.iso_categoryfilter.1">
         <source>Provides a filter by product category (page tree).</source>
       </trans-unit>
+      <trans-unit id="CTE.iso_cumulativefilter.0">
+        <source>Cumulative Filter</source>
+      </trans-unit>
+      <trans-unit id="CTE.iso_cumulativefilter.1">
+        <source>Provides a cumulative filter so visitors can cut down the product choice by clicking on multiple conditions.</source>
+      </trans-unit>
       <trans-unit id="CTE.iso_productlist.0">
         <source>Product List</source>
       </trans-unit>

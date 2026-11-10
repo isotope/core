@@ -17,6 +17,7 @@ class ModuleToElementMigration extends AbstractModuleToElementMigration
             'iso_orderdetails' => 'iso_orderdetails',
             'iso_productfilter' => 'iso_productfilter',
             'iso_categoryfilter' => 'iso_categoryfilter',
+            'iso_cumulativefilter' => 'iso_cumulativefilter',
             'iso_relatedproducts' => 'iso_relatedproducts',
             'iso_checkout' => 'iso_checkout',
         ];

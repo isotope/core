@@ -23,6 +23,7 @@ $GLOBALS['TL_DCA']['tl_content']['palettes']['iso_orderhistory'] = '{type_legend
 $GLOBALS['TL_DCA']['tl_content']['palettes']['iso_orderdetails'] = '{type_legend},title,headline,type;{config_legend},iso_loginRequired,iso_transaction_cancelled;{redirect_legend:hide},iso_cart_jumpTo;{template_legend:hide},customTpl,iso_gallery;{protected_legend:hide},protected;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
 $GLOBALS['TL_DCA']['tl_content']['palettes']['iso_configswitcher'] = '{type_legend},title,headline,type;{config_legend},iso_config_ids;{template_legend:hide},customTpl;{protected_legend:hide},protected;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
 $GLOBALS['TL_DCA']['tl_content']['palettes']['iso_productfilter'] = '{type_legend},title,headline,type;{config_legend},iso_category_scope,iso_filterQuery,iso_filterKey,iso_enableLimit,iso_filterFields,iso_filterHideSingle,iso_enableSearch,iso_sortingFields,iso_listingSortField,iso_listingSortDirection;{template_legend:hide},customTpl,iso_hide_list;{redirect_legend},jumpTo,iso_link_primary;{reference_legend:hide},defineRoot;{protected_legend:hide},protected;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
+$GLOBALS['TL_DCA']['tl_content']['palettes']['iso_cumulativefilter'] = '{type_legend},title,headline,type;{config_legend},iso_category_scope,iso_filterQuery,iso_filterKey,iso_cumulativeFields,iso_filterHideSingle,iso_listingSortField,iso_listingSortDirection;{template_legend:hide},customTpl,iso_hide_list;{redirect_legend},jumpTo;{reference_legend:hide},defineRoot;{protected_legend:hide},protected;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
 $GLOBALS['TL_DCA']['tl_content']['palettes']['iso_categoryfilter'] = '{type_legend},title,headline,type;{config_legend},levelOffset,showLevel,showProtected,showHidden,iso_filterKey;{reference_legend:hide},defineRoot;{template_legend:hide},customTpl,iso_hide_list;{redirect_legend},jumpTo;{protected_legend:hide},protected;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
 $GLOBALS['TL_DCA']['tl_content']['palettes']['iso_addressbook'] = '{type_legend},title,headline,type;{template_legend:hide},customTpl;{protected_legend:hide},protected;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
 $GLOBALS['TL_DCA']['tl_content']['palettes']['iso_relatedproducts'] = '{type_legend},title,headline,type;{config_legend},iso_related_categories,numberOfItems,perPage,iso_listingSortField,iso_listingSortDirection;{redirect_legend},iso_addProductJumpTo;{template_legend:hide},customTpl,iso_list_layout,iso_gallery,iso_hide_empty,iso_use_quantity,iso_disable_options,iso_emptyMessage,iso_buttons;{protected_legend:hide},protected;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
@@ -31,8 +32,6 @@ $GLOBALS['TL_DCA']['tl_content']['palettes']['iso_messages'] = '{type_legend},ti
 $GLOBALS['TL_DCA']['tl_content']['subpalettes']['iso_enableLimit'] = 'iso_perPage';
 $GLOBALS['TL_DCA']['tl_content']['subpalettes']['iso_emptyMessage'] = 'iso_noProducts';
 $GLOBALS['TL_DCA']['tl_content']['subpalettes']['iso_emptyFilter'] = 'iso_noFilter';
-
-$GLOBALS['TL_DCA']['tl_content']['fields']['navigationTpl']['eval']['includeBlankOption'] = true;
 
 // Define fields from tl_module if they do not exist in tl_content
 $GLOBALS['TL_DCA']['tl_content']['palettes']['__selector__'][] = 'defineRoot';
@@ -386,4 +385,32 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['iso_notifications'] = [
     'foreignKey' => 'tl_nc_notification.title',
     'eval' => ['multiple' => true, 'csv' => ',', 'includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'],
     'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['iso_cumulativeFields'] = [
+    'inputType' => 'rowWizard',
+    'explanation' => 'iso_cumulativeFields',
+    'targetColumn' => 'jsonData', // Necessary because the save_callback would prevent default Contao behaviour
+    'fields' => [
+        'attribute' => [
+            'label' => &$GLOBALS['TL_LANG']['tl_content']['iso_cumulativeFields']['attribute'],
+            'inputType' => 'select',
+            'eval' => ['mandatory' => true, 'includeBlankOption' => true, 'chosen' => true, 'style' => 'width:300px'],
+        ],
+        'queryType' => [
+            'label' => &$GLOBALS['TL_LANG']['tl_content']['iso_cumulativeFields']['queryType'],
+            'default' => 'and',
+            'inputType' => 'select',
+            'options' => ['and', 'or'],
+            'reference' => &$GLOBALS['TL_LANG']['tl_content']['iso_cumulativeFields']['queryType'],
+        ],
+        'matchCount' => [
+            'label' => &$GLOBALS['TL_LANG']['tl_content']['iso_cumulativeFields']['matchCount'],
+            'default' => 'none',
+            'inputType' => 'select',
+            'options' => ['none', 'all', 'new'],
+            'reference' => &$GLOBALS['TL_LANG']['tl_content']['iso_cumulativeFields']['matchCount'],
+        ],
+    ],
+    'eval' => ['mandatory' => true, 'helpwizard' => true, 'tl_class' => 'clr'],
 ];

@@ -38,6 +38,53 @@
             Select which product categories (pages) should be considered for the products.<br><br><u>If this is a product list element and you configured a category filter element, the category filter selection will override this configuration!</u><br><br>
         ]]></source>
       </trans-unit>
+      <trans-unit id="XPL.iso_cumulativeFields">
+        <source><![CDATA[
+            <h3 class="tl_help_table">Query type</h3>
+            <p class="tl_help_table">
+              The query type controls how selections within one attribute are combined.
+              Selections on different attributes are always combined with AND.
+              Clicking an already selected option removes it from the selection.
+            </p>
+            <table class="tl_help_table with-padding">
+              <tr><th>Attribute</th><th>AND</th><th>OR</th></tr>
+              <tr>
+                <td>Single choice</td>
+                <td>Only one option can be selected. Selecting another option replaces the previous selection.</td>
+                <td>Products may match any selected value, for example red or blue.</td>
+              </tr>
+              <tr>
+                <td>Multiple choice</td>
+                <td>Products must contain every selected value, for example both red and blue.</td>
+                <td>Products must contain at least one selected value, for example red or blue.</td>
+              </tr>
+            </table>
+
+            <h3 class="tl_help_table">Number of results</h3>
+            <p class="tl_help_table">
+              Counts are shown for unselected options and describe the result of selecting that option,
+              using the AND or OR behavior configured above and keeping the other filter selections.
+            </p>
+            <table class="tl_help_table with-padding">
+              <tr><th>Setting</th><th>Behavior</th></tr>
+              <tr><td>Do not show</td><td>No result count is displayed.</td></tr>
+              <tr><td>Show total</td><td>Shows the total number of matching products after selecting the option.</td></tr>
+              <tr>
+                <td>Show difference</td>
+                <td>Shows the total after selecting the option minus the current total.
+                  For example, changing from 5 to 7 products displays 2; changing from 5 to 3 displays -2.
+                  If no filter option is currently selected, the total is shown instead.</td>
+              </tr>
+            </table>
+            <p class="tl_help_table">
+              Counts use this element's category scope, configured product query, publication settings
+              and current selections for its filter key. Each parent product is counted once, even if several variants match.
+              Counts are calculated before pagination. Search terms and additional settings on a separate product list
+              do not affect these counts, so the list can show a different number if its configuration differs.
+              Counts are not displayed for already selected options, or when the configuration includes an attribute with dynamic options.
+            </p>
+        ]]></source>
+      </trans-unit>
       <trans-unit id="XPL.iso_filterQuery">
       <source><![CDATA[
             <p class="tl_help_table">Isotope includes a custom «Product Query» syntax to filter, search and limit products through simplified URL parameters.<br>

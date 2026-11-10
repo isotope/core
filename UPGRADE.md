@@ -19,9 +19,8 @@
 - Downloads, FileTree, Media attributes have been extracted to a commercial extension (see https://extensions.terminal42.ch/p/isotope-file-attribute).
 - The "product of current article" scope has been removed from product list category settings
 - The option to mark and filter new products has been removed
-- Custom SQL queries for product lists has been removed
+- Custom SQL queries for product lists have been removed. Use `iso_filterQuery` instead.
 - The range product list filter module has been removed
-- The cumulative product list filter module has been removed 
 - The product variant list has been removed
 - The "legacy" price display in shop config has been removed
 - The automatic currency converter for shop configs has been removed

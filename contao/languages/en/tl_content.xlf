@@ -294,7 +294,7 @@
         <source>Filter key (optional)</source>
       </trans-unit>
       <trans-unit id="tl_content.iso_filterKey.1">
-        <source>Enter an optional key to link filter and list modules.</source>
+        <source>Enter an optional key to link filters and product lists.</source>
       </trans-unit>
       <trans-unit id="tl_content.iso_filterHideSingle.0">
         <source>Hide single options</source>
@@ -391,6 +391,36 @@
       </trans-unit>
       <trans-unit id="tl_content.sortingDirection.DESC">
         <source>DESC</source>
+      </trans-unit>
+      <trans-unit id="tl_content.iso_cumulativeFields.0">
+        <source>Filter configuration</source>
+      </trans-unit>
+      <trans-unit id="tl_content.iso_cumulativeFields.1">
+        <source>Please configure the cumulative filter fields.</source>
+      </trans-unit>
+      <trans-unit id="tl_content.iso_cumulativeFields.attribute.0">
+        <source>Attribute</source>
+      </trans-unit>
+      <trans-unit id="tl_content.iso_cumulativeFields.queryType.0">
+        <source>Query Type</source>
+      </trans-unit>
+      <trans-unit id="tl_content.iso_cumulativeFields.queryType.and">
+        <source>AND</source>
+      </trans-unit>
+      <trans-unit id="tl_content.iso_cumulativeFields.queryType.or">
+        <source>OR</source>
+      </trans-unit>
+      <trans-unit id="tl_content.iso_cumulativeFields.matchCount.0">
+        <source>Number of results</source>
+      </trans-unit>
+      <trans-unit id="tl_content.iso_cumulativeFields.matchCount.none">
+        <source>Do not show</source>
+      </trans-unit>
+      <trans-unit id="tl_content.iso_cumulativeFields.matchCount.all">
+        <source>Show total</source>
+      </trans-unit>
+      <trans-unit id="tl_content.iso_cumulativeFields.matchCount.new">
+        <source>Show difference</source>
       </trans-unit>
     </body>
   </file>

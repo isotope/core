@@ -6,15 +6,15 @@ import Sorting from './Sorting';
 export default class ProductQuery {
     #configs = [];
 
-    static fromLocation() {
+    static fromLocation(location = window.location) {
         const instance = new ProductQuery();
-        const { search } = window.location;
+        const { search } = location;
 
         if (!search.startsWith('?')) {
             return instance;
         }
 
-        for (const [key, value] of new URLSearchParams(window.location.search)) {
+        for (const [key, value] of new URLSearchParams(search)) {
             const match = String(key).match(/^_([fslq])(\w*)$/);
 
             if (match === null) {

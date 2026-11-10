@@ -9,6 +9,7 @@ use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\System;
 
 #[AsCallback('tl_content', 'fields.iso_filterFields.options')]
+#[AsCallback('tl_content', 'fields.iso_cumulativeFields.fields.attribute.options')]
 class FilterFieldsOptionsListener
 {
     use DcaLabelTrait;

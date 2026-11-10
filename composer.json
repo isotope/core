@@ -80,6 +80,7 @@
         "twig/twig": "^3.12"
     },
     "require-dev": {
+        "ext-pdo": "*",
         "contao/manager-plugin": "^2.0",
         "terminal42/contao-build-tools": "dev-main",
         "contao/test-case": "5.7.*",
