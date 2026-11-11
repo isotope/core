@@ -6,10 +6,12 @@ namespace Isotope\CoreBundle\Test\Store\Price;
 
 use Isotope\CoreBundle\Model\TaxClassModel;
 use Isotope\CoreBundle\Model\TaxRateModel;
+use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\RuleBuilder\RuleMatcher;
 use Isotope\CoreBundle\Store\Price\CalculatedPrice;
 use Isotope\CoreBundle\Store\Price\PriceCalculator;
 use Isotope\CoreBundle\Store\Price\PriceDefinition;
+use Isotope\CoreBundle\Store\Price\PriceDefinitionCollection;
 use Isotope\CoreBundle\Store\Price\PriceDisplay;
 use Isotope\CoreBundle\Store\Tax\CalculatedTax;
 use Isotope\CoreBundle\Store\Tax\CalculatedTaxCollection;
@@ -22,6 +24,19 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class PriceCalculatorTest extends TestCase
 {
+    public function testProductWithoutApplicablePriceTier(): void
+    {
+        $product = $this->createStub(CoreProduct::class);
+        $product
+            ->method('getPrices')
+            ->willReturn(new PriceDefinitionCollection([new PriceDefinition(10, null, quantity: 5)]))
+        ;
+
+        $calculator = new PriceCalculator($this->createStub(TaxCalculator::class));
+
+        $this->assertNull($calculator->calculateProduct($product, 1, false, $this->createStoreContext()));
+    }
+
     #[DataProvider('calculatePriceDefinitionProvider')]
     public function testCalculatePercentagePriceDefinition(float $subtotal, PriceDisplay $priceDisplay, int $taxId, float $expectedTotal, float $expectedTaxes): void
     {

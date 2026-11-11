@@ -49,6 +49,10 @@ class PriceCalculator
             null,
         );
 
+        if (null === $price) {
+            return null;
+        }
+
         $amount = $price->getAmount();
 
         if (1.0 !== $context->getCurrencyFactor()) {
