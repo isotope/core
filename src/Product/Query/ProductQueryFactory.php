@@ -31,6 +31,10 @@ class ProductQueryFactory
     {
         $request ??= $this->requestStack->getCurrentRequest();
 
+        if (null === $request) {
+            return null;
+        }
+
         $productQuery = $request->attributes->get('_product_query');
 
         if (false === $productQuery) {
