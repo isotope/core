@@ -110,7 +110,7 @@ class PaypalPayment extends AbstractPayment
 
             $arrData['item_number_'.++$i] = $item->getSku();
             $arrData['item_name_'.$i] = $strName;
-            $arrData['amount_'.$i] = $item->getPrice()?->getTotalPrice() ?? 0.0;
+            $arrData['amount_'.$i] = $item->getPrice()?->getUnitPrice() ?? 0.0;
             $arrData['quantity_'.$i] = $item->getQuantity();
         }
 
