@@ -59,6 +59,7 @@ class Subdivisions implements ResetInterface
     public function reset(): void
     {
         $this->options = null;
+        $this->names = null;
     }
 
     private function loadOptions(): void
