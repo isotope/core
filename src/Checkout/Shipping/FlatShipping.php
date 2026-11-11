@@ -122,7 +122,7 @@ class FlatShipping extends AbstractShipping
 
         $multiply = floor($this->flatWeight->getAmount());
 
-        if ($multiply <= 1) {
+        if ($multiply < 1) {
             return 1;
         }
 
