@@ -9,7 +9,6 @@ use Isotope\CoreBundle\EventDispatcher\TransactionEventDispatcher;
 use Isotope\CoreBundle\ProductCollection\Order\Order;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Event\DocumentNumberTransactionEvent;
-use Symfony\Component\String\UnicodeString;
 
 /**
  * @internal
@@ -94,7 +93,7 @@ class DocumentNumberGenerator
         if (!\is_string($result)) {
             $max = 0;
         } else {
-            $max = (int) substr($result, (new UnicodeString($format->getPrefix()))->length());
+            $max = (int) substr($result, \strlen($format->getPrefix()));
         }
 
         return $format->getPrefix().str_pad((string) ($max + 1), $format->getLength(), '0', STR_PAD_LEFT);
