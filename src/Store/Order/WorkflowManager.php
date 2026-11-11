@@ -81,10 +81,15 @@ class WorkflowManager implements ResetInterface
             }
 
             $definition = $definitions[$row['type']];
+            $definition->addPlace($row['alias']);
+            $metadata[$row['type']][$row['alias']] = $row;
 
             foreach (explode(',', (string) $row['workflow']) as $to) {
+                if ('' === $to) {
+                    continue;
+                }
+
                 $definition->addTransition(new Transition($to, $row['alias'], $to));
-                $metadata[$row['type']][$row['alias']] = $row;
             }
         }
 
