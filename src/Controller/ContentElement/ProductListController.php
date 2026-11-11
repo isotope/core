@@ -49,9 +49,11 @@ class ProductListController extends AbstractContentElementController
             return new Response();
         }
 
+        $filterKeys = [$model->iso_filterKey ?: ''];
         $template->products = [];
         $template->pagination = null;
         $template->view = ListView::createFromContent($model);
+        $template->filters = $filterKeys;
 
         $productQuery = $this->getProductQuery($request);
 
@@ -61,7 +63,6 @@ class ProductListController extends AbstractContentElementController
             return $template->getResponse();
         }
 
-        $filterKeys = [$model->iso_filterKey ?: ''];
         $products = null;
         $pagination = null;
 
@@ -78,7 +79,6 @@ class ProductListController extends AbstractContentElementController
 
         $template->pagination = $pagination;
         $template->products = $products;
-        $template->filters = $filterKeys;
 
         return $template->getResponse();
     }
