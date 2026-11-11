@@ -14,6 +14,8 @@ use Isotope\CoreBundle\Attribute\Filter\FilterAttribute;
 use Isotope\CoreBundle\Attribute\Filter\FilterOptionsProvider;
 use Isotope\CoreBundle\Attribute\Option\Option;
 use Isotope\CoreBundle\Attribute\Option\OptionCollection;
+use Isotope\CoreBundle\Attribute\Option\OptionsSource;
+use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
 use Isotope\CoreBundle\Product\Finder\ProductFinderFactory;
 use Isotope\CoreBundle\Product\Query\Filter\EqualFilter;
 use Isotope\CoreBundle\Test\TestCase;
@@ -38,15 +40,18 @@ final class FilterOptionsProviderTest extends TestCase
             'color' => [],
             'tags' => ['eval' => ['multiple' => true, 'csv' => ',']],
             'sizes' => ['eval' => ['multiple' => true]],
+            'featured' => [],
         ];
         $connection = $this->createConnection();
         $connection->executeStatement('ALTER TABLE tl_iso_product ADD COLUMN type INTEGER DEFAULT 1');
         $connection->executeStatement("ALTER TABLE tl_iso_product ADD COLUMN tags TEXT DEFAULT ''");
         $connection->executeStatement("ALTER TABLE tl_iso_product ADD COLUMN sizes TEXT DEFAULT ''");
+        $connection->executeStatement('ALTER TABLE tl_iso_product ADD COLUMN featured INTEGER DEFAULT 0');
+        $connection->update('tl_iso_product', ['featured' => 1], ['id' => 1]);
         $connection->executeStatement('CREATE TABLE tl_iso_producttype (id INTEGER, attributes TEXT, variants INTEGER, variant_attributes TEXT)');
         $connection->insert('tl_iso_producttype', [
             'id' => 1,
-            'attributes' => serialize(['color' => ['enabled' => true], 'tags' => ['enabled' => true], 'sizes' => ['enabled' => true]]),
+            'attributes' => serialize(['color' => ['enabled' => true], 'tags' => ['enabled' => true], 'sizes' => ['enabled' => true], 'featured' => ['enabled' => true]]),
             'variants' => 1,
             'variant_attributes' => serialize(['color' => ['enabled' => true]]),
         ]);
@@ -72,6 +77,28 @@ final class FilterOptionsProviderTest extends TestCase
         $parameters = $baseQuery->getParameters();
 
         try {
+            $checkbox = $this->createStub(OptionsAttributeInterface::class);
+            $checkbox
+                ->method('getOptionsSource')
+                ->willReturn(OptionsSource::Name)
+            ;
+            $registry = $this->createStub(AttributeRegistry::class);
+            $registry
+                ->method('get')
+                ->willReturn($checkbox)
+            ;
+            $translator = $this->createStub(TranslatorInterface::class);
+            $translator
+                ->method('trans')
+                ->willReturnArgument(0)
+            ;
+            $checkboxProvider = new FilterOptionsProvider($registry, $connection, $translator);
+
+            $this->assertEquals(
+                [new Option('1', 'MSC.yes'), new Option('0', 'MSC.no')],
+                $checkboxProvider->getAttributes(['featured'], $selection)[0]->getOptions()->toArray(),
+            );
+
             $options = [];
 
             foreach ($provider->getAttributes(['color', 'tags', 'sizes', 'disabled'], $selection) as $attribute) {

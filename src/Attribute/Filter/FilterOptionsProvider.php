@@ -55,7 +55,10 @@ class FilterOptionsProvider
                 if (OptionsSource::Name === $attribute->getOptionsSource()) {
                     $stringValues = array_map(strval(...), $values);
 
-                    foreach (['1' => 'MSC.yes', '0' => 'MSC.no'] as $value => $label) {
+                    foreach ([1 => 'MSC.yes', 0 => 'MSC.no'] as $value => $label) {
+                        // PHP converts numeric array keys to numbers, even if we would use strings in the first place
+                        $value = (string) $value;
+
                         if (\in_array($value, $stringValues, true)) {
                             $options[] = new Option($value, $this->translator->trans($label, [], 'contao_default'));
                         }
