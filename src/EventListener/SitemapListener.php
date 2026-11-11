@@ -16,6 +16,7 @@ use Isotope\CoreBundle\Product\DataCollector\ProductDtoCollection;
 use Isotope\CoreBundle\Product\ProductBuilder;
 use Isotope\CoreBundle\Routing\ProductReference;
 use Isotope\CoreBundle\Routing\ProductResolver;
+use Isotope\CoreBundle\Store\Context\StoreContextException;
 use Isotope\CoreBundle\Store\StoreManager;
 use Isotope\CoreBundle\Util\ProductCategoryUtil;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
@@ -36,6 +37,13 @@ class SitemapListener
 
     public function __invoke(SitemapEvent $event): void
     {
+        try {
+            $context = $this->storeManager->getContextForRequest($event->getRequest());
+        } catch (StoreContextException) {
+            // No store config assigned to root page, nothing to do
+            return;
+        }
+
         $pageIds = Database::getInstance()->getChildRecords($event->getRootPageIds(), 'tl_page');
         $productIds = $this->connection->fetchFirstColumn(
             'SELECT p.id FROM tl_iso_product p JOIN tl_iso_product_category c ON p.id=c.product_id WHERE c.pid IN (?)',
@@ -44,7 +52,6 @@ class SitemapListener
         );
 
         $dtoCollection = new ProductDtoCollection(array_map(static fn (int|string $id) => new ProductDto('tl_iso_product.'.$id), $productIds));
-        $context = $this->storeManager->getContextForRequest($event->getRequest());
 
         $products = $this->productBuilder->build($dtoCollection, $context);
 
