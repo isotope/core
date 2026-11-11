@@ -134,22 +134,22 @@ class GroupShipping extends AbstractShipping
 
                 foreach ($this->getPrices() as $price) {
                     if (null === $return || $price[1]->getUnitPrice() < $return[1]->getUnitPrice()) {
-                        $return = $price[0];
+                        $return = $price;
                     }
                 }
 
-                return $return;
+                return $return[0] ?? null;
 
             case GroupCalculation::highest:
                 $return = null;
 
                 foreach ($this->getPrices() as $price) {
                     if (null === $return || $price[1]->getUnitPrice() > $return[1]->getUnitPrice()) {
-                        $return = $price[0];
+                        $return = $price;
                     }
                 }
 
-                return $return;
+                return $return[0] ?? null;
 
             case GroupCalculation::sum:
                 $total = 0;
