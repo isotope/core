@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Store\EventListener;
 
 use Codefog\HasteBundle\Formatter;
+use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\MemberModel;
 use Contao\StringUtil;
-use Isotope\CoreBundle\Model\AddressModel;
 use Isotope\CoreBundle\Model\ConfigModel;
-use Isotope\CoreBundle\Model\OrderStatusModel;
 use Isotope\CoreBundle\Model\PaymentModel;
 use Isotope\CoreBundle\Model\ShippingModel;
 use Isotope\CoreBundle\ProductCollection\Order\Order;
@@ -28,6 +27,7 @@ use Twig\Environment;
 class DefaultOrderNotificationTokensListener
 {
     public function __construct(
+        private readonly ContaoFramework $framework,
         private readonly Formatter $formatter,
         private readonly PriceFormatter $priceFormatter,
         private readonly AddressFormatter $addressFormatter,
@@ -38,27 +38,32 @@ class DefaultOrderNotificationTokensListener
 
     public function __invoke(CollectOrderNotificationTokensEvent $event): void
     {
+        $memberAdapter = $this->framework->getAdapter(MemberModel::class);
+        $configAdapter = $this->framework->getAdapter(ConfigModel::class);
+        $paymentAdapter = $this->framework->getAdapter(PaymentModel::class);
+        $shippingAdapter = $this->framework->getAdapter(ShippingModel::class);
+
         $order = $event->getOrder();
         $context = $order->getContext();
-        $member = $context->getMemberId() ? MemberModel::findById($context->getMemberId()) : null;
+        $member = $context->getMemberId() ? $memberAdapter->findById($context->getMemberId()) : null;
 
         $tokens['uniqid'] = $order->getIdentifier();
         $tokens['document_number'] = $order->getDocumentNumber();
         $tokens['recipient_email'] = $this->getEmailRecipient($order, $context, $member);
         $tokens['order_id'] = $order->getId();
-        $tokens['order_items'] = $order->getLineItems()->sumQuantity();
-        $tokens['order_products'] = $order->getLineItems()->count();
+        $tokens['order_items'] = $order->getLineItems()->products()->sumQuantity();
+        $tokens['order_products'] = $order->getLineItems()->products()->count();
         $tokens['order_subtotal'] = $order->getSubtotal() ? $this->priceFormatter->toText($order->getSubtotal(), $context) : '';
         $tokens['order_total'] = $order->getTotal() ? $this->priceFormatter->toText($order->getTotal(), $context) : '';
 
-        if ($config = ConfigModel::findById($context->getConfigId())) {
+        if ($config = $configAdapter->findById($context->getConfigId())) {
             $tokens['bank_name'] = $config->bankName;
             $tokens['bank_account'] = $config->bankAccount;
             $tokens['bank_code'] = $config->bankCode;
             $tokens['tax_number'] = $config->taxNumber;
 
             foreach ($config->row() as $k => $v) {
-                $tokens['config_'.$k] = $this->formatter->dcaValue(ConfigModel::getTable(), $k, $v);
+                $tokens['config_'.$k] = $this->formatter->dcaValue('tl_iso_config', $k, $v);
             }
         }
 
@@ -71,7 +76,7 @@ class DefaultOrderNotificationTokensListener
         foreach ($statuses as $type => $status) {
             if ($status) {
                 foreach ($status->row() as $k => $v) {
-                    $tokens[$type.'_status_'.$k] = $this->formatter->dcaValue(OrderStatusModel::getTable(), $k, $v);
+                    $tokens[$type.'_status_'.$k] = $this->formatter->dcaValue('tl_iso_orderstatus', $k, $v);
                 }
 
                 $tokens[$type.'_status'] = $this->translator->trans($status->label ?: $status->name, [], 'isotope');
@@ -83,7 +88,7 @@ class DefaultOrderNotificationTokensListener
         foreach ($addresses as $type => $address) {
             if ($address) {
                 foreach ($address->row() as $k => $v) {
-                    $tokens[$type.'_address_'.$k] = $this->formatter->dcaValue(AddressModel::getTable(), $k, $v);
+                    $tokens[$type.'_address_'.$k] = $this->formatter->dcaValue('tl_iso_address', $k, $v);
                 }
 
                 $tokens[$type.'_address'] = $this->addressFormatter->toHtml($address, $context->getBillingAddressConfig());
@@ -94,25 +99,25 @@ class DefaultOrderNotificationTokensListener
         $tokens['member_id'] = 0;
         if ($member) {
             foreach ($member->row() as $k => $v) {
-                $tokens['member_'.$k] = $this->formatter->dcaValue(MemberModel::getTable(), $k, $v);
+                $tokens['member_'.$k] = $this->formatter->dcaValue('tl_member', $k, $v);
             }
         }
 
         $tokens['payment_id'] = 0;
         $tokens['payment_label'] = '';
         $tokens['payment_note'] = '';
-        if (($payment = $order->getPaymentMethod()) && ($paymentModel = PaymentModel::findById($payment->getId()))) {
+        if (($payment = $order->getPaymentMethod()) && ($paymentModel = $paymentAdapter->findById($payment->getId()))) {
             foreach ($paymentModel->row() as $k => $v) {
-                $tokens['payment_'.$k] = $this->formatter->dcaValue(PaymentModel::getTable(), $k, $v);
+                $tokens['payment_'.$k] = $this->formatter->dcaValue('tl_iso_payment', $k, $v);
             }
         }
 
         $tokens['shipping_id'] = 0;
         $tokens['shipping_label'] = '';
         $tokens['shipping_note'] = '';
-        if (($shipping = $order->getShippingMethod()) && ($shippingModel = ShippingModel::findById($shipping->getId()))) {
+        if (($shipping = $order->getShippingMethod()) && ($shippingModel = $shippingAdapter->findById($shipping->getId()))) {
             foreach ($shippingModel->row() as $k => $v) {
-                $tokens['shipping_'.$k] = $this->formatter->dcaValue(ShippingModel::getTable(), $k, $v);
+                $tokens['shipping_'.$k] = $this->formatter->dcaValue('tl_iso_shipping', $k, $v);
             }
         }
 
