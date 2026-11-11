@@ -13,6 +13,7 @@ use Isotope\CoreBundle\Store\Price\CalculatedPrice;
 use Isotope\CoreBundle\Test\TestCase;
 use Isotope\CoreBundle\Twig\TemplateMarkup;
 use Isotope\CoreBundle\Twig\TemplateMarkupFactory;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
@@ -20,7 +21,8 @@ use Twig\Loader\ArrayLoader;
 
 final class PaypalPaymentTest extends TestCase
 {
-    public function testPaymentAmountsUseUnitPrices(): void
+    #[DataProvider('discountProvider')]
+    public function testPaymentAmountsAndDiscounts(array $discounts, float $expectedDiscount): void
     {
         $context = $this->createStoreContext();
 
@@ -30,6 +32,12 @@ final class PaypalPaymentTest extends TestCase
 
         $order = new Order('test', $context);
         $order->add($item);
+
+        foreach ($discounts as $index => $amount) {
+            $discount = new LineItem(LineItem::TYPE_PRODUCT, 'discount_'.$index);
+            $discount->setPrice(new CalculatedPrice($amount, $amount));
+            $order->add($discount);
+        }
 
         $parser = $this->createStub(StringParser::class);
         $parser
@@ -60,9 +68,17 @@ final class PaypalPaymentTest extends TestCase
         );
 
         $this->assertInstanceOf(TemplateMarkup::class, $result->message);
+        $this->assertEqualsWithDelta($expectedDiscount, $result->message['discount'], PHP_FLOAT_EPSILON);
         $data = $result->message->getContext()['data'];
         $this->assertSame(3, $data['quantity_1']);
         $this->assertEqualsWithDelta(10.0, $data['amount_1'], PHP_FLOAT_EPSILON);
         $this->assertEqualsWithDelta(30.0, $data['amount_1'] * $data['quantity_1'], PHP_FLOAT_EPSILON);
+    }
+
+    public static function discountProvider(): iterable
+    {
+        yield 'no discount' => [[], 0.0];
+        yield 'one discount' => [[-2.0], 2.0];
+        yield 'multiple discounts' => [[-2.0, -3.0], 5.0];
     }
 }

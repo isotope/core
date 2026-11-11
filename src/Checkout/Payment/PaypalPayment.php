@@ -79,7 +79,7 @@ class PaypalPayment extends AbstractPayment
 
         foreach ($order->getLineItems() as $item) {
             if ($item->getPrice()?->getTotalPrice() < 0) {
-                $fltDiscount -= abs($item->getPrice()->getTotalPrice());
+                $fltDiscount += abs($item->getPrice()->getTotalPrice());
                 continue;
             }
 
