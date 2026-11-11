@@ -35,6 +35,7 @@ class AddressManager
             $address = new AddressModel();
             $address->ptable = 'tl_member';
             $address->pid = $memberId;
+            $address->store_id = $storeId;
 
             return $this->generateForm($request, $address, $addressConfig, $identifier, 'create');
         }
