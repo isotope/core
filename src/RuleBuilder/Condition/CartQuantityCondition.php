@@ -29,7 +29,7 @@ class CartQuantityCondition implements RuleConditionInterface
 
     public function isApplicable(StoreContext $context): bool
     {
-        $quantity = $context->getCart()->getLineItems()->products()->sumQuantity();
+        $quantity = $context->getCart()?->getLineItems()->products()->sumQuantity() ?? 0;
 
         return match ($this->operator) {
             'eq' => FloatComparator::equals($quantity, $this->quantity),
