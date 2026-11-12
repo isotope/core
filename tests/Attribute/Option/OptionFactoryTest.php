@@ -20,6 +20,49 @@ use Twig\Environment;
 
 final class OptionFactoryTest extends TestCase
 {
+    #[DataProvider('foreignKeyFallbackProvider')]
+    public function testForeignKeyFallbackSelection(string $foreignKey, string $expectedField): void
+    {
+        $attribute = $this->createStub(OptionsAttributeInterface::class);
+        $attribute
+            ->method('getOptionsSource')
+            ->willReturn(OptionsSource::ForeignKey)
+        ;
+
+        $connection = $this->createMock(Connection::class);
+        $connection
+            ->expects($this->once())
+            ->method('iterateAssociative')
+            ->with("SELECT id AS value, $expectedField AS label FROM tl_options ORDER BY label")
+            ->willReturn(new \ArrayIterator([['value' => 42, 'label' => 'Option label']]))
+        ;
+
+        $factory = new OptionFactory(
+            $this->createContaoFrameworkStub([AttributeOptionModel::class => $this->createAdapterStub([])]),
+            $connection,
+            $this->createStub(TranslatorInterface::class),
+            $this->createStub(PriceCalculator::class),
+            $this->createStub(Environment::class),
+            $this->createStub(ScopeMatcher::class),
+        );
+
+        $context = new ProductContext($this->createStub(CoreProduct::class), $this->createStoreContext());
+
+        $options = $factory->create($attribute, $context, null, $foreignKey);
+
+        $this->assertCount(1, $options);
+        $this->assertSame('42', $options->first()->getValue());
+        $this->assertSame('Option label', $options->first()->getLabel());
+    }
+
+    public static function foreignKeyFallbackProvider(): iterable
+    {
+        yield 'default after unmatched language' => ["de=tl_options.german_label\ntl_options.default_label", 'default_label'];
+        yield 'default before unmatched language' => ["tl_options.default_label\nde=tl_options.german_label", 'default_label'];
+        yield 'matching language overrides default' => ["tl_options.default_label\nen=tl_options.english_label", 'english_label'];
+        yield 'first language remains fallback without default' => ["de=tl_options.german_label\nfr=tl_options.french_label", 'german_label'];
+    }
+
     #[DataProvider('emptyForeignKeyProvider')]
     public function testForeignKeyWithoutActiveLinesReturnsNoOptions(string $foreignKey): void
     {

@@ -173,6 +173,7 @@ class OptionFactory
     private function parseForeignKey(string $config, string $locale): array
     {
         $fallback = null;
+        $languageFallback = null;
         $lines = StringUtil::trimsplit('@\r\n|\n|\r@', $config);
 
         if ('' === $config || !\is_array($lines) || empty($lines)) {
@@ -186,7 +187,7 @@ class OptionFactory
                 continue;
             }
 
-            // Check for a language1
+            // Check for a language
             if (preg_match('/^([a-z]{2}(-[A-Z]{2})?)=(.+)$/', $line, $matches)) {
                 $foreignKey = $matches[3];
 
@@ -194,12 +195,14 @@ class OptionFactory
                     return explode('.', $foreignKey, 2);
                 }
 
-                $fallback ??= $foreignKey;
+                $languageFallback ??= $foreignKey;
             } elseif (null === $fallback) {
                 // The row without language is the fallback
                 $fallback = $line;
             }
         }
+
+        $fallback ??= $languageFallback;
 
         if (null === $fallback) {
             throw new UnderflowException('foreignKey contains no table and field');
