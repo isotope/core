@@ -127,7 +127,7 @@ class GroupShipping extends AbstractShipping
         switch ($this->groupCalculation) {
             default:
             case GroupCalculation::first:
-                return array_first($this->getPrices(false))[0];
+                return array_first($this->getPrices(false))[0] ?? null;
 
             case GroupCalculation::lowest:
                 $return = null;
