@@ -34,6 +34,7 @@
     "require": {
         "php": "^8.3",
         "ext-dom": "*",
+        "ext-mbstring": "*",
         "composer-runtime-api": "^2",
         "contao/core-bundle": "^5.7.4",
         "codefog/contao-haste": "^5.4",

@@ -54,7 +54,9 @@ class DocumentNumberGenerator
             ->andWhere('store_id=:storeId')
             ->setParameter('type', Order::getType())
             ->setParameter('storeId', $event->getStoreId())
-            ->orderBy('document_number', 'DESC')
+            ->setParameter('numberStart', mb_strlen($prefix, 'UTF-8') + 1)
+            ->orderBy('CAST(SUBSTR(document_number, :numberStart) AS UNSIGNED)', 'DESC')
+            ->setMaxResults(1)
         ;
 
         if ('' !== $prefix) {
@@ -75,7 +77,9 @@ class DocumentNumberGenerator
         $qb
             ->select('document_number')
             ->from('tl_iso_order_document')
-            ->orderBy('document_number', 'DESC')
+            ->setParameter('numberStart', mb_strlen($prefix, 'UTF-8') + 1)
+            ->orderBy('CAST(SUBSTR(document_number, :numberStart) AS UNSIGNED)', 'DESC')
+            ->setMaxResults(1)
         ;
 
         if ('' !== $prefix) {

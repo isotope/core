@@ -19,6 +19,7 @@ $GLOBALS['TL_DCA']['tl_iso_order_document'] = [
                 'id' => 'primary',
                 'pid' => 'index',
                 'uniqid' => 'unique',
+                'document_number' => 'index',
             ],
         ],
     ],

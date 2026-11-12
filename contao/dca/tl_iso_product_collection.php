@@ -31,6 +31,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
                 'member,store_id,type' => 'index',
                 'uniqid,store_id,type' => 'index',
                 'source_collection_id,type' => 'index',
+                'type,store_id,document_number' => 'index',
                 'type,order_status,locked,config_id,member' => 'index',
             ],
         ],
