@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Attribute\Option;
 
+use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\CoreBundle\Routing\ScopeMatcher;
 use Contao\Model\Collection;
 use Contao\StringUtil;
@@ -26,6 +27,7 @@ use Twig\Environment;
 class OptionFactory
 {
     public function __construct(
+        private readonly ContaoFramework $framework,
         private readonly Connection $connection,
         private readonly TranslatorInterface $translator,
         private readonly PriceCalculator $priceCalculator,
@@ -55,7 +57,7 @@ class OptionFactory
                 return $this->createFromTable($foreignKey, $productContext?->getContext());
 
             case OptionsSource::Table:
-                return $this->createFromModels(AttributeOptionModel::findByAttribute($attribute), !$isVariant, $productContext);
+                return $this->createFromModels($this->framework->getAdapter(AttributeOptionModel::class)->findByAttribute($attribute), !$isVariant, $productContext);
 
             case OptionsSource::Product:
                 $product = $productContext?->getProduct();
@@ -64,7 +66,7 @@ class OptionFactory
                     return new OptionCollection();
                 }
 
-                return $this->createFromModels(AttributeOptionModel::findByProductAndAttribute($product, $attribute), !$isVariant, $productContext);
+                return $this->createFromModels($this->framework->getAdapter(AttributeOptionModel::class)->findByProductAndAttribute($product, $attribute), !$isVariant, $productContext);
 
             default:
                 $config = Widget::getAttributesFromDca($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute->getFieldName()], $attribute->getFieldName());
@@ -197,6 +199,10 @@ class OptionFactory
                 // The row without language is the fallback
                 $fallback = $line;
             }
+        }
+
+        if (null === $fallback) {
+            throw new UnderflowException('foreignKey contains no table and field');
         }
 
         return explode('.', $fallback, 2);
