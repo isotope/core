@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Gallery;
 
 use Contao\Model;
+use Contao\StringUtil;
 use Isotope\CoreBundle\Model\GalleryModel;
 use Isotope\CoreBundle\ModelType\ModelInstanceTrait;
 use Isotope\CoreBundle\ModelType\ModelTypeFactoryInterface;
 use Isotope\CoreBundle\Store\Context\StoreContext;
-use Isotope\CoreBundle\Util\StringUtil;
 
 /**
  * @template TType of AbstractGallery
@@ -30,8 +30,8 @@ abstract class AbstractGalleryFactory implements ModelTypeFactoryInterface
         $this->validateInstanceOf($model, GalleryModel::class);
 
         $instance = $this->doCreate($model)
-            ->setMainSize(StringUtil::unserialize($model->main_size))
-            ->setGallerySize(StringUtil::unserialize($model->gallery_size))
+            ->setMainSize(StringUtil::deserialize($model->main_size, true) ?: null)
+            ->setGallerySize(StringUtil::deserialize($model->gallery_size, true) ?: null)
             ->setLightboxSize($model->lightbox_size)
             ->setPlaceholder($model->placeholder)
         ;
