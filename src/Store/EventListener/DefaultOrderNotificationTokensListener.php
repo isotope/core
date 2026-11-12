@@ -83,16 +83,19 @@ class DefaultOrderNotificationTokensListener
             }
         }
 
-        $addresses = ['billing' => $order->getBillingAddress(), 'shipping' => $order->getShippingAddress() ?: $order->getBillingAddress()];
+        $addresses = [
+            'billing' => [$order->getBillingAddress(), $context->getBillingAddressConfig()],
+            'shipping' => [$order->getShippingAddress() ?: $order->getBillingAddress(), $context->getShippingAddressConfig()],
+        ];
 
-        foreach ($addresses as $type => $address) {
+        foreach ($addresses as $type => [$address, $addressConfig]) {
             if ($address) {
                 foreach ($address->row() as $k => $v) {
                     $tokens[$type.'_address_'.$k] = $this->formatter->dcaValue('tl_iso_address', $k, $v);
                 }
 
-                $tokens[$type.'_address'] = $this->addressFormatter->toHtml($address, $context->getBillingAddressConfig());
-                $tokens[$type.'_address_text'] = $this->addressFormatter->toText($address, $context->getBillingAddressConfig());
+                $tokens[$type.'_address'] = $this->addressFormatter->toHtml($address, $addressConfig);
+                $tokens[$type.'_address_text'] = $this->addressFormatter->toText($address, $addressConfig);
             }
         }
 
