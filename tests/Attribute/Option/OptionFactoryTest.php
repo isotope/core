@@ -21,7 +21,7 @@ use Twig\Environment;
 final class OptionFactoryTest extends TestCase
 {
     #[DataProvider('foreignKeyFallbackProvider')]
-    public function testForeignKeyFallbackSelection(string $foreignKey, string $expectedField): void
+    public function testForeignKeyFallbackSelection(string $foreignKey, string $expectedField, string $locale = 'en'): void
     {
         $attribute = $this->createStub(OptionsAttributeInterface::class);
         $attribute
@@ -46,7 +46,7 @@ final class OptionFactoryTest extends TestCase
             $this->createStub(ScopeMatcher::class),
         );
 
-        $context = new ProductContext($this->createStub(CoreProduct::class), $this->createStoreContext());
+        $context = new ProductContext($this->createStub(CoreProduct::class), $this->createStoreContext(locale: $locale));
 
         $options = $factory->create($attribute, $context, null, $foreignKey);
 
@@ -61,6 +61,9 @@ final class OptionFactoryTest extends TestCase
         yield 'default before unmatched language' => ["tl_options.default_label\nde=tl_options.german_label", 'default_label'];
         yield 'matching language overrides default' => ["tl_options.default_label\nen=tl_options.english_label", 'english_label'];
         yield 'first language remains fallback without default' => ["de=tl_options.german_label\nfr=tl_options.french_label", 'german_label'];
+        yield 'underscore regional locale' => ["de=tl_options.german_label\nen-GB=tl_options.british_label", 'british_label', 'en_GB'];
+        yield 'hyphenated regional locale' => ["de=tl_options.german_label\nen-GB=tl_options.british_label", 'british_label', 'en-GB'];
+        yield 'different region uses default' => ["tl_options.default_label\nen-GB=tl_options.british_label", 'default_label', 'en_US'];
     }
 
     #[DataProvider('emptyForeignKeyProvider')]

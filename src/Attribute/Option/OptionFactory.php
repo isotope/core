@@ -6,6 +6,7 @@ namespace Isotope\CoreBundle\Attribute\Option;
 
 use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\CoreBundle\Routing\ScopeMatcher;
+use Contao\CoreBundle\Util\LocaleUtil;
 use Contao\Model\Collection;
 use Contao\StringUtil;
 use Contao\Widget;
@@ -174,6 +175,7 @@ class OptionFactory
     {
         $fallback = null;
         $languageFallback = null;
+        $locale = LocaleUtil::formatAsLanguageTag($locale);
         $lines = StringUtil::trimsplit('@\r\n|\n|\r@', $config);
 
         if ('' === $config || !\is_array($lines) || empty($lines)) {
