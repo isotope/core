@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Test\Store\Order\Transformer;
 
+use Contao\PageModel;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
 use Isotope\CoreBundle\Store\Order\Transformer\LineItemTransformer;
 use Isotope\CoreBundle\Store\Price\CalculatedPrice;
-use PHPUnit\Framework\TestCase;
+use Isotope\CoreBundle\Test\TestCase;
 
 final class LineItemTransformerTest extends TestCase
 {
@@ -37,10 +38,26 @@ final class LineItemTransformerTest extends TestCase
                 ],
                 'tax_free_price' => 0,
                 'tax_id' => '',
-                'jumpTo' => 0,
+                'referencePage' => null,
                 'level' => 0,
             ],
             $result,
         );
+    }
+
+    public function testReferencePageIdIsPreserved(): void
+    {
+        $lineItem = new LineItem(LineItem::TYPE_PRODUCT, 'tl_iso_product.42');
+        $lineItem->setReferencePage(17);
+
+        $this->assertSame(17, LineItemTransformer::transform($lineItem)['referencePage']);
+    }
+
+    public function testReferencePageModelIsConvertedToItsId(): void
+    {
+        $lineItem = new LineItem(LineItem::TYPE_PRODUCT, 'tl_iso_product.42');
+        $lineItem->setReferencePage($this->createClassWithPropertiesStub(PageModel::class, ['id' => '17']));
+
+        $this->assertSame(17, LineItemTransformer::transform($lineItem)['referencePage']);
     }
 }
