@@ -61,8 +61,8 @@ class DocumentNumberGenerator
 
         if ('' !== $prefix) {
             $qb
-                ->andWhere('document_number LIKE :prefix')
-                ->setParameter('prefix', $prefix.'%')
+                ->andWhere("document_number LIKE :prefix ESCAPE '!'")
+                ->setParameter('prefix', $this->connection->getDatabasePlatform()->escapeStringForLike($prefix, '!').'%')
             ;
         }
 
@@ -84,8 +84,8 @@ class DocumentNumberGenerator
 
         if ('' !== $prefix) {
             $qb
-                ->andWhere('document_number LIKE :prefix')
-                ->setParameter('prefix', $prefix.'%')
+                ->andWhere("document_number LIKE :prefix ESCAPE '!'")
+                ->setParameter('prefix', $this->connection->getDatabasePlatform()->escapeStringForLike($prefix, '!').'%')
             ;
         }
 

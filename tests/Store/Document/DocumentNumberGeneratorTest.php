@@ -16,7 +16,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 final class DocumentNumberGeneratorTest extends TestCase
 {
     #[DataProvider('numberSequenceProvider')]
-    public function testDocumentNumberSequence(string $prefix, int $length, array $numbers, string $expected): void
+    public function testDocumentNumberSequence(string $prefix, int $length, array $numbers, string $expected, array $otherNumbers = []): void
     {
         $connection = DriverManager::getConnection(['driver' => 'pdo_sqlite', 'memory' => true]);
         $connection->executeStatement('CREATE TABLE tl_iso_order_document (document_number VARCHAR(64))');
@@ -25,19 +25,27 @@ final class DocumentNumberGeneratorTest extends TestCase
             $connection->insert('tl_iso_order_document', ['document_number' => $prefix.$number]);
         }
 
+        foreach ($otherNumbers as $number) {
+            $connection->insert('tl_iso_order_document', ['document_number' => $number]);
+        }
+
         $generator = new DocumentNumberGenerator(new TransactionEventDispatcher(new EventDispatcher()), $connection);
 
         $this->assertSame($expected, $generator->generateForDocument(new NumberFormat($prefix, $length)));
     }
 
     #[DataProvider('numberSequenceProvider')]
-    public function testOrderNumberSequence(string $prefix, int $length, array $numbers, string $expected): void
+    public function testOrderNumberSequence(string $prefix, int $length, array $numbers, string $expected, array $otherNumbers = []): void
     {
         $connection = DriverManager::getConnection(['driver' => 'pdo_sqlite', 'memory' => true]);
         $connection->executeStatement('CREATE TABLE tl_iso_product_collection (type VARCHAR(16), store_id INTEGER, document_number VARCHAR(64))');
 
         foreach ($numbers as $number) {
             $connection->insert('tl_iso_product_collection', ['type' => Order::getType(), 'store_id' => 0, 'document_number' => $prefix.$number]);
+        }
+
+        foreach ($otherNumbers as $number) {
+            $connection->insert('tl_iso_product_collection', ['type' => Order::getType(), 'store_id' => 0, 'document_number' => $number]);
         }
 
         $generator = new DocumentNumberGenerator(new TransactionEventDispatcher(new EventDispatcher()), $connection);
@@ -53,6 +61,10 @@ final class DocumentNumberGeneratorTest extends TestCase
         yield 'changed padding' => ['INV-', 4, ['9', '0002'], 'INV-0010'];
         yield 'Unicode prefix overflow' => ['Ä-', 2, ['99', '100'], 'Ä-101'];
         yield 'no prefix overflow' => ['', 2, ['99', '100'], '101'];
+        yield 'literal underscore prefix' => ['INV_', 4, ['0009'], 'INV_0010', ['INVX9999']];
+        yield 'literal percent prefix' => ['INV%', 4, ['0009'], 'INV%0010', ['INVX9999']];
+        yield 'literal escape character prefix' => ['INV!', 4, ['0009'], 'INV!0010', ['INVX9999']];
+        yield 'literal backslash prefix' => ['INV\\', 4, ['0009'], 'INV\\0010', ['INVX9999']];
     }
 
     public function testDocumentNumberWithUnicodePrefix(): void
