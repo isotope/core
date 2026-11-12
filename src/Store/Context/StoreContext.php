@@ -64,7 +64,7 @@ final class StoreContext
         private AddressConfig|\Closure $shippingAddressConfig,
         private AddressModel|\Closure $ownerAddress,
     ) {
-        $this->timestamp = new \DateTimeImmutable();
+        $this->timestamp = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
     }
 
     public function set(string $key, mixed $value): self
@@ -145,6 +145,9 @@ final class StoreContext
         return $this;
     }
 
+    /**
+     * The context instant, always represented in UTC.
+     */
     public function getTimestamp(): \DateTimeImmutable
     {
         return $this->timestamp;
@@ -152,7 +155,7 @@ final class StoreContext
 
     public function setTimestamp(\DateTimeImmutable $timestamp): self
     {
-        $this->timestamp = $timestamp;
+        $this->timestamp = $timestamp->setTimezone(new \DateTimeZone('UTC'));
 
         return $this;
     }

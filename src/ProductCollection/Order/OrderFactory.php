@@ -55,7 +55,7 @@ class OrderFactory
         );
 
         if ($collection->locked) {
-            $context->setTimestamp(\DateTimeImmutable::createFromFormat('U', (string) $collection->locked));
+            $context->setTimestamp(new \DateTimeImmutable('@'.$collection->locked));
         }
 
         return $this->storage->load(new Order($context->getIdentifier(), $context), $collection, $context);

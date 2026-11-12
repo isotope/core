@@ -44,25 +44,25 @@ class StoreConditionFactory implements ModelTypeFactoryInterface
             ),
 
             'store_date' => new StoreDateCondition(
-                $this->getTimestamp($model->start),
-                $this->getTimestamp($model->stop),
+                $this->getDateTime($model->start),
+                $this->getDateTime($model->stop),
             ),
 
             'store_time' => new StoreTimeCondition(
-                (int) $model->start_time,
-                (int) $model->stop_time,
+                (new \DateTimeImmutable())->setTimestamp((int) $model->start_time),
+                (new \DateTimeImmutable())->setTimestamp((int) $model->stop_time),
             ),
 
             default => throw new InvalidTypeException($model->type, self::class),
         };
     }
 
-    private function getTimestamp(string|null $value): int|null
+    private function getDateTime(string|null $value): \DateTimeImmutable|null
     {
         if ('' === (string) $value) {
             return null;
         }
 
-        return (int) $value;
+        return new \DateTimeImmutable('@'.(int) $value);
     }
 }
