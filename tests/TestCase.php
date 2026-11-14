@@ -15,7 +15,7 @@ use Isotope\CoreBundle\Store\Price\TaxCalculation;
 
 class TestCase extends ContaoTestCase
 {
-    protected function createStoreContext(PriceDisplay $priceDisplay = PriceDisplay::Gross, TaxCalculation $taxCalculation = TaxCalculation::Vertical, string $locale = 'en'): StoreContext
+    protected function createStoreContext(PriceDisplay $priceDisplay = PriceDisplay::Gross, TaxCalculation $taxCalculation = TaxCalculation::Vertical, string $locale = 'en', MoneyFormat $moneyFormat = new MoneyFormat()): StoreContext
     {
         return new StoreContext(
             '__identifier__',
@@ -24,7 +24,7 @@ class TestCase extends ContaoTestCase
             0,
             [],
             $locale,
-            new MoneyFormat(),
+            $moneyFormat,
             $priceDisplay,
             $taxCalculation,
             new Currency('USD', false, true, false, 2),
