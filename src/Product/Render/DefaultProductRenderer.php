@@ -37,6 +37,10 @@ class DefaultProductRenderer implements ProductRendererInterface
             $product = $configuration->getProduct();
         }
 
+        // Keep option surcharges local to this render so rendering the product again does not apply them twice.
+        $product = clone $product;
+        $configuration?->setProduct($product);
+
         $event = new ProductPriceEvent($product, $productContext->getContext(), $configuration?->getData() ?? [], $product->getPrice());
         $this->eventDispatcher->dispatch($event);
         $product->setPrice($event->getPrice());
