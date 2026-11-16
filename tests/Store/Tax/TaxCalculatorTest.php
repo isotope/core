@@ -267,6 +267,22 @@ final class TaxCalculatorTest extends TestCase
 
     public static function combineTaxRatesProvider(): iterable
     {
+        yield 'full discount cancels the tax base' => [
+            new TaxRateCollection([new TaxRate('1', 19)]),
+            new TaxRateCollection([new TaxRate('1', 19)]),
+            100,
+            -100,
+            [],
+        ];
+
+        yield 'opposing tax-free amounts' => [
+            new TaxRateCollection(),
+            new TaxRateCollection(),
+            100,
+            -100,
+            [],
+        ];
+
         yield [
             new TaxRateCollection(),
             new TaxRateCollection(),

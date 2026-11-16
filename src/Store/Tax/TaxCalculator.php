@@ -100,7 +100,9 @@ class TaxCalculator
 
     public function combineTaxRates(TaxRateCollection $taxes1, TaxRateCollection $taxes2, float $price1, float $price2): TaxRateCollection
     {
-        if (0.0 === $price1 && 0.0 === $price2) {
+        $total = FloatComparator::cast($price1 + $price2);
+
+        if (0.0 === $total) {
             return new TaxRateCollection();
         }
 
@@ -112,7 +114,6 @@ class TaxCalculator
             return $taxes1;
         }
 
-        $total = FloatComparator::cast($price1 + $price2);
         $p1 = FloatComparator::cast(100 / $total * $price1);
         $p2 = FloatComparator::cast(100 / $total * $price2);
 

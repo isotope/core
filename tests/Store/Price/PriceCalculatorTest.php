@@ -210,6 +210,12 @@ final class PriceCalculatorTest extends TestCase
 
     public static function sumPricesProvider(): iterable
     {
+        yield 'fully discounted taxable price' => [
+            new CalculatedPrice(119, 119, new CalculatedTaxCollection([new CalculatedTax('1', 19, 19, 100)]), new TaxRateCollection([new TaxRate('1', 19)])),
+            new CalculatedPrice(-119, -119, new CalculatedTaxCollection([new CalculatedTax('1', -19, 19, -100)]), new TaxRateCollection([new TaxRate('1', 19)])),
+            new CalculatedPrice(0, 0, new CalculatedTaxCollection([new CalculatedTax('1', 0, 19, 0)])),
+        ];
+
         yield [
             new CalculatedPrice(100, 100),
             new CalculatedPrice(100, 100),
