@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\ProductCollection\Cart;
 
+use Contao\CoreBundle\Framework\ContaoFramework;
 use Isotope\CoreBundle\Model\ProductCollectionModel;
 use Isotope\CoreBundle\ProductCollection\Event\CartCreatedEvent;
 use Isotope\CoreBundle\ProductCollection\Event\MergeCollectionEvent;
@@ -16,13 +17,15 @@ class CartFactory
     public function __construct(
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly ProductCollectionStorage $storage,
+        private readonly ContaoFramework $framework,
     ) {
     }
 
     public function load(StoreContext $context): Cart|null
     {
-        $cartModel = $context->getMemberId() ? ProductCollectionModel::findOneByMember($context->getMemberId(), Cart::getType(), $context->getStoreId()) : null;
-        $guestCartModel = ProductCollectionModel::findByIdentifier($context->getIdentifier(), Cart::getType(), $context->getStoreId());
+        $collectionAdapter = $this->framework->getAdapter(ProductCollectionModel::class);
+        $cartModel = $context->getMemberId() ? $collectionAdapter->findOneByMember($context->getMemberId(), Cart::getType(), $context->getStoreId()) : null;
+        $guestCartModel = $collectionAdapter->findByIdentifier($context->getIdentifier(), Cart::getType(), $context->getStoreId());
 
         if (!$cartModel && $guestCartModel) {
             $cartModel = $guestCartModel;
@@ -31,6 +34,11 @@ class CartFactory
 
         if (!$cartModel) {
             return null;
+        }
+
+        // Prevent the cart from being deleted if guest and member cart are the same for unknown reason
+        if ($guestCartModel && (int) $guestCartModel->id === (int) $cartModel->id) {
+            $guestCartModel = null;
         }
 
         $cart = $this->storage->load($this->create($context, $cartModel->uniqid), $cartModel, $context);
