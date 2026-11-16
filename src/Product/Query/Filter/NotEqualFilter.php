@@ -28,7 +28,9 @@ class NotEqualFilter extends AbstractFilter
             return $qb->expr()->eq('FIND_IN_SET('.$qb->createNamedParameter($queryValue).', COALESCE(tl_iso_product.'.$this->attributeName.", ''))", '0');
         }
 
-        return $qb->expr()->neq('tl_iso_product.'.$this->attributeName, $qb->createNamedParameter($queryValue));
+        $expression = $qb->expr()->neq('tl_iso_product.'.$this->attributeName, $qb->createNamedParameter($queryValue));
+
+        return '' === $queryValue ? $expression : $qb->expr()->or($expression, $qb->expr()->isNull('tl_iso_product.'.$this->attributeName));
     }
 
     protected function compare(mixed $queryValue, mixed $productValue): bool
