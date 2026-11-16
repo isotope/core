@@ -28,7 +28,9 @@ class EqualFilter extends AbstractFilter
             return $qb->expr()->gt('FIND_IN_SET('.$qb->createNamedParameter($queryValue).', tl_iso_product.'.$this->attributeName.')', '0');
         }
 
-        return $qb->expr()->eq('tl_iso_product.'.$this->attributeName, $qb->createNamedParameter($queryValue));
+        $expression = $qb->expr()->eq('tl_iso_product.'.$this->attributeName, $qb->createNamedParameter($queryValue));
+
+        return '' === $queryValue ? $qb->expr()->or($expression, $qb->expr()->isNull('tl_iso_product.'.$this->attributeName)) : $expression;
     }
 
     protected function compare(mixed $queryValue, mixed $productValue): bool
