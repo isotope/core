@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Product\Render;
 
 use Contao\Controller;
+use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\StringUtil;
 use Contao\System;
 use Contao\UploadableWidgetInterface;
@@ -22,6 +23,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 class ProductConfigurationFactory
 {
     public function __construct(
+        private readonly ContaoFramework $framework,
         private readonly AttributeRegistry $attributeRegistry,
         private readonly EventDispatcherInterface $eventDispatcher,
     ) {
@@ -75,7 +77,7 @@ class ProductConfigurationFactory
                     $value = array_first($values);
                 }
 
-                if ($value) {
+                if (null !== $value && '' !== $value) {
                     // Convert all values to strings to handle int/string comparison
                     $variants = $variants->filter(static fn (CoreProduct $product) => (string) $product->$attributeName === (string) $value);
                     $configuration[$attributeName] = $value;
@@ -166,7 +168,11 @@ class ProductConfigurationFactory
     private function getDefaults(CoreProduct $product, Request $request): array
     {
         if ($request->query->has('collection_item')) {
-            $item = ProductCollectionItemModel::findById($request->query->get('collection_item'));
+            $item = $this->framework
+                ->getAdapter(ProductCollectionItemModel::class)
+                ->findById($request->query->get('collection_item'))
+            ;
+
             // TODO: check this item belongs to a collection that belongs to the current user
 
             if ($item && $item->identifier === $product->getIdentifier()) {
