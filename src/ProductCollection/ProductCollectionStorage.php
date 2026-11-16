@@ -209,6 +209,7 @@ class ProductCollectionStorage
             $itemModel->identifier = $lineItem->getIdentifier();
             $itemModel->configuration = $lineItem->getConfiguration();
             $itemModel->quantity = $lineItem->getQuantity();
+            $itemModel->level = $lineItem->getLevel();
             $itemModel->label = $lineItem->getLabel();
             $itemModel->sku = $lineItem->getSku();
             $itemModel->referencePage = $lineItem->getReferencePageId();

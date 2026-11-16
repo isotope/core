@@ -21,6 +21,49 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 
 final class ProductCollectionStorageTest extends TestCase
 {
+    #[DataProvider('levelProvider')]
+    public function testLineItemLevelIsSaved(int $level): void
+    {
+        $cart = new Cart('cart');
+        $cart->add((new LineItem(LineItem::TYPE_PRODUCT, 'tl_iso_product.1'))->setLevel($level));
+        $collectionModel = $this->createClassWithPropertiesStub(ProductCollectionModel::class, ['id' => 42]);
+        $itemModel = $this->createClassWithPropertiesMock(ProductCollectionItemModel::class, ['id' => 99, 'level' => 7]);
+        $itemModel
+            ->expects($this->once())
+            ->method('save')
+            ->willReturnCallback(
+                function () use ($itemModel, $level): ProductCollectionItemModel {
+                    $this->assertSame($level, $itemModel->level);
+
+                    return $itemModel;
+                },
+            )
+        ;
+        $collectionAdapter = $this->createAdapterStub(['findByIdentifier']);
+        $collectionAdapter
+            ->method('findByIdentifier')
+            ->willReturn($collectionModel)
+        ;
+        $collectionItemAdapter = $this->createAdapterStub(['findOneByCollection']);
+        $collectionItemAdapter
+            ->method('findOneByCollection')
+            ->willReturn($itemModel)
+        ;
+        $framework = $this->createContaoFrameworkStub([
+            ProductCollectionModel::class => $collectionAdapter,
+            ProductCollectionItemModel::class => $collectionItemAdapter,
+        ]);
+        $storage = new ProductCollectionStorage($this->createStub(Connection::class), new TransactionEventDispatcher(new EventDispatcher()), $framework);
+        $storage->save($cart, $this->createStoreContext());
+    }
+
+    public static function levelProvider(): iterable
+    {
+        yield 'negative level' => [-10];
+        yield 'reset level' => [0];
+        yield 'positive level' => [20];
+    }
+
     #[DataProvider('saveProvider')]
     public function testSavedIdsAreAvailableOnTheCartAndItsItems(bool $new): void
     {
