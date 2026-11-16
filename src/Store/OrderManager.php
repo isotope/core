@@ -84,10 +84,12 @@ class OrderManager
                 $collection->save();
 
                 $billingAddress = $this->saveAddress($data['billing_address'], (int) $collection->id, $context->getStoreId());
+                $data['billing_address'] = array_replace($data['billing_address'], $billingAddress->row(), ['id' => (int) $billingAddress->id]);
                 $shippingAddress = null;
 
                 if (isset($data['shipping_address'])) {
                     $shippingAddress = $this->saveAddress($data['shipping_address'], (int) $collection->id, $context->getStoreId());
+                    $data['shipping_address'] = array_replace($data['shipping_address'], $shippingAddress->row(), ['id' => (int) $shippingAddress->id]);
                 }
 
                 foreach ($data['line_items'] as &$lineItem) {
@@ -98,7 +100,9 @@ class OrderManager
                     $item->price_data = json_encode($item->price_data);
                     $item->save();
 
-                    $lineItem['id'] = $item->id;
+                    $lineItem['id'] = (int) $item->id;
+                    $lineItem['pid'] = (int) $collection->id;
+                    $lineItem['tstamp'] = (int) $item->tstamp;
                 }
 
                 unset($lineItem);
@@ -110,9 +114,17 @@ class OrderManager
                 $collection->shipping_address_id = $shippingAddress->id ?? 0;
                 $collection->save();
 
-                $event->setData($data);
+                $data = array_replace($data, [
+                    'type' => $collection->type,
+                    'tstamp' => (int) $collection->tstamp,
+                    'order_status' => $collection->order_status,
+                    'transaction_status' => $collection->transaction_status,
+                    'delivery_status' => $collection->delivery_status,
+                    'billing_address_id' => (int) $collection->billing_address_id,
+                    'shipping_address_id' => (int) $collection->shipping_address_id,
+                ]);
 
-                return new CreateOrderResult((int) $collection->id, $collection->uniqid);
+                return new CreateOrderResult((int) $collection->id, $collection->uniqid, $data);
             },
         );
     }
