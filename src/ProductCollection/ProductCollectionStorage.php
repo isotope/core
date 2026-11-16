@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\ProductCollection;
 
+use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\StringUtil;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
@@ -26,6 +27,7 @@ class ProductCollectionStorage
     public function __construct(
         protected readonly Connection $connection,
         protected readonly TransactionEventDispatcher $transactionDispatcher,
+        private readonly ContaoFramework $framework,
     ) {
     }
 
@@ -77,10 +79,10 @@ class ProductCollectionStorage
 
     public function save(AbstractProductCollection $collection, StoreContext $context): void
     {
-        $model = ProductCollectionModel::findByIdentifier($collection->getIdentifier(), $collection->getType(), $context->getStoreId());
+        $model = $this->framework->getAdapter(ProductCollectionModel::class)->findByIdentifier($collection->getIdentifier(), $collection->getType(), $context->getStoreId());
 
         if (!$model) {
-            $model = new ProductCollectionModel();
+            $model = $this->framework->createInstance(ProductCollectionModel::class);
             $model->uniqid = $collection->getIdentifier();
             $model->type = $collection->getType();
             $model->store_id = $context->getStoreId();
@@ -99,6 +101,7 @@ class ProductCollectionStorage
             new SaveCollectionTransactionEvent($collection, $model),
             static function (SaveCollectionTransactionEvent $event): void {
                 $event->getCollectionModel()->save();
+                $event->getCollection()->setId((int) $event->getCollectionModel()->id);
             },
         );
 
@@ -133,7 +136,7 @@ class ProductCollectionStorage
 
     private function loadLineItems(AbstractProductCollection $collection, ProductCollectionModel $collectionModel, StoreContext $context): void
     {
-        $models = ProductCollectionItemModel::findByCollection($collectionModel->id)?->getModels() ?? [];
+        $models = $this->framework->getAdapter(ProductCollectionItemModel::class)->findByCollection($collectionModel->id)?->getModels() ?? [];
         $subtotals = [];
         $total = null;
 
@@ -187,16 +190,17 @@ class ProductCollectionStorage
     private function saveLineItems(AbstractProductCollection $collection, ProductCollectionModel $collectionModel): void
     {
         $itemIds = [0];
+        $collectionItemAdapter = $this->framework->getAdapter(ProductCollectionItemModel::class);
 
         foreach ($collection->getLineItems() as $lineItem) {
             if ($lineItem->isDynamic()) {
                 continue;
             }
 
-            $itemModel = ProductCollectionItemModel::findOneByCollection($collectionModel->id, $lineItem->getIdentifier(), $lineItem->getConfiguration());
+            $itemModel = $collectionItemAdapter->findOneByCollection($collectionModel->id, $lineItem->getIdentifier(), $lineItem->getConfiguration());
 
             if (!$itemModel) {
-                $itemModel = new ProductCollectionItemModel();
+                $itemModel = $this->framework->createInstance(ProductCollectionItemModel::class);
             }
 
             $itemModel->pid = $collectionModel->id;
@@ -219,6 +223,7 @@ class ProductCollectionStorage
                 new SaveItemTransactionEvent($collection, $collectionModel, $lineItem, $itemModel),
                 static function (SaveItemTransactionEvent $event): void {
                     $event->getItemModel()->save();
+                    $event->getLineItem()->setId((int) $event->getItemModel()->id);
                 },
             );
 
