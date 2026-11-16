@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Product\EventListener;
 
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
-use Isotope\CoreBundle\Attribute\Option\Option;
 use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
 use Isotope\CoreBundle\Product\Event\ProductPriceEvent;
 use Isotope\CoreBundle\Store\Context\ProductContext;
 use Isotope\CoreBundle\Store\Price\PriceCalculator;
-use Ramsey\Collection\Exception\NoSuchElementException;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
 #[AsEventListener]
@@ -44,21 +42,18 @@ class ConfigurationPriceListener
                 continue;
             }
 
-            try {
-                /** @var Option $option */
-                $option = $attribute
-                    ->getOptions(new ProductContext($event->getProduct(), $event->getContext()))
-                    ->where('getValue', $configuration[$name])
-                    ->first()
-                ;
+            $values = array_map(strval(...), (array) $configuration[$name]);
 
-                if (!($optionPrice = $option->getPrice())) {
+            foreach ($attribute->getOptions(new ProductContext($event->getProduct(), $context)) as $option) {
+                if (
+                    $option->isGroup()
+                    || !($optionPrice = $option->getPrice())
+                    || !\in_array($option->getValue(), $values, true)
+                ) {
                     continue;
                 }
 
                 $productPrice = $this->priceCalculator->sum($productPrice, $optionPrice, $context->getPriceDisplay());
-            } catch (NoSuchElementException) {
-                continue;
             }
         }
 
