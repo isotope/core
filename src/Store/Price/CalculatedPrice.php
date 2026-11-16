@@ -129,6 +129,11 @@ class CalculatedPrice implements \JsonSerializable
             'total_price' => $this->totalPrice,
             'unit_label' => $this->unitLabel,
             'is_range' => $this->isRange(),
+            'base_price' => $this->basePrice ? [
+                'product_amount' => $this->basePrice->getProductAmount(),
+                'base_amount' => $this->basePrice->getBaseAmount(),
+                'label' => $this->basePrice->getLabel(),
+            ] : null,
             'calculated_taxes' => $this->calculatedTaxes->jsonSerialize(),
             'tax_rates' => [
                 'rates' => $this->taxRates->jsonSerialize(),
@@ -155,6 +160,14 @@ class CalculatedPrice implements \JsonSerializable
 
         $price->setUnitLabel($data['unit_label'] ?? null);
         $price->setRange((bool) ($data['is_range'] ?? false));
+
+        if (isset($data['base_price'])) {
+            $price->setBasePrice(new BasePrice(
+                (float) $data['base_price']['product_amount'],
+                (float) $data['base_price']['base_amount'],
+                $data['base_price']['label'],
+            ));
+        }
 
         foreach (($data['calculated_taxes'] ?? []) as $tax) {
             $price->getCalculatedTaxes()->put(

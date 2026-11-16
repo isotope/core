@@ -33,6 +33,7 @@ final class LineItemTransformerTest extends TestCase
                     'total_price' => 10.0,
                     'unit_label' => null,
                     'is_range' => false,
+                    'base_price' => null,
                     'calculated_taxes' => [],
                     'tax_rates' => ['rates' => [], 'included' => []],
                 ],
