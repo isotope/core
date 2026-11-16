@@ -135,7 +135,7 @@ class TaxCalculator
         $calculatedTaxes = new CalculatedTaxCollection();
 
         /** @var CalculatedTax $tax */
-        foreach ([...$taxes1->toArray(), ...$taxes2->toArray()] as $tax) {
+        foreach ([...array_values($taxes1->toArray()), ...array_values($taxes2->toArray())] as $tax) {
             /** @var CalculatedTax $newTax */
             if ($newTax = $calculatedTaxes->get($tax->getId())) {
                 $newTax->increment($tax);

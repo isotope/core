@@ -357,6 +357,13 @@ final class TaxCalculatorTest extends TestCase
 
     public static function combineCalculatedTaxesProvider(): iterable
     {
+        yield 'matching named tax IDs' => [
+            new CalculatedTaxCollection([new CalculatedTax('vat', 19.0, 19, 100.0)]),
+            new CalculatedTaxCollection([new CalculatedTax('vat', 38.0, 19, 200.0)]),
+            ['vat' => 57.0],
+            ['vat' => 300.0],
+        ];
+
         yield [
             new CalculatedTaxCollection(),
             new CalculatedTaxCollection(),
