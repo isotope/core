@@ -45,7 +45,11 @@ class CartFactory
 
         if ($guestCartModel) {
             $guestCart = $this->storage->load($this->create($context, $guestCartModel->uniqid), $guestCartModel, $context);
-            $cart->setLineItems($cart->getLineItems()->merge($guestCart->getLineItems()));
+
+            foreach ($guestCart->getLineItems() as $item) {
+                $cart->add($item);
+            }
+
             $cart->setModified();
 
             $this->eventDispatcher->dispatch(new MergeCollectionEvent($guestCart, $cart, $context));

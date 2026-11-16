@@ -10,6 +10,7 @@ use Isotope\CoreBundle\ProductCollection\Cart\CartFactory;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
 use Isotope\CoreBundle\ProductCollection\ProductCollectionStorage;
 use Isotope\CoreBundle\Test\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 final class CartFactoryTest extends TestCase
@@ -56,7 +57,8 @@ final class CartFactoryTest extends TestCase
         $this->assertFalse($cart->isModified());
     }
 
-    public function testDifferentGuestCartIsMergedAndDeletedAfterSaving(): void
+    #[DataProvider('mergedItemsProvider')]
+    public function testDifferentGuestCartIsMergedAndDeletedAfterSaving(string $guestIdentifier, array|null $memberConfiguration, array|null $guestConfiguration, int $expectedItems, int $expectedMemberQuantity): void
     {
         $context = $this->createStoreContext()->setMemberId(42);
         $memberModel = $this->createClassWithPropertiesStub(ProductCollectionModel::class, ['id' => 10, 'uniqid' => 'member', 'member' => 42]);
@@ -72,9 +74,10 @@ final class CartFactoryTest extends TestCase
             ->willReturn($guestModel)
         ;
         $memberCart = new Cart('member');
-        $memberCart->add(new LineItem(LineItem::TYPE_PRODUCT, 'tl_iso_product.1'));
+        $memberItem = (new LineItem(LineItem::TYPE_PRODUCT, 'tl_iso_product.1', 2))->setConfiguration($memberConfiguration)->setId(7);
+        $memberCart->add($memberItem);
         $guestCart = new Cart($context->getIdentifier());
-        $guestCart->add(new LineItem(LineItem::TYPE_PRODUCT, 'tl_iso_product.2'));
+        $guestCart->add((new LineItem(LineItem::TYPE_PRODUCT, $guestIdentifier, 3))->setConfiguration($guestConfiguration));
         $storage = $this->createMock(ProductCollectionStorage::class);
         $storage
             ->expects($this->exactly(2))
@@ -87,10 +90,12 @@ final class CartFactoryTest extends TestCase
             ->method('save')
             ->with($memberCart, $context)
             ->willReturnCallback(
-                function () use ($memberCart, &$saved): void {
-                    $this->assertCount(2, $memberCart->getLineItems());
+                function () use ($memberCart, $expectedItems, $expectedMemberQuantity, &$saved): void {
+                    $this->assertCount($expectedItems, $memberCart->getLineItems());
+                    $this->assertSame($expectedMemberQuantity, $memberCart->getLineItems()->first()->getQuantity());
+                    $this->assertSame(5, $memberCart->getLineItems()->sumQuantity());
                     $saved = true;
-                }
+                },
             )
         ;
         $storage
@@ -102,12 +107,21 @@ final class CartFactoryTest extends TestCase
                     $this->assertTrue($saved);
 
                     return true;
-                }
+                },
             )
         ;
         $factory = new CartFactory(new EventDispatcher(), $storage, $this->createContaoFrameworkStub([ProductCollectionModel::class => $collectionAdapter]));
 
         $this->assertSame($memberCart, $factory->load($context));
-        $this->assertSame(2, $memberCart->getLineItems()->sumQuantity());
+        $this->assertSame(5, $memberCart->getLineItems()->sumQuantity());
+        $this->assertSame(7, $memberItem->getId());
+    }
+
+    public static function mergedItemsProvider(): iterable
+    {
+        yield 'different products' => ['tl_iso_product.2', null, null, 2, 2];
+        yield 'same product without configuration' => ['tl_iso_product.1', null, null, 1, 5];
+        yield 'same product and configuration' => ['tl_iso_product.1', ['color' => 'red'], ['color' => 'red'], 1, 5];
+        yield 'same product with different configurations' => ['tl_iso_product.1', ['color' => 'red'], ['color' => 'blue'], 2, 2];
     }
 }
