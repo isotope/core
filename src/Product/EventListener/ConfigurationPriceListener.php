@@ -53,7 +53,10 @@ class ConfigurationPriceListener
                     continue;
                 }
 
-                $productPrice = $this->priceCalculator->sum($productPrice, $optionPrice, $context->getPriceDisplay());
+                $productPrice = $this->priceCalculator
+                    ->sum($productPrice, $optionPrice, $context->getPriceDisplay())
+                    ->setBasePrice($productPrice->getBasePrice())
+                ;
             }
         }
 

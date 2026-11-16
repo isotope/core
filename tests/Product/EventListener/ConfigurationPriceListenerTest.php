@@ -12,6 +12,7 @@ use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\Event\ProductPriceEvent;
 use Isotope\CoreBundle\Product\EventListener\ConfigurationPriceListener;
 use Isotope\CoreBundle\RuleBuilder\RuleMatcher;
+use Isotope\CoreBundle\Store\Price\BasePrice;
 use Isotope\CoreBundle\Store\Price\CalculatedPrice;
 use Isotope\CoreBundle\Store\Price\PriceCalculator;
 use Isotope\CoreBundle\Store\Tax\TaxCalculator;
@@ -22,7 +23,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 final class ConfigurationPriceListenerTest extends TestCase
 {
     #[DataProvider('selectionProvider')]
-    public function testSelectedOptionsContributeToThePrice(array|string $selection, float $expectedUnitPrice, int $quantity = 1): void
+    public function testSelectedOptionsContributeToThePriceAndPreserveBasePrice(array|string $selection, float $expectedUnitPrice, int $quantity = 1): void
     {
         $options = new OptionCollection([
             (new Option('a', 'Option A'))->setPrice(new CalculatedPrice(5, 5)),
@@ -50,11 +51,12 @@ final class ConfigurationPriceListenerTest extends TestCase
             $this->createStub(RuleMatcher::class),
             $this->createStub(TranslatorInterface::class),
         ));
+        $basePrice = new BasePrice(500, 100, '%s per 100g');
         $event = new ProductPriceEvent(
             $this->createStub(CoreProduct::class),
             $this->createStoreContext(),
             ['extras' => $selection],
-            new CalculatedPrice(100, 100 * $quantity, quantity: $quantity),
+            (new CalculatedPrice(100, 100 * $quantity, quantity: $quantity))->setBasePrice($basePrice),
         );
 
         $listener = new ConfigurationPriceListener($registry, $calculator);
@@ -65,6 +67,7 @@ final class ConfigurationPriceListenerTest extends TestCase
         $this->assertSame($expectedUnitPrice, $price->getUnitPrice());
         $this->assertSame($expectedUnitPrice * $quantity, $price->getTotalPrice());
         $this->assertSame($quantity, $price->getQuantity());
+        $this->assertSame($basePrice, $price->getBasePrice());
     }
 
     public static function selectionProvider(): iterable
