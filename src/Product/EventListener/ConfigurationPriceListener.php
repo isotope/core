@@ -11,7 +11,7 @@ use Isotope\CoreBundle\Store\Context\ProductContext;
 use Isotope\CoreBundle\Store\Price\PriceCalculator;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
-#[AsEventListener]
+#[AsEventListener(priority: 100)]
 class ConfigurationPriceListener
 {
     public function __construct(
