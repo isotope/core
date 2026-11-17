@@ -39,7 +39,7 @@ final class CartCalculatorTest extends TestCase
             ->willReturnCallback(
                 static function (AbstractProductCollection $collection): void {
                     $collection->add((new LineItem(LineItem::TYPE_PRODUCT, 'tl_iso_product.1'))->setLabel('Recalculated')->setPrice(new CalculatedPrice(100, 100)));
-                }
+                },
             )
         ;
         $calculator = new CartCalculator($factory, [$collector], new PriceCalculator($this->createStub(TaxCalculator::class)), new ProductCollectionHasher(new EventDispatcher()));

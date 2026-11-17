@@ -6,6 +6,7 @@ namespace Isotope\CoreBundle\ProductCollection\ItemCollector;
 
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\Event\ProductPriceEvent;
+use Isotope\CoreBundle\Product\Extension\ShippingExtension;
 use Isotope\CoreBundle\ProductCollection\AbstractProductCollection;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Price\PriceCalculator;
@@ -43,6 +44,7 @@ class ProductCollector implements ItemCollectorInterface
             $this->eventDispatcher->dispatch($event);
 
             $item->setPrice($event->getPrice());
+            $item->setWeight($product->getExtension(ShippingExtension::class)?->getWeight());
 
             $collection->add($item);
         }
