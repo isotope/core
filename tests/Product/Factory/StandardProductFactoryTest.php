@@ -12,6 +12,7 @@ use Isotope\CoreBundle\Product\AvailabilityChecker;
 use Isotope\CoreBundle\Product\DataCollector\ProductDto;
 use Isotope\CoreBundle\Product\DefaultPriceFactory;
 use Isotope\CoreBundle\Product\Factory\StandardProductFactory;
+use Isotope\CoreBundle\Product\ProductPriceCalculator;
 use Isotope\CoreBundle\Product\Render\DefaultProductRenderer;
 use Isotope\CoreBundle\ProductCollection\Cart\Cart;
 use Isotope\CoreBundle\ProductCollection\ItemCollector\ProductCollector;
@@ -95,7 +96,7 @@ final class StandardProductFactoryTest extends TestCase
             $this->createStub(DefaultProductRenderer::class),
             $this->createStub(DefaultPriceFactory::class),
             $attributes,
-            $calculator,
+            new ProductPriceCalculator($calculator, $dispatcher),
             $dispatcher,
         );
         $context = $this->createStoreContext();
@@ -122,7 +123,7 @@ final class StandardProductFactoryTest extends TestCase
         $original = new Cart('cart');
         $original->add($item);
         $calculated = new Cart('cart');
-        (new ProductCollector($calculator, $dispatcher))->process($calculated, $original, $context);
+        (new ProductCollector(new ProductPriceCalculator($calculator, $dispatcher)))->process($calculated, $original, $context);
 
         $this->assertSame(!$available, $calculated->hasErrors());
 

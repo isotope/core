@@ -7,19 +7,18 @@ namespace Isotope\CoreBundle\Product\Render;
 use Contao\CoreBundle\Exception\ResponseException;
 use Contao\StringUtil;
 use Isotope\CoreBundle\Product\CoreProduct;
-use Isotope\CoreBundle\Product\Event\ProductPriceEvent;
+use Isotope\CoreBundle\Product\ProductPriceCalculator;
 use Isotope\CoreBundle\Store\Context\ProductContext;
 use Isotope\CoreBundle\Twig\TemplateMarkup;
 use Isotope\CoreBundle\Twig\TemplateMarkupFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class DefaultProductRenderer implements ProductRendererInterface
 {
     public function __construct(
         private readonly ProductConfigurationFactory $configurationFactory,
-        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly ProductPriceCalculator $priceCalculator,
         private readonly TemplateMarkupFactory $markupFactory,
     ) {
     }
@@ -41,9 +40,15 @@ class DefaultProductRenderer implements ProductRendererInterface
         $product = clone $product;
         $configuration?->setProduct($product);
 
-        $event = new ProductPriceEvent($product, $productContext->getContext(), $configuration?->getData() ?? [], $product->getPrice());
-        $this->eventDispatcher->dispatch($event);
-        $product->setPrice($event->getPrice());
+        if ($configuration && [] !== $configuration->getData()) {
+            $product->setPrice($this->priceCalculator->calculate(
+                $product,
+                $product->getPrice()?->getQuantity() ?? 1,
+                true,
+                $productContext->getContext(),
+                $configuration->getData(),
+            ));
+        }
 
         $cssID = StringUtil::deserialize($product->cssID, true);
 

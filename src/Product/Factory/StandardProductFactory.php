@@ -17,9 +17,9 @@ use Isotope\CoreBundle\Product\Event\ProductCreatedEvent;
 use Isotope\CoreBundle\Product\Extension\QuantityExtension;
 use Isotope\CoreBundle\Product\Extension\ShippingExtension;
 use Isotope\CoreBundle\Product\ProductCollection;
+use Isotope\CoreBundle\Product\ProductPriceCalculator;
 use Isotope\CoreBundle\Product\Render\DefaultProductRenderer;
 use Isotope\CoreBundle\Store\Context\StoreContext;
-use Isotope\CoreBundle\Store\Price\PriceCalculator;
 use Isotope\CoreBundle\Store\Weight\Weight;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -31,7 +31,7 @@ class StandardProductFactory implements ProductFactoryInterface
         private readonly DefaultProductRenderer $productRenderer,
         private readonly DefaultPriceFactory $priceFactory,
         private readonly AttributeRegistry $attributeRegistry,
-        private readonly PriceCalculator $calculator,
+        private readonly ProductPriceCalculator $calculator,
         private readonly EventDispatcherInterface $eventDispatcher,
     ) {
     }
@@ -49,7 +49,7 @@ class StandardProductFactory implements ProductFactoryInterface
             ->setDefaultVariant(fn () => $this->getDefaultVariant($dto, $context))
             ->setVariantConfiguration(fn () => $this->getVariantConfiguration($product, $type))
             ->setPrices(fn () => $this->priceFactory->create($dto, $type, $context))
-            ->setPrice(fn () => $this->calculator->calculateProduct($product, $dto->getQuantity(), true, $context))
+            ->setPrice(fn () => $this->calculator->calculate($product, $dto->getQuantity(), true, $context))
             ->setAvailable(fn () => $this->isParentPublished($dto) && $this->availabilityChecker->isAvailable($product, $context))
         ;
 

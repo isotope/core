@@ -10,6 +10,7 @@ use Isotope\CoreBundle\Product\AvailabilityChecker;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\Extension\ShippingExtension;
 use Isotope\CoreBundle\Product\Product;
+use Isotope\CoreBundle\Product\ProductPriceCalculator;
 use Isotope\CoreBundle\Product\Render\ProductRendererInterface;
 use Isotope\CoreBundle\ProductCollection\Cart\Cart;
 use Isotope\CoreBundle\ProductCollection\ItemCollector\ProductCollector;
@@ -50,7 +51,7 @@ final class ProductCollectorTest extends TestCase
             ->willReturn(new CalculatedPrice(10, 20, quantity: 2))
         ;
 
-        (new ProductCollector($calculator, new EventDispatcher()))->process($calculated, $original, $this->createStoreContext());
+        (new ProductCollector(new ProductPriceCalculator($calculator, new EventDispatcher())))->process($calculated, $original, $this->createStoreContext());
 
         $this->assertSame($weight, $calculated->getLineItems()->first()->getWeight());
         $this->assertEqualsWithDelta(2.0, $calculated->getLineItems()->calculateWeight(WeightUnit::Kilogram)->getAmount(), PHP_FLOAT_EPSILON);
@@ -94,7 +95,7 @@ final class ProductCollectorTest extends TestCase
             ->method('calculateProduct')
             ->willReturn($price)
         ;
-        $collector = new ProductCollector($calculator, new EventDispatcher());
+        $collector = new ProductCollector(new ProductPriceCalculator($calculator, new EventDispatcher()));
 
         $collector->process($collection, $original, $context);
         $collector->process(new Cart('cart'), $collection, $context);
@@ -141,7 +142,7 @@ final class ProductCollectorTest extends TestCase
             ->method('dispatch')
         ;
 
-        (new ProductCollector($calculator, $dispatcher))->process($collection, $original, $this->createStoreContext());
+        (new ProductCollector(new ProductPriceCalculator($calculator, $dispatcher)))->process($collection, $original, $this->createStoreContext());
 
         $this->assertTrue($collection->isEmpty());
         $this->assertSame($item, $original->getLineItems()->first());
