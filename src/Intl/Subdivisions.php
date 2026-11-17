@@ -24,7 +24,7 @@ class Subdivisions implements ResetInterface
     {
         $this->loadOptions();
 
-        return $this->options[$country];
+        return $this->options[strtoupper($country)] ?? [];
     }
 
     public function getNames(): array
