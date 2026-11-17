@@ -104,14 +104,14 @@ class ProductFinder
         if ([] !== $this->searchFields) {
             foreach ($this->keywords as $keyword) {
                 $expressions = [];
-                $parameter = $qb->createNamedParameter('%'.$keyword.'%');
+                $parameter = $qb->createNamedParameter('%'.$this->connection->getDatabasePlatform()->escapeStringForLike($keyword, '!').'%');
 
                 foreach ($this->searchFields as $field) {
                     $field = $this->connection->quoteSingleIdentifier($field);
                     $expressions[] = $qb->expr()->like(
                         \sprintf('IFNULL(translation.%s, tl_iso_product.%s)', $field, $field),
                         $parameter,
-                    );
+                    )." ESCAPE '!'";
                 }
 
                 $qb->andWhere($qb->expr()->or(...$expressions));

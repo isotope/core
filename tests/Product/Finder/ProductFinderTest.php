@@ -176,6 +176,25 @@ final class ProductFinderTest extends TestCase
         }
     }
 
+    public function testSearchTreatsWildcardCharactersAsLiteralText(): void
+    {
+        $connection = $this->createConnection();
+        $factory = new ProductFinderFactory($connection, $this->createStub(TokenChecker::class));
+        $finder = $factory->create([10, 11], 'en');
+
+        try {
+            foreach ([['100%', '1000'], ['A_B', 'AXB'], ['save!', 'save'], ['50!%', '50!anything']] as [$keyword, $other]) {
+                $connection->update('tl_iso_product', ['color' => $keyword], ['id' => 1]);
+                $connection->update('tl_iso_product', ['color' => $other], ['id' => 4]);
+
+                $this->assertSame([1], array_map(intval(...), $finder->withSearch(['color'], [$keyword])->findIds()), $keyword);
+                $this->assertSame(1, $finder->withSearch(['color'], [$keyword])->count(), $keyword);
+            }
+        } finally {
+            $connection->close();
+        }
+    }
+
     public function testPreviewModeIncludesUnpublishedProducts(): void
     {
         $connection = $this->createConnection();
