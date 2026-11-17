@@ -37,7 +37,7 @@ class PriceFormatter
         }
 
         $amount = $productPrice->getUnitPrice() / $basePrice->getProductAmount() * $basePrice->getBaseAmount();
-        $data = $this->getData(new CalculatedPrice($amount, $amount), $context);
+        $data = $this->getData((new CalculatedPrice($amount, $amount))->setRange($productPrice->isRange()), $context);
 
         return $this->markupFactory->create('@Contao/component/_isotope_base_price.html.twig', [
             ...$data,
