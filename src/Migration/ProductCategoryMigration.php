@@ -56,6 +56,10 @@ class ProductCategoryMigration extends AbstractMigration
                 }
 
                 foreach ($order as $sorting => $pid) {
+                    if (!is_numeric($pid)) {
+                        continue;
+                    }
+
                     $this->connection->executeStatement(
                         'UPDATE tl_iso_product_category SET product_sorting=? WHERE product_id=? AND pid=?',
                         [$sorting, $productId, $pid],
