@@ -56,6 +56,7 @@ class ConfigurationPriceListener
                 $productPrice = $this->priceCalculator
                     ->sum($productPrice, $optionPrice, $context->getPriceDisplay())
                     ->setBasePrice($productPrice->getBasePrice())
+                    ->setRange($productPrice->isRange())
                 ;
             }
         }

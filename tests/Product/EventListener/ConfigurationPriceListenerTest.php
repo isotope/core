@@ -23,7 +23,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 final class ConfigurationPriceListenerTest extends TestCase
 {
     #[DataProvider('selectionProvider')]
-    public function testSelectedOptionsContributeToThePriceAndPreserveBasePrice(array|string $selection, float $expectedUnitPrice, int $quantity = 1): void
+    public function testSelectedOptionsContributeToThePriceAndPreserveMetadata(array|string $selection, float $expectedUnitPrice, int $quantity = 1, bool $isRange = false): void
     {
         $options = new OptionCollection([
             (new Option('a', 'Option A'))->setPrice(new CalculatedPrice(5, 5)),
@@ -56,7 +56,7 @@ final class ConfigurationPriceListenerTest extends TestCase
             $this->createStub(CoreProduct::class),
             $this->createStoreContext(),
             ['extras' => $selection],
-            (new CalculatedPrice(100, 100 * $quantity, quantity: $quantity))->setBasePrice($basePrice),
+            (new CalculatedPrice(100, 100 * $quantity, quantity: $quantity))->setBasePrice($basePrice)->setRange($isRange),
         );
 
         $listener = new ConfigurationPriceListener($registry, $calculator);
@@ -68,10 +68,12 @@ final class ConfigurationPriceListenerTest extends TestCase
         $this->assertSame($expectedUnitPrice * $quantity, $price->getTotalPrice());
         $this->assertSame($quantity, $price->getQuantity());
         $this->assertSame($basePrice, $price->getBasePrice());
+        $this->assertSame($isRange, $price->isRange());
     }
 
     public static function selectionProvider(): iterable
     {
+        yield 'price range with multiple options' => [['a', 'b'], 115.0, 1, true];
         yield 'single selection' => ['a', 105.0];
         yield 'multiple selections' => [['a', 'b'], 115.0];
         yield 'one selected checkbox' => [['a'], 105.0];
