@@ -92,11 +92,15 @@ abstract class AbstractModuleToElementMigration extends AbstractMigration
         $tableData['title'] = $data['name'];
 
         $event = $this->eventDispatcher->dispatch(new ModuleToElementMigrationEvent($data, $tableData, $jsonData));
+        $tableData = [];
 
-        $this->connection->insert('tl_content', [
-            ...$event->tableData,
-            'jsonData' => json_encode($event->jsonData, JSON_THROW_ON_ERROR),
-        ]);
+        foreach ($event->tableData as $key => $value) {
+            $tableData[$this->connection->quoteSingleIdentifier($key)] = $value;
+        }
+
+        $tableData[$this->connection->quoteSingleIdentifier('jsonData')] = json_encode($event->jsonData, JSON_THROW_ON_ERROR);
+
+        $this->connection->insert('tl_content', $tableData);
 
         $contentId = $this->connection->lastInsertId();
 
