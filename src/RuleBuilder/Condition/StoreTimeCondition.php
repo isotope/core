@@ -29,6 +29,10 @@ class StoreTimeCondition implements RuleConditionInterface
         $start = $now->setTime((int) $this->start->format('H'), (int) $this->start->format('i'), (int) $this->start->format('s'));
         $stop = $now->setTime((int) $this->stop->format('H'), (int) $this->stop->format('i'), (int) $this->stop->format('s'));
 
+        if ($stop < $start) {
+            return $now >= $start || $now <= $stop;
+        }
+
         return $now >= $start && $now <= $stop;
     }
 
