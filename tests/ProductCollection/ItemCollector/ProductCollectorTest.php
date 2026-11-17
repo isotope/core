@@ -8,6 +8,7 @@ use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use Isotope\CoreBundle\Model\ProductTypeModel;
 use Isotope\CoreBundle\Product\AvailabilityChecker;
 use Isotope\CoreBundle\Product\CoreProduct;
+use Isotope\CoreBundle\Product\Extension\ShippingExtension;
 use Isotope\CoreBundle\Product\Product;
 use Isotope\CoreBundle\Product\Render\ProductRendererInterface;
 use Isotope\CoreBundle\ProductCollection\Cart\Cart;
@@ -15,6 +16,8 @@ use Isotope\CoreBundle\ProductCollection\ItemCollector\ProductCollector;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
 use Isotope\CoreBundle\Store\Price\CalculatedPrice;
 use Isotope\CoreBundle\Store\Price\PriceCalculator;
+use Isotope\CoreBundle\Store\Weight\Weight;
+use Isotope\CoreBundle\Store\Weight\WeightUnit;
 use Isotope\CoreBundle\Test\TestCase;
 use Isotope\CoreBundle\Util\ProductCategoryUtil;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -24,6 +27,35 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class ProductCollectorTest extends TestCase
 {
+    public function testNewItemsReceiveTheProductShippingWeight(): void
+    {
+        $weight = new Weight(1, WeightUnit::Kilogram);
+        $product = $this->createStub(CoreProduct::class);
+        $product
+            ->method('isAvailable')
+            ->willReturn(true)
+        ;
+
+        $product
+            ->method('getExtension')
+            ->willReturn(new ShippingExtension(false, false, $weight, null))
+        ;
+        $item = (new LineItem(LineItem::TYPE_PRODUCT, 'tl_iso_product.42', 2))->setProduct($product);
+        $original = new Cart('cart');
+        $original->add($item);
+        $calculated = new Cart('cart');
+        $calculator = $this->createStub(PriceCalculator::class);
+        $calculator
+            ->method('calculateProduct')
+            ->willReturn(new CalculatedPrice(10, 20, quantity: 2))
+        ;
+
+        (new ProductCollector($calculator, new EventDispatcher()))->process($calculated, $original, $this->createStoreContext());
+
+        $this->assertSame($weight, $calculated->getLineItems()->first()->getWeight());
+        $this->assertEqualsWithDelta(2.0, $calculated->getLineItems()->calculateWeight(WeightUnit::Kilogram)->getAmount(), PHP_FLOAT_EPSILON);
+    }
+
     #[DataProvider('availabilityProvider')]
     public function testProductAvailability(bool $published, int $startOffset, int $stopOffset, bool $hasErrors): void
     {
