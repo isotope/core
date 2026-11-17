@@ -19,6 +19,26 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 final class ProductFinderTest extends TestCase
 {
+    public function testCategorySortingIsTheFinalFallback(): void
+    {
+        $connection = $this->createConnection();
+        $connection->update('tl_iso_product_category', ['sorting' => 128], ['product_id' => 1]);
+        $connection->update('tl_iso_product_category', ['sorting' => 256], ['product_id' => 4]);
+        $connection->update('tl_iso_product_category', ['sorting' => 64], ['product_id' => 4, 'pid' => 11]);
+        $factory = new ProductFinderFactory($connection, $this->createStub(TokenChecker::class));
+        $finder = $factory->create([10, 11], 'en');
+
+        try {
+            $this->assertSame([4, 1], array_map(intval(...), $finder->findIds()));
+            $this->assertSame([1, 4], array_map(intval(...), $factory->create([10], 'en')->findIds()));
+            $this->assertSame([4, 1], array_map(intval(...), $finder->withSorting([new Sorting('color')])->findIds()), 'Category sorting resolves ties in active sorting.');
+            $this->assertSame([1, 4], array_map(intval(...), $finder->withSorting([new Sorting('id')])->findIds()), 'Active sorting takes precedence over category sorting.');
+            $this->assertSame([1, 4], array_map(intval(...), $factory->create([10, 11], 'en', [], [new Sorting('id')])->findIds()), 'Base sorting takes precedence over category sorting.');
+        } finally {
+            $connection->close();
+        }
+    }
+
     public function testQueryRoundTripAndCounts(): void
     {
         $connection = $this->createConnection();
@@ -178,7 +198,7 @@ final class ProductFinderTest extends TestCase
     {
         $connection = DriverManager::getConnection(['driver' => 'pdo_sqlite', 'memory' => true]);
         $connection->executeStatement('CREATE TABLE tl_iso_product (id INTEGER PRIMARY KEY, pid INTEGER, language TEXT, published INTEGER, start TEXT, stop TEXT, color TEXT)');
-        $connection->executeStatement('CREATE TABLE tl_iso_product_category (pid INTEGER, product_id INTEGER)');
+        $connection->executeStatement('CREATE TABLE tl_iso_product_category (pid INTEGER, product_id INTEGER, sorting INTEGER DEFAULT 0)');
 
         foreach ([
             [1, 0, '', 1, '', '', 'red'],

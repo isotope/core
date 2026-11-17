@@ -99,6 +99,8 @@ class ProductFinder
             $sorting->apply($qb);
         }
 
+        $qb->addOrderBy('MIN(c.sorting)');
+
         if ([] !== $this->searchFields) {
             foreach ($this->keywords as $keyword) {
                 $expressions = [];
