@@ -17,6 +17,6 @@ class RuleOptionsListener
 
     public function __invoke(DataContainer $dc): array
     {
-        return $this->connection->fetchAllKeyValue('SELECT id, name FROM tl_iso_rule WHERE id!=?', [(int) $dc->id]);
+        return $this->connection->fetchAllKeyValue('SELECT id, name FROM tl_iso_rule WHERE id!=?', [(int) ($dc->getCurrentRecord()['pid'] ?? 0)]);
     }
 }
