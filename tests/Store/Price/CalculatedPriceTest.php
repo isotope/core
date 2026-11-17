@@ -6,10 +6,27 @@ namespace Isotope\CoreBundle\Test\Store\Price;
 
 use Isotope\CoreBundle\Store\Price\BasePrice;
 use Isotope\CoreBundle\Store\Price\CalculatedPrice;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class CalculatedPriceTest extends TestCase
 {
+    #[DataProvider('invalidPriceJsonProvider')]
+    public function testInvalidPriceJsonIsNotRestoredAsAFreePrice(string $json): void
+    {
+        $this->assertNull(CalculatedPrice::createFromJson($json));
+    }
+
+    public static function invalidPriceJsonProvider(): iterable
+    {
+        yield 'null' => ['null'];
+        yield 'false' => ['false'];
+        yield 'true' => ['true'];
+        yield 'number' => ['42'];
+        yield 'string' => ['"invalid"'];
+        yield 'invalid JSON' => ['not JSON'];
+    }
+
     public function testBasePriceSurvivesJsonEncodingAndDecoding(): void
     {
         $price = (new CalculatedPrice(6, 12, quantity: 2))

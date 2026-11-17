@@ -150,6 +150,10 @@ class CalculatedPrice implements \JsonSerializable
             return null;
         }
 
+        if (!\is_array($data)) {
+            return null;
+        }
+
         $price = new self(
             (float) ($data['unit_price'] ?? 0),
             (float) ($data['total_price'] ?? 0),
