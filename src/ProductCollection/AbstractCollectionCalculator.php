@@ -46,6 +46,7 @@ abstract class AbstractCollectionCalculator
             $this->finalize($toCalculate, $context);
 
             $calculatedHash = $this->collectionHasher->hash($toCalculate);
+            $context->set($toCalculate::class, $toCalculate);
 
             if ($calculatedHash === $originalHash) {
                 break;
@@ -53,8 +54,6 @@ abstract class AbstractCollectionCalculator
 
             $originalHash = $calculatedHash;
             $collection = $toCalculate;
-
-            $context->set($collection::class, $collection);
         }
 
         return $toCalculate;
