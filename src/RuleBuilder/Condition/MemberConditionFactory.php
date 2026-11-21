@@ -34,11 +34,11 @@ class MemberConditionFactory implements ModelTypeFactoryInterface
         $this->validateInstanceOf($model, RuleConditionModel::class);
 
         return match ($model->type) {
-            'member_group' => new MemberGroupCondition(
+            'member_groups' => new MemberGroupsCondition(
                 $this->security,
                 $this->translator,
                 $model->operator,
-                explode(',', (string) $model->member_groups),
+                array_map(intval(...), explode(',', (string) $model->member_groups)),
             ),
             'member_authenticated' => new MemberAuthenticatedCondition(
                 $this->security,

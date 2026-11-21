@@ -737,10 +737,10 @@
       <trans-unit id="MODEL.tl_iso_rule_condition.member_authenticated.1">
         <source>Checks whether a customer is logged in or not.</source>
       </trans-unit>
-      <trans-unit id="MODEL.tl_iso_rule_condition.member_group.0">
+      <trans-unit id="MODEL.tl_iso_rule_condition.member_groups.0">
         <source>Member groups (current user)</source>
       </trans-unit>
-      <trans-unit id="MODEL.tl_iso_rule_condition.member_group.1">
+      <trans-unit id="MODEL.tl_iso_rule_condition.member_groups.1">
         <source>Checks whether the currently logged-in user has or does not have certain member groups.</source>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.store">
