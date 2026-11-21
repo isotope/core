@@ -557,6 +557,60 @@
       <trans-unit id="MSC.iso_taxCalculation.vertical.1">
         <source>VAT is calculated only after summing all net amounts. Then the tax is applied to the total net amount and rounded once.</source>
       </trans-unit>
+      <trans-unit id="WGT.mg.0">
+        <source>Milligram (mg)</source>
+      </trans-unit>
+      <trans-unit id="WGT.mg.1">
+        <source>A unit of mass equal to one-thousandth of a gram.</source>
+      </trans-unit>
+      <trans-unit id="WGT.g.0">
+        <source>Gram (g)</source>
+      </trans-unit>
+      <trans-unit id="WGT.g.1">
+        <source>A metric unit of weight equal to one thousandth of a kilogram.</source>
+      </trans-unit>
+      <trans-unit id="WGT.kg.0">
+        <source>Kilogram (kg)</source>
+      </trans-unit>
+      <trans-unit id="WGT.kg.1">
+        <source>One kilogram is equivalent to 1,000 grams or 2.2 pounds; the mass of a liter of water.</source>
+      </trans-unit>
+      <trans-unit id="WGT.t.0">
+        <source>Metric Ton (t)</source>
+      </trans-unit>
+      <trans-unit id="WGT.t.1">
+        <source>A unit of weight equal to 1,000 kilograms, or 2,204.6 pounds.</source>
+      </trans-unit>
+      <trans-unit id="WGT.ct.0">
+        <source>Carats (ct)</source>
+      </trans-unit>
+      <trans-unit id="WGT.ct.1">
+        <source>A measure of weight used for gemstones. One carat is equal to 1/5 of a gram (200 milligrams). Note that karat with a "K" is a measure of the purity of a gold alloy.</source>
+      </trans-unit>
+      <trans-unit id="WGT.oz.0">
+        <source>Ounce (oz)</source>
+      </trans-unit>
+      <trans-unit id="WGT.oz.1">
+        <source>A unit of weight equal to one sixteenth of a pound or 28.35 grams.</source>
+      </trans-unit>
+      <trans-unit id="WGT.lb.0">
+        <source>Pound (lb)</source>
+      </trans-unit>
+      <trans-unit id="WGT.lb.1">
+        <source>A unit of mass equal to 16 ounces.</source>
+      </trans-unit>
+      <trans-unit id="WGT.st.0">
+        <source>Stone (st)</source>
+      </trans-unit>
+      <trans-unit id="WGT.st.1">
+        <source>A British measurement of mass that equals fourteen pounds.</source>
+      </trans-unit>
+      <trans-unit id="WGT.grain.0">
+        <source>Grain</source>
+      </trans-unit>
+      <trans-unit id="WGT.grain.1">
+        <source>1/7000 pound; equals a troy grain or 64.799 milligrams.</source>
+      </trans-unit>
       <trans-unit id="CTE.isotope">
         <source>Isotope eCommerce</source>
       </trans-unit>

@@ -7,6 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Isotope\CoreBundle\Checkout\Shipping\FlatCalculation;
 use Isotope\CoreBundle\Checkout\Shipping\GroupCalculation;
 use Isotope\CoreBundle\Checkout\Shipping\ProductCalculation;
+use Isotope\CoreBundle\Store\Weight\WeightUnit;
 
 $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
     'config' => [
@@ -100,7 +101,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
         'minimum_weight' => [
             'default' => ['unit' => 'kg'],
             'inputType' => 'timePeriod',
-            'options' => ['mg', 'g', 'kg', 't', 'ct', 'oz', 'lb', 'st', 'grain'],
+            'enum' => WeightUnit::class,
             'reference' => &$GLOBALS['TL_LANG']['WGT'],
             'eval' => ['rgxp' => 'digit', 'tl_class' => 'w50'],
             'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
@@ -108,7 +109,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
         'maximum_weight' => [
             'default' => ['unit' => 'kg'],
             'inputType' => 'timePeriod',
-            'options' => ['mg', 'g', 'kg', 't', 'ct', 'oz', 'lb', 'st', 'grain'],
+            'enum' => WeightUnit::class,
             'reference' => &$GLOBALS['TL_LANG']['WGT'],
             'eval' => ['rgxp' => 'digit', 'tl_class' => 'w50'],
             'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
@@ -135,7 +136,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
         'flatWeight' => [
             'inputType' => 'timePeriod',
             'default' => ['unit' => 'kg'],
-            'options' => ['mg', 'g', 'kg', 't', 'ct', 'oz', 'lb', 'st', 'grain'],
+            'enum' => WeightUnit::class,
             'reference' => &$GLOBALS['TL_LANG']['WGT'],
             'eval' => ['rgxp' => 'digit', 'tl_class' => 'w50', 'helpwizard' => true],
             'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
@@ -150,7 +151,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = [
         'shipping_weight' => [
             'inputType' => 'timePeriod',
             'default' => ['unit' => 'kg'],
-            'options' => ['mg', 'g', 'kg', 't', 'ct', 'oz', 'lb', 'st', 'grain'],
+            'enum' => WeightUnit::class,
             'reference' => &$GLOBALS['TL_LANG']['WGT'],
             'eval' => ['rgxp' => 'digit', 'tl_class' => 'w50', 'helpwizard' => true],
             'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
