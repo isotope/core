@@ -65,7 +65,7 @@ class CartWeightCondition implements RuleConditionInterface
         }
 
         if ('range' === $this->operator) {
-            return $this->translator->trans('tl_iso_rule_condition.range', [(string) $this->from, (string) $this->to], 'contao_tl_iso_rule_condition');
+            return $this->translator->trans('tl_iso_rule_condition.label.range', [(string) $this->from, (string) $this->to], 'contao_tl_iso_rule_condition');
         }
 
         return $this->trans($this->operator).' '.$this->weight;

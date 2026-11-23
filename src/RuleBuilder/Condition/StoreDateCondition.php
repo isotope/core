@@ -8,11 +8,13 @@ use Contao\Config;
 use Contao\Date;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsRuleCondition;
 use Isotope\CoreBundle\Store\Context\StoreContext;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[AsRuleCondition(category: 'dates', factory: StoreConditionFactory::class)]
 class StoreDateCondition implements RuleConditionInterface
 {
     public function __construct(
+        private readonly TranslatorInterface $translator,
         private readonly \DateTimeImmutable|null $start,
         private readonly \DateTimeImmutable|null $stop,
     ) {
@@ -41,18 +43,33 @@ class StoreDateCondition implements RuleConditionInterface
     public function getBackendLabel(): string
     {
         if (!$this->isValid()) {
-            return '<i>invalid</i>';
+            return '-';
         }
 
         if (null === $this->start) {
-            return 'before '.Date::parse(Config::get('datimFormat'), $this->stop?->getTimestamp());
+            return $this->translator->trans(
+                'tl_iso_rule_condition.label.dateStart',
+                [Date::parse(Config::get('datimFormat'), $this->stop->getTimestamp())],
+                'contao_tl_iso_rule_condition',
+            );
         }
 
         if (null === $this->stop) {
-            return 'later then '.Date::parse(Config::get('datimFormat'), $this->start->getTimestamp());
+            return $this->translator->trans(
+                'tl_iso_rule_condition.label.dateStop',
+                [Date::parse(Config::get('datimFormat'), $this->start->getTimestamp())],
+                'contao_tl_iso_rule_condition',
+            );
         }
 
-        return \sprintf('between %s and %s', Date::parse(Config::get('datimFormat'), $this->start->getTimestamp()), Date::parse(Config::get('datimFormat'), $this->stop->getTimestamp()));
+        return $this->translator->trans(
+            'tl_iso_rule_condition.label.range',
+            [
+                Date::parse(Config::get('datimFormat'), $this->start->getTimestamp()),
+                Date::parse(Config::get('datimFormat'), $this->stop->getTimestamp()),
+            ],
+            'contao_tl_iso_rule_condition',
+        );
     }
 
     public function getOperators(): array

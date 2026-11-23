@@ -7,6 +7,7 @@ namespace Isotope\CoreBundle\Test\RuleBuilder\Condition;
 use Isotope\CoreBundle\RuleBuilder\Condition\StoreDateCondition;
 use Isotope\CoreBundle\Test\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class StoreDateConditionTest extends TestCase
 {
@@ -20,6 +21,7 @@ final class StoreDateConditionTest extends TestCase
             $context = $this->createStoreContext();
             $context->setTimestamp(new \DateTimeImmutable($now));
             $condition = new StoreDateCondition(
+                $this->createStub(TranslatorInterface::class),
                 new \DateTimeImmutable('2026-01-01T13:00:00+01:00'),
                 new \DateTimeImmutable('2026-01-01T14:00:00+01:00'),
             );

@@ -7,6 +7,7 @@ namespace Isotope\CoreBundle\Test\RuleBuilder\Condition;
 use Isotope\CoreBundle\RuleBuilder\Condition\StoreTimeCondition;
 use Isotope\CoreBundle\Test\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class StoreTimeConditionTest extends TestCase
 {
@@ -15,6 +16,7 @@ final class StoreTimeConditionTest extends TestCase
     {
         $timezone = new \DateTimeZone('Europe/Zurich');
         $condition = new StoreTimeCondition(
+            $this->createStub(TranslatorInterface::class),
             new \DateTimeImmutable('1970-01-01 22:00:00', $timezone),
             new \DateTimeImmutable('1970-01-01 02:00:00', $timezone),
         );
@@ -43,6 +45,7 @@ final class StoreTimeConditionTest extends TestCase
     {
         $timezone = new \DateTimeZone('Europe/Zurich');
         $condition = new StoreTimeCondition(
+            $this->createStub(TranslatorInterface::class),
             new \DateTimeImmutable('1970-01-01 13:00:00', $timezone),
             new \DateTimeImmutable('2000-02-02 14:00:00', $timezone),
         );

@@ -8,11 +8,13 @@ use Contao\Config;
 use Contao\Date;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsRuleCondition;
 use Isotope\CoreBundle\Store\Context\StoreContext;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[AsRuleCondition(category: 'dates', factory: StoreConditionFactory::class)]
 class StoreTimeCondition implements RuleConditionInterface
 {
     public function __construct(
+        private readonly TranslatorInterface $translator,
         private readonly \DateTimeImmutable $start,
         private readonly \DateTimeImmutable $stop,
     ) {
@@ -38,7 +40,14 @@ class StoreTimeCondition implements RuleConditionInterface
 
     public function getBackendLabel(): string
     {
-        return \sprintf('between %s and %s', Date::parse(Config::get('timeFormat'), $this->start->getTimestamp()), Date::parse(Config::get('timeFormat'), $this->stop->getTimestamp()));
+        return $this->translator->trans(
+            'tl_iso_rule_condition.label.range',
+            [
+                Date::parse(Config::get('timeFormat'), $this->start->getTimestamp()),
+                Date::parse(Config::get('timeFormat'), $this->stop->getTimestamp()),
+            ],
+            'contao_tl_iso_rule_condition',
+        );
     }
 
     public function getOperators(): array
