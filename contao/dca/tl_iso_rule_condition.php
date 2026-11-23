@@ -4,6 +4,7 @@ use Contao\DataContainer;
 use Contao\DC_Table;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Types\Types;
+use Isotope\CoreBundle\Store\Weight\WeightUnit;
 
 $GLOBALS['TL_DCA']['tl_iso_rule_condition'] = [
     'config' => [
@@ -36,6 +37,8 @@ $GLOBALS['TL_DCA']['tl_iso_rule_condition'] = [
         'cart_total' => '{condition_legend},type,operator,amount',
         'cart_totalrange' => '{condition_legend},type,operator,amount_from,amount_to',
         'cart_address' => '{condition_legend},type,address_type,countries,subdivisions,postalcodes',
+        'cart_weight' => '{condition_legend},type,operator,weight',
+        'cart_weightrange' => '{condition_legend},type,operator,weight_from,weight_to',
         'cart_quantity' => '{condition_legend},type,operator,quantity',
         'cart_quantityrange' => '{condition_legend},type,operator,quantity_from,quantity_to',
         'cart_products' => '{condition_legend},type,operator,quantity',
@@ -108,6 +111,30 @@ $GLOBALS['TL_DCA']['tl_iso_rule_condition'] = [
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'rgxp' => 'price', 'tl_class' => 'w50'],
             'sql' => ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TINYTEXT, 'notnull' => false],
+        ],
+        'weight' => [
+            'default' => ['unit' => 'kg'],
+            'inputType' => 'timePeriod',
+            'enum' => WeightUnit::class,
+            'reference' => &$GLOBALS['TL_LANG']['WGT'],
+            'eval' => ['mandatory' => true, 'rgxp' => 'digit', 'maxlength' => 32, 'helpwizard' => true, 'tl_class' => 'w50'],
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
+        ],
+        'weight_from' => [
+            'default' => ['unit' => 'kg'],
+            'inputType' => 'timePeriod',
+            'enum' => WeightUnit::class,
+            'reference' => &$GLOBALS['TL_LANG']['WGT'],
+            'eval' => ['mandatory' => true, 'rgxp' => 'digit', 'maxlength' => 32, 'helpwizard' => true, 'tl_class' => 'w50'],
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
+        ],
+        'weight_to' => [
+            'default' => ['unit' => 'kg'],
+            'inputType' => 'timePeriod',
+            'enum' => WeightUnit::class,
+            'reference' => &$GLOBALS['TL_LANG']['WGT'],
+            'eval' => ['mandatory' => true, 'rgxp' => 'digit', 'maxlength' => 32, 'helpwizard' => true, 'tl_class' => 'w50'],
+            'sql' => ['type' => Types::STRING, 'length' => 255, 'default' => ''],
         ],
         'product_types' => [
             'inputType' => 'checkbox',

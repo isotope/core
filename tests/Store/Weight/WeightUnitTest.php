@@ -20,7 +20,7 @@ final class WeightUnitTest extends TestCase
         'g' => 0.001,
         'kg' => 1.0,
         't' => 1000.0,
-        'cz' => 0.0002,
+        'ct' => 0.0002,
         'oz' => 0.028349523125,
         'lb' => 0.45359237,
         'st' => 6.35029318,

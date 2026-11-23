@@ -12,6 +12,7 @@ use Isotope\CoreBundle\ModelType\Exception\InvalidTypeException;
 use Isotope\CoreBundle\ModelType\ModelInstanceTrait;
 use Isotope\CoreBundle\ModelType\ModelTypeFactoryInterface;
 use Isotope\CoreBundle\Store\Context\StoreContext;
+use Isotope\CoreBundle\Store\Weight\Weight;
 use Isotope\CoreBundle\Util\PostalCodeUtil;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -47,7 +48,20 @@ class CartConditionFactory implements ModelTypeFactoryInterface
                 !empty($model->postalcodes) ? PostalCodeUtil::parseRange($model->postalcodes) : null,
                 (string) $model->postalcodes,
             ),
-            'cart_total' => new CartTotalCondition($this->translator, $model->operator, (float) $model->amount, (float) $model->amount_from, (float) $model->amount_to),
+            'cart_total' => new CartTotalCondition(
+                $this->translator,
+                $model->operator, (float)
+                $model->amount,
+                (float) $model->amount_from,
+                (float) $model->amount_to,
+            ),
+            'cart_weight' => new CartWeightCondition(
+                $this->translator,
+                $model->operator,
+                Weight::createFromTimePeriod((string) $model->weight),
+                Weight::createFromTimePeriod((string) $model->weight_from),
+                Weight::createFromTimePeriod((string) $model->weight_to),
+            ),
             'cart_quantity' => new CartQuantityCondition($this->translator, $model->operator, (int) $model->quantity, (int) $model->quantity_from, (int) $model->quantity_to),
             'cart_products' => new CartProductsCondition($this->translator, $model->operator, (int) $model->quantity, (int) $model->quantity_from, (int) $model->quantity_to),
             'cart_producttypes' => new CartProducttypesCondition($this->translator, $model->operator, explode(',', (string) $model->product_types)),

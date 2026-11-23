@@ -7,7 +7,7 @@ namespace Isotope\CoreBundle\Store\Weight;
 use Contao\StringUtil;
 use Isotope\CoreBundle\Util\FloatComparator;
 
-final readonly class Weight
+final readonly class Weight implements \Stringable
 {
     private float $amount;
 
@@ -16,6 +16,11 @@ final readonly class Weight
         private WeightUnit $unit,
     ) {
         $this->amount = FloatComparator::cast($amount);
+    }
+
+    public function __toString(): string
+    {
+        return $this->amount.' '.$this->unit->value;
     }
 
     public function getAmount(): float

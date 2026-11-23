@@ -22,6 +22,9 @@ use Contao\Model\Collection;
  * @property string $amount_from
  * @property string $amount_to
  * @property string $product_types
+ * @property string $weight
+ * @property string $weight_from
+ * @property string $weight_to
  * @property string $members
  * @property string $member_groups
  * @property string $config_ids

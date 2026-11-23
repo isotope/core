@@ -185,6 +185,18 @@
       <trans-unit id="tl_iso_rule_condition.members.1">
         <source>Select one or more member accounts.</source>
       </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.weight.0">
+        <source>Weight</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.weight_from.0">
+        <source>Minimum weight</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.weight_to.0">
+        <source>Maximum weight</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.range">
+        <source>between %s and %s</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>
