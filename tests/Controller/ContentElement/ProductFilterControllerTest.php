@@ -89,9 +89,15 @@ final class ProductFilterControllerTest extends TestCase
     {
         $connection = DriverManager::getConnection(['driver' => 'pdo_sqlite', 'memory' => true]);
         $connection->executeStatement('CREATE TABLE tl_iso_product (id INTEGER, color TEXT)');
+        $connection->executeStatement('CREATE TABLE tl_iso_product_category (product_id INTEGER, sorting INTEGER)');
         $connection->insert('tl_iso_product', ['id' => 1, 'color' => 'red']);
         $connection->insert('tl_iso_product', ['id' => 2, 'color' => 'blue']);
-        $baseQuery = $connection->createQueryBuilder()->select('id')->from('tl_iso_product');
+        $baseQuery = $connection->createQueryBuilder()
+            ->select('tl_iso_product.id')
+            ->from('tl_iso_product')
+            ->leftJoin('tl_iso_product', 'tl_iso_product_category', 'c', 'tl_iso_product.id=c.product_id')
+            ->groupBy('tl_iso_product.id')
+        ;
         $finder = $this->createMock(ProductFinderFactory::class);
         $finder
             ->expects($this->once())

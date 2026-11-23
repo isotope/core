@@ -32,7 +32,7 @@ final class ProductListControllerTest extends TestCase
     {
         $this->connection = DriverManager::getConnection(['driver' => 'pdo_sqlite', 'memory' => true]);
         $this->connection->executeStatement('CREATE TEMPORARY TABLE tl_iso_product (id INTEGER PRIMARY KEY, pid INTEGER, language VARCHAR(5), name VARCHAR(255), published INTEGER, start VARCHAR(10), stop VARCHAR(10))');
-        $this->connection->executeStatement('CREATE TEMPORARY TABLE tl_iso_product_category (pid INTEGER, product_id INTEGER)');
+        $this->connection->executeStatement('CREATE TEMPORARY TABLE tl_iso_product_category (pid INTEGER, product_id INTEGER, sorting INTEGER DEFAULT 0)');
 
         foreach ([
             [1, 0, '', 'Apple'],
