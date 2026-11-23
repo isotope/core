@@ -22,6 +22,7 @@ use Isotope\CoreBundle\Store\Context\ProductContext;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Price\PriceCalculator;
 use Isotope\CoreBundle\Store\Price\PriceDefinition;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
@@ -34,6 +35,7 @@ class OptionFactory
         private readonly PriceCalculator $priceCalculator,
         private readonly Environment $twig,
         private readonly ScopeMatcher $scopeMatcher,
+        private readonly EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -58,7 +60,7 @@ class OptionFactory
                 return $this->createFromTable($foreignKey, $productContext?->getContext());
 
             case OptionsSource::Table:
-                return $this->createFromModels($this->framework->getAdapter(AttributeOptionModel::class)->findByAttribute($attribute), !$isVariant, $productContext);
+                return $this->createFromModels($this->framework->getAdapter(AttributeOptionModel::class)->findByAttribute($attribute), $attribute, !$isVariant, $productContext);
 
             case OptionsSource::Product:
                 $product = $productContext?->getProduct();
@@ -67,7 +69,7 @@ class OptionFactory
                     return new OptionCollection();
                 }
 
-                return $this->createFromModels($this->framework->getAdapter(AttributeOptionModel::class)->findByProductAndAttribute($product, $attribute), !$isVariant, $productContext);
+                return $this->createFromModels($this->framework->getAdapter(AttributeOptionModel::class)->findByProductAndAttribute($product, $attribute), $attribute, !$isVariant, $productContext);
 
             default:
                 $config = Widget::getAttributesFromDca($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute->getFieldName()], $attribute->getFieldName());
@@ -99,7 +101,7 @@ class OptionFactory
     /**
      * @param Collection<AttributeOptionModel>|null $models
      */
-    private function createFromModels(Collection|null $models, bool $canHaveDefault, ProductContext|null $productContext): OptionCollection
+    private function createFromModels(Collection|null $models, OptionsAttributeInterface $attribute, bool $canHaveDefault, ProductContext|null $productContext): OptionCollection
     {
         if (null === $models) {
             return new OptionCollection();
@@ -125,14 +127,19 @@ class OptionFactory
                 $context = $productContext->getContext();
                 $price = $this->priceCalculator->calculatePriceDefinition($priceDefinition, $productPrice, $context);
 
-                $option->setPrice($price);
-                $option->setLabel($this->twig->render('@Contao/component/_isotope_option_price.html.twig', [
-                    'label' => $option->getLabel(),
-                    'price' => $model->price,
-                    'amount' => $price->getUnitPrice(),
-                    'currency' => $context->getCurrency(),
-                    'money' => $context->getMoneyFormat(),
-                ]));
+                $event = new OptionPriceEvent($attribute, $option, $productContext, $priceDefinition, $productPrice, $price);
+                $this->eventDispatcher->dispatch($event);
+                $option->setPrice($event->getPrice());
+
+                if ($price = $option->getPrice()) {
+                    $option->setLabel($this->twig->render('@Contao/component/_isotope_option_price.html.twig', [
+                        'label' => $option->getLabel(),
+                        'price' => $model->price,
+                        'amount' => $price->getUnitPrice(),
+                        'currency' => $context->getCurrency(),
+                        'money' => $context->getMoneyFormat(),
+                    ]));
+                }
             } elseif ($model->price && $this->scopeMatcher->isBackendRequest()) {
                 $option->setLabel(\sprintf('%s (%s)', $option->getLabel(), $model->price));
             }
