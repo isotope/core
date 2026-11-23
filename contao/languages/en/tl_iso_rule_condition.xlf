@@ -179,6 +179,12 @@
       <trans-unit id="tl_iso_rule_condition.operator.not_logged_in">
         <source>Customer is not logged in</source>
       </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.members.0">
+        <source>Members</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.members.1">
+        <source>Select one or more member accounts.</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -785,6 +785,12 @@
       <trans-unit id="MODEL.tl_iso_rule_condition.member">
         <source>Member</source>
       </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.members.0">
+        <source>Specific member</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.members.1">
+        <source>Match signed-in member against a selection of member accounts.</source>
+      </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.member_authenticated.0">
         <source>Login status</source>
       </trans-unit>

@@ -15,7 +15,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[AsRuleCondition(category: 'member', factory: MemberConditionFactory::class)]
 class MemberGroupsCondition implements RuleConditionInterface
 {
-    /** @param list<int> $members */
     public function __construct(
         private readonly Security $security,
         private readonly TranslatorInterface $translator,

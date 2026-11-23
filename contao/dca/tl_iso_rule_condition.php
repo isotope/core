@@ -41,6 +41,7 @@ $GLOBALS['TL_DCA']['tl_iso_rule_condition'] = [
         'cart_products' => '{condition_legend},type,operator,quantity',
         'cart_productsrange' => '{condition_legend},type,operator,quantity_from,quantity_to',
         'cart_producttypes' => '{condition_legend},type,operator,product_types',
+        'members' => '{condition_legend},type,operator,members',
         'member_groups' => '{condition_legend},type,operator,member_groups',
         'member_authenticated' => '{condition_legend},type,operator',
         'store_config' => '{condition_legend},type,operator,config_ids',
@@ -119,6 +120,12 @@ $GLOBALS['TL_DCA']['tl_iso_rule_condition'] = [
             'foreignKey' => 'tl_member_group.name',
             'eval' => ['mandatory' => true, 'multiple' => true, 'csv' => ','],
             'sql' => ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TINYTEXT, 'notnull' => false],
+        ],
+        'members' => [
+            'inputType' => 'picker',
+            'eval' => ['mandatory' => true, 'multiple' => true, 'csv' => ',', 'tl_class' => 'clr'],
+            'sql' => ['type' => Types::TEXT, 'notnull' => false],
+            'relation' => ['type' => 'hasMany', 'table' => 'tl_member'],
         ],
         'config_ids' => [
             'inputType' => 'checkbox',
