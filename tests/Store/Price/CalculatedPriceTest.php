@@ -47,6 +47,7 @@ final class CalculatedPriceTest extends TestCase
         $price = (new CalculatedPrice(10, 30, quantity: 3))
             ->setUnitLabel('10%')
             ->setRange(true)
+            ->setListPrice(15)
         ;
         $restored = CalculatedPrice::createFromJson(json_encode($price, JSON_THROW_ON_ERROR));
 
@@ -56,6 +57,8 @@ final class CalculatedPriceTest extends TestCase
         $this->assertTrue($restored->isRange());
         $this->assertSame($price->jsonSerialize(), $restored->jsonSerialize());
         $this->assertNull($restored->getBasePrice());
+        $this->assertSame(15.0, $restored->getListPrice());
+        $this->assertSame(45.0, $restored->reduce()->getListPrice());
         $this->assertEqualsWithDelta(30.0, $restored->reduce()->getUnitPrice(), PHP_FLOAT_EPSILON);
     }
 
@@ -67,6 +70,7 @@ final class CalculatedPriceTest extends TestCase
         $this->assertSame(1, $price->getQuantity());
         $this->assertNull($price->getUnitLabel());
         $this->assertNull($price->getBasePrice());
+        $this->assertNull($price->getListPrice());
         $this->assertFalse($price->isRange());
     }
 }

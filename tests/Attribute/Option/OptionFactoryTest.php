@@ -138,26 +138,23 @@ final class OptionFactoryTest extends TestCase
         ;
 
         $product = $this->createStub(CoreProduct::class);
-        $basePrice = new CalculatedPrice(40, 40);
+        $basePrice = (new CalculatedPrice(40, 40))->setListPrice(100);
         $product
             ->method('getPrice')
             ->willReturn($basePrice)
         ;
         $context = new ProductContext($product, $this->createStoreContext());
-        $calculator = $this->createStub(PriceCalculator::class);
-        $calculator
-            ->method('calculatePriceDefinition')
-            ->willReturn(new CalculatedPrice(6, 6))
-        ;
         $translator = $this->createStub(TranslatorInterface::class);
         $translator
             ->method('trans')
             ->willReturnArgument(0)
         ;
+        $taxCalculator = new TaxCalculator($this->createContaoFrameworkStub(), $this->createStub(RuleMatcher::class), $translator);
+        $calculator = new PriceCalculator($taxCalculator);
         $twig = new Environment(new ArrayLoader([
             '@Contao/component/_isotope_option_price.html.twig' => '{{ label }} (+ {{ money.format(amount) }})',
         ]));
-        $adjusted = new CalculatedPrice(3, 3);
+        $adjusted = (new CalculatedPrice(3, 3))->setListPrice(15);
         $dispatcher = new EventDispatcher();
         $dispatcher->addListener(
             OptionPriceEvent::class,
@@ -168,6 +165,7 @@ final class OptionFactoryTest extends TestCase
                 $this->assertSame($basePrice, $event->getProductPrice());
                 $this->assertTrue($event->getPriceDefinition()->isPercentage());
                 $this->assertSame(6.0, $event->getPrice()->getUnitPrice());
+                $this->assertSame(15.0, $event->getPrice()->getListPrice());
 
                 $event->setPrice($adjusted);
             }
@@ -202,12 +200,12 @@ final class OptionFactoryTest extends TestCase
             ->method('get')
             ->willReturn($attribute)
         ;
-        $taxCalculator = new TaxCalculator($this->createContaoFrameworkStub(), $this->createStub(RuleMatcher::class), $translator);
-        $listener = new ConfigurationPriceListener($registry, new PriceCalculator($taxCalculator));
+        $listener = new ConfigurationPriceListener($registry, $calculator);
         $event = new ProductPriceEvent($product, $context->getContext(), ['gift_wrapping' => '42'], $basePrice);
         $listener($event);
 
         $this->assertSame(43.0, $event->getPrice()->getUnitPrice());
+        $this->assertSame(115.0, $event->getPrice()->getListPrice());
     }
 
     public static function emptyForeignKeyProvider(): iterable

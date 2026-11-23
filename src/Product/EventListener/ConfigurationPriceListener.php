@@ -35,6 +35,8 @@ class ConfigurationPriceListener
             return;
         }
 
+        $productContext = new ProductContext($event->getProduct(), $context, $productPrice);
+
         foreach ($names as $name) {
             $attribute = $this->attributeRegistry->get($name);
 
@@ -44,7 +46,7 @@ class ConfigurationPriceListener
 
             $values = array_map(strval(...), (array) $configuration[$name]);
 
-            foreach ($attribute->getOptions(new ProductContext($event->getProduct(), $context)) as $option) {
+            foreach ($attribute->getOptions($productContext) as $option) {
                 if (
                     $option->isGroup()
                     || !($optionPrice = $option->getPrice())
@@ -53,10 +55,19 @@ class ConfigurationPriceListener
                     continue;
                 }
 
+                $listPrice = null;
+                $productListPrice = $productPrice->getListPrice();
+                $optionListPrice = $optionPrice->getListPrice();
+
+                if ($productListPrice || $optionListPrice) {
+                    $listPrice = ($productListPrice ?? $productPrice->getUnitPrice()) + ($optionListPrice ?? $optionPrice->getUnitPrice());
+                }
+
                 $productPrice = $this->priceCalculator
                     ->sum($productPrice, $optionPrice, $context->getPriceDisplay())
                     ->setBasePrice($productPrice->getBasePrice())
                     ->setRange($productPrice->isRange())
+                    ->setListPrice($listPrice)
                 ;
             }
         }

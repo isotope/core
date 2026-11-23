@@ -122,10 +122,16 @@ class OptionFactory
             if (
                 $productContext
                 && ($priceDefinition = PriceDefinition::fromString($model->price, PriceDefinition::SPLIT_TAX))
-                && ($productPrice = $productContext->getProduct()->getPrice())
+                && ($productPrice = $productContext->getPrice())
             ) {
                 $context = $productContext->getContext();
                 $price = $this->priceCalculator->calculatePriceDefinition($priceDefinition, $productPrice, $context);
+
+                if ($priceDefinition->isPercentage() && null !== ($listPrice = $productPrice->getListPrice())) {
+                    $listBase = $this->priceCalculator->recalculateUnitPrice($productPrice, $listPrice, $context);
+
+                    $price->setListPrice($this->priceCalculator->calculatePriceDefinition($priceDefinition, $listBase, $context)->getUnitPrice());
+                }
 
                 $event = new OptionPriceEvent($attribute, $option, $productContext, $priceDefinition, $productPrice, $price);
                 $this->eventDispatcher->dispatch($event);

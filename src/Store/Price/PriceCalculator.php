@@ -53,16 +53,16 @@ class PriceCalculator
             return null;
         }
 
-        $amount = $price->getAmount();
+        $calculated = $this
+            ->calculateProductUnitPrice($price, $quantity, $context)
+            ->setRange($showRange && $prices->hasRange())
+            ->setBasePrice($this->calculateBasePrice($product))
+        ;
 
-        if (1.0 !== $context->getCurrencyFactor()) {
-            $amount *= $context->getCurrencyFactor();
+        if (null !== ($listAmount = $price->getListAmount())) {
+            $listPrice = $this->calculateProductUnitPrice($price->withAmount($listAmount), $quantity, $context);
+            $calculated->setListPrice($listPrice->getUnitPrice());
         }
-
-        [$taxRates, $includedTaxRates] = $this->taxCalculator->getTaxRates($price->getTaxClassId(), $context);
-        $calculated = $this->calculate($amount, $taxRates, $includedTaxRates, $context, $quantity)->setRange($showRange && $prices->hasRange());
-
-        $calculated->setBasePrice($this->calculateBasePrice($product));
 
         return $calculated;
     }
@@ -135,6 +135,23 @@ class PriceCalculator
         );
     }
 
+    /**
+     * Recalculate taxes for a unit price in the store's display currency and tax basis.
+     */
+    public function recalculateUnitPrice(CalculatedPrice $price, float $amount, StoreContext $context): CalculatedPrice
+    {
+        $isNet = PriceDisplay::Net === $context->getPriceDisplay();
+
+        return $this->calculate(
+            $amount,
+            $price->getTaxRates(),
+            $isNet ? new TaxRateCollection() : $price->getIncludedTaxRates(),
+            $context,
+            $price->getQuantity(),
+            $isNet ? PriceDisplay::Net : PriceDisplay::Fixed,
+        )->setUnitLabel($price->getUnitLabel());
+    }
+
     private function calculateBasePrice(CoreProduct $product): BasePrice|null
     {
         $data = StringUtil::deserialize($product->baseprice);
@@ -152,9 +169,21 @@ class PriceCalculator
         return new BasePrice((float) $data['value'], (float) $basePrice->amount, $basePrice->label);
     }
 
+    private function calculateProductUnitPrice(PriceDefinition $price, int $quantity, StoreContext $context): CalculatedPrice
+    {
+        [$taxRates, $includedTaxRates] = $this->taxCalculator->getTaxRates($price->getTaxClassId(), $context);
+
+        return $this->calculate($price->getAmount() * $context->getCurrencyFactor(), $taxRates, $includedTaxRates, $context, $quantity);
+    }
+
     private function calculate(float $amount, TaxRateCollection $taxRates, TaxRateCollection $includedTaxRates, StoreContext $context, int $quantity = 1, PriceDisplay|null $priceDisplay = null): CalculatedPrice
     {
         $priceDisplay ??= $context->getPriceDisplay();
+
+        if (PriceDisplay::Fixed === $priceDisplay) {
+            $amount = $context->getMoneyFormat()->moneyRound($amount);
+        }
+
         $netPrice = $this->taxCalculator->calculateNetPrice($amount, PriceDisplay::Fixed === $priceDisplay ? $taxRates : $includedTaxRates);
 
         if (PriceDisplay::Net === $priceDisplay) {

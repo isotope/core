@@ -9,6 +9,7 @@ use Isotope\CoreBundle\Model\TaxRateModel;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\RuleBuilder\RuleMatcher;
 use Isotope\CoreBundle\Store\Price\CalculatedPrice;
+use Isotope\CoreBundle\Store\Price\MoneyFormat;
 use Isotope\CoreBundle\Store\Price\PriceCalculator;
 use Isotope\CoreBundle\Store\Price\PriceDefinition;
 use Isotope\CoreBundle\Store\Price\PriceDefinitionCollection;
@@ -35,6 +36,50 @@ final class PriceCalculatorTest extends TestCase
         $calculator = new PriceCalculator($this->createStub(TaxCalculator::class));
 
         $this->assertNull($calculator->calculateProduct($product, 1, false, $this->createStoreContext()));
+    }
+
+    public function testFixedSellingAndListPricesAreRoundedForTheSelectedTier(): void
+    {
+        $product = $this->createStub(CoreProduct::class);
+        $product
+            ->method('getPrices')
+            ->willReturn(new PriceDefinitionCollection([
+                (new PriceDefinition(90, null))->setListAmount(95),
+                (new PriceDefinition(80.04, null, quantity: 2))->setListAmount(100.04),
+            ]))
+        ;
+        $calculator = new PriceCalculator(new TaxCalculator(
+            $this->createContaoFrameworkStub([
+                TaxClassModel::class => $this->createAdapterStub(['findById']),
+                TaxRateModel::class => $this->createAdapterStub(['findById', 'findMultipleByIds']),
+            ]),
+            $this->createStub(RuleMatcher::class),
+            $this->createStub(TranslatorInterface::class),
+        ));
+
+        $context = $this->createStoreContext(priceDisplay: PriceDisplay::Fixed, moneyFormat: new MoneyFormat(roundingIncrement: 0.05));
+        $price = $calculator->calculateProduct($product, 1, true, $context);
+
+        $this->assertTrue($price->isRange());
+        $this->assertSame(80.05, $price->getUnitPrice());
+        $this->assertSame(100.05, $price->getListPrice());
+    }
+
+    public function testRecalculatingANetUnitPriceUsesTheSuppliedAmountBeforeTax(): void
+    {
+        $taxRates = new TaxRateCollection([new TaxRate('1', 20, 100)]);
+        $price = new CalculatedPrice(80, 160, taxRates: $taxRates, includedTaxRates: $taxRates, quantity: 2);
+        $calculator = new PriceCalculator(new TaxCalculator(
+            $this->createContaoFrameworkStub(),
+            $this->createStub(RuleMatcher::class),
+            $this->createStub(TranslatorInterface::class),
+        ));
+
+        $result = $calculator->recalculateUnitPrice($price, 100, $this->createStoreContext(priceDisplay: PriceDisplay::Net));
+
+        $this->assertSame(100.0, $result->getUnitPrice());
+        $this->assertSame(200.0, $result->getTotalPrice());
+        $this->assertSame(20.0, $result->getCalculatedTaxes()->sum());
     }
 
     #[DataProvider('calculatePriceDefinitionProvider')]
