@@ -57,8 +57,8 @@ final class CalculatedPriceTest extends TestCase
         $this->assertTrue($restored->isRange());
         $this->assertSame($price->jsonSerialize(), $restored->jsonSerialize());
         $this->assertNull($restored->getBasePrice());
-        $this->assertSame(15.0, $restored->getListPrice());
-        $this->assertSame(45.0, $restored->reduce()->getListPrice());
+        $this->assertEqualsWithDelta(15.0, $restored->getListPrice(), PHP_FLOAT_EPSILON);
+        $this->assertEqualsWithDelta(45.0, $restored->reduce()->getListPrice(), PHP_FLOAT_EPSILON);
         $this->assertEqualsWithDelta(30.0, $restored->reduce()->getUnitPrice(), PHP_FLOAT_EPSILON);
     }
 

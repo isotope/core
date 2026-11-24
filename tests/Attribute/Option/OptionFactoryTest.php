@@ -164,11 +164,11 @@ final class OptionFactoryTest extends TestCase
                 $this->assertSame($context, $event->getProductContext());
                 $this->assertSame($basePrice, $event->getProductPrice());
                 $this->assertTrue($event->getPriceDefinition()->isPercentage());
-                $this->assertSame(6.0, $event->getPrice()->getUnitPrice());
-                $this->assertSame(15.0, $event->getPrice()->getListPrice());
+                $this->assertEqualsWithDelta(6.0, $event->getPrice()->getUnitPrice(), PHP_FLOAT_EPSILON);
+                $this->assertEqualsWithDelta(15.0, $event->getPrice()->getListPrice(), PHP_FLOAT_EPSILON);
 
                 $event->setPrice($adjusted);
-            }
+            },
         );
 
         $factory = new OptionFactory(
@@ -204,8 +204,8 @@ final class OptionFactoryTest extends TestCase
         $event = new ProductPriceEvent($product, $context->getContext(), ['gift_wrapping' => '42'], $basePrice);
         $listener($event);
 
-        $this->assertSame(43.0, $event->getPrice()->getUnitPrice());
-        $this->assertSame(115.0, $event->getPrice()->getListPrice());
+        $this->assertEqualsWithDelta(43.0, $event->getPrice()->getUnitPrice(), PHP_FLOAT_EPSILON);
+        $this->assertEqualsWithDelta(115.0, $event->getPrice()->getListPrice(), PHP_FLOAT_EPSILON);
     }
 
     public static function emptyForeignKeyProvider(): iterable

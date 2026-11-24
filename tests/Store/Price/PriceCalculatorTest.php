@@ -59,10 +59,11 @@ final class PriceCalculatorTest extends TestCase
 
         $context = $this->createStoreContext(priceDisplay: PriceDisplay::Fixed, moneyFormat: new MoneyFormat(roundingIncrement: 0.05));
         $price = $calculator->calculateProduct($product, 1, true, $context);
+        $this->assertInstanceOf(CalculatedPrice::class, $price);
 
         $this->assertTrue($price->isRange());
-        $this->assertSame(80.05, $price->getUnitPrice());
-        $this->assertSame(100.05, $price->getListPrice());
+        $this->assertEqualsWithDelta(80.05, $price->getUnitPrice(), PHP_FLOAT_EPSILON);
+        $this->assertEqualsWithDelta(100.05, $price->getListPrice(), PHP_FLOAT_EPSILON);
     }
 
     public function testRecalculatingANetUnitPriceUsesTheSuppliedAmountBeforeTax(): void
@@ -77,9 +78,9 @@ final class PriceCalculatorTest extends TestCase
 
         $result = $calculator->recalculateUnitPrice($price, 100, $this->createStoreContext(priceDisplay: PriceDisplay::Net));
 
-        $this->assertSame(100.0, $result->getUnitPrice());
-        $this->assertSame(200.0, $result->getTotalPrice());
-        $this->assertSame(20.0, $result->getCalculatedTaxes()->sum());
+        $this->assertEqualsWithDelta(100.0, $result->getUnitPrice(), PHP_FLOAT_EPSILON);
+        $this->assertEqualsWithDelta(200.0, $result->getTotalPrice(), PHP_FLOAT_EPSILON);
+        $this->assertEqualsWithDelta(20.0, $result->getCalculatedTaxes()->sum(), PHP_FLOAT_EPSILON);
     }
 
     #[DataProvider('calculatePriceDefinitionProvider')]
