@@ -113,17 +113,19 @@ class CheckoutRuleMigration extends AbstractMigration
             $this->connection->executeStatement("UPDATE $table SET rule=? WHERE id=?", [$ruleId, $row['id']]);
         }
 
-        $this->connection->executeStatement(<<<SQL
-                ALTER TABLE $table
-                    DROP COLUMN minimum_total,
-                    DROP COLUMN maximum_total,
-                    DROP COLUMN quantity_mode,
-                    DROP COLUMN minimum_quantity,
-                    DROP COLUMN maximum_quantity,
-                    DROP COLUMN config_ids,
-                    DROP COLUMN product_types,
-                    DROP COLUMN product_types_condition
-            SQL);
+        $this->connection->executeStatement(
+            <<<SQL
+                    ALTER TABLE $table
+                        DROP COLUMN minimum_total,
+                        DROP COLUMN maximum_total,
+                        DROP COLUMN quantity_mode,
+                        DROP COLUMN minimum_quantity,
+                        DROP COLUMN maximum_quantity,
+                        DROP COLUMN config_ids,
+                        DROP COLUMN product_types,
+                        DROP COLUMN product_types_condition
+                SQL,
+        );
     }
 
     private function createRangeCondition(string $type, string $field, float $from, float $to): array|null

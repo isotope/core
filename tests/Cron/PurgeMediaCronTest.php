@@ -28,6 +28,7 @@ final class PurgeMediaCronTest extends ContaoTestCase
 
         $this->connection = DriverManager::getConnection(['driver' => 'pdo_sqlite', 'memory' => true]);
         $this->connection->executeStatement('CREATE TABLE tl_iso_product (id INTEGER PRIMARY KEY, pid INTEGER, language TEXT, published INTEGER, images BLOB, downloads BLOB)');
+
         $this->filesystem = new Filesystem();
         $this->projectDir = sys_get_temp_dir().'/isotope-media-'.bin2hex(random_bytes(8));
         $this->filesystem->mkdir($this->projectDir);
@@ -113,9 +114,11 @@ final class PurgeMediaCronTest extends ContaoTestCase
     public function testDoesNotFollowSymbolicLinks(): void
     {
         $this->createFile('outside/file.jpg');
+
         $this->filesystem->mkdir($this->projectDir.'/isotope/a');
         $this->filesystem->symlink($this->projectDir.'/outside', $this->projectDir.'/isotope/o');
         $this->filesystem->symlink($this->projectDir.'/outside/file.jpg', $this->projectDir.'/isotope/a/alias.jpg');
+
         $this->createCron()();
 
         $this->assertFileExists($this->projectDir.'/outside/file.jpg');
@@ -126,6 +129,7 @@ final class PurgeMediaCronTest extends ContaoTestCase
     public function testDoesNotDeleteAnythingWhenReadingReferencesFails(): void
     {
         $this->createFile('isotope/o/orphan.jpg');
+
         $this->connection->executeStatement('DROP TABLE tl_iso_product');
 
         try {
@@ -139,6 +143,7 @@ final class PurgeMediaCronTest extends ContaoTestCase
     public function testMissingDirectoryDoesNotRequireTheDatabase(): void
     {
         $this->connection->executeStatement('DROP TABLE tl_iso_product');
+
         $this->createCron()();
 
         $this->assertDirectoryDoesNotExist($this->projectDir.'/isotope');
@@ -183,6 +188,7 @@ final class PurgeMediaCronTest extends ContaoTestCase
     private function createFile(string $path, int|null $mtime = null): void
     {
         $path = $this->projectDir.'/'.$path;
+
         $this->filesystem->dumpFile($path, 'media');
         $this->filesystem->touch($path, $mtime ?? time() - 172800);
     }

@@ -30,12 +30,14 @@ final class OrderValidationConstraintsListenerTest extends TestCase
     {
         $context = $this->createStoreContext()->setConfigId(1)->setMemberId($memberId);
         $price = new CalculatedPrice(10, 10);
+
         $cart = new Cart($context->getIdentifier());
         $cart->setId(1);
         $cart->setBillingAddress($this->createClassWithPropertiesStub(AddressModel::class));
         $cart->add((new LineItem(LineItem::TYPE_PRODUCT, 'tl_iso_product.42'))->setPrice($price));
         $cart->setSubtotals([0 => $price]);
         $cart->setTotal($price);
+
         $converter = new OrderConverter(new EventDispatcher());
 
         $this->assertCount(0, $this->validateOrder($converter->convertToOrder($cart, $context), $context));
@@ -97,6 +99,7 @@ final class OrderValidationConstraintsListenerTest extends TestCase
         $violations = $this->validateOrder(['notes' => 'not allowed']);
 
         $this->assertCount(2, $violations);
+
         $paths = [$violations[0]->getPropertyPath(), $violations[1]->getPropertyPath()];
         $this->assertContains('[line_items]', $paths);
         $this->assertContains('[notes]', $paths);
@@ -108,6 +111,7 @@ final class OrderValidationConstraintsListenerTest extends TestCase
         $existing = new Assert\NotNull();
         $constraints = [new Assert\Type('array')];
         $event = (new OrderValidationEvent([], $context))->addConstraint($existing);
+
         $orderValidator = $this->createMock(OrderValidator::class);
         $orderValidator
             ->expects($this->once())
@@ -115,21 +119,26 @@ final class OrderValidationConstraintsListenerTest extends TestCase
             ->with($this->identicalTo($context))
             ->willReturn($constraints)
         ;
+
         $lineItemValidator = $this->createMock(LineItemValidator::class);
         $lineItemConstraints = [new Assert\Type('array'), new Assert\NotNull()];
+
         $lineItemValidator
             ->expects($this->once())
             ->method('getOrderConstraints')
             ->willReturn($lineItemConstraints)
         ;
+
         $addressValidator = $this->createMock(AddressValidator::class);
         $addressConstraints = [new Assert\Type('array')];
+
         $addressValidator
             ->expects($this->once())
             ->method('getOrderConstraints')
             ->with($this->identicalTo($context))
             ->willReturn($addressConstraints)
         ;
+
         $listener = new OrderValidationConstraintsListener($orderValidator, $lineItemValidator, $addressValidator);
 
         $listener($event);
@@ -165,13 +174,16 @@ final class OrderValidationConstraintsListenerTest extends TestCase
         );
 
         $context ??= $this->createStoreContext()->setConfigId(1)->setMemberId(1);
+
         $listener = new OrderValidationConstraintsListener(
             new OrderValidator(),
             new LineItemValidator(),
             $addressValidator,
         );
+
         $dispatcher = new EventDispatcher();
         $dispatcher->addListener('isotope.validation.order.create', $listener);
+
         $event = new OrderValidationEvent($order, $context);
         $dispatcher->dispatch($event, 'isotope.validation.order.create');
 

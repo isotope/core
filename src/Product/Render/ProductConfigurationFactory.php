@@ -38,12 +38,15 @@ class ProductConfigurationFactory
         $ajaxAttributes = [];
 
         $pricedFields = $this->attributeRegistry->getPricedFields();
+
         $product = $productContext->getProduct();
         $type = $product->getProductType();
+
         $attributes = array_unique(array_merge($type->getAttributes(), $type->getVariantAttributes()));
 
         $variants = $product->getVariants();
         $defaultVariant = $product->isVariant() ? $product : ($view->useFallbackVariant($product) ? $product->getDefaultVariant() : null);
+
         $defaults = $this->getDefaults($product, $request);
         $variantOptions = [];
 

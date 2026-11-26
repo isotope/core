@@ -29,7 +29,6 @@ class OrderConverter
     public function convertToOrder(Cart $cart, StoreContext $context): array
     {
         $data = CartTransformer::transform($cart, $context);
-
         $data['billing_address'] = AddressTransformer::transform($cart->getBillingAddress());
         $data['line_items'] = $this->convertLineItems($cart, $context);
 
@@ -54,6 +53,7 @@ class OrderConverter
         $cart->setShippingAddress($order->getShippingAddress());
         $cart->setPaymentMethod($order->getPaymentMethod());
         $cart->setShippingMethod($order->getShippingMethod());
+
         // Recalculating the cart must not overwrite the original order's line items.
         $cart->setLineItems($order->getLineItems()->products()->clone());
         $cart->setSubtotals($order->getSubtotals());

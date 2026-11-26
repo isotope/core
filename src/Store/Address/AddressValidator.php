@@ -80,20 +80,24 @@ class AddressValidator
     {
         $reserved = array_map(static fn (string $field) => new NotHasKey($field), ['id', 'pid', 'ptable', 'tstamp', 'store_id']);
 
-        return [new Assert\Collection(
-            fields: [
-                'billing_address' => new Assert\Sequentially([
-                    new Assert\NotNull(),
-                    new Assert\Type('array'),
-                    $this->getConstraint($context->getBillingAddressConfig()), ...$reserved,
-                ]),
-                'shipping_address' => new Assert\Optional(new Assert\Sequentially([
-                    new Assert\NotNull(),
-                    new Assert\Type('array'),
-                    $this->getConstraint($context->getShippingAddressConfig()), ...$reserved,
-                ])),
-            ],
-            allowExtraFields: true,
-        )];
+        return [
+            new Assert\Collection(
+                fields: [
+                    'billing_address' => new Assert\Sequentially([
+                        new Assert\NotNull(),
+                        new Assert\Type('array'),
+                        $this->getConstraint($context->getBillingAddressConfig()),
+                        ...$reserved,
+                    ]),
+                    'shipping_address' => new Assert\Optional(new Assert\Sequentially([
+                        new Assert\NotNull(),
+                        new Assert\Type('array'),
+                        $this->getConstraint($context->getShippingAddressConfig()),
+                        ...$reserved,
+                    ])),
+                ],
+                allowExtraFields: true,
+            ),
+        ];
     }
 }

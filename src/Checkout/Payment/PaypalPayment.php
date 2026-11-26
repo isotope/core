@@ -114,30 +114,26 @@ class PaypalPayment extends AbstractPayment
             $arrData['quantity_'.$i] = $item->getQuantity();
         }
 
-        return new PaymentResult($this->get(TemplateMarkupFactory::class)->create(
-            '@Contao/isotope/payment/paypal.html.twig',
-            [
-                'id' => $this->id,
-                'action' => ('https://www.'.($this->isDebug() ? 'sandbox.' : '').'paypal.com/cgi-bin/webscr'),
-                'paypal_account' => $this->account,
-                'invoice' => $order->getDocumentNumber(),
-                'data' => $arrData,
-                'discount' => $fltDiscount,
-                'address' => $order->getBillingAddress(),
-                'currency' => $order->getContext()->getCurrency()->getCode(),
-                'custom' => $transactionModel->uniqid,
-                'return' => $returnUrl,
-                'cancel_return' => $errorUrl,
-                'notify_url' => $this->get(UrlGeneratorInterface::class)->generate(PaypalIpnController::class, [], UrlGeneratorInterface::ABSOLUTE_URL),
-                'debug' => $this->isDebug(),
-            ],
-        ));
+        return new PaymentResult($this->get(TemplateMarkupFactory::class)->create('@Contao/isotope/payment/paypal.html.twig', [
+            'id' => $this->id,
+            'action' => ('https://www.'.($this->isDebug() ? 'sandbox.' : '').'paypal.com/cgi-bin/webscr'),
+            'paypal_account' => $this->account,
+            'invoice' => $order->getDocumentNumber(),
+            'data' => $arrData,
+            'discount' => $fltDiscount,
+            'address' => $order->getBillingAddress(),
+            'currency' => $order->getContext()->getCurrency()->getCode(),
+            'custom' => $transactionModel->uniqid,
+            'return' => $returnUrl,
+            'cancel_return' => $errorUrl,
+            'notify_url' => $this->get(UrlGeneratorInterface::class)->generate(PaypalIpnController::class, [], UrlGeneratorInterface::ABSOLUTE_URL),
+            'debug' => $this->isDebug(),
+        ]));
     }
 
     public function finalize(Order $order, OrderTransactionModel $transactionModel, Request $request): PaymentResult
     {
         // TODO: check that IPN has not already updated the order
-
         $this->updateTransactionStatus($order->getId(), $this->processingStatus);
 
         return new PaymentResult();

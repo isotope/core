@@ -44,6 +44,7 @@ class PaymentCollector implements ItemCollectorInterface
         $item->setLevel($payment->getLevel());
         $item->setDynamic(true);
         $item->setPrice($price);
+
         $collection->add($item);
     }
 }

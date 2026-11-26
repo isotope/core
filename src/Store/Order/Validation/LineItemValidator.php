@@ -23,24 +23,27 @@ class LineItemValidator
      */
     public function getLineItemConstraints(): array
     {
-        return [new Assert\Sequentially([
-            new Assert\NotNull(),
-            new Assert\Type('array'),
-            new Assert\Collection(
-                fields: [
-                    'type' => [new Assert\NotBlank()],
-                    'sorting' => [new Assert\NotNull()],
-                    'quantity' => [new Assert\NotNull(), new Assert\Type('integer'), new Assert\Positive()],
-                    'price' => [new Assert\NotNull(), new Assert\Type('finite-number')],
-                    'price_data' => [new Assert\Type('array'), $this->getPriceDataConstraint()],
+        return [
+            new Assert\Sequentially([
+                new Assert\NotNull(),
+                new Assert\Type('array'),
+                new Assert\Collection(
+                    fields: [
+                        'type' => [new Assert\NotBlank()],
+                        'sorting' => [new Assert\NotNull()],
+                        'quantity' => [new Assert\NotNull(), new Assert\Type('integer'), new Assert\Positive()],
+                        'price' => [new Assert\NotNull(), new Assert\Type('finite-number')],
+                        'price_data' => [new Assert\Type('array'), $this->getPriceDataConstraint()],
 
-                    'configuration' => new Assert\Optional([new Assert\Type('array')]),
-                    'tax_free_price' => new Assert\Optional([new Assert\NotNull(), new Assert\Type('finite-number')]),
-                ],
-                allowExtraFields: true,
-            ),
-            new Assert\Callback($this->checkPriceData(...)),
-        ]), ...array_map(static fn (string $field) => new NotHasKey($field), ['id', 'pid', 'tstamp'])];
+                        'configuration' => new Assert\Optional([new Assert\Type('array')]),
+                        'tax_free_price' => new Assert\Optional([new Assert\NotNull(), new Assert\Type('finite-number')]),
+                    ],
+                    allowExtraFields: true,
+                ),
+                new Assert\Callback($this->checkPriceData(...)),
+            ]),
+            ...array_map(static fn (string $field) => new NotHasKey($field), ['id', 'pid', 'tstamp']),
+        ];
     }
 
     /**
@@ -48,61 +51,78 @@ class LineItemValidator
      */
     public function getOrderConstraints(StoreContext $context): array
     {
-        return [new Assert\Sequentially([
-            new Assert\Collection(
-                fields: [
-                    'line_items' => new Assert\Sequentially([
-                        new Assert\NotNull(),
-                        new Assert\Type('array'),
-                        new Assert\Count(min: 1),
-                        new Assert\All($this->getLineItemConstraints()),
-                    ]),
-                ],
-                allowExtraFields: true,
-            ),
-            new Assert\Callback(
-                function (array $order, ExecutionContextInterface $validationContext) use ($context): void {
-                    $this->checkPrices($order, $context, $validationContext);
-                },
-            ),
-        ])];
+        return [
+            new Assert\Sequentially([
+                new Assert\Collection(
+                    fields: [
+                        'line_items' => new Assert\Sequentially([
+                            new Assert\NotNull(),
+                            new Assert\Type('array'),
+                            new Assert\Count(min: 1),
+                            new Assert\All($this->getLineItemConstraints()),
+                        ]),
+                    ],
+                    allowExtraFields: true,
+                ),
+                new Assert\Callback(
+                    function (array $order, ExecutionContextInterface $validationContext) use ($context): void {
+                        $this->checkPrices($order, $context, $validationContext);
+                    },
+                ),
+            ]),
+        ];
     }
 
     private function getPriceDataConstraint(): Constraint
     {
-        $taxRate = new Assert\Collection(fields: [
-            'id' => [new Assert\NotNull(), new Assert\Type('string')],
-            'tax_rate' => [new Assert\NotNull(), new Assert\Type('finite-number')],
-            'percentage' => [new Assert\NotNull(), new Assert\Type('finite-number')],
-            'label' => [new Assert\Type('string')],
-        ], allowExtraFields: true);
+        $taxRate = new Assert\Collection(
+            fields: [
+                'id' => [new Assert\NotNull(), new Assert\Type('string')],
+                'tax_rate' => [new Assert\NotNull(), new Assert\Type('finite-number')],
+                'percentage' => [new Assert\NotNull(), new Assert\Type('finite-number')],
+                'label' => [new Assert\Type('string')],
+            ],
+            allowExtraFields: true,
+        );
 
-        $tax = new Assert\Collection(fields: [
-            'id' => [new Assert\NotNull(), new Assert\Type('string')],
-            'amount' => [new Assert\NotNull(), new Assert\Type('finite-number')],
-            'tax_rate' => [new Assert\NotNull(), new Assert\Type('finite-number')],
-            'price' => [new Assert\NotNull(), new Assert\Type('finite-number')],
-            'label' => [new Assert\Type('string')],
-            'number' => [new Assert\NotNull(), new Assert\Type('integer'), new Assert\PositiveOrZero()],
-        ], allowExtraFields: true);
+        $tax = new Assert\Collection(
+            fields: [
+                'id' => [new Assert\NotNull(), new Assert\Type('string')],
+                'amount' => [new Assert\NotNull(), new Assert\Type('finite-number')],
+                'tax_rate' => [new Assert\NotNull(), new Assert\Type('finite-number')],
+                'price' => [new Assert\NotNull(), new Assert\Type('finite-number')],
+                'label' => [new Assert\Type('string')],
+                'number' => [new Assert\NotNull(), new Assert\Type('integer'), new Assert\PositiveOrZero()],
+            ],
+            allowExtraFields: true,
+        );
 
-        return new Assert\Collection(fields: [
-            'unit_price' => [new Assert\NotNull(), new Assert\Type('finite-number')],
-            'total_price' => [new Assert\NotNull(), new Assert\Type('finite-number')],
-            'quantity' => [new Assert\NotNull(), new Assert\Type('integer'), new Assert\Positive()],
-            'unit_label' => new Assert\Optional([new Assert\Type('string')]),
-            'is_range' => new Assert\Optional([new Assert\NotNull(), new Assert\Type('bool')]),
-            'calculated_taxes' => new Assert\Optional(new Assert\Sequentially([
-                new Assert\NotNull(), new Assert\Type('array'), new Assert\All([new Assert\NotNull(), $tax]),
-            ])),
-            'tax_rates' => new Assert\Optional([
-                new Assert\NotNull(), new Assert\Type('array'),
-                new Assert\Collection(fields: [
-                    'rates' => new Assert\Optional([new Assert\NotNull(), new Assert\Type('array'), new Assert\All([new Assert\NotNull(), $taxRate])]),
-                    'included' => new Assert\Optional([new Assert\NotNull(), new Assert\Type('array'), new Assert\All([new Assert\NotNull(), $taxRate])]),
-                ], allowExtraFields: true),
-            ]),
-        ], allowExtraFields: true);
+        return new Assert\Collection(
+            fields: [
+                'unit_price' => [new Assert\NotNull(), new Assert\Type('finite-number')],
+                'total_price' => [new Assert\NotNull(), new Assert\Type('finite-number')],
+                'quantity' => [new Assert\NotNull(), new Assert\Type('integer'), new Assert\Positive()],
+                'unit_label' => new Assert\Optional([new Assert\Type('string')]),
+                'is_range' => new Assert\Optional([new Assert\NotNull(), new Assert\Type('bool')]),
+                'calculated_taxes' => new Assert\Optional(new Assert\Sequentially([
+                    new Assert\NotNull(),
+                    new Assert\Type('array'),
+                    new Assert\All([new Assert\NotNull(), $tax]),
+                ])),
+                'tax_rates' => new Assert\Optional([
+                    new Assert\NotNull(),
+                    new Assert\Type('array'),
+                    new Assert\Collection(
+                        fields: [
+                            'rates' => new Assert\Optional([new Assert\NotNull(), new Assert\Type('array'), new Assert\All([new Assert\NotNull(), $taxRate])]),
+                            'included' => new Assert\Optional([new Assert\NotNull(), new Assert\Type('array'), new Assert\All([new Assert\NotNull(), $taxRate])]),
+                        ],
+                        allowExtraFields: true,
+                    ),
+                ]),
+            ],
+            allowExtraFields: true,
+        );
     }
 
     private function checkPriceData(array $item, ExecutionContextInterface $context): void
@@ -161,6 +181,7 @@ class LineItemValidator
         }
 
         ksort($amounts);
+
         $subtotal = 0.0;
         $subtotals = [];
 

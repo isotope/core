@@ -15,11 +15,13 @@ final class StoreDateConditionTest extends TestCase
     public function testRuleUsesInstantsAcrossTimezones(string $now, bool $expected): void
     {
         $previousTimezone = date_default_timezone_get();
+
         date_default_timezone_set('Europe/Zurich');
 
         try {
             $context = $this->createStoreContext();
             $context->setTimestamp(new \DateTimeImmutable($now));
+
             $condition = new StoreDateCondition(
                 $this->createStub(TranslatorInterface::class),
                 new \DateTimeImmutable('2026-01-01T13:00:00+01:00'),

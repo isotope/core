@@ -24,12 +24,16 @@ final class CartControllerTest extends TestCase
         $cart = new Cart('cart');
         $cart->add((new LineItem(LineItem::TYPE_PRODUCT, 'tl_iso_product.1'))->setId(1));
         $cart->add((new LineItem(LineItem::TYPE_PRODUCT, 'tl_iso_product.2'))->setId(2));
+
         $intermediateCart = new Cart('cart');
         $intermediateCart->setLineItems($cart->getLineItems());
+
         $updatedCart = new Cart('cart');
         $updatedCart->setLineItems($cart->getLineItems());
+
         $context = $this->createStoreContext();
         $context->setCart($cart);
+
         $updates = 0;
 
         $manager = $this->createMock(CartManager::class);
@@ -51,27 +55,24 @@ final class CartControllerTest extends TestCase
 
         $response = new Response('Updated cart');
         $template = new FragmentTemplate('cart', static fn () => $response);
+
         $controller = $this->getMockBuilder(CartController::class)
             ->setConstructorArgs([$manager])
             ->onlyMethods(['isBackendScope', 'getStoreContext', 'createTemplate', 'getType', 'addDefaultDataToTemplate', 'tagResponse', 'addCollectionToTemplate'])
             ->getMock()
         ;
-
         $controller
             ->method('isBackendScope')
             ->willReturn(false)
         ;
-
         $controller
             ->method('getStoreContext')
             ->willReturn($context)
         ;
-
         $controller
             ->method('createTemplate')
             ->willReturn($template)
         ;
-
         $controller
             ->method('getType')
             ->willReturn('iso_cart')
@@ -89,6 +90,7 @@ final class CartControllerTest extends TestCase
         ;
 
         $model = $this->createClassWithPropertiesStub(ContentModel::class, ['id' => 42, 'iso_gallery' => 0]);
+
         $request = Request::create(
             '/cart?view=full',
             Request::METHOD_POST,
@@ -131,41 +133,40 @@ final class CartControllerTest extends TestCase
     {
         $cart = new Cart('cart');
         $cart->add((new LineItem(LineItem::TYPE_PRODUCT, 'tl_iso_product.1'))->setId(1));
+
         $context = $this->createStoreContext();
         $context->setCart($cart);
+
         $manager = $this->createMock(CartManager::class);
         $manager
             ->expects($this->never())
             ->method('changeQuantity')
         ;
+
         $response = new Response('Cart');
         $template = new FragmentTemplate('cart', static fn () => $response);
+
         $controller = $this->getMockBuilder(CartController::class)
             ->setConstructorArgs([$manager])
             ->onlyMethods(['isBackendScope', 'getStoreContext', 'createTemplate', 'getType', 'addDefaultDataToTemplate', 'tagResponse', 'addCollectionToTemplate'])
             ->getMock()
         ;
-
         $controller
             ->method('isBackendScope')
             ->willReturn(false)
         ;
-
         $controller
             ->method('getStoreContext')
             ->willReturn($context)
         ;
-
         $controller
             ->method('createTemplate')
             ->willReturn($template)
         ;
-
         $controller
             ->method('getType')
             ->willReturn('iso_cart')
         ;
-
         $controller
             ->expects($this->once())
             ->method('addCollectionToTemplate')

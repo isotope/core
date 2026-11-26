@@ -31,24 +31,32 @@ final class ProductConfigurationFactoryTest extends TestCase
     {
         $previousDca = $GLOBALS['TL_DCA'] ?? [];
         $container = $this->getContainerWithContaoConfiguration();
+
         $locator = $this->createStub(FileLocatorInterface::class);
         $locator
             ->method('locate')
             ->willReturn([])
         ;
+
         $container->set('contao.resource_locator', $locator);
+
         System::setContainer($container);
         DcaLoader::switchToCurrentRequest();
+
         $GLOBALS['TL_DCA']['tl_iso_product']['fields']['size'] = [];
+
         $type = $this->createClassWithPropertiesStub(ProductTypeModel::class);
         $type
             ->method('getAttributes')
             ->willReturn(['wrapping', 'size'])
         ;
+
         $renderer = $this->createStub(ProductRendererInterface::class);
         $variant = new CoreProduct(['id' => 2, 'size' => $value], $type, $renderer);
+
         $product = new CoreProduct(['id' => 1], $type, $renderer);
         $product->setVariants(new ProductCollection([$variant]));
+
         $GLOBALS['TL_DCA']['tl_iso_product']['fields']['wrapping'] = [
             'inputType' => 'select',
             'options_callback' => function (ProductContext $context) use ($variant): array {
@@ -63,31 +71,31 @@ final class ProductConfigurationFactoryTest extends TestCase
             ->method('isCustomerDefined')
             ->willReturn(true)
         ;
-
         $wrapping
             ->method('getFrontendWidget')
             ->willReturn(SelectMenu::class)
         ;
+
         $attribute = $this->createStub(VariantAttributeInterface::class);
         $attribute
             ->method('isVariantOption')
             ->willReturn(true)
         ;
-
         $attribute
             ->method('getFrontendWidget')
             ->willReturn(Widget::class)
         ;
+
         $registry = $this->createStub(AttributeRegistry::class);
         $registry
             ->method('getPricedFields')
             ->willReturn($priced ? ['wrapping'] : [])
         ;
-
         $registry
             ->method('get')
             ->willReturnMap([['size', $attribute], ['wrapping', $wrapping]])
         ;
+
         $factory = new ProductConfigurationFactory($this->createContaoFrameworkStub(), $registry, new EventDispatcher());
 
         try {
@@ -98,6 +106,7 @@ final class ProductConfigurationFactoryTest extends TestCase
             $this->assertArrayHasKey('wrapping', $configuration->getWidgets());
         } finally {
             DcaLoader::reset();
+
             $GLOBALS['TL_DCA'] = $previousDca;
         }
     }

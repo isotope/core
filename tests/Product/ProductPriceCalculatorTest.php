@@ -28,6 +28,7 @@ final class ProductPriceCalculatorTest extends TestCase
             (new PriceDefinition(100, null))->setReference('1'),
             (new PriceDefinition(120, null))->setReference('2'),
         ]));
+
         $dispatcher = new EventDispatcher();
         $dispatcher->addListener(
             ProductPriceDefinitionsEvent::class,
@@ -38,6 +39,7 @@ final class ProductPriceCalculatorTest extends TestCase
                 )));
             },
         );
+
         $calculator = $this->createCalculator($dispatcher);
         $context = $this->createStoreContext();
 
@@ -55,6 +57,7 @@ final class ProductPriceCalculatorTest extends TestCase
         $product = $this->createProduct();
         $dispatcher = new EventDispatcher();
         $context = $this->createStoreContext();
+
         $dispatcher->addListener(
             ProductPriceDefinitionsEvent::class,
             function (ProductPriceDefinitionsEvent $event) use ($product, $context): void {
@@ -64,9 +67,11 @@ final class ProductPriceCalculatorTest extends TestCase
                 $this->assertSame(3, $event->getQuantity());
                 $this->assertFalse($event->isRange());
                 $this->assertSame(['gift' => 'yes'], $event->getConfiguration());
+
                 $event->setPrices(new PriceDefinitionCollection([new PriceDefinition(10, null, 2)]));
             },
         );
+
         $dispatcher->addListener(
             ProductPriceEvent::class,
             function (ProductPriceEvent $event): void {
@@ -74,10 +79,12 @@ final class ProductPriceCalculatorTest extends TestCase
                 $this->assertFalse($event->isRange());
                 $this->assertSame(['gift' => 'yes'], $event->getConfiguration());
                 $this->assertEqualsWithDelta(30.0, $event->getPrice()->getTotalPrice(), PHP_FLOAT_EPSILON);
+
                 $event->setPrice(new CalculatedPrice(12, 36, quantity: 3));
             },
             100,
         );
+
         $dispatcher->addListener(
             ProductPriceEvent::class,
             static function (ProductPriceEvent $event): void {
@@ -100,6 +107,7 @@ final class ProductPriceCalculatorTest extends TestCase
             new PriceDefinition(100, null),
             new PriceDefinition(80, null, 10),
         ]));
+
         $dispatcher = new EventDispatcher();
         $dispatcher->addListener(
             ProductPriceDefinitionsEvent::class,
@@ -110,6 +118,7 @@ final class ProductPriceCalculatorTest extends TestCase
                 )));
             },
         );
+
         $calculator = $this->createCalculator($dispatcher);
         $context = $this->createStoreContext();
 
@@ -122,6 +131,7 @@ final class ProductPriceCalculatorTest extends TestCase
         $product = $this->createProduct();
         $source = (new PriceDefinition(100, null))->setReference('original');
         $product->setPrices(new PriceDefinitionCollection([$source]));
+
         $dispatcher = new EventDispatcher();
         $dispatcher->addListener(
             ProductPriceDefinitionsEvent::class,
@@ -166,7 +176,6 @@ final class ProductPriceCalculatorTest extends TestCase
             ->method('getTaxRates')
             ->willReturn([new TaxRateCollection(), new TaxRateCollection()])
         ;
-
         $taxCalculator
             ->method('calculateNetPrice')
             ->willReturnArgument(0)

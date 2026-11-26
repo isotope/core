@@ -38,7 +38,6 @@ final class TaxCalculatorTest extends TestCase
             ->method('findById')
             ->willReturn($includedModel)
         ;
-
         $taxRateAdapter
             ->method('findMultipleByIds')
             ->willReturn($taxRateModels)
@@ -65,6 +64,7 @@ final class TaxCalculatorTest extends TestCase
         }
 
         $this->assertCount(\count($taxRates) + ($included ? 1 : 0), $scope1);
+
         $expectedRates = array_merge($included ? [$included] : [], $taxRates);
 
         foreach ($scope1 as $i => $actualRate) {

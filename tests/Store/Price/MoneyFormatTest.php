@@ -12,7 +12,6 @@ final class MoneyFormatTest extends TestCase
     public function testNegativeZeroHandling(): void
     {
         $service = new MoneyFormat();
-
         $result = $service->mathRound(-0.001);
 
         // Convert to string to check if it's positive zero (should not start with '-')

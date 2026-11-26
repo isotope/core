@@ -20,18 +20,20 @@ final class CartFactoryTest extends TestCase
         $context = $this->createStoreContext()->setMemberId(42);
         $memberModel = $this->createClassWithPropertiesStub(ProductCollectionModel::class, ['id' => 10, 'uniqid' => $context->getIdentifier(), 'member' => 42]);
         $identifierModel = $this->createClassWithPropertiesStub(ProductCollectionModel::class, ['id' => '10', 'uniqid' => $context->getIdentifier(), 'member' => 42]);
+
         $collectionAdapter = $this->createAdapterStub(['findOneByMember', 'findByIdentifier']);
         $collectionAdapter
             ->method('findOneByMember')
             ->willReturn($memberModel)
         ;
-
         $collectionAdapter
             ->method('findByIdentifier')
             ->willReturn($identifierModel)
         ;
+
         $cart = new Cart($context->getIdentifier());
         $cart->add(new LineItem(LineItem::TYPE_PRODUCT, 'tl_iso_product.1', 2));
+
         $storage = $this->createMock(ProductCollectionStorage::class);
         $storage
             ->expects($this->once())
@@ -39,16 +41,15 @@ final class CartFactoryTest extends TestCase
             ->with($this->isInstanceOf(Cart::class), $memberModel, $context)
             ->willReturn($cart)
         ;
-
         $storage
             ->expects($this->never())
             ->method('save')
         ;
-
         $storage
             ->expects($this->never())
             ->method('delete')
         ;
+
         $factory = new CartFactory(new EventDispatcher(), $storage, $this->createContaoFrameworkStub([ProductCollectionModel::class => $collectionAdapter]));
 
         $this->assertSame($cart, $factory->load($context));
@@ -63,28 +64,33 @@ final class CartFactoryTest extends TestCase
         $context = $this->createStoreContext()->setMemberId(42);
         $memberModel = $this->createClassWithPropertiesStub(ProductCollectionModel::class, ['id' => 10, 'uniqid' => 'member', 'member' => 42]);
         $guestModel = $this->createClassWithPropertiesStub(ProductCollectionModel::class, ['id' => 11, 'uniqid' => $context->getIdentifier(), 'member' => 0]);
+
         $collectionAdapter = $this->createAdapterStub(['findOneByMember', 'findByIdentifier']);
         $collectionAdapter
             ->method('findOneByMember')
             ->willReturn($memberModel)
         ;
-
         $collectionAdapter
             ->method('findByIdentifier')
             ->willReturn($guestModel)
         ;
+
         $memberCart = new Cart('member');
         $memberItem = (new LineItem(LineItem::TYPE_PRODUCT, 'tl_iso_product.1', 2))->setConfiguration($memberConfiguration)->setId(7);
         $memberCart->add($memberItem);
+
         $guestCart = new Cart($context->getIdentifier());
         $guestCart->add((new LineItem(LineItem::TYPE_PRODUCT, $guestIdentifier, 3))->setConfiguration($guestConfiguration));
+
         $storage = $this->createMock(ProductCollectionStorage::class);
         $storage
             ->expects($this->exactly(2))
             ->method('load')
             ->willReturnOnConsecutiveCalls($memberCart, $guestCart)
         ;
+
         $saved = false;
+
         $storage
             ->expects($this->once())
             ->method('save')
@@ -94,6 +100,7 @@ final class CartFactoryTest extends TestCase
                     $this->assertCount($expectedItems, $memberCart->getLineItems());
                     $this->assertSame($expectedMemberQuantity, $memberCart->getLineItems()->first()->getQuantity());
                     $this->assertSame(5, $memberCart->getLineItems()->sumQuantity());
+
                     $saved = true;
                 },
             )
@@ -110,6 +117,7 @@ final class CartFactoryTest extends TestCase
                 },
             )
         ;
+
         $factory = new CartFactory(new EventDispatcher(), $storage, $this->createContaoFrameworkStub([ProductCollectionModel::class => $collectionAdapter]));
 
         $this->assertSame($memberCart, $factory->load($context));

@@ -28,20 +28,25 @@ final class FilterOptionsProviderTest extends TestCase
     {
         $previousDca = $GLOBALS['TL_DCA'] ?? [];
         $container = $this->getContainerWithContaoConfiguration();
+
         $locator = $this->createStub(FileLocatorInterface::class);
         $locator
             ->method('locate')
             ->willReturn([])
         ;
+
         $container->set('contao.resource_locator', $locator);
+
         System::setContainer($container);
         DcaLoader::switchToCurrentRequest();
+
         $GLOBALS['TL_DCA']['tl_iso_product']['fields'] = [
             'color' => [],
             'tags' => ['eval' => ['multiple' => true, 'csv' => ',']],
             'sizes' => ['eval' => ['multiple' => true]],
             'featured' => [],
         ];
+
         $connection = $this->createConnection();
         $connection->executeStatement('ALTER TABLE tl_iso_product ADD COLUMN type INTEGER DEFAULT 1');
         $connection->executeStatement("ALTER TABLE tl_iso_product ADD COLUMN tags TEXT DEFAULT ''");
@@ -55,6 +60,7 @@ final class FilterOptionsProviderTest extends TestCase
             'variants' => 1,
             'variant_attributes' => serialize(['color' => ['enabled' => true]]),
         ]);
+
         $connection->update('tl_iso_product', ['type' => 2], ['id' => 2]);
         $connection->update('tl_iso_product', ['color' => 'disabled', 'type' => 2], ['id' => 4]);
         $connection->update('tl_iso_product', ['color' => 'unpublished'], ['id' => 5]);
@@ -65,14 +71,17 @@ final class FilterOptionsProviderTest extends TestCase
         $connection->update('tl_iso_product', ['tags' => 'red,blue,0', 'sizes' => serialize(['small', '0'])], ['id' => 1]);
         $connection->update('tl_iso_product', ['tags' => 'blue,green', 'sizes' => serialize(['large', 'small'])], ['id' => 3]);
         $connection->insert('tl_iso_product', ['id' => 10, 'pid' => 1, 'language' => 'de', 'published' => 1, 'start' => '', 'stop' => '', 'color' => 'translation']);
+
         $finder = new ProductFinderFactory($connection, $this->createStub(TokenChecker::class));
         $selection = $finder->create([10, 11], 'de');
         $baseQuery = $selection->getQueryBuilder();
+
         $provider = new FilterOptionsProvider(
             $this->createStub(AttributeRegistry::class),
             $connection,
             $this->createStub(TranslatorInterface::class),
         );
+
         $sql = $baseQuery->getSQL();
         $parameters = $baseQuery->getParameters();
 
@@ -82,16 +91,19 @@ final class FilterOptionsProviderTest extends TestCase
                 ->method('getOptionsSource')
                 ->willReturn(OptionsSource::Name)
             ;
+
             $registry = $this->createStub(AttributeRegistry::class);
             $registry
                 ->method('get')
                 ->willReturn($checkbox)
             ;
+
             $translator = $this->createStub(TranslatorInterface::class);
             $translator
                 ->method('trans')
                 ->willReturnArgument(0)
             ;
+
             $checkboxProvider = new FilterOptionsProvider($registry, $connection, $translator);
 
             $this->assertEquals(
@@ -107,6 +119,7 @@ final class FilterOptionsProviderTest extends TestCase
 
             $this->assertSame('color', $options['color']->getName());
             $this->assertSame('color', $options['color']->getLabel());
+
             $this->assertEqualsCanonicalizing(
                 [
                     new Option('red', 'red'),
@@ -114,6 +127,7 @@ final class FilterOptionsProviderTest extends TestCase
                 ],
                 $options['color']->getOptions()->toArray(),
             );
+
             $this->assertEqualsCanonicalizing(
                 [
                     new Option('red', 'red'),
@@ -123,22 +137,25 @@ final class FilterOptionsProviderTest extends TestCase
                 ],
                 $options['tags']->getOptions()->toArray(),
             );
+
             $this->assertArrayNotHasKey('sizes', $options, 'Serialized multiple-choice fields cannot be used as filter options.');
             $this->assertArrayNotHasKey('disabled', $options);
             $this->assertSame($sql, $selection->getQueryBuilder()->getSQL());
             $this->assertSame($parameters, $selection->getQueryBuilder()->getParameters());
             $this->assertSame([], $provider->getAttributes(['color'], $finder->create([], 'en')));
+
             $filtered = $selection->withFilters([new EqualFilter('id', '2')]);
+
             $this->assertEquals(
-                [
-                    new FilterAttribute('color', 'color', new OptionCollection([new Option('blue', 'blue')])),
-                ],
+                [new FilterAttribute('color', 'color', new OptionCollection([new Option('blue', 'blue')]))],
                 $provider->getAttributes(['color'], $filtered),
                 'Variant attributes use the parent product type and configured query.',
             );
         } finally {
             $connection->close();
+
             DcaLoader::reset();
+
             $GLOBALS['TL_DCA'] = $previousDca;
         }
     }

@@ -19,6 +19,7 @@ class CategoryOptionsListener
     public function __invoke(DataContainer $dc): void
     {
         $currentRecord = $dc->getCurrentRecord();
+
         $options = $this->connection->fetchAllKeyValue(
             '
                 SELECT id, name FROM tl_iso_related_category
@@ -36,6 +37,7 @@ class CategoryOptionsListener
 
         if ('edit' === Input::get('act')) {
             unset($GLOBALS['TL_DCA']['tl_iso_related_product']['fields']['category']['foreignKey']);
+
             $GLOBALS['TL_DCA']['tl_iso_related_product']['fields']['category']['options'] = $options;
         }
     }

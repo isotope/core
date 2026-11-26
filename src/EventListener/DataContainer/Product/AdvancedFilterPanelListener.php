@@ -74,6 +74,7 @@ class AdvancedFilterPanelListener
         /** @var AttributeBagInterface $sessionBag */
         $sessionBag = $this->requestStack->getSession()->getBag('contao_backend');
         $session = $sessionBag->all();
+
         $request = $this->requestStack->getCurrentRequest();
 
         if (!$request) {
@@ -125,6 +126,7 @@ class AdvancedFilterPanelListener
 
         $filter = $sessionBag->get('filter');
         $filter['tl_iso_product']['iso_page'] = $request->request->getInt('value');
+
         $sessionBag->set('filter', $filter);
 
         // Cannot use RedirectResponseException because this handles special Ajax redirects

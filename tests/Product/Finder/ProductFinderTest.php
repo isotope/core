@@ -25,6 +25,7 @@ final class ProductFinderTest extends TestCase
         $connection->update('tl_iso_product_category', ['sorting' => 128], ['product_id' => 1]);
         $connection->update('tl_iso_product_category', ['sorting' => 256], ['product_id' => 4]);
         $connection->update('tl_iso_product_category', ['sorting' => 64], ['product_id' => 4, 'pid' => 11]);
+
         $factory = new ProductFinderFactory($connection, $this->createStub(TokenChecker::class));
         $finder = $factory->create([10, 11], 'en');
 
@@ -42,16 +43,19 @@ final class ProductFinderTest extends TestCase
     public function testQueryRoundTripAndCounts(): void
     {
         $connection = $this->createConnection();
+
         $attributes = $this->createStub(AttributeRegistry::class);
         $attributes
             ->method('getNames')
             ->willReturn(['color'])
         ;
+
         $factory = new ProductQueryFactory(
             [':' => EqualFilter::class],
             $attributes,
             new RequestStack(),
         );
+
         $query = $factory->create()->setFilters('shop', [new EqualFilter('color', 'red|blue')]);
         $restored = $factory->createFromRequest(Request::create('/?'.$query));
         $this->assertSame((string) $query, (string) $restored);
@@ -74,6 +78,7 @@ final class ProductFinderTest extends TestCase
     public function testReplacingActiveFiltersPreservesBaseFiltersAndOtherFinders(): void
     {
         $connection = $this->createConnection();
+
         $factory = new ProductFinderFactory($connection, $this->createStub(TokenChecker::class));
         $unrestricted = $factory->create([10, 11], 'en');
         $base = $factory->create([10, 11], 'en', [new EqualFilter('id', '1|2|3')]);
@@ -96,6 +101,7 @@ final class ProductFinderTest extends TestCase
     public function testSortingPaginationAndReturnedQueriesDoNotMutateTheFinder(): void
     {
         $connection = $this->createConnection();
+
         $factory = new ProductFinderFactory($connection, $this->createStub(TokenChecker::class));
         $ascending = $factory->create([10, 11], 'en')->withSorting([new Sorting('id')]);
         $descending = $ascending->withSorting([new Sorting('id', true)]);
@@ -106,6 +112,7 @@ final class ProductFinderTest extends TestCase
             $this->assertSame([], $ascending->findIds(0));
             $this->assertSame(2, $ascending->count(), 'Counting ignores pagination and sorting.');
             $this->assertSame([1, 4], array_map(intval(...), $ascending->findIds()));
+
             $ascending->getQueryBuilder()->andWhere('1=0');
             $this->assertSame(2, $ascending->count(), 'Mutating a returned query must not change the finder.');
         } finally {
@@ -116,6 +123,7 @@ final class ProductFinderTest extends TestCase
     public function testActiveSortingTakesPrecedenceAndPreservesBaseSorting(): void
     {
         $connection = $this->createConnection();
+
         $factory = new ProductFinderFactory($connection, $this->createStub(TokenChecker::class));
         $base = $factory->create([10, 11], 'en', [], [new Sorting('id', true)]);
 
@@ -142,6 +150,7 @@ final class ProductFinderTest extends TestCase
         $connection->update('tl_iso_product', ['color' => 'red shirt'], ['id' => 1]);
         $connection->update('tl_iso_product', ['color' => 'red shoes', 'name' => 'hoodie'], ['id' => 4]);
         $connection->insert('tl_iso_product', ['id' => 10, 'pid' => 1, 'language' => 'de', 'color' => 'rotes hemd']);
+
         $factory = new ProductFinderFactory($connection, $this->createStub(TokenChecker::class));
         $base = $factory->create([10, 11], 'de');
 
@@ -164,6 +173,7 @@ final class ProductFinderTest extends TestCase
     {
         $connection = $this->createConnection();
         $connection->update('tl_iso_product', ['color' => '0'], ['id' => 4]);
+
         $factory = new ProductFinderFactory($connection, $this->createStub(TokenChecker::class));
         $base = $factory->create([10, 11], 'en');
 
@@ -179,6 +189,7 @@ final class ProductFinderTest extends TestCase
     public function testSearchTreatsWildcardCharactersAsLiteralText(): void
     {
         $connection = $this->createConnection();
+
         $factory = new ProductFinderFactory($connection, $this->createStub(TokenChecker::class));
         $finder = $factory->create([10, 11], 'en');
 
@@ -198,11 +209,13 @@ final class ProductFinderTest extends TestCase
     public function testPreviewModeIncludesUnpublishedProducts(): void
     {
         $connection = $this->createConnection();
+
         $tokenChecker = $this->createStub(TokenChecker::class);
         $tokenChecker
             ->method('isPreviewMode')
             ->willReturn(true)
         ;
+
         $factory = new ProductFinderFactory($connection, $tokenChecker);
 
         try {

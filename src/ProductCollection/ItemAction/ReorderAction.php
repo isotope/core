@@ -37,9 +37,7 @@ class ReorderAction extends AbstractProductCollectionItemAction
         return $this->renderView(
             $this->type,
             $item->getId(),
-            [
-                'label' => $this->translator->trans('MSC.reorderLabel', [], 'contao_default'),
-            ],
+            ['label' => $this->translator->trans('MSC.reorderLabel', [], 'contao_default')],
         );
     }
 

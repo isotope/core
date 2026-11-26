@@ -48,6 +48,7 @@ final class PriceCalculatorTest extends TestCase
                 (new PriceDefinition(80.04, null, quantity: 2))->setListAmount(100.04),
             ]))
         ;
+
         $calculator = new PriceCalculator(new TaxCalculator(
             $this->createContaoFrameworkStub([
                 TaxClassModel::class => $this->createAdapterStub(['findById']),
@@ -70,6 +71,7 @@ final class PriceCalculatorTest extends TestCase
     {
         $taxRates = new TaxRateCollection([new TaxRate('1', 20, 100)]);
         $price = new CalculatedPrice(80, 160, taxRates: $taxRates, includedTaxRates: $taxRates, quantity: 2);
+
         $calculator = new PriceCalculator(new TaxCalculator(
             $this->createContaoFrameworkStub(),
             $this->createStub(RuleMatcher::class),
@@ -111,7 +113,6 @@ final class PriceCalculatorTest extends TestCase
                 'rate' => 10,
             ]))
         ;
-
         $taxRateAdapter
             ->method('findMultipleByIds')
             ->willReturnCallback(
@@ -129,10 +130,12 @@ final class PriceCalculatorTest extends TestCase
                         ];
                     }
 
-                    return [$this->createClassWithPropertiesStub(TaxRateModel::class, [
-                        'id' => 1,
-                        'rate' => 10,
-                    ])];
+                    return [
+                        $this->createClassWithPropertiesStub(TaxRateModel::class, [
+                            'id' => 1,
+                            'rate' => 10,
+                        ]),
+                    ];
                 },
             )
         ;
@@ -243,7 +246,6 @@ final class PriceCalculatorTest extends TestCase
         );
 
         $calculator = new PriceCalculator($taxCalculator);
-
         $result = $calculator->sum($basePrice, $addedPrice, PriceDisplay::Gross);
 
         $this->assertPriceMatch($expected, $result);

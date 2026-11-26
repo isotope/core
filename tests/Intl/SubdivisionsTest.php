@@ -19,13 +19,17 @@ final class SubdivisionsTest extends TestCase
     public function testCountryLookup(string $country, array $expected): void
     {
         $container = $this->getContainerWithContaoConfiguration();
+
         $finder = $this->createStub(ResourceFinderInterface::class);
         $finder
             ->method('findIn')
             ->willReturn((new Finder())->append([]))
         ;
+
         $container->set('contao.resource_finder', $finder);
+
         System::setContainer($container);
+
         $GLOBALS['TL_LANG']['DIV'] = ['ch' => ['CH-AG' => 'Aargau']];
 
         $this->assertSame($expected, (new Subdivisions())->getForCountry($country));

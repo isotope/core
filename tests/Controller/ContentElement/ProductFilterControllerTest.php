@@ -33,29 +33,38 @@ final class ProductFilterControllerTest extends TestCase
     {
         $container = $this->getContainerWithContaoConfiguration();
         System::setContainer($container);
+
         $previousDca = $GLOBALS['TL_DCA'] ?? [];
+
         $GLOBALS['TL_DCA']['tl_iso_product']['fields']['color'] = [
             'label' => ['Color', 'Choose a color'],
             'inputType' => 'select',
             'options_callback' => static fn () => throw new \LogicException('Options should only be resolved once.'),
             'eval' => ['includeBlankOption' => true, 'blankOptionLabel' => 'Any color'],
         ];
+
         $GLOBALS['TL_DCA']['tl_iso_product']['fields']['size'] = ['label' => ['Size'], 'inputType' => 'select'];
         $finder = $this->createStub(ProductFinder::class);
+
         $helper = $this->createMock(FilterOptionsProvider::class);
         $helper
             ->expects($this->once())
             ->method('getAttributes')
             ->with(['color', 'size'], $finder)
             ->willReturn([
-                new FilterAttribute('color', 'Color', new OptionCollection([
-                    new Option('', 'All colors'),
-                    new Option('0', 'Zero'),
-                    new Option('blue', 'Blue'),
-                ])),
+                new FilterAttribute(
+                    'color',
+                    'Color',
+                    new OptionCollection([
+                        new Option('', 'All colors'),
+                        new Option('0', 'Zero'),
+                        new Option('blue', 'Blue'),
+                    ]),
+                ),
                 new FilterAttribute('size', 'Size', new OptionCollection([new Option('large', 'Large')])),
             ])
         ;
+
         $controller = new ProductFilterController(
             $this->createStub(AttributeRegistry::class),
             $this->createStub(Formatter::class),
@@ -73,6 +82,7 @@ final class ProductFilterControllerTest extends TestCase
             $this->assertSame('Color', $widgets[0]['label']);
             $this->assertSame('Choose a color', $widgets[0]['description']);
             $this->assertSame('All colors', $widgets[0]['blankOptionLabel']);
+
             $this->assertSame(
                 [
                     ['value' => '0', 'label' => 'Zero', 'cssClass' => '', 'default' => true],
@@ -92,12 +102,14 @@ final class ProductFilterControllerTest extends TestCase
         $connection->executeStatement('CREATE TABLE tl_iso_product_category (product_id INTEGER, sorting INTEGER)');
         $connection->insert('tl_iso_product', ['id' => 1, 'color' => 'red']);
         $connection->insert('tl_iso_product', ['id' => 2, 'color' => 'blue']);
+
         $baseQuery = $connection->createQueryBuilder()
             ->select('tl_iso_product.id')
             ->from('tl_iso_product')
             ->leftJoin('tl_iso_product', 'tl_iso_product_category', 'c', 'tl_iso_product.id=c.product_id')
             ->groupBy('tl_iso_product.id')
         ;
+
         $finder = $this->createMock(ProductFinderFactory::class);
         $finder
             ->expects($this->once())
@@ -113,6 +125,7 @@ final class ProductFilterControllerTest extends TestCase
                 },
             )
         ;
+
         $helper = $this->createMock(FilterOptionsProvider::class);
         $helper
             ->expects($this->once())
@@ -125,18 +138,20 @@ final class ProductFilterControllerTest extends TestCase
                 },
             )
         ;
+
         $attributes = $this->createStub(AttributeRegistry::class);
         $attributes
             ->method('getNames')
             ->willReturn(['color'])
         ;
+
         $factory = new ProductQueryFactory([':' => EqualFilter::class], $attributes, new RequestStack());
+
         $controller = $this->getMockBuilder(ProductFilterController::class)
             ->setConstructorArgs([$attributes, $this->createStub(Formatter::class), $finder, $factory, $helper, $this->createStub(TranslatorInterface::class)])
             ->onlyMethods(['getCategories', 'getProductQuery'])
             ->getMock()
         ;
-
         $controller
             ->expects($this->once())
             ->method('getCategories')
@@ -148,6 +163,7 @@ final class ProductFilterControllerTest extends TestCase
             ->method('getProductQuery')
             ->willReturn($factory->create()->setFilters('', [new EqualFilter('color', 'red')]))
         ;
+
         $model = $this->createStub(ContentModel::class);
         $model
             ->method('__get')
@@ -157,8 +173,10 @@ final class ProductFilterControllerTest extends TestCase
                 ['iso_sortingFields', ''],
             ])
         ;
+
         $request = Request::create('/shop');
         $request->setLocale('de');
+
         $template = new FragmentTemplate('content_element/iso_productfilter', static fn () => new Response());
 
         try {

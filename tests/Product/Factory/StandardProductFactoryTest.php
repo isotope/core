@@ -40,55 +40,58 @@ final class StandardProductFactoryTest extends TestCase
     public function testVariantRequiresPublishedParent(bool $published, int $startOffset, int $stopOffset, bool $preview, bool $available): void
     {
         $GLOBALS['TL_MODELS']['tl_iso_producttype'] = ProductTypeModel::class;
+
         $type = $this->getMockBuilder(ProductTypeModel::class)
             ->disableOriginalConstructor()
             ->onlyMethods(['__get', 'getAttributes', 'getVariantAttributes', 'hasVariants', 'onRegister', 'onUnregister'])
             ->getMock()
         ;
-
         $type
             ->expects($this->atLeast(2))
             ->method('__get')
             ->willReturnMap([['id', 42], ['shipping_exempt', '']])
         ;
-
         $type
             ->method('getAttributes')
             ->willReturn(['published', 'start', 'stop'])
         ;
-
         $type
             ->method('getVariantAttributes')
             ->willReturn(['published', 'start', 'stop'])
         ;
-
         $type
             ->expects($this->once())
             ->method('onRegister')
         ;
+
         Registry::getInstance()->register($type);
 
         $columns = ['id', 'pid', 'type', 'published', 'start', 'stop', 'inherit'];
+
         $attributes = $this->createStub(AttributeRegistry::class);
         $attributes
             ->method('getSystemColumns')
             ->willReturn($columns)
         ;
+
         $tokenChecker = $this->createStub(TokenChecker::class);
         $tokenChecker
             ->method('isPreviewMode')
             ->willReturn($preview)
         ;
+
         $categories = $this->createStub(ProductCategoryUtil::class);
         $categories
             ->method('getPublishedForProductInCurrentRoot')
             ->willReturn([1])
         ;
+
         $calculator = $this->createStub(PriceCalculator::class);
         $calculator
             ->method('calculateProduct')
             ->willReturn(new CalculatedPrice(10, 10))
         ;
+
         $dispatcher = new EventDispatcher();
 
         $factory = new StandardProductFactory(
@@ -99,29 +102,40 @@ final class StandardProductFactoryTest extends TestCase
             new ProductPriceCalculator($calculator, $dispatcher),
             $dispatcher,
         );
+
         $context = $this->createStoreContext();
-        $variant = $factory->create(new ProductDto('tl_iso_product.2', 1, [
-            'id' => 2,
-            'pid' => 1,
-            'type' => 0,
-            'published' => true,
-            'start' => '',
-            'stop' => '',
-            'inherit' => '',
-            '__parent' => [
-                'id' => 1,
-                'type' => 42,
-                'published' => $published,
-                'start' => $startOffset ? (string) (time() + $startOffset) : '',
-                'stop' => $stopOffset ? (string) (time() + $stopOffset) : '',
-            ],
-        ]), $context);
+
+        $variant = $factory->create(
+            new ProductDto(
+                'tl_iso_product.2',
+                1,
+                [
+                    'id' => 2,
+                    'pid' => 1,
+                    'type' => 0,
+                    'published' => true,
+                    'start' => '',
+                    'stop' => '',
+                    'inherit' => '',
+                    '__parent' => [
+                        'id' => 1,
+                        'type' => 42,
+                        'published' => $published,
+                        'start' => $startOffset ? (string) (time() + $startOffset) : '',
+                        'stop' => $stopOffset ? (string) (time() + $stopOffset) : '',
+                    ],
+                ],
+            ),
+            $context,
+        );
 
         $this->assertSame($available, $variant->isAvailable());
 
         $item = (new LineItem(LineItem::TYPE_PRODUCT, $variant->getIdentifier()))->setProduct($variant);
+
         $original = new Cart('cart');
         $original->add($item);
+
         $calculated = new Cart('cart');
         (new ProductCollector(new ProductPriceCalculator($calculator, $dispatcher)))->process($calculated, $original, $context);
 

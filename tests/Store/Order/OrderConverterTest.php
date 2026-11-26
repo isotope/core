@@ -21,10 +21,13 @@ final class OrderConverterTest extends TestCase
         $order = new Order('order', $context);
         $price = new CalculatedPrice(10, 20, quantity: 2);
         $item = (new LineItem(LineItem::TYPE_PRODUCT, 'tl_iso_product.42', 2))->setId(17)->setPrice($price);
+
         $order->add($item);
         $order->add(new LineItem(LineItem::TYPE_SHIPPING, 'tl_iso_shipping.1'));
+
         $converter = new OrderConverter($this->createStub(EventDispatcherInterface::class));
         $cart = $converter->convertToCart($order, $context);
+
         $cartItem = $cart->getLineItems()->first();
         $cartItem->setQuantity(3)->setPrice(new CalculatedPrice(15, 45, quantity: 3));
 

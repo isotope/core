@@ -45,7 +45,6 @@ class StoreContextFactory
         $this->framework->initialize();
 
         // TODO: load applicable taxes, etc.
-
         $billingAddress = new AddressModel();
         $billingAddress->country = $config->billing_country;
 
@@ -153,7 +152,6 @@ class StoreContextFactory
     private function getOwnerAddress(ConfigModel $config): AddressModel
     {
         $address = new AddressModel();
-
         $address->company = $config->company;
         $address->firstname = $config->firstname;
         $address->lastname = $config->lastname;
@@ -167,7 +165,6 @@ class StoreContextFactory
         $address->email = $config->email;
         $address->phone = $config->phone;
         $address->vat_no = $config->vat_no;
-
         $address->preventSaving(false);
 
         return $address;

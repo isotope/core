@@ -27,6 +27,7 @@ class ProductFinderFactory
     {
         $qb = $this->connection->createQueryBuilder();
         $localeParameter = $qb->createNamedParameter($locale);
+
         $qb
             ->select('IFNULL(parent.id, tl_iso_product.id)')
             ->from('tl_iso_product')

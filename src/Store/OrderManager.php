@@ -80,7 +80,6 @@ class OrderManager
                 $collection->total = $data['total'];
                 $collection->currency = $data['currency'];
                 $collection->extensions = isset($data['extensions']) ? json_encode($data['extensions'], JSON_THROW_ON_ERROR) : null;
-
                 $collection->save();
 
                 $billingAddress = $this->saveAddress($data['billing_address'], (int) $collection->id, $context->getStoreId());
@@ -271,12 +270,15 @@ class OrderManager
             unset($lineItem);
         }
 
-        return array_merge($data, $this->updateOrder($orderId, [
-            'payment_id' => $data['payment_id'],
-            'subtotal' => $data['subtotal'],
-            'total' => $data['total'],
-            'transaction_status' => array_key_first($this->workflowManager->getTransactionWorkflow()->getMarking(new ProductCollectionModel())->getPlaces()),
-        ]));
+        return array_merge(
+            $data,
+            $this->updateOrder($orderId, [
+                'payment_id' => $data['payment_id'],
+                'subtotal' => $data['subtotal'],
+                'total' => $data['total'],
+                'transaction_status' => array_key_first($this->workflowManager->getTransactionWorkflow()->getMarking(new ProductCollectionModel())->getPlaces()),
+            ]),
+        );
     }
 
     public function initPayment(Order $order, PaymentInterface $payment, PageModel $pageModel): PaymentResult
@@ -343,7 +345,6 @@ class OrderManager
         $address->ptable = 'tl_iso_product_collection';
         $address->tstamp = time();
         $address->store_id = $storeId;
-
         $address->save();
 
         return $address;

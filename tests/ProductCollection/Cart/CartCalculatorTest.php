@@ -27,12 +27,15 @@ final class CartCalculatorTest extends TestCase
         $cart = new Cart('cart');
         $cart->add((new LineItem(LineItem::TYPE_PRODUCT, 'tl_iso_product.1'))->setPrice(new CalculatedPrice($originalPrice, $originalPrice)));
         $cart->setTotal(new CalculatedPrice($originalPrice, $originalPrice));
+
         $context = $this->createStoreContext()->setCart($cart);
+
         $factory = $this->createStub(CartFactory::class);
         $factory
             ->method('create')
             ->willReturnCallback(static fn (StoreContext $context, string $identifier) => new Cart($identifier))
         ;
+
         $collector = $this->createStub(ItemCollectorInterface::class);
         $collector
             ->method('process')
@@ -42,6 +45,7 @@ final class CartCalculatorTest extends TestCase
                 },
             )
         ;
+
         $calculator = new CartCalculator($factory, [$collector], new PriceCalculator($this->createStub(TaxCalculator::class)), new ProductCollectionHasher(new EventDispatcher()));
         $calculated = $calculator->calculate($cart, $context);
 

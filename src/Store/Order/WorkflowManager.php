@@ -67,6 +67,7 @@ class WorkflowManager implements ResetInterface
     private function load(): void
     {
         $metadata = [];
+
         $definitions = [
             'order' => new DefinitionBuilder(),
             'transaction' => new DefinitionBuilder(),
@@ -82,6 +83,7 @@ class WorkflowManager implements ResetInterface
 
             $definition = $definitions[$row['type']];
             $definition->addPlace($row['alias']);
+
             $metadata[$row['type']][$row['alias']] = $row;
 
             foreach (explode(',', (string) $row['workflow']) as $to) {

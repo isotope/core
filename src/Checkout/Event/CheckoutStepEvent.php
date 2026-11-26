@@ -38,6 +38,7 @@ class CheckoutStepEvent extends Event
         private readonly array $config,
     ) {
         $this->formId = $this->type.'_step';
+
         $this->editing = $this->request->isMethod(Request::METHOD_POST) && $this->request->request->getBoolean('edit_'.$this->getType().'_step');
         $this->submitted = $this->request->isMethod(Request::METHOD_POST) && $this->request->request->getBoolean('submit_'.$this->getType().'_step');
     }

@@ -84,6 +84,7 @@ final class ProductQueryFactoryTest extends TestCase
     {
         $stack = new RequestStack();
         $stack->push(Request::create('/products?_q=shoes'));
+
         $factory = new ProductQueryFactory([], $this->createStub(AttributeRegistry::class), $stack);
 
         $this->assertSame(['' => 'shoes'], $factory->getCurrent()?->getSearches(['']));

@@ -26,7 +26,9 @@ final class ProductCollectionStorageTest extends TestCase
     {
         $cart = new Cart('cart');
         $cart->add((new LineItem(LineItem::TYPE_PRODUCT, 'tl_iso_product.1'))->setLevel($level));
+
         $collectionModel = $this->createClassWithPropertiesStub(ProductCollectionModel::class, ['id' => 42]);
+
         $itemModel = $this->createClassWithPropertiesMock(ProductCollectionItemModel::class, ['id' => 99, 'level' => 7]);
         $itemModel
             ->expects($this->once())
@@ -39,20 +41,24 @@ final class ProductCollectionStorageTest extends TestCase
                 },
             )
         ;
+
         $collectionAdapter = $this->createAdapterStub(['findByIdentifier']);
         $collectionAdapter
             ->method('findByIdentifier')
             ->willReturn($collectionModel)
         ;
+
         $collectionItemAdapter = $this->createAdapterStub(['findOneByCollection']);
         $collectionItemAdapter
             ->method('findOneByCollection')
             ->willReturn($itemModel)
         ;
+
         $framework = $this->createContaoFrameworkStub([
             ProductCollectionModel::class => $collectionAdapter,
             ProductCollectionItemModel::class => $collectionItemAdapter,
         ]);
+
         $storage = new ProductCollectionStorage($this->createStub(Connection::class), new TransactionEventDispatcher(new EventDispatcher()), $framework);
         $storage->save($cart, $this->createStoreContext());
     }
@@ -88,6 +94,7 @@ final class ProductCollectionStorageTest extends TestCase
                 },
             )
         ;
+
         $itemModel = $this->createClassWithPropertiesMock(ProductCollectionItemModel::class, ['id' => $new ? null : 99]);
         $itemModel
             ->expects($this->once())
@@ -100,16 +107,19 @@ final class ProductCollectionStorageTest extends TestCase
                 },
             )
         ;
+
         $collectionAdapter = $this->createAdapterStub(['findByIdentifier']);
         $collectionAdapter
             ->method('findByIdentifier')
             ->willReturn($new ? null : $collectionModel)
         ;
+
         $collectionItemAdapter = $this->createAdapterStub(['findOneByCollection']);
         $collectionItemAdapter
             ->method('findOneByCollection')
             ->willReturn($new ? null : $itemModel)
         ;
+
         $framework = $this->createContaoFrameworkStub(
             [
                 ProductCollectionModel::class => $collectionAdapter,
@@ -120,6 +130,7 @@ final class ProductCollectionStorageTest extends TestCase
                 ProductCollectionItemModel::class => $itemModel,
             ],
         );
+
         $connection = $this->createMock(Connection::class);
         $connection
             ->expects($this->once())
@@ -131,6 +142,7 @@ final class ProductCollectionStorageTest extends TestCase
             )
             ->willReturn(0)
         ;
+
         $dispatcher = new EventDispatcher();
         $dispatcher->addListener(
             SaveCollectionTransactionEvent::NAME.'.post',
@@ -138,12 +150,14 @@ final class ProductCollectionStorageTest extends TestCase
                 $this->assertSame(42, $event->getCollection()->getId());
             },
         );
+
         $dispatcher->addListener(
             SaveItemTransactionEvent::NAME.'.post',
             function (SaveItemTransactionEvent $event): void {
                 $this->assertSame(99, $event->getLineItem()->getId());
             },
         );
+
         $storage = new ProductCollectionStorage($connection, new TransactionEventDispatcher($dispatcher), $framework);
         $storage->save($cart, $this->createStoreContext());
 

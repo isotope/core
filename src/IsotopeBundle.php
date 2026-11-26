@@ -130,14 +130,12 @@ class IsotopeBundle extends AbstractBundle
     {
         $configurator->parameters()->set('isotope.cart_timeout', $config['cart_timeout']);
         $configurator->parameters()->set('isotope.currency_formats', $config['currency_formats']);
-
         $configurator
             ->services()
             ->load(__NAMESPACE__.'\\', '../src/')
             ->autoconfigure()
             ->autowire()
         ;
-
         $configurator
             ->services()
             ->set('isotope.hashids', Hashids::class)
@@ -148,7 +146,6 @@ class IsotopeBundle extends AbstractBundle
             ->registerForAutoconfiguration(ShopConfigInterface::class)
             ->addTag('isotope.shop_config')
         ;
-
         $container
             ->registerForAutoconfiguration(AttributeFactoryInterface::class)
             ->addTag('isotope.attribute_factory')

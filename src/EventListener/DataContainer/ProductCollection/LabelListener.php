@@ -54,13 +54,16 @@ class LabelListener
                     break;
 
                 case 'order_status':
-                    $lines = ['<div>'.$this->formatStatus(
-                        $this->workflowManager->getOrderWorkflow(),
-                        $row['order_status'],
-                    ).'</div>'];
+                    $lines = [
+                        '<div>'.$this->formatStatus(
+                            $this->workflowManager->getOrderWorkflow(),
+                            $row['order_status'],
+                        ).'</div>',
+                    ];
 
                     if ($row['transaction_status']) {
-                        $lines[] = \sprintf('<div>%s: %s</div>',
+                        $lines[] = \sprintf(
+                            '<div>%s: %s</div>',
                             $this->translator->trans('tl_iso_product_collection.transaction_status.2', [], 'contao_tl_iso_product_collection'),
                             $this->formatStatus(
                                 $this->workflowManager->getTransactionWorkflow(),
@@ -70,7 +73,8 @@ class LabelListener
                     }
 
                     if ($row['delivery_status']) {
-                        $lines[] = \sprintf('<div>%s: %s</div>',
+                        $lines[] = \sprintf(
+                            '<div>%s: %s</div>',
                             $this->translator->trans('tl_iso_product_collection.delivery_status.2', [], 'contao_tl_iso_product_collection'),
                             $this->formatStatus(
                                 $this->workflowManager->getDeliveryWorkflow(),

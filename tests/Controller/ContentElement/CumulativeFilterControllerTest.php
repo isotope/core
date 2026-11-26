@@ -47,9 +47,12 @@ final class CumulativeFilterControllerTest extends TestCase
     {
         $GLOBALS['TL_DCA']['tl_iso_product']['fields']['color']['eval']['multiple'] = $multiple;
         $GLOBALS['TL_DCA']['tl_iso_product']['fields']['color']['eval']['csv'] = ',';
+
         $connection = DriverManager::getConnection(['driver' => 'pdo_sqlite', 'memory' => true]);
         $pdo = $connection->getNativeConnection();
+
         $this->assertInstanceOf(\PDO::class, $pdo);
+
         $pdo->sqliteCreateFunction(
             'FIND_IN_SET',
             static function (string $value, string $list): int {
@@ -59,11 +62,13 @@ final class CumulativeFilterControllerTest extends TestCase
             },
             2,
         );
+
         $connection->executeStatement('CREATE TABLE tl_iso_product (id INTEGER PRIMARY KEY, pid INTEGER, language TEXT, published INTEGER, start TEXT, stop TEXT, color TEXT)');
         $connection->executeStatement('CREATE TABLE tl_iso_product_category (pid INTEGER, product_id INTEGER)');
 
         foreach ($multiple ? [['red'], ['blue'], ['red', 'blue']] : ['red', 'blue', 'blue'] as $i => $color) {
             $color = $multiple ? implode(',', $color) : $color;
+
             $connection->insert('tl_iso_product', ['id' => $i + 1, 'pid' => 0, 'language' => '', 'published' => 1, 'start' => '', 'stop' => '', 'color' => $color]);
             $connection->insert('tl_iso_product_category', ['pid' => 10, 'product_id' => $i + 1]);
         }
@@ -71,18 +76,25 @@ final class CumulativeFilterControllerTest extends TestCase
         $query = new ProductQuery();
         $query->setFilters('shop', $selected ? [new EqualFilter('color', 'red')] : []);
         $query->setFilters('other', [new EqualFilter('color', 'green')]);
+
         $request = Request::create('https://example.com/shop?'.$query.'&_p12=3&campaign=test');
+
         $stack = new RequestStack();
         $stack->push($request);
+
         $provider = $this->getMockBuilder(FilterOptionsProvider::class)->disableOriginalConstructor()->onlyMethods(['getAttributes'])->getMock();
         $provider
             ->expects($this->once())
             ->method('getAttributes')
             ->willReturn([
-                new FilterAttribute('color', 'Color', new OptionCollection([
-                    new Option('red', 'Red'),
-                    new Option('blue', 'Blue'),
-                ])),
+                new FilterAttribute(
+                    'color',
+                    'Color',
+                    new OptionCollection([
+                        new Option('red', 'Red'),
+                        new Option('blue', 'Blue'),
+                    ]),
+                ),
             ])
         ;
 
@@ -91,6 +103,7 @@ final class CumulativeFilterControllerTest extends TestCase
             ->method('getNames')
             ->willReturn(['id', 'color'])
         ;
+
         $queryFactory = new ProductQueryFactory([':' => EqualFilter::class, '!' => NotEqualFilter::class], $attributes, $stack);
 
         $controller = $this->getMockBuilder(CumulativeFilterController::class)
@@ -104,17 +117,16 @@ final class CumulativeFilterControllerTest extends TestCase
             ->onlyMethods(['getCategories', 'getProductQuery'])
             ->getMock()
         ;
-
         $controller
             ->expects($this->once())
             ->method('getCategories')
             ->willReturn([10])
         ;
-
         $controller
             ->method('getProductQuery')
             ->willReturn($query)
         ;
+
         $model = $this->createStub(ContentModel::class);
         $model
             ->method('__get')
@@ -124,6 +136,7 @@ final class CumulativeFilterControllerTest extends TestCase
                 ['iso_filterQuery', $filterQuery],
             ])
         ;
+
         $template = new FragmentTemplate('content_element/iso_cumulativefilter', static fn () => new Response());
         (new \ReflectionMethod($controller, 'getResponse'))->invoke($controller, $template, $model, $request);
         $data = $template->getData();
@@ -141,6 +154,7 @@ final class CumulativeFilterControllerTest extends TestCase
         $this->assertArrayNotHasKey('_fshop', $clearParams);
         $this->assertSame('color:green', $clearParams['_fother']);
         $this->assertSame($selected ? 'color:red' : '', implode(';', array_map(strval(...), $query->getFilters(['shop']))), 'Generating links must not change the current query.');
+
         $connection->close();
     }
 
@@ -168,6 +182,7 @@ final class CumulativeFilterControllerTest extends TestCase
         $otherFilter = new EqualFilter('size', 'large');
         $exclusion = new NotEqualFilter('color', 'green');
         $filters = [$otherFilter, $exclusion, ...$filters];
+
         $controller = new CumulativeFilterController(
             $this->createStub(FilterOptionsProvider::class),
             $this->createStub(ProductFinderFactory::class),
@@ -175,6 +190,7 @@ final class CumulativeFilterControllerTest extends TestCase
             $this->createStub(AttributeRegistry::class),
             new UrlParser(new RequestStack()),
         );
+
         $result = (new \ReflectionMethod($controller, 'toggleFilter'))->invoke($controller, $filters, 'color', 'blue', $queryType, $multiple);
         $isActive = new \ReflectionMethod($controller, 'isFilterActive');
 

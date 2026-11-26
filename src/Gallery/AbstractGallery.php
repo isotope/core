@@ -137,6 +137,7 @@ abstract class AbstractGallery extends AbstractModelType implements GalleryInter
             }
 
             [$link, $rel] = explode('|', $file['link'] ?? '', 2) + [null, null];
+
             $files[$k]['link'] = $link;
             $files[$k]['rel'] = $rel;
 

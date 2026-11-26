@@ -73,6 +73,7 @@ class ProductCategoryMigration extends AbstractMigration
 
         if ($schemaManager->tablesExist(['tl_page'])) {
             $this->connection->executeStatement("UPDATE tl_page SET type='iso_products' WHERE type='regular' AND id IN (SELECT pid FROM tl_iso_product_category)");
+
             $this->addDefaultConfig();
         }
 

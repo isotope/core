@@ -50,7 +50,8 @@ class CartConditionFactory implements ModelTypeFactoryInterface
             ),
             'cart_total' => new CartTotalCondition(
                 $this->translator,
-                $model->operator, (float)
+                $model->operator,
+                (float)
                 $model->amount,
                 (float) $model->amount_from,
                 (float) $model->amount_to,

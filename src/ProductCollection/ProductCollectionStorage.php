@@ -96,7 +96,6 @@ class ProductCollectionStorage
         $model->extensions = json_encode($collection->getExtensions(), JSON_THROW_ON_ERROR);
 
         // TODO: save price etc.
-
         $this->transactionDispatcher->dispatch(
             new SaveCollectionTransactionEvent($collection, $model),
             static function (SaveCollectionTransactionEvent $event): void {

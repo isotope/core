@@ -15,11 +15,13 @@ final class StoreTimeConditionTest extends TestCase
     public function testDailyTimeRangeAcrossMidnight(string $now, bool $expected): void
     {
         $timezone = new \DateTimeZone('Europe/Zurich');
+
         $condition = new StoreTimeCondition(
             $this->createStub(TranslatorInterface::class),
             new \DateTimeImmutable('1970-01-01 22:00:00', $timezone),
             new \DateTimeImmutable('1970-01-01 02:00:00', $timezone),
         );
+
         $context = $this->createStoreContext();
         $context->setTimestamp(new \DateTimeImmutable($now));
 
@@ -44,11 +46,13 @@ final class StoreTimeConditionTest extends TestCase
     public function testDailyTimeRange(string $now, bool $expected): void
     {
         $timezone = new \DateTimeZone('Europe/Zurich');
+
         $condition = new StoreTimeCondition(
             $this->createStub(TranslatorInterface::class),
             new \DateTimeImmutable('1970-01-01 13:00:00', $timezone),
             new \DateTimeImmutable('2000-02-02 14:00:00', $timezone),
         );
+
         $context = $this->createStoreContext();
         $context->setTimestamp(new \DateTimeImmutable($now));
 

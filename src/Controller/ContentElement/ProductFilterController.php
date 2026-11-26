@@ -90,7 +90,9 @@ class ProductFilterController extends AbstractContentElementController
 
             // Options have already been resolved by the provider.
             unset($field['options_callback'], $field['foreignKey']);
+
             $field['options'] = [];
+
             $widget = Widget::getAttributesFromDca($field, $name, $current[$name] ?? null, $name, 'tl_iso_product');
             $widget['options'] = [];
 

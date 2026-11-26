@@ -50,6 +50,7 @@ class ProductListController extends AbstractContentElementController
         }
 
         $filterKeys = [$model->iso_filterKey ?: ''];
+
         $template->products = [];
         $template->pagination = null;
         $template->view = ListView::createFromContent($model);

@@ -25,6 +25,7 @@ class DisableVariantAttributesListener
         }
 
         unset($GLOBALS['TL_DCA']['tl_iso_producttype']['subpalettes']['variants']);
+
         $GLOBALS['TL_DCA']['tl_iso_producttype']['fields']['variants']['input_field_callback'] = fn () => \sprintf(
             '<br><p class="tl_info">%s</p>',
             $this->translator->trans('XPL.noVariantAttributes', [], 'contao_explain'),

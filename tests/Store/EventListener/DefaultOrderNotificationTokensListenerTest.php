@@ -32,25 +32,41 @@ final class DefaultOrderNotificationTokensListenerTest extends TestCase
     public function testProductCountsAndAddressFormats(): void
     {
         $billingAddress = $this->createClassWithPropertiesStub(AddressModel::class, [
-            'firstname' => 'Billing', 'company' => 'Company', 'street_1' => 'Billing street',
+            'firstname' => 'Billing',
+            'company' => 'Company',
+            'street_1' => 'Billing street',
         ]);
+
         $shippingAddress = $this->createClassWithPropertiesStub(AddressModel::class, [
-            'firstname' => 'Shipping', 'company' => 'Company', 'street_1' => 'Delivery street',
+            'firstname' => 'Shipping',
+            'company' => 'Company',
+            'street_1' => 'Delivery street',
         ]);
+
         $context = new StoreContext(
-            'test', 0, 0, null, [], 'en', new MoneyFormat(), PriceDisplay::Gross,
-            TaxCalculation::Vertical, new Currency('CHF', false, true, false, 2), 1.0,
+            'test',
+            0,
+            0,
+            null,
+            [],
+            'en',
+            new MoneyFormat(),
+            PriceDisplay::Gross,
+            TaxCalculation::Vertical,
+            new Currency('CHF', false, true, false, 2),
+            1.0,
             new AddressConfig(['firstname', 'company'], [], [], 'ch'),
             new AddressConfig(['firstname', 'street_1'], [], [], 'ch'),
             $billingAddress,
         );
+
         $config = $this->createClassWithPropertiesStub(ConfigModel::class, ['id' => 0, 'bankName' => 'Test bank']);
+
         $configAdapter = $this->createAdapterStub(['findById', 'getTable']);
         $configAdapter
             ->method('findById')
             ->willReturn($config)
         ;
-
         $configAdapter
             ->method('getTable')
             ->willReturn('tl_iso_config')
@@ -68,11 +84,11 @@ final class DefaultOrderNotificationTokensListenerTest extends TestCase
 
         $addressFormatter = $this->createStub(AddressFormatter::class);
         $formatAddress = static fn (AddressModel $address, AddressConfig $config): string => implode('|', array_intersect_key($address->row(), array_flip($config->getFields())));
+
         $addressFormatter
             ->method('toHtml')
             ->willReturnCallback($formatAddress)
         ;
-
         $addressFormatter
             ->method('toText')
             ->willReturnCallback($formatAddress)

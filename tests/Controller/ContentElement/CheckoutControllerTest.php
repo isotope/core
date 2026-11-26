@@ -33,18 +33,19 @@ final class CheckoutControllerTest extends TestCase
         $context = $this->createStoreContext();
         $original = $modified ? (new Cart('cart'))->setModified() : $cart;
         $context->setCart($original);
+
         $manager = $this->createMock(CartManager::class);
         $manager
             ->expects($this->never())
             ->method('order')
         ;
-
         $manager
             ->expects($modified ? $this->once() : $this->never())
             ->method('recalculate')
             ->with($original, $context)
             ->willReturn($cart)
         ;
+
         $step = $this->createStub(CheckoutStepInterface::class);
         $step
             ->method('getSummary')
@@ -61,17 +62,14 @@ final class CheckoutControllerTest extends TestCase
             ->onlyMethods(['isBackendScope', 'getStoreContext', 'addCollectionToTemplate'])
             ->getMock()
         ;
-
         $controller
             ->method('isBackendScope')
             ->willReturn(false)
         ;
-
         $controller
             ->method('getStoreContext')
             ->willReturn($context)
         ;
-
         $controller
             ->expects($this->once())
             ->method('addCollectionToTemplate')
@@ -83,7 +81,6 @@ final class CheckoutControllerTest extends TestCase
             ->method('row')
             ->willReturn([])
         ;
-
         $model
             ->method('__get')
             ->willReturnMap([
@@ -91,6 +88,7 @@ final class CheckoutControllerTest extends TestCase
                 ['iso_gallery', 0],
             ])
         ;
+
         $template = new FragmentTemplate('checkout', static fn () => new Response());
         $request = Request::create('/checkout', Request::METHOD_POST, ['place_order' => '1']);
 

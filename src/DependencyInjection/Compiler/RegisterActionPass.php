@@ -33,8 +33,8 @@ class RegisterActionPass implements CompilerPassInterface
 
         foreach ($services as $reference) {
             $definition = $container->findDefinition((string) $reference);
-
             $tags = $definition->getTag($this->tagName);
+
             $createChildDefinition = \count($tags) > 1;
 
             // When creating child definitions, we clear the tag on the original service
@@ -47,9 +47,11 @@ class RegisterActionPass implements CompilerPassInterface
 
                 if ($createChildDefinition) {
                     $serviceId = $this->tagName.'._'.$type;
+
                     $actionDefinition = new ChildDefinition((string) $reference);
                     $actionDefinition->setTags($definition->getTags());
                     $actionDefinition->clearTag($this->tagName);
+
                     $actionReference = new Reference($serviceId);
                     $container->setDefinition($serviceId, $actionDefinition);
                 } else {

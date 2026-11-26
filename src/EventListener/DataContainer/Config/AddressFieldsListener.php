@@ -90,6 +90,7 @@ class AddressFieldsListener extends Backend
 
             $config['name'] = $name;
             $config['position'] = $pos;
+
             $value[$name] = $config;
         }
 

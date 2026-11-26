@@ -94,6 +94,7 @@ final class FloatComparatorTest extends TestCase
     public function testCast(float $value, float $expected): void
     {
         $previousPrecision = \ini_get('precision');
+
         ini_set('precision', '14');
 
         try {

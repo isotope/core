@@ -24,6 +24,7 @@ final class RuleMatcherTest extends TestCase
             ->method('findById')
             ->willReturn($this->createClassWithPropertiesStub(RuleModel::class, ['enabled' => true]))
         ;
+
         $conditionAdapter = $this->createAdapterStub(['findByRuleId']);
         $conditionAdapter
             ->method('findByRuleId')
@@ -39,12 +40,19 @@ final class RuleMatcherTest extends TestCase
                 },
             )
         ;
+
         $registry = $this->createStub(RuleConditionRegistry::class);
-        $matcher = new RuleMatcher($this->createContaoFrameworkStub([
-            RuleModel::class => $ruleAdapter,
-            RuleConditionModel::class => $conditionAdapter,
-        ]), $registry);
+
+        $matcher = new RuleMatcher(
+            $this->createContaoFrameworkStub([
+                RuleModel::class => $ruleAdapter,
+                RuleConditionModel::class => $conditionAdapter,
+            ]),
+            $registry,
+        );
+
         $calls = 0;
+
         $registry
             ->method('get')
             ->willReturnCallback(
@@ -73,6 +81,7 @@ final class RuleMatcherTest extends TestCase
                 },
             )
         ;
+
         $context = $this->createStoreContext();
 
         $this->assertSame($expected, $matcher->isApplicable(1, $context));

@@ -40,6 +40,7 @@ class TemplateMigration extends AbstractMigration
             $schema = $schemaManager->introspectTableByUnquotedName($table);
 
             $check = false;
+
             $qb = $this->connection->createQueryBuilder();
             $qb->select('COUNT(*)')->from($table);
 

@@ -21,13 +21,16 @@ final class OrderTransactionEventTest extends TestCase
             'line_items' => [['identifier' => 'tl_iso_product.42', 'downloads' => [['download_id' => 5]]]],
             'extensions' => ['custom' => ['value' => 42]],
         ];
+
         $created = $input;
         $created['billing_address']['id'] = 17;
         $created['line_items'][0]['id'] = 18;
         $created['order_status'] = '1';
+
         $event = new OrderTransactionEvent($input, $this->createStoreContext());
         $dispatcher = new EventDispatcher();
         $postCalled = false;
+
         $dispatcher->addListener(
             'isotope.order.post',
             function (OrderTransactionEvent $event) use ($input, $created, &$postCalled): void {
@@ -43,8 +46,10 @@ final class OrderTransactionEventTest extends TestCase
         );
 
         $this->assertTrue($postCalled);
+
         $copy = $event->getData();
         $copy['line_items'][0]['id'] = 999;
+
         $this->assertSame($input, $event->getData());
     }
 }

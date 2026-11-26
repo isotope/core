@@ -20,6 +20,7 @@ final class AbstractShippingTest extends TestCase
     {
         $cart = new Cart('cart');
         $cart->add((new LineItem(LineItem::TYPE_PRODUCT, 'tl_iso_product.1'))->setWeight($weight));
+
         $shipping = new class(1, $this->createStoreContext()->setCart($cart)) extends AbstractShipping {
             public function hasError(): bool
             {

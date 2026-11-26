@@ -18,6 +18,7 @@ final class RuleOptionsListenerTest extends TestCase
         $connection->insert('tl_iso_rule', ['id' => 1, 'name' => 'Parent rule']);
         $connection->insert('tl_iso_rule', ['id' => 2, 'name' => 'Other rule']);
         $connection->insert('tl_iso_rule', ['id' => 3, 'name' => 'Third rule']);
+
         $dc = $this->createClassWithPropertiesStub(DataContainer::class, ['id' => 2]);
         $dc
             ->method('getCurrentRecord')

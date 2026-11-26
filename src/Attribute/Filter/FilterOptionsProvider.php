@@ -108,6 +108,7 @@ class FilterOptionsProvider
     private function getAttributeValues(array $fields, QueryBuilder $baseQuery): array
     {
         Controller::loadDataContainer('tl_iso_product');
+
         [$attributeTypes, $variantTypes] = $this->getProductTypeIdsByAttribute();
         $values = [];
 

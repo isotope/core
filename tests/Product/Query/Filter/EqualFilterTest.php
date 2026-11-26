@@ -17,6 +17,7 @@ final class EqualFilterTest extends TestCase
     {
         $connection = DriverManager::getConnection(['driver' => 'pdo_sqlite', 'memory' => true]);
         $connection->executeStatement('CREATE TABLE tl_iso_product (id INTEGER PRIMARY KEY, test_value TEXT NULL)');
+
         $values = [1 => null, 2 => '', 3 => 'red', 4 => 'blue', 5 => '0'];
 
         try {

@@ -44,8 +44,10 @@ class CumulativeFilterController extends AbstractContentElementController
 
         $categories = $this->getCategories($model, $request);
         $key = $model->iso_filterKey ?: '';
+
         $query = $this->getProductQuery($request) ?? $this->queryFactory->create();
         $filters = $query->getFilters([$key]);
+
         $configByAttribute = array_column($configuration, null, 'attribute');
         $baseFilters = $model->iso_filterQuery ? $this->queryFactory->parseFilters($model->iso_filterQuery, $this->attributeRegistry->getNames()) : [];
         $finder = $this->finderFactory->create($categories, $request->getLocale(), $baseFilters);
@@ -57,6 +59,7 @@ class CumulativeFilterController extends AbstractContentElementController
         $groups = [];
         $showClear = false;
         $target = $model->jumpTo ? PageModel::findById($model->jumpTo)?->getFrontendUrl() : null;
+
         $baseUrl = $this->urlParser->removeQueryStringCallback(
             static fn (mixed $value, int|string $name) => !preg_match('/^_p\d+$/', (string) $name),
             $target ?? $request->getUri(),
@@ -112,9 +115,11 @@ class CumulativeFilterController extends AbstractContentElementController
 
                 $params = [];
                 parse_str((string) $nextQuery, $params);
+
                 $href = $this->urlParser->addQueryString(http_build_query($params), $baseUrl);
                 $label = $option->getLabel();
                 $class = trim($option->getCssClass().($active ? ' active' : '').(0 === $count ? ' empty' : ''));
+
                 $items[] = [
                     'href' => $href,
                     'label' => $label,
@@ -122,6 +127,7 @@ class CumulativeFilterController extends AbstractContentElementController
                     'is_active' => $active,
                     'class' => $class,
                 ];
+
                 $groupActive = $groupActive || $active;
             }
 
@@ -180,8 +186,11 @@ class CumulativeFilterController extends AbstractContentElementController
 
     private function isFilterActive(array $filters, string $attribute, string $value): bool
     {
-        return array_any($filters, static fn (FilterInterface $filter) => $filter instanceof EqualFilter
-            && $filter->getAttributeName() === $attribute
-            && \in_array($value, $filter->getValue(), true));
+        return array_any(
+            $filters,
+            static fn (FilterInterface $filter) => $filter instanceof EqualFilter
+                && $filter->getAttributeName() === $attribute
+                && \in_array($value, $filter->getValue(), true),
+        );
     }
 }

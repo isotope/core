@@ -28,16 +28,17 @@ $GLOBALS['TL_DCA']['tl_content']['palettes']['iso_categoryfilter'] = '{type_lege
 $GLOBALS['TL_DCA']['tl_content']['palettes']['iso_addressbook'] = '{type_legend},title,headline,type;{template_legend:hide},customTpl;{protected_legend:hide},protected;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
 $GLOBALS['TL_DCA']['tl_content']['palettes']['iso_relatedproducts'] = '{type_legend},title,headline,type;{config_legend},iso_related_categories,numberOfItems,perPage,iso_listingSortField,iso_listingSortDirection;{redirect_legend},iso_addProductJumpTo;{template_legend:hide},customTpl,iso_list_layout,iso_gallery,iso_hide_empty,iso_use_quantity,iso_disable_options,iso_emptyMessage,iso_buttons;{protected_legend:hide},protected;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
 $GLOBALS['TL_DCA']['tl_content']['palettes']['iso_messages'] = '{type_legend},title,headline,type;{template_legend:hide},customTpl;{protected_legend:hide},protected;{expert_legend:hide},cssID;{invisible_legend:hide},invisible,start,stop';
-
 $GLOBALS['TL_DCA']['tl_content']['subpalettes']['iso_enableLimit'] = 'iso_perPage';
 $GLOBALS['TL_DCA']['tl_content']['subpalettes']['iso_emptyMessage'] = 'iso_noProducts';
 $GLOBALS['TL_DCA']['tl_content']['subpalettes']['iso_emptyFilter'] = 'iso_noFilter';
 
 // Define fields from tl_module if they do not exist in tl_content
 $GLOBALS['TL_DCA']['tl_content']['palettes']['__selector__'][] = 'defineRoot';
+
 $GLOBALS['TL_DCA']['tl_content']['subpalettes'] += [
     'defineRoot' => 'rootPage',
 ];
+
 $GLOBALS['TL_DCA']['tl_content']['fields'] += [
     'defineRoot' => [
         'label' => &$GLOBALS['TL_LANG']['tl_module']['defineRoot'],

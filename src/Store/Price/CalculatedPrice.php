@@ -125,6 +125,7 @@ class CalculatedPrice implements \JsonSerializable
         foreach ($this->getCalculatedTaxes() as $tax) {
             $new = clone $tax;
             $new->multiply($this->quantity);
+
             $calculatedTaxes->put($new->getId(), $new);
         }
 

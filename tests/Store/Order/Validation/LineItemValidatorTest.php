@@ -39,12 +39,14 @@ final class LineItemValidatorTest extends TestCase
         yield 'free item' => [self::pricedItem('product', 0)];
         yield 'discount and custom type' => [array_replace(self::pricedItem('discount', -5), ['tax_free_price' => -5])];
         yield 'nullable properties' => [array_replace(self::minimalItem(), ['identifier' => null, 'sku' => null, 'configuration' => null, 'referencePage' => null, 'unit_label' => null])];
-        yield 'configuration and additional properties' => [array_replace(self::minimalItem(), [
-            'configuration' => ['color' => 'red', 'custom' => ['value' => 42]],
-            'custom_column' => 'custom value',
-            'extensions' => ['custom' => ['value' => 42]],
-            'referencePage' => 17,
-        ])];
+        yield 'configuration and additional properties' => [
+            array_replace(self::minimalItem(), [
+                'configuration' => ['color' => 'red', 'custom' => ['value' => 42]],
+                'custom_column' => 'custom value',
+                'extensions' => ['custom' => ['value' => 42]],
+                'referencePage' => 17,
+            ]),
+        ];
     }
 
     #[DataProvider('invalidValueProvider')]
@@ -86,6 +88,7 @@ final class LineItemValidatorTest extends TestCase
     {
         $item = self::pricedItem('product', 10, quantity: 2);
         $item['price_data'] = array_replace($item['price_data'], $changes);
+
         $violations = Validation::createValidator()->validate($item, (new LineItemValidator())->getLineItemConstraints());
         $paths = array_map(static fn (ConstraintViolationInterface $violation) => $violation->getPropertyPath(), iterator_to_array($violations));
 
@@ -130,6 +133,7 @@ final class LineItemValidatorTest extends TestCase
         foreach (['unit_price', 'total_price', 'quantity'] as $field) {
             $item = self::pricedItem('product', 10);
             unset($item['price_data'][$field]);
+
             $violations = Validation::createValidator()->validate($item, (new LineItemValidator())->getLineItemConstraints());
 
             $this->assertCount(1, $violations);
@@ -140,12 +144,15 @@ final class LineItemValidatorTest extends TestCase
     public function testValidPriceDataCanBeRestored(): void
     {
         $item = self::pricedItem('product', 10, quantity: 2, tax: 0.5);
+
         $item['price_data']['tax_rates'] = [
             'rates' => [['id' => '1', 'tax_rate' => 10, 'percentage' => 100, 'label' => null]],
             'included' => [['id' => '1', 'tax_rate' => 10, 'percentage' => 100, 'label' => null]],
         ];
+
         $violations = Validation::createValidator()->validate($item, (new LineItemValidator())->getLineItemConstraints());
         $this->assertCount(0, $violations);
+
         $restored = CalculatedPrice::createFromJson(json_encode($item['price_data'], JSON_THROW_ON_ERROR));
         $this->assertInstanceOf(CalculatedPrice::class, $restored);
         $this->assertSame($item['price'], $restored->getTotalPrice());
@@ -160,6 +167,7 @@ final class LineItemValidatorTest extends TestCase
     {
         $item = self::minimalItem();
         unset($item[$field]);
+
         $validator = Validation::createValidator();
         $constraints = (new LineItemValidator())->getLineItemConstraints();
         $violations = $validator->validate($item, $constraints);
@@ -199,6 +207,7 @@ final class LineItemValidatorTest extends TestCase
             self::pricedItem('subtotal', 107, level: 1),
             self::pricedItem('total', 107),
         ];
+
         $order = ['subtotal' => 107, 'total' => 107, 'line_items' => $items, 'custom_column' => 'value'];
 
         yield 'gross prices include all charges once' => [$order, PriceDisplay::Gross, []];
@@ -215,6 +224,7 @@ final class LineItemValidatorTest extends TestCase
 
         $netItems = $items;
         $netItems[6] = self::pricedItem('total', 117.7);
+
         $netOrder = ['subtotal' => 107, 'total' => 117.7, 'line_items' => $netItems];
         yield 'net prices add taxes for every unit' => [$netOrder, PriceDisplay::Net, []];
         yield 'net total must include taxes' => [array_replace($netOrder, ['total' => 107]), PriceDisplay::Net, ['[total]']];
@@ -226,7 +236,9 @@ final class LineItemValidatorTest extends TestCase
 
         yield 'cash rounding' => [
             ['subtotal' => 10.02, 'total' => 10.8, 'line_items' => [self::pricedItem('product', 10.02, tax: 0.8)]],
-            PriceDisplay::Net, [], new MoneyFormat(roundingIncrement: 0.05),
+            PriceDisplay::Net,
+            [],
+            new MoneyFormat(roundingIncrement: 0.05),
         ];
         yield 'floating point arithmetic' => [['subtotal' => 0.3, 'total' => 0.3, 'line_items' => [self::pricedItem('product', 0.1), self::pricedItem('product', 0.2)]], PriceDisplay::Gross, []];
         yield 'free order' => [['subtotal' => 0, 'total' => 0, 'line_items' => [self::pricedItem('product', 0)]], PriceDisplay::Net, []];
@@ -244,6 +256,7 @@ final class LineItemValidatorTest extends TestCase
     {
         $taxes = new CalculatedTaxCollection();
         $taxes->put('1', new CalculatedTax('1', $tax, 10, $price / $quantity));
+
         $item = (new LineItem($type, null, $quantity))->setLevel($level);
         $item->setPrice(new CalculatedPrice($price / $quantity, $price, $taxes, quantity: $quantity));
 

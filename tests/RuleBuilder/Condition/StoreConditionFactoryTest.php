@@ -17,6 +17,7 @@ final class StoreConditionFactoryTest extends TestCase
     public function testCreateTimeConditionUsesConfiguredTimezone(): void
     {
         $previousTimezone = date_default_timezone_get();
+
         date_default_timezone_set('Europe/Zurich');
 
         try {
@@ -25,10 +26,11 @@ final class StoreConditionFactoryTest extends TestCase
                 'start_time' => (string) (new \DateTimeImmutable('1970-01-01 13:00:00'))->getTimestamp(),
                 'stop_time' => (string) (new \DateTimeImmutable('1970-01-01 14:00:00'))->getTimestamp(),
             ]);
+
             $context = $this->createStoreContext();
             $context->setTimestamp(new \DateTimeImmutable('2026-07-01T11:30:00+00:00'));
-            $factory = new StoreConditionFactory($this->createStub(TranslatorInterface::class));
 
+            $factory = new StoreConditionFactory($this->createStub(TranslatorInterface::class));
             $condition = $factory->create($model, $context);
 
             $this->assertInstanceOf(StoreTimeCondition::class, $condition);
@@ -46,10 +48,11 @@ final class StoreConditionFactoryTest extends TestCase
             'start' => $start,
             'stop' => $stop,
         ]);
+
         $context = $this->createStoreContext();
         $context->setTimestamp(new \DateTimeImmutable('@100'));
-        $factory = new StoreConditionFactory($this->createStub(TranslatorInterface::class));
 
+        $factory = new StoreConditionFactory($this->createStub(TranslatorInterface::class));
         $condition = $factory->create($model, $context);
 
         $this->assertInstanceOf(StoreDateCondition::class, $condition);

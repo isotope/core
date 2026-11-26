@@ -40,6 +40,7 @@ class ProductItemResolver implements ContentUrlResolverInterface
         if ($content instanceof ProductCollectionItemModel) {
             $id = $content->id;
             $referencePage = $content->referencePage;
+
             $product = $this->productBuilder->buildOne(
                 new ProductDto($content->identifier),
                 $this->storeManager->getCurrentContext(),

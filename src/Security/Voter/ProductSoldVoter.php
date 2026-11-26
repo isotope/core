@@ -51,6 +51,7 @@ class ProductSoldVoter extends AbstractDataContainerVoter implements ResetInterf
                     INNER JOIN tl_iso_product_collection c ON i.pid=c.id
                     WHERE p.pid>0 AND c.type='order'
             ");
+
             $this->used = array_map(intval(...), $this->used);
         }
 

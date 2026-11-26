@@ -12,6 +12,7 @@ final class StoreContextTest extends TestCase
     public function testInitialTimestampUsesUtc(): void
     {
         $previousTimezone = date_default_timezone_get();
+
         date_default_timezone_set('Asia/Dhaka');
 
         try {
@@ -27,6 +28,7 @@ final class StoreContextTest extends TestCase
     public function testSetTimestampPreservesInstantInUtc(string $value, string $expected): void
     {
         $context = $this->createStoreContext();
+
         $timestamp = new \DateTimeImmutable($value);
         $originalTimezone = $timestamp->getTimezone()->getName();
 

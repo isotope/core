@@ -24,6 +24,7 @@ final class CartManagerTest extends TestCase
     {
         $cart = new Cart('cart');
         $cart->add(new LineItem(LineItem::TYPE_PRODUCT, 'tl_iso_product.42'));
+
         $invalidCart = new Cart('cart');
         $item = new LineItem(LineItem::TYPE_PRODUCT, 'tl_iso_product.42');
         $invalidCart->add($item);
@@ -35,11 +36,13 @@ final class CartManagerTest extends TestCase
             ->method('calculate')
             ->willReturn($invalidCart)
         ;
+
         $converter = $this->createMock(OrderConverter::class);
         $converter
             ->expects($this->never())
             ->method('convertToOrder')
         ;
+
         $orderManager = $this->createMock(OrderManager::class);
         $orderManager
             ->expects($this->never())
@@ -55,6 +58,7 @@ final class CartManagerTest extends TestCase
         );
 
         $this->expectException(InvalidCartException::class);
+
         $manager->order($afterCalculation ? $cart : $invalidCart, $this->createStoreContext());
     }
 

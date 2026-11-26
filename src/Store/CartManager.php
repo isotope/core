@@ -63,6 +63,7 @@ class CartManager
     {
         $item = $cart->getLineItems()->where('getId', $itemId)->first();
         $item->setQuantity($quantity);
+
         $cart->setModified();
 
         return $this->recalculate($cart, $context);
@@ -80,6 +81,7 @@ class CartManager
     {
         /** @var LineItemCollection $lineItems */
         $lineItems = $cart->getLineItems()->filter(static fn (LineItem $item) => !\in_array($item->getId(), $ids, true));
+
         $cart->setLineItems($lineItems);
         $cart->setModified();
 
@@ -129,7 +131,6 @@ class CartManager
         }
 
         // TODO: validate payment
-
         $data = $this->orderConverter->convertToOrder($cart, $context);
         $result = $this->orderManager->createOrder($data, $context);
 

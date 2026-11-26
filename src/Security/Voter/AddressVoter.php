@@ -62,7 +62,6 @@ class AddressVoter extends AbstractDataContainerVoter
         }
 
         // Address must belong to a member from here on
-
         $member = $this->connection->fetchAssociative('SELECT * FROM tl_member WHERE id=?', [$current['pid']]);
 
         return $this->accessDecisionManager->decide(

@@ -21,6 +21,7 @@ final class CartAddressConditionTest extends TestCase
             'country' => 'ch',
             'subdivision' => $subdivision,
         ]);
+
         $context = $this->createStoreContext()->setDefaultBillingAddress($address);
 
         $condition = new CartAddressCondition(

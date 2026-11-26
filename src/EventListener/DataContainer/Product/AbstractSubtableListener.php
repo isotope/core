@@ -37,6 +37,7 @@ abstract class AbstractSubtableListener
             'SELECT data FROM tl_version WHERE fromTable=? AND pid=? AND version=?',
             [$table, $pid, $version],
         );
+
         $vData = StringUtil::deserialize($vData);
 
         if (!\is_array($vData) || !isset($vData[$field])) {

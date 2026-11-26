@@ -46,11 +46,16 @@ class PaymentAccessVoter extends AbstractDataContainerVoter implements ResetInte
 
     private function canDelete(array $current): bool
     {
-        $this->used ??= array_map(intval(...), $this->connection->fetchFirstColumn(<<<'SQL'
-            SELECT payment_id FROM tl_iso_product_collection WHERE type='order'
-            UNION
-            SELECT payment_id FROM tl_iso_order_transaction
-            SQL));
+        $this->used ??= array_map(
+            intval(...),
+            $this->connection->fetchFirstColumn(
+                <<<'SQL'
+                    SELECT payment_id FROM tl_iso_product_collection WHERE type='order'
+                    UNION
+                    SELECT payment_id FROM tl_iso_order_transaction
+                    SQL,
+            ),
+        );
 
         return !\in_array((int) $current['id'], $this->used, true);
     }

@@ -75,7 +75,7 @@ class OptionFactory
                 $config = Widget::getAttributesFromDca($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute->getFieldName()], $attribute->getFieldName());
 
                 if (!isset($config['options']) || !\is_array($config['options'])) {
-                    throw new UnexpectedValueException('Invalid options source "'.$source?->value.'" for tl_iso_attribute.'.$attribute->getFieldName());
+                    throw new UnexpectedValueException('Invalid options source for tl_iso_attribute.'.$attribute->getFieldName());
                 }
 
                 return $this->createFromArray($config['options'], !$isVariant);

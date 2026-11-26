@@ -19,17 +19,16 @@ final class GroupShippingTest extends TestCase
     public function testFirstAvailablePrice(bool $available, bool $hasPrice, bool $expectPrice): void
     {
         $definition = new PriceDefinition(5, null);
+
         $method = $this->createStub(ShippingInterface::class);
         $method
             ->method('getId')
             ->willReturn(1)
         ;
-
         $method
             ->method('isAvailable')
             ->willReturn($available)
         ;
-
         $method
             ->method('getPriceDefinition')
             ->willReturn($hasPrice ? $definition : null)
@@ -41,6 +40,7 @@ final class GroupShippingTest extends TestCase
         $shipping->setContainer(new ServiceLocator([PriceCalculator::class => static fn () => $calculator]));
 
         $warnings = [];
+
         set_error_handler(
             static function (int $severity, string $message) use (&$warnings): bool {
                 $warnings[] = $message;

@@ -32,21 +32,23 @@ final class DefaultProductRendererTest extends TestCase
             $this->createStub(ProductRendererInterface::class),
         );
         $product->setPrice(new CalculatedPrice(100, 100));
+
         $configurationFactory = $this->createStub(ProductConfigurationFactory::class);
         $configurationFactory
             ->method('create')
             ->willReturnCallback(static fn () => new ProductConfiguration($product, ['gift' => 'yes'], [], []))
         ;
+
         $view = $this->createStub(ViewInterface::class);
         $view
             ->method('useOptions')
             ->willReturn(true)
         ;
-
         $view
             ->method('getTemplate')
             ->willReturn('product.html.twig')
         ;
+
         $dispatcher = new EventDispatcher();
         $dispatcher->addListener(
             ProductPriceEvent::class,
@@ -55,14 +57,17 @@ final class DefaultProductRendererTest extends TestCase
                 $event->setPrice(new CalculatedPrice($amount, $amount));
             },
         );
+
         $baseCalculator = $this->createStub(PriceCalculator::class);
         $baseCalculator
             ->method('calculateProduct')
             ->willReturnCallback(static fn (): CalculatedPrice => new CalculatedPrice(100, 100))
         ;
+
         $renderer = new DefaultProductRenderer($configurationFactory, new ProductPriceCalculator($baseCalculator, $dispatcher), new TemplateMarkupFactory($this->createStub(Environment::class)));
         $context = new ProductContext($product, $this->createStoreContext());
         $request = Request::create('/product');
+
         $first = $renderer->render($context, $view, $request);
         $second = $renderer->render($context, $view, $request);
 

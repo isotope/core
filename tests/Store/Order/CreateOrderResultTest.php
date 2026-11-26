@@ -27,6 +27,7 @@ final class CreateOrderResultTest extends TestCase
             'line_items' => [['id' => 9, 'downloads' => [['download_id' => 5]]]],
             'extensions' => ['custom' => ['value' => 42]],
         ];
+
         $result = new CreateOrderResult(42, 'order', $data);
 
         $this->assertSame(42, $result->getCollectionId());

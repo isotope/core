@@ -24,11 +24,13 @@ final class FlatShippingTest extends TestCase
 
         foreach ([[false, 2], [true, 10]] as [$exempt, $amount]) {
             $weight = new Weight($amount, WeightUnit::Kilogram);
+
             $product = $this->createStub(CoreProduct::class);
             $product
                 ->method('getExtension')
                 ->willReturn(new ShippingExtension($exempt, false, $weight, null))
             ;
+
             $cart->add((new LineItem(LineItem::TYPE_PRODUCT, $exempt ? 'exempt' : 'shippable'))->setProduct($product)->setWeight($weight));
         }
 
@@ -46,12 +48,10 @@ final class FlatShippingTest extends TestCase
             ->method('getType')
             ->willReturn(LineItem::TYPE_PRODUCT)
         ;
-
         $item
             ->method('getWeight')
             ->willReturn(new Weight(3, WeightUnit::Kilogram))
         ;
-
         $item
             ->method('getQuantity')
             ->willReturn(1)
@@ -64,6 +64,7 @@ final class FlatShippingTest extends TestCase
         ;
 
         $context = $this->createStoreContext()->setCart($cart);
+
         $shipping = new FlatShipping(1, $context, FlatCalculation::perWeight);
         $shipping->setPriceDefinition(new PriceDefinition(5, null));
         $shipping->setFlatWeight(new Weight(1, WeightUnit::Kilogram));

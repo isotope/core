@@ -64,6 +64,7 @@ class OrderDocument
                         echo fread($contents, 8192);
                         flush();
                     }
+
                     fclose($contents);
                 },
             );
@@ -72,11 +73,14 @@ class OrderDocument
         }
 
         $response->headers->set('Content-Type', $this->getContentType());
-        $response->headers->set('Content-Disposition', HeaderUtils::makeDisposition(
-            HeaderUtils::DISPOSITION_INLINE,
-            $this->getFilename(),
-            (new UnicodeString($this->getFilename()))->ascii()->toString(),
-        ));
+        $response->headers->set(
+            'Content-Disposition',
+            HeaderUtils::makeDisposition(
+                HeaderUtils::DISPOSITION_INLINE,
+                $this->getFilename(),
+                (new UnicodeString($this->getFilename()))->ascii()->toString(),
+            ),
+        );
 
         return $response;
     }

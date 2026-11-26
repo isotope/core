@@ -21,12 +21,14 @@ final class TransactionEventDispatcherTest extends TestCase
         $event = new OrderTransactionEvent(['total' => 10], $this->createStoreContext());
         $result = new CreateOrderResult(42, 'order');
         $calls = [];
+
         $dispatcher->addListener(
             'isotope.order.pre',
             static function () use (&$calls): void {
                 $calls[] = 'pre';
             },
         );
+
         $dispatcher->addListener(
             'isotope.order.post',
             static function () use (&$calls): void {
@@ -53,18 +55,21 @@ final class TransactionEventDispatcherTest extends TestCase
         $dispatcher = new EventDispatcher();
         $event = new OrderTransactionEvent(['total' => -1], $this->createStoreContext());
         $calls = [];
+
         $dispatcher->addListener(
             'isotope.order.pre',
             static function () use (&$calls): void {
                 $calls[] = 'pre';
             },
         );
+
         $dispatcher->addListener(
             'isotope.order.error',
             static function () use (&$calls): void {
                 $calls[] = 'error';
             },
         );
+
         $dispatcher->addListener(
             'isotope.order.post',
             static function () use (&$calls): void {
@@ -106,6 +111,7 @@ final class TransactionEventDispatcherTest extends TestCase
         $exception = new \DomainException('Persistence failed');
         $result = new CreateOrderResult(42, 'recovered');
         $calls = [];
+
         $dispatcher->addListener(
             'isotope.order.error',
             static function (OrderTransactionEvent $event) use (&$calls, $result): void {
@@ -113,6 +119,7 @@ final class TransactionEventDispatcherTest extends TestCase
                 $event->result = $result;
             },
         );
+
         $dispatcher->addListener(
             'isotope.order.post',
             static function () use (&$calls): void {
@@ -137,6 +144,7 @@ final class TransactionEventDispatcherTest extends TestCase
         $dispatcher = new EventDispatcher();
         $event = new OrderTransactionEvent([], $this->createStoreContext());
         $result = new CreateOrderResult(42, 'handled');
+
         $dispatcher->addListener(
             'isotope.order.pre',
             static function (OrderTransactionEvent $event) use ($result): void {

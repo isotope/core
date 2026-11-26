@@ -19,6 +19,7 @@ final class PriceFormatterTest extends TestCase
     public function testBasePricePreservesTheProductPriceRange(bool $range): void
     {
         $price = (new CalculatedPrice(6, 6))->setRange($range)->setBasePrice(new BasePrice(500, 100, '%s per 100g'));
+
         $formatter = new PriceFormatter(new TemplateMarkupFactory($this->createStub(Environment::class)));
         $markup = $formatter->getBasePrice($price, $this->createStoreContext());
 

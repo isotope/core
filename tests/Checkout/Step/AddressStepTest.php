@@ -31,14 +31,17 @@ final class AddressStepTest extends TestCase
     public function testGuestSubmission(array|bool $billingResult, array|bool $shippingResult, bool $addShipping, bool $skipShipping, bool $listenerError): void
     {
         $context = $this->createStoreContext();
+
         $cart = new Cart('test');
         $cart->add(new LineItem(LineItem::TYPE_PRODUCT, 'test'));
         $cart->setBillingAddress($this->createClassWithPropertiesStub(AddressModel::class, ['id' => 1]));
         $cart->setShippingAddress($this->createClassWithPropertiesStub(AddressModel::class, ['id' => 2]));
+
         $context->setCart($cart);
 
         $billingForm = $this->createStub(Form::class);
         $shippingForm = $this->createStub(Form::class);
+
         $builder = $this->createMock(FormBuilder::class);
         $builder
             ->method('build')
@@ -46,6 +49,7 @@ final class AddressStepTest extends TestCase
         ;
 
         $validateShipping = $addShipping && !$skipShipping;
+
         $builder
             ->expects($this->exactly($validateShipping ? 2 : 1))
             ->method('validate')
@@ -53,6 +57,7 @@ final class AddressStepTest extends TestCase
         ;
 
         $twig = new Environment(new ArrayLoader());
+
         $builder
             ->method('render')
             ->willReturnCallback(static fn (Form $form, array $errors) => new TemplateMarkup($twig, 'form', ['errors' => $errors]))

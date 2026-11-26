@@ -82,6 +82,7 @@ abstract class AbstractCollectionCalculator
         }
 
         $collection->setTotal($total);
+
         $this->updateTaxNumbers($collection);
     }
 

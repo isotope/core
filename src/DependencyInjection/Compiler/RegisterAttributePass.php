@@ -41,6 +41,7 @@ class RegisterAttributePass implements CompilerPassInterface
 
         $listener = new Definition(ModelTypeOptionsListener::class, [$types]);
         $listener->addTag('contao.callback', ['table' => 'tl_iso_attribute', 'target' => 'fields.type.options']);
+
         $container->setDefinition('isotope.listener.attribute_type_options', $listener);
     }
 }

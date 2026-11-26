@@ -78,6 +78,7 @@ class ProductFinder
     {
         $finder = clone $this;
         $finder->searchFields = $fields;
+
         $finder->keywords = array_values(array_unique(array_filter(
             explode(' ', implode(' ', $keywords)),
             static fn (string $keyword): bool => '' !== $keyword,
@@ -108,6 +109,7 @@ class ProductFinder
 
                 foreach ($this->searchFields as $field) {
                     $field = $this->connection->quoteSingleIdentifier($field);
+
                     $expressions[] = $qb->expr()->like(
                         \sprintf('IFNULL(translation.%s, tl_iso_product.%s)', $field, $field),
                         $parameter,

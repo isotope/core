@@ -17,12 +17,12 @@ final class AddressValidatorTest extends TestCase
     {
         $validator = Validation::createValidator();
         $context = $this->createStoreContext();
+
         $addressValidator = $this->getMockBuilder(AddressValidator::class)
             ->setConstructorArgs([$validator])
             ->onlyMethods(['getConstraint'])
             ->getMock()
         ;
-
         $addressValidator
             ->expects($this->exactly(2))
             ->method('getConstraint')

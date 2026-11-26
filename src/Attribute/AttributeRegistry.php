@@ -58,8 +58,8 @@ class AttributeRegistry implements ResetInterface
         Controller::loadDataContainer('tl_iso_product');
 
         $this->attributes = [];
-        $dca = &$GLOBALS['TL_DCA']['tl_iso_product'];
 
+        $dca = &$GLOBALS['TL_DCA']['tl_iso_product'];
         $dca['config']['sql']['keys'] ??= [];
 
         if ($this->connection->createSchemaManager()->tablesExist(['tl_iso_attribute'])) {
@@ -83,6 +83,7 @@ class AttributeRegistry implements ResetInterface
                 $dca['fields'][$name] ??= [];
 
                 $this->applyContainer($attribute);
+
                 $attribute->updateDcaField($dca['fields'][$name], $dca['config']['sql']['keys']);
                 $this->attributes[$name] = $attribute;
 
@@ -100,6 +101,7 @@ class AttributeRegistry implements ResetInterface
 
             if (null !== $attribute) {
                 $this->applyContainer($attribute);
+
                 $attribute->updateDcaField($dca['fields'][$name], $dca['config']['sql']['keys']);
                 $this->attributes[$name] = $attribute;
             }

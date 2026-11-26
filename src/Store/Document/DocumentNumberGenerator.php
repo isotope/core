@@ -92,7 +92,7 @@ class DocumentNumberGenerator
         return $this->pad($qb->fetchOne(), $event->getNumberFormat());
     }
 
-    private function pad(string|false $result, NumberFormat $format): string
+    private function pad(false|string $result, NumberFormat $format): string
     {
         if (!\is_string($result)) {
             $max = 0;

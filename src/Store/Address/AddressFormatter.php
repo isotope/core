@@ -35,6 +35,7 @@ class AddressFormatter implements ResetInterface
         $data['data'] = $address->row();
 
         $validation = $this->addressValidator->validate($address, $config);
+
         $data['isValid'] = !$validation->count();
         $data['error'] = (string) $validation;
 

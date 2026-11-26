@@ -30,17 +30,14 @@ final class DefaultPriceFactoryTest extends TestCase
             ->method('getAttributes')
             ->willReturn(['price'])
         ;
-
         $type
             ->method('hasVariantPrices')
             ->willReturn(!$inherited)
         ;
-
         $type
             ->method('hasAdvancedPrices')
             ->willReturn($advanced)
         ;
-
         $type
             ->method('showPriceTiers')
             ->willReturn(false)
@@ -53,7 +50,9 @@ final class DefaultPriceFactoryTest extends TestCase
             ...$this->priceData($inherited ? 200 : 100),
             '__parent' => ['id' => 1, ...$this->priceData(100)],
         ];
+
         $context = $this->createStoreContext();
+
         $factory = new DefaultPriceFactory($this->createStub(RuleMatcher::class));
         $prices = $factory->create(new ProductDto('tl_iso_product.42', 1, $data), $type, $context);
 
@@ -64,6 +63,7 @@ final class DefaultPriceFactoryTest extends TestCase
 
         $product = new CoreProduct($data, $type, $this->createStub(ProductRendererInterface::class));
         $product->setIsVariant(true)->setPrices($prices);
+
         $calculator = new PriceCalculator(new TaxCalculator(
             $this->createContaoFrameworkStub([
                 TaxClassModel::class => $this->createAdapterStub(['findById']),
@@ -103,21 +103,31 @@ final class DefaultPriceFactoryTest extends TestCase
             ->method('hasVariantPrices')
             ->willReturn(true)
         ;
-
         $type
             ->method('hasAdvancedPrices')
             ->willReturn($advanced)
         ;
+
         $context = $this->createStoreContext();
+
         $factory = new DefaultPriceFactory($this->createStub(RuleMatcher::class));
-        $prices = $factory->create(new ProductDto('tl_iso_product.1', 1, [
-            'id' => 1,
-            'pid' => 0,
-            '__variants' => [
-                ['id' => 42, ...$this->priceData(100)],
-                ['id' => 43, ...$this->priceData(120)],
-            ],
-        ]), $type, $context);
+        $prices = $factory->create(
+            new ProductDto(
+                'tl_iso_product.1',
+                1,
+                [
+                    'id' => 1,
+                    'pid' => 0,
+                    '__variants' => [
+                        ['id' => 42, ...$this->priceData(100)],
+                        ['id' => 43, ...$this->priceData(120)],
+                    ],
+                ],
+            ),
+            $type,
+            $context,
+        );
+
         $this->assertInstanceOf(PriceDefinitionCollection::class, $prices);
 
         $this->assertSame($advanced ? ['42', '42', '43', '43'] : ['42', '43'], $prices->column('getReference'));
@@ -131,18 +141,28 @@ final class DefaultPriceFactoryTest extends TestCase
             ->method('getAttributes')
             ->willReturn(['price'])
         ;
-
         $type
             ->method('hasAdvancedPrices')
             ->willReturn($advanced)
         ;
+
         $context = $this->createStoreContext();
+
         $factory = new DefaultPriceFactory($this->createStub(RuleMatcher::class));
-        $prices = $factory->create(new ProductDto('tl_iso_product.1', 1, [
-            'id' => 1,
-            'pid' => 0,
-            ...$this->priceData(100),
-        ]), $type, $context);
+        $prices = $factory->create(
+            new ProductDto(
+                'tl_iso_product.1',
+                1,
+                [
+                    'id' => 1,
+                    'pid' => 0,
+                    ...$this->priceData(100),
+                ],
+            ),
+            $type,
+            $context,
+        );
+
         $this->assertInstanceOf(PriceDefinitionCollection::class, $prices);
 
         $this->assertSame($advanced ? [null, null] : [null], $prices->column('getReference'));

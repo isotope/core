@@ -87,6 +87,7 @@ abstract class AbstractModuleToElementMigration extends AbstractMigration
         }
 
         unset($tableData['id']);
+
         $tableData['type'] = $type;
         $tableData['ptable'] = 'tl_theme';
         $tableData['title'] = $data['name'];

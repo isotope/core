@@ -45,6 +45,7 @@ class LabelListener
         Controller::loadDataContainer('tl_iso_product');
 
         $fields = $GLOBALS['TL_DCA']['tl_iso_product']['list']['label']['fields'];
+
         $products = $this->connection->fetchAllAssociative(
             'SELECT * FROM tl_iso_product WHERE id IN (?) ORDER BY name',
             [$products],

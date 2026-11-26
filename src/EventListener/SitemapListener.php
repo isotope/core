@@ -45,6 +45,7 @@ class SitemapListener
         }
 
         $pageIds = Database::getInstance()->getChildRecords($event->getRootPageIds(), 'tl_page');
+
         $productIds = $this->connection->fetchFirstColumn(
             'SELECT p.id FROM tl_iso_product p JOIN tl_iso_product_category c ON p.id=c.product_id WHERE c.pid IN (?)',
             [$pageIds],
@@ -81,6 +82,7 @@ class SitemapListener
                     foreach ($product->getVariants() as $variant) {
                         if ($variant instanceof CoreProduct) {
                             $reference->product = $variant;
+
                             $this->addToSitemap($reference, $event->getDocument());
                         }
                     }
@@ -97,11 +99,13 @@ class SitemapListener
             $url = $this->urlGenerator->generate($content, [], UrlGeneratorInterface::ABSOLUTE_URL);
 
             $urlSet = $sitemap->firstElementChild;
+
             $loc = $sitemap->createElementNS($urlSet->namespaceURI, 'loc');
             $loc->appendChild($sitemap->createTextNode($url));
 
             $urlEl = $sitemap->createElementNS($urlSet->namespaceURI, 'url');
             $urlEl->appendChild($loc);
+
             $urlSet->appendChild($urlEl);
         } catch (ExceptionInterface) {
             // ignore product if URL cannot be generated

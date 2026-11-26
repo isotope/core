@@ -31,20 +31,24 @@ final class ProductCollectorTest extends TestCase
     public function testNewItemsReceiveTheProductShippingWeight(): void
     {
         $weight = new Weight(1, WeightUnit::Kilogram);
+
         $product = $this->createStub(CoreProduct::class);
         $product
             ->method('isAvailable')
             ->willReturn(true)
         ;
-
         $product
             ->method('getExtension')
             ->willReturn(new ShippingExtension(false, false, $weight, null))
         ;
+
         $item = (new LineItem(LineItem::TYPE_PRODUCT, 'tl_iso_product.42', 2))->setProduct($product);
+
         $original = new Cart('cart');
         $original->add($item);
+
         $calculated = new Cart('cart');
+
         $calculator = $this->createStub(PriceCalculator::class);
         $calculator
             ->method('calculateProduct')
@@ -61,12 +65,15 @@ final class ProductCollectorTest extends TestCase
     public function testProductAvailability(bool $published, int $startOffset, int $stopOffset, bool $hasErrors): void
     {
         $context = $this->createStoreContext();
+
         $categoryUtil = $this->createStub(ProductCategoryUtil::class);
         $categoryUtil
             ->method('getPublishedForProductInCurrentRoot')
             ->willReturn([1])
         ;
+
         $checker = new AvailabilityChecker($this->createStub(TokenChecker::class), $categoryUtil);
+
         $type = $this->createStub(ProductTypeModel::class);
         $type
             ->method('getAttributes')
@@ -86,17 +93,20 @@ final class ProductCollectorTest extends TestCase
         $product->setAvailable(static fn () => $checker->isAvailable($product, $context));
 
         $item = (new LineItem(LineItem::TYPE_PRODUCT, $product->getIdentifier()))->setProduct($product);
+
         $original = new Cart('cart');
         $original->add($item);
+
         $collection = new Cart('cart');
         $price = new CalculatedPrice(10, 10);
+
         $calculator = $this->createStub(PriceCalculator::class);
         $calculator
             ->method('calculateProduct')
             ->willReturn($price)
         ;
-        $collector = new ProductCollector(new ProductPriceCalculator($calculator, new EventDispatcher()));
 
+        $collector = new ProductCollector(new ProductPriceCalculator($calculator, new EventDispatcher()));
         $collector->process($collection, $original, $context);
         $collector->process(new Cart('cart'), $collection, $context);
 
@@ -124,18 +134,23 @@ final class ProductCollectorTest extends TestCase
     {
         $item = new LineItem(LineItem::TYPE_PRODUCT, 'tl_iso_product.42');
         $item->setProduct($missing ? null : $this->createStub(Product::class));
+
         $price = new CalculatedPrice(10, 10);
         $item->setPrice($price);
         $error = new TranslatableMessage('ERR.collectionItemNotAvailable', [], 'contao_default');
         $item->addError($error);
+
         $original = new Cart('cart');
         $original->add($item);
+
         $collection = new Cart('cart');
+
         $calculator = $this->createMock(PriceCalculator::class);
         $calculator
             ->expects($this->never())
             ->method('calculateProduct')
         ;
+
         $dispatcher = $this->createMock(EventDispatcherInterface::class);
         $dispatcher
             ->expects($this->never())

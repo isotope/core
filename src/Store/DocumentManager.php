@@ -54,7 +54,6 @@ class DocumentManager
         $model->file_id = $this->storage->store($file->getContents());
         $model->file_name = $file->getFilename();
         $model->mime_type = $file->getContentType();
-
         $model->save();
 
         return $file;

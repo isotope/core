@@ -38,6 +38,7 @@ class UppercaseCountryMigration extends AbstractMigration
             $schema = $schemaManager->introspectTableByUnquotedName($table);
 
             $check = false;
+
             $qb = $this->connection->createQueryBuilder();
             $qb
                 ->select('COUNT(*)')
@@ -73,6 +74,7 @@ class UppercaseCountryMigration extends AbstractMigration
             $schema = $schemaManager->introspectTableByUnquotedName($table);
 
             $update = false;
+
             $qb = $this->connection->createQueryBuilder();
             $qb
                 ->select('id', ...array_keys($fields))

@@ -32,9 +32,11 @@ final class CalculatedPriceTest extends TestCase
         $price = (new CalculatedPrice(6, 12, quantity: 2))
             ->setBasePrice(new BasePrice(500, 100, '%s per 100g'))
         ;
+
         $restored = CalculatedPrice::createFromJson(json_encode($price, JSON_THROW_ON_ERROR));
 
         $this->assertInstanceOf(CalculatedPrice::class, $restored);
+
         $basePrice = $restored->getBasePrice();
         $this->assertInstanceOf(BasePrice::class, $basePrice);
         $this->assertEqualsWithDelta(500.0, $basePrice->getProductAmount(), PHP_FLOAT_EPSILON);
@@ -49,6 +51,7 @@ final class CalculatedPriceTest extends TestCase
             ->setRange(true)
             ->setListPrice(15)
         ;
+
         $restored = CalculatedPrice::createFromJson(json_encode($price, JSON_THROW_ON_ERROR));
 
         $this->assertInstanceOf(CalculatedPrice::class, $restored);

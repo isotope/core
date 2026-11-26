@@ -36,6 +36,7 @@ final class PaypalPaymentTest extends TestCase
         foreach ($discounts as $index => $amount) {
             $discount = new LineItem(LineItem::TYPE_PRODUCT, 'discount_'.$index);
             $discount->setPrice(new CalculatedPrice($amount, $amount));
+
             $order->add($discount);
         }
 
@@ -69,6 +70,7 @@ final class PaypalPaymentTest extends TestCase
 
         $this->assertInstanceOf(TemplateMarkup::class, $result->message);
         $this->assertEqualsWithDelta($expectedDiscount, $result->message['discount'], PHP_FLOAT_EPSILON);
+
         $data = $result->message->getContext()['data'];
         $this->assertSame(3, $data['quantity_1']);
         $this->assertEqualsWithDelta(10.0, $data['amount_1'], PHP_FLOAT_EPSILON);

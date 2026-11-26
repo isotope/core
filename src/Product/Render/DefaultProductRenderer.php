@@ -27,6 +27,7 @@ class DefaultProductRenderer implements ProductRendererInterface
     {
         $product = $productContext->getProduct();
         $type = $product->getProductType();
+
         $attributes = array_unique(array_merge($type->getAttributes(), $type->getVariantAttributes()));
         $useOptions = $view->useOptions($product);
         $configuration = null;

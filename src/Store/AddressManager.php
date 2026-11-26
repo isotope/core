@@ -85,6 +85,7 @@ class AddressManager
             'ignoreModelValue' => true,
             'value' => $address->id ?? 1,
         ]);
+
         $form->addSubmitFormField($this->translator->trans('MSC.submitLabel', [], 'contao_default'));
 
         $result = $this->formBuilder->validate($form, $addressConfig);

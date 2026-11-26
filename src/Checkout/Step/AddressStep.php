@@ -264,6 +264,7 @@ class AddressStep extends AbstractCheckoutStep
     {
         $skipBilling = $this->skipBillingAddress($config);
         $skipShipping = $this->skipShippingAddress($config);
+
         $billingAddress = $context->getCart()->getBillingAddress();
         $shippingAddress = $context->getCart()->getShippingAddress();
 
@@ -336,7 +337,6 @@ class AddressStep extends AbstractCheckoutStep
         $address->street_1 = $address->street;
         $address->ptable = 'tl_iso_product_collection';
         $address->pid = $context->getCart()->getId();
-
         $address->save();
 
         return $address;

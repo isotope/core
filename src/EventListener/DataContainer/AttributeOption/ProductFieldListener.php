@@ -47,7 +47,6 @@ class ProductFieldListener
 
         if ('iso_products' === $request->query->get('do')) {
             $config = UrlConfig::urlDecode($request->query->getString('picker'));
-
             $values['field_name'] = $config->getField();
         }
 

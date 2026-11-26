@@ -30,7 +30,6 @@ $GLOBALS['TL_LANG']['DIV']['af']['AF-SAR'] = 'Sar-e Pol';
 $GLOBALS['TL_LANG']['DIV']['af']['AF-TAK'] = 'Takhār';
 $GLOBALS['TL_LANG']['DIV']['af']['AF-WAR'] = 'Wardak (Wardag)';
 $GLOBALS['TL_LANG']['DIV']['af']['AF-ZAB'] = 'Zābol (Zābul)';
-
 $GLOBALS['TL_LANG']['DIV']['al']['AL-BR'] = 'Berat';
 $GLOBALS['TL_LANG']['DIV']['al']['AL-BU'] = 'Bulqizë';
 $GLOBALS['TL_LANG']['DIV']['al']['AL-DL'] = 'Delvinë';
@@ -67,7 +66,6 @@ $GLOBALS['TL_LANG']['DIV']['al']['AL-TE'] = 'Tepelenë';
 $GLOBALS['TL_LANG']['DIV']['al']['AL-TR'] = 'Tiranë';
 $GLOBALS['TL_LANG']['DIV']['al']['AL-TP'] = 'Tropojë';
 $GLOBALS['TL_LANG']['DIV']['al']['AL-VL'] = 'Vlorë';
-
 $GLOBALS['TL_LANG']['DIV']['dz']['DZ-01'] = 'Adrar';
 $GLOBALS['TL_LANG']['DIV']['dz']['DZ-44'] = 'Aïn Defla';
 $GLOBALS['TL_LANG']['DIV']['dz']['DZ-46'] = 'Aïn Témouchent';
@@ -115,11 +113,8 @@ $GLOBALS['TL_LANG']['DIV']['dz']['DZ-42'] = 'Tipaza';
 $GLOBALS['TL_LANG']['DIV']['dz']['DZ-38'] = 'Tissemsilt';
 $GLOBALS['TL_LANG']['DIV']['dz']['DZ-15'] = 'Tizi Ouzou';
 $GLOBALS['TL_LANG']['DIV']['dz']['DZ-13'] = 'Tlémcèn';
-
 $GLOBALS['TL_LANG']['DIV']['as']['AS-AS'] = 'American Samoa';
-
 $GLOBALS['TL_LANG']['DIV']['ad']['AD-AD'] = 'Andorra';
-
 $GLOBALS['TL_LANG']['DIV']['ao']['AO-BGO'] = 'Bengo';
 $GLOBALS['TL_LANG']['DIV']['ao']['AO-BGU'] = 'Benguela';
 $GLOBALS['TL_LANG']['DIV']['ao']['AO-BIE'] = 'Bié';
@@ -138,13 +133,9 @@ $GLOBALS['TL_LANG']['DIV']['ao']['AO-MOX'] = 'Moxico';
 $GLOBALS['TL_LANG']['DIV']['ao']['AO-NAM'] = 'Namibe';
 $GLOBALS['TL_LANG']['DIV']['ao']['AO-UIG'] = 'Uíge';
 $GLOBALS['TL_LANG']['DIV']['ao']['AO-ZAI'] = 'Zaïre';
-
 $GLOBALS['TL_LANG']['DIV']['ai']['AI-AI'] = 'Anguilla';
-
 $GLOBALS['TL_LANG']['DIV']['aq']['AQ-AQ'] = 'Antarctica';
-
 $GLOBALS['TL_LANG']['DIV']['ag']['AG-AG'] = 'Antigua & Barbuda';
-
 $GLOBALS['TL_LANG']['DIV']['ar']['AR-C'] = 'Capital federal';
 $GLOBALS['TL_LANG']['DIV']['ar']['AR-B'] = 'Buenos Aires';
 $GLOBALS['TL_LANG']['DIV']['ar']['AR-K'] = 'Catamarca';
@@ -169,7 +160,6 @@ $GLOBALS['TL_LANG']['DIV']['ar']['AR-S'] = 'Santa Fe';
 $GLOBALS['TL_LANG']['DIV']['ar']['AR-G'] = 'Santiago del Estero';
 $GLOBALS['TL_LANG']['DIV']['ar']['AR-V'] = 'Tierra del Fuego';
 $GLOBALS['TL_LANG']['DIV']['ar']['AR-T'] = 'Tucumán';
-
 $GLOBALS['TL_LANG']['DIV']['am']['AM-ER'] = 'Erevan';
 $GLOBALS['TL_LANG']['DIV']['am']['AM-AG'] = 'Aragacotn';
 $GLOBALS['TL_LANG']['DIV']['am']['AM-AR'] = 'Ararat';
@@ -181,9 +171,7 @@ $GLOBALS['TL_LANG']['DIV']['am']['AM-SH'] = 'Širak';
 $GLOBALS['TL_LANG']['DIV']['am']['AM-SU'] = 'Syunik\'';
 $GLOBALS['TL_LANG']['DIV']['am']['AM-TV'] = 'Tavuš';
 $GLOBALS['TL_LANG']['DIV']['am']['AM-VD'] = 'Vayoc Jor';
-
 $GLOBALS['TL_LANG']['DIV']['aw']['AW-AW'] = 'Aruba';
-
 $GLOBALS['TL_LANG']['DIV']['au']['AU-NSW'] = 'New South Wales';
 $GLOBALS['TL_LANG']['DIV']['au']['AU-QLD'] = 'Queensland';
 $GLOBALS['TL_LANG']['DIV']['au']['AU-SA'] = 'South Australia';
@@ -192,7 +180,6 @@ $GLOBALS['TL_LANG']['DIV']['au']['AU-VIC'] = 'Victoria';
 $GLOBALS['TL_LANG']['DIV']['au']['AU-WA'] = 'Western Australia';
 $GLOBALS['TL_LANG']['DIV']['au']['AU-ACT'] = 'Australian Capital Territory';
 $GLOBALS['TL_LANG']['DIV']['au']['AU-NT'] = 'Northern Territory';
-
 $GLOBALS['TL_LANG']['DIV']['at']['AT-1'] = 'Burgenland';
 $GLOBALS['TL_LANG']['DIV']['at']['AT-2'] = 'Kärnten';
 $GLOBALS['TL_LANG']['DIV']['at']['AT-3'] = 'Niederösterreich';
@@ -202,7 +189,6 @@ $GLOBALS['TL_LANG']['DIV']['at']['AT-6'] = 'Steiermark';
 $GLOBALS['TL_LANG']['DIV']['at']['AT-7'] = 'Tirol';
 $GLOBALS['TL_LANG']['DIV']['at']['AT-8'] = 'Vorarlberg';
 $GLOBALS['TL_LANG']['DIV']['at']['AT-9'] = 'Wien';
-
 $GLOBALS['TL_LANG']['DIV']['az']['AZ-MM'] = 'Naxçivan';
 $GLOBALS['TL_LANG']['DIV']['az']['AZ-AB'] = 'Äli Bayramli';
 $GLOBALS['TL_LANG']['DIV']['az']['AZ-BA'] = 'Baki';
@@ -280,7 +266,6 @@ $GLOBALS['TL_LANG']['DIV']['az']['AZ-YEV'] = 'Yevlax';
 $GLOBALS['TL_LANG']['DIV']['az']['AZ-ZAN'] = 'Zängılan';
 $GLOBALS['TL_LANG']['DIV']['az']['AZ-ZAQ'] = 'Zaqatala';
 $GLOBALS['TL_LANG']['DIV']['az']['AZ-ZAR'] = 'Zärdab';
-
 $GLOBALS['TL_LANG']['DIV']['bs']['BS-AC'] = 'Acklins and Crooked Islands';
 $GLOBALS['TL_LANG']['DIV']['bs']['BS-BI'] = 'Bimini';
 $GLOBALS['TL_LANG']['DIV']['bs']['BS-CI'] = 'Cat Island';
@@ -302,7 +287,6 @@ $GLOBALS['TL_LANG']['DIV']['bs']['BS-RI'] = 'Ragged Island';
 $GLOBALS['TL_LANG']['DIV']['bs']['BS-RS'] = 'Rock Sound';
 $GLOBALS['TL_LANG']['DIV']['bs']['BS-SP'] = 'Sandy Point';
 $GLOBALS['TL_LANG']['DIV']['bs']['BS-SR'] = 'San Salvador and Rum Cay';
-
 $GLOBALS['TL_LANG']['DIV']['bh']['BH-01'] = 'Al Ḩadd';
 $GLOBALS['TL_LANG']['DIV']['bh']['BH-03'] = 'Al Manāmah';
 $GLOBALS['TL_LANG']['DIV']['bh']['BH-10'] = 'Al Minţaqah al Gharbīyah';
@@ -315,7 +299,6 @@ $GLOBALS['TL_LANG']['DIV']['bh']['BH-12'] = 'Madīnat Ḩamad';
 $GLOBALS['TL_LANG']['DIV']['bh']['BH-08'] = 'Madīnat ‘Īsá';
 $GLOBALS['TL_LANG']['DIV']['bh']['BH-11'] = 'Minţaqat Juzur Ḩawār';
 $GLOBALS['TL_LANG']['DIV']['bh']['BH-06'] = 'Sitrah';
-
 $GLOBALS['TL_LANG']['DIV']['bd']['BD-1'][''] = 'Barisal bibhag';
 $GLOBALS['TL_LANG']['DIV']['bd']['BD-1']['BD-1B'] = 'Barisal anchal';
 $GLOBALS['TL_LANG']['DIV']['bd']['BD-1']['BD-1Q'] = 'Patuakhali anchal';
@@ -342,16 +325,13 @@ $GLOBALS['TL_LANG']['DIV']['bd']['BD-5']['BD-5H'] = 'Dinajpur anchal';
 $GLOBALS['TL_LANG']['DIV']['bd']['BD-5']['BD-5P'] = 'Pabna anchal';
 $GLOBALS['TL_LANG']['DIV']['bd']['BD-5']['BD-5R'] = 'Rajshahi anchal';
 $GLOBALS['TL_LANG']['DIV']['bd']['BD-5']['BD-5S'] = 'Rangpur anchal';
-
 $GLOBALS['TL_LANG']['DIV']['bb']['BB-BB'] = 'Barbados';
-
 $GLOBALS['TL_LANG']['DIV']['by']['BY-BR'] = 'Brestskaya voblasts\'';
 $GLOBALS['TL_LANG']['DIV']['by']['BY-HO'] = 'Homyel\'skaya voblasts’';
 $GLOBALS['TL_LANG']['DIV']['by']['BY-HR'] = 'Hrodnenskaya voblasts\'';
 $GLOBALS['TL_LANG']['DIV']['by']['BY-MA'] = 'Mahilyowskaya voblasts\'';
 $GLOBALS['TL_LANG']['DIV']['by']['BY-MI'] = 'Minskaya voblasts\'';
 $GLOBALS['TL_LANG']['DIV']['by']['BY-VI'] = 'Vitsyebskaya voblasts\'';
-
 $GLOBALS['TL_LANG']['DIV']['be']['BE-BRU'] = 'Bruxelles-Capitale, Region de (fr), Brussels Hoofdstedelijk Gewest (nl)';
 $GLOBALS['TL_LANG']['DIV']['be']['BE-VLG'][''] = 'Vlaamse Gewest (nl)';
 $GLOBALS['TL_LANG']['DIV']['be']['BE-VLG']['BE-VAN'] = 'Antwerpen (nl)';
@@ -365,23 +345,19 @@ $GLOBALS['TL_LANG']['DIV']['be']['BE-WAL']['BE-WHT'] = 'Hainaut (fr)';
 $GLOBALS['TL_LANG']['DIV']['be']['BE-WAL']['BE-WLG'] = 'Liège (fr)';
 $GLOBALS['TL_LANG']['DIV']['be']['BE-WAL']['BE-WLX'] = 'Luxembourg (fr)';
 $GLOBALS['TL_LANG']['DIV']['be']['BE-WAL']['BE-WNA'] = 'Namur (fr)';
-
 $GLOBALS['TL_LANG']['DIV']['bz']['BZ-BZ'] = 'Belize';
 $GLOBALS['TL_LANG']['DIV']['bz']['BZ-CY'] = 'Cayo';
 $GLOBALS['TL_LANG']['DIV']['bz']['BZ-CZL'] = 'Corozal';
 $GLOBALS['TL_LANG']['DIV']['bz']['BZ-OW'] = 'Orange Walk';
 $GLOBALS['TL_LANG']['DIV']['bz']['BZ-SC'] = 'Stann Creek';
 $GLOBALS['TL_LANG']['DIV']['bz']['BZ-TOL'] = 'Toledo';
-
 $GLOBALS['TL_LANG']['DIV']['bj']['BJ-AK'] = 'Atakora';
 $GLOBALS['TL_LANG']['DIV']['bj']['BJ-AQ'] = 'Atlantique';
 $GLOBALS['TL_LANG']['DIV']['bj']['BJ-BO'] = 'Borgou';
 $GLOBALS['TL_LANG']['DIV']['bj']['BJ-MO'] = 'Mono';
 $GLOBALS['TL_LANG']['DIV']['bj']['BJ-OU'] = 'Ouémé';
 $GLOBALS['TL_LANG']['DIV']['bj']['BJ-ZO'] = 'Zou';
-
 $GLOBALS['TL_LANG']['DIV']['bm']['BM-BM'] = 'Bermuda';
-
 $GLOBALS['TL_LANG']['DIV']['bt']['BT-33'] = 'Bumthang';
 $GLOBALS['TL_LANG']['DIV']['bt']['BT-12'] = 'Chhukha';
 $GLOBALS['TL_LANG']['DIV']['bt']['BT-22'] = 'Dagana';
@@ -402,7 +378,6 @@ $GLOBALS['TL_LANG']['DIV']['bt']['BT-32'] = 'Trongsa';
 $GLOBALS['TL_LANG']['DIV']['bt']['BT-21'] = 'Tsirang';
 $GLOBALS['TL_LANG']['DIV']['bt']['BT-24'] = 'Wangdue Phodrang';
 $GLOBALS['TL_LANG']['DIV']['bt']['BT-34'] = 'Zhemgang';
-
 $GLOBALS['TL_LANG']['DIV']['bo']['BO-C'] = 'Cochabamba';
 $GLOBALS['TL_LANG']['DIV']['bo']['BO-H'] = 'Chuquisaca';
 $GLOBALS['TL_LANG']['DIV']['bo']['BO-B'] = 'El Beni';
@@ -412,10 +387,8 @@ $GLOBALS['TL_LANG']['DIV']['bo']['BO-N'] = 'Pando';
 $GLOBALS['TL_LANG']['DIV']['bo']['BO-P'] = 'Potosi';
 $GLOBALS['TL_LANG']['DIV']['bo']['BO-S'] = 'Santa Cruz';
 $GLOBALS['TL_LANG']['DIV']['bo']['BO-T'] = 'Tarija';
-
 $GLOBALS['TL_LANG']['DIV']['ba']['BA-BIH'] = 'Federacija Bosna i Hercegovina';
 $GLOBALS['TL_LANG']['DIV']['ba']['BA-SRP'] = 'Republika Srpska';
-
 $GLOBALS['TL_LANG']['DIV']['bw']['BW-CE'] = 'Central [Serowe-Palapye]';
 $GLOBALS['TL_LANG']['DIV']['bw']['BW-CH'] = 'Chobe';
 $GLOBALS['TL_LANG']['DIV']['bw']['BW-GH'] = 'Ghanzi';
@@ -426,9 +399,7 @@ $GLOBALS['TL_LANG']['DIV']['bw']['BW-NG'] = 'Ngamiland [North-West]';
 $GLOBALS['TL_LANG']['DIV']['bw']['BW-NE'] = 'North-East';
 $GLOBALS['TL_LANG']['DIV']['bw']['BW-SE'] = 'South-East';
 $GLOBALS['TL_LANG']['DIV']['bw']['BW-SO'] = 'Southern [Ngwaketse]';
-
 $GLOBALS['TL_LANG']['DIV']['bv']['BV-BV'] = 'Bouvet Island';
-
 $GLOBALS['TL_LANG']['DIV']['br']['BR-DF'] = 'Distrito Federal';
 $GLOBALS['TL_LANG']['DIV']['br']['BR-AC'] = 'Acre';
 $GLOBALS['TL_LANG']['DIV']['br']['BR-AL'] = 'Alagoas';
@@ -456,14 +427,11 @@ $GLOBALS['TL_LANG']['DIV']['br']['BR-SC'] = 'Santa Catarina';
 $GLOBALS['TL_LANG']['DIV']['br']['BR-SP'] = 'São Paulo';
 $GLOBALS['TL_LANG']['DIV']['br']['BR-SE'] = 'Sergipe';
 $GLOBALS['TL_LANG']['DIV']['br']['BR-TO'] = 'Tocantins';
-
 $GLOBALS['TL_LANG']['DIV']['io']['IO-IO'] = 'British Indian Ocean Territory';
-
 $GLOBALS['TL_LANG']['DIV']['bn']['BN-BE'] = 'Belait';
 $GLOBALS['TL_LANG']['DIV']['bn']['BN-BM'] = 'Brunei-Muara';
 $GLOBALS['TL_LANG']['DIV']['bn']['BN-TE'] = 'Temburong';
 $GLOBALS['TL_LANG']['DIV']['bn']['BN-TU'] = 'Tutong';
-
 $GLOBALS['TL_LANG']['DIV']['bg']['BG-02'] = 'Burgas';
 $GLOBALS['TL_LANG']['DIV']['bg']['BG-09'] = 'Haskovo';
 $GLOBALS['TL_LANG']['DIV']['bg']['BG-04'] = 'Loveč';
@@ -473,7 +441,6 @@ $GLOBALS['TL_LANG']['DIV']['bg']['BG-07'] = 'Ruse';
 $GLOBALS['TL_LANG']['DIV']['bg']['BG-08'] = 'Sofija';
 $GLOBALS['TL_LANG']['DIV']['bg']['BG-01'] = 'Sofija-Grad';
 $GLOBALS['TL_LANG']['DIV']['bg']['BG-03'] = 'Varna';
-
 $GLOBALS['TL_LANG']['DIV']['bf']['BF-BAL'] = 'Balé';
 $GLOBALS['TL_LANG']['DIV']['bf']['BF-BAM'] = 'Bam';
 $GLOBALS['TL_LANG']['DIV']['bf']['BF-BAN'] = 'Banwa';
@@ -519,7 +486,6 @@ $GLOBALS['TL_LANG']['DIV']['bf']['BF-YAT'] = 'Yatenga';
 $GLOBALS['TL_LANG']['DIV']['bf']['BF-ZIR'] = 'Ziro';
 $GLOBALS['TL_LANG']['DIV']['bf']['BF-ZON'] = 'Zondoma';
 $GLOBALS['TL_LANG']['DIV']['bf']['BF-ZOU'] = 'Zoundwéogo';
-
 $GLOBALS['TL_LANG']['DIV']['bi']['BI-BB'] = 'Bubanza';
 $GLOBALS['TL_LANG']['DIV']['bi']['BI-BJ'] = 'Bujumbura';
 $GLOBALS['TL_LANG']['DIV']['bi']['BI-BR'] = 'Bururi';
@@ -535,7 +501,6 @@ $GLOBALS['TL_LANG']['DIV']['bi']['BI-MY'] = 'Muyinga';
 $GLOBALS['TL_LANG']['DIV']['bi']['BI-NG'] = 'Ngozi';
 $GLOBALS['TL_LANG']['DIV']['bi']['BI-RT'] = 'Rutana';
 $GLOBALS['TL_LANG']['DIV']['bi']['BI-RY'] = 'Ruyigi';
-
 $GLOBALS['TL_LANG']['DIV']['kh']['KH-23'] = 'Krong Kaeb [Krŏng Kêb]';
 $GLOBALS['TL_LANG']['DIV']['kh']['KH-18'] = 'Krong Preah Sihanouk [Krŏng Preăh Sihanouk]';
 $GLOBALS['TL_LANG']['DIV']['kh']['KH-12'] = 'Phnom Penh [Phnum Pénh]';
@@ -558,7 +523,6 @@ $GLOBALS['TL_LANG']['DIV']['kh']['KH-17'] = 'Siem Reab [Siĕmréab]';
 $GLOBALS['TL_LANG']['DIV']['kh']['KH-19'] = 'Stueng Traeng [Stœng Trêng]';
 $GLOBALS['TL_LANG']['DIV']['kh']['KH-20'] = 'Svaay Rieng [Svay Riĕng]';
 $GLOBALS['TL_LANG']['DIV']['kh']['KH-21'] = 'Taakaev [Takêv]';
-
 $GLOBALS['TL_LANG']['DIV']['cm']['CM-AD'] = 'Adamaoua';
 $GLOBALS['TL_LANG']['DIV']['cm']['CM-CE'] = 'Centre';
 $GLOBALS['TL_LANG']['DIV']['cm']['CM-ES'] = 'Est';
@@ -569,7 +533,6 @@ $GLOBALS['TL_LANG']['DIV']['cm']['CM-NW'] = 'North-West';
 $GLOBALS['TL_LANG']['DIV']['cm']['CM-SU'] = 'South';
 $GLOBALS['TL_LANG']['DIV']['cm']['CM-SW'] = 'South-West';
 $GLOBALS['TL_LANG']['DIV']['cm']['CM-OU'] = 'West';
-
 $GLOBALS['TL_LANG']['DIV']['ca']['CA-AB'] = 'Alberta';
 $GLOBALS['TL_LANG']['DIV']['ca']['CA-BC'] = 'British Columbia (Colombie-Britannique)';
 $GLOBALS['TL_LANG']['DIV']['ca']['CA-MB'] = 'Manitoba';
@@ -582,7 +545,6 @@ $GLOBALS['TL_LANG']['DIV']['ca']['CA-QC'] = 'Quebec (Québec)';
 $GLOBALS['TL_LANG']['DIV']['ca']['CA-SK'] = 'Saskatchewan';
 $GLOBALS['TL_LANG']['DIV']['ca']['CA-NT'] = 'Northwest Territories (Territoires du Nord-Ouest)';
 $GLOBALS['TL_LANG']['DIV']['ca']['CA-YT'] = 'Yukon Territory (Teritoire du Yukon)';
-
 $GLOBALS['TL_LANG']['DIV']['cv']['CV-B'][''] = 'Ilhas de Barlavento';
 $GLOBALS['TL_LANG']['DIV']['cv']['CV-B']['CV-BV'] = 'Boa Vista';
 $GLOBALS['TL_LANG']['DIV']['cv']['CV-B']['CV-PA'] = 'Paul';
@@ -599,9 +561,7 @@ $GLOBALS['TL_LANG']['DIV']['cv']['CV-B']['CV-PR'] = 'Praia';
 $GLOBALS['TL_LANG']['DIV']['cv']['CV-B']['CV-CA'] = 'Santa Catarina';
 $GLOBALS['TL_LANG']['DIV']['cv']['CV-B']['CV-CR'] = 'Santa Cruz';
 $GLOBALS['TL_LANG']['DIV']['cv']['CV-B']['CV-TA'] = 'Tarrafal';
-
 $GLOBALS['TL_LANG']['DIV']['ky']['KY-KY'] = 'Cayman Islands';
-
 $GLOBALS['TL_LANG']['DIV']['cf']['CF-BGF'] = 'Bangui';
 $GLOBALS['TL_LANG']['DIV']['cf']['CF-BB'] = 'Bamingui-Bangoran';
 $GLOBALS['TL_LANG']['DIV']['cf']['CF-BK'] = 'Basse-Kotto';
@@ -619,7 +579,6 @@ $GLOBALS['TL_LANG']['DIV']['cf']['CF-AC'] = 'Ouham';
 $GLOBALS['TL_LANG']['DIV']['cf']['CF-OP'] = 'Ouham-Pendé';
 $GLOBALS['TL_LANG']['DIV']['cf']['CF-SE'] = 'Sangha-Mbaéré';
 $GLOBALS['TL_LANG']['DIV']['cf']['CF-VK'] = 'Vakaga';
-
 $GLOBALS['TL_LANG']['DIV']['td']['TD-BA'] = 'Batha';
 $GLOBALS['TL_LANG']['DIV']['td']['TD-BI'] = 'Biltine';
 $GLOBALS['TL_LANG']['DIV']['td']['TD-BET'] = 'Borkou-Ennedi-Tibesti';
@@ -634,7 +593,6 @@ $GLOBALS['TL_LANG']['DIV']['td']['TD-MC'] = 'Moyen-Chari';
 $GLOBALS['TL_LANG']['DIV']['td']['TD-OD'] = 'Ouaddaï';
 $GLOBALS['TL_LANG']['DIV']['td']['TD-SA'] = 'Salamat';
 $GLOBALS['TL_LANG']['DIV']['td']['TD-TA'] = 'Tandjilé';
-
 $GLOBALS['TL_LANG']['DIV']['cl']['CL-AI'] = 'Aisén del General Carlos Ibáñiez del Campo';
 $GLOBALS['TL_LANG']['DIV']['cl']['CL-AN'] = 'Antofagasta';
 $GLOBALS['TL_LANG']['DIV']['cl']['CL-AR'] = 'Araucanía';
@@ -648,7 +606,6 @@ $GLOBALS['TL_LANG']['DIV']['cl']['CL-ML'] = 'Maule';
 $GLOBALS['TL_LANG']['DIV']['cl']['CL-RM'] = 'Regíon Metropolitana de Santiago';
 $GLOBALS['TL_LANG']['DIV']['cl']['CL-TA'] = 'Tarapacá';
 $GLOBALS['TL_LANG']['DIV']['cl']['CL-VS'] = 'Valparaiso';
-
 $GLOBALS['TL_LANG']['DIV']['cn']['CN-11'] = 'Beijing';
 $GLOBALS['TL_LANG']['DIV']['cn']['CN-50'] = 'Chongqing';
 $GLOBALS['TL_LANG']['DIV']['cn']['CN-31'] = 'Shanghai';
@@ -682,11 +639,8 @@ $GLOBALS['TL_LANG']['DIV']['cn']['CN-64'] = 'Ningxia';
 $GLOBALS['TL_LANG']['DIV']['cn']['CN-65'] = 'Xinjiang';
 $GLOBALS['TL_LANG']['DIV']['cn']['CN-54'] = 'Xizang';
 $GLOBALS['TL_LANG']['DIV']['cn']['CN-91'] = 'Hong Kong';
-
 $GLOBALS['TL_LANG']['DIV']['cx']['CX-CX'] = 'Christmas Island';
-
 $GLOBALS['TL_LANG']['DIV']['cc']['CC-CC'] = 'Cocos (Keeling) Islands';
-
 $GLOBALS['TL_LANG']['DIV']['co']['CO-DC'] = 'Distrito Capital de Santa Fe de Bogota';
 $GLOBALS['TL_LANG']['DIV']['co']['CO-AMA'] = 'Amazonas';
 $GLOBALS['TL_LANG']['DIV']['co']['CO-ANT'] = 'Antioguia';
@@ -720,11 +674,9 @@ $GLOBALS['TL_LANG']['DIV']['co']['CO-TOL'] = 'Tolima';
 $GLOBALS['TL_LANG']['DIV']['co']['CO-VAC'] = 'Valle del Cauca';
 $GLOBALS['TL_LANG']['DIV']['co']['CO-VAU'] = 'Vaupés';
 $GLOBALS['TL_LANG']['DIV']['co']['CO-VID'] = 'Vichada';
-
 $GLOBALS['TL_LANG']['DIV']['km']['KM-A'] = 'Anjouan (Ndzouani)';
 $GLOBALS['TL_LANG']['DIV']['km']['KM-G'] = 'Grande Comore (Ngazidja)';
 $GLOBALS['TL_LANG']['DIV']['km']['KM-M'] = 'Mohéli (Moili)';
-
 $GLOBALS['TL_LANG']['DIV']['cg']['CG-BZV'] = 'Brazzaville';
 $GLOBALS['TL_LANG']['DIV']['cg']['CG-11'] = 'Bouenza';
 $GLOBALS['TL_LANG']['DIV']['cg']['CG-8'] = 'Cuvette';
@@ -736,7 +688,6 @@ $GLOBALS['TL_LANG']['DIV']['cg']['CG-9'] = 'Niari';
 $GLOBALS['TL_LANG']['DIV']['cg']['CG-14'] = 'Plateaux';
 $GLOBALS['TL_LANG']['DIV']['cg']['CG-12'] = 'Pool';
 $GLOBALS['TL_LANG']['DIV']['cg']['CG-13'] = 'Sangha';
-
 $GLOBALS['TL_LANG']['DIV']['cd']['CD-KN'] = 'Kinshasa';
 $GLOBALS['TL_LANG']['DIV']['cd']['CD-BN'] = 'Bandundu';
 $GLOBALS['TL_LANG']['DIV']['cd']['CD-BC'] = 'Bas-Congo';
@@ -748,9 +699,7 @@ $GLOBALS['TL_LANG']['DIV']['cd']['CD-KA'] = 'Katanga';
 $GLOBALS['TL_LANG']['DIV']['cd']['CD-MA'] = 'Maniema';
 $GLOBALS['TL_LANG']['DIV']['cd']['CD-NK'] = 'Nord-Kivu';
 $GLOBALS['TL_LANG']['DIV']['cd']['CD-SK'] = 'Sud-Kivu';
-
 $GLOBALS['TL_LANG']['DIV']['ck']['CK-CK'] = 'Cook Islands';
-
 $GLOBALS['TL_LANG']['DIV']['cr']['CR-A'] = 'Alajuela';
 $GLOBALS['TL_LANG']['DIV']['cr']['CR-C'] = 'Cartago';
 $GLOBALS['TL_LANG']['DIV']['cr']['CR-G'] = 'Guanacaste';
@@ -758,7 +707,6 @@ $GLOBALS['TL_LANG']['DIV']['cr']['CR-H'] = 'Heredia';
 $GLOBALS['TL_LANG']['DIV']['cr']['CR-L'] = 'Limón';
 $GLOBALS['TL_LANG']['DIV']['cr']['CR-P'] = 'Puntarenas';
 $GLOBALS['TL_LANG']['DIV']['cr']['CR-SJ'] = 'San José';
-
 $GLOBALS['TL_LANG']['DIV']['ci']['CI-06'] = '18 Montagnes (Région des)';
 $GLOBALS['TL_LANG']['DIV']['ci']['CI-16'] = 'Agnébi (Région de l\')';
 $GLOBALS['TL_LANG']['DIV']['ci']['CI-09'] = 'Bas-Sassandra (Région du)';
@@ -775,7 +723,6 @@ $GLOBALS['TL_LANG']['DIV']['ci']['CI-13'] = 'Sud-Comoé (Région du)';
 $GLOBALS['TL_LANG']['DIV']['ci']['CI-04'] = 'Vallée du Bandama (Région de la)';
 $GLOBALS['TL_LANG']['DIV']['ci']['CI-14'] = 'Worodougou (Région du)';
 $GLOBALS['TL_LANG']['DIV']['ci']['CI-08'] = 'Zanzan (Région du)';
-
 $GLOBALS['TL_LANG']['DIV']['hr']['HR-07'] = 'Bjelovarsko-bilogorska županija';
 $GLOBALS['TL_LANG']['DIV']['hr']['HR-12'] = 'Brodsko-posavska županija';
 $GLOBALS['TL_LANG']['DIV']['hr']['HR-19'] = 'Dubrovačko-neretvanska županija';
@@ -796,7 +743,6 @@ $GLOBALS['TL_LANG']['DIV']['hr']['HR-10'] = 'Virovitičko-podravska županija';
 $GLOBALS['TL_LANG']['DIV']['hr']['HR-16'] = 'Vukovarsko-srijemska županija';
 $GLOBALS['TL_LANG']['DIV']['hr']['HR-13'] = 'Zadarska županija';
 $GLOBALS['TL_LANG']['DIV']['hr']['HR-01'] = 'Zagrebačka županija';
-
 $GLOBALS['TL_LANG']['DIV']['cu']['CU-09'] = 'Camagüey';
 $GLOBALS['TL_LANG']['DIV']['cu']['CU-03'] = 'Ciudad de La Habana';
 $GLOBALS['TL_LANG']['DIV']['cu']['CU-12'] = 'Granma';
@@ -810,14 +756,12 @@ $GLOBALS['TL_LANG']['DIV']['cu']['CU-07'] = 'Sancti Spíritus';
 $GLOBALS['TL_LANG']['DIV']['cu']['CU-13'] = 'Santiago de Cuba';
 $GLOBALS['TL_LANG']['DIV']['cu']['CU-05'] = 'Villa Clara';
 $GLOBALS['TL_LANG']['DIV']['cu']['CU-99'] = 'Isla de la Juventud';
-
 $GLOBALS['TL_LANG']['DIV']['cy']['CY-04'] = 'Ammochostos (Mağusa)';
 $GLOBALS['TL_LANG']['DIV']['cy']['CY-06'] = 'Keryneia (Girne)';
 $GLOBALS['TL_LANG']['DIV']['cy']['CY-03'] = 'Larnaka';
 $GLOBALS['TL_LANG']['DIV']['cy']['CY-01'] = 'Lefkosia (Lefkoşa)';
 $GLOBALS['TL_LANG']['DIV']['cy']['CY-02'] = 'Lemesos (Leymosun)';
 $GLOBALS['TL_LANG']['DIV']['cy']['CY-05'] = 'Pafos (Baf)';
-
 $GLOBALS['TL_LANG']['DIV']['cz']['CZ-PRG'] = 'Praha';
 $GLOBALS['TL_LANG']['DIV']['cz']['CZ-CJC'] = 'Jihočeský kraj';
 $GLOBALS['TL_LANG']['DIV']['cz']['CZ-CJM'] = 'Jihomoravský kraj';
@@ -826,7 +770,6 @@ $GLOBALS['TL_LANG']['DIV']['cz']['CZ-CSM'] = 'Severomoravský kraj';
 $GLOBALS['TL_LANG']['DIV']['cz']['CZ-CST'] = 'Středočeský kraj';
 $GLOBALS['TL_LANG']['DIV']['cz']['CZ-CVC'] = 'Východočeský kraj';
 $GLOBALS['TL_LANG']['DIV']['cz']['CZ-CZC'] = 'Západočeský kraj';
-
 $GLOBALS['TL_LANG']['DIV']['dk']['DK-147'] = 'Frederiksberg';
 $GLOBALS['TL_LANG']['DIV']['dk']['DK-101'] = 'Kǿbenhavn';
 $GLOBALS['TL_LANG']['DIV']['dk']['DK-040'] = 'Bornholm';
@@ -843,15 +786,12 @@ $GLOBALS['TL_LANG']['DIV']['dk']['DK-060'] = 'Vejle';
 $GLOBALS['TL_LANG']['DIV']['dk']['DK-030'] = 'Vestsjælland';
 $GLOBALS['TL_LANG']['DIV']['dk']['DK-076'] = 'Viborg';
 $GLOBALS['TL_LANG']['DIV']['dk']['DK-070'] = 'Århus';
-
 $GLOBALS['TL_LANG']['DIV']['dj']['DJ-AS'] = 'Ali Sabieh';
 $GLOBALS['TL_LANG']['DIV']['dj']['DJ-DI'] = 'Dikhil';
 $GLOBALS['TL_LANG']['DIV']['dj']['DJ-DJ'] = 'Djibouti';
 $GLOBALS['TL_LANG']['DIV']['dj']['DJ-OB'] = 'Obock';
 $GLOBALS['TL_LANG']['DIV']['dj']['DJ-TA'] = 'Tadjoura';
-
 $GLOBALS['TL_LANG']['DIV']['dm']['DM-DM'] = 'Dominica';
-
 $GLOBALS['TL_LANG']['DIV']['do']['DO-DN'] = 'Distrito National (Santo Domingo)';
 $GLOBALS['TL_LANG']['DIV']['do']['DO-AZ'] = 'Azua';
 $GLOBALS['TL_LANG']['DIV']['do']['DO-BR'] = 'Bahoruco';
@@ -881,9 +821,7 @@ $GLOBALS['TL_LANG']['DIV']['do']['DO-PM'] = 'San Pedro de Macorís';
 $GLOBALS['TL_LANG']['DIV']['do']['DO-ST'] = 'Santiago';
 $GLOBALS['TL_LANG']['DIV']['do']['DO-SR'] = 'Santiago Rodríguez';
 $GLOBALS['TL_LANG']['DIV']['do']['DO-VA'] = 'Valverde';
-
 $GLOBALS['TL_LANG']['DIV']['tp']['TP-TP'] = 'East Timor';
-
 $GLOBALS['TL_LANG']['DIV']['ec']['EC-A'] = 'Azuay';
 $GLOBALS['TL_LANG']['DIV']['ec']['EC-B'] = 'Bolívar';
 $GLOBALS['TL_LANG']['DIV']['ec']['EC-F'] = 'Cañar';
@@ -905,7 +843,6 @@ $GLOBALS['TL_LANG']['DIV']['ec']['EC-P'] = 'Pichincha';
 $GLOBALS['TL_LANG']['DIV']['ec']['EC-U'] = 'Sucumbíos';
 $GLOBALS['TL_LANG']['DIV']['ec']['EC-T'] = 'Tungurahua';
 $GLOBALS['TL_LANG']['DIV']['ec']['EC-Z'] = 'Zarnora-Chinchipe';
-
 $GLOBALS['TL_LANG']['DIV']['eg']['EG-DK'] = 'Ad Daqahlīyah';
 $GLOBALS['TL_LANG']['DIV']['eg']['EG-BA'] = 'Al Baḩr al Aḩmar';
 $GLOBALS['TL_LANG']['DIV']['eg']['EG-BH'] = 'Al Buḩayrah';
@@ -932,7 +869,6 @@ $GLOBALS['TL_LANG']['DIV']['eg']['EG-MT'] = 'Maţrūḩ';
 $GLOBALS['TL_LANG']['DIV']['eg']['EG-KN'] = 'Qinā';
 $GLOBALS['TL_LANG']['DIV']['eg']['EG-SIN'] = 'Shamāl Sīnā\'';
 $GLOBALS['TL_LANG']['DIV']['eg']['EG-SHG'] = 'Sūhāj';
-
 $GLOBALS['TL_LANG']['DIV']['sv']['SV-AH'] = 'Ahuachapán';
 $GLOBALS['TL_LANG']['DIV']['sv']['SV-CA'] = 'Cabañas';
 $GLOBALS['TL_LANG']['DIV']['sv']['SV-CU'] = 'Cuscatlán';
@@ -947,7 +883,6 @@ $GLOBALS['TL_LANG']['DIV']['sv']['SV-SA'] = 'Santa Ana';
 $GLOBALS['TL_LANG']['DIV']['sv']['SV-SV'] = 'San Vicente';
 $GLOBALS['TL_LANG']['DIV']['sv']['SV-SO'] = 'Sonsonate';
 $GLOBALS['TL_LANG']['DIV']['sv']['SV-SU'] = 'Usulután';
-
 $GLOBALS['TL_LANG']['DIV']['gq']['GQ-C'][''] = 'Región Continental';
 $GLOBALS['TL_LANG']['DIV']['gq']['GQ-C']['GQ-CS'] = 'Centro Sur';
 $GLOBALS['TL_LANG']['DIV']['gq']['GQ-C']['GQ-KN'] = 'Kie-Ntem';
@@ -957,7 +892,6 @@ $GLOBALS['TL_LANG']['DIV']['gq']['GQ-I'][''] = 'Región Insular';
 $GLOBALS['TL_LANG']['DIV']['gq']['GQ-I']['GQ-AN'] = 'Annobón';
 $GLOBALS['TL_LANG']['DIV']['gq']['GQ-I']['GQ-BN'] = 'Bioko Norte';
 $GLOBALS['TL_LANG']['DIV']['gq']['GQ-I']['GQ-BS'] = 'Bioko Sur';
-
 $GLOBALS['TL_LANG']['DIV']['er']['ER-AG'] = 'Akele Guzai [Akalä Guzay]';
 $GLOBALS['TL_LANG']['DIV']['er']['ER-AS'] = 'Asmara [Asmära]';
 $GLOBALS['TL_LANG']['DIV']['er']['ER-BA'] = 'Barka';
@@ -968,7 +902,6 @@ $GLOBALS['TL_LANG']['DIV']['er']['ER-SA'] = 'Sahel';
 $GLOBALS['TL_LANG']['DIV']['er']['ER-SM'] = 'Semhar [Sämhar]';
 $GLOBALS['TL_LANG']['DIV']['er']['ER-SN'] = 'Senhit [Sänhet]';
 $GLOBALS['TL_LANG']['DIV']['er']['ER-SR'] = 'Seraye [Särayé]';
-
 $GLOBALS['TL_LANG']['DIV']['ee']['EE-37'] = 'Harjumaa';
 $GLOBALS['TL_LANG']['DIV']['ee']['EE-39'] = 'Hiiumaa';
 $GLOBALS['TL_LANG']['DIV']['ee']['EE-44'] = 'Ida-Virumaa';
@@ -984,7 +917,6 @@ $GLOBALS['TL_LANG']['DIV']['ee']['EE-78'] = 'Tartumaa';
 $GLOBALS['TL_LANG']['DIV']['ee']['EE-82'] = 'Valgamaa';
 $GLOBALS['TL_LANG']['DIV']['ee']['EE-84'] = 'Viljandimaa';
 $GLOBALS['TL_LANG']['DIV']['ee']['EE-86'] = 'Vōrumaa';
-
 $GLOBALS['TL_LANG']['DIV']['et']['ET-AA'] = 'Addis Ababa [Addis Abeba]';
 $GLOBALS['TL_LANG']['DIV']['et']['ET-AF'] = 'Afar';
 $GLOBALS['TL_LANG']['DIV']['et']['ET-AM'] = 'Amara [Amhara]';
@@ -995,24 +927,19 @@ $GLOBALS['TL_LANG']['DIV']['et']['ET-OR'] = 'Oromia [Oromo]';
 $GLOBALS['TL_LANG']['DIV']['et']['ET-SO'] = 'Somali';
 $GLOBALS['TL_LANG']['DIV']['et']['ET-SN'] = 'Southern Nations, Nationalities and Peoples';
 $GLOBALS['TL_LANG']['DIV']['et']['ET-TI'] = 'Tigrai [Tegré]';
-
 $GLOBALS['TL_LANG']['DIV']['fk']['FK-FK'] = 'Falkland Islands (Malvinas)';
-
 $GLOBALS['TL_LANG']['DIV']['fo']['FO-FO'] = 'Faroe Islands';
-
 $GLOBALS['TL_LANG']['DIV']['fj']['FJ-C'] = 'Central';
 $GLOBALS['TL_LANG']['DIV']['fj']['FJ-E'] = 'Eastern';
 $GLOBALS['TL_LANG']['DIV']['fj']['FJ-N'] = 'Northern';
 $GLOBALS['TL_LANG']['DIV']['fj']['FJ-W'] = 'Western';
 $GLOBALS['TL_LANG']['DIV']['fj']['FJ-R'] = 'Rotuma';
-
 $GLOBALS['TL_LANG']['DIV']['fi']['FI-AL'] = 'Ahvenanmaan lääni';
 $GLOBALS['TL_LANG']['DIV']['fi']['FI-ES'] = 'Etelä-Suomen lääni';
 $GLOBALS['TL_LANG']['DIV']['fi']['FI-IS'] = 'Itä-Suomen lääni';
 $GLOBALS['TL_LANG']['DIV']['fi']['FI-LL'] = 'Lapin lääni';
 $GLOBALS['TL_LANG']['DIV']['fi']['FI-LS'] = 'Länsi-Suomen lääni';
 $GLOBALS['TL_LANG']['DIV']['fi']['FI-OL'] = 'Oulun lääni';
-
 $GLOBALS['TL_LANG']['DIV']['fr']['FR-A'][''] = 'Alsace';
 $GLOBALS['TL_LANG']['DIV']['fr']['FR-A']['FR-67'] = 'Bas-Rhin';
 $GLOBALS['TL_LANG']['DIV']['fr']['FR-A']['FR-68'] = 'Haut-Rhin';
@@ -1131,13 +1058,9 @@ $GLOBALS['TL_LANG']['DIV']['fr']['FR-V']['FR-38'] = 'Isère';
 $GLOBALS['TL_LANG']['DIV']['fr']['FR-V']['FR-42'] = 'Loire';
 $GLOBALS['TL_LANG']['DIV']['fr']['FR-V']['FR-69'] = 'Rhône';
 $GLOBALS['TL_LANG']['DIV']['fr']['FR-V']['FR-73'] = 'Savoie';
-
 $GLOBALS['TL_LANG']['DIV']['gf']['GF-GF'] = 'French Guiana';
-
 $GLOBALS['TL_LANG']['DIV']['pf']['PF-PF'] = 'French Polynesia';
-
 $GLOBALS['TL_LANG']['DIV']['tf']['TF-TF'] = 'French Southern Territories';
-
 $GLOBALS['TL_LANG']['DIV']['ga']['GA-1'] = 'Estuaire';
 $GLOBALS['TL_LANG']['DIV']['ga']['GA-2'] = 'Haut-Ogooué';
 $GLOBALS['TL_LANG']['DIV']['ga']['GA-3'] = 'Moyen-Ogooué';
@@ -1147,14 +1070,12 @@ $GLOBALS['TL_LANG']['DIV']['ga']['GA-6'] = 'Ogooué-Ivindo';
 $GLOBALS['TL_LANG']['DIV']['ga']['GA-7'] = 'Ogooué-Lolo';
 $GLOBALS['TL_LANG']['DIV']['ga']['GA-8'] = 'Ogooué-Maritime';
 $GLOBALS['TL_LANG']['DIV']['ga']['GA-9'] = 'Woleu-Ntem';
-
 $GLOBALS['TL_LANG']['DIV']['gm']['GM-B'] = 'Banjul';
 $GLOBALS['TL_LANG']['DIV']['gm']['GM-L'] = 'Lower River';
 $GLOBALS['TL_LANG']['DIV']['gm']['GM-M'] = 'MacCarthy Island';
 $GLOBALS['TL_LANG']['DIV']['gm']['GM-N'] = 'North Bank';
 $GLOBALS['TL_LANG']['DIV']['gm']['GM-U'] = 'Upper River';
 $GLOBALS['TL_LANG']['DIV']['gm']['GM-W'] = 'Western';
-
 $GLOBALS['TL_LANG']['DIV']['ge']['GE-AB'] = 'Ap\'khazet\'is Avtonomiuri Respublika [Abkhazia]';
 $GLOBALS['TL_LANG']['DIV']['ge']['GE-AJ'] = 'Acharis Avtonomiuri Respublika [Ajaria]';
 $GLOBALS['TL_LANG']['DIV']['ge']['GE-BUS'] = 'Bat\'umi';
@@ -1233,7 +1154,6 @@ $GLOBALS['TL_LANG']['DIV']['ge']['GE-60'] = 'Tsalkis Raioni';
 $GLOBALS['TL_LANG']['DIV']['ge']['GE-61'] = 'Vanis Raioni';
 $GLOBALS['TL_LANG']['DIV']['ge']['GE-62'] = 'Zestap\'onis Raioni';
 $GLOBALS['TL_LANG']['DIV']['ge']['GE-63'] = 'Zugdidis Raioni';
-
 $GLOBALS['TL_LANG']['DIV']['de']['DE-BW'] = 'Baden-Württemberg';
 $GLOBALS['TL_LANG']['DIV']['de']['DE-BY'] = 'Bayern';
 $GLOBALS['TL_LANG']['DIV']['de']['DE-BE'] = 'Berlin';
@@ -1250,7 +1170,6 @@ $GLOBALS['TL_LANG']['DIV']['de']['DE-SN'] = 'Sachsen';
 $GLOBALS['TL_LANG']['DIV']['de']['DE-ST'] = 'Sachsen-Anhalt';
 $GLOBALS['TL_LANG']['DIV']['de']['DE-SH'] = 'Schleswig-Holstein';
 $GLOBALS['TL_LANG']['DIV']['de']['DE-TH'] = 'Thüringen';
-
 $GLOBALS['TL_LANG']['DIV']['gh']['GH-AH'] = 'Ashanti';
 $GLOBALS['TL_LANG']['DIV']['gh']['GH-BA'] = 'Brong-Ahafo';
 $GLOBALS['TL_LANG']['DIV']['gh']['GH-CP'] = 'Central';
@@ -1261,9 +1180,7 @@ $GLOBALS['TL_LANG']['DIV']['gh']['GH-UE'] = 'Upper East';
 $GLOBALS['TL_LANG']['DIV']['gh']['GH-UW'] = 'Upper West';
 $GLOBALS['TL_LANG']['DIV']['gh']['GH-TV'] = 'Volta';
 $GLOBALS['TL_LANG']['DIV']['gh']['GH-WP'] = 'Western';
-
 $GLOBALS['TL_LANG']['DIV']['gi']['GI-GI'] = 'Gibraltar';
-
 $GLOBALS['TL_LANG']['DIV']['gb']['GB-CHA'][''] = 'Channel Islands';
 $GLOBALS['TL_LANG']['DIV']['gb']['GB-CHA']['GB-GSY'] = 'Guernsey [Guernesey]';
 $GLOBALS['TL_LANG']['DIV']['gb']['GB-CHA']['GB-JSY'] = 'Jersey';
@@ -1502,7 +1419,6 @@ $GLOBALS['TL_LANG']['DIV']['gb']['GB-WLS']['GB-SWA'] = 'Swansea (City of) [Abert
 $GLOBALS['TL_LANG']['DIV']['gb']['GB-WLS']['GB-TOF'] = 'Torfaen [Tor-faen]';
 $GLOBALS['TL_LANG']['DIV']['gb']['GB-WLS']['GB-VGL'] = 'Vale of Glamorgan, The [Bro Morgannwg GB-BMG]';
 $GLOBALS['TL_LANG']['DIV']['gb']['GB-WLS']['GB-WRX'] = 'Wrexham [Wrecsam GB-WRC]';
-
 $GLOBALS['TL_LANG']['DIV']['gr']['GR-I'][''] = 'Anatoliki Makedonia kai Thraki';
 $GLOBALS['TL_LANG']['DIV']['gr']['GR-I']['GR-52'] = 'Drama';
 $GLOBALS['TL_LANG']['DIV']['gr']['GR-I']['GR-71'] = 'Evros';
@@ -1567,15 +1483,10 @@ $GLOBALS['TL_LANG']['DIV']['gr']['GR-XI'][''] = 'Voreio Aigaio';
 $GLOBALS['TL_LANG']['DIV']['gr']['GR-XI']['GR-85'] = 'Chios';
 $GLOBALS['TL_LANG']['DIV']['gr']['GR-XI']['GR-83'] = 'Lesvos';
 $GLOBALS['TL_LANG']['DIV']['gr']['GR-XI']['GR-84'] = 'Samos';
-
 $GLOBALS['TL_LANG']['DIV']['gl']['GL-GL'] = 'Greenland';
-
 $GLOBALS['TL_LANG']['DIV']['gd']['GD-GD'] = 'Grenada';
-
 $GLOBALS['TL_LANG']['DIV']['gp']['GP-GP'] = 'Guadeloupe';
-
 $GLOBALS['TL_LANG']['DIV']['gu']['GU-GU'] = 'Guam';
-
 $GLOBALS['TL_LANG']['DIV']['gt']['GT-AV'] = 'Alta Verapaz';
 $GLOBALS['TL_LANG']['DIV']['gt']['GT-BV'] = 'Baja Verapaz';
 $GLOBALS['TL_LANG']['DIV']['gt']['GT-CM'] = 'Chimaltenango';
@@ -1598,7 +1509,6 @@ $GLOBALS['TL_LANG']['DIV']['gt']['GT-SO'] = 'Sololá';
 $GLOBALS['TL_LANG']['DIV']['gt']['GT-SU'] = 'Suchitepéquez';
 $GLOBALS['TL_LANG']['DIV']['gt']['GT-TO'] = 'Totonicapán';
 $GLOBALS['TL_LANG']['DIV']['gt']['GT-ZA'] = 'Zacapa';
-
 $GLOBALS['TL_LANG']['DIV']['gn']['GN-B'][''] = 'Bake, Gouvernorat de';
 $GLOBALS['TL_LANG']['DIV']['gn']['GN-B']['GN-BF'] = 'Boffa';
 $GLOBALS['TL_LANG']['DIV']['gn']['GN-B']['GN-BK'] = 'Boké';
@@ -1640,7 +1550,6 @@ $GLOBALS['TL_LANG']['DIV']['gn']['GN-N']['GN-LO'] = 'Lola';
 $GLOBALS['TL_LANG']['DIV']['gn']['GN-N']['GN-MC'] = 'Macenta';
 $GLOBALS['TL_LANG']['DIV']['gn']['GN-N']['GN-NZ'] = 'Nzérékoré';
 $GLOBALS['TL_LANG']['DIV']['gn']['GN-N']['GN-YO'] = 'Yomou';
-
 $GLOBALS['TL_LANG']['DIV']['gw']['GW-BS'] = 'Bissau';
 $GLOBALS['TL_LANG']['DIV']['gw']['GW-BA'] = 'Bafatá';
 $GLOBALS['TL_LANG']['DIV']['gw']['GW-BM'] = 'Biombo';
@@ -1649,7 +1558,6 @@ $GLOBALS['TL_LANG']['DIV']['gw']['GW-CA'] = 'Cacheu';
 $GLOBALS['TL_LANG']['DIV']['gw']['GW-GA'] = 'Gabú';
 $GLOBALS['TL_LANG']['DIV']['gw']['GW-OI'] = 'Oio';
 $GLOBALS['TL_LANG']['DIV']['gw']['GW-QU'] = 'Quinara';
-
 $GLOBALS['TL_LANG']['DIV']['gy']['GY-BA'] = 'Barima-Waini';
 $GLOBALS['TL_LANG']['DIV']['gy']['GY-CU'] = 'Cuyuni-Mazaruni';
 $GLOBALS['TL_LANG']['DIV']['gy']['GY-DE'] = 'Demerara-Mahaica';
@@ -1660,7 +1568,6 @@ $GLOBALS['TL_LANG']['DIV']['gy']['GY-PM'] = 'Pomeroon-Supenaam';
 $GLOBALS['TL_LANG']['DIV']['gy']['GY-PT'] = 'Potaro-Siparuni';
 $GLOBALS['TL_LANG']['DIV']['gy']['GY-UD'] = 'Upper Demerara-Berbice';
 $GLOBALS['TL_LANG']['DIV']['gy']['GY-UT'] = 'Upper Takutu-Upper Essequibo';
-
 $GLOBALS['TL_LANG']['DIV']['ht']['HT-AR'] = 'Artibonite';
 $GLOBALS['TL_LANG']['DIV']['ht']['HT-CE'] = 'Centre';
 $GLOBALS['TL_LANG']['DIV']['ht']['HT-GA'] = 'Grande-Anse';
@@ -1670,11 +1577,8 @@ $GLOBALS['TL_LANG']['DIV']['ht']['HT-NO'] = 'Nord-Ouest';
 $GLOBALS['TL_LANG']['DIV']['ht']['HT-OU'] = 'Ouest';
 $GLOBALS['TL_LANG']['DIV']['ht']['HT-SD'] = 'Sud';
 $GLOBALS['TL_LANG']['DIV']['ht']['HT-SE'] = 'Sud-Est';
-
 $GLOBALS['TL_LANG']['DIV']['hm']['HM-HM'] = 'Heard & McDonald Islands';
-
 $GLOBALS['TL_LANG']['DIV']['va']['VA-VA'] = 'Vatican City (Holy See)';
-
 $GLOBALS['TL_LANG']['DIV']['hn']['HN-AT'] = 'Atlántida';
 $GLOBALS['TL_LANG']['DIV']['hn']['HN-CL'] = 'Colón';
 $GLOBALS['TL_LANG']['DIV']['hn']['HN-CM'] = 'Comayagua';
@@ -1693,9 +1597,7 @@ $GLOBALS['TL_LANG']['DIV']['hn']['HN-OL'] = 'Olancho';
 $GLOBALS['TL_LANG']['DIV']['hn']['HN-SB'] = 'Santa Bárbara';
 $GLOBALS['TL_LANG']['DIV']['hn']['HN-VA'] = 'Valle';
 $GLOBALS['TL_LANG']['DIV']['hn']['HN-YO'] = 'Yoro';
-
 $GLOBALS['TL_LANG']['DIV']['hk']['HK-HK'] = 'Hong Kong';
-
 $GLOBALS['TL_LANG']['DIV']['hu']['HU-BU'] = 'Budapest';
 $GLOBALS['TL_LANG']['DIV']['hu']['HU-BK'] = 'Bács-Kiskun';
 $GLOBALS['TL_LANG']['DIV']['hu']['HU-BA'] = 'Baranya';
@@ -1738,7 +1640,6 @@ $GLOBALS['TL_LANG']['DIV']['hu']['HU-SH'] = 'Szombathely';
 $GLOBALS['TL_LANG']['DIV']['hu']['HU-TB'] = 'Tatabánya';
 $GLOBALS['TL_LANG']['DIV']['hu']['HU-VM'] = 'Veszprém';
 $GLOBALS['TL_LANG']['DIV']['hu']['HU-ZE'] = 'Zalaegerszeg';
-
 $GLOBALS['TL_LANG']['DIV']['is']['IS-7'] = 'Austurland';
 $GLOBALS['TL_LANG']['DIV']['is']['IS-1'] = 'Höfudborgarsvædi utan Reykjavíkur';
 $GLOBALS['TL_LANG']['DIV']['is']['IS-6'] = 'Nordurland eystra';
@@ -1748,7 +1649,6 @@ $GLOBALS['TL_LANG']['DIV']['is']['IS-8'] = 'Sudurland';
 $GLOBALS['TL_LANG']['DIV']['is']['IS-2'] = 'Sudurnes';
 $GLOBALS['TL_LANG']['DIV']['is']['IS-4'] = 'Vestfirdir';
 $GLOBALS['TL_LANG']['DIV']['is']['IS-3'] = 'Vesturland';
-
 $GLOBALS['TL_LANG']['DIV']['in']['IN-AP'] = 'Andhra Pradesh';
 $GLOBALS['TL_LANG']['DIV']['in']['IN-AR'] = 'Arunachal Pradesh';
 $GLOBALS['TL_LANG']['DIV']['in']['IN-AS'] = 'Assam';
@@ -1781,7 +1681,6 @@ $GLOBALS['TL_LANG']['DIV']['in']['IN-DD'] = 'Daman and Diu';
 $GLOBALS['TL_LANG']['DIV']['in']['IN-DL'] = 'Delhi';
 $GLOBALS['TL_LANG']['DIV']['in']['IN-LD'] = 'Lakshadweep';
 $GLOBALS['TL_LANG']['DIV']['in']['IN-PY'] = 'Pondicherry';
-
 $GLOBALS['TL_LANG']['DIV']['id']['ID-IJU'][''] = 'Irian Jaya';
 $GLOBALS['TL_LANG']['DIV']['id']['ID-IJU']['ID-IJ'] = 'Irian Jaya';
 $GLOBALS['TL_LANG']['DIV']['id']['ID-JWU'][''] = 'Jawa';
@@ -1816,7 +1715,6 @@ $GLOBALS['TL_LANG']['DIV']['id']['ID-SMU']['ID-SB'] = 'Sumatera Barat';
 $GLOBALS['TL_LANG']['DIV']['id']['ID-SMU']['ID-SS'] = 'Sumatera Selatan';
 $GLOBALS['TL_LANG']['DIV']['id']['ID-SMU']['ID-SU'] = 'Sumatera Utara';
 $GLOBALS['TL_LANG']['DIV']['id']['ID-SMU']['ID-AC'] = 'Aceh';
-
 $GLOBALS['TL_LANG']['DIV']['ir']['IR-03'] = 'Ardabīl';
 $GLOBALS['TL_LANG']['DIV']['ir']['IR-02'] = 'Āzarbāyjān-e-Gharbī';
 $GLOBALS['TL_LANG']['DIV']['ir']['IR-01'] = 'Āzarbāyjān-e-Sharqī';
@@ -1843,7 +1741,6 @@ $GLOBALS['TL_LANG']['DIV']['ir']['IR-13'] = 'Sīstān va Balūchestān';
 $GLOBALS['TL_LANG']['DIV']['ir']['IR-07'] = 'Tehrān';
 $GLOBALS['TL_LANG']['DIV']['ir']['IR-25'] = 'Yazd';
 $GLOBALS['TL_LANG']['DIV']['ir']['IR-11'] = 'Zanjān';
-
 $GLOBALS['TL_LANG']['DIV']['iq']['IQ-AN'] = 'Al Anbār';
 $GLOBALS['TL_LANG']['DIV']['iq']['IQ-BA'] = 'Al Başrah';
 $GLOBALS['TL_LANG']['DIV']['iq']['IQ-MU'] = 'Al Muthanná';
@@ -1862,7 +1759,6 @@ $GLOBALS['TL_LANG']['DIV']['iq']['IQ-MA'] = 'Maysān';
 $GLOBALS['TL_LANG']['DIV']['iq']['IQ-NI'] = 'Nīnawá';
 $GLOBALS['TL_LANG']['DIV']['iq']['IQ-SD'] = 'Şalāḩ ad Dīn';
 $GLOBALS['TL_LANG']['DIV']['iq']['IQ-WA'] = 'Wāsiţ';
-
 $GLOBALS['TL_LANG']['DIV']['ie']['IE-C'][''] = 'Connaught (Connacht)';
 $GLOBALS['TL_LANG']['DIV']['ie']['IE-C']['IE-G'] = 'Galway (Gaillimh)';
 $GLOBALS['TL_LANG']['DIV']['ie']['IE-C']['IE-LM'] = 'Leitrim (Liatroim)';
@@ -1893,14 +1789,12 @@ $GLOBALS['TL_LANG']['DIV']['ie']['IE-U'][''] = 'Ulster (Ulaidh)';
 $GLOBALS['TL_LANG']['DIV']['ie']['IE-U']['IE-CN'] = 'Cavan (An Cabhán)';
 $GLOBALS['TL_LANG']['DIV']['ie']['IE-U']['IE-DL'] = 'Donegal (Dún na nGall)';
 $GLOBALS['TL_LANG']['DIV']['ie']['IE-U']['IE-MN'] = 'Monaghan (Muineachán)';
-
 $GLOBALS['TL_LANG']['DIV']['il']['IL-D'] = 'HaDarom (El Janūbī)';
 $GLOBALS['TL_LANG']['DIV']['il']['IL-M'] = 'HaMerkaz (El Awsat)';
 $GLOBALS['TL_LANG']['DIV']['il']['IL-2'] = 'HaZafon (Esh Shamālī)';
 $GLOBALS['TL_LANG']['DIV']['il']['IL-HA'] = 'Hefa (Heifā)';
 $GLOBALS['TL_LANG']['DIV']['il']['IL-TA'] = 'Tel-Aviv (Tell Abīb)';
 $GLOBALS['TL_LANG']['DIV']['il']['IL-JM'] = 'Yerushalayim (Al Quds)';
-
 $GLOBALS['TL_LANG']['DIV']['it']['IT-65'][''] = 'Abruzzo';
 $GLOBALS['TL_LANG']['DIV']['it']['IT-65']['IT-CH'] = 'Chieti';
 $GLOBALS['TL_LANG']['DIV']['it']['IT-65']['IT-AQ'] = 'L\'Aquila';
@@ -2024,7 +1918,6 @@ $GLOBALS['TL_LANG']['DIV']['it']['IT-34']['IT-TV'] = 'Treviso';
 $GLOBALS['TL_LANG']['DIV']['it']['IT-34']['IT-VE'] = 'Venezia';
 $GLOBALS['TL_LANG']['DIV']['it']['IT-34']['IT-VR'] = 'Verona';
 $GLOBALS['TL_LANG']['DIV']['it']['IT-34']['IT-VI'] = 'Vicenza';
-
 $GLOBALS['TL_LANG']['DIV']['jm']['JM-13'] = 'Clarendon';
 $GLOBALS['TL_LANG']['DIV']['jm']['JM-09'] = 'Hanover';
 $GLOBALS['TL_LANG']['DIV']['jm']['JM-01'] = 'Kingston';
@@ -2039,7 +1932,6 @@ $GLOBALS['TL_LANG']['DIV']['jm']['JM-05'] = 'Saint Mary';
 $GLOBALS['TL_LANG']['DIV']['jm']['JM-03'] = 'Saint Thomas';
 $GLOBALS['TL_LANG']['DIV']['jm']['JM-07'] = 'Trelawny';
 $GLOBALS['TL_LANG']['DIV']['jm']['JM-10'] = 'Westmoreland';
-
 $GLOBALS['TL_LANG']['DIV']['jp']['JP-01'] = 'Hokkaido';
 $GLOBALS['TL_LANG']['DIV']['jp']['JP-02'] = 'Aomori';
 $GLOBALS['TL_LANG']['DIV']['jp']['JP-03'] = 'Iwate';
@@ -2087,7 +1979,6 @@ $GLOBALS['TL_LANG']['DIV']['jp']['JP-44'] = 'Oita';
 $GLOBALS['TL_LANG']['DIV']['jp']['JP-45'] = 'Miyazaki';
 $GLOBALS['TL_LANG']['DIV']['jp']['JP-46'] = 'Kagoshima';
 $GLOBALS['TL_LANG']['DIV']['jp']['JP-47'] = 'Okinawa';
-
 $GLOBALS['TL_LANG']['DIV']['jo']['JO-AJ'] = 'Ajlūn';
 $GLOBALS['TL_LANG']['DIV']['jo']['JO-AQ'] = 'Al \'Aqaba';
 $GLOBALS['TL_LANG']['DIV']['jo']['JO-BA'] = 'Al Balqā\'';
@@ -2100,7 +1991,6 @@ $GLOBALS['TL_LANG']['DIV']['jo']['JO-IR'] = 'Irbid';
 $GLOBALS['TL_LANG']['DIV']['jo']['JO-JA'] = 'Jarash';
 $GLOBALS['TL_LANG']['DIV']['jo']['JO-MN'] = 'Ma‘ān';
 $GLOBALS['TL_LANG']['DIV']['jo']['JO-MD'] = 'Mādaba';
-
 $GLOBALS['TL_LANG']['DIV']['kz']['KZ-ALA'] = 'Almaty';
 $GLOBALS['TL_LANG']['DIV']['kz']['KZ-BAY'] = 'Bayqonyr (Baykonyr)';
 $GLOBALS['TL_LANG']['DIV']['kz']['KZ-ALM'] = 'Almaty oblysy (Almatinskaya oblast\')';
@@ -2117,7 +2007,6 @@ $GLOBALS['TL_LANG']['DIV']['kz']['KZ-KZY'] = 'Qyzylorda oblysy (Kzylordinskaya o
 $GLOBALS['TL_LANG']['DIV']['kz']['KZ-VOS'] = 'Shyghys Kazakstan oblysy (Vostochno-Kazakhstanskaya oblast\')';
 $GLOBALS['TL_LANG']['DIV']['kz']['KZ-SEV'] = 'Soltüstik Kazakstan oblysy (Severo-Kazakhstanskaya oblast\')';
 $GLOBALS['TL_LANG']['DIV']['kz']['KZ-ZHA'] = 'Zhambyl oblysy (Zhambylskaya Oblast\')';
-
 $GLOBALS['TL_LANG']['DIV']['ke']['KE-110'] = 'Nairobi Municipality';
 $GLOBALS['TL_LANG']['DIV']['ke']['KE-200'] = 'Central (Kati)';
 $GLOBALS['TL_LANG']['DIV']['ke']['KE-300'] = 'Coast (Pwani)';
@@ -2126,11 +2015,9 @@ $GLOBALS['TL_LANG']['DIV']['ke']['KE-500'] = 'North-Eastern (Kaskazini Mashariki
 $GLOBALS['TL_LANG']['DIV']['ke']['KE-600'] = 'Nyanza';
 $GLOBALS['TL_LANG']['DIV']['ke']['KE-700'] = 'Rift Valley';
 $GLOBALS['TL_LANG']['DIV']['ke']['KE-900'] = 'Western (Magharibi)';
-
 $GLOBALS['TL_LANG']['DIV']['ki']['KI-G'] = 'Gilbert Islands';
 $GLOBALS['TL_LANG']['DIV']['ki']['KI-L'] = 'Line Islands';
 $GLOBALS['TL_LANG']['DIV']['ki']['KI-P'] = 'Phoenix Islands';
-
 $GLOBALS['TL_LANG']['DIV']['kp']['KP-KAE'] = 'Kaesong-si';
 $GLOBALS['TL_LANG']['DIV']['kp']['KP-NAM'] = 'Nampo-si';
 $GLOBALS['TL_LANG']['DIV']['kp']['KP-PYO'] = 'Pyongyang-si';
@@ -2143,7 +2030,6 @@ $GLOBALS['TL_LANG']['DIV']['kp']['KP-KAN'] = 'Kangwon-do';
 $GLOBALS['TL_LANG']['DIV']['kp']['KP-PYB'] = 'Pyonganbuk-do';
 $GLOBALS['TL_LANG']['DIV']['kp']['KP-PYN'] = 'Pyongannam-do';
 $GLOBALS['TL_LANG']['DIV']['kp']['KP-YAN'] = 'Yanggang-do';
-
 $GLOBALS['TL_LANG']['DIV']['kr']['KR-11'] = 'Seoul Teugbyeolsi [Seoul-T’ŭkpyŏlshi]';
 $GLOBALS['TL_LANG']['DIV']['kr']['KR-26'] = 'Busan Gwang\'yeogsi [Pusan-Kwangyŏkshi]';
 $GLOBALS['TL_LANG']['DIV']['kr']['KR-27'] = 'Daegu Gwang\'yeogsi [Taegu-Kwangyŏkshi)';
@@ -2160,20 +2046,17 @@ $GLOBALS['TL_LANG']['DIV']['kr']['KR-48'] = 'Gyeongsangnamdo [Kyŏngsangnam-do]'
 $GLOBALS['TL_LANG']['DIV']['kr']['KR-49'] = 'Jejudo [Cheju-do]';
 $GLOBALS['TL_LANG']['DIV']['kr']['KR-45'] = 'Jeonrabugdo [Chŏllabuk-do)';
 $GLOBALS['TL_LANG']['DIV']['kr']['KR-46'] = 'Jeonranamdo [Chŏllanam-do]';
-
 $GLOBALS['TL_LANG']['DIV']['kw']['KW-AH'] = 'Al Aḩmadi';
 $GLOBALS['TL_LANG']['DIV']['kw']['KW-FA'] = 'Al Farwānīyah';
 $GLOBALS['TL_LANG']['DIV']['kw']['KW-JA'] = 'Al Jahrah';
 $GLOBALS['TL_LANG']['DIV']['kw']['KW-KU'] = 'Al Kuwayt';
 $GLOBALS['TL_LANG']['DIV']['kw']['KW-HA'] = 'Ḩawallī';
-
 $GLOBALS['TL_LANG']['DIV']['kg']['KG-C'] = 'Chu (Chuyskaya oblast\')';
 $GLOBALS['TL_LANG']['DIV']['kg']['KG-J'] = 'Jalal-Abad (Dzhalal-Abadskaya oblast\')';
 $GLOBALS['TL_LANG']['DIV']['kg']['KG-N'] = 'Naryn (Narynskaya Oblast’)';
 $GLOBALS['TL_LANG']['DIV']['kg']['KG-O'] = 'Osh (Oshskaya oblast\')';
 $GLOBALS['TL_LANG']['DIV']['kg']['KG-T'] = 'Talas (Talasskaya oblast\')';
 $GLOBALS['TL_LANG']['DIV']['kg']['KG-Y'] = 'Ysyk-Köl (Issyk-Kul\'skaya oblast\')';
-
 $GLOBALS['TL_LANG']['DIV']['la']['LA-VT'] = 'Vientiane';
 $GLOBALS['TL_LANG']['DIV']['la']['LA-AT'] = 'Attapu [Attopeu]';
 $GLOBALS['TL_LANG']['DIV']['la']['LA-BK'] = 'Bokèo';
@@ -2191,7 +2074,6 @@ $GLOBALS['TL_LANG']['DIV']['la']['LA-VI'] = 'Vientiane';
 $GLOBALS['TL_LANG']['DIV']['la']['LA-XA'] = 'Xaignabouli [Sayaboury]';
 $GLOBALS['TL_LANG']['DIV']['la']['LA-XE'] = 'Xékong [Sékong]';
 $GLOBALS['TL_LANG']['DIV']['la']['LA-XI'] = 'Xiangkhoang [Xieng Khouang]';
-
 $GLOBALS['TL_LANG']['DIV']['lv']['LV-AI'] = 'Aizkraukles Aprinkis';
 $GLOBALS['TL_LANG']['DIV']['lv']['LV-AL'] = 'Alūksnes Aprinkis';
 $GLOBALS['TL_LANG']['DIV']['lv']['LV-BL'] = 'Balvu Aprinkis';
@@ -2225,14 +2107,12 @@ $GLOBALS['TL_LANG']['DIV']['lv']['LV-LPX'] = 'Liepāja';
 $GLOBALS['TL_LANG']['DIV']['lv']['LV-REZ'] = 'Rēzekne';
 $GLOBALS['TL_LANG']['DIV']['lv']['LV-RIX'] = 'Rīga';
 $GLOBALS['TL_LANG']['DIV']['lv']['LV-VEN'] = 'Ventspils';
-
 $GLOBALS['TL_LANG']['DIV']['lb']['LB-BA'] = 'Beiroût (Bayrūt)';
 $GLOBALS['TL_LANG']['DIV']['lb']['LB-BI'] = 'El Béqaa (Al Biqā\')';
 $GLOBALS['TL_LANG']['DIV']['lb']['LB-JL'] = 'Jabal Loubnâne (Jabal Lubnān)';
 $GLOBALS['TL_LANG']['DIV']['lb']['LB-AS'] = 'Loubnâne ech Chemâli (Ash Shamāl)';
 $GLOBALS['TL_LANG']['DIV']['lb']['LB-JA'] = 'Loubnâne ej Jnoûbi (Al Janūb)';
 $GLOBALS['TL_LANG']['DIV']['lb']['LB-NA'] = 'Nabatîyé (An Nabaţīyah)';
-
 $GLOBALS['TL_LANG']['DIV']['ls']['LS-D'] = 'Berea';
 $GLOBALS['TL_LANG']['DIV']['ls']['LS-B'] = 'Butha-Buthe';
 $GLOBALS['TL_LANG']['DIV']['ls']['LS-C'] = 'Leribe';
@@ -2243,7 +2123,6 @@ $GLOBALS['TL_LANG']['DIV']['ls']['LS-J'] = 'Mokhotlong';
 $GLOBALS['TL_LANG']['DIV']['ls']['LS-H'] = 'Qacha\'s Nek';
 $GLOBALS['TL_LANG']['DIV']['ls']['LS-G'] = 'Quthing';
 $GLOBALS['TL_LANG']['DIV']['ls']['LS-K'] = 'Thaba-Tseka';
-
 $GLOBALS['TL_LANG']['DIV']['lr']['LR-BM'] = 'Bomi';
 $GLOBALS['TL_LANG']['DIV']['lr']['LR-BG'] = 'Bong';
 $GLOBALS['TL_LANG']['DIV']['lr']['LR-GB'] = 'Grand Bassa';
@@ -2257,7 +2136,6 @@ $GLOBALS['TL_LANG']['DIV']['lr']['LR-MO'] = 'Montserrado';
 $GLOBALS['TL_LANG']['DIV']['lr']['LR-NI'] = 'Nimba';
 $GLOBALS['TL_LANG']['DIV']['lr']['LR-RI'] = 'Rivercess';
 $GLOBALS['TL_LANG']['DIV']['lr']['LR-SI'] = 'Sinoe';
-
 $GLOBALS['TL_LANG']['DIV']['ly']['LY-BU'] = 'Al Buţnān';
 $GLOBALS['TL_LANG']['DIV']['ly']['LY-JA'] = 'Al Jabal al Akhḑar';
 $GLOBALS['TL_LANG']['DIV']['ly']['LY-JG'] = 'Al Jabal al Gharbī';
@@ -2271,9 +2149,7 @@ $GLOBALS['TL_LANG']['DIV']['ly']['LY-MI'] = 'Mişrātah';
 $GLOBALS['TL_LANG']['DIV']['ly']['LY-NA'] = 'Naggaza';
 $GLOBALS['TL_LANG']['DIV']['ly']['LY-SF'] = 'Sawfajjin';
 $GLOBALS['TL_LANG']['DIV']['ly']['LY-TB'] = 'Ţarābulus';
-
 $GLOBALS['TL_LANG']['DIV']['li']['LI-LI'] = 'Liechtenstein';
-
 $GLOBALS['TL_LANG']['DIV']['lt']['LT-AL'] = 'Alytaus Apskritis';
 $GLOBALS['TL_LANG']['DIV']['lt']['LT-KU'] = 'Kauno Apskritis';
 $GLOBALS['TL_LANG']['DIV']['lt']['LT-KL'] = 'Klaipėdos Apskritis';
@@ -2284,22 +2160,17 @@ $GLOBALS['TL_LANG']['DIV']['lt']['LT-TA'] = 'Tauragės Apskritis';
 $GLOBALS['TL_LANG']['DIV']['lt']['LT-TE'] = 'Telšiu Apskritis';
 $GLOBALS['TL_LANG']['DIV']['lt']['LT-UT'] = 'Utenos Apskritis';
 $GLOBALS['TL_LANG']['DIV']['lt']['LT-VL'] = 'Vilniaus Apskritis';
-
 $GLOBALS['TL_LANG']['DIV']['lu']['LU-D'] = 'Diekirch';
 $GLOBALS['TL_LANG']['DIV']['lu']['LU-G'] = 'Grevenmacher';
 $GLOBALS['TL_LANG']['DIV']['lu']['LU-L'] = 'Luxembourg (Luxemburg)';
-
 $GLOBALS['TL_LANG']['DIV']['mo']['MO-MO'] = 'Macau';
-
 $GLOBALS['TL_LANG']['DIV']['mk']['MK-MK'] = 'Macedonia';
-
 $GLOBALS['TL_LANG']['DIV']['mg']['MG-T'] = 'Antananarivo';
 $GLOBALS['TL_LANG']['DIV']['mg']['MG-D'] = 'Antsiranana';
 $GLOBALS['TL_LANG']['DIV']['mg']['MG-F'] = 'Fianarantsoa';
 $GLOBALS['TL_LANG']['DIV']['mg']['MG-M'] = 'Mahajanga';
 $GLOBALS['TL_LANG']['DIV']['mg']['MG-A'] = 'Toamasina';
 $GLOBALS['TL_LANG']['DIV']['mg']['MG-U'] = 'Toliara';
-
 $GLOBALS['TL_LANG']['DIV']['mw']['MW-C'][''] = 'Central';
 $GLOBALS['TL_LANG']['DIV']['mw']['MW-C']['MW-DE'] = 'Dedza';
 $GLOBALS['TL_LANG']['DIV']['mw']['MW-C']['MW-DO'] = 'Dowa';
@@ -2327,7 +2198,6 @@ $GLOBALS['TL_LANG']['DIV']['mw']['MW-S']['MW-MW'] = 'Mwanza';
 $GLOBALS['TL_LANG']['DIV']['mw']['MW-S']['MW-NS'] = 'Nsanje';
 $GLOBALS['TL_LANG']['DIV']['mw']['MW-S']['MW-TH'] = 'Thyolo';
 $GLOBALS['TL_LANG']['DIV']['mw']['MW-S']['MW-ZO'] = 'Zomba';
-
 $GLOBALS['TL_LANG']['DIV']['my']['MY-W'] = 'Wilayah Persekutuan Kuala Lumpur';
 $GLOBALS['TL_LANG']['DIV']['my']['MY-L'] = 'Wilayah Persekutuan Labuan';
 $GLOBALS['TL_LANG']['DIV']['my']['MY-J'] = 'Johor';
@@ -2343,7 +2213,6 @@ $GLOBALS['TL_LANG']['DIV']['my']['MY-SA'] = 'Sabah';
 $GLOBALS['TL_LANG']['DIV']['my']['MY-SK'] = 'Sarawak';
 $GLOBALS['TL_LANG']['DIV']['my']['MY-B'] = 'Selangor';
 $GLOBALS['TL_LANG']['DIV']['my']['MY-T'] = 'Terengganu';
-
 $GLOBALS['TL_LANG']['DIV']['mv']['MV-MLE'] = 'Male';
 $GLOBALS['TL_LANG']['DIV']['mv']['MV-02'] = 'Alif';
 $GLOBALS['TL_LANG']['DIV']['mv']['MV-20'] = 'Baa';
@@ -2364,7 +2233,6 @@ $GLOBALS['TL_LANG']['DIV']['mv']['MV-01'] = 'Seenu';
 $GLOBALS['TL_LANG']['DIV']['mv']['MV-24'] = 'Shaviyani';
 $GLOBALS['TL_LANG']['DIV']['mv']['MV-08'] = 'Thaa';
 $GLOBALS['TL_LANG']['DIV']['mv']['MV-04'] = 'Vaavu';
-
 $GLOBALS['TL_LANG']['DIV']['ml']['ML-BKO'] = 'Bamako';
 $GLOBALS['TL_LANG']['DIV']['ml']['ML-7'] = 'Gao';
 $GLOBALS['TL_LANG']['DIV']['ml']['ML-1'] = 'Kayes';
@@ -2374,9 +2242,7 @@ $GLOBALS['TL_LANG']['DIV']['ml']['ML-5'] = 'Mopti';
 $GLOBALS['TL_LANG']['DIV']['ml']['ML-4'] = 'Ségou';
 $GLOBALS['TL_LANG']['DIV']['ml']['ML-3'] = 'Sikasso';
 $GLOBALS['TL_LANG']['DIV']['ml']['ML-6'] = 'Tombouctou';
-
 $GLOBALS['TL_LANG']['DIV']['mt']['MT-MT'] = 'Malta';
-
 $GLOBALS['TL_LANG']['DIV']['mh']['MH-L'][''] = 'Ralik chain';
 $GLOBALS['TL_LANG']['DIV']['mh']['MH-L']['MH-ALL'] = 'Ailinglapalap';
 $GLOBALS['TL_LANG']['DIV']['mh']['MH-L']['MH-EBO'] = 'Ebon';
@@ -2403,9 +2269,7 @@ $GLOBALS['TL_LANG']['DIV']['mh']['MH-T']['MH-MEJ'] = 'Mejit';
 $GLOBALS['TL_LANG']['DIV']['mh']['MH-T']['MH-MIL'] = 'Mili';
 $GLOBALS['TL_LANG']['DIV']['mh']['MH-T']['MH-UTI'] = 'Utirik';
 $GLOBALS['TL_LANG']['DIV']['mh']['MH-T']['MH-WTJ'] = 'Wotje';
-
 $GLOBALS['TL_LANG']['DIV']['mq']['MQ-MQ'] = 'Martinique';
-
 $GLOBALS['TL_LANG']['DIV']['mr']['MR-NKC'] = 'Nouakchott';
 $GLOBALS['TL_LANG']['DIV']['mr']['MR-07'] = 'Adrar';
 $GLOBALS['TL_LANG']['DIV']['mr']['MR-03'] = 'Assaba';
@@ -2419,7 +2283,6 @@ $GLOBALS['TL_LANG']['DIV']['mr']['MR-12'] = 'Inchiri';
 $GLOBALS['TL_LANG']['DIV']['mr']['MR-09'] = 'Tagant';
 $GLOBALS['TL_LANG']['DIV']['mr']['MR-11'] = 'Tiris Zemmour';
 $GLOBALS['TL_LANG']['DIV']['mr']['MR-06'] = 'Trarza';
-
 $GLOBALS['TL_LANG']['DIV']['mu']['MU-BR'] = 'Beau Bassin-Rose Hill';
 $GLOBALS['TL_LANG']['DIV']['mu']['MU-CU'] = 'Curepipe';
 $GLOBALS['TL_LANG']['DIV']['mu']['MU-PL'] = 'Port Louis';
@@ -2436,9 +2299,7 @@ $GLOBALS['TL_LANG']['DIV']['mu']['MU-SA'] = 'Savanne';
 $GLOBALS['TL_LANG']['DIV']['mu']['MU-AG'] = 'Agalega Islands';
 $GLOBALS['TL_LANG']['DIV']['mu']['MU-CC'] = 'Cargados Carajos Shoals [Saint Brandon Islands]';
 $GLOBALS['TL_LANG']['DIV']['mu']['MU-RO'] = 'Rodrigues Island';
-
 $GLOBALS['TL_LANG']['DIV']['yt']['YT-YT'] = 'Mayotte';
-
 $GLOBALS['TL_LANG']['DIV']['mx']['MX-DIF'] = 'Distrito Federal';
 $GLOBALS['TL_LANG']['DIV']['mx']['MX-AGU'] = 'Aguascalientes';
 $GLOBALS['TL_LANG']['DIV']['mx']['MX-BCN'] = 'Baja California';
@@ -2471,12 +2332,10 @@ $GLOBALS['TL_LANG']['DIV']['mx']['MX-TLA'] = 'Tlaxcala';
 $GLOBALS['TL_LANG']['DIV']['mx']['MX-VER'] = 'Veracruz';
 $GLOBALS['TL_LANG']['DIV']['mx']['MX-YUC'] = 'Yucatán';
 $GLOBALS['TL_LANG']['DIV']['mx']['MX-ZAC'] = 'Zacatecas';
-
 $GLOBALS['TL_LANG']['DIV']['fm']['FM-TRK'] = 'chuuk';
 $GLOBALS['TL_LANG']['DIV']['fm']['FM-KSA'] = 'Kosrae';
 $GLOBALS['TL_LANG']['DIV']['fm']['FM-PNI'] = 'Pohnpei';
 $GLOBALS['TL_LANG']['DIV']['fm']['FM-YAP'] = 'Yap';
-
 $GLOBALS['TL_LANG']['DIV']['md']['MD-BAL'] = 'Bălţi';
 $GLOBALS['TL_LANG']['DIV']['md']['MD-CAH'] = 'Cahul';
 $GLOBALS['TL_LANG']['DIV']['md']['MD-CHI'] = 'Chişinău';
@@ -2527,9 +2386,7 @@ $GLOBALS['TL_LANG']['DIV']['md']['MD-TAR'] = 'Taraclia';
 $GLOBALS['TL_LANG']['DIV']['md']['MD-TEL'] = 'Teleneşti';
 $GLOBALS['TL_LANG']['DIV']['md']['MD-UGI'] = 'Ungheni';
 $GLOBALS['TL_LANG']['DIV']['md']['MD-VUL'] = 'Vulcăneşti';
-
 $GLOBALS['TL_LANG']['DIV']['mc']['MC-MC'] = 'Monaco';
-
 $GLOBALS['TL_LANG']['DIV']['mn']['MN-1'] = 'Ulaanbaatar';
 $GLOBALS['TL_LANG']['DIV']['mn']['MN-073'] = 'Arhangay';
 $GLOBALS['TL_LANG']['DIV']['mn']['MN-069'] = 'Bayanhongor';
@@ -2552,9 +2409,7 @@ $GLOBALS['TL_LANG']['DIV']['mn']['MN-049'] = 'Selenge';
 $GLOBALS['TL_LANG']['DIV']['mn']['MN-051'] = 'Sühbaatar';
 $GLOBALS['TL_LANG']['DIV']['mn']['MN-047'] = 'Töv';
 $GLOBALS['TL_LANG']['DIV']['mn']['MN-046'] = 'Uvs';
-
 $GLOBALS['TL_LANG']['DIV']['ms']['MS-MS'] = 'Montserrat';
-
 $GLOBALS['TL_LANG']['DIV']['ma']['MA-CE'][''] = 'Centre';
 $GLOBALS['TL_LANG']['DIV']['ma']['MA-CE']['MA-AZI'] = 'Azilal';
 $GLOBALS['TL_LANG']['DIV']['ma']['MA-CE']['MA-BEM'] = 'Beni Mellal';
@@ -2613,7 +2468,6 @@ $GLOBALS['TL_LANG']['DIV']['ma']['MA-TS']['MA-ESI'] = 'Essaouira';
 $GLOBALS['TL_LANG']['DIV']['ma']['MA-TS']['MA-KES'] = 'Kelaat Sraghna';
 $GLOBALS['TL_LANG']['DIV']['ma']['MA-TS']['MA-MAR'] = 'Marrakech';
 $GLOBALS['TL_LANG']['DIV']['ma']['MA-TS']['MA-SAF'] = 'Safi';
-
 $GLOBALS['TL_LANG']['DIV']['mz']['MZ-MPM'] = 'Maputo';
 $GLOBALS['TL_LANG']['DIV']['mz']['MZ-P'] = 'Cabo Delgado';
 $GLOBALS['TL_LANG']['DIV']['mz']['MZ-G'] = 'Gaza';
@@ -2625,7 +2479,6 @@ $GLOBALS['TL_LANG']['DIV']['mz']['MZ-A'] = 'Niassa';
 $GLOBALS['TL_LANG']['DIV']['mz']['MZ-S'] = 'Sofala';
 $GLOBALS['TL_LANG']['DIV']['mz']['MZ-T'] = 'Tete';
 $GLOBALS['TL_LANG']['DIV']['mz']['MZ-Q'] = 'Zambézia';
-
 $GLOBALS['TL_LANG']['DIV']['mm']['MM-07'] = 'Ayeyarwady';
 $GLOBALS['TL_LANG']['DIV']['mm']['MM-02'] = 'Bago';
 $GLOBALS['TL_LANG']['DIV']['mm']['MM-03'] = 'Magway';
@@ -2640,7 +2493,6 @@ $GLOBALS['TL_LANG']['DIV']['mm']['MM-13'] = 'Kayin';
 $GLOBALS['TL_LANG']['DIV']['mm']['MM-15'] = 'Mon';
 $GLOBALS['TL_LANG']['DIV']['mm']['MM-16'] = 'Rakhine';
 $GLOBALS['TL_LANG']['DIV']['mm']['MM-17'] = 'Shan';
-
 $GLOBALS['TL_LANG']['DIV']['na']['NA-CA'] = 'Caprivi';
 $GLOBALS['TL_LANG']['DIV']['na']['NA-ER'] = 'Erongo';
 $GLOBALS['TL_LANG']['DIV']['na']['NA-HA'] = 'Hardap';
@@ -2654,9 +2506,7 @@ $GLOBALS['TL_LANG']['DIV']['na']['NA-OS'] = 'Omusati';
 $GLOBALS['TL_LANG']['DIV']['na']['NA-ON'] = 'Oshana';
 $GLOBALS['TL_LANG']['DIV']['na']['NA-OT'] = 'Oshikoto';
 $GLOBALS['TL_LANG']['DIV']['na']['NA-OD'] = 'Otjozondjupa';
-
 $GLOBALS['TL_LANG']['DIV']['nr']['NR-NR'] = 'Nauru';
-
 $GLOBALS['TL_LANG']['DIV']['np']['NP-1'][''] = 'Madhyamanchal';
 $GLOBALS['TL_LANG']['DIV']['np']['NP-1']['NP-BA'] = 'Bagmati';
 $GLOBALS['TL_LANG']['DIV']['np']['NP-1']['NP-JA'] = 'Janakpur';
@@ -2676,7 +2526,6 @@ $GLOBALS['TL_LANG']['DIV']['np']['NP-4']['NP-SA'] = 'Sagarmatha';
 $GLOBALS['TL_LANG']['DIV']['np']['NP-5'][''] = 'Sudur Pashchimanchal';
 $GLOBALS['TL_LANG']['DIV']['np']['NP-5']['NP-MA'] = 'Mahakali';
 $GLOBALS['TL_LANG']['DIV']['np']['NP-5']['NP-SE'] = 'Seti';
-
 $GLOBALS['TL_LANG']['DIV']['nl']['NL-DR'] = 'Drenthe';
 $GLOBALS['TL_LANG']['DIV']['nl']['NL-FL'] = 'Flevoland';
 $GLOBALS['TL_LANG']['DIV']['nl']['NL-FR'] = 'Friesland';
@@ -2689,11 +2538,8 @@ $GLOBALS['TL_LANG']['DIV']['nl']['NL-OV'] = 'Overijssel';
 $GLOBALS['TL_LANG']['DIV']['nl']['NL-UT'] = 'Utrecht';
 $GLOBALS['TL_LANG']['DIV']['nl']['NL-ZE'] = 'Zeeland';
 $GLOBALS['TL_LANG']['DIV']['nl']['NL-ZH'] = 'Zuid-Holland';
-
 $GLOBALS['TL_LANG']['DIV']['an']['AN-AN'] = 'Netherlands Antilles';
-
 $GLOBALS['TL_LANG']['DIV']['nc']['NC-NC'] = 'New Caledonia';
-
 $GLOBALS['TL_LANG']['DIV']['nz']['NZ-N'][''] = 'North Island';
 $GLOBALS['TL_LANG']['DIV']['nz']['NZ-N']['NZ-AUK'] = 'Auckland';
 $GLOBALS['TL_LANG']['DIV']['nz']['NZ-N']['NZ-BOP'] = 'Bay of Plenty';
@@ -2712,7 +2558,6 @@ $GLOBALS['TL_LANG']['DIV']['nz']['NZ-S']['NZ-OTA'] = 'Otago';
 $GLOBALS['TL_LANG']['DIV']['nz']['NZ-S']['NZ-STL'] = 'Southland';
 $GLOBALS['TL_LANG']['DIV']['nz']['NZ-S']['NZ-TAS'] = 'Tasman';
 $GLOBALS['TL_LANG']['DIV']['nz']['NZ-S']['NZ-WTC'] = 'West Coast';
-
 $GLOBALS['TL_LANG']['DIV']['ni']['NI-BO'] = 'Boaco';
 $GLOBALS['TL_LANG']['DIV']['ni']['NI-CA'] = 'Carazo';
 $GLOBALS['TL_LANG']['DIV']['ni']['NI-CI'] = 'Chinandega';
@@ -2729,7 +2574,6 @@ $GLOBALS['TL_LANG']['DIV']['ni']['NI-NS'] = 'Nueva Segovia';
 $GLOBALS['TL_LANG']['DIV']['ni']['NI-SJ'] = 'Río San Juan';
 $GLOBALS['TL_LANG']['DIV']['ni']['NI-RI'] = 'Rivas';
 $GLOBALS['TL_LANG']['DIV']['ni']['NI-ZE'] = 'Zelaya';
-
 $GLOBALS['TL_LANG']['DIV']['ne']['NE-8'] = 'Niamey';
 $GLOBALS['TL_LANG']['DIV']['ne']['NE-1'] = 'Agadez';
 $GLOBALS['TL_LANG']['DIV']['ne']['NE-2'] = 'Diffa';
@@ -2738,7 +2582,6 @@ $GLOBALS['TL_LANG']['DIV']['ne']['NE-4'] = 'Maradi';
 $GLOBALS['TL_LANG']['DIV']['ne']['NE-5'] = 'Tahoua';
 $GLOBALS['TL_LANG']['DIV']['ne']['NE-6'] = 'Tillaberi';
 $GLOBALS['TL_LANG']['DIV']['ne']['NE-7'] = 'Zinder';
-
 $GLOBALS['TL_LANG']['DIV']['ng']['NG-FC'] = 'Abuja Capital Territory';
 $GLOBALS['TL_LANG']['DIV']['ng']['NG-AB'] = 'Abia';
 $GLOBALS['TL_LANG']['DIV']['ng']['NG-AD'] = 'Adamawa';
@@ -2770,13 +2613,9 @@ $GLOBALS['TL_LANG']['DIV']['ng']['NG-RI'] = 'Rivers';
 $GLOBALS['TL_LANG']['DIV']['ng']['NG-SO'] = 'Sokoto';
 $GLOBALS['TL_LANG']['DIV']['ng']['NG-TA'] = 'Taraba';
 $GLOBALS['TL_LANG']['DIV']['ng']['NG-YO'] = 'Yobe';
-
 $GLOBALS['TL_LANG']['DIV']['nu']['NU-NU'] = 'Niue';
-
 $GLOBALS['TL_LANG']['DIV']['nf']['NF-NF'] = 'Norfolk Island';
-
 $GLOBALS['TL_LANG']['DIV']['mp']['MP-MP'] = 'Northern Mariana Islands';
-
 $GLOBALS['TL_LANG']['DIV']['no']['NO-02'] = 'Akershus';
 $GLOBALS['TL_LANG']['DIV']['no']['NO-09'] = 'Aust-Agder';
 $GLOBALS['TL_LANG']['DIV']['no']['NO-06'] = 'Buskerud';
@@ -2798,7 +2637,6 @@ $GLOBALS['TL_LANG']['DIV']['no']['NO-07'] = 'Vestfold';
 $GLOBALS['TL_LANG']['DIV']['no']['NO-01'] = 'Østfold';
 $GLOBALS['TL_LANG']['DIV']['no']['NO-22'] = 'Jan Mayen (Arctic Region)';
 $GLOBALS['TL_LANG']['DIV']['no']['NO-21'] = 'Svalbard (Arctic Region)';
-
 $GLOBALS['TL_LANG']['DIV']['om']['OM-DA'] = 'Ad Dākhilīyah';
 $GLOBALS['TL_LANG']['DIV']['om']['OM-BA'] = 'Al Bāţinah';
 $GLOBALS['TL_LANG']['DIV']['om']['OM-JA'] = 'Al Janūbīyah [Zufār]';
@@ -2807,7 +2645,6 @@ $GLOBALS['TL_LANG']['DIV']['om']['OM-SH'] = 'Ash Sharqīyah';
 $GLOBALS['TL_LANG']['DIV']['om']['OM-ZA'] = 'Az Zāhirah';
 $GLOBALS['TL_LANG']['DIV']['om']['OM-MA'] = 'Masqaţ';
 $GLOBALS['TL_LANG']['DIV']['om']['OM-MU'] = 'Musandam';
-
 $GLOBALS['TL_LANG']['DIV']['pk']['PK-IS'] = 'Islamabad';
 $GLOBALS['TL_LANG']['DIV']['pk']['PK-BA'] = 'Baluchistan (Balochistān)';
 $GLOBALS['TL_LANG']['DIV']['pk']['PK-NW'] = 'North-West Frontier';
@@ -2816,9 +2653,7 @@ $GLOBALS['TL_LANG']['DIV']['pk']['PK-SD'] = 'Sind (Sindh)';
 $GLOBALS['TL_LANG']['DIV']['pk']['PK-TA'] = 'Federally Administered Tribal Areas';
 $GLOBALS['TL_LANG']['DIV']['pk']['PK-JK'] = 'Azad Kashmir';
 $GLOBALS['TL_LANG']['DIV']['pk']['PK-NA'] = 'Northern Areas';
-
 $GLOBALS['TL_LANG']['DIV']['pw']['PW-PW'] = 'Palau';
-
 $GLOBALS['TL_LANG']['DIV']['pa']['PA-1'] = 'Botas del Toro';
 $GLOBALS['TL_LANG']['DIV']['pa']['PA-2'] = 'Coclé';
 $GLOBALS['TL_LANG']['DIV']['pa']['PA-3'] = 'Colón';
@@ -2829,7 +2664,6 @@ $GLOBALS['TL_LANG']['DIV']['pa']['PA-7'] = 'Los Santos';
 $GLOBALS['TL_LANG']['DIV']['pa']['PA-8'] = 'Panamá';
 $GLOBALS['TL_LANG']['DIV']['pa']['PA-9'] = 'Veraguas';
 $GLOBALS['TL_LANG']['DIV']['pa']['PA-0'] = 'Comarca de San Blas';
-
 $GLOBALS['TL_LANG']['DIV']['pg']['PG-NCD'] = 'National Capital District (Port Moresby)';
 $GLOBALS['TL_LANG']['DIV']['pg']['PG-CPM'] = 'Central';
 $GLOBALS['TL_LANG']['DIV']['pg']['PG-CPK'] = 'Chimbu';
@@ -2850,7 +2684,6 @@ $GLOBALS['TL_LANG']['DIV']['pg']['PG-SHM'] = 'Southern Highlands';
 $GLOBALS['TL_LANG']['DIV']['pg']['PG-WPD'] = 'Western';
 $GLOBALS['TL_LANG']['DIV']['pg']['PG-WHM'] = 'Western Highlands';
 $GLOBALS['TL_LANG']['DIV']['pg']['PG-WBK'] = 'West New Britain';
-
 $GLOBALS['TL_LANG']['DIV']['py']['PY-ASU'] = 'Asunción';
 $GLOBALS['TL_LANG']['DIV']['py']['PY-16'] = 'Alto Paraguay';
 $GLOBALS['TL_LANG']['DIV']['py']['PY-10'] = 'Alto Parang';
@@ -2869,7 +2702,6 @@ $GLOBALS['TL_LANG']['DIV']['py']['PY-12'] = 'Neembucú';
 $GLOBALS['TL_LANG']['DIV']['py']['PY-9'] = 'Paraguarī';
 $GLOBALS['TL_LANG']['DIV']['py']['PY-15'] = 'Presidente Hayes';
 $GLOBALS['TL_LANG']['DIV']['py']['PY-2'] = 'San Pedro';
-
 $GLOBALS['TL_LANG']['DIV']['pe']['PE-CAL'] = 'El Callao';
 $GLOBALS['TL_LANG']['DIV']['pe']['PE-AMA'] = 'Amazonas';
 $GLOBALS['TL_LANG']['DIV']['pe']['PE-ANC'] = 'Ancash';
@@ -2895,11 +2727,8 @@ $GLOBALS['TL_LANG']['DIV']['pe']['PE-SAM'] = 'San Martín';
 $GLOBALS['TL_LANG']['DIV']['pe']['PE-TAC'] = 'Tacna';
 $GLOBALS['TL_LANG']['DIV']['pe']['PE-TUM'] = 'Tumbes';
 $GLOBALS['TL_LANG']['DIV']['pe']['PE-UCA'] = 'Ucayali';
-
 $GLOBALS['TL_LANG']['DIV']['ph']['PH-PH'] = 'Philippines';
-
 $GLOBALS['TL_LANG']['DIV']['pn']['PN-PN'] = 'Pitcairn';
-
 $GLOBALS['TL_LANG']['DIV']['pl']['PL-BP'] = 'Biała Podlaska';
 $GLOBALS['TL_LANG']['DIV']['pl']['PL-BK'] = 'Białystok';
 $GLOBALS['TL_LANG']['DIV']['pl']['PL-BB'] = 'Bielsko';
@@ -2949,7 +2778,6 @@ $GLOBALS['TL_LANG']['DIV']['pl']['PL-WL'] = 'Włocławek';
 $GLOBALS['TL_LANG']['DIV']['pl']['PL-WR'] = 'Wrocław';
 $GLOBALS['TL_LANG']['DIV']['pl']['PL-ZA'] = 'Zamość';
 $GLOBALS['TL_LANG']['DIV']['pl']['PL-ZG'] = 'Zielona Góra';
-
 $GLOBALS['TL_LANG']['DIV']['pt']['PT-01'] = 'Aveiro';
 $GLOBALS['TL_LANG']['DIV']['pt']['PT-02'] = 'Beja';
 $GLOBALS['TL_LANG']['DIV']['pt']['PT-03'] = 'Braga';
@@ -2970,9 +2798,7 @@ $GLOBALS['TL_LANG']['DIV']['pt']['PT-17'] = 'Vila Real';
 $GLOBALS['TL_LANG']['DIV']['pt']['PT-18'] = 'Viseu';
 $GLOBALS['TL_LANG']['DIV']['pt']['PT-20'] = 'Regiāo Autónoma dos Açores';
 $GLOBALS['TL_LANG']['DIV']['pt']['PT-30'] = 'Regiāo Autónoma da Madeira';
-
 $GLOBALS['TL_LANG']['DIV']['pr']['PR-PR'] = 'Puerto Rico';
-
 $GLOBALS['TL_LANG']['DIV']['qa']['QA-DA'] = 'Ad Dawḩah';
 $GLOBALS['TL_LANG']['DIV']['qa']['QA-GH'] = 'Al Ghuwayrīyah';
 $GLOBALS['TL_LANG']['DIV']['qa']['QA-JU'] = 'Al Jumaylīyah';
@@ -2982,9 +2808,7 @@ $GLOBALS['TL_LANG']['DIV']['qa']['QA-RA'] = 'Ar Rayyān';
 $GLOBALS['TL_LANG']['DIV']['qa']['QA-JB'] = 'Jarīyān al Bāţnah';
 $GLOBALS['TL_LANG']['DIV']['qa']['QA-MS'] = 'Madīnat ash Shamāl';
 $GLOBALS['TL_LANG']['DIV']['qa']['QA-US'] = 'Umm Şalāl';
-
 $GLOBALS['TL_LANG']['DIV']['re']['RE-RE'] = 'Reunion';
-
 $GLOBALS['TL_LANG']['DIV']['ro']['RO-B'] = 'Bucureşti';
 $GLOBALS['TL_LANG']['DIV']['ro']['RO-AB'] = 'Alba';
 $GLOBALS['TL_LANG']['DIV']['ro']['RO-AR'] = 'Arad';
@@ -3026,7 +2850,6 @@ $GLOBALS['TL_LANG']['DIV']['ro']['RO-TL'] = 'Tulcea';
 $GLOBALS['TL_LANG']['DIV']['ro']['RO-VS'] = 'Vaslui';
 $GLOBALS['TL_LANG']['DIV']['ro']['RO-VL'] = 'Vâlcea';
 $GLOBALS['TL_LANG']['DIV']['ro']['RO-VN'] = 'Vrancea';
-
 $GLOBALS['TL_LANG']['DIV']['ru']['RU-AD'] = 'Adygeya, Respublika';
 $GLOBALS['TL_LANG']['DIV']['ru']['RU-AL'] = 'Altay, Respublika';
 $GLOBALS['TL_LANG']['DIV']['ru']['RU-BA'] = 'Bashkortostan, Respublika';
@@ -3116,7 +2939,6 @@ $GLOBALS['TL_LANG']['DIV']['ru']['RU-NEN'] = 'Nenetskiy avtonomnyy okrug';
 $GLOBALS['TL_LANG']['DIV']['ru']['RU-TAY'] = 'Taymyrskiy (Dolgano-Nenetskiy) avtonomnyy okrug';
 $GLOBALS['TL_LANG']['DIV']['ru']['RU-UOB'] = 'Ust’-Ordynskiy Buryatskiy avtonomnyy okrug';
 $GLOBALS['TL_LANG']['DIV']['ru']['RU-YAN'] = 'Yamalo-Nenetskiy avtonomnyy okrug';
-
 $GLOBALS['TL_LANG']['DIV']['rw']['RW-C'] = 'Butare';
 $GLOBALS['TL_LANG']['DIV']['rw']['RW-I'] = 'Byumba';
 $GLOBALS['TL_LANG']['DIV']['rw']['RW-E'] = 'Cyangugu';
@@ -3129,19 +2951,13 @@ $GLOBALS['TL_LANG']['DIV']['rw']['RW-K'] = 'Kigali-Rural (Kigali y’ Icyaro)';
 $GLOBALS['TL_LANG']['DIV']['rw']['RW-L'] = 'Kigali-Ville (Kilgali Ngari)';
 $GLOBALS['TL_LANG']['DIV']['rw']['RW-M'] = 'Mutara';
 $GLOBALS['TL_LANG']['DIV']['rw']['RW-H'] = 'Ruhengeri';
-
 $GLOBALS['TL_LANG']['DIV']['sh']['SH-SH'] = 'Saint Helena';
 $GLOBALS['TL_LANG']['DIV']['sh']['SH-AC'] = 'Ascension';
 $GLOBALS['TL_LANG']['DIV']['sh']['SH-TA'] = 'Tristan da Cunha';
-
 $GLOBALS['TL_LANG']['DIV']['kn']['KN-KN'] = 'Saint Kitts & Nevis';
-
 $GLOBALS['TL_LANG']['DIV']['lc']['LC-LC'] = 'Saint Lucia';
-
 $GLOBALS['TL_LANG']['DIV']['pm']['PM-PM'] = 'St. Pierre & Miquelon';
-
 $GLOBALS['TL_LANG']['DIV']['vc']['VC-VC'] = 'St. Vincent & the Grenadines';
-
 $GLOBALS['TL_LANG']['DIV']['ws']['WS-AA'] = 'A\'ana';
 $GLOBALS['TL_LANG']['DIV']['ws']['WS-AL'] = 'Aiga-i-le-Tai';
 $GLOBALS['TL_LANG']['DIV']['ws']['WS-AT'] = 'Atua';
@@ -3153,12 +2969,9 @@ $GLOBALS['TL_LANG']['DIV']['ws']['WS-SA'] = 'Satupa\'itea';
 $GLOBALS['TL_LANG']['DIV']['ws']['WS-TU'] = 'Tuamasaga';
 $GLOBALS['TL_LANG']['DIV']['ws']['WS-VF'] = 'Va\'a-o-Fonoti';
 $GLOBALS['TL_LANG']['DIV']['ws']['WS-VS'] = 'Vaisigano';
-
 $GLOBALS['TL_LANG']['DIV']['sm']['SM-SM'] = 'San Marino';
-
 $GLOBALS['TL_LANG']['DIV']['st']['ST-P'] = 'Príncipe';
 $GLOBALS['TL_LANG']['DIV']['st']['ST-S'] = 'Sāo Tomé';
-
 $GLOBALS['TL_LANG']['DIV']['sa']['SA-11'] = 'Al Bāḩah';
 $GLOBALS['TL_LANG']['DIV']['sa']['SA-08'] = 'Al Ḩudūd ash Shamālīyah';
 $GLOBALS['TL_LANG']['DIV']['sa']['SA-12'] = 'Al Jawf';
@@ -3172,7 +2985,6 @@ $GLOBALS['TL_LANG']['DIV']['sa']['SA-09'] = 'Jīzān';
 $GLOBALS['TL_LANG']['DIV']['sa']['SA-02'] = 'Makkah';
 $GLOBALS['TL_LANG']['DIV']['sa']['SA-10'] = 'Najrān';
 $GLOBALS['TL_LANG']['DIV']['sa']['SA-07'] = 'Tabūk';
-
 $GLOBALS['TL_LANG']['DIV']['sn']['SN-DK'] = 'Dakar';
 $GLOBALS['TL_LANG']['DIV']['sn']['SN-DB'] = 'Diourbel';
 $GLOBALS['TL_LANG']['DIV']['sn']['SN-FK'] = 'Fatick';
@@ -3183,16 +2995,12 @@ $GLOBALS['TL_LANG']['DIV']['sn']['SN-SL'] = 'Saint-Louis';
 $GLOBALS['TL_LANG']['DIV']['sn']['SN-TC'] = 'Tambacounda';
 $GLOBALS['TL_LANG']['DIV']['sn']['SN-TH'] = 'Thiès';
 $GLOBALS['TL_LANG']['DIV']['sn']['SN-ZG'] = 'Ziguinchor';
-
 $GLOBALS['TL_LANG']['DIV']['sc']['SC-SC'] = 'Seychelles';
-
 $GLOBALS['TL_LANG']['DIV']['sl']['SL-W'] = 'Western Area (Freetown)';
 $GLOBALS['TL_LANG']['DIV']['sl']['SL-E'] = 'Eastern';
 $GLOBALS['TL_LANG']['DIV']['sl']['SL-N'] = 'Northern';
 $GLOBALS['TL_LANG']['DIV']['sl']['SL-S'] = 'Southern';
-
 $GLOBALS['TL_LANG']['DIV']['sg']['SG-SG'] = 'Singapore';
-
 $GLOBALS['TL_LANG']['DIV']['sk']['SK-BC'] = 'Banskobystrický kraj';
 $GLOBALS['TL_LANG']['DIV']['sk']['SK-BL'] = 'Bratislavský kraj';
 $GLOBALS['TL_LANG']['DIV']['sk']['SK-KI'] = 'Košický kraj';
@@ -3201,7 +3009,6 @@ $GLOBALS['TL_LANG']['DIV']['sk']['SK-PV'] = 'Prešovský kraj';
 $GLOBALS['TL_LANG']['DIV']['sk']['SK-TC'] = 'Trenčiansky kraj';
 $GLOBALS['TL_LANG']['DIV']['sk']['SK-TA'] = 'Trnavský kraj';
 $GLOBALS['TL_LANG']['DIV']['sk']['SK-ZI'] = 'Žilinský kraj';
-
 $GLOBALS['TL_LANG']['DIV']['si']['SI-07'] = 'Dolenjska';
 $GLOBALS['TL_LANG']['DIV']['si']['SI-09'] = 'Gorenjska';
 $GLOBALS['TL_LANG']['DIV']['si']['SI-11'] = 'Goriška';
@@ -3214,7 +3021,6 @@ $GLOBALS['TL_LANG']['DIV']['si']['SI-01'] = 'Pomurska';
 $GLOBALS['TL_LANG']['DIV']['si']['SI-04'] = 'Savinjska';
 $GLOBALS['TL_LANG']['DIV']['si']['SI-06'] = 'Spodnjeposavska';
 $GLOBALS['TL_LANG']['DIV']['si']['SI-05'] = 'Zasavska';
-
 $GLOBALS['TL_LANG']['DIV']['sb']['SB-CT'] = 'Capital Territory (Honiara)';
 $GLOBALS['TL_LANG']['DIV']['sb']['SB-CE'] = 'Central';
 $GLOBALS['TL_LANG']['DIV']['sb']['SB-GU'] = 'Guadalcanal';
@@ -3223,7 +3029,6 @@ $GLOBALS['TL_LANG']['DIV']['sb']['SB-MK'] = 'Makira';
 $GLOBALS['TL_LANG']['DIV']['sb']['SB-ML'] = 'Malaita';
 $GLOBALS['TL_LANG']['DIV']['sb']['SB-TE'] = 'Temotu';
 $GLOBALS['TL_LANG']['DIV']['sb']['SB-WE'] = 'Western';
-
 $GLOBALS['TL_LANG']['DIV']['so']['SO-AW'] = 'Awdal';
 $GLOBALS['TL_LANG']['DIV']['so']['SO-BK'] = 'Bakool';
 $GLOBALS['TL_LANG']['DIV']['so']['SO-BN'] = 'Banaadir';
@@ -3242,7 +3047,6 @@ $GLOBALS['TL_LANG']['DIV']['so']['SO-SH'] = 'Shabeellaha Hoose';
 $GLOBALS['TL_LANG']['DIV']['so']['SO-SO'] = 'Sool';
 $GLOBALS['TL_LANG']['DIV']['so']['SO-TO'] = 'Togdheer';
 $GLOBALS['TL_LANG']['DIV']['so']['SO-WO'] = 'Woqooyi Galbeed';
-
 $GLOBALS['TL_LANG']['DIV']['za']['ZA-EC'] = 'Eastern Cape (Oos-Kaap)';
 $GLOBALS['TL_LANG']['DIV']['za']['ZA-FS'] = 'Free State (Vrystaat)';
 $GLOBALS['TL_LANG']['DIV']['za']['ZA-GT'] = 'Gauteng';
@@ -3252,9 +3056,7 @@ $GLOBALS['TL_LANG']['DIV']['za']['ZA-NC'] = 'Northern Cape (Noord-Kaap)';
 $GLOBALS['TL_LANG']['DIV']['za']['ZA-NP'] = 'Northern Province (Noordelike Provinsie)';
 $GLOBALS['TL_LANG']['DIV']['za']['ZA-NW'] = 'North-West (Noord-Wes)';
 $GLOBALS['TL_LANG']['DIV']['za']['ZA-WC'] = 'Western Cape (Wes-Kaap)';
-
 $GLOBALS['TL_LANG']['DIV']['gs']['GS-GS'] = 'S.Georgia & S.Sandwich Islands';
-
 $GLOBALS['TL_LANG']['DIV']['es']['ES-AN'][''] = 'Andalucía';
 $GLOBALS['TL_LANG']['DIV']['es']['ES-AN']['ES-AL'] = 'Almería';
 $GLOBALS['TL_LANG']['DIV']['es']['ES-AN']['ES-CA'] = 'Cádiz';
@@ -3322,7 +3124,6 @@ $GLOBALS['TL_LANG']['DIV']['es']['ES-VC'][''] = 'Valenciana, Comunidad';
 $GLOBALS['TL_LANG']['DIV']['es']['ES-VC']['ES-A'] = 'Alicante';
 $GLOBALS['TL_LANG']['DIV']['es']['ES-VC']['ES-CS'] = 'Castellón';
 $GLOBALS['TL_LANG']['DIV']['es']['ES-VC']['ES-V'] = 'Valencia';
-
 $GLOBALS['TL_LANG']['DIV']['lk']['LK-1'][''] = 'Basnahira Palata (Western Province)';
 $GLOBALS['TL_LANG']['DIV']['lk']['LK-1']['LK-11'] = 'Colombo';
 $GLOBALS['TL_LANG']['DIV']['lk']['LK-1']['LK-12'] = 'Gampaha';
@@ -3357,7 +3158,6 @@ $GLOBALS['TL_LANG']['DIV']['lk']['LK-8']['LK-82'] = 'Monaragala';
 $GLOBALS['TL_LANG']['DIV']['lk']['LK-6'][''] = 'Wayamba Palata (North Western Province)';
 $GLOBALS['TL_LANG']['DIV']['lk']['LK-6']['LK-61'] = 'Kurunegala';
 $GLOBALS['TL_LANG']['DIV']['lk']['LK-6']['LK-62'] = 'Puttalam';
-
 $GLOBALS['TL_LANG']['DIV']['sd']['SD-23'] = 'A‘ālī an Nīl';
 $GLOBALS['TL_LANG']['DIV']['sd']['SD-26'] = 'Al Baḩr al Aḩmar';
 $GLOBALS['TL_LANG']['DIV']['sd']['SD-18'] = 'Al Buḩayrāt';
@@ -3384,7 +3184,6 @@ $GLOBALS['TL_LANG']['DIV']['sd']['SD-09'] = 'Shamāl Kurdufān';
 $GLOBALS['TL_LANG']['DIV']['sd']['SD-19'] = 'Sharq al Istiwā\'iyah';
 $GLOBALS['TL_LANG']['DIV']['sd']['SD-25'] = 'Sinnār';
 $GLOBALS['TL_LANG']['DIV']['sd']['SD-21'] = 'Wārāb';
-
 $GLOBALS['TL_LANG']['DIV']['sr']['SR-BR'] = 'Brokopondo';
 $GLOBALS['TL_LANG']['DIV']['sr']['SR-CM'] = 'Commewijne';
 $GLOBALS['TL_LANG']['DIV']['sr']['SR-CR'] = 'Coronie';
@@ -3395,14 +3194,11 @@ $GLOBALS['TL_LANG']['DIV']['sr']['SR-PM'] = 'Paramaribo';
 $GLOBALS['TL_LANG']['DIV']['sr']['SR-SA'] = 'Saramacca';
 $GLOBALS['TL_LANG']['DIV']['sr']['SR-SI'] = 'Sipaliwini';
 $GLOBALS['TL_LANG']['DIV']['sr']['SR-WA'] = 'Wanica';
-
 $GLOBALS['TL_LANG']['DIV']['sj']['SJ-SJ'] = 'Svalbard & Jan Mayen Islands';
-
 $GLOBALS['TL_LANG']['DIV']['sz']['SZ-HH'] = 'Hhohho';
 $GLOBALS['TL_LANG']['DIV']['sz']['SZ-LU'] = 'Lubombo';
 $GLOBALS['TL_LANG']['DIV']['sz']['SZ-MA'] = 'Manzini';
 $GLOBALS['TL_LANG']['DIV']['sz']['SZ-SH'] = 'Shiselweni';
-
 $GLOBALS['TL_LANG']['DIV']['se']['SE-K'] = 'Blekinge län';
 $GLOBALS['TL_LANG']['DIV']['se']['SE-W'] = 'Dalarnas län';
 $GLOBALS['TL_LANG']['DIV']['se']['SE-I'] = 'Gotlands län';
@@ -3424,7 +3220,6 @@ $GLOBALS['TL_LANG']['DIV']['se']['SE-U'] = 'Västmanlands län';
 $GLOBALS['TL_LANG']['DIV']['se']['SE-O'] = 'Västra Götalands län';
 $GLOBALS['TL_LANG']['DIV']['se']['SE-T'] = 'Örebro län';
 $GLOBALS['TL_LANG']['DIV']['se']['SE-E'] = 'Östergötlands län';
-
 $GLOBALS['TL_LANG']['DIV']['ch']['CH-AG'] = 'Aargau';
 $GLOBALS['TL_LANG']['DIV']['ch']['CH-AR'] = 'Appenzell Ausser-Rhoden';
 $GLOBALS['TL_LANG']['DIV']['ch']['CH-AI'] = 'Appenzell Inner-Rhoden';
@@ -3451,7 +3246,6 @@ $GLOBALS['TL_LANG']['DIV']['ch']['CH-VS'] = 'Wallis';
 $GLOBALS['TL_LANG']['DIV']['ch']['CH-VD'] = 'Vaud';
 $GLOBALS['TL_LANG']['DIV']['ch']['CH-ZG'] = 'Zug';
 $GLOBALS['TL_LANG']['DIV']['ch']['CH-ZH'] = 'Zürich';
-
 $GLOBALS['TL_LANG']['DIV']['sy']['SY-HA'] = 'Al Ḩasakah';
 $GLOBALS['TL_LANG']['DIV']['sy']['SY-LA'] = 'Al Lādhiqīyah';
 $GLOBALS['TL_LANG']['DIV']['sy']['SY-QU'] = 'Al Qunayţirah';
@@ -3466,7 +3260,6 @@ $GLOBALS['TL_LANG']['DIV']['sy']['SY-HI'] = 'Ḩimş';
 $GLOBALS['TL_LANG']['DIV']['sy']['SY-ID'] = 'Idlib';
 $GLOBALS['TL_LANG']['DIV']['sy']['SY-RD'] = 'Rīf Dimashq';
 $GLOBALS['TL_LANG']['DIV']['sy']['SY-TA'] = 'Ţarţūs';
-
 $GLOBALS['TL_LANG']['DIV']['tw']['TW-KHH'] = 'Kaohsiung';
 $GLOBALS['TL_LANG']['DIV']['tw']['TW-TPE'] = 'Taipei';
 $GLOBALS['TL_LANG']['DIV']['tw']['TW-CYI'] = 'Chiayi';
@@ -3484,12 +3277,10 @@ $GLOBALS['TL_LANG']['DIV']['tw']['TW-PIF'] = 'Pingtung';
 $GLOBALS['TL_LANG']['DIV']['tw']['TW-TTT'] = 'Taitung';
 $GLOBALS['TL_LANG']['DIV']['tw']['TW-TAO'] = 'Taoyuan';
 $GLOBALS['TL_LANG']['DIV']['tw']['TW-YUN'] = 'Yunlin';
-
 $GLOBALS['TL_LANG']['DIV']['tj']['TJ-KR'] = 'Karategin';
 $GLOBALS['TL_LANG']['DIV']['tj']['TJ-KT'] = 'Khatlon';
 $GLOBALS['TL_LANG']['DIV']['tj']['TJ-LN'] = 'Leninabad';
 $GLOBALS['TL_LANG']['DIV']['tj']['TJ-GB'] = 'Gorno-Badakhshan';
-
 $GLOBALS['TL_LANG']['DIV']['tz']['TZ-01'] = 'Arusha';
 $GLOBALS['TL_LANG']['DIV']['tz']['TZ-02'] = 'Dar-es-Salaam';
 $GLOBALS['TL_LANG']['DIV']['tz']['TZ-03'] = 'Dodoma';
@@ -3515,7 +3306,6 @@ $GLOBALS['TL_LANG']['DIV']['tz']['TZ-22'] = 'Shinyanga';
 $GLOBALS['TL_LANG']['DIV']['tz']['TZ-23'] = 'Singida';
 $GLOBALS['TL_LANG']['DIV']['tz']['TZ-24'] = 'Tabora';
 $GLOBALS['TL_LANG']['DIV']['tz']['TZ-25'] = 'Tanga';
-
 $GLOBALS['TL_LANG']['DIV']['th']['TH-10'] = 'Krung Thep Maha Nakhon [Bangkok]';
 $GLOBALS['TL_LANG']['DIV']['th']['TH-S'] = 'Phatthaya';
 $GLOBALS['TL_LANG']['DIV']['th']['TH-37'] = 'Amnat Charoen';
@@ -3593,17 +3383,13 @@ $GLOBALS['TL_LANG']['DIV']['th']['TH-61'] = 'Uthai Thani';
 $GLOBALS['TL_LANG']['DIV']['th']['TH-53'] = 'Uttaradit';
 $GLOBALS['TL_LANG']['DIV']['th']['TH-95'] = 'Yala';
 $GLOBALS['TL_LANG']['DIV']['th']['TH-35'] = 'Yasothon';
-
 $GLOBALS['TL_LANG']['DIV']['tg']['TG-C'] = 'Centre';
 $GLOBALS['TL_LANG']['DIV']['tg']['TG-K'] = 'Kara';
 $GLOBALS['TL_LANG']['DIV']['tg']['TG-M'] = 'Maritime (Région)';
 $GLOBALS['TL_LANG']['DIV']['tg']['TG-P'] = 'Plateaux';
 $GLOBALS['TL_LANG']['DIV']['tg']['TG-S'] = 'Savannes';
-
 $GLOBALS['TL_LANG']['DIV']['tk']['TK-TK'] = 'Tokelau';
-
 $GLOBALS['TL_LANG']['DIV']['to']['TO-TO'] = 'Tonga';
-
 $GLOBALS['TL_LANG']['DIV']['tt']['TT-CTT'] = 'Couva-Tabaquite-Talparo';
 $GLOBALS['TL_LANG']['DIV']['tt']['TT-DMN'] = 'Diego Martin';
 $GLOBALS['TL_LANG']['DIV']['tt']['TT-ETO'] = 'Eastern Tobago';
@@ -3620,7 +3406,6 @@ $GLOBALS['TL_LANG']['DIV']['tt']['TT-CHA'] = 'Chaguanas';
 $GLOBALS['TL_LANG']['DIV']['tt']['TT-PTF'] = 'Point Fortin';
 $GLOBALS['TL_LANG']['DIV']['tt']['TT-POS'] = 'Port of Spain';
 $GLOBALS['TL_LANG']['DIV']['tt']['TT-SFO'] = 'San Fernando';
-
 $GLOBALS['TL_LANG']['DIV']['tn']['TN-31'] = 'Béja';
 $GLOBALS['TL_LANG']['DIV']['tn']['TN-13'] = 'Ben Arous';
 $GLOBALS['TL_LANG']['DIV']['tn']['TN-23'] = 'Bizerte';
@@ -3644,7 +3429,6 @@ $GLOBALS['TL_LANG']['DIV']['tn']['TN-83'] = 'Tataouine';
 $GLOBALS['TL_LANG']['DIV']['tn']['TN-72'] = 'Tozeur';
 $GLOBALS['TL_LANG']['DIV']['tn']['TN-11'] = 'Tunis';
 $GLOBALS['TL_LANG']['DIV']['tn']['TN-22'] = 'Zaghouan';
-
 $GLOBALS['TL_LANG']['DIV']['tr']['TR-01'] = 'Adana';
 $GLOBALS['TL_LANG']['DIV']['tr']['TR-02'] = 'Adiyaman';
 $GLOBALS['TL_LANG']['DIV']['tr']['TR-03'] = 'Afyon';
@@ -3724,17 +3508,13 @@ $GLOBALS['TL_LANG']['DIV']['tr']['TR-65'] = 'Van';
 $GLOBALS['TL_LANG']['DIV']['tr']['TR-77'] = 'Yalova';
 $GLOBALS['TL_LANG']['DIV']['tr']['TR-66'] = 'Yozgat';
 $GLOBALS['TL_LANG']['DIV']['tr']['TR-67'] = 'Zonguldak';
-
 $GLOBALS['TL_LANG']['DIV']['tm']['TM-A'] = 'Ahal';
 $GLOBALS['TL_LANG']['DIV']['tm']['TM-B'] = 'Balkan';
 $GLOBALS['TL_LANG']['DIV']['tm']['TM-D'] = 'Daşhowuz';
 $GLOBALS['TL_LANG']['DIV']['tm']['TM-L'] = 'Lebap';
 $GLOBALS['TL_LANG']['DIV']['tm']['TM-M'] = 'Mary';
-
 $GLOBALS['TL_LANG']['DIV']['tc']['TC-TC'] = 'Turks & Caicos Islands';
-
 $GLOBALS['TL_LANG']['DIV']['tv']['TV-TV'] = 'Tuvalu';
-
 $GLOBALS['TL_LANG']['DIV']['ug']['UG-APA'] = 'Apac';
 $GLOBALS['TL_LANG']['DIV']['ug']['UG-ARU'] = 'Arua';
 $GLOBALS['TL_LANG']['DIV']['ug']['UG-BUN'] = 'Bundibugyo';
@@ -3774,7 +3554,6 @@ $GLOBALS['TL_LANG']['DIV']['ug']['UG-RAK'] = 'Rakai';
 $GLOBALS['TL_LANG']['DIV']['ug']['UG-RUK'] = 'Rukungiri';
 $GLOBALS['TL_LANG']['DIV']['ug']['UG-SOR'] = 'Soroti';
 $GLOBALS['TL_LANG']['DIV']['ug']['UG-TOR'] = 'Tororo';
-
 $GLOBALS['TL_LANG']['DIV']['ua']['UA-71'] = 'Cherkas\'ka Oblast\'';
 $GLOBALS['TL_LANG']['DIV']['ua']['UA-74'] = 'Chernihivs\'ka Oblast\'';
 $GLOBALS['TL_LANG']['DIV']['ua']['UA-77'] = 'Chernivets\'ka Oblast\'';
@@ -3802,7 +3581,6 @@ $GLOBALS['TL_LANG']['DIV']['ua']['UA-18'] = 'Zhytomyrs\'ka Oblast\'';
 $GLOBALS['TL_LANG']['DIV']['ua']['UA-43'] = 'Respublika Krym';
 $GLOBALS['TL_LANG']['DIV']['ua']['UA-30'] = 'Kyïv';
 $GLOBALS['TL_LANG']['DIV']['ua']['UA-40'] = 'Sevastopol\'';
-
 $GLOBALS['TL_LANG']['DIV']['ae']['AE-AZ'] = 'Abū Zaby (Abu Dhabi)';
 $GLOBALS['TL_LANG']['DIV']['ae']['AE-AJ'] = 'Ajmān';
 $GLOBALS['TL_LANG']['DIV']['ae']['AE-FU'] = 'Al Fujayrah';
@@ -3810,7 +3588,6 @@ $GLOBALS['TL_LANG']['DIV']['ae']['AE-SH'] = 'Ash Shāriqah (Sharjah)';
 $GLOBALS['TL_LANG']['DIV']['ae']['AE-DU'] = 'Dubayy (Dubai)';
 $GLOBALS['TL_LANG']['DIV']['ae']['AE-RK'] = 'R\'as al Khaymah';
 $GLOBALS['TL_LANG']['DIV']['ae']['AE-UQ'] = 'Umm al Qaywayn';
-
 $GLOBALS['TL_LANG']['DIV']['us']['US-AL'] = 'Alabama';
 $GLOBALS['TL_LANG']['DIV']['us']['US-AK'] = 'Alaska';
 $GLOBALS['TL_LANG']['DIV']['us']['US-AZ'] = 'Arizona';
@@ -3868,7 +3645,6 @@ $GLOBALS['TL_LANG']['DIV']['us']['US-MP'] = 'Northern Mariana Islands';
 $GLOBALS['TL_LANG']['DIV']['us']['US-PR'] = 'Puerto Rico';
 $GLOBALS['TL_LANG']['DIV']['us']['US-UM'] = 'United States Minor Outlying Islands';
 $GLOBALS['TL_LANG']['DIV']['us']['US-VI'] = 'Virgin Islands, U.S.';
-
 $GLOBALS['TL_LANG']['DIV']['uy']['UY-AR'] = 'Artigas';
 $GLOBALS['TL_LANG']['DIV']['uy']['UY-CA'] = 'Canelones';
 $GLOBALS['TL_LANG']['DIV']['uy']['UY-CL'] = 'Cerro Largo';
@@ -3888,7 +3664,6 @@ $GLOBALS['TL_LANG']['DIV']['uy']['UY-SJ'] = 'San José';
 $GLOBALS['TL_LANG']['DIV']['uy']['UY-SO'] = 'Soriano';
 $GLOBALS['TL_LANG']['DIV']['uy']['UY-TA'] = 'Tacuarembó';
 $GLOBALS['TL_LANG']['DIV']['uy']['UY-TT'] = 'Treinta y Tres';
-
 $GLOBALS['TL_LANG']['DIV']['uz']['UZ-QR'] = 'Qoraqalpoghiston Respublikasi (Karakalpakstan, Respublika)';
 $GLOBALS['TL_LANG']['DIV']['uz']['UZ-AN'] = 'Andijon (Andizhan)';
 $GLOBALS['TL_LANG']['DIV']['uz']['UZ-BU'] = 'Bukhoro (Bukhara)';
@@ -3902,14 +3677,12 @@ $GLOBALS['TL_LANG']['DIV']['uz']['UZ-SA'] = 'Samarqand (Samarkand)';
 $GLOBALS['TL_LANG']['DIV']['uz']['UZ-SI'] = 'Sirdaryo (Syrdar\'ya)';
 $GLOBALS['TL_LANG']['DIV']['uz']['UZ-SU'] = 'Surkhondaryo (Surkhandar\'ya)';
 $GLOBALS['TL_LANG']['DIV']['uz']['UZ-TO'] = 'Toshkent (Tashkent)';
-
 $GLOBALS['TL_LANG']['DIV']['vu']['VU-MAP'] = 'Malampa';
 $GLOBALS['TL_LANG']['DIV']['vu']['VU-PAM'] = 'Pénama';
 $GLOBALS['TL_LANG']['DIV']['vu']['VU-SAM'] = 'Sanma';
 $GLOBALS['TL_LANG']['DIV']['vu']['VU-SEE'] = 'Shéfa';
 $GLOBALS['TL_LANG']['DIV']['vu']['VU-TAE'] = 'Taféa';
 $GLOBALS['TL_LANG']['DIV']['vu']['VU-TOB'] = 'Torba';
-
 $GLOBALS['TL_LANG']['DIV']['ve']['VE-A'] = 'Distrito Federal';
 $GLOBALS['TL_LANG']['DIV']['ve']['VE-B'] = 'Anzoátegui';
 $GLOBALS['TL_LANG']['DIV']['ve']['VE-C'] = 'Apure';
@@ -3934,7 +3707,6 @@ $GLOBALS['TL_LANG']['DIV']['ve']['VE-V'] = 'Zulia';
 $GLOBALS['TL_LANG']['DIV']['ve']['VE-Z'] = 'Amazonas';
 $GLOBALS['TL_LANG']['DIV']['ve']['VE-Y'] = 'Delta Amacuro';
 $GLOBALS['TL_LANG']['DIV']['ve']['VE-W'] = 'Dependencias Federales';
-
 $GLOBALS['TL_LANG']['DIV']['vn']['VN-44'] = 'An Giang';
 $GLOBALS['TL_LANG']['DIV']['vn']['VN-53'] = 'Bat Can';
 $GLOBALS['TL_LANG']['DIV']['vn']['VN-54'] = 'Bat Giang';
@@ -3995,15 +3767,10 @@ $GLOBALS['TL_LANG']['DIV']['vn']['VN-07'] = 'Tuyen Quang';
 $GLOBALS['TL_LANG']['DIV']['vn']['VN-49'] = 'Vinh Long';
 $GLOBALS['TL_LANG']['DIV']['vn']['VN-70'] = 'Vinh Yen';
 $GLOBALS['TL_LANG']['DIV']['vn']['VN-06'] = 'Yen Bai';
-
 $GLOBALS['TL_LANG']['DIV']['vg']['VG-VG'] = 'Virgin Islands (British)';
-
 $GLOBALS['TL_LANG']['DIV']['vi']['VI-VI'] = 'Virgin Islands (U.S.)';
-
 $GLOBALS['TL_LANG']['DIV']['wf']['WF-WF'] = 'Wallis & Futuna Islands';
-
 $GLOBALS['TL_LANG']['DIV']['eh']['EH-EH'] = 'Western Sahara';
-
 $GLOBALS['TL_LANG']['DIV']['ye']['YE-AB'] = 'Abyān';
 $GLOBALS['TL_LANG']['DIV']['ye']['YE-AD'] = 'Adan';
 $GLOBALS['TL_LANG']['DIV']['ye']['YE-BA'] = 'Al Bayḑā\'';
@@ -4021,12 +3788,10 @@ $GLOBALS['TL_LANG']['DIV']['ye']['YE-SD'] = 'Şa\'dah';
 $GLOBALS['TL_LANG']['DIV']['ye']['YE-SN'] = 'Şan‘ā\'';
 $GLOBALS['TL_LANG']['DIV']['ye']['YE-SH'] = 'Shabwah';
 $GLOBALS['TL_LANG']['DIV']['ye']['YE-TA'] = 'Ta‘izz';
-
 $GLOBALS['TL_LANG']['DIV']['yu']['YU-CG'] = 'Crna Gora';
 $GLOBALS['TL_LANG']['DIV']['yu']['YU-SR'] = 'Srbija';
 $GLOBALS['TL_LANG']['DIV']['yu']['YU-KM'] = 'Kosovo-Metohija';
 $GLOBALS['TL_LANG']['DIV']['yu']['YU-VO'] = 'Vojvodina';
-
 $GLOBALS['TL_LANG']['DIV']['zm']['ZM-02'] = 'Central';
 $GLOBALS['TL_LANG']['DIV']['zm']['ZM-08'] = 'Copperbelt';
 $GLOBALS['TL_LANG']['DIV']['zm']['ZM-03'] = 'Eastern';
@@ -4036,7 +3801,6 @@ $GLOBALS['TL_LANG']['DIV']['zm']['ZM-05'] = 'Northern';
 $GLOBALS['TL_LANG']['DIV']['zm']['ZM-06'] = 'North-Western';
 $GLOBALS['TL_LANG']['DIV']['zm']['ZM-07'] = 'Southern';
 $GLOBALS['TL_LANG']['DIV']['zm']['ZM-01'] = 'Western';
-
 $GLOBALS['TL_LANG']['DIV']['zw']['ZW-BU'] = 'Bulawayo';
 $GLOBALS['TL_LANG']['DIV']['zw']['ZW-HA'] = 'Harare';
 $GLOBALS['TL_LANG']['DIV']['zw']['ZW-MA'] = 'Manicaland';
@@ -4047,7 +3811,6 @@ $GLOBALS['TL_LANG']['DIV']['zw']['ZW-MV'] = 'Masvingo';
 $GLOBALS['TL_LANG']['DIV']['zw']['ZW-MN'] = 'Matabeleland North';
 $GLOBALS['TL_LANG']['DIV']['zw']['ZW-MS'] = 'Matabeleland South';
 $GLOBALS['TL_LANG']['DIV']['zw']['ZW-MI'] = 'Midlands';
-
 $GLOBALS['TL_LANG']['DIV']['ax']['AX-AX'] = 'Åland Islands';
 $GLOBALS['TL_LANG']['DIV']['cw']['CW-CW'] = 'Curaçao';
 $GLOBALS['TL_LANG']['DIV']['gg']['GG-GG'] = 'Guernsey';

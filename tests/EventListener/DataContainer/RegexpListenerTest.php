@@ -55,6 +55,7 @@ final class RegexpListenerTest extends TestCase
     {
         $previousLanguage = $GLOBALS['TL_LANG'] ?? [];
         $GLOBALS['TL_LANG']['ERR'][$regexp] = $message;
+
         $widget = $this->createMock(Widget::class);
         $widget
             ->expects($valid ? $this->never() : $this->once())

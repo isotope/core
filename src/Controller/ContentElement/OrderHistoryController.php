@@ -36,6 +36,7 @@ class OrderHistoryController extends AbstractContentElementController
         }
 
         $orders = [];
+
         $models = ProductCollectionModel::findBy(
             [
                 'order_status IS NOT NULL',

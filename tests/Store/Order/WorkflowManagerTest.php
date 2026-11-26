@@ -26,6 +26,7 @@ final class WorkflowManagerTest extends TestCase
         $definition = $manager->getOrderWorkflow()->getDefinition();
 
         $this->assertSame(['new' => 'new', 'completed' => 'completed'], $definition->getPlaces());
+
         $transitions = $definition->getTransitions();
         $this->assertCount(1, $transitions);
         $this->assertSame('completed', $transitions[0]->getName());

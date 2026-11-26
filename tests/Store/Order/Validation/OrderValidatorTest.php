@@ -21,10 +21,13 @@ final class OrderValidatorTest extends TestCase
 
     public function testAdditionalPropertiesAndExtensionsAreAccepted(): void
     {
-        $this->assertCount(0, $this->validateOrder([
-            'custom_column' => 'value',
-            'extensions' => ['custom' => ['value' => 42]],
-        ]));
+        $this->assertCount(
+            0,
+            $this->validateOrder([
+                'custom_column' => 'value',
+                'extensions' => ['custom' => ['value' => 42]],
+            ]),
+        );
     }
 
     #[DataProvider('invalidOrderProvider')]
@@ -89,18 +92,24 @@ final class OrderValidatorTest extends TestCase
         $context ??= $this->createStoreContext()->setConfigId(1)->setMemberId(1);
         $constraints = (new OrderValidator())->getConstraints($context);
 
-        return $validator->validate(array_replace([
-            'member_id' => 1,
-            'config_id' => 1,
-            'store_id' => 0,
-            'locale' => 'en',
-            'source_collection_id' => 1,
-            'billing_address' => [],
-            'payment_id' => 0,
-            'shipping_id' => 0,
-            'subtotal' => 0,
-            'total' => 0,
-            'currency' => 'USD',
-        ], $data), $constraints);
+        return $validator->validate(
+            array_replace(
+                [
+                    'member_id' => 1,
+                    'config_id' => 1,
+                    'store_id' => 0,
+                    'locale' => 'en',
+                    'source_collection_id' => 1,
+                    'billing_address' => [],
+                    'payment_id' => 0,
+                    'shipping_id' => 0,
+                    'subtotal' => 0,
+                    'total' => 0,
+                    'currency' => 'USD',
+                ],
+                $data,
+            ),
+            $constraints,
+        );
     }
 }

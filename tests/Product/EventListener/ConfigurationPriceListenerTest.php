@@ -31,27 +31,31 @@ final class ConfigurationPriceListenerTest extends TestCase
             (new Option('0', 'Option zero'))->setPrice(new CalculatedPrice(2, 2)),
             new Option('free', 'Free option'),
         ]);
+
         $attribute = $this->createStub(OptionsAttributeInterface::class);
         $attribute
             ->method('getOptions')
             ->willReturn($options)
         ;
+
         $registry = $this->createStub(AttributeRegistry::class);
         $registry
             ->method('getPricedFields')
             ->willReturn(['extras'])
         ;
-
         $registry
             ->method('get')
             ->willReturn($attribute)
         ;
+
         $calculator = new PriceCalculator(new TaxCalculator(
             $this->createContaoFrameworkStub(),
             $this->createStub(RuleMatcher::class),
             $this->createStub(TranslatorInterface::class),
         ));
+
         $basePrice = new BasePrice(500, 100, '%s per 100g');
+
         $event = new ProductPriceEvent(
             $this->createStub(CoreProduct::class),
             $this->createStoreContext(),
@@ -61,6 +65,7 @@ final class ConfigurationPriceListenerTest extends TestCase
 
         $listener = new ConfigurationPriceListener($registry, $calculator);
         $listener($event);
+
         $price = $event->getPrice();
 
         $this->assertInstanceOf(CalculatedPrice::class, $price);
