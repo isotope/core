@@ -191,6 +191,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
         ],
         'submit_buttons' => [
             // input_field_callback from OrderLogListener
+            'exclude' => false,
             'eval' => ['doNotShow' => true],
         ],
         'config_id' => [
@@ -227,6 +228,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
         ],
         'order_log' => [
             // input_field_callback from OrderLogListener
+            'exclude' => false,
             'eval' => ['doNotShow' => true],
         ],
         'subtotal' => [
