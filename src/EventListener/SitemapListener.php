@@ -57,7 +57,7 @@ class SitemapListener
         $products = $this->productBuilder->build($dtoCollection, $context);
 
         foreach ($products as $product) {
-            if (!$product instanceof CoreProduct) {
+            if (!$product instanceof CoreProduct || !$product->isAvailable()) {
                 continue;
             }
 
@@ -80,7 +80,7 @@ class SitemapListener
                     }
 
                     foreach ($product->getVariants() as $variant) {
-                        if ($variant instanceof CoreProduct) {
+                        if ($variant instanceof CoreProduct && $variant->isAvailable()) {
                             $reference->product = $variant;
 
                             $this->addToSitemap($reference, $event->getDocument());
