@@ -183,7 +183,7 @@ class OrderstatusMigration extends AbstractMigration
 
         if (!$table->hasColumn('delivery_status')) {
             $this->connection->executeStatement('ALTER TABLE tl_iso_product_collection ADD COLUMN `delivery_status` VARCHAR(32) DEFAULT NULL');
-            $this->connection->executeStatement("UPDATE tl_iso_product_collection SET transaction_status='shipped' WHERE type='order'");
+            $this->connection->executeStatement("UPDATE tl_iso_product_collection SET delivery_status='shipped' WHERE type='order'");
         }
     }
 }
