@@ -79,9 +79,7 @@ class PaypalIpnController extends AbstractController
             $response = $this->httpClient->request(
                 'POST',
                 $url,
-                [
-                    'body' => $request->getContent(),
-                ],
+                ['body' => $request->getContent()],
             );
 
             if ('VERIFIED' !== $response->getContent()) {

@@ -20,6 +20,7 @@ class ValidAliasCharactersListener
         $currentRecord = $dc->getCurrentRecord();
 
         $slugOptions = [];
+
         $validChars = $this->connection->fetchOne(
             'SELECT validAliasCharacters FROM tl_iso_producttype WHERE id=?',
             [$currentRecord['type']],

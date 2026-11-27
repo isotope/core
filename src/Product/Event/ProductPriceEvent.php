@@ -16,7 +16,19 @@ class ProductPriceEvent extends Event
         private readonly StoreContext $context,
         private readonly array $configuration = [],
         private CalculatedPrice|null $price = null,
+        private readonly int $quantity = 1,
+        private readonly bool $showRange = false,
     ) {
+    }
+
+    public function getQuantity(): int
+    {
+        return $this->quantity;
+    }
+
+    public function isRange(): bool
+    {
+        return $this->showRange;
     }
 
     public function getProduct(): CoreProduct

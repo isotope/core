@@ -24,6 +24,7 @@ class ChangelanguageNavigationListener
     public function __invoke(ChangelanguageNavigationEvent $event): void
     {
         $request = $this->requestStack->getCurrentRequest();
+
         $product = $request?->attributes->get('_content');
         $currentPage = $request?->attributes->get('originalPageModel');
 
@@ -40,6 +41,7 @@ class ChangelanguageNavigationListener
         $alias = $model->getAlias($navigationItem->getRootPage()->language);
 
         $event->getUrlParameterBag()->setUrlAttribute('auto_item', $alias ?: $model->id);
+
         $navigationItem->setTitle($product->getName());
         $navigationItem->setPageTitle($product->meta_title);
 

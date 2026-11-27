@@ -1,7 +1,7 @@
 <?php
 
-use Contao\DC_Table;
 use Contao\DataContainer;
+use Contao\DC_Table;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Types\Types;
 use Isotope\CoreBundle\Store\Order\StatusType;
@@ -12,7 +12,7 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = [
         'dataContainer' => DC_Table::class,
         'enableVersioning' => true,
         'markAsCopy' => 'name',
-        'sql' =>  [
+        'sql' => [
             'keys' => [
                 'id' => 'primary',
                 'transaction_state' => 'index',
@@ -62,7 +62,7 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = [
         'sorting' => [
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'rgxp' => 'natural', 'tl_class' => 'w25'],
-            'sql' =>  ['type' => Types::INTEGER, 'default' => 0, 'unsigned' => true],
+            'sql' => ['type' => Types::INTEGER, 'default' => 0, 'unsigned' => true],
         ],
         'color' => [
             'inputType' => 'text',
@@ -102,7 +102,7 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = [
         'welcomescreen' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'clr'],
-            'sql' =>  ['type' => 'boolean', 'default' => false],
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
     ],
 ];

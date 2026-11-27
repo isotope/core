@@ -19,6 +19,21 @@ export default class extends Controller {
         this.#exec(query, event);
     }
 
+    follow(event) {
+        const url = new URL(event.currentTarget.href);
+
+        if (url.origin !== window.location.origin || url.pathname !== window.location.pathname) {
+            return;
+        }
+
+        event.preventDefault();
+
+        const query = ProductQuery.fromLocation(url);
+        query.apply(query.getFilter(this.idValue));
+
+        this.#exec(query, event);
+    }
+
     unset(event) {
         const query = ProductQuery.fromLocation();
         const filter = query.getFilter(this.idValue).unset(...this.#getFilterParams(event));

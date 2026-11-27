@@ -86,7 +86,6 @@ abstract class AbstractOptionsAttribute extends AbstractAttribute implements Opt
             unset($fieldTemplate['label']);
 
             $field = array_replace_recursive($field, $fieldTemplate);
-
             $field['attributes']['dynamic'] = true;
             $field['foreignKey'] = 'tl_iso_attribute_option.label';
             $field['eval']['whereCondition'] = "field_name='{$this->getFieldName()}'";

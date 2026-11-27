@@ -29,7 +29,6 @@ class OrderConverter
     public function convertToOrder(Cart $cart, StoreContext $context): array
     {
         $data = CartTransformer::transform($cart, $context);
-
         $data['billing_address'] = AddressTransformer::transform($cart->getBillingAddress());
         $data['line_items'] = $this->convertLineItems($cart, $context);
 
@@ -49,13 +48,14 @@ class OrderConverter
 
     public function convertToCart(Order $order, StoreContext $context): Cart
     {
-        // TODO: do we need to clone things?
         $cart = new Cart($order->getIdentifier());
         $cart->setBillingAddress($order->getBillingAddress());
         $cart->setShippingAddress($order->getShippingAddress());
         $cart->setPaymentMethod($order->getPaymentMethod());
         $cart->setShippingMethod($order->getShippingMethod());
-        $cart->setLineItems($order->getLineItems()->products());
+
+        // Recalculating the cart must not overwrite the original order's line items.
+        $cart->setLineItems($order->getLineItems()->products()->clone());
         $cart->setSubtotals($order->getSubtotals());
         $cart->setTotal($order->getTotal());
         $cart->setExtensions($order->getExtensions());

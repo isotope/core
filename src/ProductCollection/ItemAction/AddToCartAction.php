@@ -37,9 +37,7 @@ class AddToCartAction extends AbstractProductCollectionItemAction
         return $this->renderView(
             $this->type,
             $item->getId(),
-            [
-                'label' => $this->translator->trans('MSC.buttonLabel.add_to_cart', [], 'contao_default'),
-            ],
+            ['label' => $this->translator->trans('MSC.buttonLabel.add_to_cart', [], 'contao_default')],
         );
     }
 

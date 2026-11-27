@@ -99,13 +99,7 @@ class SelectAttribute extends AbstractOptionsAttribute implements VariantAttribu
         $field['eval']['chosen'] = $this->hasChosen();
         $field['eval']['includeBlankOption'] = $this->isIncludeBlankOption();
 
-        if (
-            $this->hasMultiple()
-            && (
-                OptionsSource::Table === $this->getOptionsSource()
-                || OptionsSource::ForeignKey === $this->getOptionsSource()
-            )
-        ) {
+        if ($this->hasMultiple()) {
             $field['eval']['csv'] = ',';
         }
 

@@ -95,7 +95,7 @@ class OrderstatusMigration extends AbstractMigration
             $this->addAliases($schemaManager);
         }
 
-        $this->addMissingTypes();
+        $this->addMissingTypes($schemaManager);
         $this->migrateOrders($schemaManager);
 
         return $this->createResult(true);
@@ -109,7 +109,10 @@ class OrderstatusMigration extends AbstractMigration
         );
     }
 
-    private function addMissingTypes(): void
+    /**
+     * @param AbstractSchemaManager<MySQLPlatform> $schemaManager
+     */
+    private function addMissingTypes(AbstractSchemaManager $schemaManager): void
     {
         $types = $this->getMissingTypes();
 
@@ -121,6 +124,19 @@ class OrderstatusMigration extends AbstractMigration
                     'sorting' => $position,
                     ...$status,
                 ]);
+            }
+
+            // Update the existing payments
+            if ('transaction' === $type && $schemaManager->tableExists('tl_iso_payment')) {
+                $table = $schemaManager->introspectTableByUnquotedName('tl_iso_payment');
+
+                foreach (['processing_status', 'paid_status', 'failed_status'] as $field) {
+                    if (!$table->hasColumn($field)) {
+                        $this->connection->executeStatement("ALTER TABLE tl_iso_payment ADD COLUMN `$field` varchar(32) NOT NULL DEFAULT ''");
+                    }
+                }
+
+                $this->connection->executeStatement("UPDATE tl_iso_paymnent SET processing_status='processing', paid_status='paid', failed_status='failed'");
             }
         }
     }
@@ -183,7 +199,7 @@ class OrderstatusMigration extends AbstractMigration
 
         if (!$table->hasColumn('delivery_status')) {
             $this->connection->executeStatement('ALTER TABLE tl_iso_product_collection ADD COLUMN `delivery_status` VARCHAR(32) DEFAULT NULL');
-            $this->connection->executeStatement("UPDATE tl_iso_product_collection SET transaction_status='shipped' WHERE type='order'");
+            $this->connection->executeStatement("UPDATE tl_iso_product_collection SET delivery_status='shipped' WHERE type='order'");
         }
     }
 }

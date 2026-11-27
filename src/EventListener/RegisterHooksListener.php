@@ -21,6 +21,7 @@ class RegisterHooksListener
                     $priorities[0] = [...array_values($GLOBALS['ISO_HOOKS'][$hookName]), ...$priorities[0]];
                 } else {
                     $priorities[0] = $GLOBALS['ISO_HOOKS'][$hookName];
+
                     krsort($priorities);
                 }
             }

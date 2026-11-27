@@ -47,7 +47,7 @@ class CartAddressCondition implements RuleConditionInterface
             return false;
         }
 
-        if (null !== $this->subdivisions && \in_array($address->subdivision, $this->subdivisions, true)) {
+        if (null !== $this->subdivisions && !\in_array($address->subdivision, $this->subdivisions, true)) {
             return false;
         }
 

@@ -38,12 +38,12 @@ class FloatComparator
 
     public static function lessThan(float $a, float $b): bool
     {
-        return $a - $b < -self::EPSILON;
+        return $a - $b <= -self::EPSILON;
     }
 
     public static function greaterThan(float $a, float $b): bool
     {
-        return $b - $a < -self::EPSILON;
+        return $b - $a <= -self::EPSILON;
     }
 
     public static function lessThanOrEquals(float $a, float $b): bool

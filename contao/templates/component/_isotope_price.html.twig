@@ -5,15 +5,27 @@
         {%- set html = html is defined ? html : true -%}
         {%- set space = html ? '&nbsp;' : ' ' -%}
         {%- set amount = amount|default(unit_price|default(0)) -%}
+        {%- set selling_price -%}
+            {%- block price_amount -%}
+                {%- set symbol = currency.symbol -%}
+                {%- if currency.after -%}{{- money.format(amount) -}}{%- endif -%}
+                {%- if currency.after and (not symbol or currency.space) -%}{{ space|raw }}{%- endif -%}
+                {%- if html -%}<span class="currency">{%- endif -%}
+                {%- if symbol -%}{{- symbol -}}{%- else -%}{{- currency.code -}}{%- endif -%}
+                {%- if html -%}</span>{%- endif -%}
+                {%- if not currency.after and (not symbol or currency.space) -%}{{ space|raw }}{%- endif -%}
+                {%- if not currency.after -%}{{- money.format(amount) -}}{% endif -%}
+            {%- endblock -%}
+        {%- endset -%}
         {%- set price -%}
-            {%- set symbol = currency.symbol -%}
-            {%- if currency.after -%}{{- money.format(amount) -}}{%- endif -%}
-            {%- if currency.after and (not symbol or currency.space) -%}{{ space }}{%- endif -%}
-            {%- if html -%}<span class="currency">{%- endif -%}
-            {%- if symbol -%}{{- symbol -}}{%- else -%}{{- currency.code -}}{%- endif -%}
-            {%- if html -%}</span>{%- endif -%}
-            {%- if not currency.after and (not symbol or currency.space) -%}{{ space }}{%- endif -%}
-            {%- if not currency.after -%}{{- money.format(amount) -}}{% endif -%}
+            {%- if html and list_price is defined and list_price is not null and list_price > amount -%}
+                <del class="regular-price">
+                    {%- with {amount: list_price} -%}
+                        {{- block('price_amount') -}}
+                    {%- endwith -%}
+                </del>{{ ' ' }}
+            {%- endif -%}
+            {{- selling_price -}}
         {%- endset -%}
         {%- if is_range|default -%}{{ 'MSC.priceRangeLabel'|trans([price], 'contao_default')|raw }}{% else %}{{ price }}{% endif -%}
     {%- endif -%}

@@ -46,20 +46,22 @@ class PricesMigration extends AbstractMigration
          *     parent_type: int
          * }> $prices
          */
-        $prices = $this->connection->fetchAllAssociative(<<<'SQL'
-            SELECT
-                tl_iso_product_price.*,
-                GROUP_CONCAT(tl_iso_product_pricetier.min) AS tier_keys,
-                GROUP_CONCAT(tl_iso_product_pricetier.price) AS tier_values,
-                p.type,
-                pp.type AS parent_type
-            FROM tl_iso_product_price
-            LEFT JOIN tl_iso_product_pricetier ON tl_iso_product_pricetier.pid = tl_iso_product_price.id
-            LEFT JOIN tl_iso_product p ON p.id=tl_iso_product_price.pid
-            LEFT JOIN tl_iso_product pp ON pp.id=p.pid
-            GROUP BY tl_iso_product_price.id
-            ORDER BY config_id DESC, member_group DESC, start DESC, stop DESC
-            SQL);
+        $prices = $this->connection->fetchAllAssociative(
+            <<<'SQL'
+                SELECT
+                    tl_iso_product_price.*,
+                    GROUP_CONCAT(tl_iso_product_pricetier.min) AS tier_keys,
+                    GROUP_CONCAT(tl_iso_product_pricetier.price) AS tier_values,
+                    p.type,
+                    pp.type AS parent_type
+                FROM tl_iso_product_price
+                LEFT JOIN tl_iso_product_pricetier ON tl_iso_product_pricetier.pid = tl_iso_product_price.id
+                LEFT JOIN tl_iso_product p ON p.id=tl_iso_product_price.pid
+                LEFT JOIN tl_iso_product pp ON pp.id=p.pid
+                GROUP BY tl_iso_product_price.id
+                ORDER BY config_id DESC, member_group DESC, start DESC, stop DESC
+                SQL,
+        );
 
         foreach ($prices as $price) {
             $tiers = array_combine(explode(',', (string) $price['tier_keys']), explode(',', (string) $price['tier_values']));

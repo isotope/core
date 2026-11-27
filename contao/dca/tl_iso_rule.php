@@ -1,7 +1,7 @@
 <?php
 
-use Contao\DC_Table;
 use Contao\DataContainer;
+use Contao\DC_Table;
 use Doctrine\DBAL\Types\Types;
 
 $GLOBALS['TL_DCA']['tl_iso_rule'] = [
@@ -10,7 +10,7 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = [
         'ctable' => ['tl_iso_rule_condition'],
         'enableVersioning' => false,
         'markAsCopy' => 'name',
-        'sql' =>  [
+        'sql' => [
             'keys' => [
                 'id' => 'primary',
             ],
@@ -60,7 +60,7 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = [
             'inputType' => 'checkbox',
             'filter' => true,
             'eval' => ['doNotCopy' => true, 'tl_class' => 'w33 m12'],
-            'sql' =>  ['type' => 'boolean', 'default' => false],
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'priority' => [
             'sorting' => true,

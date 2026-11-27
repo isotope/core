@@ -1,0 +1,53 @@
+{% trans_default_domain 'contao_default' %}
+{% extends '@Contao/content_element/_isotope_base.html.twig' %}
+
+{% set attributes = attrs()
+    .set('data-controller', 'isotope--productquery isotope--fragment')
+    .set('data-isotope--productquery-id-value', filter_key)
+    .set('data-isotope--fragment-id-value', fragment_id)
+    .set('data-isotope--fragment-filters-value', [filter_key]|json_encode)
+    .set('data-action', 'isotope--productquery:update@window->isotope--fragment#query')
+    .mergeWith(attributes|default)
+%}
+
+{% block content %}
+    {% block filters %}
+        <ul class="level_1">
+            {% for filter in filters %}
+                <li class="{{ filter.class }}{% if loop.first %} first{% endif %}{% if loop.last %} last{% endif %}">
+                    {% block filter_label %}
+                        <span class="label">{{ filter.label }}</span>
+                    {% endblock %}
+                    {% block options %}
+                        <ul class="level_2">
+                            {% for item in filter.items %}
+                                {% block option %}
+                                    {% set link_attributes = attrs()
+                                        .set('href', item.href)
+                                        .set('rel', 'nofollow')
+                                        .addClass(item.class)
+                                        .set('aria-current', 'true', item.is_active)
+                                        .set('data-action', 'isotope--productquery#follow')
+                                    %}
+                                    <li class="{{ item.class }}">
+                                        <a{{ link_attributes }}>
+                                            {% block option_label %}{{ item.label }}{% endblock %}
+                                            {% block option_count %}
+                                                {% if item.count is not null %} <i class="result_count">({{ item.count }})</i>{% endif %}
+                                            {% endblock %}
+                                        </a>
+                                    </li>
+                                {% endblock %}
+                            {% endfor %}
+                        </ul>
+                    {% endblock %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endblock %}
+    {% if show_clear %}
+        {% block clear %}
+            <p class="clearall"><a href="{{ link_clear_all }}" rel="nofollow" data-action="isotope--productquery#follow">{{ 'MSC.clearFiltersLabel'|trans }}</a></p>
+        {% endblock %}
+    {% endif %}
+{% endblock %}

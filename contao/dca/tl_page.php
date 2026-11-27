@@ -86,7 +86,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['iso_readerJumpTo'] = [
 $GLOBALS['TL_DCA']['tl_page']['fields']['iso_sitemapVariants'] = [
     'inputType' => 'checkbox',
     'eval' => ['tl_class' => 'w50'],
-    'sql' =>  ['type' => 'boolean', 'default' => false],
+    'sql' => ['type' => 'boolean', 'default' => false],
 ];
 
 /*

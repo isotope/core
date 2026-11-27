@@ -11,6 +11,12 @@ use Isotope\CoreBundle\DependencyInjection\Attribute\AsProductFilter;
 #[AsProductFilter('!')]
 class NotEqualFilter extends AbstractFilter
 {
+    #[\Override]
+    public function matches(array $productValue): bool
+    {
+        return $this->isMultiple() ? $this->matchesMultiple($productValue, true) : parent::matches($productValue);
+    }
+
     protected function getOperator(): string
     {
         return '!';
@@ -18,7 +24,13 @@ class NotEqualFilter extends AbstractFilter
 
     protected function applyValue(QueryBuilder $qb, mixed $queryValue): CompositeExpression|string
     {
-        return $qb->expr()->neq('tl_iso_product.'.$this->attributeName, $qb->createNamedParameter($queryValue));
+        if ($this->isMultiple()) {
+            return $qb->expr()->eq('FIND_IN_SET('.$qb->createNamedParameter($queryValue).', COALESCE(tl_iso_product.'.$this->attributeName.", ''))", '0');
+        }
+
+        $expression = $qb->expr()->neq('tl_iso_product.'.$this->attributeName, $qb->createNamedParameter($queryValue));
+
+        return '' === $queryValue ? $expression : $qb->expr()->or($expression, $qb->expr()->isNull('tl_iso_product.'.$this->attributeName));
     }
 
     protected function compare(mixed $queryValue, mixed $productValue): bool

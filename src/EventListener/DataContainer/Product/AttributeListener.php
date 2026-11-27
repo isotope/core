@@ -324,12 +324,14 @@ class AttributeListener
         }
 
         ksort($legendOrder);
+
         $legendOrder = array_unique($legendOrder);
 
         // Build
         foreach ($legendOrder as $legend) {
             $fields = $palettes[$legend];
             ksort($fields);
+
             $legends[] = '{'.$legend.'},'.implode(',', $fields);
         }
 

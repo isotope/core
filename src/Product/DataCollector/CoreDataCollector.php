@@ -91,6 +91,7 @@ class CoreDataCollector implements DataCollectorInterface
     {
         $data['__translation'] = $this->extract($data, 't__');
         $data['__parent'] = $this->extract($data, 'pp__');
+
         $parentTranslation = $this->extract($data, 'pt__');
 
         if ($data['__parent']) {

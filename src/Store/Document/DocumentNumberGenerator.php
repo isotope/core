@@ -9,7 +9,6 @@ use Isotope\CoreBundle\EventDispatcher\TransactionEventDispatcher;
 use Isotope\CoreBundle\ProductCollection\Order\Order;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Event\DocumentNumberTransactionEvent;
-use Symfony\Component\String\UnicodeString;
 
 /**
  * @internal
@@ -55,13 +54,15 @@ class DocumentNumberGenerator
             ->andWhere('store_id=:storeId')
             ->setParameter('type', Order::getType())
             ->setParameter('storeId', $event->getStoreId())
-            ->orderBy('document_number', 'DESC')
+            ->setParameter('numberStart', mb_strlen($prefix, 'UTF-8') + 1)
+            ->orderBy('CAST(SUBSTR(document_number, :numberStart) AS UNSIGNED)', 'DESC')
+            ->setMaxResults(1)
         ;
 
         if ('' !== $prefix) {
             $qb
-                ->andWhere('document_number LIKE :prefix')
-                ->setParameter('prefix', $prefix.'%')
+                ->andWhere("document_number LIKE :prefix ESCAPE '!'")
+                ->setParameter('prefix', $this->connection->getDatabasePlatform()->escapeStringForLike($prefix, '!').'%')
             ;
         }
 
@@ -76,25 +77,27 @@ class DocumentNumberGenerator
         $qb
             ->select('document_number')
             ->from('tl_iso_order_document')
-            ->orderBy('document_number', 'DESC')
+            ->setParameter('numberStart', mb_strlen($prefix, 'UTF-8') + 1)
+            ->orderBy('CAST(SUBSTR(document_number, :numberStart) AS UNSIGNED)', 'DESC')
+            ->setMaxResults(1)
         ;
 
         if ('' !== $prefix) {
             $qb
-                ->andWhere('document_number LIKE :prefix')
-                ->setParameter('prefix', $prefix.'%')
+                ->andWhere("document_number LIKE :prefix ESCAPE '!'")
+                ->setParameter('prefix', $this->connection->getDatabasePlatform()->escapeStringForLike($prefix, '!').'%')
             ;
         }
 
         return $this->pad($qb->fetchOne(), $event->getNumberFormat());
     }
 
-    private function pad(string|false $result, NumberFormat $format): string
+    private function pad(false|string $result, NumberFormat $format): string
     {
         if (!\is_string($result)) {
             $max = 0;
         } else {
-            $max = (int) substr($result, (new UnicodeString($format->getPrefix()))->length());
+            $max = (int) substr($result, \strlen($format->getPrefix()));
         }
 
         return $format->getPrefix().str_pad((string) ($max + 1), $format->getLength(), '0', STR_PAD_LEFT);

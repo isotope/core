@@ -8,13 +8,15 @@ use Contao\Config;
 use Contao\Date;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsRuleCondition;
 use Isotope\CoreBundle\Store\Context\StoreContext;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[AsRuleCondition(category: 'dates', factory: StoreConditionFactory::class)]
 class StoreTimeCondition implements RuleConditionInterface
 {
     public function __construct(
-        private readonly int $start,
-        private readonly int $stop,
+        private readonly TranslatorInterface $translator,
+        private readonly \DateTimeImmutable $start,
+        private readonly \DateTimeImmutable $stop,
     ) {
     }
 
@@ -25,14 +27,27 @@ class StoreTimeCondition implements RuleConditionInterface
 
     public function isApplicable(StoreContext $context): bool
     {
-        $now = $context->getTimestamp()->format('Hi');
+        $now = $context->getTimestamp()->setTimezone($this->start->getTimezone());
+        $start = $now->setTime((int) $this->start->format('H'), (int) $this->start->format('i'), (int) $this->start->format('s'));
+        $stop = $now->setTime((int) $this->stop->format('H'), (int) $this->stop->format('i'), (int) $this->stop->format('s'));
 
-        return $now >= date('Hi', $this->start) && $now <= date('Hi', $this->stop);
+        if ($stop < $start) {
+            return $now >= $start || $now <= $stop;
+        }
+
+        return $now >= $start && $now <= $stop;
     }
 
     public function getBackendLabel(): string
     {
-        return \sprintf('between %s and %s', Date::parse(Config::get('timeFormat'), $this->start), Date::parse(Config::get('timeFormat'), $this->stop));
+        return $this->translator->trans(
+            'tl_iso_rule_condition.label.range',
+            [
+                Date::parse(Config::get('timeFormat'), $this->start->getTimestamp()),
+                Date::parse(Config::get('timeFormat'), $this->stop->getTimestamp()),
+            ],
+            'contao_tl_iso_rule_condition',
+        );
     }
 
     public function getOperators(): array

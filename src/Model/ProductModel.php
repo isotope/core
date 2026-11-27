@@ -60,6 +60,7 @@ class ProductModel extends Multilingual
         }
 
         $table = static::getTable();
+
         $options = array_merge(
             [
                 'limit' => 1,

@@ -44,6 +44,7 @@ class TransactionsListener
         $order = $this->getOrder($dc);
 
         $records = [];
+
         $transactions = $this->connection->fetchAllAssociative(
             <<<'SQL'
                 SELECT t.*, COUNT(e.id) AS event_count

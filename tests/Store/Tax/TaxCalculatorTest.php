@@ -38,7 +38,6 @@ final class TaxCalculatorTest extends TestCase
             ->method('findById')
             ->willReturn($includedModel)
         ;
-
         $taxRateAdapter
             ->method('findMultipleByIds')
             ->willReturn($taxRateModels)
@@ -65,6 +64,7 @@ final class TaxCalculatorTest extends TestCase
         }
 
         $this->assertCount(\count($taxRates) + ($included ? 1 : 0), $scope1);
+
         $expectedRates = array_merge($included ? [$included] : [], $taxRates);
 
         foreach ($scope1 as $i => $actualRate) {
@@ -267,6 +267,22 @@ final class TaxCalculatorTest extends TestCase
 
     public static function combineTaxRatesProvider(): iterable
     {
+        yield 'full discount cancels the tax base' => [
+            new TaxRateCollection([new TaxRate('1', 19)]),
+            new TaxRateCollection([new TaxRate('1', 19)]),
+            100,
+            -100,
+            [],
+        ];
+
+        yield 'opposing tax-free amounts' => [
+            new TaxRateCollection(),
+            new TaxRateCollection(),
+            100,
+            -100,
+            [],
+        ];
+
         yield [
             new TaxRateCollection(),
             new TaxRateCollection(),
@@ -357,6 +373,13 @@ final class TaxCalculatorTest extends TestCase
 
     public static function combineCalculatedTaxesProvider(): iterable
     {
+        yield 'matching named tax IDs' => [
+            new CalculatedTaxCollection([new CalculatedTax('vat', 19.0, 19, 100.0)]),
+            new CalculatedTaxCollection([new CalculatedTax('vat', 38.0, 19, 200.0)]),
+            ['vat' => 57.0],
+            ['vat' => 300.0],
+        ];
+
         yield [
             new CalculatedTaxCollection(),
             new CalculatedTaxCollection(),

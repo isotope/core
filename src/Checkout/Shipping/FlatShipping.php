@@ -7,6 +7,7 @@ namespace Isotope\CoreBundle\Checkout\Shipping;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsShipping;
 use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\Product\Extension\ShippingExtension;
+use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItemCollection;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Price\PriceDefinition;
@@ -122,10 +123,11 @@ class FlatShipping extends AbstractShipping
 
         $multiply = floor($this->flatWeight->getAmount());
 
-        if ($multiply <= 1) {
+        if ($multiply < 1) {
             return 1;
         }
 
+        $items = $items->filter(static fn (LineItem $item) => !$item->getProduct()?->getExtension(ShippingExtension::class)?->isExemptFromShipping());
         $cartWeight = floor($items->calculateWeight($this->flatWeight->getUnit())->getAmount());
 
         return $cartWeight / $multiply;

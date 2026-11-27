@@ -1,7 +1,7 @@
 <?php
 
-use Contao\DC_Table;
 use Contao\DataContainer;
+use Contao\DC_Table;
 use Contao\Input;
 use Contao\System;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
@@ -24,13 +24,14 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
         'notCopyable' => true,
         'notDeletable' => ('select' === Input::get('act')),
         'permissions' => ['update'],
-        'sql' =>  [
+        'sql' => [
             'keys' => [
                 'id' => 'primary',
                 'uniqid,type' => 'unique',
                 'member,store_id,type' => 'index',
                 'uniqid,store_id,type' => 'index',
                 'source_collection_id,type' => 'index',
+                'type,store_id,document_number' => 'index',
                 'type,order_status,locked,config_id,member' => 'index',
             ],
         ],
@@ -190,6 +191,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
         ],
         'submit_buttons' => [
             // input_field_callback from OrderLogListener
+            'exclude' => false,
             'eval' => ['doNotShow' => true],
         ],
         'config_id' => [
@@ -226,6 +228,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
         ],
         'order_log' => [
             // input_field_callback from OrderLogListener
+            'exclude' => false,
             'eval' => ['doNotShow' => true],
         ],
         'subtotal' => [
@@ -256,7 +259,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = [
         'extensions' => [
             'exclude' => false,
             'eval' => ['doNotShow' => true],
-            'sql' =>  ['type' => Types::BLOB, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_MEDIUMBLOB, 'notnull' => false],
+            'sql' => ['type' => Types::BLOB, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_MEDIUMBLOB, 'notnull' => false],
         ],
         'details' => [
             // input_field_callback from OrderDetailsListener

@@ -25,7 +25,6 @@ class FlatShippingFactory extends AbstractShippingFactory
             $context,
             FlatCalculation::tryFrom($model->flatCalculation),
         );
-
         $instance
             ->setFlatProductTypes(StringUtil::csv($model->flatProductTypes, intval(...)))
             ->setFlatWeight(Weight::createFromTimePeriod($model->flatWeight))

@@ -9,6 +9,7 @@ use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\System;
 
 #[AsCallback('tl_content', 'fields.iso_filterFields.options')]
+#[AsCallback('tl_content', 'fields.iso_cumulativeFields.fields.attribute.options')]
 class FilterFieldsOptionsListener
 {
     use DcaLabelTrait;
@@ -21,6 +22,10 @@ class FilterFieldsOptionsListener
         $options = [];
 
         foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $name => $config) {
+            if (($config['eval']['multiple'] ?? false) && ',' !== ($config['eval']['csv'] ?? null)) {
+                continue;
+            }
+
             if ($config['attributes']['fe_filter'] ?? false) {
                 $options[$name] = $this->getDcaLabel($name, $config);
             }

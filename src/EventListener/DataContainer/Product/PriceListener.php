@@ -53,6 +53,7 @@ class PriceListener
         }
 
         ksort($tiers);
+
         $price['price_tiers'] = $tiers;
 
         return $price;

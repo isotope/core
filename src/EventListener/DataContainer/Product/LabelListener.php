@@ -68,6 +68,7 @@ class LabelListener
                     ) {
                         $values = $this->connection->fetchFirstColumn("SELECT $field FROM tl_iso_product WHERE pid=? AND language=''", [$row['id']]);
                         $values = array_unique(array_filter($values));
+
                         $removed = array_splice($values, 3);
 
                         $args[$i] = implode('<br>', $values);
@@ -168,7 +169,6 @@ class LabelListener
 
             /** @var PriceDefinitionCollection $prices */
             $prices = (new PriceDefinitionCollection())->merge(...$data);
-
             $priceDefinition = $prices->getLowest();
             $fromPrice = $prices->hasRange();
         }

@@ -5,20 +5,18 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\ProductCollection\ItemCollector;
 
 use Isotope\CoreBundle\Product\CoreProduct;
-use Isotope\CoreBundle\Product\Event\ProductPriceEvent;
+use Isotope\CoreBundle\Product\Extension\ShippingExtension;
+use Isotope\CoreBundle\Product\ProductPriceCalculator;
 use Isotope\CoreBundle\ProductCollection\AbstractProductCollection;
 use Isotope\CoreBundle\Store\Context\StoreContext;
-use Isotope\CoreBundle\Store\Price\PriceCalculator;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Translation\TranslatableMessage;
 
 #[AutoconfigureTag('isotope.item_collector', ['priority' => 100])]
 class ProductCollector implements ItemCollectorInterface
 {
-    public function __construct(
-        private readonly PriceCalculator $priceCalculator,
-        private readonly EventDispatcherInterface $eventDispatcher,
-    ) {
+    public function __construct(private readonly ProductPriceCalculator $priceCalculator)
+    {
     }
 
     public function process(AbstractProductCollection $collection, AbstractProductCollection $original, StoreContext $context): void
@@ -32,12 +30,12 @@ class ProductCollector implements ItemCollectorInterface
                 continue;
             }
 
-            $price = $this->priceCalculator->calculateProduct($product, $item->getQuantity(), false, $context);
+            if (!$product->isAvailable() && !$item->hasErrors()) {
+                $item->addError(new TranslatableMessage('ERR.collectionItemNotAvailable', [], 'contao_default'));
+            }
 
-            $event = new ProductPriceEvent($product, $context, $item->getConfiguration() ?? [], $price);
-            $this->eventDispatcher->dispatch($event);
-
-            $item->setPrice($event->getPrice());
+            $item->setPrice($this->priceCalculator->calculate($product, $item->getQuantity(), false, $context, $item->getConfiguration() ?? []));
+            $item->setWeight($product->getExtension(ShippingExtension::class)?->getWeight());
 
             $collection->add($item);
         }

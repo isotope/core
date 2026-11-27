@@ -5,15 +5,13 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Product\EventListener;
 
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
-use Isotope\CoreBundle\Attribute\Option\Option;
 use Isotope\CoreBundle\Attribute\OptionsAttributeInterface;
 use Isotope\CoreBundle\Product\Event\ProductPriceEvent;
 use Isotope\CoreBundle\Store\Context\ProductContext;
 use Isotope\CoreBundle\Store\Price\PriceCalculator;
-use Ramsey\Collection\Exception\NoSuchElementException;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
-#[AsEventListener]
+#[AsEventListener(priority: 100)]
 class ConfigurationPriceListener
 {
     public function __construct(
@@ -37,6 +35,8 @@ class ConfigurationPriceListener
             return;
         }
 
+        $productContext = new ProductContext($event->getProduct(), $context, $productPrice);
+
         foreach ($names as $name) {
             $attribute = $this->attributeRegistry->get($name);
 
@@ -44,21 +44,31 @@ class ConfigurationPriceListener
                 continue;
             }
 
-            try {
-                /** @var Option $option */
-                $option = $attribute
-                    ->getOptions(new ProductContext($event->getProduct(), $event->getContext()))
-                    ->where('getValue', $configuration[$name])
-                    ->first()
-                ;
+            $values = array_map(strval(...), (array) $configuration[$name]);
 
-                if (!($optionPrice = $option->getPrice())) {
+            foreach ($attribute->getOptions($productContext) as $option) {
+                if (
+                    $option->isGroup()
+                    || !($optionPrice = $option->getPrice())
+                    || !\in_array($option->getValue(), $values, true)
+                ) {
                     continue;
                 }
 
-                $productPrice = $this->priceCalculator->sum($productPrice, $optionPrice, $context->getPriceDisplay());
-            } catch (NoSuchElementException) {
-                continue;
+                $listPrice = null;
+                $productListPrice = $productPrice->getListPrice();
+                $optionListPrice = $optionPrice->getListPrice();
+
+                if ($productListPrice || $optionListPrice) {
+                    $listPrice = ($productListPrice ?? $productPrice->getUnitPrice()) + ($optionListPrice ?? $optionPrice->getUnitPrice());
+                }
+
+                $productPrice = $this->priceCalculator
+                    ->sum($productPrice, $optionPrice, $context->getPriceDisplay())
+                    ->setBasePrice($productPrice->getBasePrice())
+                    ->setRange($productPrice->isRange())
+                    ->setListPrice($listPrice)
+                ;
             }
         }
 

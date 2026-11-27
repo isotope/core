@@ -13,6 +13,7 @@ use Isotope\CoreBundle\ProductCollection\LineItem\LineItemCollection;
 use Isotope\CoreBundle\ProductCollection\ProductCollectionStorage;
 use Isotope\CoreBundle\Store\Context\StoreContext;
 use Isotope\CoreBundle\Store\Exception\EmptyCartException;
+use Isotope\CoreBundle\Store\Exception\InvalidCartException;
 use Isotope\CoreBundle\Store\Order\CreateOrderResult;
 use Isotope\CoreBundle\Store\Order\OrderConverter;
 
@@ -62,6 +63,7 @@ class CartManager
     {
         $item = $cart->getLineItems()->where('getId', $itemId)->first();
         $item->setQuantity($quantity);
+
         $cart->setModified();
 
         return $this->recalculate($cart, $context);
@@ -79,6 +81,7 @@ class CartManager
     {
         /** @var LineItemCollection $lineItems */
         $lineItems = $cart->getLineItems()->filter(static fn (LineItem $item) => !\in_array($item->getId(), $ids, true));
+
         $cart->setLineItems($lineItems);
         $cart->setModified();
 
@@ -117,10 +120,17 @@ class CartManager
             throw new EmptyCartException();
         }
 
+        if ($cart->hasErrors()) {
+            throw new InvalidCartException();
+        }
+
         $cart = $this->calculator->calculate($cart, $context);
 
-        // TODO: validate payment
+        if ($cart->hasErrors()) {
+            throw new InvalidCartException();
+        }
 
+        // TODO: validate payment
         $data = $this->orderConverter->convertToOrder($cart, $context);
         $result = $this->orderManager->createOrder($data, $context);
 

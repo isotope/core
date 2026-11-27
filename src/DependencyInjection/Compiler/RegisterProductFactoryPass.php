@@ -44,6 +44,7 @@ class RegisterProductFactoryPass implements CompilerPassInterface
 
         $listener = new Definition(ModelTypeOptionsListener::class, [$types]);
         $listener->addTag('contao.callback', ['table' => 'tl_iso_producttype', 'target' => 'fields.class.options']);
+
         $container->setDefinition('isotope.listener.product_type_options', $listener);
     }
 }

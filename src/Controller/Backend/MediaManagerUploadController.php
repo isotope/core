@@ -52,6 +52,7 @@ class MediaManagerUploadController extends AbstractController
         try {
             $objUploader = new FileUpload();
             $objUploader->setName(self::NAME);
+
             $uploadFolder = MediaManager::TEMP_FOLDER;
 
             // Convert the $_FILES array to Contao format

@@ -30,6 +30,7 @@ abstract class AbstractRenameVariantOperation extends CoreAbstractRenameVariantO
     public function execute(Request $request, OperationContext $context): Response|null
     {
         preg_match('%^('.preg_quote($this->getPrefix(), '%').')/(.+)$%', $context->getIdentifier(), $matches);
+
         [, $baseIdentifier, $oldFragment] = $matches;
 
         // Show a confirmation dialog

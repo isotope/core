@@ -6,6 +6,7 @@ namespace Isotope\CoreBundle\Store\Address;
 
 use Contao\CoreBundle\DataContainer\ValueFormatter;
 use Contao\CoreBundle\Intl\Countries;
+use Contao\StringUtil;
 use Isotope\CoreBundle\Model\AddressModel;
 use Isotope\CoreBundle\Twig\TemplateMarkupFactory;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -34,6 +35,7 @@ class AddressFormatter implements ResetInterface
         $data['data'] = $address->row();
 
         $validation = $this->addressValidator->validate($address, $config);
+
         $data['isValid'] = !$validation->count();
         $data['error'] = (string) $validation;
 
@@ -67,7 +69,7 @@ class AddressFormatter implements ResetInterface
      */
     public function toText(AddressModel $address, AddressConfig $config): string
     {
-        return strip_tags($this->toHtml($address, $config));
+        return StringUtil::decodeEntities(strip_tags($this->toHtml($address, $config)));
     }
 
     public function reset(): void

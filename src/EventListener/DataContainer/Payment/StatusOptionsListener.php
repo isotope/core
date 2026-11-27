@@ -21,6 +21,7 @@ class StatusOptionsListener
     public function __invoke(DataContainer $dc): array
     {
         $workflow = $this->workflowManager->getTransactionWorkflow();
+
         $collection = new ProductCollectionModel();
         $collection->transaction_status = array_key_first($workflow->getMarking($collection)->getPlaces());
 

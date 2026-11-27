@@ -26,6 +26,7 @@ class LabelListener implements ResetInterface
     {
         if ($this->pageId !== $row['pid']) {
             $this->pageId = $row['pid'];
+
             $this->cache = $this->connection->fetchAllAssociativeIndexed(
                 'SELECT id, name, images FROM tl_iso_product WHERE id IN (SELECT product_id FROM tl_iso_product_category WHERE pid=?)',
                 [$row['pid']],
@@ -34,11 +35,15 @@ class LabelListener implements ResetInterface
 
         $product = $this->cache[$row['product_id']];
 
-        return [\sprintf(
-            '%s<div>%s</div>',
-            $this->productLabelListener->generateImage($product),
-            $product['name'],
-        ), null, 'iso_product_category_list'];
+        return [
+            \sprintf(
+                '%s<div>%s</div>',
+                $this->productLabelListener->generateImage($product),
+                $product['name'],
+            ),
+            null,
+            'iso_product_category_list',
+        ];
     }
 
     public function reset(): void

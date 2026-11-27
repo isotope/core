@@ -13,7 +13,7 @@ final class PriceUtilTest extends TestCase
     #[DataProvider('backendPrices')]
     public function testRoundBackendPrice(float|string $price, string $expected): void
     {
-        self::assertSame($expected, PriceUtil::roundBackendPrice($price));
+        $this->assertSame($expected, PriceUtil::roundBackendPrice($price));
     }
 
     public static function backendPrices(): iterable

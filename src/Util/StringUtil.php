@@ -26,28 +26,6 @@ class StringUtil
      *
      * @return ($forceArray is true ? ($callback is null ? array<string> : array<TReturn>) : ($callback is null ? array<string>|null : array<TReturn>|null))
      */
-    public static function unserialize(string|null $value, callable|null $callback = null, bool $forceArray = false): array|null
-    {
-        $values = \Contao\StringUtil::deserialize($value);
-
-        if (!\is_array($values) || [] === $values) {
-            return $forceArray ? [] : null;
-        }
-
-        if ($callback) {
-            return array_map($callback, $values);
-        }
-
-        return array_filter($values);
-    }
-
-    /**
-     * @template TReturn
-     *
-     * @param (callable(mixed $value):TReturn)|null $callback
-     *
-     * @return ($forceArray is true ? ($callback is null ? array<string> : array<TReturn>) : ($callback is null ? array<string>|null : array<TReturn>|null))
-     */
     public static function csv(string|null $value, callable|null $callback = null, bool $forceArray = false): array|null
     {
         if (null === $value || '' === $value) {

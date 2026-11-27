@@ -41,7 +41,6 @@ use Isotope\CoreBundle\ProductCollection\ItemAction\ProductCollectionItemActionR
 use Isotope\CoreBundle\ProductCollection\OrderTransaction\TransactionStatus;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ChildDefinition;
-use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\LogicException;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -131,14 +130,12 @@ class IsotopeBundle extends AbstractBundle
     {
         $configurator->parameters()->set('isotope.cart_timeout', $config['cart_timeout']);
         $configurator->parameters()->set('isotope.currency_formats', $config['currency_formats']);
-
         $configurator
             ->services()
             ->load(__NAMESPACE__.'\\', '../src/')
             ->autoconfigure()
             ->autowire()
         ;
-
         $configurator
             ->services()
             ->set('isotope.hashids', Hashids::class)
@@ -149,7 +146,6 @@ class IsotopeBundle extends AbstractBundle
             ->registerForAutoconfiguration(ShopConfigInterface::class)
             ->addTag('isotope.shop_config')
         ;
-
         $container
             ->registerForAutoconfiguration(AttributeFactoryInterface::class)
             ->addTag('isotope.attribute_factory')

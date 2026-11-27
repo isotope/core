@@ -30,6 +30,7 @@ class CategoryFilterController extends AbstractContentElementController
         }
 
         $template->filter_key = $model->iso_filterKey ?: '';
+
         $template->menuOptions = [
             'filterKey' => $template->filter_key,
             'rootPage' => $trail[$level] ?? 0,

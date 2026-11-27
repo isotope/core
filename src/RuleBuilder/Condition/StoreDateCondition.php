@@ -8,13 +8,15 @@ use Contao\Config;
 use Contao\Date;
 use Isotope\CoreBundle\DependencyInjection\Attribute\AsRuleCondition;
 use Isotope\CoreBundle\Store\Context\StoreContext;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[AsRuleCondition(category: 'dates', factory: StoreConditionFactory::class)]
 class StoreDateCondition implements RuleConditionInterface
 {
     public function __construct(
-        private readonly int|null $start,
-        private readonly int|null $stop,
+        private readonly TranslatorInterface $translator,
+        private readonly \DateTimeImmutable|null $start,
+        private readonly \DateTimeImmutable|null $stop,
     ) {
     }
 
@@ -25,13 +27,13 @@ class StoreDateCondition implements RuleConditionInterface
 
     public function isApplicable(StoreContext $context): bool
     {
-        $now = $context->getTimestamp()->format('YmdHi');
+        $now = $context->getTimestamp();
 
-        if (null !== $this->start && $now < date('YmdHi', $this->start)) {
+        if (null !== $this->start && $now < $this->start) {
             return false;
         }
 
-        if (null !== $this->stop && $now > date('YmdHi', $this->stop)) {
+        if (null !== $this->stop && $now > $this->stop) {
             return false;
         }
 
@@ -41,18 +43,33 @@ class StoreDateCondition implements RuleConditionInterface
     public function getBackendLabel(): string
     {
         if (!$this->isValid()) {
-            return '<i>invalid</i>';
+            return '-';
         }
 
         if (null === $this->start) {
-            return 'before '.Date::parse(Config::get('datimFormat'), $this->stop);
+            return $this->translator->trans(
+                'tl_iso_rule_condition.label.dateStart',
+                [Date::parse(Config::get('datimFormat'), $this->stop->getTimestamp())],
+                'contao_tl_iso_rule_condition',
+            );
         }
 
         if (null === $this->stop) {
-            return 'later then '.Date::parse(Config::get('datimFormat'), $this->start);
+            return $this->translator->trans(
+                'tl_iso_rule_condition.label.dateStop',
+                [Date::parse(Config::get('datimFormat'), $this->start->getTimestamp())],
+                'contao_tl_iso_rule_condition',
+            );
         }
 
-        return \sprintf('between %s and %s', Date::parse(Config::get('datimFormat'), $this->start), Date::parse(Config::get('datimFormat'), $this->stop));
+        return $this->translator->trans(
+            'tl_iso_rule_condition.label.range',
+            [
+                Date::parse(Config::get('datimFormat'), $this->start->getTimestamp()),
+                Date::parse(Config::get('datimFormat'), $this->stop->getTimestamp()),
+            ],
+            'contao_tl_iso_rule_condition',
+        );
     }
 
     public function getOperators(): array

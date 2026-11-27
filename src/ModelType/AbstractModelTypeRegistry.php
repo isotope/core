@@ -54,7 +54,7 @@ class AbstractModelTypeRegistry
     /**
      * @param TModel|Collection<TModel>|array<TModel>|null $modelOrCollection
      *
-     * @return ($modelOrCollection is array|Collection<TModel> ? array<TType> : ($modelOrCollection is null ? null : TType) )
+     * @return ($modelOrCollection is array|Collection<TModel> ? array<TType> : ($modelOrCollection is null ? null : ($skipMissing is true ? TType|null : TType)))
      */
     public function get(Collection|Model|array|null $modelOrCollection, StoreContext $context, bool $skipMissing = false): array|object|null
     {

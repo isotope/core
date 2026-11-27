@@ -32,7 +32,6 @@ class CartCalculator extends AbstractCollectionCalculator
     protected function createNewInstance(AbstractProductCollection $collection, StoreContext $context): AbstractProductCollection
     {
         $toCalculate = $this->cartFactory->create($context, $collection->getIdentifier());
-
         $toCalculate->setId($collection->getId());
         $toCalculate->setBillingAddress($collection->getBillingAddress());
         $toCalculate->setShippingAddress($collection->getShippingAddress());

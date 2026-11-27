@@ -39,6 +39,6 @@ class Sorting implements \Stringable
      */
     public function sort(mixed $a, mixed $b): int
     {
-        return $a <=> $b;
+        return $this->desc ? $b <=> $a : $a <=> $b;
     }
 }

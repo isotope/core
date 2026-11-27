@@ -22,13 +22,7 @@ class CheckboxAttribute extends AbstractOptionsAttribute
             unset($field['options'], $field['options_callback'], $field['foreignKey']);
         } else {
             $field['eval']['multiple'] = true;
-
-            if (
-                OptionsSource::Table === $this->getOptionsSource()
-                || OptionsSource::ForeignKey === $this->getOptionsSource()
-            ) {
-                $field['eval']['csv'] = ',';
-            }
+            $field['eval']['csv'] = ',';
         }
     }
 

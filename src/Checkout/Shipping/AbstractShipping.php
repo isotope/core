@@ -6,6 +6,7 @@ namespace Isotope\CoreBundle\Checkout\Shipping;
 
 use Isotope\CoreBundle\Checkout\AbstractCheckoutMethod;
 use Isotope\CoreBundle\Store\Weight\Weight;
+use Isotope\CoreBundle\Util\FloatComparator;
 
 abstract class AbstractShipping extends AbstractCheckoutMethod implements ShippingInterface
 {
@@ -60,8 +61,8 @@ abstract class AbstractShipping extends AbstractCheckoutMethod implements Shippi
 
         if (
             (($this->minWeight || $this->maxWeight) && !$items)
-            || ($this->minWeight && $items->calculateWeight($this->minWeight->getUnit())->getAmount() < $this->minWeight->getAmount())
-            || ($this->maxWeight && $items->calculateWeight($this->maxWeight->getUnit())->getAmount() > $this->maxWeight->getAmount())
+            || ($this->minWeight && FloatComparator::lessThan($items->calculateWeight($this->minWeight->getUnit())->getAmount(), $this->minWeight->getAmount()))
+            || ($this->maxWeight && FloatComparator::greaterThan($items->calculateWeight($this->maxWeight->getUnit())->getAmount(), $this->maxWeight->getAmount()))
         ) {
             return false;
         }

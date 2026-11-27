@@ -1,7 +1,7 @@
 <?php
 
-use Contao\DC_Table;
 use Contao\DataContainer;
+use Contao\DC_Table;
 use Contao\System;
 use Doctrine\DBAL\Types\Types;
 use Isotope\CoreBundle\Gallery\AnchorTarget;
@@ -11,7 +11,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = [
         'dataContainer' => DC_Table::class,
         'enableVersioning' => true,
         'markAsCopy' => 'name',
-        'sql' =>  [
+        'sql' => [
             'keys' => [
                 'id' => 'primary',
             ],

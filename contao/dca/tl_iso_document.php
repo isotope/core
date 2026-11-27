@@ -1,7 +1,7 @@
 <?php
 
-use Contao\DC_Table;
 use Contao\DataContainer;
+use Contao\DC_Table;
 use Doctrine\DBAL\Types\Types;
 
 $GLOBALS['TL_DCA']['tl_iso_document'] = [
@@ -9,7 +9,7 @@ $GLOBALS['TL_DCA']['tl_iso_document'] = [
         'dataContainer' => DC_Table::class,
         'enableVersioning' => true,
         'markAsCopy' => 'name',
-        'sql' =>  [
+        'sql' => [
             'keys' => [
                 'id' => 'primary',
             ],

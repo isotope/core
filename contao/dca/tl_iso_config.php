@@ -1,8 +1,8 @@
 <?php
 
 use Contao\BackendUser;
-use Contao\DC_Table;
 use Contao\DataContainer;
+use Contao\DC_Table;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Types\Types;
 use Isotope\CoreBundle\Store\Price\PriceDisplay;
@@ -13,7 +13,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
         'dataContainer' => DC_Table::class,
         'enableVersioning' => true,
         'markAsCopy' => 'name',
-        'sql' =>  [
+        'sql' => [
             'keys' => [
                 'id' => 'primary',
             ],
@@ -225,20 +225,20 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
         'limitMemberCountries' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50'],
-            'sql' =>  ['type' => 'boolean', 'default' => false],
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'payment_ids' => [
             'inputType' => 'checkboxWizard',
             'foreignKey' => 'tl_iso_payment.name',
             'eval' => ['multiple' => true, 'csv' => ','],
-            'sql' =>  ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TINYTEXT, 'notnull' => false],
+            'sql' => ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TINYTEXT, 'notnull' => false],
             'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
         ],
         'shipping_ids' => [
             'inputType' => 'checkboxWizard',
             'foreignKey' => 'tl_iso_shipping.name',
             'eval' => ['multiple' => true, 'csv' => ','],
-            'sql' =>  ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TINYTEXT, 'notnull' => false],
+            'sql' => ['type' => Types::TEXT, 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TINYTEXT, 'notnull' => false],
             'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
         ],
         'priceDisplay' => [
@@ -282,12 +282,12 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = [
         'currencySymbol' => [
             'inputType' => 'checkbox',
             'eval' => ['submitOnChange' => true, 'tl_class' => 'w33'],
-            'sql' =>  ['type' => 'boolean', 'default' => false],
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'currencySpace' => [
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w33'],
-            'sql' =>  ['type' => 'boolean', 'default' => false],
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'currencyPosition' => [
             'inputType' => 'radio',

@@ -78,6 +78,7 @@ class BackendRequestListener
         // Moves Isotope after "content" (or 1 if that does not exist)
         $targetPosition = array_search('content', array_keys($tree->getChildren()), true);
         $targetPosition = false === $targetPosition ? 1 : $targetPosition + 1;
+
         $manipulator = new MenuManipulator();
         $manipulator->moveToPosition($isotope, $targetPosition);
     }

@@ -5,15 +5,16 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Test\Controller\ContentElement;
 
 use Contao\ContentModel;
+use Contao\CoreBundle\Pagination\Pagination;
 use Contao\CoreBundle\Pagination\PaginationConfig;
 use Contao\CoreBundle\Pagination\PaginationFactoryInterface;
 use Contao\CoreBundle\Pagination\PaginationInterface;
 use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
-use Doctrine\DBAL\Query\QueryBuilder;
 use Isotope\CoreBundle\Attribute\AttributeRegistry;
 use Isotope\CoreBundle\Controller\ContentElement\ProductListController;
+use Isotope\CoreBundle\Product\Finder\ProductFinderFactory;
 use Isotope\CoreBundle\Product\ProductBuilder;
 use Isotope\CoreBundle\Product\Query\Filter\EqualFilter;
 use Isotope\CoreBundle\Product\Query\ProductQueryFactory;
@@ -31,7 +32,7 @@ final class ProductListControllerTest extends TestCase
     {
         $this->connection = DriverManager::getConnection(['driver' => 'pdo_sqlite', 'memory' => true]);
         $this->connection->executeStatement('CREATE TEMPORARY TABLE tl_iso_product (id INTEGER PRIMARY KEY, pid INTEGER, language VARCHAR(5), name VARCHAR(255), published INTEGER, start VARCHAR(10), stop VARCHAR(10))');
-        $this->connection->executeStatement('CREATE TEMPORARY TABLE tl_iso_product_category (pid INTEGER, product_id INTEGER)');
+        $this->connection->executeStatement('CREATE TEMPORARY TABLE tl_iso_product_category (pid INTEGER, product_id INTEGER, sorting INTEGER DEFAULT 0)');
 
         foreach ([
             [1, 0, '', 'Apple'],
@@ -67,34 +68,38 @@ final class ProductListControllerTest extends TestCase
     }
 
     #[DataProvider('paginationProvider')]
-    public function testPaginationReturnsEachProductOnce(bool $desc, int $offset, array $expected): void
+    public function testPaginationReturnsEachProductOnce(bool $desc, int $offset, array $expected, int $numberOfItems = 0, int $perPage = 2): void
     {
-        $pagination = $this->createStub(PaginationInterface::class);
-        $pagination->method('getPerPage')->willReturn(2);
-        $pagination->method('getOffset')->willReturn($offset);
-
         $factory = $this->createMock(PaginationFactoryInterface::class);
-        $factory->expects($this->once())
+        $factory
+            ->expects($this->once())
             ->method('create')
-            ->with($this->callback(static fn (PaginationConfig $config): bool => 3 === $config->getTotal()))
-            ->willReturn($pagination)
+            ->willReturnCallback(
+                function (PaginationConfig $config) use ($offset, $numberOfItems): PaginationInterface {
+                    $this->assertSame($numberOfItems > 0 ? min(3, $numberOfItems) : 3, $config->getTotal());
+
+                    return new Pagination(null === $config->getCurrentPage() ? $config->withCurrentPage(1 + intdiv($offset, $config->getPerPage())) : $config);
+                },
+            )
         ;
 
         $controller = $this->createController($factory);
-        $qb = $this->prepareQuery($controller);
-        (new Sorting('name', $desc))->apply($qb);
+        $finder = (new ProductFinderFactory($this->connection, $this->createStub(TokenChecker::class)))->create([10, 11], 'fr')->withSorting([new Sorting('name', $desc)]);
 
         $model = $this->createStub(ContentModel::class);
-        $model->method('__get')->willReturnMap([
-            ['id', 42],
-            ['numberOfItems', 0],
-            ['perPage', 2],
-        ]);
+        $model
+            ->method('__get')
+            ->willReturnMap([
+                ['id', 42],
+                ['numberOfItems', $numberOfItems],
+                ['perPage', $perPage],
+            ])
+        ;
 
-        $result = (new \ReflectionMethod($controller, 'applyPagination'))->invoke($controller, $model, new Request(), $qb, null);
+        $pagination = (new \ReflectionMethod($controller, 'getPagination'))->invoke($controller, $model, new Request(), $finder, null);
 
-        self::assertSame($pagination, $result);
-        self::assertSame($expected, array_map(intval(...), $qb->fetchFirstColumn()));
+        [$pageOffset, $end] = $pagination->getIndexRange();
+        $this->assertSame($expected, array_map(intval(...), $finder->findIds($end - $pageOffset, $pageOffset)));
     }
 
     public static function paginationProvider(): iterable
@@ -103,33 +108,31 @@ final class ProductListControllerTest extends TestCase
         yield 'ascending last page' => [false, 2, [5]];
         yield 'descending first page' => [true, 0, [5, 1]];
         yield 'descending last page' => [true, 2, [4]];
+        yield 'overall limit on last page' => [false, 2, [5], 3];
+        yield 'overall limit without pagination' => [false, 0, [4], 1];
+        yield 'pagination disabled' => [false, 0, [4, 1, 5], 0, 0];
+        yield 'overall limit with pagination disabled' => [false, 0, [4, 1], 2, 0];
     }
 
     public function testMatchingVariantReturnsItsParentProduct(): void
     {
-        $controller = $this->createController($this->createStub(PaginationFactoryInterface::class));
-        $qb = $this->prepareQuery($controller);
-        (new EqualFilter('name', 'Variant B'))->apply($qb);
-        (new Sorting('name'))->apply($qb);
+        $finder = (new ProductFinderFactory($this->connection, $this->createStub(TokenChecker::class)))->create([10, 11], 'fr')
+            ->withFilters([new EqualFilter('name', 'Variant B')])
+            ->withSorting([new Sorting('name')])
+        ;
 
-        self::assertSame([1], array_map(intval(...), $qb->fetchFirstColumn()));
+        $this->assertSame([1], array_map(intval(...), $finder->findIds()));
     }
 
     private function createController(PaginationFactoryInterface $factory): ProductListController
     {
         return new ProductListController(
-            $this->connection,
             $this->createStub(AttributeRegistry::class),
+            new ProductFinderFactory($this->connection, $this->createStub(TokenChecker::class)),
             $this->createStub(ProductQueryFactory::class),
-            $this->createStub(TokenChecker::class),
             $this->createStub(ProductBuilder::class),
             $this->createStub(StoreManager::class),
             $factory,
         );
-    }
-
-    private function prepareQuery(ProductListController $controller): QueryBuilder
-    {
-        return (new \ReflectionMethod($controller, 'prepareQueryBuilder'))->invoke($controller, [10, 11], 'fr');
     }
 }

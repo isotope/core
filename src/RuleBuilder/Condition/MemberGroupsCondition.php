@@ -13,7 +13,7 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[AsRuleCondition(category: 'member', factory: MemberConditionFactory::class)]
-class MemberGroupCondition implements RuleConditionInterface
+class MemberGroupsCondition implements RuleConditionInterface
 {
     public function __construct(
         private readonly Security $security,

@@ -56,6 +56,10 @@ class ProductCategoryMigration extends AbstractMigration
                 }
 
                 foreach ($order as $sorting => $pid) {
+                    if (!is_numeric($pid)) {
+                        continue;
+                    }
+
                     $this->connection->executeStatement(
                         'UPDATE tl_iso_product_category SET product_sorting=? WHERE product_id=? AND pid=?',
                         [$sorting, $productId, $pid],
@@ -69,6 +73,7 @@ class ProductCategoryMigration extends AbstractMigration
 
         if ($schemaManager->tablesExist(['tl_page'])) {
             $this->connection->executeStatement("UPDATE tl_page SET type='iso_products' WHERE type='regular' AND id IN (SELECT pid FROM tl_iso_product_category)");
+
             $this->addDefaultConfig();
         }
 

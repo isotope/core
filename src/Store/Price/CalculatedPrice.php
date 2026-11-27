@@ -18,6 +18,8 @@ class CalculatedPrice implements \JsonSerializable
 
     private BasePrice|null $basePrice = null;
 
+    private float|null $listPrice = null;
+
     public function __construct(
         private float $unitPrice,
         private float $totalPrice,
@@ -28,6 +30,18 @@ class CalculatedPrice implements \JsonSerializable
     ) {
         $this->unitPrice = FloatComparator::cast($unitPrice);
         $this->totalPrice = FloatComparator::cast($totalPrice);
+    }
+
+    public function setListPrice(float|null $listPrice): self
+    {
+        $this->listPrice = null === $listPrice ? null : FloatComparator::cast($listPrice);
+
+        return $this;
+    }
+
+    public function getListPrice(): float|null
+    {
+        return $this->listPrice;
     }
 
     public function getUnitPrice(): float
@@ -111,6 +125,7 @@ class CalculatedPrice implements \JsonSerializable
         foreach ($this->getCalculatedTaxes() as $tax) {
             $new = clone $tax;
             $new->multiply($this->quantity);
+
             $calculatedTaxes->put($new->getId(), $new);
         }
 
@@ -118,6 +133,7 @@ class CalculatedPrice implements \JsonSerializable
             ->setRange($this->isRange)
             ->setUnitLabel($this->unitLabel)
             ->setBasePrice($this->basePrice)
+            ->setListPrice(null === $this->listPrice ? null : $this->listPrice * $this->quantity)
         ;
     }
 
@@ -128,7 +144,13 @@ class CalculatedPrice implements \JsonSerializable
             'quantity' => $this->quantity,
             'total_price' => $this->totalPrice,
             'unit_label' => $this->unitLabel,
+            ...(null === $this->listPrice ? [] : ['list_price' => $this->listPrice]),
             'is_range' => $this->isRange(),
+            'base_price' => $this->basePrice ? [
+                'product_amount' => $this->basePrice->getProductAmount(),
+                'base_amount' => $this->basePrice->getBaseAmount(),
+                'label' => $this->basePrice->getLabel(),
+            ] : null,
             'calculated_taxes' => $this->calculatedTaxes->jsonSerialize(),
             'tax_rates' => [
                 'rates' => $this->taxRates->jsonSerialize(),
@@ -145,6 +167,10 @@ class CalculatedPrice implements \JsonSerializable
             return null;
         }
 
+        if (!\is_array($data)) {
+            return null;
+        }
+
         $price = new self(
             (float) ($data['unit_price'] ?? 0),
             (float) ($data['total_price'] ?? 0),
@@ -154,7 +180,16 @@ class CalculatedPrice implements \JsonSerializable
         );
 
         $price->setUnitLabel($data['unit_label'] ?? null);
+        $price->setListPrice(isset($data['list_price']) ? (float) $data['list_price'] : null);
         $price->setRange((bool) ($data['is_range'] ?? false));
+
+        if (isset($data['base_price'])) {
+            $price->setBasePrice(new BasePrice(
+                (float) $data['base_price']['product_amount'],
+                (float) $data['base_price']['base_amount'],
+                $data['base_price']['label'],
+            ));
+        }
 
         foreach (($data['calculated_taxes'] ?? []) as $tax) {
             $price->getCalculatedTaxes()->put(

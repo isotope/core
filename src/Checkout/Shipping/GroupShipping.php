@@ -127,29 +127,29 @@ class GroupShipping extends AbstractShipping
         switch ($this->groupCalculation) {
             default:
             case GroupCalculation::first:
-                return array_first($this->getPrices(false))[0];
+                return array_first($this->getPrices(false))[0] ?? null;
 
             case GroupCalculation::lowest:
                 $return = null;
 
                 foreach ($this->getPrices() as $price) {
                     if (null === $return || $price[1]->getUnitPrice() < $return[1]->getUnitPrice()) {
-                        $return = $price[0];
+                        $return = $price;
                     }
                 }
 
-                return $return;
+                return $return[0] ?? null;
 
             case GroupCalculation::highest:
                 $return = null;
 
                 foreach ($this->getPrices() as $price) {
                     if (null === $return || $price[1]->getUnitPrice() > $return[1]->getUnitPrice()) {
-                        $return = $price[0];
+                        $return = $price;
                     }
                 }
 
-                return $return;
+                return $return[0] ?? null;
 
             case GroupCalculation::sum:
                 $total = 0;

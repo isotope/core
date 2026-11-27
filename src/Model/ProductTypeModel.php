@@ -159,10 +159,12 @@ class ProductTypeModel extends Model
 
         $arrFields = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
 
-        $config = array_filter($config, static fn ($a) => (($a['enabled'] ?? false)
-            && \is_array($arrFields[$a['name']] ?? null)
-            && !empty($arrFields[$a['name']]['attributes']['legend'])
-        ));
+        $config = array_filter(
+            $config,
+            static fn ($a) => ($a['enabled'] ?? false)
+                && \is_array($arrFields[$a['name']] ?? null)
+                && !empty($arrFields[$a['name']]['attributes']['legend']),
+        );
 
         uasort($config, static fn ($a, $b): int => $a['position'] <=> $b['position']);
 

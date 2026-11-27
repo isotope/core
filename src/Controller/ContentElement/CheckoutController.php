@@ -46,7 +46,7 @@ class CheckoutController extends AbstractContentElementController
         $cart = $context->getCart();
 
         if ($cart->isModified()) {
-            $this->cartManager->recalculate($cart, $context);
+            $cart = $this->cartManager->recalculate($cart, $context);
         }
 
         $steps = [];
@@ -75,6 +75,8 @@ class CheckoutController extends AbstractContentElementController
                 ->setEditing(true)
                 ->setSubmitted($isSubmitted),
         );
+
+        $allCompleted = $allCompleted && !$cart->hasErrors();
 
         if ($allCompleted && $isSubmitted && !$event->hasError()) {
             $result = $this->cartManager->order($cart, $context);

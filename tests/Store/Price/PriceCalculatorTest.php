@@ -6,10 +6,13 @@ namespace Isotope\CoreBundle\Test\Store\Price;
 
 use Isotope\CoreBundle\Model\TaxClassModel;
 use Isotope\CoreBundle\Model\TaxRateModel;
+use Isotope\CoreBundle\Product\CoreProduct;
 use Isotope\CoreBundle\RuleBuilder\RuleMatcher;
 use Isotope\CoreBundle\Store\Price\CalculatedPrice;
+use Isotope\CoreBundle\Store\Price\MoneyFormat;
 use Isotope\CoreBundle\Store\Price\PriceCalculator;
 use Isotope\CoreBundle\Store\Price\PriceDefinition;
+use Isotope\CoreBundle\Store\Price\PriceDefinitionCollection;
 use Isotope\CoreBundle\Store\Price\PriceDisplay;
 use Isotope\CoreBundle\Store\Tax\CalculatedTax;
 use Isotope\CoreBundle\Store\Tax\CalculatedTaxCollection;
@@ -22,6 +25,66 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class PriceCalculatorTest extends TestCase
 {
+    public function testProductWithoutApplicablePriceTier(): void
+    {
+        $product = $this->createStub(CoreProduct::class);
+        $product
+            ->method('getPrices')
+            ->willReturn(new PriceDefinitionCollection([new PriceDefinition(10, null, quantity: 5)]))
+        ;
+
+        $calculator = new PriceCalculator($this->createStub(TaxCalculator::class));
+
+        $this->assertNull($calculator->calculateProduct($product, 1, false, $this->createStoreContext()));
+    }
+
+    public function testFixedSellingAndListPricesAreRoundedForTheSelectedTier(): void
+    {
+        $product = $this->createStub(CoreProduct::class);
+        $product
+            ->method('getPrices')
+            ->willReturn(new PriceDefinitionCollection([
+                (new PriceDefinition(90, null))->setListAmount(95),
+                (new PriceDefinition(80.04, null, quantity: 2))->setListAmount(100.04),
+            ]))
+        ;
+
+        $calculator = new PriceCalculator(new TaxCalculator(
+            $this->createContaoFrameworkStub([
+                TaxClassModel::class => $this->createAdapterStub(['findById']),
+                TaxRateModel::class => $this->createAdapterStub(['findById', 'findMultipleByIds']),
+            ]),
+            $this->createStub(RuleMatcher::class),
+            $this->createStub(TranslatorInterface::class),
+        ));
+
+        $context = $this->createStoreContext(priceDisplay: PriceDisplay::Fixed, moneyFormat: new MoneyFormat(roundingIncrement: 0.05));
+        $price = $calculator->calculateProduct($product, 1, true, $context);
+        $this->assertInstanceOf(CalculatedPrice::class, $price);
+
+        $this->assertTrue($price->isRange());
+        $this->assertEqualsWithDelta(80.05, $price->getUnitPrice(), PHP_FLOAT_EPSILON);
+        $this->assertEqualsWithDelta(100.05, $price->getListPrice(), PHP_FLOAT_EPSILON);
+    }
+
+    public function testRecalculatingANetUnitPriceUsesTheSuppliedAmountBeforeTax(): void
+    {
+        $taxRates = new TaxRateCollection([new TaxRate('1', 20, 100)]);
+        $price = new CalculatedPrice(80, 160, taxRates: $taxRates, includedTaxRates: $taxRates, quantity: 2);
+
+        $calculator = new PriceCalculator(new TaxCalculator(
+            $this->createContaoFrameworkStub(),
+            $this->createStub(RuleMatcher::class),
+            $this->createStub(TranslatorInterface::class),
+        ));
+
+        $result = $calculator->recalculateUnitPrice($price, 100, $this->createStoreContext(priceDisplay: PriceDisplay::Net));
+
+        $this->assertEqualsWithDelta(100.0, $result->getUnitPrice(), PHP_FLOAT_EPSILON);
+        $this->assertEqualsWithDelta(200.0, $result->getTotalPrice(), PHP_FLOAT_EPSILON);
+        $this->assertEqualsWithDelta(20.0, $result->getCalculatedTaxes()->sum(), PHP_FLOAT_EPSILON);
+    }
+
     #[DataProvider('calculatePriceDefinitionProvider')]
     public function testCalculatePercentagePriceDefinition(float $subtotal, PriceDisplay $priceDisplay, int $taxId, float $expectedTotal, float $expectedTaxes): void
     {
@@ -50,7 +113,6 @@ final class PriceCalculatorTest extends TestCase
                 'rate' => 10,
             ]))
         ;
-
         $taxRateAdapter
             ->method('findMultipleByIds')
             ->willReturnCallback(
@@ -68,10 +130,12 @@ final class PriceCalculatorTest extends TestCase
                         ];
                     }
 
-                    return [$this->createClassWithPropertiesStub(TaxRateModel::class, [
-                        'id' => 1,
-                        'rate' => 10,
-                    ])];
+                    return [
+                        $this->createClassWithPropertiesStub(TaxRateModel::class, [
+                            'id' => 1,
+                            'rate' => 10,
+                        ]),
+                    ];
                 },
             )
         ;
@@ -182,7 +246,6 @@ final class PriceCalculatorTest extends TestCase
         );
 
         $calculator = new PriceCalculator($taxCalculator);
-
         $result = $calculator->sum($basePrice, $addedPrice, PriceDisplay::Gross);
 
         $this->assertPriceMatch($expected, $result);
@@ -195,6 +258,12 @@ final class PriceCalculatorTest extends TestCase
 
     public static function sumPricesProvider(): iterable
     {
+        yield 'fully discounted taxable price' => [
+            new CalculatedPrice(119, 119, new CalculatedTaxCollection([new CalculatedTax('1', 19, 19, 100)]), new TaxRateCollection([new TaxRate('1', 19)])),
+            new CalculatedPrice(-119, -119, new CalculatedTaxCollection([new CalculatedTax('1', -19, 19, -100)]), new TaxRateCollection([new TaxRate('1', 19)])),
+            new CalculatedPrice(0, 0, new CalculatedTaxCollection([new CalculatedTax('1', 0, 19, 0)])),
+        ];
+
         yield [
             new CalculatedPrice(100, 100),
             new CalculatedPrice(100, 100),

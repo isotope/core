@@ -37,7 +37,7 @@ class PriceFormatter
         }
 
         $amount = $productPrice->getUnitPrice() / $basePrice->getProductAmount() * $basePrice->getBaseAmount();
-        $data = $this->getData(new CalculatedPrice($amount, $amount), $context);
+        $data = $this->getData((new CalculatedPrice($amount, $amount))->setRange($productPrice->isRange()), $context);
 
         return $this->markupFactory->create('@Contao/component/_isotope_base_price.html.twig', [
             ...$data,
@@ -56,6 +56,7 @@ class PriceFormatter
             'unit_tax' => $format->mathRound($price->getCalculatedTaxes()->sum()),
             'total_price' => $price->getTotalPrice(),
             'is_range' => $price->isRange(),
+            'list_price' => null === $key ? $price->getListPrice() : null,
             'calculated_taxes' => $price->getCalculatedTaxes(),
             'tax_ids' => $price->getCalculatedTaxes()->getNumbers(),
             'money' => $context->getMoneyFormat(),

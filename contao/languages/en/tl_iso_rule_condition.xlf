@@ -41,6 +41,24 @@
       <trans-unit id="tl_iso_rule_condition.quantity_to.1">
         <source>Please enter the maximum number.</source>
       </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.weight.0">
+        <source>Weight</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.weight.1">
+        <source>Please enter the weight.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.weight_from.0">
+        <source>Minimum weight</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.weight_from.1">
+        <source>Please enter the minimum weight.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.weight_to.0">
+        <source>Maximum weight</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.weight_to.1">
+        <source>Please enter the maximum weight.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_rule_condition.amount.0">
         <source>Amount</source>
       </trans-unit>
@@ -64,6 +82,12 @@
       </trans-unit>
       <trans-unit id="tl_iso_rule_condition.product_types.1">
         <source>Choose the product types.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.members.0">
+        <source>Members</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.members.1">
+        <source>Select one or more member accounts.</source>
       </trans-unit>
       <trans-unit id="tl_iso_rule_condition.member_groups.0">
         <source>Member groups</source>
@@ -178,6 +202,15 @@
       </trans-unit>
       <trans-unit id="tl_iso_rule_condition.operator.not_logged_in">
         <source>Customer is not logged in</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.label.range">
+        <source>between %s and %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.label.dateStart">
+        <source>before %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule_condition.label.dateStop">
+        <source>later then %s</source>
       </trans-unit>
     </body>
   </file>

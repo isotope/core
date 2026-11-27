@@ -11,7 +11,6 @@ use Isotope\CoreBundle\Controller\Backend\DocumentCreateController;
 use Isotope\CoreBundle\Controller\Backend\DocumentPopupController;
 use Isotope\CoreBundle\Controller\DocumentController;
 use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\HttpFoundation\UriSigner;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class OperationsListener

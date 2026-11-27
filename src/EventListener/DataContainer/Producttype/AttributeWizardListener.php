@@ -49,15 +49,17 @@ class AttributeWizardListener
             'enabled' => [
                 'inputType' => 'checkbox',
                 'eval' => ['cell_style' => 'white-space:nowrap;width:1%'],
-                'attributes_callback' => [static function (array $attributes) use ($fixed, &$enabledConfig) {
-                    $config = array_shift($enabledConfig);
+                'attributes_callback' => [
+                    static function (array $attributes) use ($fixed, &$enabledConfig) {
+                        $config = array_shift($enabledConfig);
 
-                    if ($config && \in_array($config['name'], $fixed, true)) {
-                        $attributes['disabled'] = true;
-                    }
+                        if ($config && \in_array($config['name'], $fixed, true)) {
+                            $attributes['disabled'] = true;
+                        }
 
-                    return $attributes;
-                }],
+                        return $attributes;
+                    },
+                ],
             ],
             'name' => [
                 'input_field_callback' => $this->getNameClosure($dc->field, $values, $fixed),
@@ -83,21 +85,23 @@ class AttributeWizardListener
                     'blankOptionLabel' => &$GLOBALS['TL_LANG']['tl_iso_producttype']['attributes']['default'],
                     'cell_style' => 'width:100px',
                 ],
-                'attributes_callback' => [function (array $attributes) use (&$mandatoryConfig) {
-                    $config = array_shift($mandatoryConfig);
+                'attributes_callback' => [
+                    function (array $attributes) use (&$mandatoryConfig) {
+                        $config = array_shift($mandatoryConfig);
 
-                    if (!($config['name'] ?? null)) {
+                        if (!($config['name'] ?? null)) {
+                            return $attributes;
+                        }
+
+                        $attribute = $this->attributeRegistry->get($config['name']);
+
+                        if ($attribute instanceof VariantAttributeInterface && $attribute->isVariantOption()) {
+                            $attributes['disabled'] = true;
+                        }
+
                         return $attributes;
-                    }
-
-                    $attribute = $this->attributeRegistry->get($config['name']);
-
-                    if ($attribute instanceof VariantAttributeInterface && $attribute->isVariantOption()) {
-                        $attributes['disabled'] = true;
-                    }
-
-                    return $attributes;
-                }],
+                    },
+                ],
             ],
             'edit' => [
                 'input_field_callback' => $this->getEditAttributeClosure($values),

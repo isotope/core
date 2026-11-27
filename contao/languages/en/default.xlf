@@ -2,11 +2,17 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="contao/languages/en/default.xlf" source-language="en">
     <body>
+      <trans-unit id="ERR.optionvalue">
+        <source>Use ASCII letters, digits and underscores only.</source>
+      </trans-unit>
       <trans-unit id="ERR.systemColumn">
         <source>Name "%s" is reserved for system use. Please choose a different name.</source>
       </trans-unit>
       <trans-unit id="ERR.invalidColumn">
         <source>"%s" cannot be used as a database column. Suggestion: "%s"</source>
+      </trans-unit>
+      <trans-unit id="ERR.invalidRuleCondition">
+        <source><![CDATA[<i>Invalid rule condition (type "%s")</i>]]></source>
       </trans-unit>
       <trans-unit id="ERR.noStoreConfigurationSet">
         <source>No store configuration available</source>
@@ -554,6 +560,60 @@
       <trans-unit id="MSC.iso_taxCalculation.vertical.1">
         <source>VAT is calculated only after summing all net amounts. Then the tax is applied to the total net amount and rounded once.</source>
       </trans-unit>
+      <trans-unit id="WGT.mg.0">
+        <source>Milligram (mg)</source>
+      </trans-unit>
+      <trans-unit id="WGT.mg.1">
+        <source>A unit of mass equal to one-thousandth of a gram.</source>
+      </trans-unit>
+      <trans-unit id="WGT.g.0">
+        <source>Gram (g)</source>
+      </trans-unit>
+      <trans-unit id="WGT.g.1">
+        <source>A metric unit of weight equal to one thousandth of a kilogram.</source>
+      </trans-unit>
+      <trans-unit id="WGT.kg.0">
+        <source>Kilogram (kg)</source>
+      </trans-unit>
+      <trans-unit id="WGT.kg.1">
+        <source>One kilogram is equivalent to 1,000 grams or 2.2 pounds; the mass of a liter of water.</source>
+      </trans-unit>
+      <trans-unit id="WGT.t.0">
+        <source>Metric Ton (t)</source>
+      </trans-unit>
+      <trans-unit id="WGT.t.1">
+        <source>A unit of weight equal to 1,000 kilograms, or 2,204.6 pounds.</source>
+      </trans-unit>
+      <trans-unit id="WGT.ct.0">
+        <source>Carats (ct)</source>
+      </trans-unit>
+      <trans-unit id="WGT.ct.1">
+        <source>A measure of weight used for gemstones. One carat is equal to 1/5 of a gram (200 milligrams). Note that karat with a "K" is a measure of the purity of a gold alloy.</source>
+      </trans-unit>
+      <trans-unit id="WGT.oz.0">
+        <source>Ounce (oz)</source>
+      </trans-unit>
+      <trans-unit id="WGT.oz.1">
+        <source>A unit of weight equal to one sixteenth of a pound or 28.35 grams.</source>
+      </trans-unit>
+      <trans-unit id="WGT.lb.0">
+        <source>Pound (lb)</source>
+      </trans-unit>
+      <trans-unit id="WGT.lb.1">
+        <source>A unit of mass equal to 16 ounces.</source>
+      </trans-unit>
+      <trans-unit id="WGT.st.0">
+        <source>Stone (st)</source>
+      </trans-unit>
+      <trans-unit id="WGT.st.1">
+        <source>A British measurement of mass that equals fourteen pounds.</source>
+      </trans-unit>
+      <trans-unit id="WGT.grain.0">
+        <source>Grain</source>
+      </trans-unit>
+      <trans-unit id="WGT.grain.1">
+        <source>1/7000 pound; equals a troy grain or 64.799 milligrams.</source>
+      </trans-unit>
       <trans-unit id="CTE.isotope">
         <source>Isotope eCommerce</source>
       </trans-unit>
@@ -568,6 +628,12 @@
       </trans-unit>
       <trans-unit id="CTE.iso_categoryfilter.1">
         <source>Provides a filter by product category (page tree).</source>
+      </trans-unit>
+      <trans-unit id="CTE.iso_cumulativefilter.0">
+        <source>Cumulative Filter</source>
+      </trans-unit>
+      <trans-unit id="CTE.iso_cumulativefilter.1">
+        <source>Provides a cumulative filter so visitors can cut down the product choice by clicking on multiple conditions.</source>
       </trans-unit>
       <trans-unit id="CTE.iso_productlist.0">
         <source>Product List</source>
@@ -707,6 +773,12 @@
       <trans-unit id="MODEL.tl_iso_rule_condition.cart_quantity.1">
         <source>Compares the given value to the sum of all quantities of all products.</source>
       </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.cart_weight.0">
+        <source>Cart weight</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.cart_weight.1">
+        <source>Compare the combined weight of the products and quantities in the cart.</source>
+      </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.cart_products.0">
         <source>Total products in cart</source>
       </trans-unit>
@@ -722,16 +794,22 @@
       <trans-unit id="MODEL.tl_iso_rule_condition.member">
         <source>Member</source>
       </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.members.0">
+        <source>Specific member</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_rule_condition.members.1">
+        <source>Match signed-in member against a selection of member accounts.</source>
+      </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.member_authenticated.0">
         <source>Login status</source>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.member_authenticated.1">
         <source>Checks whether a customer is logged in or not.</source>
       </trans-unit>
-      <trans-unit id="MODEL.tl_iso_rule_condition.member_group.0">
+      <trans-unit id="MODEL.tl_iso_rule_condition.member_groups.0">
         <source>Member groups (current user)</source>
       </trans-unit>
-      <trans-unit id="MODEL.tl_iso_rule_condition.member_group.1">
+      <trans-unit id="MODEL.tl_iso_rule_condition.member_groups.1">
         <source>Checks whether the currently logged-in user has or does not have certain member groups.</source>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_rule_condition.store">

@@ -6,32 +6,25 @@ namespace Isotope\CoreBundle\Test\Store\Address;
 
 use Contao\CoreBundle\DataContainer\ValueFormatter;
 use Contao\CoreBundle\Intl\Countries;
-use Contao\System;
 use Isotope\CoreBundle\Model\AddressModel;
 use Isotope\CoreBundle\Store\Address\AddressConfig;
 use Isotope\CoreBundle\Store\Address\AddressFormatter;
 use Isotope\CoreBundle\Store\Address\AddressValidator;
+use Isotope\CoreBundle\Test\TestCase;
 use Isotope\CoreBundle\Twig\TemplateMarkupFactory;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
 
-final class AddressFormatterTest extends KernelTestCase
+final class AddressFormatterTest extends TestCase
 {
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-
-        restore_exception_handler();
-    }
-
     #[DataProvider('addressProvider')]
     public function testAddress(array $data, string $expectedHTML, string $expectedText): void
     {
-        self::bootKernel();
+        $loader = new FilesystemLoader();
+        $loader->addPath(\dirname(__DIR__, 3).'/contao/templates', 'Contao');
 
-        System::setContainer($this->getContainer());
-
-        $markupFactory = new TemplateMarkupFactory($this->getContainer()->get('twig'));
+        $markupFactory = new TemplateMarkupFactory(new Environment($loader));
 
         $formatter = $this->createStub(ValueFormatter::class);
         $formatter
@@ -41,8 +34,7 @@ final class AddressFormatterTest extends KernelTestCase
 
         $addressFormatter = new AddressFormatter($formatter, $markupFactory, $this->createStub(AddressValidator::class), $this->createStub(Countries::class));
 
-        $address = new AddressModel();
-        (new \ReflectionProperty(AddressModel::class, 'arrData'))->setValue($address, $data);
+        $address = $this->createClassWithPropertiesStub(AddressModel::class, $data);
 
         $config = new AddressConfig(
             ['gender', 'company', 'salutation', 'firstname', 'lastname', 'street_1', 'street_2', 'street_3', 'postal', 'city', 'subdivision', 'country', 'email', 'phone'],
@@ -57,6 +49,32 @@ final class AddressFormatterTest extends KernelTestCase
 
     public static function addressProvider(): iterable
     {
+        yield 'HTML entities in address fields' => [
+            [
+                'company' => 'A & B <Research>',
+                'firstname' => 'Zoë',
+                'lastname' => "O'Brien",
+                'street_1' => 'R&D Road <1>',
+                'postal' => '12345',
+                'city' => 'Paris',
+                'country' => 'FR',
+            ],
+            <<<'HTML'
+                A &amp; B &lt;Research&gt;<br>
+                Zoë O&#039;Brien<br>
+                R&amp;D Road &lt;1&gt;<br>
+                12345 Paris<br>
+                FR
+                HTML,
+            <<<'TEXT'
+                A & B <Research>
+                Zoë O'Brien
+                R&D Road <1>
+                12345 Paris
+                FR
+                TEXT,
+        ];
+
         yield [
             [
                 'company' => 'Musterfirma',

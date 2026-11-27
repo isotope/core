@@ -122,6 +122,7 @@ class OrderDetailsController extends AbstractContentElementController
             if ($newPayment) {
                 $cart = $this->orderConverter->convertToCart($order, $context);
                 $context->setCart($cart);
+
                 $cart->setPaymentMethod($newPayment);
                 $cart->setModified();
 

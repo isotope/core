@@ -45,7 +45,6 @@ class StoreContextFactory
         $this->framework->initialize();
 
         // TODO: load applicable taxes, etc.
-
         $billingAddress = new AddressModel();
         $billingAddress->country = $config->billing_country;
 
@@ -106,18 +105,14 @@ class StoreContextFactory
 
     private function getMoneyFormat(ConfigModel $config): MoneyFormat
     {
-        if (!isset($this->currencyFormats[$config->currencyFormat])) {
-            return new MoneyFormat();
-        }
-
-        $format = $this->currencyFormats[$config->currencyFormat];
+        $format = $this->currencyFormats[$config->currencyFormat] ?? [];
 
         return new MoneyFormat(
-            (int) $format['decimals'],
-            $format['decimal_separator'],
-            $format['thousands_separator'],
-            (int) $config->priceRoundPrecision,
-            (float) $config->priceRoundIncrement,
+            (int) ($format['decimals'] ?? 2),
+            $format['decimal_separator'] ?? '.',
+            $format['thousands_separator'] ?? '',
+            (int) ($config->priceRoundPrecision ?? 2),
+            (float) $config->priceRoundIncrement ?: 0.01,
         );
     }
 
@@ -157,7 +152,6 @@ class StoreContextFactory
     private function getOwnerAddress(ConfigModel $config): AddressModel
     {
         $address = new AddressModel();
-
         $address->company = $config->company;
         $address->firstname = $config->firstname;
         $address->lastname = $config->lastname;
@@ -171,7 +165,6 @@ class StoreContextFactory
         $address->email = $config->email;
         $address->phone = $config->phone;
         $address->vat_no = $config->vat_no;
-
         $address->preventSaving(false);
 
         return $address;

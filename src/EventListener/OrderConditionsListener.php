@@ -55,6 +55,7 @@ class OrderConditionsListener
     private function getForm(CheckoutStepEvent $event, array $condition): TemplateMarkup|null
     {
         $form = new Form($event->getFormId(), 'POST', static fn () => $event->isSubmitted());
+
         $cart = $event->getContext()->getCart();
         $extension = $cart?->getExtension(OrderConditionsExtension::class);
 

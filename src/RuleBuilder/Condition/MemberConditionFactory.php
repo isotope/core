@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\RuleBuilder\Condition;
 
+use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\Model;
 use Isotope\CoreBundle\Model\RuleConditionModel;
 use Isotope\CoreBundle\ModelType\Exception\InvalidTypeException;
@@ -21,6 +22,7 @@ class MemberConditionFactory implements ModelTypeFactoryInterface
     use ModelInstanceTrait;
 
     public function __construct(
+        private readonly ContaoFramework $framework,
         private readonly Security $security,
         private readonly TranslatorInterface $translator,
     ) {
@@ -34,11 +36,17 @@ class MemberConditionFactory implements ModelTypeFactoryInterface
         $this->validateInstanceOf($model, RuleConditionModel::class);
 
         return match ($model->type) {
-            'member_group' => new MemberGroupCondition(
+            'members' => new MembersCondition(
+                $this->framework,
+                $this->translator,
+                $model->operator,
+                array_map(intval(...), explode(',', (string) $model->members)),
+            ),
+            'member_groups' => new MemberGroupsCondition(
                 $this->security,
                 $this->translator,
                 $model->operator,
-                explode(',', (string) $model->member_groups),
+                array_map(intval(...), explode(',', (string) $model->member_groups)),
             ),
             'member_authenticated' => new MemberAuthenticatedCondition(
                 $this->security,

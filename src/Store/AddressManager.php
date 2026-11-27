@@ -35,6 +35,7 @@ class AddressManager
             $address = new AddressModel();
             $address->ptable = 'tl_member';
             $address->pid = $memberId;
+            $address->store_id = $storeId;
 
             return $this->generateForm($request, $address, $addressConfig, $identifier, 'create');
         }
@@ -84,6 +85,7 @@ class AddressManager
             'ignoreModelValue' => true,
             'value' => $address->id ?? 1,
         ]);
+
         $form->addSubmitFormField($this->translator->trans('MSC.submitLabel', [], 'contao_default'));
 
         $result = $this->formBuilder->validate($form, $addressConfig);
@@ -95,7 +97,7 @@ class AddressManager
         }
 
         return [
-            'form' => $this->formBuilder->render($form),
+            'form' => $this->formBuilder->render($form, $result ?: []),
             'address' => $address,
             'config' => $addressConfig,
         ];

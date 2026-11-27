@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Isotope\CoreBundle\Product\Query;
 
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Query\QueryBuilder;
 use Isotope\CoreBundle\Product\Query\Filter\FilterInterface;
 
 class ProductQuery implements \Stringable
@@ -30,10 +28,6 @@ class ProductQuery implements \Stringable
      */
     private array $search = [];
 
-    public function __construct(private readonly Connection $connection)
-    {
-    }
-
     public function __toString(): string
     {
         $query = [];
@@ -55,46 +49,6 @@ class ProductQuery implements \Stringable
         }
 
         return http_build_query($query);
-    }
-
-    public function applyFilterAndSorting(QueryBuilder $queryBuilder, array $keys): void
-    {
-        foreach ($this->getFilters($keys) as $filter) {
-            $filter->apply($queryBuilder);
-        }
-
-        foreach ($this->getSortings($keys) as $sorting) {
-            $sorting->apply($queryBuilder);
-        }
-    }
-
-    public function applySearch(QueryBuilder $queryBuilder, array $fields, array $keys): void
-    {
-        $search = implode(' ', array_intersect_key($this->search, array_flip($keys)));
-        $keywords = array_values(array_unique(array_filter(
-            explode(' ', $search),
-            static fn (string $keyword): bool => '' !== $keyword,
-        )));
-
-        if ([] === $keywords) {
-            return;
-        }
-
-        foreach ($keywords as $keyword) {
-            $expr = [];
-            $param = $queryBuilder->createNamedParameter('%'.$keyword.'%');
-
-            foreach ($fields as $field) {
-                $field = $this->connection->quoteSingleIdentifier($field);
-
-                $expr[] = $queryBuilder->expr()->like(
-                    \sprintf('IFNULL(translation.%s, tl_iso_product.%s)', $field, $field),
-                    $param,
-                );
-            }
-
-            $queryBuilder->andWhere($queryBuilder->expr()->or(...$expr));
-        }
     }
 
     public function setFilters(string $key, array $filters): self

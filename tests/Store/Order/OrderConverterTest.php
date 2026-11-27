@@ -7,6 +7,7 @@ namespace Isotope\CoreBundle\Test\Store\Order;
 use Isotope\CoreBundle\Model\AddressModel;
 use Isotope\CoreBundle\ProductCollection\Cart\Cart;
 use Isotope\CoreBundle\ProductCollection\LineItem\LineItem;
+use Isotope\CoreBundle\ProductCollection\Order\Order;
 use Isotope\CoreBundle\Store\Order\OrderConverter;
 use Isotope\CoreBundle\Store\Price\CalculatedPrice;
 use Isotope\CoreBundle\Test\TestCase;
@@ -14,11 +15,35 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class OrderConverterTest extends TestCase
 {
+    public function testConvertedCartDoesNotShareLineItemsWithTheOrder(): void
+    {
+        $context = $this->createStoreContext();
+        $order = new Order('order', $context);
+        $price = new CalculatedPrice(10, 20, quantity: 2);
+        $item = (new LineItem(LineItem::TYPE_PRODUCT, 'tl_iso_product.42', 2))->setId(17)->setPrice($price);
+
+        $order->add($item);
+        $order->add(new LineItem(LineItem::TYPE_SHIPPING, 'tl_iso_shipping.1'));
+
+        $converter = new OrderConverter($this->createStub(EventDispatcherInterface::class));
+        $cart = $converter->convertToCart($order, $context);
+
+        $cartItem = $cart->getLineItems()->first();
+        $cartItem->setQuantity(3)->setPrice(new CalculatedPrice(15, 45, quantity: 3));
+
+        $this->assertCount(1, $cart->getLineItems());
+        $this->assertNotSame($item, $cartItem);
+        $this->assertSame(2, $item->getQuantity());
+        $this->assertSame($price, $item->getPrice());
+        $this->assertSame(17, $item->getId());
+        $this->assertSame(0, $cartItem->getId());
+    }
+
     public function testConvertToOrder(): void
     {
         $cart = new Cart('__identifier__');
         $cart->setBillingAddress($this->createClassWithPropertiesStub(AddressModel::class));
-        $cart->add((new LineItem(LineItem::TYPE_PRODUCT, 'tl_iso_product.42'))->setPrice(new CalculatedPrice(10, 10)));
+        $cart->add((new LineItem(LineItem::TYPE_PRODUCT, 'tl_iso_product.42'))->setPrice(new CalculatedPrice(10, 10))->setReferencePage(17));
         $cart->add((new LineItem(LineItem::TYPE_PRODUCT, 'tl_iso_product.43'))->setPrice(new CalculatedPrice(20, 20)));
         $cart->add((new LineItem(LineItem::TYPE_SHIPPING, 'tl_iso_shipping.1'))->setPrice(new CalculatedPrice(30, 30))->setLevel(1));
 
@@ -49,12 +74,13 @@ final class OrderConverterTest extends TestCase
                         'total_price' => 10.0,
                         'unit_label' => null,
                         'is_range' => false,
+                        'base_price' => null,
                         'calculated_taxes' => [],
                         'tax_rates' => ['rates' => [], 'included' => []],
                     ],
                     'tax_free_price' => 0,
                     'tax_id' => '',
-                    'jumpTo' => 0,
+                    'referencePage' => 17,
                     'level' => 0,
                 ],
                 [
@@ -72,12 +98,13 @@ final class OrderConverterTest extends TestCase
                         'total_price' => 20.0,
                         'unit_label' => null,
                         'is_range' => false,
+                        'base_price' => null,
                         'calculated_taxes' => [],
                         'tax_rates' => ['rates' => [], 'included' => []],
                     ],
                     'tax_free_price' => 0,
                     'tax_id' => '',
-                    'jumpTo' => 0,
+                    'referencePage' => null,
                     'level' => 0,
                 ],
                 [
@@ -93,6 +120,7 @@ final class OrderConverterTest extends TestCase
                         'total_price' => 30.0,
                         'unit_label' => null,
                         'is_range' => false,
+                        'base_price' => null,
                         'calculated_taxes' => [],
                         'tax_rates' => ['rates' => [], 'included' => []],
                     ],
@@ -114,12 +142,13 @@ final class OrderConverterTest extends TestCase
                         'total_price' => 30.0,
                         'unit_label' => null,
                         'is_range' => false,
+                        'base_price' => null,
                         'calculated_taxes' => [],
                         'tax_rates' => ['rates' => [], 'included' => []],
                     ],
                     'tax_free_price' => 0,
                     'tax_id' => '',
-                    'jumpTo' => 0,
+                    'referencePage' => null,
                     'level' => 1,
                 ],
                 [
@@ -135,6 +164,7 @@ final class OrderConverterTest extends TestCase
                         'total_price' => 60.0,
                         'unit_label' => null,
                         'is_range' => false,
+                        'base_price' => null,
                         'calculated_taxes' => [],
                         'tax_rates' => ['rates' => [], 'included' => []],
                     ],
@@ -153,6 +183,7 @@ final class OrderConverterTest extends TestCase
                         'total_price' => 60.0,
                         'unit_label' => null,
                         'is_range' => false,
+                        'base_price' => null,
                         'calculated_taxes' => [],
                         'tax_rates' => ['rates' => [], 'included' => []],
                     ],

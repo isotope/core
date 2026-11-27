@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Isotope\CoreBundle\Product\Render;
 
 use Contao\Controller;
+use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\StringUtil;
 use Contao\System;
 use Contao\UploadableWidgetInterface;
@@ -22,6 +23,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 class ProductConfigurationFactory
 {
     public function __construct(
+        private readonly ContaoFramework $framework,
         private readonly AttributeRegistry $attributeRegistry,
         private readonly EventDispatcherInterface $eventDispatcher,
     ) {
@@ -36,13 +38,48 @@ class ProductConfigurationFactory
         $ajaxAttributes = [];
 
         $pricedFields = $this->attributeRegistry->getPricedFields();
+
         $product = $productContext->getProduct();
         $type = $product->getProductType();
+
         $attributes = array_unique(array_merge($type->getAttributes(), $type->getVariantAttributes()));
 
         $variants = $product->getVariants();
         $defaultVariant = $product->isVariant() ? $product : ($view->useFallbackVariant($product) ? $product->getDefaultVariant() : null);
+
         $defaults = $this->getDefaults($product, $request);
+        $variantOptions = [];
+
+        foreach ($attributes as $attributeName) {
+            $attribute = $this->attributeRegistry->get($attributeName);
+
+            if (!$attribute instanceof VariantAttributeInterface || !$attribute->isVariantOption() || !$attribute->getFrontendWidget()) {
+                continue;
+            }
+
+            $values = array_unique($variants->column($attributeName));
+            $value = null;
+
+            if ($request->isMethod(Request::METHOD_POST) && \in_array($request->request->get($attributeName), $values, false)) {
+                $value = $request->request->get($attributeName);
+            } elseif (isset($defaults[$attributeName]) && $request->isMethod(Request::METHOD_GET) && \in_array($defaults[$attributeName], $values, false)) {
+                $value = $defaults[$attributeName];
+            } elseif ($defaultVariant) {
+                $value = $defaultVariant->{$attributeName};
+            } elseif (1 === \count($values)) {
+                $value = array_first($values);
+            }
+
+            if (null !== $value && '' !== $value) {
+                $variants = $variants->filter(static fn (CoreProduct $variant) => (string) $variant->$attributeName === (string) $value);
+            }
+
+            $variantOptions[$attributeName] = [$values, $value];
+        }
+
+        /** @var CoreProduct $variant */
+        $variant = 1 === $variants->count() ? $variants->first() : $product;
+        $variantContext = $variant === $product ? $productContext : new ProductContext($variant, $productContext->getContext());
 
         foreach ($attributes as $attributeName) {
             $attribute = $this->attributeRegistry->get($attributeName);
@@ -58,26 +95,15 @@ class ProductConfigurationFactory
                 continue;
             }
 
+            $isPriced = \in_array($attributeName, $pricedFields, true);
             $dcaConfig = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attributeName] ?? [];
-            $fieldConfig = $widgetClass::getAttributesFromDca($dcaConfig, $attributeName, $dcaConfig['default'] ?? null, $attributeName, 'tl_iso_product', $productContext);
+            $fieldConfig = $widgetClass::getAttributesFromDca($dcaConfig, $attributeName, $dcaConfig['default'] ?? null, $attributeName, 'tl_iso_product', $variantContext);
             $value = null;
 
-            if ($attribute instanceof VariantAttributeInterface && $attribute->isVariantOption()) {
-                $values = array_unique($variants->column($attributeName));
+            if (isset($variantOptions[$attributeName])) {
+                [$values, $value] = $variantOptions[$attributeName];
 
-                if ($request->isMethod(Request::METHOD_POST) && \in_array($request->request->get($attributeName), $values, false)) {
-                    $value = $request->request->get($attributeName);
-                } elseif (isset($defaults[$attributeName]) && $request->isMethod(Request::METHOD_GET) && \in_array($defaults[$attributeName], $values, false)) {
-                    $value = $defaults[$attributeName];
-                } elseif ($defaultVariant) {
-                    $value = $defaultVariant->{$attributeName};
-                } elseif (1 === \count($values)) {
-                    $value = array_first($values);
-                }
-
-                if ($value) {
-                    // Convert all values to strings to handle int/string comparison
-                    $variants = $variants->filter(static fn (CoreProduct $product) => (string) $product->$attributeName === (string) $value);
+                if (null !== $value && '' !== $value) {
                     $configuration[$attributeName] = $value;
                 }
 
@@ -135,15 +161,12 @@ class ProductConfigurationFactory
 
             if (
                 ($dcaConfig['attributes']['ajax_option'] ?? null)
-                || \in_array($attributeName, $pricedFields, true)
+                || $isPriced
                 || ($attribute instanceof VariantAttributeInterface && $attribute->isVariantOption())
             ) {
                 $ajaxAttributes[] = $attributeName;
             }
         }
-
-        /** @var CoreProduct $variant */
-        $variant = 1 === $variants->count() ? $variants->first() : $product;
 
         $event = new ProductConfigurationEvent(
             $variant,
@@ -166,7 +189,11 @@ class ProductConfigurationFactory
     private function getDefaults(CoreProduct $product, Request $request): array
     {
         if ($request->query->has('collection_item')) {
-            $item = ProductCollectionItemModel::findById($request->query->get('collection_item'));
+            $item = $this->framework
+                ->getAdapter(ProductCollectionItemModel::class)
+                ->findById($request->query->get('collection_item'))
+            ;
+
             // TODO: check this item belongs to a collection that belongs to the current user
 
             if ($item && $item->identifier === $product->getIdentifier()) {

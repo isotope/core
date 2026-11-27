@@ -34,6 +34,7 @@
     "require": {
         "php": "^8.3",
         "ext-dom": "*",
+        "ext-mbstring": "*",
         "composer-runtime-api": "^2",
         "contao/core-bundle": "^5.7.4",
         "codefog/contao-haste": "^5.4",
@@ -58,6 +59,7 @@
         "symfony/event-dispatcher": "^7.4",
         "symfony/event-dispatcher-contracts": "^3.0",
         "symfony/filesystem": "^7.4",
+        "symfony/finder": "^7.4",
         "symfony/http-client-contracts": "^3.1",
         "symfony/http-foundation": "^7.4",
         "symfony/http-kernel": "^7.4",
@@ -79,6 +81,7 @@
         "twig/twig": "^3.12"
     },
     "require-dev": {
+        "ext-pdo": "*",
         "contao/manager-plugin": "^2.0",
         "terminal42/contao-build-tools": "dev-main",
         "contao/test-case": "5.7.*",
@@ -90,7 +93,9 @@
         "symfony/framework-bundle": "^7.4",
         "symfony/monolog-bundle": "^3.1",
         "symfony/twig-bundle": "^7.4",
-        "terminal42/contao-changelanguage": "^3.8"
+        "symfony/var-exporter": "^7.4",
+        "terminal42/contao-changelanguage": "^3.8",
+        "web-auth/webauthn-symfony-bundle": "^5.0"
     },
     "conflict": {
         "contao/manager-plugin": "<2.0 || >= 3.0",

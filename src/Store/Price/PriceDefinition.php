@@ -16,6 +16,8 @@ class PriceDefinition
 
     private string|null $reference = null;
 
+    private float|null $listAmount = null;
+
     public function __construct(
         float $amount,
         private int|null $taxClassId,
@@ -23,6 +25,18 @@ class PriceDefinition
         private bool $percentage = false,
     ) {
         $this->amount = FloatComparator::cast($amount);
+    }
+
+    public function setListAmount(float|null $listAmount): self
+    {
+        $this->listAmount = null === $listAmount ? null : FloatComparator::cast($listAmount);
+
+        return $this;
+    }
+
+    public function getListAmount(): float|null
+    {
+        return $this->listAmount;
     }
 
     public function getAmount(): float

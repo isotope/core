@@ -36,7 +36,6 @@ class StandardDocumentFactory implements ModelTypeFactoryInterface
             new NumberFormat($this->insertTagParser->replace($model->numberPrefix), (int) $model->numberDigits),
             '@Contao/'.($model->customTpl ?: 'isotope/document/standard').'.html.twig',
         );
-
         $document
             ->setDocumentTitle($this->insertTagParser->replace($model->documentTitle))
             ->setGalleryId($model->gallery ?: null)

@@ -31,7 +31,7 @@ class LineItemTransformer
             'price_data' => $price?->jsonSerialize(),
             'tax_free_price' => 0,
             'tax_id' => implode(',', $price?->getCalculatedTaxes()->getNumbers() ?? []),
-            'jumpTo' => 0,
+            'referencePage' => $lineItem->getReferencePageId(),
             'level' => $lineItem->getLevel(),
         ];
     }

@@ -29,7 +29,7 @@ class CartQuantityCondition implements RuleConditionInterface
 
     public function isApplicable(StoreContext $context): bool
     {
-        $quantity = $context->getCart()->getLineItems()->products()->sumQuantity();
+        $quantity = $context->getCart()?->getLineItems()->products()->sumQuantity() ?? 0;
 
         return match ($this->operator) {
             'eq' => FloatComparator::equals($quantity, $this->quantity),
@@ -45,8 +45,12 @@ class CartQuantityCondition implements RuleConditionInterface
 
     public function getBackendLabel(): string
     {
+        if (!$this->isValid()) {
+            return '-';
+        }
+
         if ('range' === $this->operator) {
-            return \sprintf('between %s and %s', $this->quantityFrom, $this->quantityTo);
+            return $this->translator->trans('tl_iso_rule_condition.label.range', [$this->quantityFrom, $this->quantityTo], 'contao_tl_iso_rule_condition');
         }
 
         return $this->trans($this->operator).' '.$this->quantity;

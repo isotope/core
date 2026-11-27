@@ -43,7 +43,6 @@ class TransactionEventDispatcher
                 $event->result = $function($event);
             } catch (\Throwable $e) {
                 $event->exception = $e;
-
                 $event->resetPropagation();
 
                 $this->dispatcher->dispatch($event, self::error($event->getName()));

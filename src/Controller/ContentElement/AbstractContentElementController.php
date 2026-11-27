@@ -54,7 +54,6 @@ abstract class AbstractContentElementController extends CoreContentElementContro
     public static function getSubscribedServices(): array
     {
         $services = parent::getSubscribedServices();
-
         $services[StoreManager::class] = StoreManager::class;
         $services[ProductQueryFactory::class] = ProductQueryFactory::class;
         $services[ProductCollectionRenderer::class] = ProductCollectionRenderer::class;
@@ -145,6 +144,7 @@ abstract class AbstractContentElementController extends CoreContentElementContro
             /** @var Connection $connection */
             $connection = $this->container->get(Connection::class);
             $pageId = $connection->fetchOne('SELECT pid FROM tl_article WHERE id=?', [$request->query->getInt('id')]);
+
             $pageModel = PageModel::findWithDetails($pageId);
 
             if (!$pageModel) {

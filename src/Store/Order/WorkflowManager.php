@@ -67,13 +67,14 @@ class WorkflowManager implements ResetInterface
     private function load(): void
     {
         $metadata = [];
+
         $definitions = [
             'order' => new DefinitionBuilder(),
             'transaction' => new DefinitionBuilder(),
             'delivery' => new DefinitionBuilder(),
         ];
 
-        $records = $this->connection->fetchAllAssociative('SELECT * FROM tl_iso_orderstatus');
+        $records = $this->connection->fetchAllAssociative('SELECT * FROM tl_iso_orderstatus ORDER BY type, sorting, id');
 
         foreach ($records as $row) {
             if (!isset($definitions[$row['type']])) {
@@ -81,10 +82,16 @@ class WorkflowManager implements ResetInterface
             }
 
             $definition = $definitions[$row['type']];
+            $definition->addPlace($row['alias']);
+
+            $metadata[$row['type']][$row['alias']] = $row;
 
             foreach (explode(',', (string) $row['workflow']) as $to) {
+                if ('' === $to) {
+                    continue;
+                }
+
                 $definition->addTransition(new Transition($to, $row['alias'], $to));
-                $metadata[$row['type']][$row['alias']] = $row;
             }
         }
 
