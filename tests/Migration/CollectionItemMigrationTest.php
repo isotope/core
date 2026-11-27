@@ -9,6 +9,7 @@ use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Schema\Table;
 use Isotope\CoreBundle\Migration\CollectionItemMigration;
 use Isotope\CoreBundle\Store\Price\CalculatedPrice;
+use Isotope\CoreBundle\Store\Tax\CalculatedTax;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -112,7 +113,7 @@ final class CollectionItemMigrationTest extends TestCase
 
         foreach ([$product, $inserted['shipping.1']] as $price) {
             $tax = $price->getCalculatedTaxes()->get('7');
-            $this->assertInstanceOf(\Isotope\CoreBundle\Store\Tax\CalculatedTax::class, $tax);
+            $this->assertInstanceOf(CalculatedTax::class, $tax);
             $this->assertEqualsWithDelta($expectedBase, $tax->getPrice(), 0.00001);
             $this->assertEqualsWithDelta($expectedTax, $tax->getAmount(), 0.00001);
             $this->assertSame(7, $tax->getNumber());
